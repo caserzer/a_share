@@ -1,0 +1,23 @@
+provider_uri: data/qlib/cn_data
+market: selected
+benchmark: SH000300
+freq: day
+
+signal:
+  kind: momentum
+  lookback: 20
+  score_start_time: "2017-01-01"
+
+backtest:
+  start_time: "2021-01-01"
+  end_time: "2026-04-29"
+  account: 1000000
+  topk: 30
+  n_drop: 3
+  limit_threshold: 0.095
+  deal_price: close
+  open_cost: 0.0005
+  close_cost: 0.0015
+  min_cost: 5
+
+output_dir: outputs/backtests

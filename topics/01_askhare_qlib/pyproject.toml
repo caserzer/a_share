@@ -1,0 +1,19 @@
+[project]
+name = "askhare-qlib"
+version = "0.1.0"
+description = "AkShare to Qlib A-share daily data pipeline"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "akshare>=1.18.0",
+    "lightgbm>=4.5.0",
+    "numpy>=1.26.0,<2.0.0",
+    "pandas>=2.2.0,<3.0.0",
+    "protobuf>=3.20.0,<4.0.0",
+    "pyqlib>=0.9.6",
+    "pyyaml>=6.0.0",
+    "setuptools<81.0.0",
+]
+
+[tool.uv]
+package = false
