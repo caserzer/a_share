@@ -48,6 +48,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--start-date", default="2017-01-01", help="Used for generated Qlib instrument files.")
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Used for generated Qlib instrument files.")
     parser.add_argument(
+        "--instrument-output",
+        default="data/universe/qlib_selected.txt",
+        help="Path for the generated Qlib instrument file.",
+    )
+    parser.add_argument(
         "--volume-multiplier",
         type=float,
         default=100.0,
@@ -180,7 +185,7 @@ def main() -> int:
 
     write_qlib_instrument_file(
         universe,
-        "data/universe/qlib_selected.txt",
+        args.instrument_output,
         qlib_date(args.start_date),
         qlib_date(args.end_date),
     )
@@ -195,4 +200,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
