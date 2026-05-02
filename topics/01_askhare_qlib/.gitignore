@@ -1,4 +1,7 @@
 .venv/
+.env
+.env.*
+!.env.example
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -20,5 +23,7 @@ Explore1/data/interim/
 Explore1/data/qlib/
 Explore1/outputs/reports/*
 Explore1/outputs/backtests/*
+
+Explore3/outputs/cache/
 
 mlruns/
