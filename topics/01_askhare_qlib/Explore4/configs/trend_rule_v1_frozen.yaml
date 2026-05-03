@@ -1,0 +1,285 @@
+paths:
+  provider_uri: Explore1/data/qlib/cn_data
+  explore1_universe_csv: Explore1/data/universe/mcap500_mainboard_20251231.csv
+  explore1_universe_qlib: Explore1/data/universe/qlib_mcap500_mainboard_20251231.txt
+  universe_csv: Explore4/data/universe/mcap500_mainboard_20251231.csv
+  universe_qlib: Explore4/data/universe/qlib_mcap500_mainboard_20251231.txt
+  target_dir: Explore4/data/targets
+  cache_dir: Explore4/outputs/cache
+  report_dir: Explore4/outputs/reports
+  backtest_dir: Explore4/outputs/backtests
+dates:
+  data_start: '2017-01-01'
+  data_end: '2026-04-30'
+  train_start: '2017-01-01'
+  train_end: '2022-12-31'
+  valid_start: '2023-01-01'
+  valid_end: '2024-12-31'
+  test_start: '2025-01-01'
+  test_end: '2026-04-30'
+  backtest_start: '2025-01-01'
+  backtest_end: '2026-04-29'
+  observed_test_start: '2025-01-01'
+  observed_test_end: '2026-04-30'
+  observed_backtest_end: '2026-04-29'
+qlib:
+  market: mcap500_mainboard_20251231
+  benchmark: SH000300
+  required_fields:
+  - $open
+  - $high
+  - $low
+  - $close
+  - $volume
+  - $money
+  - $factor
+costs:
+  account: 1000000
+  freq: day
+  deal_price: open
+  open_cost: 0.0005
+  close_cost: 0.0015
+  min_cost: 5
+  limit_threshold: 0.095
+rules:
+  market:
+    ema: 60
+    slope_window: 20
+    record_ema: 120
+  width:
+    close_gt_ema60: 0.55
+    ema20_gt_ema60: 0.45
+  candidate:
+    max_dist_ema20: 0.08
+    atr_dist_multiplier: 2.0
+    volatility_quantile: 0.9
+    money_quantile: 0.2
+  score:
+    top_pct: 0.2
+    winsor_lower: 0.01
+    winsor_upper: 0.99
+    weights:
+      ema60_slope10: 0.25
+      ret60_excess: 0.2
+      ema20_ema60_spread: 0.15
+      money_ratio20: 0.15
+      ret20: 0.1
+      adx_proxy20: 0.1
+      overheat: -0.15
+      volatility20: -0.1
+  breakout:
+    lookback: 60
+    money_ratio: 1.2
+    upper_shadow_max: 0.4
+  pullback:
+    ema_band_pct: 0.03
+    recent_low_window: 5
+  stops:
+    fixed_stop_pct: 0.08
+    atr_multiplier: 2.0
+    structure_atr_buffer: 0.5
+    time_stop_days: 10
+    trailing_atr_multiplier: 2.0
+  portfolio:
+    max_positions: 20
+    single_stock_max_weight: 0.05
+    max_industry_weight: 0.25
+    max_daily_new_weight: 0.2
+    risk_degree: 0.95
+    risk_unit_sizing_enabled: false
+targets:
+  market:
+  - target_key: broad_market
+    name: 沪深300
+    ts_code: 000300.SH
+    akshare_api: stock_zh_index_hist_csindex
+    akshare_symbol: '000300'
+  - target_key: mid_cap_spread
+    name: 中证500
+    ts_code: 000905.SH
+    akshare_api: stock_zh_index_hist_csindex
+    akshare_symbol: 000905
+  - target_key: small_cap_spread
+    name: 中证1000
+    ts_code: 000852.SH
+    akshare_api: stock_zh_index_hist_csindex
+    akshare_symbol: 000852
+  - target_key: growth_board_spread
+    name: 创业板指
+    ts_code: 399006.SZ
+    akshare_api: index_hist_cni
+    akshare_symbol: '399006'
+  industry:
+  - target_key: sw_801010
+    ts_code: 801010.SI
+    name: 农林牧渔
+  - target_key: sw_801030
+    ts_code: 801030.SI
+    name: 基础化工
+  - target_key: sw_801040
+    ts_code: 801040.SI
+    name: 钢铁
+  - target_key: sw_801050
+    ts_code: 801050.SI
+    name: 有色金属
+  - target_key: sw_801080
+    ts_code: 801080.SI
+    name: 电子
+  - target_key: sw_801110
+    ts_code: 801110.SI
+    name: 家用电器
+  - target_key: sw_801120
+    ts_code: 801120.SI
+    name: 食品饮料
+  - target_key: sw_801130
+    ts_code: 801130.SI
+    name: 纺织服饰
+  - target_key: sw_801140
+    ts_code: 801140.SI
+    name: 轻工制造
+  - target_key: sw_801150
+    ts_code: 801150.SI
+    name: 医药生物
+  - target_key: sw_801160
+    ts_code: 801160.SI
+    name: 公用事业
+  - target_key: sw_801170
+    ts_code: 801170.SI
+    name: 交通运输
+  - target_key: sw_801180
+    ts_code: 801180.SI
+    name: 房地产
+  - target_key: sw_801200
+    ts_code: 801200.SI
+    name: 商贸零售
+  - target_key: sw_801210
+    ts_code: 801210.SI
+    name: 社会服务
+  - target_key: sw_801230
+    ts_code: 801230.SI
+    name: 综合
+  - target_key: sw_801710
+    ts_code: 801710.SI
+    name: 建筑材料
+  - target_key: sw_801720
+    ts_code: 801720.SI
+    name: 建筑装饰
+  - target_key: sw_801730
+    ts_code: 801730.SI
+    name: 电力设备
+  - target_key: sw_801740
+    ts_code: 801740.SI
+    name: 国防军工
+  - target_key: sw_801750
+    ts_code: 801750.SI
+    name: 计算机
+  - target_key: sw_801760
+    ts_code: 801760.SI
+    name: 传媒
+  - target_key: sw_801770
+    ts_code: 801770.SI
+    name: 通信
+  - target_key: sw_801780
+    ts_code: 801780.SI
+    name: 银行
+  - target_key: sw_801790
+    ts_code: 801790.SI
+    name: 非银金融
+  - target_key: sw_801880
+    ts_code: 801880.SI
+    name: 汽车
+  - target_key: sw_801890
+    ts_code: 801890.SI
+    name: 机械设备
+  - target_key: sw_801950
+    ts_code: 801950.SI
+    name: 煤炭
+  - target_key: sw_801960
+    ts_code: 801960.SI
+    name: 石油石化
+  - target_key: sw_801970
+    ts_code: 801970.SI
+    name: 环保
+  - target_key: sw_801980
+    ts_code: 801980.SI
+    name: 美容护理
+  theme:
+  - target_key: dividend
+    name: 中证红利指数
+    ts_code: 000922.SH
+    akshare_api: stock_zh_index_hist_csindex
+    akshare_symbol: 000922
+  - target_key: central_soe
+    name: 中证中央企业综合指数
+    ts_code: 000926.SH
+    akshare_api: stock_zh_index_hist_csindex
+    akshare_symbol: 000926
+  - target_key: ai
+    name: 中证人工智能主题指数
+    ts_code: 930713.CSI
+    akshare_api: stock_zh_index_hist_csindex
+    akshare_symbol: '930713'
+  - target_key: new_energy
+    name: 中证内地新能源主题指数
+    ts_code: 000941.SH
+    akshare_api: stock_zh_index_hist_csindex
+    akshare_symbol: 000941
+ablations:
+- version: ema_state_only
+  entry_filter: ema_state
+  entry_type: ema_state
+  stop_mode: fixed
+  exit_mode: ema_fixed
+- version: market_filter
+  entry_filter: market_ok_entry
+  entry_type: ema_state
+  stop_mode: fixed
+  exit_mode: ema_fixed
+- version: market_width
+  entry_filter: width_ok_entry
+  entry_type: ema_state
+  stop_mode: fixed
+  exit_mode: ema_fixed
+- version: industry_theme_state
+  entry_filter: industry_ok_entry
+  entry_type: ema_state
+  stop_mode: fixed
+  exit_mode: ema_fixed
+- version: trend_score_top20
+  entry_filter: trend_score_top20_entry
+  entry_type: ema_state
+  stop_mode: fixed
+  exit_mode: ema_fixed
+- version: breakout_entry
+  entry_filter: breakout_entry
+  entry_type: breakout
+  stop_mode: fixed
+  exit_mode: ema_fixed
+- version: pullback_entry
+  entry_filter: pullback_entry
+  entry_type: pullback
+  stop_mode: fixed
+  exit_mode: ema_fixed
+- version: atr_structure_stop
+  entry_filter: combined_entry
+  entry_type: combined
+  stop_mode: atr_structure
+  exit_mode: stop_plus_ema
+- version: layered_exit
+  entry_filter: combined_entry
+  entry_type: combined
+  stop_mode: atr_structure
+  exit_mode: layered
+explore4:
+  source_config: Explore3/configs/trend_rule_v1.yaml
+  source_report: Explore3/outputs/reports/explore3_verification_report.md
+  observed_test_only: true
+  final_test_available: false
+  default_grid_max_combinations: 13
+  selection_rule:
+  - valid max_drawdown >= baseline fixed-weight max_drawdown
+  - valid total_return_with_cost > 0
+  - valid trades >= 70% of baseline fixed-weight trades
+  - highest return_drawdown_ratio
+  - if ratio gap < 0.10, higher remove-top5-winners return
+  - if still tied, lower turnover

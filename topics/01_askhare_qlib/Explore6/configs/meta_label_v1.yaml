@@ -1,0 +1,131 @@
+paths:
+  provider_uri: Explore1/data/qlib/cn_data
+  universe_csv: Explore1/data/universe/mcap500_mainboard_20251231.csv
+  universe_qlib: Explore1/data/universe/qlib_mcap500_mainboard_20251231.txt
+  target_history: Explore4/data/targets/target_history.csv
+  industry_membership: Explore4/data/targets/industry_membership.csv
+  cache_dir: Explore6/outputs/cache
+  report_dir: Explore6/outputs/reports
+  backtest_dir: Explore6/outputs/backtests
+
+sources:
+  source_rule_config: Explore4/configs/trend_rule_v1_frozen.yaml
+  source_walk_forward_config: Explore5/configs/walk_forward_v1.yaml
+  source_background_report: Explore5/outputs/reports/explore5_final_report.md
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  observed_test_start: "2025-01-01"
+  observed_test_end: "2026-04-30"
+  observed_backtest_end: "2026-04-29"
+
+label:
+  entry_type: pullback
+  amount: 100
+  bad_exit_reasons: ["stop_loss", "time_stop"]
+  bad_return_threshold: -0.02
+  bad_r_multiple_threshold: -0.50
+  good_exit_reasons: ["trailing_stop"]
+  good_return_threshold: 0.03
+  good_r_multiple_threshold: 1.00
+
+candidate_pool:
+  loose_money_ratio_upper: 1.20
+
+sample_sufficiency:
+  target_train_labeled_candidates: 200
+  min_train_labeled_candidates: 100
+  min_class_count: 30
+  min_minority_class_ratio: 0.05
+  min_trainable_folds: 3
+  inner_min_fit_candidates: 80
+  inner_min_select_candidates: 30
+  inner_min_select_class_count: 10
+
+imbalance:
+  class_weight_cap: 10.0
+  use_scale_pos_weight_when_bad_minority: true
+
+model:
+  name: lgbm_pullback_bad_trade_classifier
+  seed: 20260503
+  num_boost_round: 120
+  lgbm_param_grid:
+    - id: lgbm_01
+      num_leaves: 15
+      learning_rate: 0.03
+      min_data_in_leaf: 20
+      feature_fraction: 0.70
+      lambda_l1: 0
+      lambda_l2: 10
+    - id: lgbm_02
+      num_leaves: 15
+      learning_rate: 0.03
+      min_data_in_leaf: 50
+      feature_fraction: 0.90
+      lambda_l1: 10
+      lambda_l2: 50
+    - id: lgbm_03
+      num_leaves: 15
+      learning_rate: 0.05
+      min_data_in_leaf: 20
+      feature_fraction: 0.90
+      lambda_l1: 0
+      lambda_l2: 50
+    - id: lgbm_04
+      num_leaves: 15
+      learning_rate: 0.05
+      min_data_in_leaf: 50
+      feature_fraction: 0.70
+      lambda_l1: 10
+      lambda_l2: 10
+    - id: lgbm_05
+      num_leaves: 31
+      learning_rate: 0.03
+      min_data_in_leaf: 20
+      feature_fraction: 0.90
+      lambda_l1: 10
+      lambda_l2: 10
+    - id: lgbm_06
+      num_leaves: 31
+      learning_rate: 0.03
+      min_data_in_leaf: 50
+      feature_fraction: 0.70
+      lambda_l1: 0
+      lambda_l2: 50
+    - id: lgbm_07
+      num_leaves: 31
+      learning_rate: 0.05
+      min_data_in_leaf: 20
+      feature_fraction: 0.70
+      lambda_l1: 10
+      lambda_l2: 50
+    - id: lgbm_08
+      num_leaves: 31
+      learning_rate: 0.05
+      min_data_in_leaf: 50
+      feature_fraction: 0.90
+      lambda_l1: 0
+      lambda_l2: 10
+
+thresholds:
+  bad_prob_threshold: [0.50, 0.55, 0.60, 0.65, 0.70]
+  min_trade_ratio_vs_baseline: 0.60
+  max_avg_cash_ratio_worse_pp: 0.10
+  min_stop_time_ratio_reduction: 0.15
+  return_tie_pp: 0.03
+
+selection:
+  positive_valid_years: 3
+  qualified_valid_years: 4
+  controlled_flat_return_floor: -0.005
+  controlled_flat_drawdown_improvement: 0.10
+  max_year_return_concentration: 0.45
+  max_year_drawdown_worse_pp: 0.0
+
+hard_gate:
+  money_ratio_lower: 0.60
+  money_ratio_upper: 1.00
+  trend_score_pct_lower: 0.10
+  trend_score_pct_upper: 0.20

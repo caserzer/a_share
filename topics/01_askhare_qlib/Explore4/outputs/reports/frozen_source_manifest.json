@@ -1,0 +1,24 @@
+{
+  "frozen_at": "2026-05-03T09:50:34.043086",
+  "frozen_config": "Explore4/configs/trend_rule_v1_frozen.yaml",
+  "frozen_config_sha256": "5e8ba37a8ce98ee3efb18139e5e1c0aa1859fd85e0a3df2e0e05872cbc27f3c7",
+  "independent_rerun_entry": "uv run python Explore4/scripts/run_explore4.py all --config Explore4/configs/trend_rule_v1_frozen.yaml",
+  "known_caveats": [
+    "2025-2026 was already observed in Explore3 and is only observed_test / frozen_replication.",
+    "Universe is the static Explore1 mcap500 mainboard universe and is not point-in-time.",
+    "Industry membership uses current as-of SW2021 mapping, not historical point-in-time industry membership.",
+    "Explore4 reports are independent reruns; Explore3 backtest outputs are not reused as Explore4 results."
+  ],
+  "observed_2025_2026_already_seen": true,
+  "rule_summary": {
+    "candidate": "EMA trend state + market regime + market width + current as-of industry/theme trend filters.",
+    "entry": "T close signal; breakout and pullback entries ranked by frozen trend_score rules.",
+    "execution": "T+1 open execution with limit-block and invalid-open skips.",
+    "exit": "Layered structural stop, trailing stop, time stop, EMA60 exit, and forced end-of-backtest close.",
+    "sizing": "Frozen fixed-weight baseline plus Explore4 risk-unit sizing experiments."
+  },
+  "source_config": "Explore3/configs/trend_rule_v1.yaml",
+  "source_config_sha256": "0daa99d1c936355077f1b14cfc007839480da9284fc1fe335344234e64d58b5f",
+  "source_report": "Explore3/outputs/reports/explore3_verification_report.md",
+  "source_report_sha256": "6de7cc7dae0201a053838339465a47bdc740f5ed7a3f080e89bbd3ca112fe7b4"
+}

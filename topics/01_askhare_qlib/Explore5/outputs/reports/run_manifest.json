@@ -1,0 +1,168 @@
+{
+  "benchmark": "SH000300",
+  "candidate_versions": [
+    {
+      "candidate_type": "baseline",
+      "eligible_for_freeze": false,
+      "version": "frozen_fixed_weight"
+    },
+    {
+      "candidate_type": "candidate_baseline",
+      "eligible_for_freeze": true,
+      "version": "risk_unit_with_industry_cap"
+    },
+    {
+      "candidate_type": "diagnostic_only",
+      "eligible_for_freeze": false,
+      "version": "breakout_only_diagnostic"
+    },
+    {
+      "candidate_type": "diagnostic_only",
+      "eligible_for_freeze": false,
+      "version": "pullback_regime_gated_diagnostic"
+    }
+  ],
+  "command_sequence": [
+    "build-regimes",
+    "build-signals",
+    "data-quality",
+    "run-walk-forward",
+    "run-regime-holdout",
+    "observed-replication",
+    "report",
+    "all",
+    "report",
+    "report",
+    "report",
+    "report",
+    "report",
+    "report",
+    "report"
+  ],
+  "config_path": "Explore5/configs/walk_forward_v1.yaml",
+  "config_sha256": "898ee7b7334b6ef8c3b424e51ba9a1ebec2f1a366c2b858ffb9091b7f29a3a59",
+  "experiment": "Explore5 walk-forward regime holdout",
+  "explore5_frozen_version": "",
+  "explore5_frozen_version_formed": false,
+  "folds": [
+    {
+      "fold": "WF1",
+      "train_end": "2018-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2020-12-31",
+      "valid_start": "2019-01-01"
+    },
+    {
+      "fold": "WF2",
+      "train_end": "2019-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2021-12-31",
+      "valid_start": "2020-01-01"
+    },
+    {
+      "fold": "WF3",
+      "train_end": "2020-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2022-12-31",
+      "valid_start": "2021-01-01"
+    },
+    {
+      "fold": "WF4",
+      "train_end": "2021-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2023-12-31",
+      "valid_start": "2022-01-01"
+    },
+    {
+      "fold": "WF5",
+      "train_end": "2022-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2024-12-31",
+      "valid_start": "2023-01-01"
+    }
+  ],
+  "industry_membership_point_in_time": false,
+  "industry_membership_source": "Explore4/data/targets/industry_membership.csv",
+  "market": "mcap500_mainboard_20251231",
+  "missing_industry": "UNKNOWN",
+  "observed_replication_end": "2026-04-30",
+  "observed_replication_executable_end": "2026-04-29",
+  "observed_replication_start": "2025-01-01",
+  "observed_replication_used_for_selection": false,
+  "output_paths": [
+    "Explore5/outputs/cache/stock_indicators.pkl",
+    "Explore5/outputs/cache/stock_signals.pkl",
+    "Explore5/outputs/reports/daily_candidates.csv",
+    "Explore5/outputs/reports/data_quality_report.csv",
+    "Explore5/outputs/reports/explore5_final_report.md",
+    "Explore5/outputs/reports/fold_execution_audit.csv",
+    "Explore5/outputs/reports/fold_industry_exposure_audit.csv",
+    "Explore5/outputs/reports/fold_metrics.csv",
+    "Explore5/outputs/reports/fold_portfolio_daily.csv",
+    "Explore5/outputs/reports/fold_risk_budget_audit.csv",
+    "Explore5/outputs/reports/fold_trade_detail.csv",
+    "Explore5/outputs/reports/industry_regime.csv",
+    "Explore5/outputs/reports/market_regime.csv",
+    "Explore5/outputs/reports/market_width.csv",
+    "Explore5/outputs/reports/observed_replication_summary.csv",
+    "Explore5/outputs/reports/provider_coverage_report.csv",
+    "Explore5/outputs/reports/regime_attribution.csv",
+    "Explore5/outputs/reports/regime_holdout_report.md",
+    "Explore5/outputs/reports/regime_holdout_summary.csv",
+    "Explore5/outputs/reports/signals.csv",
+    "Explore5/outputs/reports/theme_regime.csv",
+    "Explore5/outputs/reports/walk_forward_report.md",
+    "Explore5/outputs/reports/walk_forward_summary.csv",
+    "Explore5/outputs/reports/year_metrics.csv"
+  ],
+  "provider_data_max_date": "2026-04-30",
+  "provider_data_min_date": "2017-01-03",
+  "provider_instruments": 282,
+  "provider_uri": "Explore1/data/qlib/cn_data",
+  "regime_attribution_rows": 454,
+  "regime_definitions": {
+    "industry_sync_on": "industry_trend_ok true on signal date",
+    "market_trend_on": "broad_market trend_ok on signal date",
+    "pullback_money_weak": "entry_type = pullback and 0.60 <= money_ratio20 <= 1.00",
+    "pullback_top10_20": "entry_type = pullback and 0.10 < trend_score_pct <= 0.20",
+    "top10": "trend_score_pct <= 0.10",
+    "top10_20": "0.10 < trend_score_pct <= 0.20",
+    "width_neutral": "not width_strong and (close_gt_ema60_ratio > 0.55 or ema20_gt_ema60_ratio > 0.45)",
+    "width_strong": "close_gt_ema60_ratio > 0.60 and ema20_gt_ema60_ratio > 0.50",
+    "width_weak": "close_gt_ema60_ratio <= 0.55 and ema20_gt_ema60_ratio <= 0.45"
+  },
+  "regime_holdout_full_replay": true,
+  "regime_holdout_rows": 25,
+  "required_fields": [
+    "$open",
+    "$high",
+    "$low",
+    "$close",
+    "$volume",
+    "$money",
+    "$factor"
+  ],
+  "signal_rows": 147824,
+  "source_explore4_config": "Explore4/configs/trend_rule_v1_frozen.yaml",
+  "source_explore4_config_sha256": "5e8ba37a8ce98ee3efb18139e5e1c0aa1859fd85e0a3df2e0e05872cbc27f3c7",
+  "source_explore4_diagnostics": [
+    "Explore4/outputs/diagnostics/valid_trade_attribution.csv",
+    "Explore4/outputs/diagnostics/pullback_rule_diagnostic.csv",
+    "Explore4/outputs/diagnostics/risk_constraint_decomposition.csv"
+  ],
+  "source_explore4_diagnostics_sha256": {
+    "Explore4/outputs/diagnostics/pullback_rule_diagnostic.csv": "0de4287c25e7b769de2c772565b1dcfac3244451c8c97dfb1472b2d30e8b2329",
+    "Explore4/outputs/diagnostics/risk_constraint_decomposition.csv": "3d0c86ac389ccac2b2b46fa62cf459d9e98db06d2634b2ab24c20e8ccb8f2aa2",
+    "Explore4/outputs/diagnostics/valid_trade_attribution.csv": "275a43dea0d177790f4bf03e2bbb18d61f1b4fea3b9a1463a4e0b9cfadd22944"
+  },
+  "source_explore4_manifest": "Explore4/outputs/reports/run_manifest.json",
+  "source_explore4_manifest_sha256": "53ec2de01a2931aacdc6cd5b892a7df0e3c29e92e04703d6bfa3e0313caf9455",
+  "source_explore4_report": "Explore4/outputs/reports/explore4_expand_report.md",
+  "source_explore4_report_sha256": "108d0c9840f3b558e024ab9f0bc859594ae8b4bbc6f98f89c600978d0c9a86b7",
+  "stock_indicator_rows": 599532,
+  "universe_asof_date": "2025-12-31",
+  "universe_point_in_time": false,
+  "universe_source": "Explore1/data/universe/mcap500_mainboard_20251231.csv",
+  "walk_forward_fold_rows": 20,
+  "year_metric_rows": 24
+}

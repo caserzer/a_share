@@ -1,0 +1,6 @@
+fold,trainable,skip_reason,inner_method,inner_fit_start,inner_fit_end,inner_select_start,inner_select_end,inner_fit_samples,inner_select_samples,inner_select_bad,inner_select_good,selected_param_id,selected_threshold,selection_mode
+WF1,True,,first_year_fit_second_year_select,2017-01-01,2017-12-31,2018-01-01,2018-12-31,5675,2549,2185,364,lgbm_01,0.5,eligible
+WF2,True,,expanding_last_year_select,2017-01-01,2018-12-31,2019-01-01,2019-12-31,8553,4447,3291,1156,lgbm_06,0.6,eligible
+WF3,True,,expanding_last_year_select,2017-01-01,2019-12-31,2020-01-01,2020-12-31,13089,4639,3425,1214,lgbm_06,0.55,eligible
+WF4,True,,expanding_last_year_select,2017-01-01,2020-12-31,2021-01-01,2021-12-31,18171,4118,3194,924,lgbm_01,0.5,eligible
+WF5,True,,expanding_last_year_select,2017-01-01,2021-12-31,2022-01-01,2022-12-31,22617,3603,2969,634,lgbm_01,0.5,eligible

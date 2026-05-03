@@ -1,0 +1,186 @@
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  target_history: Explore7/data/targets/target_history.csv
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  cache_dir: Explore7/outputs/cache
+  report_dir: Explore7/outputs/reports
+  backtest_dir: Explore7/outputs/backtests
+
+sources:
+  source_rule_config: Explore4/configs/trend_rule_v1_frozen.yaml
+  source_walk_forward_config: Explore5/configs/walk_forward_v1.yaml
+  source_pullback_failure_report: Explore4/outputs/reports/pullback_failure_analysis_report.md
+  source_walk_forward_report: Explore5/outputs/reports/explore5_final_report.md
+  source_meta_label_report: Explore6/outputs/reports/explore6_meta_label_report.md
+  allowed_config_keys:
+    source_rule_config: [qlib, costs, rules, targets]
+    source_walk_forward_config:
+      - qlib
+      - costs
+      - rules
+      - targets
+      - explore5.folds
+      - explore5.selection_thresholds
+  background_reference_only:
+    - source_pullback_failure_report
+    - source_walk_forward_report
+    - source_meta_label_report
+  path_classification_order:
+    - background_reference_only
+    - forbidden_result_path_patterns
+  forbidden_result_path_patterns:
+    - "Explore4/outputs/diagnostics/"
+    - "Explore4/outputs/backtests/"
+    - "Explore5/outputs/"
+    - "Explore6/outputs/"
+  result_csv_used_for_calculation: false
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  observed_replication_start: "2025-01-01"
+  observed_replication_end: "2026-04-30"
+  observed_backtest_end: "2026-04-29"
+
+universe:
+  name: pit_mcap500_mainboard
+  point_in_time: true
+  membership_frequency: daily
+  min_listing_age_trading_days: 120
+  market_cap_threshold_cny: 50000000000
+  eligible_market: mainboard_a_share
+  exclude_boards: [chinext, star, bse, b_share]
+  exclude_security_types: [etf, lof, fund, bond, convertible_bond, index]
+  exclude_status_asof_t: [ST, "*ST", delisting_period, delisted]
+  price_policy: last_available_on_or_before_t
+  shares_policy: effective_total_shares_on_or_before_t
+  missing_policy: exclude_and_audit
+  coverage_limited_diagnostic_allowed: true
+  coverage_limited_can_select_candidate: false
+
+qlib:
+  market: pit_mcap500_mainboard
+  benchmark: SH000300
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  limit_threshold: 0.095
+  instrument_file_role: data_availability_superset
+  tradable_universe_authority: daily_pit_membership
+
+industry:
+  point_in_time: true
+  missing_industry: UNKNOWN
+  allow_asof_diagnostic: true
+  asof_diagnostic_can_select_candidate: false
+  asof_diagnostic_can_run_walk_forward: false
+
+folds:
+  - fold: WF1
+    train_start: "2017-01-01"
+    train_end: "2018-12-31"
+    valid_start: "2019-01-01"
+    valid_end: "2020-12-31"
+  - fold: WF2
+    train_start: "2017-01-01"
+    train_end: "2019-12-31"
+    valid_start: "2020-01-01"
+    valid_end: "2021-12-31"
+  - fold: WF3
+    train_start: "2017-01-01"
+    train_end: "2020-12-31"
+    valid_start: "2021-01-01"
+    valid_end: "2022-12-31"
+  - fold: WF4
+    train_start: "2017-01-01"
+    train_end: "2021-12-31"
+    valid_start: "2022-01-01"
+    valid_end: "2023-12-31"
+  - fold: WF5
+    train_start: "2017-01-01"
+    train_end: "2022-12-31"
+    valid_start: "2023-01-01"
+    valid_end: "2024-12-31"
+
+rules:
+  ema_band_pct: 0.01
+  risk_degree: 0.95
+  max_positions: 20
+  max_daily_new_weight: 0.20
+  risk_budget_per_trade: 0.005
+  single_stock_max_weight: 0.03
+  max_industry_weight: 0.20
+
+pullback_classes:
+  precedence:
+    - breakdown_repair
+    - weak_volume_rebound
+    - strong_trend_continuation
+    - unclassified_pullback
+  strong_trend_continuation:
+    candidate_type: selectable
+    trend_score_pct_max: 0.10
+    market_trend_state: market_trend_on
+    market_width_states: [width_strong, width_neutral]
+    industry_sync_state: industry_sync_on
+    close_above_ema20: true
+    ema20_above_ema60: true
+    distance_to_ema60_min: 0.0
+    distance_to_high60_min: -0.15
+    money_ratio20_max: 0.80
+    no_breakdown_lookback_days: 5
+  weak_volume_rebound:
+    candidate_type: diagnostic_only
+    money_ratio20_min: 0.60
+    money_ratio20_max: 1.00
+    weak_if_any:
+      trend_score_pct_gt: 0.10
+      market_width_state_not: width_strong
+      industry_sync_state_not: industry_sync_on
+  breakdown_repair:
+    candidate_type: diagnostic_only
+    breakdown_if_any:
+      previous_close_below_ema20: true
+      rolling_low_5_touches_ema60: true
+      distance_to_low20_max: 0.03
+      ret20_max: 0.0
+  unclassified_pullback:
+    candidate_type: diagnostic_only
+
+versions:
+  - version: pit_breakout_core_baseline
+    candidate_type: baseline
+    pullback_classes: []
+  - version: pit_original_pullback_baseline
+    candidate_type: baseline
+    pullback_classes: [original_rule_pullback]
+  - version: pit_strong_trend_pullback_candidate
+    candidate_type: candidate
+    pullback_classes: [strong_trend_continuation]
+  - version: pit_weak_volume_rebound_diagnostic
+    candidate_type: diagnostic_only
+    pullback_classes: [weak_volume_rebound]
+  - version: pit_breakdown_repair_diagnostic
+    candidate_type: diagnostic_only
+    pullback_classes: [breakdown_repair]
+  - version: pit_rebuilt_pullback_candidate
+    candidate_type: candidate
+    pullback_classes: [strong_trend_continuation]
+
+selection:
+  universe_point_in_time_required: true
+  industry_point_in_time_required: true
+  observed_replication_used_for_selection: false
+  positive_valid_years: 3
+  qualified_valid_years: 4
+  controlled_flat_return_floor: -0.005
+  controlled_flat_drawdown_improvement: 0.10
+  min_years_expectancy_improved_vs_original_pullback: 4
+  min_years_return_not_below_breakout_core: 3
+  max_avg_cash_ratio: 0.95
+  max_fold_cash_ratio: 0.97
+  min_trade_ratio_vs_original_pullback: 0.60
+  min_trades_per_fold: 40
+  min_stop_time_ratio_reduction: 0.15
+  max_year_return_concentration: 0.45
+  max_year_drawdown_worse_pp: 0.0

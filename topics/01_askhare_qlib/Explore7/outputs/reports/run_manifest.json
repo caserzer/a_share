@@ -1,0 +1,262 @@
+{
+  "any_explore456_result_csv_used": false,
+  "benchmark": "SH000300",
+  "candidate_for_future_final_test": false,
+  "command_sequence": [
+    "self-test",
+    "self-test",
+    "self-test",
+    "self-test",
+    "self-test",
+    "build-pit-universe",
+    "self-test",
+    "audit-pit-data",
+    "build-signals",
+    "self-test",
+    "run-walk-forward",
+    "report",
+    "report",
+    "report",
+    "report"
+  ],
+  "config_path": "Explore7/configs/pullback_rebuild_v1.yaml",
+  "config_sha256": "0473179227a3669b6f299907a163d269d41df44f8beffaef9bdecdd65a513068",
+  "coverage_limited_diagnostic": true,
+  "data_gate_status": "ok",
+  "experiment": "Explore7 PIT pullback subsystem rebuild",
+  "fold_universe_member_summary": [
+    {
+      "fold": "WF1",
+      "max_members": 234,
+      "median_members": 165.0,
+      "min_members": 117
+    },
+    {
+      "fold": "WF2",
+      "max_members": 274,
+      "median_members": 228.0,
+      "min_members": 154
+    },
+    {
+      "fold": "WF3",
+      "max_members": 274,
+      "median_members": 236.0,
+      "min_members": 197
+    },
+    {
+      "fold": "WF4",
+      "max_members": 258,
+      "median_members": 227.0,
+      "min_members": 197
+    },
+    {
+      "fold": "WF5",
+      "max_members": 249,
+      "median_members": 223.0,
+      "min_members": 180
+    }
+  ],
+  "folds": [
+    {
+      "fold": "WF1",
+      "train_end": "2018-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2020-12-31",
+      "valid_start": "2019-01-01"
+    },
+    {
+      "fold": "WF2",
+      "train_end": "2019-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2021-12-31",
+      "valid_start": "2020-01-01"
+    },
+    {
+      "fold": "WF3",
+      "train_end": "2020-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2022-12-31",
+      "valid_start": "2021-01-01"
+    },
+    {
+      "fold": "WF4",
+      "train_end": "2021-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2023-12-31",
+      "valid_start": "2022-01-01"
+    },
+    {
+      "fold": "WF5",
+      "train_end": "2022-12-31",
+      "train_start": "2017-01-01",
+      "valid_end": "2024-12-31",
+      "valid_start": "2023-01-01"
+    }
+  ],
+  "industry_membership": "Explore7/data/targets/pit_industry_membership.csv",
+  "industry_membership_point_in_time": true,
+  "industry_membership_sha256": "9fefe9fba24993c3f92f667c4059b9e18742a1ee9bb65f713b344c29d80ca2aa",
+  "market": "pit_mcap500_mainboard",
+  "missing_industry": "UNKNOWN",
+  "observed_replication_used_for_selection": false,
+  "output_paths": [
+    "Explore7/data/targets/pit_industry_membership.csv",
+    "Explore7/data/universe/pit_mcap500_mainboard_daily.csv",
+    "Explore7/data/universe/qlib_pit_mcap500_mainboard.txt",
+    "Explore7/outputs/reports/candidate_acceptance.csv",
+    "Explore7/outputs/reports/class_expectancy_by_year.csv",
+    "Explore7/outputs/reports/explore7_pullback_rebuild_report.md",
+    "Explore7/outputs/reports/fold_execution_audit.csv",
+    "Explore7/outputs/reports/fold_industry_exposure_audit.csv",
+    "Explore7/outputs/reports/fold_portfolio_daily.csv",
+    "Explore7/outputs/reports/fold_replay_metrics.csv",
+    "Explore7/outputs/reports/fold_trade_detail.csv",
+    "Explore7/outputs/reports/generated_daily_candidates.csv",
+    "Explore7/outputs/reports/generated_signals.csv",
+    "Explore7/outputs/reports/industry_regime.csv",
+    "Explore7/outputs/reports/market_regime.csv",
+    "Explore7/outputs/reports/market_width.csv",
+    "Explore7/outputs/reports/pit_industry_membership_audit.csv",
+    "Explore7/outputs/reports/pit_industry_membership_summary.json",
+    "Explore7/outputs/reports/pit_name_status_audit.csv",
+    "Explore7/outputs/reports/pit_provider_coverage_audit.csv",
+    "Explore7/outputs/reports/pit_provider_coverage_summary.json",
+    "Explore7/outputs/reports/pit_universe_audit.csv",
+    "Explore7/outputs/reports/pit_universe_summary.csv",
+    "Explore7/outputs/reports/pullback_classification_audit.csv",
+    "Explore7/outputs/reports/pullback_rebuild_report.md",
+    "Explore7/outputs/reports/source_data_audit.csv",
+    "Explore7/outputs/reports/source_data_audit_summary.json",
+    "Explore7/outputs/reports/year_metrics.csv"
+  ],
+  "pit_universe_daily_count_max": 310,
+  "pit_universe_daily_count_median": 220.0,
+  "pit_universe_daily_count_min": 113,
+  "pit_universe_instruments": 539,
+  "pit_universe_max_date": "2026-04-30",
+  "pit_universe_min_date": "2017-07-04",
+  "pit_universe_rows": 439140,
+  "provider_coverage": {
+    "coverage_limited_diagnostic": true,
+    "coverage_ratio": 0.8616955868288018,
+    "covered_membership_rows": 378405,
+    "fallback_provider_uri": "Explore1/data/qlib/cn_data",
+    "fallback_used": true,
+    "membership_rows": 439140,
+    "missing_membership_rows": 60735,
+    "provider_uri": "Explore1/data/qlib/cn_data",
+    "required_fields": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "money",
+      "factor"
+    ]
+  },
+  "provider_coverage_limited_diagnostic": true,
+  "provider_fallback_uri": "Explore1/data/qlib/cn_data",
+  "provider_uri": "Explore7/data/qlib/cn_data_pit",
+  "pullback_class_precedence": [
+    "breakdown_repair",
+    "weak_volume_rebound",
+    "strong_trend_continuation",
+    "unclassified_pullback"
+  ],
+  "required_fields": [
+    "$open",
+    "$high",
+    "$low",
+    "$close",
+    "$volume",
+    "$money",
+    "$factor"
+  ],
+  "result_csv_used_for_calculation": false,
+  "selected_version": "",
+  "selection": {
+    "controlled_flat_drawdown_improvement": 0.1,
+    "controlled_flat_return_floor": -0.005,
+    "industry_point_in_time_required": true,
+    "max_avg_cash_ratio": 0.95,
+    "max_fold_cash_ratio": 0.97,
+    "max_year_drawdown_worse_pp": 0.0,
+    "max_year_return_concentration": 0.45,
+    "min_stop_time_ratio_reduction": 0.15,
+    "min_trade_ratio_vs_original_pullback": 0.6,
+    "min_trades_per_fold": 40,
+    "min_years_expectancy_improved_vs_original_pullback": 4,
+    "min_years_return_not_below_breakout_core": 3,
+    "observed_replication_used_for_selection": false,
+    "positive_valid_years": 3,
+    "qualified_valid_years": 4,
+    "universe_point_in_time_required": true
+  },
+  "self_test_status": "ok",
+  "signal_rows": 28969,
+  "source_data_audit": "Explore7/outputs/reports/source_data_audit.csv",
+  "source_path_classification_summary": {
+    "classification_counts": {
+      "allowed_structural_config_key": 10,
+      "background_reference": 3,
+      "forbidden_result_path": 21,
+      "source_config_non_path_value": 7
+    },
+    "forbidden_result_paths_used_for_calculation": 0,
+    "path": "Explore7/outputs/reports/source_data_audit.csv",
+    "result_csv_used_for_calculation": false,
+    "rows": 41
+  },
+  "trade_rows": 7022,
+  "tushare_token_present": true,
+  "universe_daily_membership_changes": true,
+  "universe_membership": "Explore7/data/universe/pit_mcap500_mainboard_daily.csv",
+  "universe_membership_sha256": "33e037afb7f75c2f64ff6a7a6f205f164f1ba90d61b09976b670c9d3930a3a80",
+  "universe_name": "pit_mcap500_mainboard",
+  "universe_point_in_time": true,
+  "versions": [
+    {
+      "candidate_type": "baseline",
+      "pullback_classes": [],
+      "version": "pit_breakout_core_baseline"
+    },
+    {
+      "candidate_type": "baseline",
+      "pullback_classes": [
+        "original_rule_pullback"
+      ],
+      "version": "pit_original_pullback_baseline"
+    },
+    {
+      "candidate_type": "candidate",
+      "pullback_classes": [
+        "strong_trend_continuation"
+      ],
+      "version": "pit_strong_trend_pullback_candidate"
+    },
+    {
+      "candidate_type": "diagnostic_only",
+      "pullback_classes": [
+        "weak_volume_rebound"
+      ],
+      "version": "pit_weak_volume_rebound_diagnostic"
+    },
+    {
+      "candidate_type": "diagnostic_only",
+      "pullback_classes": [
+        "breakdown_repair"
+      ],
+      "version": "pit_breakdown_repair_diagnostic"
+    },
+    {
+      "candidate_type": "candidate",
+      "pullback_classes": [
+        "strong_trend_continuation"
+      ],
+      "version": "pit_rebuilt_pullback_candidate"
+    }
+  ],
+  "walk_forward_fold_rows": 30,
+  "year_metric_rows": 36
+}
