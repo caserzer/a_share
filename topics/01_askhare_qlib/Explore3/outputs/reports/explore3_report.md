@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary
 
-- Report generated: `2026-05-03 00:41:45` Asia/Shanghai.
+- Report generated: `2026-05-03 08:57:25` Asia/Shanghai.
 - This is a rule-only Explore3 phase-one experiment. It does not use Alpha360, LightGBM, or any model predictions.
 - Stock daily bars are read from `Explore1/data/qlib/cn_data` and treated as read-only Explore1 cache input.
 - The static stock universe is `mcap500_mainboard_20251231` with `282` resolved instruments.
@@ -504,39 +504,50 @@ Layered-exit exit reason counts:
 | `Explore3/data/universe/mcap500_mainboard_20251231.csv` | yes | 33,590 |
 | `Explore3/data/universe/qlib_mcap500_mainboard_20251231.txt` | yes | 8,742 |
 | `Explore3/outputs/backtests/atr_structure_stop/portfolio_daily.csv` | yes | 36,248 |
-| `Explore3/outputs/backtests/atr_structure_stop/trade_detail.csv` | yes | 22,013 |
+| `Explore3/outputs/backtests/atr_structure_stop/trade_detail.csv` | yes | 33,228 |
 | `Explore3/outputs/backtests/breakout_entry/portfolio_daily.csv` | yes | 32,257 |
-| `Explore3/outputs/backtests/breakout_entry/trade_detail.csv` | yes | 9,867 |
+| `Explore3/outputs/backtests/breakout_entry/trade_detail.csv` | yes | 14,908 |
 | `Explore3/outputs/backtests/ema_state_only/portfolio_daily.csv` | yes | 44,217 |
-| `Explore3/outputs/backtests/ema_state_only/trade_detail.csv` | yes | 62,956 |
+| `Explore3/outputs/backtests/ema_state_only/trade_detail.csv` | yes | 94,979 |
 | `Explore3/outputs/backtests/industry_theme_state/portfolio_daily.csv` | yes | 37,234 |
-| `Explore3/outputs/backtests/industry_theme_state/trade_detail.csv` | yes | 25,358 |
+| `Explore3/outputs/backtests/industry_theme_state/trade_detail.csv` | yes | 38,340 |
 | `Explore3/outputs/backtests/layered_exit/portfolio_daily.csv` | yes | 36,408 |
-| `Explore3/outputs/backtests/layered_exit/trade_detail.csv` | yes | 29,554 |
+| `Explore3/outputs/backtests/layered_exit/trade_detail.csv` | yes | 44,515 |
 | `Explore3/outputs/backtests/market_filter/portfolio_daily.csv` | yes | 40,193 |
-| `Explore3/outputs/backtests/market_filter/trade_detail.csv` | yes | 41,783 |
+| `Explore3/outputs/backtests/market_filter/trade_detail.csv` | yes | 63,070 |
 | `Explore3/outputs/backtests/market_width/portfolio_daily.csv` | yes | 37,234 |
-| `Explore3/outputs/backtests/market_width/trade_detail.csv` | yes | 25,358 |
+| `Explore3/outputs/backtests/market_width/trade_detail.csv` | yes | 38,340 |
 | `Explore3/outputs/backtests/pullback_entry/portfolio_daily.csv` | yes | 36,297 |
-| `Explore3/outputs/backtests/pullback_entry/trade_detail.csv` | yes | 21,444 |
+| `Explore3/outputs/backtests/pullback_entry/trade_detail.csv` | yes | 32,417 |
 | `Explore3/outputs/backtests/trend_score_top20/portfolio_daily.csv` | yes | 37,076 |
-| `Explore3/outputs/backtests/trend_score_top20/trade_detail.csv` | yes | 24,648 |
+| `Explore3/outputs/backtests/trend_score_top20/trade_detail.csv` | yes | 37,223 |
 | `Explore3/outputs/cache/stock_indicators.pkl` | yes | 126,506,364 |
 | `Explore3/outputs/cache/stock_panel.pkl` | yes | 28,181,244 |
 | `Explore3/outputs/cache/stock_signals.pkl` | yes | 214,042,444 |
+| `Explore3/outputs/reports/benchmark_comparison.csv` | yes | 729 |
 | `Explore3/outputs/reports/daily_candidates.csv` | yes | 110,262 |
 | `Explore3/outputs/reports/daily_scores.csv` | yes | 22,099,199 |
 | `Explore3/outputs/reports/data_quality_report.csv` | yes | 12,670 |
 | `Explore3/outputs/reports/explore1_cache_coverage.csv` | yes | 12,670 |
-| `Explore3/outputs/reports/explore3_report.md` | yes | 25,423 |
+| `Explore3/outputs/reports/explore3_report.md` | yes | 31,573 |
+| `Explore3/outputs/reports/explore3_verification_report.md` | yes | 2,365 |
+| `Explore3/outputs/reports/fat_tail_stress.csv` | yes | 1,124 |
+| `Explore3/outputs/reports/group_stability.csv` | yes | 43,927 |
+| `Explore3/outputs/reports/industry_filter_audit.csv` | yes | 207,192 |
 | `Explore3/outputs/reports/industry_regime.csv` | yes | 17,130,678 |
+| `Explore3/outputs/reports/limit_skip_audit.csv` | yes | 2,956 |
 | `Explore3/outputs/reports/market_regime.csv` | yes | 2,876,652 |
 | `Explore3/outputs/reports/market_width.csv` | yes | 131,154 |
+| `Explore3/outputs/reports/monthly_returns.csv` | yes | 3,816 |
+| `Explore3/outputs/reports/order_execution_audit.csv` | yes | 289,602 |
+| `Explore3/outputs/reports/portfolio_reconciliation.csv` | yes | 871 |
+| `Explore3/outputs/reports/rolling_risk_report.csv` | yes | 497,950 |
+| `Explore3/outputs/reports/signal_execution_audit.csv` | yes | 204,214 |
 | `Explore3/outputs/reports/signals.csv` | yes | 28,933,660 |
 | `Explore3/outputs/reports/theme_regime.csv` | yes | 1,997,261 |
-| `Explore3/outputs/reports/trade_detail.csv` | yes | 280,185 |
+| `Explore3/outputs/reports/trade_detail.csv` | yes | 413,672 |
 | `Explore3/outputs/reports/trend_rule_ablation_summary.csv` | yes | 3,220 |
-| `Explore3/reports/explore3_report.md` | yes | 25,423 |
+| `Explore3/reports/explore3_report.md` | yes | 31,573 |
 
 ## 11. Next-Step Recommendation
 

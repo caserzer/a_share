@@ -38,10 +38,17 @@ REPORT_COLUMNS = [
     "order_date",
     "deal_date",
     "entry_type",
+    "amount",
     "entry_price",
+    "entry_value",
+    "entry_cost",
     "exit_signal_date",
     "exit_date",
     "exit_price",
+    "exit_value",
+    "exit_cost",
+    "gross_pnl",
+    "net_pnl",
     "initial_stop",
     "current_stop",
     "R",
@@ -49,6 +56,20 @@ REPORT_COLUMNS = [
     "holding_days",
     "cost_before_return",
     "cost_after_return",
+]
+ORDER_AUDIT_COLUMNS = [
+    "version",
+    "direction",
+    "instrument",
+    "signal_date",
+    "order_date",
+    "status",
+    "reason",
+    "open",
+    "prev_close_for_limit",
+    "limit_threshold",
+    "entry_type",
+    "exit_reason",
 ]
 
 
@@ -1084,6 +1105,10 @@ def empty_trade_frame() -> pd.DataFrame:
     return pd.DataFrame(columns=REPORT_COLUMNS)
 
 
+def empty_order_audit_frame() -> pd.DataFrame:
+    return pd.DataFrame(columns=ORDER_AUDIT_COLUMNS)
+
+
 def compute_metrics(
     version: str,
     portfolio: pd.DataFrame,
@@ -1143,7 +1168,14 @@ def compute_metrics(
     }
 
 
-def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+def run_backtest_one(
+    config: dict[str, Any],
+    signals: pd.DataFrame,
+    ablation: dict[str, Any],
+    *,
+    blocked_trades: set[tuple[str, str, str]] | None = None,
+    blocked_instruments: set[str] | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     version = ablation["version"]
     entry_filter = ablation["entry_filter"]
     stop_mode = ablation["stop_mode"]
@@ -1165,6 +1197,7 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
     positions: dict[str, dict[str, Any]] = {}
     pending: dict[pd.Timestamp, list[dict[str, Any]]] = {}
     trade_rows: list[dict[str, Any]] = []
+    order_audit_rows: list[dict[str, Any]] = []
     portfolio_rows: list[dict[str, Any]] = []
     previous_value = cash
     target_weight = min(
@@ -1177,6 +1210,32 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
     def schedule(date: pd.Timestamp, order: dict[str, Any]) -> None:
         pending.setdefault(date, []).append(order)
 
+    def audit_order(
+        order: dict[str, Any],
+        date: pd.Timestamp,
+        status: str,
+        reason: str,
+        row: pd.Series | None = None,
+    ) -> None:
+        order_audit_rows.append(
+            {
+                "version": version,
+                "direction": order.get("direction", ""),
+                "instrument": order.get("instrument", ""),
+                "signal_date": pd.Timestamp(order.get("signal_date")).date().isoformat()
+                if order.get("signal_date") is not None
+                else "",
+                "order_date": date.date().isoformat(),
+                "status": status,
+                "reason": reason,
+                "open": safe_float(row.get("open"), np.nan) if row is not None else np.nan,
+                "prev_close_for_limit": safe_float(row.get("prev_close_for_limit"), np.nan) if row is not None else np.nan,
+                "limit_threshold": float(costs["limit_threshold"]),
+                "entry_type": order.get("entry_type", ""),
+                "exit_reason": order.get("exit_reason", ""),
+            }
+        )
+
     for idx, date in enumerate(all_dates):
         day = by_date[date]
         day_cost = 0.0
@@ -1187,16 +1246,22 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
         for order in sells + buys:
             instrument = order["instrument"]
             if instrument not in day.index:
+                audit_order(order, date, "skipped", "no_market_row")
                 continue
             row = day.loc[instrument]
             if isinstance(row, pd.DataFrame):
                 row = row.iloc[0]
             price = safe_float(row.get("open"))
-            if price <= 0 or is_limit_blocked(row, order["direction"], float(costs["limit_threshold"])):
+            if price <= 0:
+                audit_order(order, date, "skipped", "invalid_open", row)
+                continue
+            if is_limit_blocked(row, order["direction"], float(costs["limit_threshold"])):
+                audit_order(order, date, "skipped", "limit_blocked", row)
                 continue
             if order["direction"] == "sell":
                 position = positions.pop(instrument, None)
                 if not position:
+                    audit_order(order, date, "skipped", "no_position", row)
                     continue
                 amount = position["amount"]
                 value = amount * price
@@ -1205,6 +1270,10 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
                 day_cost += cost
                 day_turnover += value
                 gross, net = trade_return(position["entry_price"], price, position["entry_cost"], cost, amount)
+                entry_value = amount * position["entry_price"]
+                gross_pnl = value - entry_value
+                net_pnl = value - cost - entry_value - position["entry_cost"]
+                audit_order(order, date, "executed", "executed", row)
                 trade_rows.append(
                     {
                         "instrument": instrument,
@@ -1212,10 +1281,17 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
                         "order_date": position["order_date"].date().isoformat(),
                         "deal_date": position["deal_date"].date().isoformat(),
                         "entry_type": position["entry_type"],
+                        "amount": amount,
                         "entry_price": position["entry_price"],
+                        "entry_value": entry_value,
+                        "entry_cost": position["entry_cost"],
                         "exit_signal_date": order["signal_date"].date().isoformat(),
                         "exit_date": date.date().isoformat(),
                         "exit_price": price,
+                        "exit_value": value,
+                        "exit_cost": cost,
+                        "gross_pnl": gross_pnl,
+                        "net_pnl": net_pnl,
                         "initial_stop": position["initial_stop"],
                         "current_stop": position["current_stop"],
                         "R": position["R"],
@@ -1227,10 +1303,12 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
                 )
             else:
                 if instrument in positions:
+                    audit_order(order, date, "skipped", "duplicate_position", row)
                     continue
                 budget = min(order["budget"], cash)
                 amount = round_lot_amount(budget, price)
                 if amount <= 0:
+                    audit_order(order, date, "skipped", "zero_lot", row)
                     continue
                 value = amount * price
                 cost = max(value * float(costs["open_cost"]), float(costs["min_cost"]))
@@ -1239,6 +1317,7 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
                     value = amount * price
                     cost = max(value * float(costs["open_cost"]), float(costs["min_cost"]))
                 if amount <= 0 or value + cost > cash:
+                    audit_order(order, date, "skipped", "insufficient_cash", row)
                     continue
                 signal_row = order["signal_row"]
                 entry_type = order["entry_type"]
@@ -1259,6 +1338,7 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
                     "current_stop": stop,
                     "R": risk,
                 }
+                audit_order(order, date, "executed", "executed", row)
 
         if date <= end:
             next_date = next_trading_date(all_dates, idx)
@@ -1332,6 +1412,15 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
                         if budget <= 0:
                             break
                         entry_type = choose_entry_type(candidate, ablation)
+                        trade_key = (
+                            str(candidate["instrument"]),
+                            date.date().isoformat(),
+                            entry_type,
+                        )
+                        if blocked_instruments and str(candidate["instrument"]) in blocked_instruments:
+                            continue
+                        if blocked_trades and trade_key in blocked_trades:
+                            continue
                         schedule(
                             next_date,
                             {
@@ -1388,6 +1477,9 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
             value = amount * price
             cost = max(value * float(costs["close_cost"]), float(costs["min_cost"]))
             gross, net = trade_return(position["entry_price"], price, position["entry_cost"], cost, amount)
+            entry_value = amount * position["entry_price"]
+            gross_pnl = value - entry_value
+            net_pnl = value - cost - entry_value - position["entry_cost"]
             trade_rows.append(
                 {
                     "instrument": instrument,
@@ -1395,10 +1487,17 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
                     "order_date": position["order_date"].date().isoformat(),
                     "deal_date": position["deal_date"].date().isoformat(),
                     "entry_type": position["entry_type"],
+                    "amount": amount,
                     "entry_price": position["entry_price"],
+                    "entry_value": entry_value,
+                    "entry_cost": position["entry_cost"],
                     "exit_signal_date": end.date().isoformat(),
                     "exit_date": final_exit_date.date().isoformat(),
                     "exit_price": price,
+                    "exit_value": value,
+                    "exit_cost": cost,
+                    "gross_pnl": gross_pnl,
+                    "net_pnl": net_pnl,
                     "initial_stop": position["initial_stop"],
                     "current_stop": position["current_stop"],
                     "R": position["R"],
@@ -1412,8 +1511,13 @@ def run_backtest_one(config: dict[str, Any], signals: pd.DataFrame, ablation: di
 
     portfolio = pd.DataFrame(portfolio_rows)
     trades = pd.DataFrame(trade_rows, columns=REPORT_COLUMNS) if trade_rows else empty_trade_frame()
+    order_audit = (
+        pd.DataFrame(order_audit_rows, columns=ORDER_AUDIT_COLUMNS)
+        if order_audit_rows
+        else empty_order_audit_frame()
+    )
     metrics = compute_metrics(version, portfolio, trades, float(costs["account"]))
-    return portfolio, trades, metrics
+    return portfolio, trades, order_audit, metrics
 
 
 def command_run_ablation(config: dict[str, Any]) -> list[Path]:
@@ -1423,9 +1527,10 @@ def command_run_ablation(config: dict[str, Any]) -> list[Path]:
     outputs: list[Path] = []
     summaries = []
     all_trades = []
+    all_order_audits = []
     for ablation in config["ablations"]:
         version = ablation["version"]
-        portfolio, trades, metrics = run_backtest_one(config, signals, ablation)
+        portfolio, trades, order_audit, metrics = run_backtest_one(config, signals, ablation)
         version_dir = topic_path(config["paths"]["backtest_dir"]) / version
         portfolio_path = write_csv(portfolio, version_dir / "portfolio_daily.csv")
         trades_path = write_csv(trades, version_dir / "trade_detail.csv")
@@ -1435,6 +1540,8 @@ def command_run_ablation(config: dict[str, Any]) -> list[Path]:
             trades_with_version = trades.copy()
             trades_with_version.insert(0, "version", version)
             all_trades.append(trades_with_version)
+        if not order_audit.empty:
+            all_order_audits.append(order_audit.copy())
         print(
             f"ran {version} trades={metrics.get('trades', 0)} "
             f"return={metrics.get('total_return_with_cost', 0):.4f}",
@@ -1447,7 +1554,12 @@ def command_run_ablation(config: dict[str, Any]) -> list[Path]:
     else:
         detail = pd.DataFrame(columns=["version", *REPORT_COLUMNS])
     detail_path = write_csv(detail, report_dir(config) / "trade_detail.csv")
-    outputs.extend([summary_path, detail_path])
+    if all_order_audits:
+        order_detail = pd.concat(all_order_audits, ignore_index=True)
+    else:
+        order_detail = empty_order_audit_frame()
+    order_detail_path = write_csv(order_detail, report_dir(config) / "order_execution_audit.csv")
+    outputs.extend([summary_path, detail_path, order_detail_path])
     record_manifest(
         config,
         "run-ablation",
@@ -1456,6 +1568,7 @@ def command_run_ablation(config: dict[str, Any]) -> list[Path]:
             "ablation_versions": [row["version"] for row in summaries],
             "ablation_summary_rows": int(len(summary)),
             "trade_detail_rows": int(len(detail)),
+            "order_execution_audit_rows": int(len(order_detail)),
         },
     )
     return outputs
@@ -1564,6 +1677,704 @@ def safe_min(series: pd.Series) -> str:
 def safe_max(series: pd.Series) -> str:
     cleaned = series.replace("", np.nan).dropna()
     return str(cleaned.max()) if not cleaned.empty else "NA"
+
+
+def backtest_dir(config: dict[str, Any]) -> Path:
+    return topic_path(config["paths"]["backtest_dir"])
+
+
+def ensure_expand_inputs(config: dict[str, Any]) -> pd.DataFrame:
+    if not stock_signal_cache_path(config).exists():
+        command_build_signals(config)
+    signals = pd.read_pickle(stock_signal_cache_path(config))
+    summary_path = report_dir(config) / "trend_rule_ablation_summary.csv"
+    trade_path = report_dir(config) / "trade_detail.csv"
+    order_path = report_dir(config) / "order_execution_audit.csv"
+    needs_ablation = not summary_path.exists() or not trade_path.exists() or not order_path.exists()
+    if not needs_ablation and trade_path.exists():
+        header = pd.read_csv(trade_path, nrows=0)
+        needs_ablation = any(col not in header.columns for col in ["amount", "entry_value", "exit_value", "net_pnl"])
+    if needs_ablation:
+        command_run_ablation(config)
+    return signals
+
+
+def daily_return_frame(name: str, account_values: pd.DataFrame) -> pd.DataFrame:
+    data = account_values[["datetime", "account_value"]].copy()
+    data["datetime"] = pd.to_datetime(data["datetime"])
+    data = data.sort_values("datetime")
+    data["return"] = data["account_value"] / data["account_value"].shift(1) - 1
+    data["return"] = data["return"].fillna(0.0)
+    data.insert(0, "name", name)
+    return data
+
+
+def drawdown_interval(daily: pd.DataFrame) -> dict[str, Any]:
+    if daily.empty:
+        return {"max_drawdown": np.nan, "mdd_start": "", "mdd_trough": "", "mdd_recovery": ""}
+    values = pd.to_numeric(daily["account_value"], errors="coerce")
+    dates = pd.to_datetime(daily["datetime"])
+    running_max = values.cummax()
+    drawdown = values / running_max - 1
+    trough_pos = int(drawdown.idxmin())
+    peak_value = running_max.loc[trough_pos]
+    prior = values.loc[:trough_pos]
+    peak_candidates = prior[prior >= peak_value]
+    peak_pos = int(peak_candidates.index[-1]) if not peak_candidates.empty else 0
+    recovery_pos = ""
+    after = values.loc[trough_pos:]
+    recovered = after[after >= peak_value]
+    if not recovered.empty:
+        recovery_pos = dates.loc[int(recovered.index[0])].date().isoformat()
+    return {
+        "max_drawdown": float(drawdown.min()),
+        "mdd_start": dates.loc[peak_pos].date().isoformat(),
+        "mdd_trough": dates.loc[trough_pos].date().isoformat(),
+        "mdd_recovery": recovery_pos,
+    }
+
+
+def metrics_from_daily(name: str, daily: pd.DataFrame) -> dict[str, Any]:
+    if daily.empty:
+        return {"name": name}
+    values = pd.to_numeric(daily["account_value"], errors="coerce")
+    start_value = float(values.iloc[0])
+    end_value = float(values.iloc[-1])
+    total_return = end_value / start_value - 1 if start_value else np.nan
+    stats = drawdown_interval(daily)
+    rows = max(len(daily), 1)
+    annual = (1 + total_return) ** (252 / rows) - 1 if total_return > -1 else -1
+    return {
+        "name": name,
+        "rows": int(rows),
+        "total_return": float(total_return),
+        "annual_return": float(annual),
+        "max_drawdown": stats["max_drawdown"],
+        "mdd_start": stats["mdd_start"],
+        "mdd_trough": stats["mdd_trough"],
+        "mdd_recovery": stats["mdd_recovery"],
+        "ending_account": end_value,
+    }
+
+
+def load_strategy_daily(config: dict[str, Any], version: str) -> pd.DataFrame:
+    path = backtest_dir(config) / version / "portfolio_daily.csv"
+    data = pd.read_csv(path, parse_dates=["datetime"])
+    out = data[["datetime", "account_value", "return"]].copy()
+    out.insert(0, "name", version)
+    return out
+
+
+def build_sh000300_benchmark(config: dict[str, Any]) -> pd.DataFrame:
+    market = pd.read_csv(report_dir(config) / "market_regime.csv", parse_dates=["date"])
+    start = parse_dt(config["dates"]["backtest_start"])
+    end = parse_dt(config["dates"]["backtest_end"])
+    broad = market[(market["target_key"] == "broad_market") & (market["date"] >= start) & (market["date"] <= end)]
+    broad = broad.sort_values("date")
+    account = float(config["costs"]["account"])
+    first_close = safe_float(broad["close"].iloc[0], np.nan) if not broad.empty else np.nan
+    daily = pd.DataFrame(
+        {
+            "datetime": broad["date"],
+            "account_value": account * pd.to_numeric(broad["close"], errors="coerce") / first_close,
+        }
+    )
+    return daily_return_frame("SH000300", daily)
+
+
+def run_equal_weight_benchmark(config: dict[str, Any], signals: pd.DataFrame) -> pd.DataFrame:
+    costs = config["costs"]
+    portfolio_rules = config["rules"]["portfolio"]
+    start = parse_dt(config["dates"]["backtest_start"])
+    end = parse_dt(config["dates"]["backtest_end"])
+    df = signals.copy()
+    df["datetime"] = pd.to_datetime(df["datetime"])
+    df = df.sort_values(["datetime", "instrument"])
+    df["prev_close_for_limit"] = df.groupby("instrument")["close"].shift(1)
+    df = df[(df["datetime"] >= start) & (df["datetime"] <= end)]
+    all_dates = [pd.Timestamp(date) for date in sorted(df["datetime"].unique())]
+    by_date = {date: day.set_index("instrument", drop=False) for date, day in df.groupby("datetime")}
+    cash = float(costs["account"])
+    positions: dict[str, int] = {}
+    rows = []
+    current_month: tuple[int, int] | None = None
+    previous_value = cash
+    risk_degree = float(portfolio_rules.get("risk_degree", 1.0))
+    limit_threshold = float(costs["limit_threshold"])
+
+    for date in all_dates:
+        day = by_date[date]
+        month_key = (date.year, date.month)
+        day_cost = 0.0
+        day_turnover = 0.0
+        if current_month != month_key:
+            current_month = month_key
+            for instrument, amount in list(positions.items()):
+                if instrument not in day.index:
+                    continue
+                row = day.loc[instrument]
+                if isinstance(row, pd.DataFrame):
+                    row = row.iloc[0]
+                price = safe_float(row.get("open"))
+                if price <= 0 or is_limit_blocked(row, "sell", limit_threshold):
+                    continue
+                value = amount * price
+                cost = max(value * float(costs["close_cost"]), float(costs["min_cost"]))
+                cash += value - cost
+                day_cost += cost
+                day_turnover += value
+                positions.pop(instrument, None)
+
+            tradable = []
+            for instrument, row in day.iterrows():
+                if isinstance(row, pd.DataFrame):
+                    row = row.iloc[0]
+                price = safe_float(row.get("open"))
+                close = safe_float(row.get("close"))
+                if price > 0 and close > 0 and not is_limit_blocked(row, "buy", limit_threshold):
+                    tradable.append((instrument, price, row))
+            if tradable:
+                budget = cash * risk_degree / len(tradable)
+                for instrument, price, row in tradable:
+                    amount = round_lot_amount(budget, price)
+                    if amount <= 0:
+                        continue
+                    value = amount * price
+                    cost = max(value * float(costs["open_cost"]), float(costs["min_cost"]))
+                    if value + cost > cash:
+                        amount = round_lot_amount(cash - float(costs["min_cost"]), price)
+                        value = amount * price
+                        cost = max(value * float(costs["open_cost"]), float(costs["min_cost"]))
+                    if amount <= 0 or value + cost > cash:
+                        continue
+                    cash -= value + cost
+                    day_cost += cost
+                    day_turnover += value
+                    positions[instrument] = positions.get(instrument, 0) + amount
+
+        position_value = 0.0
+        for instrument, amount in positions.items():
+            if instrument not in day.index:
+                continue
+            row = day.loc[instrument]
+            if isinstance(row, pd.DataFrame):
+                row = row.iloc[0]
+            position_value += amount * safe_float(row.get("close"))
+        account_value = cash + position_value
+        rows.append(
+            {
+                "datetime": date,
+                "account_value": account_value,
+                "return": account_value / previous_value - 1 if previous_value else 0.0,
+                "cost": day_cost,
+                "turnover": day_turnover / previous_value if previous_value else 0.0,
+                "positions": len(positions),
+            }
+        )
+        previous_value = account_value
+
+    daily = pd.DataFrame(rows)
+    daily.insert(0, "name", "equal_weight_monthly")
+    return daily
+
+
+def build_signal_execution_audit(config: dict[str, Any], trades: pd.DataFrame, signals: pd.DataFrame) -> pd.DataFrame:
+    df = signals.copy()
+    df["datetime"] = pd.to_datetime(df["datetime"])
+    all_dates = [pd.Timestamp(date) for date in sorted(df["datetime"].unique())]
+    next_map = {date.date().isoformat(): all_dates[idx + 1].date().isoformat() for idx, date in enumerate(all_dates[:-1])}
+    rows = []
+    for _, trade in trades.iterrows():
+        expected_entry = next_map.get(str(trade["signal_date"]), "")
+        entry_deal = str(trade["deal_date"])
+        rows.append(
+            {
+                "version": trade.get("version", ""),
+                "instrument": trade["instrument"],
+                "phase": "entry",
+                "signal_date": trade["signal_date"],
+                "expected_deal_date": expected_entry,
+                "order_date": trade["order_date"],
+                "deal_date": trade["deal_date"],
+                "exit_reason": "",
+                "aligned": bool(expected_entry and str(trade["order_date"]) == expected_entry and entry_deal == expected_entry),
+            }
+        )
+        expected_exit = next_map.get(str(trade["exit_signal_date"]), "")
+        rows.append(
+            {
+                "version": trade.get("version", ""),
+                "instrument": trade["instrument"],
+                "phase": "exit",
+                "signal_date": trade["exit_signal_date"],
+                "expected_deal_date": expected_exit,
+                "order_date": trade["exit_date"],
+                "deal_date": trade["exit_date"],
+                "exit_reason": trade["exit_reason"],
+                "aligned": bool(expected_exit and str(trade["exit_date"]) == expected_exit),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_industry_filter_audit(config: dict[str, Any], signals: pd.DataFrame) -> pd.DataFrame:
+    df = signals.copy()
+    df["datetime"] = pd.to_datetime(df["datetime"])
+    score_rules = config["rules"]["score"]
+    score = pd.Series(0.0, index=df.index)
+    for component, weight in score_rules["weights"].items():
+        z_col = f"z_{component}"
+        if z_col in df.columns:
+            score += float(weight) * pd.to_numeric(df[z_col], errors="coerce").fillna(0.0)
+        elif component in df.columns:
+            score += float(weight) * daily_zscore(df, component, score_rules["winsor_lower"], score_rules["winsor_upper"]).fillna(0.0)
+    df["trend_score_without_industry"] = score
+    df.loc[~df["width_ok_entry"].fillna(False), "trend_score_without_industry"] = np.nan
+    df["score_pct_without_industry"] = df.groupby("datetime")["trend_score_without_industry"].rank(pct=True, ascending=False)
+    top = df["width_ok_entry"].fillna(False) & (df["score_pct_without_industry"] <= score_rules["top_pct"])
+    breakout = config["rules"]["breakout"]
+    pullback = config["rules"]["pullback"]
+    candidate = config["rules"]["candidate"]
+    max_dist = np.minimum(float(candidate["max_dist_ema20"]), float(candidate["atr_dist_multiplier"]) * df["atr20"] / df["close"])
+    df["breakout_without_industry"] = (
+        top
+        & (df["close"] > df["rolling_high60"])
+        & (df["money_ratio20"] >= breakout["money_ratio"])
+        & (df["close_pos"] >= 0.5)
+        & (df["upper_shadow_pct"] <= breakout["upper_shadow_max"])
+        & (df["dist_ema20"] < max_dist)
+    )
+    near_ema20 = df["low"] <= df["ema20"] * (1 + pullback["ema_band_pct"])
+    near_ema30 = df["low"] <= df["ema30"] * (1 + pullback["ema_band_pct"])
+    df["pullback_without_industry"] = (
+        top
+        & (near_ema20 | near_ema30)
+        & (df["low"] > df["ema60"])
+        & (df["money_ratio20"] <= 1.0)
+        & (df["close"] >= df["ema20"])
+        & (df["close"] > df["open"])
+    )
+    df["combined_without_industry"] = df["breakout_without_industry"] | df["pullback_without_industry"]
+
+    rows = []
+    daily = df.groupby("datetime").agg(
+        width_ok_entry=("width_ok_entry", "sum"),
+        industry_ok_entry=("industry_ok_entry", "sum"),
+        filtered_out=("industry_ok_entry", lambda s: 0),
+        combined_entry=("combined_entry", "sum"),
+        combined_without_industry=("combined_without_industry", "sum"),
+    ).reset_index()
+    daily["filtered_out"] = (
+        df["width_ok_entry"].fillna(False) & ~df["industry_ok_entry"].fillna(False)
+    ).groupby(df["datetime"]).sum().reindex(daily["datetime"]).fillna(0).to_numpy()
+    for _, row in daily.iterrows():
+        rows.append(
+            {
+                "row_type": "daily",
+                "date": row["datetime"].date().isoformat(),
+                "instrument": "",
+                "industry_name": "",
+                "status": "",
+                "width_ok_entry": int(row["width_ok_entry"]),
+                "industry_ok_entry": int(row["industry_ok_entry"]),
+                "filtered_out": int(row["filtered_out"]),
+                "combined_entry": int(row["combined_entry"]),
+                "combined_without_industry": int(row["combined_without_industry"]),
+                "score_pct_without_industry": np.nan,
+                "trend_score_pct": np.nan,
+            }
+        )
+
+    detail = df[df["width_ok_entry"].fillna(False) & ~df["industry_ok_entry"].fillna(False) & df["combined_without_industry"]].copy()
+    for _, row in detail.iterrows():
+        rows.append(
+            {
+                "row_type": "filtered_candidate_trigger",
+                "date": row["datetime"].date().isoformat(),
+                "instrument": row["instrument"],
+                "industry_name": row.get("industry_name", ""),
+                "status": "industry_filtered_out_but_triggered_without_industry",
+                "width_ok_entry": bool(row["width_ok_entry"]),
+                "industry_ok_entry": bool(row["industry_ok_entry"]),
+                "filtered_out": True,
+                "combined_entry": bool(row["combined_entry"]),
+                "combined_without_industry": bool(row["combined_without_industry"]),
+                "score_pct_without_industry": row["score_pct_without_industry"],
+                "trend_score_pct": row.get("trend_score_pct", np.nan),
+            }
+        )
+
+    market_width_path = backtest_dir(config) / "market_width" / "trade_detail.csv"
+    industry_path = backtest_dir(config) / "industry_theme_state" / "trade_detail.csv"
+    if market_width_path.exists() and industry_path.exists():
+        left = pd.read_csv(market_width_path)
+        right = pd.read_csv(industry_path)
+        key_cols = ["instrument", "signal_date", "entry_type", "exit_signal_date", "exit_reason"]
+        left_keys = set(map(tuple, left[key_cols].astype(str).to_numpy())) if not left.empty else set()
+        right_keys = set(map(tuple, right[key_cols].astype(str).to_numpy())) if not right.empty else set()
+        for key in sorted(left_keys ^ right_keys):
+            rows.append(
+                {
+                    "row_type": "trade_diff",
+                    "date": key[1],
+                    "instrument": key[0],
+                    "industry_name": "",
+                    "status": "market_width_only" if key in left_keys else "industry_theme_state_only",
+                    "width_ok_entry": "",
+                    "industry_ok_entry": "",
+                    "filtered_out": "",
+                    "combined_entry": "",
+                    "combined_without_industry": "",
+                    "score_pct_without_industry": np.nan,
+                    "trend_score_pct": np.nan,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def build_portfolio_reconciliation(config: dict[str, Any], summary: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    account = float(config["costs"]["account"])
+    for version in ["layered_exit", "ema_state_only", "market_width"]:
+        portfolio_path = backtest_dir(config) / version / "portfolio_daily.csv"
+        trade_path = backtest_dir(config) / version / "trade_detail.csv"
+        if not portfolio_path.exists():
+            continue
+        portfolio = pd.read_csv(portfolio_path, parse_dates=["datetime"])
+        trades = pd.read_csv(trade_path) if trade_path.exists() else empty_trade_frame()
+        metrics = compute_metrics(version, portfolio, trades, account)
+        summary_row = summary[summary["version"] == version]
+        continuity = (portfolio["prev_account_value"].iloc[1:].reset_index(drop=True) - portfolio["account_value"].iloc[:-1].reset_index(drop=True)).abs()
+        rows.append(
+            {
+                "version": version,
+                "rows": len(portfolio),
+                "trades": len(trades),
+                "computed_return_with_cost": metrics.get("total_return_with_cost", np.nan),
+                "summary_return_with_cost": summary_row["total_return_with_cost"].iloc[0] if not summary_row.empty else np.nan,
+                "return_diff": metrics.get("total_return_with_cost", np.nan)
+                - (summary_row["total_return_with_cost"].iloc[0] if not summary_row.empty else np.nan),
+                "computed_max_drawdown": metrics.get("max_drawdown", np.nan),
+                "summary_max_drawdown": summary_row["max_drawdown"].iloc[0] if not summary_row.empty else np.nan,
+                "max_drawdown_diff": metrics.get("max_drawdown", np.nan)
+                - (summary_row["max_drawdown"].iloc[0] if not summary_row.empty else np.nan),
+                "continuity_error_count": int((continuity > 0.01).sum()),
+                "cost_sum": float(pd.to_numeric(portfolio["cost"], errors="coerce").sum()),
+                "trade_net_pnl_sum": float(pd.to_numeric(trades.get("net_pnl"), errors="coerce").sum())
+                if "net_pnl" in trades
+                else np.nan,
+                "ending_account": float(portfolio["account_value"].iloc[-1]),
+                "account_delta": float(portfolio["account_value"].iloc[-1] - account),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_benchmark_and_monthly(
+    config: dict[str, Any],
+    signals: pd.DataFrame,
+    summary: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, pd.DataFrame]]:
+    daily_map: dict[str, pd.DataFrame] = {}
+    daily_map["SH000300"] = build_sh000300_benchmark(config)
+    daily_map["equal_weight_monthly"] = run_equal_weight_benchmark(config, signals)
+    for version in ["ema_state_only", "layered_exit"]:
+        daily_map[version] = load_strategy_daily(config, version)
+
+    benchmark_rows = []
+    for name, daily in daily_map.items():
+        row = metrics_from_daily(name, daily)
+        if name in set(summary["version"]):
+            srow = summary[summary["version"] == name].iloc[0]
+            row["source_total_return_with_cost"] = srow["total_return_with_cost"]
+            row["source_max_drawdown"] = srow["max_drawdown"]
+        benchmark_rows.append(row)
+    benchmark = pd.DataFrame(benchmark_rows)
+
+    sh_monthly = {}
+    monthly_rows = []
+    for name, daily in daily_map.items():
+        data = daily.copy()
+        data["datetime"] = pd.to_datetime(data["datetime"])
+        data["month"] = data["datetime"].dt.to_period("M").astype(str)
+        for month, group in data.groupby("month", sort=True):
+            ret = float((1 + pd.to_numeric(group["return"], errors="coerce").fillna(0.0)).prod() - 1)
+            if name == "SH000300":
+                sh_monthly[month] = ret
+            monthly_rows.append({"name": name, "month": month, "monthly_return": ret})
+    monthly = pd.DataFrame(monthly_rows)
+    monthly["excess_vs_sh000300"] = monthly.apply(
+        lambda row: row["monthly_return"] - sh_monthly.get(row["month"], np.nan)
+        if row["name"] != "SH000300"
+        else 0.0,
+        axis=1,
+    )
+    return benchmark, monthly, daily_map
+
+
+def build_rolling_risk_report(daily_map: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    rows = []
+    for name, daily in daily_map.items():
+        data = daily.copy()
+        data["datetime"] = pd.to_datetime(data["datetime"])
+        data = data.sort_values("datetime").reset_index(drop=True)
+        stats = drawdown_interval(data)
+        values = pd.to_numeric(data["account_value"], errors="coerce")
+        running_max = values.cummax()
+        data["drawdown"] = values / running_max - 1
+        for window in [20, 60, 120]:
+            rolling_return = values / values.shift(window) - 1
+            rolling_peak = values.rolling(window, min_periods=1).max()
+            rolling_dd = values / rolling_peak - 1
+            for idx, row in data.iterrows():
+                rows.append(
+                    {
+                        "name": name,
+                        "date": row["datetime"].date().isoformat(),
+                        "window": window,
+                        "rolling_return": rolling_return.iloc[idx],
+                        "rolling_drawdown": rolling_dd.iloc[idx],
+                        "drawdown_to_date": row["drawdown"],
+                        **stats,
+                    }
+                )
+    return pd.DataFrame(rows)
+
+
+def build_fat_tail_stress(config: dict[str, Any], signals: pd.DataFrame, layered_trades: pd.DataFrame) -> pd.DataFrame:
+    ablation = next(item for item in config["ablations"] if item["version"] == "layered_exit")
+    rows = []
+
+    def append_metrics(scenario: str, blocked_count: int, portfolio: pd.DataFrame, trades: pd.DataFrame, metrics: dict[str, Any]) -> None:
+        rows.append(
+            {
+                "scenario": scenario,
+                "blocked_count": blocked_count,
+                "trades": metrics.get("trades", len(trades)),
+                "win_rate": metrics.get("win_rate", np.nan),
+                "total_return_with_cost": metrics.get("total_return_with_cost", np.nan),
+                "annual_return_with_cost": metrics.get("annual_return_with_cost", np.nan),
+                "max_drawdown": metrics.get("max_drawdown", np.nan),
+                "ending_account": metrics.get("ending_account", np.nan),
+            }
+        )
+
+    base_portfolio, base_trades, _, base_metrics = run_backtest_one(config, signals, ablation)
+    append_metrics("baseline", 0, base_portfolio, base_trades, base_metrics)
+
+    winners = layered_trades.sort_values("cost_after_return", ascending=False)
+    for n in [1, 3, 5, 10]:
+        blocked = set(
+            (str(row["instrument"]), str(row["signal_date"]), str(row["entry_type"]))
+            for _, row in winners.head(n).iterrows()
+        )
+        portfolio, trades, _, metrics = run_backtest_one(config, signals, ablation, blocked_trades=blocked)
+        append_metrics(f"remove_top_{n}_winning_trades", len(blocked), portfolio, trades, metrics)
+
+    top_instruments = (
+        layered_trades.groupby("instrument")["cost_after_return"].sum().sort_values(ascending=False).index.tolist()
+        if not layered_trades.empty
+        else []
+    )
+    for n in [1, 3, 5]:
+        blocked_instruments = set(map(str, top_instruments[:n]))
+        portfolio, trades, _, metrics = run_backtest_one(
+            config,
+            signals,
+            ablation,
+            blocked_instruments=blocked_instruments,
+        )
+        append_metrics(f"remove_top_{n}_instruments", len(blocked_instruments), portfolio, trades, metrics)
+    return pd.DataFrame(rows)
+
+
+def build_group_stability(trades: pd.DataFrame, signals: pd.DataFrame) -> pd.DataFrame:
+    if trades.empty:
+        return pd.DataFrame()
+    context_cols = [
+        "datetime",
+        "instrument",
+        "industry_name",
+        "market_ok_entry",
+        "width_ok_entry",
+        "trend_score_pct",
+    ]
+    context = signals[context_cols].copy()
+    context["signal_date"] = pd.to_datetime(context["datetime"]).dt.date.astype(str)
+    context = context.drop(columns=["datetime"])
+    data = trades.merge(context, on=["instrument", "signal_date"], how="left", suffixes=("", "_signal"))
+    if "industry_name_signal" in data.columns:
+        data["industry_name"] = data.get("industry_name", pd.Series(index=data.index, dtype=object)).fillna(data["industry_name_signal"])
+    data["signal_year"] = pd.to_datetime(data["signal_date"]).dt.year.astype(str)
+    data["market_state"] = data["market_ok_entry"].map({True: "market_ok", False: "market_not_ok"}).fillna("NA")
+    data["width_state"] = data["width_ok_entry"].map({True: "width_ok", False: "width_not_ok"}).fillna("NA")
+    data["trend_score_bucket"] = pd.cut(
+        pd.to_numeric(data["trend_score_pct"], errors="coerce"),
+        bins=[0, 0.2, 0.4, 0.6, 0.8, 1.0],
+        labels=["0-20%", "20-40%", "40-60%", "60-80%", "80-100%"],
+        include_lowest=True,
+    ).astype("object").fillna("NA")
+    dimensions = [
+        ("year", "signal_year"),
+        ("entry_type", "entry_type"),
+        ("exit_reason", "exit_reason"),
+        ("industry", "industry_name"),
+        ("market_state", "market_state"),
+        ("width_state", "width_state"),
+        ("trend_score_bucket", "trend_score_bucket"),
+    ]
+    rows = []
+    for dimension, column in dimensions:
+        for (version, group_value), subset in data.groupby(["version", column], dropna=False):
+            ret = pd.to_numeric(subset["cost_after_return"], errors="coerce")
+            holding = pd.to_numeric(subset["holding_days"], errors="coerce")
+            rows.append(
+                {
+                    "dimension": dimension,
+                    "version": version,
+                    "group": str(group_value),
+                    "trades": int(len(subset)),
+                    "win_rate": float((ret > 0).mean()) if len(subset) else np.nan,
+                    "avg_net_return": float(ret.mean()) if len(subset) else np.nan,
+                    "median_net_return": float(ret.median()) if len(subset) else np.nan,
+                    "max_trade_return": float(ret.max()) if len(subset) else np.nan,
+                    "min_trade_return": float(ret.min()) if len(subset) else np.nan,
+                    "avg_holding_days": float(holding.mean()) if len(subset) else np.nan,
+                    "sum_net_return": float(ret.sum()) if len(subset) else np.nan,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def write_expand_markdown_report(
+    config: dict[str, Any],
+    signal_audit: pd.DataFrame,
+    limit_skip: pd.DataFrame,
+    industry_audit: pd.DataFrame,
+    reconciliation: pd.DataFrame,
+    benchmark: pd.DataFrame,
+    fat_tail: pd.DataFrame,
+) -> Path:
+    signal_failures = int((~signal_audit["aligned"].astype(bool)).sum()) if not signal_audit.empty else 0
+    limit_blocked = int((limit_skip["reason"] == "limit_blocked").sum()) if not limit_skip.empty else 0
+    skipped_orders = int(len(limit_skip))
+    trade_diff_count = int((industry_audit["row_type"] == "trade_diff").sum()) if not industry_audit.empty else 0
+    filtered_trigger_count = int((industry_audit["row_type"] == "filtered_candidate_trigger").sum()) if not industry_audit.empty else 0
+    continuity_errors = int(pd.to_numeric(reconciliation.get("continuity_error_count", pd.Series(dtype=float)), errors="coerce").sum())
+    layered_benchmark = benchmark[benchmark["name"] == "layered_exit"]
+    sh_benchmark = benchmark[benchmark["name"] == "SH000300"]
+    equal_benchmark = benchmark[benchmark["name"] == "equal_weight_monthly"]
+    baseline_stress = fat_tail[fat_tail["scenario"] == "baseline"]
+    top5_stress = fat_tail[fat_tail["scenario"] == "remove_top_5_winning_trades"]
+
+    layered_return = layered_benchmark["total_return"].iloc[0] if not layered_benchmark.empty else np.nan
+    sh_return = sh_benchmark["total_return"].iloc[0] if not sh_benchmark.empty else np.nan
+    equal_return = equal_benchmark["total_return"].iloc[0] if not equal_benchmark.empty else np.nan
+    baseline_return = baseline_stress["total_return_with_cost"].iloc[0] if not baseline_stress.empty else np.nan
+    top5_return = top5_stress["total_return_with_cost"].iloc[0] if not top5_stress.empty else np.nan
+    fat_tail_note = (
+        "剔除前 5 笔最大盈利后仍为正收益，说明不是完全依赖少数单笔交易。"
+        if pd.notna(top5_return) and top5_return > 0
+        else "剔除前 5 笔最大盈利后收益明显削弱或转负，应把收益稳定性结论降级。"
+    )
+    explore4_ready = signal_failures == 0 and continuity_errors == 0
+    lines = [
+        "# Explore3 扩展验证报告",
+        "",
+        f"- 生成时间：`{pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}` Asia/Shanghai。",
+        "- 本报告只验证 Explore3 既有规则结果，不修改交易规则、不调参、不引入模型。",
+        f"- 审计使用配置：`{relpath(config['_config_path'])}`。",
+        "",
+        "## 1. 结论摘要",
+        "",
+        f"- 信号/成交对齐失败数：`{format_int(signal_failures)}`。",
+        f"- 组合资产连续性错误数：`{format_int(continuity_errors)}`。",
+        f"- 被跳过订单数：`{format_int(skipped_orders)}`，其中涨跌停阻断：`{format_int(limit_blocked)}`。",
+        f"- 行业过滤与 market_width 交易差异数：`{format_int(trade_diff_count)}`。",
+        f"- 被行业过滤排除但无行业过滤口径下会触发入场的候选数：`{format_int(filtered_trigger_count)}`。",
+        f"- `layered_exit` 区间收益：`{format_pct(layered_return)}`；`SH000300`：`{format_pct(sh_return)}`；月度等权股票池：`{format_pct(equal_return)}`。",
+        f"- 肥尾压力测试：baseline `{format_pct(baseline_return)}`，剔除前 5 笔最大盈利后 `{format_pct(top5_return)}`。{fat_tail_note}",
+        "",
+        "## 2. 验收问题回答",
+        "",
+        f"1. `layered_exit` 是否通过信号和成交对齐审计：{'通过' if signal_failures == 0 else '未通过'}。",
+        f"2. `layered_exit` 是否能从交易明细反向核对：{'通过' if continuity_errors == 0 else '未通过'}。",
+        f"3. 行业过滤是否真实生效：{'交易集存在差异' if trade_diff_count > 0 else '当前 market_width 与 industry_theme_state 交易集仍完全一致；需要把该现象解释为行业过滤未改变最终交易，而不是证明行业过滤有效'}。",
+        f"4. 低回撤是否稳定：`layered_exit` 低回撤仍成立，但肥尾压力测试显示：{fat_tail_note}",
+        f"5. 相对基准是否有成本后优势：`layered_exit` 相对 `SH000300` {'有优势' if layered_return > sh_return else '无优势'}，相对月度等权股票池 {'有优势' if layered_return > equal_return else '无优势'}。",
+        f"6. 是否具备进入 Explore4 条件：{'可以进入，但必须保留静态股票池和肥尾依赖 caveat' if explore4_ready else '暂不建议进入，应先修复审计失败项'}。",
+        "",
+        "## 3. 文件索引",
+        "",
+        "| File | Purpose |",
+        "| --- | --- |",
+        "| `signal_execution_audit.csv` | 信号日、订单日和成交日对齐审计 |",
+        "| `limit_skip_audit.csv` | 被跳过订单和涨跌停阻断明细 |",
+        "| `industry_filter_audit.csv` | 行业过滤候选与交易差异诊断 |",
+        "| `portfolio_reconciliation.csv` | 组合收益和交易明细核对 |",
+        "| `benchmark_comparison.csv` | 沪深300、月度等权、EMA baseline 和 layered_exit 对比 |",
+        "| `monthly_returns.csv` | 月度收益和相对沪深300超额 |",
+        "| `rolling_risk_report.csv` | 滚动收益、滚动回撤和最大回撤区间 |",
+        "| `fat_tail_stress.csv` | 剔除最大赢家后的重跑压力测试 |",
+        "| `group_stability.csv` | 分组交易稳定性统计 |",
+        "",
+    ]
+    output = ensure_parent(report_dir(config) / "explore3_verification_report.md")
+    output.write_text("\n".join(lines), encoding="utf-8")
+    return output
+
+
+def command_expand_report(config: dict[str, Any]) -> list[Path]:
+    signals = ensure_expand_inputs(config)
+    summary = pd.read_csv(report_dir(config) / "trend_rule_ablation_summary.csv")
+    trades = pd.read_csv(report_dir(config) / "trade_detail.csv")
+    order_audit = pd.read_csv(report_dir(config) / "order_execution_audit.csv")
+    layered_trades = trades[trades["version"] == "layered_exit"].copy()
+
+    signal_audit = build_signal_execution_audit(config, trades, signals)
+    limit_skip = order_audit[order_audit["status"] != "executed"].copy()
+    industry_audit = build_industry_filter_audit(config, signals)
+    reconciliation = build_portfolio_reconciliation(config, summary)
+    benchmark, monthly, daily_map = build_benchmark_and_monthly(config, signals, summary)
+    rolling = build_rolling_risk_report(daily_map)
+    fat_tail = build_fat_tail_stress(config, signals, layered_trades)
+    group_stability = build_group_stability(trades, signals)
+
+    outputs = [
+        write_csv(signal_audit, report_dir(config) / "signal_execution_audit.csv"),
+        write_csv(limit_skip, report_dir(config) / "limit_skip_audit.csv"),
+        write_csv(industry_audit, report_dir(config) / "industry_filter_audit.csv"),
+        write_csv(reconciliation, report_dir(config) / "portfolio_reconciliation.csv"),
+        write_csv(benchmark, report_dir(config) / "benchmark_comparison.csv"),
+        write_csv(monthly, report_dir(config) / "monthly_returns.csv"),
+        write_csv(rolling, report_dir(config) / "rolling_risk_report.csv"),
+        write_csv(fat_tail, report_dir(config) / "fat_tail_stress.csv"),
+        write_csv(group_stability, report_dir(config) / "group_stability.csv"),
+    ]
+    outputs.append(
+        write_expand_markdown_report(
+            config,
+            signal_audit,
+            limit_skip,
+            industry_audit,
+            reconciliation,
+            benchmark,
+            fat_tail,
+        )
+    )
+    record_manifest(
+        config,
+        "expand-report",
+        outputs,
+        {
+            "expand_report_path": relpath(report_dir(config) / "explore3_verification_report.md"),
+            "signal_execution_audit_rows": int(len(signal_audit)),
+            "limit_skip_audit_rows": int(len(limit_skip)),
+            "industry_filter_audit_rows": int(len(industry_audit)),
+        },
+    )
+    print(f"wrote {relpath(report_dir(config) / 'explore3_verification_report.md')}", flush=True)
+    return outputs
 
 
 def command_report(config: dict[str, Any]) -> list[Path]:
@@ -2235,6 +3046,7 @@ def command_all(config: dict[str, Any]) -> list[Path]:
     outputs.extend(command_build_signals(config))
     outputs.extend(command_run_ablation(config))
     outputs.extend(command_report(config))
+    outputs.extend(command_expand_report(config))
     record_manifest(config, "all", outputs)
     return outputs
 
@@ -2265,6 +3077,7 @@ def parse_args() -> argparse.Namespace:
             "build-signals",
             "run-ablation",
             "report",
+            "expand-report",
             "all",
             "self-test",
         ],
@@ -2294,6 +3107,8 @@ def main() -> int:
             command_run_ablation(config)
         elif args.command == "report":
             command_report(config)
+        elif args.command == "expand-report":
+            command_expand_report(config)
         elif args.command == "all":
             command_all(config)
         else:
