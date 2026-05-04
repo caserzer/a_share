@@ -17,11 +17,17 @@
     "report",
     "report",
     "report",
-    "report"
+    "report",
+    "audit-pit-data",
+    "audit-pit-data",
+    "build-signals",
+    "run-walk-forward",
+    "report",
+    "self-test"
   ],
   "config_path": "Explore7/configs/pullback_rebuild_v1.yaml",
   "config_sha256": "0473179227a3669b6f299907a163d269d41df44f8beffaef9bdecdd65a513068",
-  "coverage_limited_diagnostic": true,
+  "coverage_limited_diagnostic": false,
   "data_gate_status": "ok",
   "experiment": "Explore7 PIT pullback subsystem rebuild",
   "fold_universe_member_summary": [
@@ -137,14 +143,14 @@
   "pit_universe_min_date": "2017-07-04",
   "pit_universe_rows": 439140,
   "provider_coverage": {
-    "coverage_limited_diagnostic": true,
-    "coverage_ratio": 0.8616955868288018,
-    "covered_membership_rows": 378405,
-    "fallback_provider_uri": "Explore1/data/qlib/cn_data",
-    "fallback_used": true,
+    "coverage_limited_diagnostic": false,
+    "coverage_ratio": 1.0,
+    "covered_membership_rows": 439140,
+    "fallback_provider_uri": "",
+    "fallback_used": false,
     "membership_rows": 439140,
-    "missing_membership_rows": 60735,
-    "provider_uri": "Explore1/data/qlib/cn_data",
+    "missing_membership_rows": 0,
+    "provider_uri": "Explore7/data/qlib/cn_data_pit",
     "required_fields": [
       "open",
       "high",
@@ -155,8 +161,8 @@
       "factor"
     ]
   },
-  "provider_coverage_limited_diagnostic": true,
-  "provider_fallback_uri": "Explore1/data/qlib/cn_data",
+  "provider_coverage_limited_diagnostic": false,
+  "provider_fallback_uri": "",
   "provider_uri": "Explore7/data/qlib/cn_data_pit",
   "pullback_class_precedence": [
     "breakdown_repair",
@@ -194,7 +200,7 @@
     "universe_point_in_time_required": true
   },
   "self_test_status": "ok",
-  "signal_rows": 28969,
+  "signal_rows": 32488,
   "source_data_audit": "Explore7/outputs/reports/source_data_audit.csv",
   "source_path_classification_summary": {
     "classification_counts": {
@@ -208,7 +214,7 @@
     "result_csv_used_for_calculation": false,
     "rows": 41
   },
-  "trade_rows": 7022,
+  "trade_rows": 7433,
   "tushare_token_present": true,
   "universe_daily_membership_changes": true,
   "universe_membership": "Explore7/data/universe/pit_mcap500_mainboard_daily.csv",

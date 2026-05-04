@@ -1,0 +1,254 @@
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  fallback_provider_uri: Explore1/data/qlib/cn_data
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  cache_dir: Explore8/outputs/cache
+  report_dir: Explore8/outputs/reports
+  backtest_dir: Explore8/outputs/backtests
+
+sources:
+  allowed_config_reference:
+    - path: Explore7/configs/pullback_rebuild_v1.yaml
+      allowed_keys: [paths, qlib, costs, rules, universe, industry]
+  allowed_metadata_audit:
+    - Explore7/outputs/reports/pit_provider_coverage_audit.csv
+    - Explore7/outputs/reports/pit_provider_coverage_summary.json
+  background_reference:
+    - Explore3/reports/explore3_report.md
+    - Explore5/outputs/reports/explore5_final_report.md
+    - Explore7/outputs/reports/explore7_pullback_rebuild_report.md
+  forbidden_result_path_patterns:
+    - Explore3/outputs/
+    - Explore4/outputs/
+    - Explore5/outputs/
+    - Explore6/outputs/
+    - Explore7/outputs/
+  forbidden_result_name_tokens:
+    - trade_detail
+    - portfolio_daily
+    - signals
+    - daily_candidates
+    - year_metrics
+    - prediction
+    - pred.pkl
+    - model
+  forbidden_result_path_used_for_calculation: false
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  warmup_start: "2017-01-01"
+  research_start: "2017-01-01"
+  research_end: "2024-12-31"
+  observed_reference_start: "2025-01-01"
+  observed_reference_end: "2026-04-30"
+
+universe:
+  name: pit_mcap500_mainboard
+  point_in_time: true
+  membership_frequency: daily
+  qlib_instrument_file_role: data_availability_superset
+  tradable_universe_authority: daily_pit_membership
+  static_20251231_universe_used_as_authority: false
+
+industry:
+  point_in_time: true
+  missing_industry: UNKNOWN
+
+qlib:
+  market: pit_mcap500_mainboard
+  benchmark: SH000300
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+
+coverage:
+  coverage_ok_min: 0.98
+  coverage_limited_min: 0.90
+  required_field_coverage_ok_min: 0.98
+
+costs:
+  account: 1000000
+  freq: day
+  deal_price: open
+  open_cost: 0.0005
+  close_cost: 0.0015
+  min_cost: 5
+  limit_threshold: 0.095
+
+rules:
+  max_positions: 20
+  max_daily_new_weight: 0.20
+  risk_degree: 1.00
+  min_warmup_trading_days: 140
+  score:
+    winsor_lower: 0.01
+    winsor_upper: 0.99
+    weights:
+      ema60_slope10: 0.25
+      ret60_excess: 0.20
+      ema20_ema60_spread: 0.15
+      money_ratio20: 0.15
+      ret20: 0.10
+      adx_proxy20: 0.10
+      overheat: -0.15
+      volatility20: -0.10
+  market:
+    broad_market_key: broad_market
+    ema: 60
+    record_ema: 120
+    slope_window: 20
+  width:
+    close_gt_ema60: 0.55
+    ema20_gt_ema60: 0.45
+  stops:
+    structure_atr_buffer: 0.50
+    fallback_atr_multiplier: 2.0
+
+param_suites:
+  base:
+    trend_score_pct: 0.20
+    pullback_band_pct: 0.03
+    breakout_money_min: 1.20
+    pullback_money_floor: 0.60
+    pullback_money_ceiling: 1.00
+    time_stop_days: 10
+    atr_stop_multiplier: 2.0
+  strict_score:
+    trend_score_pct: 0.10
+    pullback_band_pct: 0.03
+    breakout_money_min: 1.20
+    pullback_money_floor: 0.60
+    pullback_money_ceiling: 1.00
+    time_stop_days: 10
+    atr_stop_multiplier: 2.0
+  strict_pullback:
+    trend_score_pct: 0.20
+    pullback_band_pct: 0.02
+    breakout_money_min: 1.20
+    pullback_money_floor: 0.80
+    pullback_money_ceiling: 1.00
+    time_stop_days: 10
+    atr_stop_multiplier: 2.0
+  fast_failure:
+    trend_score_pct: 0.20
+    pullback_band_pct: 0.03
+    breakout_money_min: 1.20
+    pullback_money_floor: 0.60
+    pullback_money_ceiling: 1.00
+    time_stop_days: 5
+    atr_stop_multiplier: 1.5
+  slow_hold:
+    trend_score_pct: 0.20
+    pullback_band_pct: 0.03
+    breakout_money_min: 1.20
+    pullback_money_floor: 0.60
+    pullback_money_ceiling: 1.00
+    time_stop_days: 15
+    atr_stop_multiplier: 2.0
+
+sizing_suites:
+  fixed_w05:
+    sizing_family: fixed_weight
+    risk_budget_per_trade: null
+    single_stock_max_weight: 0.05
+    max_industry_weight: null
+  risk_unit_w03_ind20:
+    sizing_family: risk_unit_with_industry_cap
+    risk_budget_per_trade: 0.005
+    single_stock_max_weight: 0.03
+    max_industry_weight: 0.20
+  risk_unit_w05_ind25:
+    sizing_family: risk_unit_with_industry_cap
+    risk_budget_per_trade: 0.005
+    single_stock_max_weight: 0.05
+    max_industry_weight: 0.25
+
+rule_matrix:
+  - rule_family_id: ema_state_ema60_base
+    entry_family: ema_state_baseline
+    exit_family: ema60_exit_only
+    param_suite: base
+    sizing_suites: [fixed_w05, risk_unit_w03_ind20]
+    scope: baseline
+  - rule_family_id: ema_state_stop_time_base
+    entry_family: ema_state_baseline
+    exit_family: stop_plus_time
+    param_suite: base
+    sizing_suites: [fixed_w05, risk_unit_w03_ind20]
+    scope: baseline
+  - rule_family_id: breakout_layered_base
+    entry_family: breakout_core
+    exit_family: layered_exit
+    param_suite: base
+    sizing_suites: [fixed_w05, risk_unit_w03_ind20, risk_unit_w05_ind25]
+    scope: year_diagnostic
+  - rule_family_id: breakout_stop_time_base
+    entry_family: breakout_core
+    exit_family: stop_plus_time
+    param_suite: base
+    sizing_suites: [fixed_w05, risk_unit_w03_ind20, risk_unit_w05_ind25]
+    scope: year_diagnostic
+  - rule_family_id: breakout_fast_failure_diag
+    entry_family: breakout_core
+    exit_family: fast_failure_exit_diagnostic
+    param_suite: fast_failure
+    sizing_suites: [risk_unit_w03_ind20]
+    scope: diagnostic_only
+  - rule_family_id: pullback_original_layered_base
+    entry_family: pullback_original
+    exit_family: layered_exit
+    param_suite: base
+    sizing_suites: [fixed_w05, risk_unit_w03_ind20, risk_unit_w05_ind25]
+    scope: year_diagnostic
+  - rule_family_id: pullback_original_stop_time_base
+    entry_family: pullback_original
+    exit_family: stop_plus_time
+    param_suite: base
+    sizing_suites: [fixed_w05, risk_unit_w03_ind20]
+    scope: year_diagnostic
+  - rule_family_id: pullback_strict_trend_layered
+    entry_family: pullback_strict_trend
+    exit_family: layered_exit
+    param_suite: strict_score
+    sizing_suites: [risk_unit_w03_ind20, risk_unit_w05_ind25]
+    scope: year_diagnostic
+  - rule_family_id: pullback_strict_money_layered
+    entry_family: pullback_strict_money
+    exit_family: layered_exit
+    param_suite: strict_pullback
+    sizing_suites: [risk_unit_w03_ind20, risk_unit_w05_ind25]
+    scope: year_diagnostic
+  - rule_family_id: pullback_top_score_layered
+    entry_family: pullback_top_score
+    exit_family: layered_exit
+    param_suite: strict_score
+    sizing_suites: [risk_unit_w03_ind20, risk_unit_w05_ind25]
+    scope: year_diagnostic
+  - rule_family_id: pullback_strict_trend_fast_failure_diag
+    entry_family: pullback_strict_trend
+    exit_family: fast_failure_exit_diagnostic
+    param_suite: fast_failure
+    sizing_suites: [risk_unit_w03_ind20]
+    scope: diagnostic_only
+  - rule_family_id: pullback_slow_hold_diag
+    entry_family: pullback_original
+    exit_family: layered_exit
+    param_suite: slow_hold
+    sizing_suites: [risk_unit_w03_ind20]
+    scope: diagnostic_only
+  - rule_family_id: breakdown_repair_layered_diag
+    entry_family: breakdown_repair_diagnostic
+    exit_family: layered_exit
+    param_suite: base
+    sizing_suites: [risk_unit_w03_ind20]
+    scope: diagnostic_only
+  - rule_family_id: breakdown_repair_fast_failure_diag
+    entry_family: breakdown_repair_diagnostic
+    exit_family: fast_failure_exit_diagnostic
+    param_suite: fast_failure
+    sizing_suites: [risk_unit_w03_ind20]
+    scope: diagnostic_only

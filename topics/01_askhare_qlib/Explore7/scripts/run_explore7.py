@@ -1152,7 +1152,7 @@ def build_provider_coverage_audit(config: dict[str, Any], universe: pd.DataFrame
                     "missing_field_count": len(missing),
                 }
             )
-    audit = pd.DataFrame(missing_fields)
+    audit = pd.DataFrame(missing_fields, columns=["date", "instrument", "missing_fields", "missing_field_count"])
     covered_rows = int(len(merged) - len(audit))
     coverage_ratio = float(covered_rows / len(merged)) if len(merged) else 0.0
     coverage_limited = bool(provider_meta.get("fallback_used", False) or coverage_ratio < 0.995)

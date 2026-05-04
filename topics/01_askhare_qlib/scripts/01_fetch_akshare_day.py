@@ -30,6 +30,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--start-date", default="2017-01-01")
     parser.add_argument("--end-date", default=date.today().isoformat())
     parser.add_argument("--symbols", nargs="*", help="Optional stock codes or Qlib instruments to fetch.")
+    parser.add_argument("--symbols-file", help="Optional newline-delimited stock codes or Qlib instruments to fetch.")
     parser.add_argument("--limit", type=int, help="Fetch only the first N instruments after filtering.")
     parser.add_argument("--raw-dir", default="data/raw/akshare/day/raw")
     parser.add_argument("--qfq-dir", default="data/raw/akshare/day/qfq")
@@ -40,6 +41,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--force", action="store_true", help="Overwrite existing CSV files.")
     parser.add_argument("--fail-fast", action="store_true")
     return parser.parse_args()
+
+
+def load_symbols(args: argparse.Namespace) -> list[str] | None:
+    symbols = list(args.symbols or [])
+    if args.symbols_file:
+        path = topic_path(args.symbols_file)
+        with path.open("r", encoding="utf-8") as file:
+            symbols.extend(line.strip() for line in file if line.strip() and not line.lstrip().startswith("#"))
+    return symbols or None
 
 
 def save_frame(df: pd.DataFrame, path: Path) -> None:
@@ -148,7 +158,7 @@ def main() -> int:
 
     raw_dir = topic_path(args.raw_dir)
     qfq_dir = topic_path(args.qfq_dir)
-    universe = filter_universe(load_universe(args.universe), args.symbols, args.limit)
+    universe = filter_universe(load_universe(args.universe), load_symbols(args), args.limit)
     start = ak_date(args.start_date)
     end = ak_date(args.end_date)
 

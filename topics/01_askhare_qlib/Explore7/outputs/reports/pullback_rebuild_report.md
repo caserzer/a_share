@@ -3,17 +3,16 @@
 ## 1. 核心结论
 - 未形成 `candidate_for_future_final_test`。所有 rebuilt/strong-trend 候选仍为 diagnostic-only。
 - rebuilt pullback 被降级：改善主要来自交易数下降或现金比例升高。
-- 本次策略回放只能视为 `coverage_limited_diagnostic`：PIT universe 与 PIT industry 已构建，但行情 provider 回退到旧 Explore1 provider，覆盖率只有 `86.17%` 左右，不能作为最终可交易结论。
-- rebuilt/strong-trend 版本没有通过验收：正收益年份 `2/3`，qualified 年份 `3/4`，expectancy 改善年份 `2/4`，交易数比例 `0.41`，平均现金 `97.77%`。
+- rebuilt/strong-trend 版本没有通过验收：正收益年份 `2/3`，qualified 年份 `3/4`，expectancy 改善年份 `4/4`，交易数比例 `0.39`，平均现金 `97.71%`。
 
 ## 2. 数据可信边界
 - Universe point-in-time: `True`
 - Industry point-in-time: `True`
-- Provider coverage ratio: `86.17%`
-- Coverage-limited diagnostic: `True`
+- Provider coverage ratio: `100.00%`
+- Coverage-limited diagnostic: `False`
 - Historical result CSV used for calculation: `False`
-- Provider used for this diagnostic replay: `Explore1/data/qlib/cn_data`
-- Missing PIT membership rows in provider: `60,735` / `439,140`
+- Provider used for this diagnostic replay: `Explore7/data/qlib/cn_data_pit`
+- Missing PIT membership rows in provider: `0` / `439,140`
 
 ### 2.1 PIT Universe 摘要
 | Metric | Value |
@@ -66,104 +65,104 @@
 ## 3. Fold 回放结果
 | Version | Trades | Positive folds | Mean return | Worst return | Worst DD | Avg cash | Max cash |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| breakdown-repair diagnostic | 3598 | 2/5 | 0.20% | -30.96% | -34.40% | 48.15% | 49.77% |
-| breakout core baseline | 91 | 3/5 | 0.63% | -0.99% | -2.04% | 98.00% | 99.30% |
-| original pullback baseline | 288 | 1/5 | -0.11% | -2.82% | -4.21% | 95.86% | 98.29% |
-| rebuilt pullback candidate | 117 | 3/5 | 0.29% | -1.70% | -2.52% | 97.77% | 99.28% |
-| strong-trend candidate | 117 | 3/5 | 0.29% | -1.70% | -2.52% | 97.77% | 99.28% |
-| weak-volume diagnostic | 2811 | 2/5 | -5.60% | -26.24% | -28.06% | 63.13% | 66.64% |
+| breakdown-repair diagnostic | 3662 | 2/5 | -6.31% | -37.87% | -42.04% | 47.72% | 50.04% |
+| breakout core baseline | 103 | 2/5 | 0.05% | -1.03% | -2.32% | 97.96% | 99.17% |
+| original pullback baseline | 341 | 1/5 | -1.44% | -3.64% | -5.38% | 95.35% | 97.78% |
+| rebuilt pullback candidate | 133 | 1/5 | -0.18% | -1.73% | -2.89% | 97.71% | 99.12% |
+| strong-trend candidate | 133 | 1/5 | -0.18% | -1.73% | -2.89% | 97.71% | 99.12% |
+| weak-volume diagnostic | 3061 | 2/5 | -8.96% | -32.47% | -33.90% | 60.24% | 62.89% |
 
 解读：`pit_rebuilt_pullback_candidate` 与 `pit_strong_trend_pullback_candidate` 完全一致，说明第一版 rebuilt 只保留 strong-trend continuation。它的 fold return 均值略高于原 pullback baseline，但交易数从 288 降到 117，平均现金从 95.86% 升到 97.77%，因此改善主要是少交易和高现金，而不是 pullback 子规则质量显著提升。
 
 ### 3.1 Fold 明细
 | Version | Fold | Trades | Return | Max DD | Avg Cash |
 | --- | --- | --- | --- | --- | --- |
-| breakout core baseline | WF1 | 30 | 0.92% | -2.04% | 96.98% |
-| breakout core baseline | WF2 | 17 | 3.90% | -1.07% | 97.50% |
-| breakout core baseline | WF3 | 6 | 0.15% | -1.16% | 99.30% |
-| breakout core baseline | WF4 | 13 | -0.82% | -1.25% | 98.75% |
-| breakout core baseline | WF5 | 25 | -0.99% | -1.86% | 97.47% |
-| original pullback baseline | WF1 | 79 | -0.19% | -3.95% | 93.77% |
-| original pullback baseline | WF2 | 59 | 4.33% | -2.44% | 94.86% |
-| original pullback baseline | WF3 | 27 | -0.20% | -2.27% | 98.29% |
-| original pullback baseline | WF4 | 33 | -1.68% | -2.09% | 97.84% |
-| original pullback baseline | WF5 | 90 | -2.82% | -4.21% | 94.53% |
-| strong-trend candidate | WF1 | 36 | 0.66% | -2.39% | 96.57% |
-| strong-trend candidate | WF2 | 20 | 3.35% | -1.07% | 97.42% |
-| strong-trend candidate | WF3 | 7 | 0.15% | -1.18% | 99.28% |
-| strong-trend candidate | WF4 | 16 | -0.99% | -1.25% | 98.64% |
-| strong-trend candidate | WF5 | 38 | -1.70% | -2.52% | 96.95% |
-| weak-volume diagnostic | WF1 | 472 | 11.63% | -12.27% | 64.32% |
-| weak-volume diagnostic | WF2 | 576 | -0.87% | -13.88% | 62.45% |
-| weak-volume diagnostic | WF3 | 590 | -26.24% | -28.06% | 66.64% |
-| weak-volume diagnostic | WF4 | 594 | -20.97% | -21.64% | 65.47% |
-| weak-volume diagnostic | WF5 | 579 | 8.46% | -14.36% | 56.78% |
-| breakdown-repair diagnostic | WF1 | 587 | 38.52% | -11.91% | 47.08% |
-| breakdown-repair diagnostic | WF2 | 683 | 20.87% | -14.27% | 46.81% |
-| breakdown-repair diagnostic | WF3 | 824 | -26.49% | -34.40% | 49.77% |
-| breakdown-repair diagnostic | WF4 | 808 | -30.96% | -31.40% | 49.75% |
-| breakdown-repair diagnostic | WF5 | 696 | -0.94% | -17.43% | 47.32% |
-| rebuilt pullback candidate | WF1 | 36 | 0.66% | -2.39% | 96.57% |
-| rebuilt pullback candidate | WF2 | 20 | 3.35% | -1.07% | 97.42% |
-| rebuilt pullback candidate | WF3 | 7 | 0.15% | -1.18% | 99.28% |
-| rebuilt pullback candidate | WF4 | 16 | -0.99% | -1.25% | 98.64% |
-| rebuilt pullback candidate | WF5 | 38 | -1.70% | -2.52% | 96.95% |
+| breakout core baseline | WF1 | 34 | 0.07% | -2.32% | 96.88% |
+| breakout core baseline | WF2 | 20 | 2.32% | -1.16% | 97.49% |
+| breakout core baseline | WF3 | 8 | -0.34% | -1.17% | 99.17% |
+| breakout core baseline | WF4 | 14 | -0.75% | -1.04% | 98.81% |
+| breakout core baseline | WF5 | 27 | -1.03% | -1.77% | 97.47% |
+| original pullback baseline | WF1 | 95 | -2.22% | -5.38% | 93.31% |
+| original pullback baseline | WF2 | 74 | 2.41% | -3.60% | 94.11% |
+| original pullback baseline | WF3 | 36 | -1.70% | -3.59% | 97.78% |
+| original pullback baseline | WF4 | 37 | -2.04% | -2.57% | 97.73% |
+| original pullback baseline | WF5 | 99 | -3.64% | -4.99% | 93.85% |
+| strong-trend candidate | WF1 | 42 | -0.01% | -2.89% | 96.35% |
+| strong-trend candidate | WF2 | 23 | 2.23% | -1.34% | 97.44% |
+| strong-trend candidate | WF3 | 10 | -0.43% | -1.27% | 99.12% |
+| strong-trend candidate | WF4 | 18 | -0.98% | -1.04% | 98.66% |
+| strong-trend candidate | WF5 | 40 | -1.73% | -2.43% | 96.95% |
+| weak-volume diagnostic | WF1 | 517 | 11.09% | -13.26% | 61.07% |
+| weak-volume diagnostic | WF2 | 646 | -4.49% | -16.49% | 58.11% |
+| weak-volume diagnostic | WF3 | 669 | -32.47% | -33.90% | 62.63% |
+| weak-volume diagnostic | WF4 | 634 | -24.79% | -25.13% | 62.89% |
+| weak-volume diagnostic | WF5 | 595 | 5.84% | -15.05% | 56.53% |
+| breakdown-repair diagnostic | WF1 | 595 | 31.74% | -12.08% | 46.04% |
+| breakdown-repair diagnostic | WF2 | 690 | 10.95% | -17.66% | 46.72% |
+| breakdown-repair diagnostic | WF3 | 851 | -37.87% | -42.04% | 50.04% |
+| breakdown-repair diagnostic | WF4 | 805 | -33.24% | -33.46% | 49.10% |
+| breakdown-repair diagnostic | WF5 | 721 | -3.14% | -17.16% | 46.71% |
+| rebuilt pullback candidate | WF1 | 42 | -0.01% | -2.89% | 96.35% |
+| rebuilt pullback candidate | WF2 | 23 | 2.23% | -1.34% | 97.44% |
+| rebuilt pullback candidate | WF3 | 10 | -0.43% | -1.27% | 99.12% |
+| rebuilt pullback candidate | WF4 | 18 | -0.98% | -1.04% | 98.66% |
+| rebuilt pullback candidate | WF5 | 40 | -1.73% | -2.43% | 96.95% |
 
 ## 4. Distinct Year 对照
 | Version | Year | Trades | Return | Expectancy | Cash |
 | --- | --- | --- | --- | --- | --- |
-| breakout core baseline | 2019 | 17 | -1.00% | -939.89 | 97.39% |
-| breakout core baseline | 2020 | 13 | 2.29% | 2142.88 | 96.73% |
-| breakout core baseline | 2021 | 3 | 0.91% | 1966.33 | 98.49% |
-| breakout core baseline | 2022 | 3 | -0.44% | -1467.12 | 99.74% |
-| breakout core baseline | 2023 | 10 | -0.38% | -378.90 | 97.77% |
-| breakout core baseline | 2024 | 15 | -0.61% | -416.62 | 97.17% |
-| original pullback baseline | 2019 | 34 | -0.90% | -458.66 | 94.74% |
-| original pullback baseline | 2020 | 45 | 1.11% | 541.48 | 92.94% |
-| original pullback baseline | 2021 | 13 | 1.76% | 558.09 | 97.22% |
-| original pullback baseline | 2022 | 14 | -0.92% | -661.12 | 98.79% |
-| original pullback baseline | 2023 | 19 | -0.76% | -397.89 | 96.91% |
-| original pullback baseline | 2024 | 71 | -2.08% | -303.86 | 92.13% |
-| rebuilt pullback candidate | 2019 | 20 | -0.66% | -657.48 | 96.74% |
-| rebuilt pullback candidate | 2020 | 16 | 1.71% | 1421.89 | 96.57% |
-| rebuilt pullback candidate | 2021 | 3 | 0.91% | 1966.33 | 98.48% |
-| rebuilt pullback candidate | 2022 | 4 | -0.44% | -1110.24 | 99.71% |
-| rebuilt pullback candidate | 2023 | 12 | -0.55% | -455.16 | 97.58% |
-| rebuilt pullback candidate | 2024 | 26 | -1.16% | -450.62 | 96.31% |
+| breakout core baseline | 2019 | 20 | -1.02% | -806.47 | 97.10% |
+| breakout core baseline | 2020 | 14 | 1.45% | 1339.64 | 96.81% |
+| breakout core baseline | 2021 | 5 | 0.30% | 196.01 | 98.31% |
+| breakout core baseline | 2022 | 3 | -0.44% | -1466.70 | 99.74% |
+| breakout core baseline | 2023 | 11 | -0.31% | -280.40 | 97.88% |
+| breakout core baseline | 2024 | 16 | -0.73% | -463.29 | 97.05% |
+| original pullback baseline | 2019 | 43 | -1.99% | -645.13 | 93.95% |
+| original pullback baseline | 2020 | 52 | 0.46% | 363.78 | 92.63% |
+| original pullback baseline | 2021 | 22 | 0.24% | -352.24 | 96.22% |
+| original pullback baseline | 2022 | 14 | -0.93% | -662.87 | 98.75% |
+| original pullback baseline | 2023 | 23 | -1.14% | -492.74 | 96.75% |
+| original pullback baseline | 2024 | 76 | -2.54% | -340.00 | 90.91% |
+| rebuilt pullback candidate | 2019 | 25 | -0.86% | -644.26 | 96.29% |
+| rebuilt pullback candidate | 2020 | 17 | 1.29% | 1062.10 | 96.64% |
+| rebuilt pullback candidate | 2021 | 5 | 0.30% | 196.01 | 98.31% |
+| rebuilt pullback candidate | 2022 | 5 | -0.53% | -1053.44 | 99.65% |
+| rebuilt pullback candidate | 2023 | 13 | -0.46% | -349.20 | 97.69% |
+| rebuilt pullback candidate | 2024 | 27 | -1.28% | -477.42 | 96.20% |
 
 ### 4.1 Rebuilt vs Original vs Breakout
 | Year | Original return | Rebuilt return | Breakout return | Expectancy delta | Rebuilt/orig trades | Rebuilt cash |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2019 | -0.90% | -0.66% | -1.00% | -198.82 | 20/34 | 96.74% |
-| 2020 | 1.11% | 1.71% | 2.29% | 880.40 | 16/45 | 96.57% |
-| 2021 | 1.76% | 0.91% | 0.91% | 1408.23 | 3/13 | 98.48% |
-| 2022 | -0.92% | -0.44% | -0.44% | -449.12 | 4/14 | 99.71% |
-| 2023 | -0.76% | -0.55% | -0.38% | -57.27 | 12/19 | 97.58% |
-| 2024 | -2.08% | -1.16% | -0.61% | -146.76 | 26/71 | 96.31% |
+| 2019 | -1.99% | -0.86% | -1.02% | 0.87 | 25/43 | 96.29% |
+| 2020 | 0.46% | 1.29% | 1.45% | 698.33 | 17/52 | 96.64% |
+| 2021 | 0.24% | 0.30% | 0.30% | 548.25 | 5/22 | 98.31% |
+| 2022 | -0.93% | -0.53% | -0.44% | -390.57 | 5/14 | 99.65% |
+| 2023 | -1.14% | -0.46% | -0.31% | 143.55 | 13/23 | 97.69% |
+| 2024 | -2.54% | -1.28% | -0.73% | -137.41 | 27/76 | 96.20% |
 
-逐年看，rebuilt 的 yearly expectancy 只在 `2` 个 distinct years 优于原 pullback，相对 breakout core 同时满足收益不低且交易覆盖增加的年份只有 `1` 个；两项都没有达到验收要求。2021 和 2022 的 rebuilt 交易数尤其低，说明该版本没有提供稳定交易覆盖。
+逐年看，rebuilt 的 yearly expectancy 只在 `4` 个 distinct years 优于原 pullback，相对 breakout core 同时满足收益不低且交易覆盖增加的年份只有 `1` 个；两项都没有达到验收要求。2021 和 2022 的 rebuilt 交易数尤其低，说明该版本没有提供稳定交易覆盖。
 
 ## 5. Pullback 三类拆分结果
 ### 5.1 分类覆盖
 说明：下表按 fold-valid 视角统计，fold 之间有重叠年份，因此用于覆盖审计，不解释为去重样本数。
 | Class | Candidate rows | PIT member count sum | Insufficient rows |
 | --- | --- | --- | --- |
-| breakdown_repair | 36,040 | 3,828 | 0 |
-| weak_volume_rebound | 12,326 | 3,228 | 0 |
-| unclassified_pullback | 7,354 | 1,700 | 0 |
-| strong_trend_continuation | 99 | 81 | 24 |
+| breakdown_repair | 42,072 | 4,908 | 0 |
+| weak_volume_rebound | 14,218 | 3,892 | 0 |
+| unclassified_pullback | 8,257 | 2,031 | 0 |
+| strong_trend_continuation | 120 | 105 | 24 |
 
 ### 5.2 分类回放表现
 | Version | Class | Trades | Net PnL | Avg Expectancy | Positive class-years | Stop/Time |
 | --- | --- | --- | --- | --- | --- | --- |
-| breakdown-repair diagnostic | breakdown_repair | 3573 | 29132.24 | 83.03 | 4/10 | 45.37% |
-| original pullback baseline | breakdown_repair | 68 | -981.58 | 286.96 | 6/10 | 46.23% |
-| original pullback baseline | strong_trend_continuation | 23 | -16519.61 | -660.75 | 1/8 | 46.88% |
-| original pullback baseline | unclassified_pullback | 30 | -23488.42 | -731.55 | 3/10 | 92.50% |
-| original pullback baseline | weak_volume_rebound | 89 | 10359.23 | -76.59 | 4/10 | 57.23% |
-| rebuilt pullback candidate | strong_trend_continuation | 27 | -18410.49 | -689.43 | 1/8 | 49.72% |
-| strong-trend candidate | strong_trend_continuation | 27 | -18410.49 | -689.43 | 1/8 | 49.72% |
-| weak-volume diagnostic | weak_volume_rebound | 2774 | -320005.40 | -85.39 | 4/10 | 53.51% |
+| breakdown-repair diagnostic | breakdown_repair | 3630 | -297611.87 | -7.85 | 4/10 | 46.00% |
+| original pullback baseline | breakdown_repair | 72 | 453.38 | 629.36 | 6/10 | 41.36% |
+| original pullback baseline | strong_trend_continuation | 30 | -11236.71 | -424.95 | 0/8 | 44.79% |
+| original pullback baseline | unclassified_pullback | 32 | -14862.28 | -550.09 | 3/10 | 88.33% |
+| original pullback baseline | weak_volume_rebound | 122 | -43163.49 | -534.89 | 2/10 | 65.50% |
+| rebuilt pullback candidate | strong_trend_continuation | 33 | -12831.57 | -424.75 | 0/8 | 44.51% |
+| strong-trend candidate | strong_trend_continuation | 33 | -12831.57 | -424.75 | 0/8 | 44.51% |
+| weak-volume diagnostic | weak_volume_rebound | 3016 | -469014.23 | -115.81 | 4/10 | 53.16% |
 
 分类解释：
 - `strong_trend_continuation` 没有证明自己是可选候选。valid 覆盖中样本非常少，rebuilt/strong-trend 实际 pullback 交易只有 27 笔，合计 net PnL 为负，且 positive class-years 只有 1/8。
@@ -174,15 +173,15 @@
 ## 6. 验收门槛逐项解释
 | Version | Candidate | Avg Cash | Max Fold Cash | Trade Ratio | Failed Checks |
 | --- | --- | --- | --- | --- | --- |
-| rebuilt pullback candidate | False | 97.77% | 99.28% | 0.41 | provider 覆盖不是完整 PIT provider; 正收益 distinct year 数不足; qualified valid year 数不足; yearly expectancy 改善年份不足; 相对 breakout core 的收益/覆盖改善年份不足; 平均现金比例超过 95%; 至少一个 fold 现金比例超过 97%; 交易数低于原 pullback baseline 的 60%; 至少一个 fold 交易数少于 40; stop_loss + time_stop 占比没有下降 15%; 年度收益集中度超过 45% |
-| strong-trend candidate | False | 97.77% | 99.28% | 0.41 | provider 覆盖不是完整 PIT provider; 正收益 distinct year 数不足; qualified valid year 数不足; yearly expectancy 改善年份不足; 相对 breakout core 的收益/覆盖改善年份不足; 平均现金比例超过 95%; 至少一个 fold 现金比例超过 97%; 交易数低于原 pullback baseline 的 60%; 至少一个 fold 交易数少于 40; stop_loss + time_stop 占比没有下降 15%; 年度收益集中度超过 45% |
+| rebuilt pullback candidate | False | 97.71% | 99.12% | 0.39 | 正收益 distinct year 数不足; qualified valid year 数不足; 相对 breakout core 的收益/覆盖改善年份不足; 平均现金比例超过 95%; 至少一个 fold 现金比例超过 97%; 交易数低于原 pullback baseline 的 60%; 至少一个 fold 交易数少于 40; stop_loss + time_stop 占比没有下降 15%; 年度收益集中度超过 45% |
+| strong-trend candidate | False | 97.71% | 99.12% | 0.39 | 正收益 distinct year 数不足; qualified valid year 数不足; 相对 breakout core 的收益/覆盖改善年份不足; 平均现金比例超过 95%; 至少一个 fold 现金比例超过 97%; 交易数低于原 pullback baseline 的 60%; 至少一个 fold 交易数少于 40; stop_loss + time_stop 占比没有下降 15%; 年度收益集中度超过 45% |
 
 验收解释：
-- 现金门槛失败：平均现金 `97.77%`，高于 95%；最大 fold 现金 `99.28%`，高于 97%。
-- 覆盖门槛失败：rebuilt 总交易数 `117`，只有原 pullback baseline 的 `40.62%`。
-- 期望改善不足：expectancy 改善年份 `2`，低于要求的 4 年。
-- 风险结构没有改善：stop_loss + time_stop 占比变化为 `-0.95%`，没有达到至少下降 15% 的要求。
-- 年度收益集中度 `65.32%`，高于 45%，说明少数年份贡献过高。
+- 现金门槛失败：平均现金 `97.71%`，高于 95%；最大 fold 现金 `99.12%`，高于 97%。
+- 覆盖门槛失败：rebuilt 总交易数 `133`，只有原 pullback baseline 的 `39.00%`。
+- 期望改善不足：expectancy 改善年份 `4`，低于要求的 4 年。
+- 风险结构没有改善：stop_loss + time_stop 占比变化为 `0.83%`，没有达到至少下降 15% 的要求。
+- 年度收益集中度 `81.03%`，高于 45%，说明少数年份贡献过高。
 
 ## 7. 对需求问题的逐项回答
 - PIT universe 构建成功，并已替代静态 `2025-12-31` universe 作为交易资格来源；但行情 provider 尚未完全替换为 Explore7 PIT provider，所以策略结论仍是 coverage-limited diagnostic。
