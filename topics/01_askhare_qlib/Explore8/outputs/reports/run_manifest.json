@@ -1,4 +1,23 @@
 {
+  "adjusted_price_used": true,
+  "big_winner_anchor_profile_rows": 3670,
+  "big_winner_coverage_audit_rows": 2098,
+  "big_winner_cross_year_audit_rows": 1348,
+  "big_winner_episode_rows": 734,
+  "big_winner_profile_enabled": true,
+  "big_winner_report_path": "Explore8/outputs/reports/explore8_big_winner_profile_report.md",
+  "big_winner_stock_year_rows": 734,
+  "big_winner_threshold": 0.5,
+  "big_winner_years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
   "command_sequence": [
     "self-test",
     "audit-data",
@@ -21,10 +40,13 @@
     "report",
     "self-test",
     "self-test",
-    "report"
+    "report",
+    "self-test",
+    "profile-big-winners",
+    "big-winner-report"
   ],
   "config_path": "Explore8/configs/yearly_rule_diagnostic_v1.yaml",
-  "config_sha256": "da7530cfa3d878ebcb12c8b531aea91433d09581fd2eaff0cbcf5cffcf835786",
+  "config_sha256": "0d3e16bc332cd375b9b42ced4d09f85df47ae8ffe8929a2ebe4111a37b7ad140",
   "coverage_by_year": [
     {
       "coverage_status": "coverage_ok",
@@ -68,12 +90,15 @@
     }
   ],
   "coverage_limited_research": false,
+  "coverage_limited_years": [],
   "deep_dive_report_path": "Explore8/outputs/reports/explore8_deep_dive_analysis_report.md",
   "experiment": "Explore8 PIT EMA yearly rule-family diagnostic",
   "fallback_provider_uri": "Explore1/data/qlib/cn_data",
   "forbidden_result_path_used_for_calculation": false,
+  "historical_trade_results_used_for_labeling": false,
   "industry_membership": "Explore7/data/targets/pit_industry_membership.csv",
   "industry_membership_point_in_time": true,
+  "labels_used_for_trading_signal": false,
   "leaderboard_rows": 208,
   "min_warmup_trading_days": 140,
   "observed_2025_2026_used_for_selection": false,
@@ -84,6 +109,7 @@
     "Explore8/outputs/backtests/rule_industry_exposure.csv",
     "Explore8/outputs/backtests/rule_portfolio_daily.csv",
     "Explore8/outputs/backtests/rule_trade_detail.csv",
+    "Explore8/outputs/reports/explore8_big_winner_profile_report.md",
     "Explore8/outputs/reports/explore8_deep_dive_analysis_report.md",
     "Explore8/outputs/reports/explore8_yearly_rule_diagnostic_report.md",
     "Explore8/outputs/reports/pit_provider_coverage_by_year.csv",
@@ -97,9 +123,20 @@
     "Explore8/outputs/reports/year_entry_exit_attribution.csv",
     "Explore8/outputs/reports/year_failure_attribution.csv",
     "Explore8/outputs/reports/year_market_regime_summary.csv",
-    "Explore8/outputs/reports/year_rule_leaderboard.csv"
+    "Explore8/outputs/reports/year_rule_leaderboard.csv",
+    "Explore8/outputs/reports/yearly_big_winner_anchor_profile.csv",
+    "Explore8/outputs/reports/yearly_big_winner_coverage_audit.csv",
+    "Explore8/outputs/reports/yearly_big_winner_cross_year_audit.csv",
+    "Explore8/outputs/reports/yearly_big_winner_episodes.csv",
+    "Explore8/outputs/reports/yearly_big_winner_industry_summary.csv",
+    "Explore8/outputs/reports/yearly_big_winner_market_context.csv",
+    "Explore8/outputs/reports/yearly_big_winner_regime_summary.csv",
+    "Explore8/outputs/reports/yearly_big_winner_rule_miss_attribution.csv",
+    "Explore8/outputs/reports/yearly_big_winner_stock_summary.csv",
+    "Explore8/outputs/reports/yearly_big_winner_year_summary.csv"
   ],
   "portfolio_rows": 47346,
+  "price_adjustment_mode": "provider_ohlc_already_adjusted",
   "provider_mode": "pit_primary",
   "provider_uri": "Explore7/data/qlib/cn_data_pit",
   "report_all_research_years_blocked": false,
@@ -116,6 +153,7 @@
   "research_end": "2024-12-31",
   "research_start": "2017-01-01",
   "result_csv_used_for_calculation": false,
+  "rule_miss_attribution_rows": 10276,
   "rule_version_count": 26,
   "rule_versions": [
     {
@@ -384,7 +422,7 @@
     "allowed_config_reference": 1,
     "allowed_metadata_audit": 2,
     "background_reference": 3,
-    "forbidden_result_path": 49,
+    "forbidden_result_path": 50,
     "structural_input": 8
   },
   "static_20251231_universe_used_as_authority": false,

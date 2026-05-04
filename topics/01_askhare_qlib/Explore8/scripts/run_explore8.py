@@ -1779,10 +1779,1137 @@ def build_reference_2025_comparison(config: dict[str, Any], market_summary: pd.D
     return pd.DataFrame([ref])
 
 
+def big_winner_config(config: dict[str, Any]) -> dict[str, Any]:
+    profile = dict(config.get("big_winner_profile", {}))
+    profile.setdefault("threshold", 0.50)
+    profile.setdefault("price_adjustment_mode", "provider_ohlc_already_adjusted")
+    profile.setdefault("anchor_window_trading_days", 20)
+    allowed_modes = {"provider_ohlc_already_adjusted", "raw_ohlc_times_factor", "raw_ohlc_unadjusted"}
+    if profile["price_adjustment_mode"] not in allowed_modes:
+        raise DataGateError(f"invalid big_winner price_adjustment_mode: {profile['price_adjustment_mode']}")
+    return profile
+
+
+def research_years(config: dict[str, Any]) -> list[int]:
+    start = pd.Timestamp(config["dates"]["research_start"]).year
+    end = pd.Timestamp(config["dates"]["research_end"]).year
+    return list(range(start, end + 1))
+
+
+def iso_date(value: Any) -> str:
+    if value is None or pd.isna(value):
+        return ""
+    return pd.Timestamp(value).date().isoformat()
+
+
+def first_date_where(frame: pd.DataFrame, mask: pd.Series) -> pd.Timestamp | pd.NaT:
+    if frame.empty:
+        return pd.NaT
+    hit = frame.loc[mask.fillna(False), "datetime"]
+    return pd.NaT if hit.empty else pd.Timestamp(hit.iloc[0]).normalize()
+
+
+def date_offset_bounds(dates: list[pd.Timestamp], anchor: pd.Timestamp, window: int) -> tuple[pd.Timestamp, pd.Timestamp, bool, str]:
+    if not dates or pd.isna(anchor):
+        return pd.NaT, pd.NaT, True, "anchor_missing"
+    normalized = [pd.Timestamp(date).normalize() for date in dates]
+    try:
+        pos = normalized.index(pd.Timestamp(anchor).normalize())
+    except ValueError:
+        return pd.NaT, pd.NaT, True, "anchor_not_in_series"
+    start_idx = max(0, pos - window)
+    end_idx = min(len(normalized) - 1, pos + window)
+    reasons: list[str] = []
+    if start_idx == 0 and pos - window < 0:
+        reasons.append("left_boundary")
+    if end_idx == len(normalized) - 1 and pos + window >= len(normalized):
+        reasons.append("right_boundary")
+    return normalized[start_idx], normalized[end_idx], bool(reasons), ";".join(reasons)
+
+
+def prepare_big_winner_features(config: dict[str, Any], features: pd.DataFrame, panel: pd.DataFrame, universe: pd.DataFrame) -> pd.DataFrame:
+    df = features.copy().sort_values(["instrument", "datetime"]).reset_index(drop=True)
+    names = universe[["date", "instrument", "name"]].drop_duplicates().rename(columns={"date": "datetime"})
+    names["datetime"] = pd.to_datetime(names["datetime"]).dt.normalize()
+    names["instrument"] = names["instrument"].astype(str).str.upper()
+    df = df.merge(names, on=["datetime", "instrument"], how="left")
+    df["name"] = df["name"].fillna("")
+
+    full = panel[["instrument", "datetime", "volume"]].copy().sort_values(["instrument", "datetime"])
+    full["instrument"] = full["instrument"].astype(str).str.upper()
+    full["datetime"] = pd.to_datetime(full["datetime"]).dt.normalize()
+    group = full.groupby("instrument", group_keys=False)
+    full["prev_full_datetime"] = group["datetime"].shift(1)
+    full["avg_volume20_prior"] = group["volume"].transform(lambda s: s.shift(1).rolling(20, min_periods=20).mean())
+    df = df.merge(full[["instrument", "datetime", "prev_full_datetime", "avg_volume20_prior"]], on=["instrument", "datetime"], how="left")
+
+    df["pit_prev_datetime"] = df.groupby("instrument")["datetime"].shift(1)
+    df["prev_close_missing"] = pd.to_numeric(df["prev_close_for_limit"], errors="coerce").isna() | (pd.to_numeric(df["prev_close_for_limit"], errors="coerce") <= 0)
+    df["prev_close_from_non_member_day"] = df["prev_full_datetime"].notna() & (df["prev_full_datetime"] != df["pit_prev_datetime"])
+    denominator = pd.to_numeric(df["prev_close_for_limit"], errors="coerce").where(~df["prev_close_missing"], pd.to_numeric(df["close"], errors="coerce"))
+    df["daily_amplitude"] = (pd.to_numeric(df["high"], errors="coerce") - pd.to_numeric(df["low"], errors="coerce")) / denominator.replace(0, np.nan)
+    df["volume_ratio20"] = pd.to_numeric(df["volume"], errors="coerce") / pd.to_numeric(df["avg_volume20_prior"], errors="coerce").replace(0, np.nan)
+    df["atr20_pct"] = pd.to_numeric(df["atr20"], errors="coerce") / pd.to_numeric(df["close"], errors="coerce").replace(0, np.nan)
+    if "ret120" not in df.columns:
+        df["ret120"] = df.groupby("instrument")["close"].pct_change(120)
+    df["money_percentile_in_pit_universe"] = df.groupby("datetime")["money"].rank(pct=True)
+    df["year"] = df["datetime"].dt.year
+    df["price_adjustment_mode"] = str(big_winner_config(config)["price_adjustment_mode"])
+    return df
+
+
+def target_return_between(target_history: pd.DataFrame, target_type: str, target_key: str, start: pd.Timestamp, end: pd.Timestamp) -> float:
+    subset = target_history[
+        (target_history["target_type"] == target_type)
+        & (target_history["target_key"].astype(str) == str(target_key))
+        & (target_history["date"] >= start)
+        & (target_history["date"] <= end)
+    ].sort_values("date")
+    if subset.empty:
+        return np.nan
+    first = safe_float(subset["close"].iloc[0], np.nan)
+    last = safe_float(subset["close"].iloc[-1], np.nan)
+    return float(last / first - 1.0) if np.isfinite(first) and first > 0 and np.isfinite(last) else np.nan
+
+
+def max_forward_episode(
+    group: pd.DataFrame,
+    threshold: float,
+    config: dict[str, Any],
+    target_history: pd.DataFrame,
+    coverage_status: str,
+    membership_days: int,
+    episode_scope: str,
+    episode_overlap_year: int,
+    cross_year_episode_id: str = "",
+    observed_reference_overlap: bool = False,
+) -> dict[str, Any] | None:
+    data = group.sort_values("datetime").reset_index(drop=True)
+    if data.empty:
+        return None
+    low_values = pd.to_numeric(data["low"], errors="coerce").to_numpy(dtype=float)
+    high_values = pd.to_numeric(data["high"], errors="coerce").to_numpy(dtype=float)
+    close_values = pd.to_numeric(data["close"], errors="coerce").to_numpy(dtype=float)
+    best_gain = -np.inf
+    best_low_idx = 0
+    best_high_idx = 0
+    min_low = np.inf
+    min_low_idx = 0
+    for idx, (low, high) in enumerate(zip(low_values, high_values)):
+        if np.isfinite(low) and low > 0 and low < min_low:
+            min_low = low
+            min_low_idx = idx
+        if np.isfinite(high) and np.isfinite(min_low) and min_low > 0:
+            gain = high / min_low - 1.0
+            if gain > best_gain:
+                best_gain = gain
+                best_low_idx = min_low_idx
+                best_high_idx = idx
+    if not np.isfinite(best_gain) or best_gain < threshold:
+        return None
+
+    low_row = data.iloc[best_low_idx]
+    high_row = data.iloc[best_high_idx]
+    after_low = data.iloc[best_low_idx:].copy()
+    close_peak_pos = int(pd.to_numeric(after_low["close"], errors="coerce").idxmax())
+    close_peak_row = data.loc[close_peak_pos]
+    low_price = safe_float(low_row["low"], np.nan)
+    high_price = safe_float(high_row["high"], np.nan)
+    close_peak = safe_float(close_peak_row["close"], np.nan)
+    close_confirmed_gain = close_peak / low_price - 1.0 if np.isfinite(low_price) and low_price > 0 and np.isfinite(close_peak) else np.nan
+    window = data.iloc[best_low_idx : best_high_idx + 1].copy()
+    first_intraday_50 = first_date_where(window, pd.to_numeric(window["high"], errors="coerce") / low_price - 1.0 >= threshold)
+    first_close_50 = first_date_where(window, pd.to_numeric(window["close"], errors="coerce") / low_price - 1.0 >= threshold)
+    close_series = pd.to_numeric(window["close"], errors="coerce")
+    drawdown_before_high = float((close_series / close_series.cummax() - 1.0).min()) if not close_series.dropna().empty else np.nan
+    max_intraday_gain = float(((pd.to_numeric(window["high"], errors="coerce") - pd.to_numeric(window["low"], errors="coerce")) / pd.to_numeric(window["low"], errors="coerce").replace(0, np.nan)).max())
+    start = pd.Timestamp(low_row["datetime"]).normalize()
+    end = pd.Timestamp(high_row["datetime"]).normalize()
+    broad_ret = safe_float(high_row.get("broad_close"), np.nan) / safe_float(low_row.get("broad_close"), np.nan) - 1.0 if safe_float(low_row.get("broad_close"), np.nan) > 0 else np.nan
+    industry_ret = target_return_between(target_history, "industry", str(low_row.get("industry_target_key", "UNKNOWN")), start, end)
+    first_ema60 = first_date_where(window, pd.to_numeric(window["close"], errors="coerce") > pd.to_numeric(window["ema60"], errors="coerce"))
+    first_20 = first_date_where(window, pd.to_numeric(window["close"], errors="coerce") / low_price - 1.0 >= 0.20)
+    first_30 = first_date_where(window, pd.to_numeric(window["close"], errors="coerce") / low_price - 1.0 >= 0.30)
+    primary_anchor_candidates = [date for date in [first_ema60, first_20, first_30] if not pd.isna(date)]
+    primary_anchor = min(primary_anchor_candidates) if primary_anchor_candidates else start
+    primary_anchor_type = (
+        "first_ema60_reclaim"
+        if not pd.isna(first_ema60) and primary_anchor == first_ema60
+        else "first_close_gain_20pct"
+        if not pd.isna(first_20) and primary_anchor == first_20
+        else "first_close_gain_30pct"
+        if not pd.isna(first_30) and primary_anchor == first_30
+        else "low_date_retrospective"
+    )
+    return {
+        "year": int(episode_overlap_year),
+        "instrument": str(low_row["instrument"]),
+        "name": str(low_row.get("name", "")),
+        "industry_name": str(low_row.get("industry_name", "UNKNOWN")),
+        "episode_rank": 1,
+        "episode_scope": episode_scope,
+        "cross_year_episode_id": cross_year_episode_id,
+        "episode_overlap_year": int(episode_overlap_year),
+        "truncated_by_year_boundary": bool(episode_scope == "cross_year_overlap_episode"),
+        "observed_reference_overlap": bool(observed_reference_overlap),
+        "price_adjustment_mode": str(big_winner_config(config)["price_adjustment_mode"]),
+        "low_date": iso_date(start),
+        "high_date": iso_date(end),
+        "start_trade_index": int(low_row.get("instrument_day_index", best_low_idx + 1)),
+        "end_trade_index": int(high_row.get("instrument_day_index", best_high_idx + 1)),
+        "duration_trading_days": int(best_high_idx - best_low_idx + 1),
+        "duration_calendar_days": int((end - start).days + 1),
+        "low_price_adj": low_price,
+        "high_price_adj": high_price,
+        "forward_gain_intraday": float(best_gain),
+        "forward_gain_close_confirmed": float(close_confirmed_gain) if np.isfinite(close_confirmed_gain) else np.nan,
+        "intraday_50pct": bool(best_gain >= threshold),
+        "close_confirmed_50pct": bool(np.isfinite(close_confirmed_gain) and close_confirmed_gain >= threshold),
+        "close_confirmed_peak_date": iso_date(close_peak_row["datetime"]),
+        "close_to_close_gain": safe_float(high_row.get("close"), np.nan) / safe_float(low_row.get("close"), np.nan) - 1.0 if safe_float(low_row.get("close"), np.nan) > 0 else np.nan,
+        "max_intraday_gain": max_intraday_gain,
+        "max_drawdown_before_high": drawdown_before_high,
+        "max_pullback_before_high": drawdown_before_high,
+        "avg_daily_amplitude": float(pd.to_numeric(window["daily_amplitude"], errors="coerce").mean()),
+        "median_daily_amplitude": float(pd.to_numeric(window["daily_amplitude"], errors="coerce").median()),
+        "max_daily_amplitude": float(pd.to_numeric(window["daily_amplitude"], errors="coerce").max()),
+        "prev_close_missing_count": int(window["prev_close_missing"].fillna(False).sum()),
+        "prev_close_from_non_member_day_count": int(window["prev_close_from_non_member_day"].fillna(False).sum()),
+        "avg_gap_pct": float(pd.to_numeric(window["gap_proxy"], errors="coerce").mean()),
+        "max_gap_up_pct": float(pd.to_numeric(window["gap_proxy"], errors="coerce").max()),
+        "max_gap_down_pct": float(pd.to_numeric(window["gap_proxy"], errors="coerce").min()),
+        "avg_turnover_money": float(pd.to_numeric(window["money"], errors="coerce").mean()),
+        "median_turnover_money": float(pd.to_numeric(window["money"], errors="coerce").median()),
+        "max_turnover_money": float(pd.to_numeric(window["money"], errors="coerce").max()),
+        "avg_volume": float(pd.to_numeric(window["volume"], errors="coerce").mean()),
+        "median_volume": float(pd.to_numeric(window["volume"], errors="coerce").median()),
+        "max_volume": float(pd.to_numeric(window["volume"], errors="coerce").max()),
+        "low_is_retrospective_label": True,
+        "first_intraday_50pct_date": iso_date(first_intraday_50),
+        "first_close_confirmed_50pct_date": iso_date(first_close_50),
+        "first_ema60_reclaim_date": iso_date(first_ema60),
+        "first_breakout_signal_date": "",
+        "first_close_gain_20pct_date": iso_date(first_20),
+        "first_close_gain_30pct_date": iso_date(first_30),
+        "primary_profile_anchor_date": iso_date(primary_anchor),
+        "primary_profile_anchor_type": primary_anchor_type,
+        "anchor_missing_count": int(sum(pd.isna(date) for date in [first_ema60, first_20, first_30])),
+        "volume_ratio20_at_high": safe_float(high_row.get("volume_ratio20"), np.nan),
+        "money_ratio20_at_high": safe_float(high_row.get("money_ratio20"), np.nan),
+        "atr20_pct_at_high": safe_float(high_row.get("atr20_pct"), np.nan),
+        "benchmark_ret_during_episode": broad_ret,
+        "industry_target_ret_during_episode": industry_ret,
+        "membership_days_in_year": int(membership_days),
+        "readable_days_in_year": int(len(data)),
+        "coverage_status": coverage_status,
+        "first_close_gain_100pct_date": iso_date(first_date_where(window, pd.to_numeric(window["close"], errors="coerce") / low_price - 1.0 >= 1.0)),
+        "high_amplitude_day_ratio": float((pd.to_numeric(window["daily_amplitude"], errors="coerce") >= 0.08).mean()),
+    }
+
+
+def build_big_winner_coverage_audit(config: dict[str, Any], universe: pd.DataFrame, panel: pd.DataFrame, coverage: pd.DataFrame) -> pd.DataFrame:
+    fields = required_field_names(config)
+    start = parse_dt(config["dates"]["research_start"])
+    end = parse_dt(config["dates"]["research_end"])
+    membership = universe[(universe["date"] >= start) & (universe["date"] <= end)][["date", "instrument", "name"]].drop_duplicates().copy()
+    membership["year"] = membership["date"].dt.year
+    availability = panel[["datetime", "instrument"] + [field for field in fields if field in panel.columns]].rename(columns={"datetime": "date"}).copy()
+    for field in fields:
+        if field not in availability.columns:
+            availability[field] = np.nan
+    merged = membership.merge(availability, on=["date", "instrument"], how="left")
+    merged["all_required_fields"] = merged[fields].notna().all(axis=1)
+    cov_status = dict(zip(coverage["year"], coverage["coverage_status"])) if not coverage.empty else {}
+    rows = []
+    for (year, instrument), group in merged.groupby(["year", "instrument"], sort=True):
+        missing = group[~group["all_required_fields"]]
+        missing_fields: list[str] = []
+        for field in fields:
+            if field in missing.columns and missing[field].isna().any():
+                missing_fields.append(field)
+        readable = int(group["all_required_fields"].sum())
+        membership_days = int(len(group))
+        excluded = readable == 0
+        if excluded:
+            reason = "no_readable_required_rows"
+        elif missing_fields:
+            reason = "partial_missing_required_fields"
+        else:
+            reason = ""
+        rows.append(
+            {
+                "year": int(year),
+                "instrument": instrument,
+                "name": str(group["name"].dropna().iloc[0]) if group["name"].notna().any() else "",
+                "membership_days_in_year": membership_days,
+                "readable_days_in_year": readable,
+                "missing_days": int(len(missing)),
+                "missing_required_fields": ";".join(missing_fields),
+                "first_missing_date": iso_date(missing["date"].min()) if not missing.empty else "",
+                "last_missing_date": iso_date(missing["date"].max()) if not missing.empty else "",
+                "excluded_from_big_winner_scan": bool(excluded),
+                "excluded_reason": reason,
+                "coverage_status": cov_status.get(int(year), "data_insufficient"),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def attach_breakout_anchor_dates(config: dict[str, Any], features: pd.DataFrame, episodes: pd.DataFrame) -> pd.DataFrame:
+    if episodes.empty:
+        return episodes
+    spec = {"params": config["param_suites"]["base"], "entry_family": "breakout_core"}
+    data = features.copy()
+    data["breakout_base_signal"] = entry_signal_for_spec(data, spec).fillna(False)
+    first_dates = []
+    for _, event in episodes.iterrows():
+        low = parse_dt(event["low_date"])
+        high = parse_dt(event["high_date"])
+        subset = data[(data["instrument"] == event["instrument"]) & (data["datetime"] >= low) & (data["datetime"] <= high)]
+        first_dates.append(iso_date(first_date_where(subset, subset["breakout_base_signal"] if not subset.empty else pd.Series(dtype=bool))))
+    result = episodes.copy()
+    result["first_breakout_signal_date"] = first_dates
+    observable_cols = ["first_ema60_reclaim_date", "first_breakout_signal_date", "first_close_gain_20pct_date", "first_close_gain_30pct_date"]
+    primary_dates: list[str] = []
+    primary_types: list[str] = []
+    missing_counts: list[int] = []
+    for _, row in result.iterrows():
+        candidates = []
+        missing = 0
+        for column in observable_cols:
+            value = row.get(column, "")
+            if value:
+                candidates.append((parse_dt(value), column.replace("_date", "")))
+            else:
+                missing += 1
+        if candidates:
+            date, anchor = min(candidates, key=lambda item: item[0])
+            primary_dates.append(iso_date(date))
+            primary_types.append(anchor)
+        else:
+            primary_dates.append(row["low_date"])
+            primary_types.append("low_date_retrospective")
+        missing_counts.append(missing)
+    result["primary_profile_anchor_date"] = primary_dates
+    result["primary_profile_anchor_type"] = primary_types
+    result["anchor_missing_count"] = missing_counts
+    return result
+
+
+def build_big_winner_episodes(
+    config: dict[str, Any],
+    features: pd.DataFrame,
+    panel: pd.DataFrame,
+    universe: pd.DataFrame,
+    coverage: pd.DataFrame,
+    target_history: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    profile = big_winner_config(config)
+    threshold = float(profile["threshold"])
+    data = prepare_big_winner_features(config, features, panel, universe)
+    data = data[data["has_required_ohlcvf"].fillna(False)].copy()
+    coverage_status = dict(zip(coverage["year"], coverage["coverage_status"])) if not coverage.empty else {}
+    membership_counts = (
+        universe.assign(year=lambda x: pd.to_datetime(x["date"]).dt.year)
+        .groupby(["year", "instrument"])
+        .size()
+        .to_dict()
+    )
+    episode_rows: list[dict[str, Any]] = []
+    for year in research_years(config):
+        year_data = data[data["year"] == year]
+        for instrument, group in year_data.groupby("instrument", sort=True):
+            row = max_forward_episode(
+                group,
+                threshold,
+                config,
+                target_history,
+                coverage_status.get(year, "data_insufficient"),
+                int(membership_counts.get((year, instrument), len(group))),
+                "in_year_episode",
+                year,
+            )
+            if row is not None:
+                episode_rows.append(row)
+    episodes = pd.DataFrame(episode_rows)
+
+    cross_rows: list[dict[str, Any]] = []
+    research_start = parse_dt(config["dates"]["research_start"])
+    research_end = parse_dt(config["dates"]["research_end"])
+    observed_start = parse_dt(config["dates"]["observed_reference_start"])
+    observed_end = parse_dt(config["dates"]["observed_reference_end"])
+    continuous = data[(data["datetime"] >= research_start) & (data["datetime"] <= observed_end)].copy()
+    for instrument, group in continuous.groupby("instrument", sort=True):
+        event = max_forward_episode(
+            group,
+            threshold,
+            config,
+            target_history,
+            "coverage_ok",
+            int(len(group)),
+            "cross_year_overlap_episode",
+            0,
+            "",
+            False,
+        )
+        if event is None:
+            continue
+        low = parse_dt(event["low_date"])
+        high = parse_dt(event["high_date"])
+        if low.year == high.year:
+            continue
+        cross_id = f"{instrument}_{low.date().isoformat()}_{high.date().isoformat()}"
+        for year in range(low.year, high.year + 1):
+            overlap_start = max(low, pd.Timestamp(f"{year}-01-01"))
+            overlap_end = min(high, pd.Timestamp(f"{year}-12-31"))
+            if overlap_end < research_start or overlap_start > observed_end:
+                continue
+            overlap_group = group[(group["datetime"] >= overlap_start) & (group["datetime"] <= overlap_end)]
+            row = {
+                "cross_year_episode_id": cross_id,
+                "instrument": instrument,
+                "name": event["name"],
+                "industry_name": event["industry_name"],
+                "episode_start_year": int(low.year),
+                "episode_end_year": int(high.year),
+                "overlap_year": int(year),
+                "low_date": event["low_date"],
+                "high_date": event["high_date"],
+                "forward_gain_intraday": event["forward_gain_intraday"],
+                "forward_gain_close_confirmed": event["forward_gain_close_confirmed"],
+                "close_confirmed_peak_date": event["close_confirmed_peak_date"],
+                "overlap_start_date": iso_date(overlap_start),
+                "overlap_end_date": iso_date(overlap_end),
+                "overlap_trading_days": int(len(overlap_group)),
+                "in_year_episode_linked": False,
+                "truncated_by_year_boundary": True,
+                "observed_reference_overlap": bool(overlap_end >= observed_start or overlap_start > research_end),
+            }
+            cross_rows.append(row)
+    cross = pd.DataFrame(cross_rows)
+    if not episodes.empty:
+        truncated_keys = set(zip(cross.get("overlap_year", pd.Series(dtype=int)), cross.get("instrument", pd.Series(dtype=str)))) if not cross.empty else set()
+        episodes["truncated_by_year_boundary"] = episodes.apply(lambda r: (int(r["year"]), r["instrument"]) in truncated_keys, axis=1)
+        if not cross.empty:
+            linked = set(zip(episodes["year"], episodes["instrument"]))
+            cross["in_year_episode_linked"] = cross.apply(lambda r: (int(r["overlap_year"]), r["instrument"]) in linked, axis=1)
+    episodes = attach_breakout_anchor_dates(config, data, episodes)
+    return episodes, cross, data
+
+
+def build_anchor_profile(events: pd.DataFrame, features: pd.DataFrame) -> pd.DataFrame:
+    columns = [
+        "year",
+        "instrument",
+        "episode_rank",
+        "low_date",
+        "high_date",
+        "anchor_type",
+        "anchor_date",
+        "anchor_missing",
+        "anchor_missing_reason",
+        "anchor_lag_trading_days_from_low",
+        "gain_intraday_from_low_to_anchor",
+        "gain_close_from_low_to_anchor",
+        "ret20_before_anchor",
+        "ret60_before_anchor",
+        "ret120_before_anchor",
+        "volatility20_before_anchor",
+        "atr20_pct_before_anchor",
+        "volume_ratio20_before_anchor",
+        "money_ratio20_before_anchor",
+        "money_percentile_in_pit_universe",
+        "ema20_gt_ema60_at_anchor",
+        "close_gt_ema60_at_anchor",
+        "ema60_slope_at_anchor",
+        "trend_score_pct_at_anchor",
+        "market_regime_at_anchor",
+        "market_width_at_anchor",
+        "industry_regime_at_anchor",
+        "industry_width_at_anchor",
+        "lookback_readable_days_20",
+        "lookback_readable_days_60",
+        "lookback_readable_days_120",
+    ]
+    if events.empty:
+        return pd.DataFrame(columns=columns)
+    by_inst = {instrument: group.sort_values("datetime").reset_index(drop=True) for instrument, group in features.groupby("instrument")}
+    rows: list[dict[str, Any]] = []
+    anchor_columns = {
+        "low_date_retrospective": "low_date",
+        "first_ema60_reclaim": "first_ema60_reclaim_date",
+        "first_breakout_signal": "first_breakout_signal_date",
+        "first_close_gain_20pct": "first_close_gain_20pct_date",
+        "first_close_gain_30pct": "first_close_gain_30pct_date",
+    }
+    for _, event in events.iterrows():
+        group = by_inst.get(event["instrument"], pd.DataFrame())
+        low_date = parse_dt(event["low_date"])
+        low_price = safe_float(event["low_price_adj"], np.nan)
+        for anchor_type, column in anchor_columns.items():
+            anchor_value = event.get(column, "")
+            anchor_missing = not bool(anchor_value)
+            row = {
+                "year": int(event["year"]),
+                "instrument": event["instrument"],
+                "episode_rank": int(event["episode_rank"]),
+                "low_date": event["low_date"],
+                "high_date": event["high_date"],
+                "anchor_type": anchor_type,
+                "anchor_date": anchor_value,
+                "anchor_missing": bool(anchor_missing),
+                "anchor_missing_reason": "anchor_not_observed_in_episode" if anchor_missing else "",
+            }
+            if anchor_missing or group.empty:
+                rows.append(row)
+                continue
+            anchor_date = parse_dt(anchor_value)
+            anchor_rows = group[group["datetime"] == anchor_date]
+            if anchor_rows.empty:
+                row["anchor_missing"] = True
+                row["anchor_missing_reason"] = "anchor_date_not_readable"
+                rows.append(row)
+                continue
+            anchor = anchor_rows.iloc[0]
+            before_anchor = group[group["datetime"] < anchor_date]
+            event_to_anchor = group[(group["datetime"] >= low_date) & (group["datetime"] <= anchor_date)]
+            row.update(
+                {
+                    "anchor_lag_trading_days_from_low": int(len(event_to_anchor) - 1),
+                    "gain_intraday_from_low_to_anchor": float(pd.to_numeric(event_to_anchor["high"], errors="coerce").max() / low_price - 1.0) if low_price > 0 and not event_to_anchor.empty else np.nan,
+                    "gain_close_from_low_to_anchor": safe_float(anchor.get("close"), np.nan) / low_price - 1.0 if low_price > 0 else np.nan,
+                    "ret20_before_anchor": safe_float(anchor.get("ret20"), np.nan),
+                    "ret60_before_anchor": safe_float(anchor.get("ret60"), np.nan),
+                    "ret120_before_anchor": safe_float(anchor.get("ret120"), np.nan),
+                    "volatility20_before_anchor": safe_float(anchor.get("volatility20"), np.nan),
+                    "atr20_pct_before_anchor": safe_float(anchor.get("atr20_pct"), np.nan),
+                    "volume_ratio20_before_anchor": safe_float(anchor.get("volume_ratio20"), np.nan),
+                    "money_ratio20_before_anchor": safe_float(anchor.get("money_ratio20"), np.nan),
+                    "money_percentile_in_pit_universe": safe_float(anchor.get("money_percentile_in_pit_universe"), np.nan),
+                    "ema20_gt_ema60_at_anchor": bool(anchor.get("ema20", np.nan) > anchor.get("ema60", np.nan)),
+                    "close_gt_ema60_at_anchor": bool(anchor.get("close", np.nan) > anchor.get("ema60", np.nan)),
+                    "ema60_slope_at_anchor": safe_float(anchor.get("ema60_slope10"), np.nan),
+                    "trend_score_pct_at_anchor": safe_float(anchor.get("trend_score_pct"), np.nan),
+                    "market_regime_at_anchor": anchor.get("market_trend_state", ""),
+                    "market_width_at_anchor": anchor.get("market_width_state", ""),
+                    "industry_regime_at_anchor": anchor.get("industry_sync_state", ""),
+                    "industry_width_at_anchor": anchor.get("industry_sync_state", ""),
+                    "lookback_readable_days_20": int(min(len(before_anchor), 20)),
+                    "lookback_readable_days_60": int(min(len(before_anchor), 60)),
+                    "lookback_readable_days_120": int(min(len(before_anchor), 120)),
+                }
+            )
+            rows.append(row)
+    return pd.DataFrame(rows, columns=columns)
+
+
+def unique_rule_specs_for_big_winner(config: dict[str, Any]) -> list[dict[str, Any]]:
+    seen: set[tuple[str, str, str]] = set()
+    specs: list[dict[str, Any]] = []
+    for spec in expand_rule_versions(config):
+        key = (spec["entry_family"], spec["exit_family"], spec["param_suite"])
+        if key in seen:
+            continue
+        seen.add(key)
+        specs.append(spec)
+    return specs
+
+
+def signal_column_name(spec: dict[str, Any]) -> str:
+    return f"signal__{spec['entry_family']}__{spec['exit_family']}__{spec['param_suite']}".replace("-", "_")
+
+
+def classify_signal_miss(window: pd.DataFrame, spec: dict[str, Any]) -> str:
+    if window.empty or not window.get("has_required_ohlcvf", pd.Series(dtype=bool)).fillna(False).any():
+        return "coverage_missing"
+    if not window["market_ok"].fillna(False).any() or not window["width_ok"].fillna(False).any():
+        return "market_filtered"
+    if not window["industry_ok"].fillna(False).any():
+        return "industry_filtered"
+    if spec["entry_family"].startswith("breakout") and safe_float(pd.to_numeric(window.get("money_ratio20"), errors="coerce").max(), np.nan) < float(spec["params"].get("breakout_money_min", 1.20)):
+        return "liquidity_filtered"
+    if pd.to_numeric(window.get("atr20"), errors="coerce").notna().sum() == 0:
+        return "risk_filtered"
+    return "no_signal"
+
+
+def simulate_exit_before_high(config: dict[str, Any], group: pd.DataFrame, spec: dict[str, Any], signal_date: pd.Timestamp, high_date: pd.Timestamp) -> tuple[bool, str, str, float, str, float]:
+    dates = [pd.Timestamp(date).normalize() for date in group["datetime"]]
+    try:
+        signal_idx = dates.index(pd.Timestamp(signal_date).normalize())
+        high_idx = dates.index(pd.Timestamp(high_date).normalize())
+    except ValueError:
+        return False, "", "", np.nan, "", np.nan
+    entry_idx = signal_idx + 1
+    if entry_idx >= len(group) or entry_idx > high_idx:
+        return False, "", "", np.nan, "", np.nan
+    signal = group.iloc[signal_idx]
+    entry = group.iloc[entry_idx]
+    entry_price = safe_float(entry.get("open"), np.nan)
+    entry_type = entry_type_for_family(spec["entry_family"])
+    stop = initial_stop_for(signal, entry_price, entry_type, spec, config)
+    if not np.isfinite(stop):
+        return False, "", iso_date(entry["datetime"]), entry_price, "risk_filtered", np.nan
+    position = {
+        "entry_index": entry_idx,
+        "entry_price": entry_price,
+        "current_stop": stop,
+        "initial_stop": stop,
+        "R": entry_price - stop,
+        "industry_bad_streak": 0,
+        "holding_days": 0,
+    }
+    for idx in range(entry_idx, high_idx):
+        row = group.iloc[idx]
+        reason = apply_exit_logic(position, row, idx, spec)
+        if reason:
+            exit_price = safe_float(row.get("close"), np.nan)
+            return True, reason, iso_date(entry["datetime"]), entry_price, iso_date(row["datetime"]), exit_price
+    return False, "", iso_date(entry["datetime"]), entry_price, "", np.nan
+
+
+def build_rule_miss_attribution(config: dict[str, Any], events: pd.DataFrame, features: pd.DataFrame) -> pd.DataFrame:
+    columns = [
+        "year",
+        "instrument",
+        "episode_rank",
+        "low_date",
+        "high_date",
+        "entry_family",
+        "exit_family",
+        "signal_search_start",
+        "signal_search_end",
+        "anchor_search_start",
+        "anchor_search_end",
+        "search_window_truncated",
+        "search_window_truncate_reason",
+        "would_have_signal_near_start",
+        "first_signal_date",
+        "entry_date",
+        "entry_price",
+        "exit_date",
+        "exit_price",
+        "signal_lag_trading_days",
+        "would_exit_before_high",
+        "exit_before_high_reason",
+        "missed_reason",
+        "gain_before_first_signal_intraday",
+        "gain_before_first_signal_close_confirmed",
+        "gain_after_first_signal_intraday",
+        "gain_lost_by_early_exit",
+        "anchor_type_used_for_alignment",
+    ]
+    if events.empty:
+        return pd.DataFrame(columns=columns)
+    data = features.copy().sort_values(["instrument", "datetime"]).reset_index(drop=True)
+    specs = unique_rule_specs_for_big_winner(config)
+    for spec in specs:
+        data[signal_column_name(spec)] = entry_signal_for_spec(data, spec).fillna(False)
+    by_inst = {instrument: group.sort_values("datetime").reset_index(drop=True) for instrument, group in data.groupby("instrument")}
+    window_size = int(big_winner_config(config)["anchor_window_trading_days"])
+    rows: list[dict[str, Any]] = []
+    for _, event in events.iterrows():
+        group = by_inst.get(event["instrument"], pd.DataFrame())
+        if group.empty:
+            continue
+        low = parse_dt(event["low_date"])
+        high = parse_dt(event["high_date"])
+        low_price = safe_float(event["low_price_adj"], np.nan)
+        anchor_type = str(event.get("primary_profile_anchor_type") or "low_date_retrospective")
+        anchor_date = parse_dt(event.get("primary_profile_anchor_date") or event["low_date"])
+        dates = [pd.Timestamp(date).normalize() for date in group["datetime"]]
+        anchor_start, anchor_end, truncated, truncate_reason = date_offset_bounds(dates, anchor_date, window_size)
+        signal_window = group[(group["datetime"] >= low) & (group["datetime"] <= high)]
+        near_window = group[(group["datetime"] >= anchor_start) & (group["datetime"] <= anchor_end)] if not pd.isna(anchor_start) else pd.DataFrame()
+        low_idx = int(signal_window.index.min()) if not signal_window.empty else -1
+        for spec in specs:
+            col = signal_column_name(spec)
+            signals = signal_window[signal_window[col].fillna(False)] if col in signal_window.columns else pd.DataFrame()
+            near_signals = near_window[near_window[col].fillna(False)] if col in near_window.columns else pd.DataFrame()
+            first_signal_date = pd.NaT if signals.empty else pd.Timestamp(signals.iloc[0]["datetime"]).normalize()
+            would_near = bool(not near_signals.empty)
+            entry_date = ""
+            entry_price = np.nan
+            exit_date = ""
+            exit_price = np.nan
+            would_exit = False
+            exit_reason = ""
+            risk_reason = ""
+            lag = np.nan
+            gain_before_intraday = np.nan
+            gain_before_close = np.nan
+            gain_after_intraday = np.nan
+            gain_lost = np.nan
+            if pd.isna(first_signal_date):
+                missed = classify_signal_miss(signal_window, spec)
+            else:
+                first_signal_rows = group[group["datetime"] == first_signal_date]
+                first_signal_idx = int(first_signal_rows.index[0]) if not first_signal_rows.empty else -1
+                lag = int(first_signal_idx - low_idx) if low_idx >= 0 and first_signal_idx >= 0 else np.nan
+                before = group[(group["datetime"] >= low) & (group["datetime"] <= first_signal_date)]
+                after = group[(group["datetime"] >= first_signal_date) & (group["datetime"] <= high)]
+                if low_price > 0 and not before.empty:
+                    gain_before_intraday = float(pd.to_numeric(before["high"], errors="coerce").max() / low_price - 1.0)
+                    gain_before_close = float(pd.to_numeric(before["close"], errors="coerce").max() / low_price - 1.0)
+                if safe_float(first_signal_rows.iloc[0].get("close"), np.nan) > 0 and not after.empty:
+                    gain_after_intraday = float(pd.to_numeric(after["high"], errors="coerce").max() / safe_float(first_signal_rows.iloc[0].get("close"), np.nan) - 1.0)
+                would_exit, exit_reason, entry_date, entry_price, exit_date, exit_price = simulate_exit_before_high(config, group, spec, first_signal_date, high)
+                if exit_reason == "risk_filtered" and not would_exit:
+                    risk_reason = "risk_filtered"
+                first_30 = event.get("first_close_gain_30pct_date", "")
+                if risk_reason:
+                    missed = risk_reason
+                elif first_30 and first_signal_date > parse_dt(first_30):
+                    missed = "late_signal"
+                elif would_exit:
+                    missed = "early_exit"
+                    high_price = safe_float(event.get("high_price_adj"), np.nan)
+                    gain_lost = high_price / exit_price - 1.0 if np.isfinite(high_price) and np.isfinite(exit_price) and exit_price > 0 else np.nan
+                else:
+                    missed = "not_missed"
+            rows.append(
+                {
+                    "year": int(event["year"]),
+                    "instrument": event["instrument"],
+                    "episode_rank": int(event["episode_rank"]),
+                    "low_date": event["low_date"],
+                    "high_date": event["high_date"],
+                    "entry_family": spec["entry_family"],
+                    "exit_family": spec["exit_family"],
+                    "signal_search_start": event["low_date"],
+                    "signal_search_end": event["high_date"],
+                    "anchor_search_start": iso_date(anchor_start),
+                    "anchor_search_end": iso_date(anchor_end),
+                    "search_window_truncated": bool(truncated),
+                    "search_window_truncate_reason": truncate_reason,
+                    "would_have_signal_near_start": would_near,
+                    "first_signal_date": iso_date(first_signal_date),
+                    "entry_date": entry_date,
+                    "entry_price": entry_price,
+                    "exit_date": exit_date,
+                    "exit_price": exit_price,
+                    "signal_lag_trading_days": lag,
+                    "would_exit_before_high": bool(would_exit),
+                    "exit_before_high_reason": exit_reason,
+                    "missed_reason": missed,
+                    "gain_before_first_signal_intraday": gain_before_intraday,
+                    "gain_before_first_signal_close_confirmed": gain_before_close,
+                    "gain_after_first_signal_intraday": gain_after_intraday,
+                    "gain_lost_by_early_exit": gain_lost,
+                    "anchor_type_used_for_alignment": anchor_type,
+                }
+            )
+    return pd.DataFrame(rows, columns=columns)
+
+
+def build_big_winner_summaries(
+    events: pd.DataFrame,
+    anchors: pd.DataFrame,
+    cross: pd.DataFrame,
+    universe: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    stock_columns = [
+        "year",
+        "instrument",
+        "name",
+        "industry_name",
+        "max_forward_gain_intraday",
+        "max_forward_gain_close_confirmed",
+        "main_low_date",
+        "main_high_date",
+        "close_confirmed_peak_date",
+        "main_duration_trading_days",
+        "episode_count",
+        "first_intraday_50pct_date",
+        "first_close_confirmed_50pct_date",
+        "readable_days_in_year",
+        "membership_days_in_year",
+        "coverage_status",
+        "truncated_by_year_boundary",
+    ]
+    if events.empty:
+        empty = pd.DataFrame()
+        return pd.DataFrame(columns=stock_columns), empty, empty, empty, empty
+    stock_summary = events.rename(
+        columns={
+            "forward_gain_intraday": "max_forward_gain_intraday",
+            "forward_gain_close_confirmed": "max_forward_gain_close_confirmed",
+            "low_date": "main_low_date",
+            "high_date": "main_high_date",
+            "duration_trading_days": "main_duration_trading_days",
+        }
+    ).copy()
+    stock_summary["episode_count"] = 1
+    for column in stock_columns:
+        if column not in stock_summary.columns:
+            stock_summary[column] = np.nan
+    stock_summary = stock_summary[stock_columns]
+
+    universe_year = universe.assign(year=lambda x: pd.to_datetime(x["date"]).dt.year).groupby("year")["instrument"].nunique()
+    year_summary = (
+        events.groupby("year", as_index=False)
+        .agg(
+            big_winner_stock_years=("instrument", "nunique"),
+            episode_count=("instrument", "size"),
+            close_confirmed_50pct_count=("close_confirmed_50pct", "sum"),
+            avg_forward_gain_intraday=("forward_gain_intraday", "mean"),
+            median_forward_gain_intraday=("forward_gain_intraday", "median"),
+            max_forward_gain_intraday=("forward_gain_intraday", "max"),
+            avg_duration_trading_days=("duration_trading_days", "mean"),
+            median_duration_trading_days=("duration_trading_days", "median"),
+            avg_daily_amplitude=("avg_daily_amplitude", "mean"),
+            max_daily_amplitude=("max_daily_amplitude", "max"),
+            avg_turnover_money=("avg_turnover_money", "mean"),
+            truncated_by_year_boundary_count=("truncated_by_year_boundary", "sum"),
+        )
+        .sort_values("year")
+    )
+    year_summary["pit_universe_instruments"] = year_summary["year"].map(universe_year).fillna(0).astype(int)
+    year_summary["big_winner_ratio"] = year_summary["big_winner_stock_years"] / year_summary["pit_universe_instruments"].replace(0, np.nan)
+
+    industry_summary = (
+        events.groupby(["year", "industry_name"], as_index=False)
+        .agg(
+            big_winner_stock_years=("instrument", "nunique"),
+            episode_count=("instrument", "size"),
+            avg_forward_gain_intraday=("forward_gain_intraday", "mean"),
+            max_forward_gain_intraday=("forward_gain_intraday", "max"),
+            avg_duration_trading_days=("duration_trading_days", "mean"),
+            avg_daily_amplitude=("avg_daily_amplitude", "mean"),
+            avg_turnover_money=("avg_turnover_money", "mean"),
+        )
+        .sort_values(["year", "big_winner_stock_years", "avg_forward_gain_intraday"], ascending=[True, False, False])
+    )
+    market_context = events[
+        [
+            "year",
+            "instrument",
+            "episode_rank",
+            "low_date",
+            "high_date",
+            "industry_name",
+            "primary_profile_anchor_date",
+            "primary_profile_anchor_type",
+            "benchmark_ret_during_episode",
+            "industry_target_ret_during_episode",
+            "avg_daily_amplitude",
+            "avg_turnover_money",
+            "forward_gain_intraday",
+            "forward_gain_close_confirmed",
+        ]
+    ].copy()
+    valid_anchors = anchors[~anchors.get("anchor_missing", pd.Series(dtype=bool)).fillna(True)].copy() if not anchors.empty else pd.DataFrame()
+    regime_summary = (
+        valid_anchors.groupby(["year", "anchor_type", "market_regime_at_anchor", "market_width_at_anchor", "industry_regime_at_anchor"], as_index=False)
+        .agg(
+            anchor_rows=("instrument", "size"),
+            avg_anchor_lag=("anchor_lag_trading_days_from_low", "mean"),
+            avg_gain_to_anchor=("gain_close_from_low_to_anchor", "mean"),
+            avg_ret60_before_anchor=("ret60_before_anchor", "mean"),
+            avg_money_ratio20=("money_ratio20_before_anchor", "mean"),
+        )
+        if not valid_anchors.empty
+        else pd.DataFrame()
+    )
+    return stock_summary, year_summary, industry_summary, market_context, regime_summary
+
+
+def command_profile_big_winners(config: dict[str, Any]) -> list[Path]:
+    ensure_dir(report_dir(config))
+    ensure_dir(cache_dir(config))
+    if not bool(config["universe"].get("point_in_time", False)):
+        raise DataGateError("universe_point_in_time must be true")
+    if not bool(config["industry"].get("point_in_time", False)):
+        raise DataGateError("industry_membership_point_in_time must be true")
+    profile = big_winner_config(config)
+    features, _summary = build_feature_panel(config)
+    panel, provider_meta = load_stock_panel(config)
+    universe = read_universe(config)
+    industry = read_industry(config)
+    target_history = read_target_history(config)
+    coverage, coverage_summary = build_provider_coverage_by_year(config, universe, industry, panel, provider_meta, target_history)
+    events, cross, prepared = build_big_winner_episodes(config, features, panel, universe, coverage, target_history)
+    coverage_audit = build_big_winner_coverage_audit(config, universe, panel, coverage)
+    anchors = build_anchor_profile(events, prepared)
+    rule_miss = build_rule_miss_attribution(config, events, prepared)
+    stock_summary, year_summary, industry_summary, market_context, regime_summary = build_big_winner_summaries(events, anchors, cross, universe)
+    outputs = [
+        write_csv(events, report_dir(config) / "yearly_big_winner_episodes.csv"),
+        write_csv(stock_summary, report_dir(config) / "yearly_big_winner_stock_summary.csv"),
+        write_csv(anchors, report_dir(config) / "yearly_big_winner_anchor_profile.csv"),
+        write_csv(cross, report_dir(config) / "yearly_big_winner_cross_year_audit.csv"),
+        write_csv(coverage_audit, report_dir(config) / "yearly_big_winner_coverage_audit.csv"),
+        write_csv(year_summary, report_dir(config) / "yearly_big_winner_year_summary.csv"),
+        write_csv(industry_summary, report_dir(config) / "yearly_big_winner_industry_summary.csv"),
+        write_csv(market_context, report_dir(config) / "yearly_big_winner_market_context.csv"),
+        write_csv(regime_summary, report_dir(config) / "yearly_big_winner_regime_summary.csv"),
+        write_csv(rule_miss, report_dir(config) / "yearly_big_winner_rule_miss_attribution.csv"),
+    ]
+    record_manifest(
+        config,
+        "profile-big-winners",
+        outputs,
+        {
+            "provider_mode": coverage_summary.get("provider_mode", ""),
+            "coverage_by_year": coverage[["year", "coverage_status"]].to_dict("records"),
+            "big_winner_profile_enabled": True,
+            "big_winner_threshold": float(profile["threshold"]),
+            "big_winner_years": research_years(config),
+            "adjusted_price_used": profile["price_adjustment_mode"] != "raw_ohlc_unadjusted",
+            "price_adjustment_mode": profile["price_adjustment_mode"],
+            "coverage_limited_years": coverage.loc[coverage["coverage_status"] != "coverage_ok", "year"].astype(int).tolist(),
+            "big_winner_episode_rows": int(len(events)),
+            "big_winner_stock_year_rows": int(len(stock_summary)),
+            "big_winner_anchor_profile_rows": int(len(anchors)),
+            "big_winner_cross_year_audit_rows": int(len(cross)),
+            "big_winner_coverage_audit_rows": int(len(coverage_audit)),
+            "rule_miss_attribution_rows": int(len(rule_miss)),
+            "labels_used_for_trading_signal": False,
+            "historical_trade_results_used_for_labeling": False,
+        },
+    )
+    print(f"profiled big winners episodes={len(events)} anchors={len(anchors)} rule_miss_rows={len(rule_miss)}", flush=True)
+    return outputs
+
+
+def command_big_winner_report(config: dict[str, Any]) -> list[Path]:
+    report = report_dir(config)
+    required = [
+        report / "yearly_big_winner_episodes.csv",
+        report / "yearly_big_winner_stock_summary.csv",
+        report / "yearly_big_winner_anchor_profile.csv",
+        report / "yearly_big_winner_cross_year_audit.csv",
+        report / "yearly_big_winner_coverage_audit.csv",
+        report / "yearly_big_winner_year_summary.csv",
+        report / "yearly_big_winner_industry_summary.csv",
+        report / "yearly_big_winner_market_context.csv",
+        report / "yearly_big_winner_regime_summary.csv",
+        report / "yearly_big_winner_rule_miss_attribution.csv",
+    ]
+    if any(not path.exists() for path in required):
+        command_profile_big_winners(config)
+    episodes = read_csv_if_exists(report / "yearly_big_winner_episodes.csv")
+    stock_summary = read_csv_if_exists(report / "yearly_big_winner_stock_summary.csv")
+    anchors = read_csv_if_exists(report / "yearly_big_winner_anchor_profile.csv")
+    cross = read_csv_if_exists(report / "yearly_big_winner_cross_year_audit.csv")
+    coverage_audit = read_csv_if_exists(report / "yearly_big_winner_coverage_audit.csv")
+    year_summary = read_csv_if_exists(report / "yearly_big_winner_year_summary.csv")
+    industry_summary = read_csv_if_exists(report / "yearly_big_winner_industry_summary.csv")
+    regime_summary = read_csv_if_exists(report / "yearly_big_winner_regime_summary.csv")
+    rule_miss = read_csv_if_exists(report / "yearly_big_winner_rule_miss_attribution.csv")
+    manifest = read_json(report / "run_manifest.json")
+
+    profile = big_winner_config(config)
+    lines: list[str] = [
+        "# Explore8 年度大涨股画像探查报告",
+        "",
+        "## 1. 诊断边界",
+        "",
+        "本报告是 PIT universe 下的大涨股票事后画像，不是策略回测、参数选择或候选冻结。",
+        f"- Big-winner threshold: `{format_pct(profile['threshold'])}`。",
+        f"- Price adjustment mode: `{manifest.get('price_adjustment_mode', profile['price_adjustment_mode'])}`。",
+        f"- Universe point-in-time: `{manifest.get('universe_point_in_time', config['universe'].get('point_in_time'))}`。",
+        f"- 历史交易/结果 CSV 用于标签: `{manifest.get('historical_trade_results_used_for_labeling', False)}`；标签用于交易信号: `{manifest.get('labels_used_for_trading_signal', False)}`。",
+        f"- 事件行数: `{len(episodes)}`；锚点画像行数: `{len(anchors)}`；规则错配行数: `{len(rule_miss)}`。",
+    ]
+
+    if not year_summary.empty:
+        lines.extend(["", "## 2. 逐年大涨股分布", ""])
+        rows = []
+        for _, row in year_summary.iterrows():
+            rows.append(
+                [
+                    int(row["year"]),
+                    int(row["big_winner_stock_years"]),
+                    format_pct(row["big_winner_ratio"]),
+                    int(row["close_confirmed_50pct_count"]),
+                    format_pct(row["avg_forward_gain_intraday"]),
+                    format_pct(row["max_forward_gain_intraday"]),
+                    format_float(row["avg_duration_trading_days"], 1),
+                    format_pct(row["avg_daily_amplitude"]),
+                    int(row["truncated_by_year_boundary_count"]),
+                ]
+            )
+        lines.extend(
+            markdown_table(
+                ["Year", "大涨股票年", "占 PIT 比例", "收盘确认数", "平均涨幅", "最高涨幅", "平均交易日", "平均振幅", "跨年截断"],
+                rows,
+            )
+        )
+        peak_year = year_summary.sort_values("big_winner_stock_years", ascending=False).iloc[0]
+        lines.append(
+            f"- 大涨股票年数量最多的是 `{int(peak_year['year'])}`，共有 `{int(peak_year['big_winner_stock_years'])}` 个股票年；这类年份应优先检查现有 EMA 规则是否信号过晚或过早退出。"
+        )
+
+    if not stock_summary.empty:
+        lines.extend(["", "## 3. 代表性大涨股票", ""])
+        top = stock_summary.sort_values("max_forward_gain_intraday", ascending=False).head(20)
+        rows = []
+        for _, row in top.iterrows():
+            rows.append(
+                [
+                    int(row["year"]),
+                    row["instrument"],
+                    row.get("name", ""),
+                    row.get("industry_name", ""),
+                    row["main_low_date"],
+                    row["main_high_date"],
+                    format_pct(row["max_forward_gain_intraday"]),
+                    format_pct(row["max_forward_gain_close_confirmed"]),
+                    int(row["main_duration_trading_days"]),
+                    bool(row["truncated_by_year_boundary"]),
+                ]
+            )
+        lines.extend(markdown_table(["Year", "Instrument", "Name", "Industry", "Low", "High", "盘中涨幅", "收盘确认", "交易日", "跨年"], rows))
+
+    if not cross.empty:
+        lines.extend(["", "## 4. 跨年主升段审计", ""])
+        cross_summary = (
+            cross.groupby("overlap_year", as_index=False)
+            .agg(
+                cross_year_events=("cross_year_episode_id", "nunique"),
+                observed_reference_overlap=("observed_reference_overlap", "sum"),
+                avg_forward_gain_intraday=("forward_gain_intraday", "mean"),
+            )
+            .sort_values("overlap_year")
+        )
+        rows = []
+        for _, row in cross_summary.iterrows():
+            rows.append([int(row["overlap_year"]), int(row["cross_year_events"]), int(row["observed_reference_overlap"]), format_pct(row["avg_forward_gain_intraday"])])
+        lines.extend(markdown_table(["Overlap year", "跨年事件数", "涉及 observed reference", "平均完整涨幅"], rows))
+        unlinked = int((~cross["in_year_episode_linked"].astype(bool)).sum()) if "in_year_episode_linked" in cross.columns else 0
+        lines.append(f"- 有 `{unlinked}` 个跨年 overlap 行没有对应年内主事件；这些是自然年切片可能切碎完整趋势的重点样本。")
+    else:
+        lines.extend(["", "## 4. 跨年主升段审计", "", "未发现满足阈值的跨年完整主升段。"])
+
+    if not anchors.empty:
+        lines.extend(["", "## 5. 可观察锚点画像", ""])
+        anchor_summary = (
+            anchors.groupby("anchor_type", as_index=False)
+            .agg(
+                rows=("instrument", "size"),
+                missing=("anchor_missing", "sum"),
+                avg_lag=("anchor_lag_trading_days_from_low", "mean"),
+                avg_gain_to_anchor=("gain_close_from_low_to_anchor", "mean"),
+                avg_ret60=("ret60_before_anchor", "mean"),
+                avg_money_ratio=("money_ratio20_before_anchor", "mean"),
+                avg_trend_score_pct=("trend_score_pct_at_anchor", "mean"),
+            )
+            .sort_values("anchor_type")
+        )
+        rows = []
+        for _, row in anchor_summary.iterrows():
+            rows.append(
+                [
+                    row["anchor_type"],
+                    int(row["rows"]),
+                    format_pct(row["missing"] / row["rows"] if row["rows"] else np.nan),
+                    format_float(row["avg_lag"], 1),
+                    format_pct(row["avg_gain_to_anchor"]),
+                    format_pct(row["avg_ret60"]),
+                    format_float(row["avg_money_ratio"], 2),
+                    format_pct(row["avg_trend_score_pct"]),
+                ]
+            )
+        lines.extend(markdown_table(["Anchor", "Rows", "Missing", "Lag days", "已涨幅", "Ret60", "Money ratio", "Trend pct"], rows))
+        lines.append("- `low_date_retrospective` 只解释底部状态；可交易判断应优先看 EMA60 reclaim、breakout signal 和 20%/30% 收盘确认锚点。")
+
+    if not industry_summary.empty:
+        lines.extend(["", "## 6. 行业分布", ""])
+        top_ind = industry_summary.sort_values(["big_winner_stock_years", "avg_forward_gain_intraday"], ascending=[False, False]).head(20)
+        rows = []
+        for _, row in top_ind.iterrows():
+            rows.append(
+                [
+                    int(row["year"]),
+                    row["industry_name"],
+                    int(row["big_winner_stock_years"]),
+                    format_pct(row["avg_forward_gain_intraday"]),
+                    format_pct(row["max_forward_gain_intraday"]),
+                    format_float(row["avg_duration_trading_days"], 1),
+                    format_money(row["avg_turnover_money"]),
+                ]
+            )
+        lines.extend(markdown_table(["Year", "Industry", "Count", "Avg gain", "Max gain", "Avg days", "Avg money"], rows))
+
+    if not rule_miss.empty:
+        lines.extend(["", "## 7. Explore8 规则错配", ""])
+        miss_summary = (
+            rule_miss.groupby(["entry_family", "missed_reason"], as_index=False)
+            .agg(rows=("instrument", "size"), avg_lag=("signal_lag_trading_days", "mean"), avg_lost=("gain_lost_by_early_exit", "mean"))
+            .sort_values(["entry_family", "rows"], ascending=[True, False])
+        )
+        rows = []
+        for _, row in miss_summary.head(40).iterrows():
+            rows.append([row["entry_family"], row["missed_reason"], int(row["rows"]), format_float(row["avg_lag"], 1), format_pct(row["avg_lost"])])
+        lines.extend(markdown_table(["Entry family", "Reason", "Rows", "Avg lag", "Early-exit lost"], rows))
+        reason_counts = rule_miss["missed_reason"].value_counts().to_dict()
+        dominant_reason = max(reason_counts.items(), key=lambda item: item[1])[0] if reason_counts else ""
+        lines.append(f"- 最常见的错配分类是 `{dominant_reason}`；这说明下一阶段应先围绕该类失败原因做规则解释，而不是扩大参数搜索。")
+
+    if not regime_summary.empty:
+        lines.extend(["", "## 8. 市场与行业状态", ""])
+        regime_top = regime_summary.sort_values("anchor_rows", ascending=False).head(20)
+        rows = []
+        for _, row in regime_top.iterrows():
+            rows.append(
+                [
+                    int(row["year"]),
+                    row["anchor_type"],
+                    row["market_regime_at_anchor"],
+                    row["market_width_at_anchor"],
+                    row["industry_regime_at_anchor"],
+                    int(row["anchor_rows"]),
+                    format_pct(row["avg_gain_to_anchor"]),
+                    format_float(row["avg_money_ratio20"], 2),
+                ]
+            )
+        lines.extend(markdown_table(["Year", "Anchor", "Market", "Width", "Industry", "Rows", "Gain to anchor", "Money ratio"], rows))
+
+    if not coverage_audit.empty:
+        partial = coverage_audit[pd.to_numeric(coverage_audit["missing_days"], errors="coerce") > 0]
+        excluded = coverage_audit[coverage_audit["excluded_from_big_winner_scan"].astype(bool)]
+        lines.extend(["", "## 9. 覆盖审计", ""])
+        lines.append(f"- coverage audit 股票年行数 `{len(coverage_audit)}`；存在缺失日的股票年 `{len(partial)}`；完全无法扫描的股票年 `{len(excluded)}`。")
+
+    lines.extend(
+        [
+            "",
+            "## 10. 初步判断",
+            "",
+            "- 本扩展的关键产物不是规则收益，而是大涨样本的时间段、振幅、成交和可观察锚点结构。",
+            "- 若大多数大涨股在 `first_breakout_signal` 前已经完成较大涨幅，下一阶段应研究 early trend detection 或 post-low repair。",
+            "- 若 `early_exit` 占比高，应优先拆 time stop / layered exit，而不是继续调入场阈值。",
+            "- 若 `no_signal` 或 `market_filtered` 占比高，应检查 market width / industry gate 是否过度过滤真实主升段。",
+        ]
+    )
+
+    output = report / "explore8_big_winner_profile_report.md"
+    ensure_parent(output)
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    outputs = [output]
+    record_manifest(
+        config,
+        "big-winner-report",
+        outputs,
+        {
+            "big_winner_report_path": relpath(output),
+            "big_winner_profile_enabled": True,
+            "big_winner_threshold": float(profile["threshold"]),
+            "price_adjustment_mode": manifest.get("price_adjustment_mode", profile["price_adjustment_mode"]),
+            "labels_used_for_trading_signal": False,
+            "historical_trade_results_used_for_labeling": False,
+        },
+    )
+    print(f"wrote {relpath(output)}", flush=True)
+    return outputs
+
+
 def command_self_test(config: dict[str, Any]) -> list[Path]:
     ensure_dir(report_dir(config))
     ensure_dir(cache_dir(config))
     ensure_dir(backtest_dir(config))
+    big_winner_config(config)
     if not bool(config["universe"].get("point_in_time", False)):
         raise DataGateError("universe_point_in_time must be true")
     if not bool(config["industry"].get("point_in_time", False)):
@@ -2754,7 +3881,7 @@ def command_report(config: dict[str, Any]) -> list[Path]:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["self-test", "audit-data", "run-yearly", "report"])
+    parser.add_argument("command", choices=["self-test", "audit-data", "run-yearly", "report", "profile-big-winners", "big-winner-report"])
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
     return parser.parse_args(argv)
 
@@ -2771,6 +3898,10 @@ def main(argv: list[str] | None = None) -> int:
             command_run_yearly(config)
         elif args.command == "report":
             command_report(config)
+        elif args.command == "profile-big-winners":
+            command_profile_big_winners(config)
+        elif args.command == "big-winner-report":
+            command_big_winner_report(config)
         else:
             raise DataGateError(f"unknown command: {args.command}")
     except DataGateError as exc:

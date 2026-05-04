@@ -1,10 +1,10 @@
 path,category,allowed_use,exists,is_file,row_count,sha256,used_for_calculation
 Explore7/configs/pullback_rebuild_v1.yaml,allowed_config_reference,whitelisted config keys only,True,True,,0473179227a3669b6f299907a163d269d41df44f8beffaef9bdecdd65a513068,True
-Explore7/outputs/reports/pit_provider_coverage_audit.csv,allowed_metadata_audit,coverage metadata audit only,True,True,0.0,01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b,False
+Explore7/outputs/reports/pit_provider_coverage_audit.csv,allowed_metadata_audit,coverage metadata audit only,True,True,0.0,9024be8ab643386a4cdea81783008c0fa892a3ede96a71994051fe4024dfc1be,False
 Explore7/outputs/reports/pit_provider_coverage_summary.json,allowed_metadata_audit,coverage metadata audit only,True,True,,77b0903a2005ac18e355e91c63d3cb024e1d94fd857d7dd448558b956a3aa84b,False
 Explore3/reports/explore3_report.md,background_reference,report background narrative only,True,True,,f758cec148e3d4c98780aea550444e8f3a295a981ed67661506b1054bf465f96,False
 Explore5/outputs/reports/explore5_final_report.md,background_reference,report background narrative only,True,True,,d11f13ab14b986f8d6a265b67711b408a225dcb83b2e2e91d2eb49ec0a5495c6,False
-Explore7/outputs/reports/explore7_pullback_rebuild_report.md,background_reference,report background narrative only,True,True,,64f31b09f06951500103578b8e19d69f9a37fa7adf3865a4c3a2aec4d4403a47,False
+Explore7/outputs/reports/explore7_pullback_rebuild_report.md,background_reference,report background narrative only,True,True,,1cc7cf2882b6b3cf973ac8689a608e2e010e792941bd48511c132489c3cb56d9,False
 Explore3/outputs/backtests/atr_structure_stop/portfolio_daily.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
 Explore3/outputs/backtests/atr_structure_stop/trade_detail.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
 Explore3/outputs/backtests/breakout_entry/portfolio_daily.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
@@ -49,6 +49,7 @@ Explore6/outputs/reports/inner_oof_predictions.csv,forbidden_result_path,must no
 Explore6/outputs/reports/no_model_gate_portfolio_daily.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
 Explore6/outputs/reports/no_model_gate_trade_detail.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
 Explore6/outputs/reports/year_metrics.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
+Explore7/outputs/cache/stock_signals.pkl,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
 Explore7/outputs/reports/fold_portfolio_daily.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
 Explore7/outputs/reports/fold_trade_detail.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False
 Explore7/outputs/reports/generated_daily_candidates.csv,forbidden_result_path,must not enter Explore8 calculation path,True,True,,,False

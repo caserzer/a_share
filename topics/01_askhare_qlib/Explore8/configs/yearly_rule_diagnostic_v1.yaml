@@ -70,6 +70,11 @@ coverage:
   coverage_limited_min: 0.90
   required_field_coverage_ok_min: 0.98
 
+big_winner_profile:
+  threshold: 0.50
+  price_adjustment_mode: provider_ohlc_already_adjusted
+  anchor_window_trading_days: 20
+
 costs:
   account: 1000000
   freq: day
