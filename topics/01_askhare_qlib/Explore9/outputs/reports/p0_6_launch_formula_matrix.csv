@@ -1,0 +1,11 @@
+launch_family,v1_trigger_formula,launch_pool,launch_lifecycle_role,primary_entry_leaderboard_eligible,lookback_days,thresholds,required_fields,sparse_diagnostic
+expansion_high_volatility,day_range >= 0.08 and ret_1d > 0 and close_location >= 0.55,primary_pre_20_launch_pool,launch_observation_only,True,20/60/120,day_range=0.08;close_location=0.55,"open,high,low,close,money",False
+high_vol_money_upper_close,day_range >= 0.08 and money_ratio_20 >= 1.5 and close_location >= 0.65,primary_pre_20_launch_pool,launch_observation_only,True,20/60/120,day_range=0.08;money_ratio_20=1.5;close_location=0.65,"open,high,low,close,money",False
+rank_jump_leadership,ret_rank_20d_market >= 0.80 and ret_rank_20d_market - ret_rank_20d_market_5d_ago >= 0.30,primary_pre_30_launch_pool,launch_observation_only,True,20,rank=0.80;rank_jump=0.30,close,False
+repair_reclaim,close > ema20 and close_1d_ago <= ema20_1d_ago and ret_5d > 0,primary_pre_20_launch_pool,launch_observation_only,True,20,ret_5d>0,"close,ema20",False
+first_limit_up_like,ret_1d >= 0.095 and close_location >= 0.80 and no same-family event in prior 60 trading days,sparse_strong_day_diagnostic_pool,sparse_launch_observation,False,60,ret_1d=0.095;close_location=0.80,"open,high,low,close",True
+first_near_limit_up_like,ret_1d >= 0.07 and ret_1d < 0.095 and close_location >= 0.75 and no same-family event in prior 60 trading days,sparse_strong_day_diagnostic_pool,sparse_launch_observation,False,60,ret_1d=0.07/0.095;close_location=0.75,"open,high,low,close",True
+gap_up_upper_close,open / prev_close - 1 >= 0.03 and close >= open and close_location >= 0.60,sparse_strong_day_diagnostic_pool,sparse_launch_observation,False,1,gap=0.03;close_location=0.60,"open,high,low,close",True
+strong_body_day,body_ret >= 0.05 and close_location >= 0.70 and money_ratio_20 >= 1.2,sparse_strong_day_diagnostic_pool,sparse_launch_observation,False,20,body_ret=0.05;close_location=0.70;money_ratio_20=1.2,"open,high,low,close,money",True
+post_20pct_relative_strength,launch_gain_from_recent_low_60d >= 0.20 and ret_rank_20d_market >= 0.70,post_20_30_hold_only_pool,add_on_or_hold_only,False,60,gain60=0.20;rank=0.70,close,False
+post_30pct_relative_strength,launch_gain_from_recent_low_90d >= 0.30 and ret_rank_20d_market >= 0.70,post_20_30_hold_only_pool,add_on_or_hold_only,False,90,gain90=0.30;rank=0.70,close,False

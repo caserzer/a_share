@@ -1,0 +1,258 @@
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  fallback_provider_uri: Explore1/data/qlib/cn_data
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  cache_dir: Explore9/outputs/cache
+  report_dir: Explore9/outputs/reports
+
+sources:
+  background_reference:
+    - Explore9/outputs/reports/explore9_p0_6_entry_trigger_report.md
+    - Explore9/requirement_expand_2.md
+  schema_reference:
+    - Explore9/outputs/reports/episode_lifecycle_labels.csv
+    - Explore9/outputs/reports/p0_5_primitive_feature_dictionary.csv
+    - Explore9/outputs/reports/p0_5_pairwise_lift.csv
+    - Explore9/outputs/reports/p0_5_candidate_pattern_audit.csv
+    - Explore9/outputs/cache/p0_6_launch_event_panel.parquet
+  forbidden_result_path_patterns:
+    - Explore3/outputs/
+    - Explore4/outputs/
+    - Explore5/outputs/
+    - Explore6/outputs/
+    - Explore7/outputs/
+    - Explore8/outputs/backtests/
+  forbidden_result_name_tokens:
+    - trade_detail
+    - portfolio_daily
+    - signals
+    - daily_candidates
+    - model_predictions
+    - year_metrics
+    - predictions
+    - model
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  research_start: "2017-01-01"
+  research_end: "2024-12-31"
+  observed_reference_start: "2025-01-01"
+  observed_reference_end: "2026-04-30"
+
+universe:
+  name: pit_mcap500_mainboard
+  point_in_time: true
+  membership_frequency: daily
+  qlib_instrument_file_role: data_availability_superset
+  tradable_universe_authority: daily_pit_membership
+
+industry:
+  point_in_time: true
+  missing_industry: UNKNOWN
+
+qlib:
+  market: pit_mcap500_mainboard
+  benchmark: SH000300
+  broad_market_key: broad_market
+  freq: day
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  price_adjustment_mode: provider_ohlc_already_adjusted
+
+coverage:
+  coverage_ok_min: 0.98
+  coverage_limited_min: 0.90
+  required_field_coverage_ok_min: 0.98
+
+labels:
+  horizons: [20, 60, 120, 240]
+  high_gain_thresholds: [0.5, 1.0]
+  close_gain_thresholds: [0.5, 1.0]
+  episode_threshold: 0.5
+  time_to_max_horizon: 240
+
+p0_5:
+  feature_panel_cache: Explore9/outputs/cache/p0_5_feature_panel_expand_1.parquet
+
+p0_6:
+  launch_event_panel_cache: Explore9/outputs/cache/p0_6_launch_event_panel.parquet
+  entry_event_panel_cache: Explore9/outputs/cache/p0_6_entry_event_panel.parquet
+  launch_dedup_gap_trading_days: 20
+
+p0_7:
+  phase: P0.7AB
+  expansion_id: expand_3
+  cache:
+    launch_episode_panel: Explore9/outputs/cache/p0_7_launch_episode_panel.parquet
+    launch_stratum_event_panel: Explore9/outputs/cache/p0_7_launch_stratum_event_panel.parquet
+    failure_filter_opportunity_panel: Explore9/outputs/cache/p0_7_failure_filter_opportunity_panel.parquet
+    failure_filter_event_panel: Explore9/outputs/cache/p0_7_failure_filter_event_panel.parquet
+
+scope:
+  run_p0_7a_launch_stratification: true
+  run_p0_7b_failure_filter: true
+  run_p0_7c_hold_gate: false
+  run_p0_7c_addon_gate: false
+
+reuse:
+  p0_label_panel: true
+  p0_5_feature_reference: true
+  p0_6_launch_event_panel: true
+  p0_6_entry_results_for_selection: false
+
+windows:
+  launch_episode_collapse_gap_days: 20
+  failure_filter_windows: [1, 3, 5, 10, 20]
+  max_filter_signal_wait_trading_days: 20
+  hold_gate_windows: [3, 5, 10, 20, 40]
+  addon_gate_windows: [5, 10, 20, 40, 60]
+
+thresholds:
+  min_distinct_year_count_launch: 5
+  min_distinct_year_count_failure: 5
+  min_distinct_instrument_count_launch: 50
+  min_distinct_instrument_count_failure: 50
+  min_positive_unique_instrument_year_count: 20
+  min_winner_episode_coverage: 0.05
+  max_top1_instrument_contribution: 0.15
+  max_top5_instrument_contribution: 0.35
+  min_instrument_year_lift: 1.00
+  min_launch_stratum_event_count: 200
+  min_launch_lift_vs_all: 1.10
+  min_launch_lift_vs_same_family: 1.05
+  max_false_positive_rate_tolerance: 0.00
+  max_drawdown_worsening_tolerance: 0.02
+  min_failure_filter_event_count: 200
+  min_nonwinner_reject_recall: 0.20
+  min_failure_reject_recall: 0.20
+  min_reject_precision_lift: 1.05
+  min_failure_precision_lift: 1.05
+  max_winner_false_reject_rate: 0.25
+  max_big_winner_false_reject_rate: 0.15
+  max_winner_coverage_loss_pending: 0.30
+  max_winner_coverage_loss_total: 0.20
+  min_drawdown_avoided_vs_matched_delay_pct: 0.00
+  min_before_12pct_drawdown_rate: 0.50
+  min_before_20pct_drawdown_rate: 0.50
+  failure_drawdown_threshold: 0.12
+  drawdown_audit_window: 60
+  near_limit_threshold: 0.085
+  gap_up_min_ret: 0.03
+  rank_drop: 0.25
+  rank_evaporation_floor: 0.50
+  industry_breadth_drop: 0.15
+  min_followthrough_gain: 0.05
+  max_stop_distance_for_new_risk: 0.15
+  min_hold_gate_event_count: 200
+  min_addon_event_count: 100
+  min_distinct_year_count_hold: 5
+  min_distinct_year_count_addon: 4
+  min_distinct_instrument_count_hold: 50
+  min_distinct_instrument_count_addon: 40
+  max_hold_gate_winner_coverage_loss: 0.35
+  max_hold_gate_false_reject_winner_rate: 0.30
+  max_addon_to_stop_risk_pct: 0.15
+  max_addon_wide_stop_rate: 0.40
+  max_late_acceleration_overlap_rate: 0.50
+  min_addon_success_lift_vs_same_context: 1.05
+
+  expansion_high_vol_upper_close__close_location__min: 0.65
+  expansion_high_vol_upper_close__ret_rank_20d_market__min: 0.70
+  expansion_high_vol_upper_close__launch_gain_from_recent_low_60d__max: 0.30
+  high_vol_controlled_drawdown__close_location__min: 0.60
+  high_vol_controlled_drawdown__median20_low_ratio__min: 0.95
+  high_vol_controlled_drawdown__ret_rank_20d_market__min: 0.65
+  destructive_high_vol_upper_shadow__close_location__max: 0.40
+  destructive_high_vol_upper_shadow__upper_shadow_pct__min: 0.45
+  high_vol_break_median_warning__money_ratio_20__min: 1.30
+  rank_jump_5d_persist_3d__rank_jump__min: 0.25
+  rank_jump_5d_persist_3d__ret_rank_20d_market_5d_median__min: 0.60
+  industry_rank_jump_leader__ret_rank_20d_industry__min: 0.80
+  industry_rank_jump_leader__ret_rank_20d_market__min: 0.60
+  industry_rank_jump_leader__relative_ret20_vs_industry__min: 0.00
+  repair_reclaim_ema20_quality__prelaunch_drawdown_120d__max: -0.20
+  repair_reclaim_ema20_quality__close_location__min: 0.60
+  repair_higher_low_reclaim__higher_low_count_20d__min: 1.00
+  repair_higher_low_reclaim__max_drawdown_20d__min: -0.12
+  money_price_upper_keep__money_ratio_20__min: 1.20
+  money_price_upper_keep__close_location__min: 0.65
+  money_expansion_no_distribution__money_ratio_20__min: 1.20
+  money_expansion_no_distribution__upper_shadow_pct__max: 0.35
+  industry_breadth_confirmed_launch__relative_ret20_vs_industry__min: 0.00
+  industry_breadth_confirmed_launch__ret_rank_20d_market__min: 0.60
+  weak_market_industry_leader__ret_rank_20d_industry__min: 0.80
+  weak_market_industry_leader__relative_ret20_vs_benchmark__min: 0.00
+  relative_strength_10d_persistence__ret_rank_20d_market__min: 0.70
+  relative_strength_10d_persistence__ret_rank_20d_market_5d_median__min: 0.65
+  relative_strength_10d_persistence__relative_ret20_vs_benchmark__min: 0.00
+  industry_relative_strength_persistence__ret_rank_20d_industry__min: 0.75
+  industry_relative_strength_persistence__relative_ret20_vs_industry__min: 0.00
+  industry_relative_strength_persistence__close_location_5d_median__min: 0.55
+  controlled_repair_from_deep_drawdown__prelaunch_drawdown_120d__max: -0.25
+  controlled_repair_from_deep_drawdown__max_drawdown_20d__min: -0.12
+  range_tightening_then_expand__close_location__min: 0.65
+  first_near_limit_upper_close__close_location__min: 0.75
+  strong_body_day_node__close_location__min: 0.75
+  strong_body_day_node__money_ratio_20__min: 1.20
+  post_20_relative_strength_context__launch_gain_from_recent_low_90d__min: 0.20
+  post_20_relative_strength_context__launch_gain_from_recent_low_90d__max: 0.30
+  post_20_relative_strength_context__ret_rank_20d_market__min: 0.70
+  late_acceleration_context__launch_gain_from_recent_low_120d__min: 0.50
+  gap_fade_after_launch_5d__close_location__max: 0.35
+  gap_fade_break_prior_close_5d__close_location__max: 0.40
+  upper_shadow_volume_failure_5d__upper_shadow_pct__min: 0.45
+  upper_shadow_volume_failure_5d__close_location__max: 0.40
+  upper_shadow_volume_failure_5d__money_ratio_20__min: 1.50
+  upper_shadow_money_distribution_10d__upper_shadow_pct__min: 0.40
+  upper_shadow_money_distribution_10d__close_location__max: 0.45
+  upper_shadow_money_distribution_10d__money_ratio_20__min: 1.30
+  money_distribution_5d__money_ratio_20__min: 1.30
+  money_distribution_5d__close_location__max: 0.45
+  money_distribution_10d__money_ratio_20__min: 1.20
+  money_distribution_10d__upper_shadow_pct__min: 0.35
+  destructive_high_vol_3d__close_location__max: 0.40
+  destructive_high_vol_5d__close_location__max: 0.40
+
+matched_delay:
+  enabled: true
+  random_seed: 20260505
+  n_repeats: 20
+  sample_with_replacement: false
+  n_jobs: 24
+  max_sample_per_variant: 20000
+  max_resample_attempts: 10
+  pseudo_reject_set_mode: exact_real_reject_count
+  exact_real_reject_count_required_for_p1: true
+
+output:
+  full_row_panels_as_parquet_cache: true
+  full_row_panels_as_csv_reports: false
+  debug_export_row_csv: false
+  debug_max_rows_per_panel: 5000
+
+execution:
+  default_formula_observation_timing: close_derived
+  default_effective_date_execution: next_trading_day_open
+  default_effective_price_reference: next_open
+  intraday_same_day_effective_allowed_only_if_declared: true
+  same_close_proxy_used_in_main_leaderboard: false
+  next_open_used_for_filter_execution_audit: true
+  next_open_used_for_hold_gate_execution_audit: true
+  next_open_used_for_addon_execution_audit: true
+
+ranking:
+  instrument_year_required: true
+  dedup_event_required: true
+  winner_coverage_required: true
+  false_reject_audit_required: true
+  observability_leak_check_required: true
+  failure_filter_denominator_audit_required: true
+  declared_role_vs_recommended_action_split_required: true
+  formula_token_coverage_audit_required: true
+  launch_baseline_schema_contract_required: true
+  matched_delay_conversion_rate_matched_required: true

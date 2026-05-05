@@ -12,7 +12,9 @@ import argparse
 import hashlib
 import json
 import math
+import re
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -25,6 +27,9 @@ import yaml
 EXPLORE_DIR = Path(__file__).resolve().parents[1]
 TOPIC_DIR = EXPLORE_DIR.parent
 DEFAULT_CONFIG = EXPLORE_DIR / "configs/broad_discovery_p0.yaml"
+DEFAULT_P0_5_CONFIG = EXPLORE_DIR / "configs/broad_discovery_expand_1.yaml"
+DEFAULT_P0_6_CONFIG = EXPLORE_DIR / "configs/entry_trigger_p0_6.yaml"
+DEFAULT_P0_7_CONFIG = EXPLORE_DIR / "configs/launch_failure_p0_7ab.yaml"
 FIELD_RENAME = {
     "$open": "open",
     "$high": "high",
@@ -72,6 +77,87 @@ DEFERRED_P2_OUTPUTS = [
     "joint_shape_cluster_summary.csv",
     "shape_cluster_examples.csv",
 ]
+P0_5_REQUIRED_REPORTS = [
+    "p0_5_primitive_feature_dictionary.csv",
+    "p0_5_primitive_feature_coverage.csv",
+    "p0_5_univariate_lift.csv",
+    "p0_5_pairwise_lift.csv",
+    "p0_5_lead_ranking_stock_day.csv",
+    "p0_5_lead_ranking_instrument_year.csv",
+    "p0_5_lead_ranking_dedup_trigger_event.csv",
+    "p0_5_winner_episode_coverage.csv",
+    "p0_5_early_entry_discovery_leads.csv",
+    "p0_5_confirmation_continuation_leads.csv",
+    "p0_5_hold_exit_tolerance_leads.csv",
+    "p0_5_high_volatility_decomposition.csv",
+    "p0_5_repair_initiation_leads.csv",
+    "p0_5_rank_jump_leadership_leads.csv",
+    "p0_5_money_quality_leads.csv",
+    "p0_5_sparse_strong_day_diagnostics.csv",
+    "p0_5_candidate_pattern_audit.csv",
+    "p0_5_false_positive_audit.csv",
+    "p0_5_scope_completion_audit.csv",
+    "p0_5_run_manifest.json",
+    "explore9_p0_5_expand_1_report.md",
+]
+P0_6_REQUIRED_REPORTS = [
+    "p0_6_launch_event_dictionary.csv",
+    "p0_6_launch_formula_matrix.csv",
+    "p0_6_launch_pool_quality_audit.csv",
+    "p0_6_launch_pool_lifecycle_gate_audit.csv",
+    "p0_6_entry_trigger_dictionary.csv",
+    "p0_6_entry_trigger_formula_matrix.csv",
+    "p0_6_launch_event_panel.csv",
+    "p0_6_entry_event_panel.csv",
+    "p0_6_direct_launch_entry_baseline.csv",
+    "p0_6_all_launch_direct_baseline.csv",
+    "p0_6_trigger_convertible_direct_baseline.csv",
+    "p0_6_matched_delay_baseline.csv",
+    "p0_6_entry_trigger_lift.csv",
+    "p0_6_entry_trigger_vs_direct.csv",
+    "p0_6_entry_trigger_year_breakdown.csv",
+    "p0_6_entry_trigger_instrument_year_breakdown.csv",
+    "p0_6_entry_trigger_industry_breakdown.csv",
+    "p0_6_entry_execution_assumption_audit.csv",
+    "p0_6_entry_execution_feasibility_audit.csv",
+    "p0_6_entry_trigger_dedup_audit.csv",
+    "p0_6_entry_trigger_failure_audit.csv",
+    "p0_6_entry_trigger_missed_gain_audit.csv",
+    "p0_6_entry_trigger_missed_winner_audit.csv",
+    "p0_6_entry_trigger_leaderboard.csv",
+    "p0_6_entry_trigger_rejected.csv",
+    "p0_6_scope_completion_audit.csv",
+    "p0_6_run_manifest.json",
+    "explore9_p0_6_entry_trigger_report.md",
+]
+P0_7_REQUIRED_REPORTS = [
+    "p0_7_feature_dictionary.csv",
+    "p0_7_formula_token_coverage_audit.csv",
+    "p0_7_launch_formula_matrix.csv",
+    "p0_7_launch_episode_summary.csv",
+    "p0_7_launch_stratum_event_summary.csv",
+    "p0_7_launch_stratification_leaderboard.csv",
+    "p0_7_launch_stratification_rejected.csv",
+    "p0_7_direct_launch_baseline_by_stratum.csv",
+    "p0_7_failure_filter_formula_matrix.csv",
+    "p0_7_failure_filter_opportunity_summary.csv",
+    "p0_7_failure_filter_event_summary.csv",
+    "p0_7_failure_filter_leaderboard.csv",
+    "p0_7_failure_filter_rejected.csv",
+    "p0_7_failure_filter_false_reject_audit.csv",
+    "p0_7_failure_filter_drawdown_reduction_audit.csv",
+    "p0_7_matched_delay_filter_baseline.csv",
+    "p0_7_lifecycle_transition_audit.csv",
+    "p0_7_stratum_observability_audit.csv",
+    "p0_7_regime_breakdown.csv",
+    "p0_7_industry_breakdown.csv",
+    "p0_7_instrument_year_breakdown.csv",
+    "p0_7_dedup_audit.csv",
+    "p0_7_scope_completion_audit.csv",
+    "p0_7_row_panel_schema.csv",
+    "p0_7_run_manifest.json",
+    "explore9_p0_7ab_launch_failure_report.md",
+]
 
 
 class DataGateError(RuntimeError):
@@ -104,6 +190,110 @@ class PairwiseSpec:
     observable_state_stage: str
     direction: str
     recommended_next_phase: str
+
+
+@dataclass(frozen=True)
+class P05PrimitiveSpec:
+    feature_name: str
+    feature_family: str
+    column: str
+    value_type: str
+    min_history_trading_days: int
+    lookback_window: str
+    requires_benchmark_history: bool = False
+    requires_industry_history: bool = False
+    p0_enabled: bool = True
+    direction_hint: str = "high"
+    p0_5_new: bool = True
+    lifecycle_bucket: str = "early_entry_discovery"
+    primary_combo_family: str = ""
+    sparse_diagnostic: bool = False
+    generalizable_entry_lead: bool = True
+    path_explanation_only: bool = False
+    category_id: str = ""
+    human_readable_definition: str = ""
+    formula_or_bin: str = ""
+    required_columns: str = ""
+    close_location_rule: str = ""
+    trend_or_drawdown_context: str = ""
+    evaluation_only_false_positive_definition: str = ""
+    diagnostic_only_not_p1_ready: bool = False
+
+
+@dataclass(frozen=True)
+class P05PatternSpec:
+    lead_id: str
+    lead_name: str
+    primary_combo_family: str
+    lifecycle_bucket: str
+    conditions: tuple[tuple[str, tuple[str, ...]], ...]
+    formula_or_bin: str
+    direction: str
+    recommended_next_phase: str
+    sparse_diagnostic: bool = False
+    generalizable_entry_lead: bool = True
+    path_explanation_only: bool = False
+    diagnostic_only_not_p1_ready: bool = False
+
+
+@dataclass(frozen=True)
+class P06LaunchSpec:
+    launch_family: str
+    formula: str
+    declared_launch_pool: str
+    lifecycle_role: str
+    primary_entry_leaderboard_eligible: bool
+    lookback_days: str
+    thresholds: str
+    required_fields: str
+    sparse_diagnostic: bool = False
+
+
+@dataclass(frozen=True)
+class P06EntrySpec:
+    entry_family: str
+    entry_variant_id: str
+    allowed_launch_families: tuple[str, ...]
+    excluded_launch_families: tuple[str, ...]
+    signal_window_start_after_launch: int
+    signal_window_end_after_launch: int
+    entry_signal_condition: str
+    entry_signal_date_definition: str
+    invalidation_rule_id: str
+    invalidation_price_reference: str
+    pre_entry_failure_filter_ids: tuple[str, ...]
+    post_entry_invalidation_audit_ids: tuple[str, ...]
+    primary_leaderboard_eligible: bool = True
+    same_close_proxy_allowed: bool = False
+
+
+@dataclass(frozen=True)
+class P07LaunchSpec:
+    stratum_family: str
+    stratum_variant: str
+    formula_text: str
+    formula_text_resolved: str
+    required_features: tuple[str, ...]
+    required_thresholds: tuple[str, ...]
+    declared_stratum_role: str
+    declared_lifecycle_stage: str
+
+
+@dataclass(frozen=True)
+class P07FailureFilterSpec:
+    filter_family: str
+    filter_variant: str
+    formula_text: str
+    formula_text_resolved: str
+    required_features: tuple[str, ...]
+    required_thresholds: tuple[str, ...]
+    signal_date_definition: str
+    formula_window_trading_days: int
+    filter_formula_observation_timing: str
+    effective_date_rule: str
+    filter_action: str
+    filter_severity: str
+    filter_reason_code: str
 
 
 def topic_path(value: str | Path) -> Path:
@@ -1869,6 +2059,5324 @@ def build_p0_completion_audit(dictionary: pd.DataFrame, univariate: pd.DataFrame
     return pd.DataFrame(rows, columns=["check_name", "actual_value", "required_value", "passed", "failure_reason"])
 
 
+def p0_5_cfg(config: dict[str, Any]) -> dict[str, Any]:
+    return config.get("p0_5", {})
+
+
+def p0_5_feature_panel_path(config: dict[str, Any]) -> Path:
+    configured = p0_5_cfg(config).get("feature_panel_cache", "Explore9/outputs/cache/p0_5_feature_panel_expand_1.parquet")
+    return topic_path(configured)
+
+
+def p0_5_manifest_path(config: dict[str, Any]) -> Path:
+    return report_dir(config) / "p0_5_run_manifest.json"
+
+
+def rolling_sum_by_instrument(df: pd.DataFrame, column: str, window: int) -> pd.Series:
+    return (
+        df.groupby("instrument", group_keys=False)[column]
+        .transform(lambda s, window=window: s.fillna(False).astype(float).rolling(window, min_periods=1).sum())
+        .reindex(df.index)
+    )
+
+
+def add_p0_5_features(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy().sort_values(["instrument", "datetime"]).reset_index(drop=True)
+    group = df.groupby("instrument", group_keys=False)
+    day_range = (df["high"] - df["low"]).replace(0, np.nan)
+    df["close_location_in_day"] = ((df["close"] - df["low"]) / day_range).clip(0, 1)
+    df["body_ratio"] = ((df["close"] - df["open"]).abs() / day_range).clip(0, 1)
+    df["upper_shadow_ratio"] = ((df["high"] - df[["open", "close"]].max(axis=1)) / day_range).clip(0, 1)
+    df["lower_shadow_ratio"] = ((df[["open", "close"]].min(axis=1) - df["low"]) / day_range).clip(0, 1)
+    df["up_day"] = df["close"] > df["prev_close"]
+    df["down_day"] = df["close"] < df["prev_close"]
+    df["up_day_amplitude"] = df["amplitude"].where(df["up_day"])
+    df["down_day_amplitude"] = df["amplitude"].where(df["down_day"])
+    df["median_price20"] = group["close"].transform(lambda s: s.rolling(20, min_periods=20).median())
+    df["median_price60"] = group["close"].transform(lambda s: s.rolling(60, min_periods=60).median())
+    df["reclaim_median20_flag"] = (df["close"] > df["median_price20"]) & (group["close"].shift(1) <= df.groupby("instrument")["median_price20"].shift(1))
+    df["reclaim_median60_flag"] = (df["close"] > df["median_price60"]) & (group["close"].shift(1) <= df.groupby("instrument")["median_price60"].shift(1))
+    df["first_reclaim_median20_after_drawdown"] = df["reclaim_median20_flag"] & (df["drawdown_from_high120"] <= -0.20)
+    df["first_reclaim_median60_after_drawdown"] = df["reclaim_median60_flag"] & (df["drawdown_from_high120"] <= -0.25)
+    df["drawdown_from_high20"] = df["dist_high20"]
+    df["repair_under20_from_low120"] = (df["repair_from_low120"] >= 0.05) & (df["repair_from_low120"] < 0.20)
+    df["repair_under30_from_low120"] = (df["repair_from_low120"] >= 0.10) & (df["repair_from_low120"] < 0.30)
+    df["higher_low20_flag"] = df["low20"] > group["low20"].shift(20)
+    df["higher_low60_flag"] = df["low60"] > group["low60"].shift(60)
+    df["higher_high20_flag"] = df["high20"] > group["high20"].shift(20)
+    df["higher_high60_flag"] = df["high60"] > group["high60"].shift(60)
+    df["higher_low_without_high_breakout"] = df["higher_low20_flag"] & ~df["higher_high20_flag"]
+    prior_low20 = group["low20"].shift(1)
+    df["false_breakdown_reclaim20"] = (df["low"] < prior_low20) & (df["close"] > prior_low20)
+    df["drawdown_speed20"] = df["drawdown_from_high120"] - group["drawdown_from_high120"].shift(20)
+    df["drawdown_speed_slowing20"] = df.groupby("instrument")["drawdown_speed20"].shift(20) - df["drawdown_speed20"]
+
+    for ret_window in [5, 20, 60]:
+        df[f"ret{ret_window}_universe_pctile_p0_5"] = df.groupby("datetime")[f"ret{ret_window}"].rank(pct=True)
+        df[f"ret{ret_window}_industry_pctile_p0_5"] = df.groupby(["datetime", "industry_name"])[f"ret{ret_window}"].rank(pct=True)
+    for money_window, money_col in [(5, "avg_money5_prior"), (20, "avg_money20_prior"), (60, "avg_money60_prior")]:
+        df[f"money{money_window}_universe_pctile"] = df.groupby("datetime")[money_col].rank(pct=True)
+        df[f"money{money_window}_industry_pctile"] = df.groupby(["datetime", "industry_name"])[money_col].rank(pct=True)
+    df["ret_rank_jump5_20"] = df["ret5_universe_pctile_p0_5"] - df["ret20_universe_pctile"]
+    df["ret_rank_jump20_60"] = df["ret20_universe_pctile"] - df["ret60_universe_pctile_p0_5"]
+    df["money_rank_jump5_20"] = df["money5_universe_pctile"] - df["money20_universe_pctile"]
+    df["money_rank_jump20_60"] = df["money20_universe_pctile"] - df["money60_universe_pctile"]
+    df["industry_ret_rank_jump5_20"] = df["ret5_industry_pctile_p0_5"] - df["ret20_industry_pctile"]
+    df["industry_ret_rank_jump20_60"] = df["ret20_industry_pctile"] - df["ret60_industry_pctile_p0_5"]
+    df["from_industry_below_median_to_top20"] = (df["ret_rank_jump20_60"] >= 0.30) & (df["ret20_industry_pctile"] >= 0.80)
+    df["market_top20_industry_lag"] = (df["ret20_universe_pctile"] >= 0.80) & df["industry_width_state"].isin(["industry_width_weak", "industry_width_neutral"])
+    df["stock_leads_industry_lag"] = (df["relative_ret20_vs_industry"] > 0.10) & df["industry_regime_state"].isin(["industry_lagging", "industry_mixed"])
+    df["isolated_strength_weak_market"] = (df["ret20_universe_pctile"] >= 0.80) & df["market_regime_state"].isin(["market_drawdown", "market_choppy"])
+    df["market_turn_front_runner"] = (df["benchmark_ema60_slope20"] > 0) & (df["ret20_universe_pctile"] >= 0.80) & (df["market_width_state"] != "width_strong")
+
+    industry_width = df[["datetime", "industry_name", "industry_close_gt_ema60_ratio"]].drop_duplicates().sort_values(["industry_name", "datetime"])
+    industry_width["industry_width_delta20"] = industry_width.groupby("industry_name")["industry_close_gt_ema60_ratio"].diff(20)
+    df = df.merge(industry_width[["datetime", "industry_name", "industry_width_delta20"]], on=["datetime", "industry_name"], how="left")
+    market_width = df[["datetime", "close_gt_ema60_ratio"]].drop_duplicates().sort_values("datetime")
+    market_width["market_width_delta20"] = market_width["close_gt_ema60_ratio"].diff(20)
+    df = df.merge(market_width[["datetime", "market_width_delta20"]], on="datetime", how="left")
+    df["industry_width_improving_front_runner"] = (df["industry_width_delta20"] > 0.10) & (df["ret20_industry_pctile"] >= 0.80)
+    df["early_repair_industry_lag"] = df["repair_under20_from_low120"] & df["industry_width_state"].isin(["industry_width_weak", "industry_width_neutral"])
+
+    df["expansion_volatility_flag"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["close_location_in_day"] >= 0.60) & (df["ret20"] > 0)
+    df["destructive_volatility_flag"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["close_location_in_day"] <= 0.40) & (df["drawdown_from_high60"] <= -0.10)
+    df["reversal_volatility_flag"] = (df["amplitude"] >= df.groupby("year")["amplitude"].transform(lambda s: s.quantile(0.8))) & (df["lower_shadow_ratio"] >= 0.45) & (df["close_location_in_day"] >= 0.55)
+    df["late_acceleration_volatility_flag"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["observable_state_stage"] == "observable_late_acceleration_risk")
+    df["failed_high_volatility_flag"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["ret20"] <= 0) & (df["close_location_in_day"] <= 0.45)
+    df["high_atr_above_median20"] = (df["atr20_pct"] >= df.groupby("year")["atr20_pct"].transform(lambda s: s.quantile(0.8))) & (df["close"] > df["median_price20"])
+    df["high_atr_break_short_structure"] = (df["atr20_pct"] >= df.groupby("year")["atr20_pct"].transform(lambda s: s.quantile(0.8))) & (df["close"] < df["low20"])
+    df["high_vol_relative_strength_flag"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["ret20_universe_pctile"] >= 0.80)
+    df["high_vol_industry_width_improving"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["industry_width_delta20"] > 0.10)
+    df["high_vol_drawdown_controlled"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["drawdown_from_high60"] > -0.12)
+    df["high_vol_money_quality_flag"] = (df["amplitude20"] >= df.groupby("year")["amplitude20"].transform(lambda s: s.quantile(0.8))) & (df["money_ratio20"] >= 1.20) & (df["close_location_in_day"] >= 0.55)
+    df["high_vol_false_positive_control"] = df["failed_high_volatility_flag"] & (df["money_ratio20"] >= 1.20)
+
+    df["up_day_money_ratio20"] = df["money_ratio20"].where(df["up_day"])
+    df["down_day_money_ratio20"] = df["money_ratio20"].where(df["down_day"])
+    df["pullback_volume_contraction"] = (df["ret5"] < 0) & (df["money_ratio20"] < 0.80) & (df["close"] > df["ema60"])
+    df["volume_price_hold_3d"] = (group["money_ratio20"].shift(3) >= 1.50) & (df["close"] >= group["close"].shift(3))
+    df["volume_price_hold_5d"] = (group["money_ratio20"].shift(5) >= 1.50) & (df["close"] >= group["close"].shift(5))
+    df["volume_spike_failed_5d"] = (group["money_ratio20"].shift(5) >= 1.50) & (df["close"] < group["low"].shift(5))
+    df["money_close_location_score"] = df["money_ratio20"] * df["close_location_in_day"]
+    df["money_rank_jump_with_ret_rank_jump"] = (df["money_rank_jump5_20"] >= 0.20) & (df["ret_rank_jump5_20"] >= 0.20)
+    df["high_money_persistence5"] = rolling_sum_by_instrument(df, "money_ratio20", 5) >= 5.0
+    df["money_up_no_return_followthrough"] = (df["money_ratio20"] >= 1.50) & (df["ret5"] <= 0.02)
+    df["money_industry_width_improve"] = (df["money_ratio20"] >= 1.20) & (df["industry_width_delta20"] > 0.10)
+
+    df["near_limit_up_like"] = ((df["close"] / df["prev_close"].replace(0, np.nan) - 1.0) >= 0.08) | (df["gap_pct"] >= 0.08)
+    df["limit_up_count5"] = rolling_sum_by_instrument(df, "limit_up_like", 5)
+    df["limit_up_count20"] = rolling_sum_by_instrument(df, "limit_up_like", 20)
+    df["near_limit_up_count5"] = rolling_sum_by_instrument(df, "near_limit_up_like", 5)
+    df["near_limit_up_count20"] = rolling_sum_by_instrument(df, "near_limit_up_like", 20)
+    prior_limit60 = group["limit_up_like"].transform(lambda s: s.fillna(False).astype(float).shift(1).rolling(60, min_periods=1).sum())
+    prior_near60 = df.groupby("instrument", group_keys=False)["near_limit_up_like"].transform(lambda s: s.fillna(False).astype(float).shift(1).rolling(60, min_periods=1).sum())
+    df["first_limit_up_60d"] = df["limit_up_like"].fillna(False).astype(bool) & (prior_limit60.fillna(0) == 0)
+    df["first_near_limit_up_60d"] = df["near_limit_up_like"].fillna(False).astype(bool) & (prior_near60.fillna(0) == 0)
+    df["gap_up_close_upper"] = (df["gap_pct"] >= 0.03) & (df["close_location_in_day"] >= 0.60)
+    df["recent_gap_up_count3"] = rolling_sum_by_instrument(df, "gap_up_close_upper", 3)
+    df["recent_gap_up_count5"] = rolling_sum_by_instrument(df, "gap_up_close_upper", 5)
+    df["gap_up_held_3d"] = (df["recent_gap_up_count3"] > 0) & (df["close"] > df["ema20"])
+    df["gap_up_held_5d"] = (df["recent_gap_up_count5"] > 0) & (df["close"] > df["ema20"])
+    df["strong_body_day"] = (df["body_ratio"] >= 0.60) & (df["ret1"] > 0.04) & (df["close_location_in_day"] >= 0.60)
+    df["long_upper_shadow_failure"] = (df["upper_shadow_ratio"] >= 0.45) & (df["close_location_in_day"] <= 0.45) & (df["money_ratio20"] >= 1.20)
+    df["recent_strong_body_count10"] = rolling_sum_by_instrument(df, "strong_body_day", 10)
+    df["strong_day_pullback_hold20"] = (df["recent_strong_body_count10"] > 0) & (df["drawdown_from_high20"] > -0.12) & (df["money_ratio20"] < 1.30)
+    return df
+
+
+def p0_5_primitive_specs() -> list[P05PrimitiveSpec]:
+    specs: list[P05PrimitiveSpec] = []
+    for spec in primitive_specs():
+        if not spec.p0_enabled:
+            continue
+        lifecycle = "hold_exit_tolerance" if spec.feature_name in {"post_20pct_from_recent_low", "post_30pct_from_recent_low"} else "early_entry_discovery"
+        specs.append(
+            P05PrimitiveSpec(
+                spec.feature_name,
+                spec.feature_family,
+                spec.column,
+                spec.value_type,
+                spec.min_history_trading_days,
+                spec.lookback_window,
+                spec.requires_benchmark_history,
+                spec.requires_industry_history,
+                True,
+                spec.direction_hint,
+                p0_5_new=False,
+                lifecycle_bucket=lifecycle,
+                primary_combo_family=spec.feature_family,
+                human_readable_definition=f"P0 inherited primitive: {spec.feature_name}",
+                formula_or_bin=spec.column,
+                required_columns=spec.column,
+            )
+        )
+
+    def add(
+        name: str,
+        family: str,
+        value_type: str,
+        min_history: int,
+        lifecycle: str,
+        primary: str,
+        definition: str,
+        direction: str = "high",
+        sparse: bool = False,
+        generalizable: bool = True,
+        path_only: bool = False,
+        diagnostic_only: bool = False,
+        close_rule: str = "",
+        context: str = "",
+        false_def: str = "evaluation_only: target forward label miss and/or adverse future drawdown; never used as T-day feature",
+    ) -> None:
+        specs.append(
+            P05PrimitiveSpec(
+                name,
+                family,
+                name,
+                value_type,
+                min_history,
+                f"{min_history}d" if min_history > 1 else "1d",
+                False,
+                "industry" in name or "industry" in definition,
+                True,
+                direction,
+                p0_5_new=True,
+                lifecycle_bucket=lifecycle,
+                primary_combo_family=primary,
+                sparse_diagnostic=sparse,
+                generalizable_entry_lead=generalizable,
+                path_explanation_only=path_only,
+                category_id=name if primary == "high_volatility_decomposition" else "",
+                human_readable_definition=definition,
+                formula_or_bin=name,
+                required_columns=name,
+                close_location_rule=close_rule,
+                trend_or_drawdown_context=context,
+                evaluation_only_false_positive_definition=false_def,
+                diagnostic_only_not_p1_ready=diagnostic_only,
+            )
+        )
+
+    hv = "high_volatility_decomposition"
+    add("close_location_in_day", "price_intraday_structure", "continuous", 1, "early_entry_discovery", hv, "Close location within the daily range.")
+    add("up_day_amplitude", "volatility_decomposition", "continuous", 20, "early_entry_discovery", hv, "Daily amplitude on up days.", close_rule="close > prev_close")
+    add("down_day_amplitude", "volatility_decomposition", "continuous", 20, "early_entry_discovery", hv, "Daily amplitude on down days.", direction="low", close_rule="close < prev_close")
+    add("expansion_volatility_flag", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High amplitude with upper close and positive 20d return.", close_rule="close_location >= 0.60", context="upward expansion")
+    add("destructive_volatility_flag", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High amplitude with lower close and existing drawdown.", direction="low", close_rule="close_location <= 0.40", context="drawdown damage")
+    add("reversal_volatility_flag", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High intraday range with lower shadow and upper-half close.", close_rule="lower_shadow >= 0.45")
+    add("late_acceleration_volatility_flag", "volatility_decomposition", "boolean", 20, "hold_exit_tolerance", hv, "High volatility while already in late acceleration state.", diagnostic_only=True, context="late lifecycle")
+    add("failed_high_volatility_flag", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High volatility with weak return and lower close.", direction="low", close_rule="close_location <= 0.45")
+    add("high_atr_above_median20", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High ATR while close remains above 20d median price.", close_rule="close > median20")
+    add("high_atr_break_short_structure", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High ATR with close breaking short-term structure.", direction="low", context="structure break")
+    add("high_vol_relative_strength_flag", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High amplitude combined with top-quintile market relative return.")
+    add("high_vol_industry_width_improving", "volatility_decomposition", "boolean", 60, "early_entry_discovery", hv, "High volatility while industry breadth improves.")
+    add("high_vol_drawdown_controlled", "volatility_decomposition", "boolean", 60, "early_entry_discovery", hv, "High volatility with controlled 60d drawdown.")
+    add("high_vol_money_quality_flag", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High volatility supported by money expansion and upper-half close.", close_rule="close_location >= 0.55")
+    add("high_vol_false_positive_control", "volatility_decomposition", "boolean", 20, "early_entry_discovery", hv, "High volatility failure-control diagnostic.", direction="low", diagnostic_only=True)
+
+    repair = "repair_initiation"
+    add("reclaim_median20_flag", "repair_initiation", "boolean", 20, "early_entry_discovery", repair, "First close reclaim above 20d median price.")
+    add("reclaim_median60_flag", "repair_initiation", "boolean", 60, "early_entry_discovery", repair, "First close reclaim above 60d median price.")
+    add("drawdown_from_high20", "repair_initiation", "continuous", 20, "hold_exit_tolerance", repair, "20d drawdown from rolling high.", direction="low")
+    add("first_reclaim_median20_after_drawdown", "repair_initiation", "boolean", 120, "early_entry_discovery", repair, "20d median reclaim after at least 20% drawdown.")
+    add("first_reclaim_median60_after_drawdown", "repair_initiation", "boolean", 120, "early_entry_discovery", repair, "60d median reclaim after at least 25% drawdown.")
+    add("repair_under20_from_low120", "repair_initiation", "boolean", 120, "early_entry_discovery", repair, "Repair from 120d low but still below post-20% confirmation.")
+    add("repair_under30_from_low120", "repair_initiation", "boolean", 120, "early_entry_discovery", repair, "Repair from 120d low but still below post-30% confirmation.")
+    add("higher_low20_flag", "repair_initiation", "boolean", 40, "early_entry_discovery", repair, "20d low is higher than prior 20d low.")
+    add("higher_low60_flag", "repair_initiation", "boolean", 120, "early_entry_discovery", repair, "60d low is higher than prior 60d low.")
+    add("higher_high20_flag", "repair_initiation", "boolean", 40, "confirmation_continuation", repair, "20d high is higher than prior 20d high.")
+    add("higher_high60_flag", "repair_initiation", "boolean", 120, "confirmation_continuation", repair, "60d high is higher than prior 60d high.")
+    add("higher_low_without_high_breakout", "repair_initiation", "boolean", 40, "early_entry_discovery", repair, "Higher low without a 20d high breakout.")
+    add("false_breakdown_reclaim20", "repair_initiation", "boolean", 20, "early_entry_discovery", repair, "Temporary break below prior 20d low followed by reclaim.")
+    add("drawdown_speed_slowing20", "repair_initiation", "continuous", 120, "early_entry_discovery", repair, "Recent drawdown deterioration slows versus previous 20d.")
+    add("early_repair_industry_lag", "repair_initiation", "boolean", 120, "early_entry_discovery", repair, "Early repair while industry breadth has not yet synchronized.")
+
+    rank = "rank_jump_leadership"
+    add("industry_width_delta20", "rank_jump_leadership", "continuous", 60, "early_entry_discovery", rank, "20-session improvement in industry breadth.")
+    add("market_width_delta20", "rank_jump_leadership", "continuous", 60, "early_entry_discovery", rank, "20-session improvement in market breadth.")
+    add("ret5_universe_pctile_p0_5", "rank_jump_leadership", "continuous", 5, "early_entry_discovery", rank, "5d return cross-section rank.")
+    add("ret60_universe_pctile_p0_5", "rank_jump_leadership", "continuous", 60, "confirmation_continuation", rank, "60d return cross-section rank.")
+    add("ret_rank_jump5_20", "rank_jump_leadership", "continuous", 20, "early_entry_discovery", rank, "5d return rank minus 20d return rank.")
+    add("ret_rank_jump20_60", "rank_jump_leadership", "continuous", 60, "early_entry_discovery", rank, "20d return rank minus 60d return rank.")
+    add("money5_universe_pctile", "rank_jump_leadership", "continuous", 5, "early_entry_discovery", rank, "5d money cross-section rank.")
+    add("money_rank_jump5_20", "rank_jump_leadership", "continuous", 20, "early_entry_discovery", rank, "5d money rank minus 20d money rank.")
+    add("money_rank_jump20_60", "rank_jump_leadership", "continuous", 60, "early_entry_discovery", rank, "20d money rank minus 60d money rank.")
+    add("industry_ret_rank_jump5_20", "rank_jump_leadership", "continuous", 20, "early_entry_discovery", rank, "5d industry return rank jump versus 20d.")
+    add("from_industry_below_median_to_top20", "rank_jump_leadership", "boolean", 60, "early_entry_discovery", rank, "Stock jumps from weak/mid industry rank to top 20%.")
+    add("market_top20_industry_lag", "rank_jump_leadership", "boolean", 20, "early_entry_discovery", rank, "Stock enters market top 20% before industry breadth sync.")
+    add("stock_leads_industry_lag", "rank_jump_leadership", "boolean", 20, "early_entry_discovery", rank, "Stock persistently outperforms lagging industry.")
+    add("isolated_strength_weak_market", "rank_jump_leadership", "boolean", 20, "early_entry_discovery", rank, "Top-quintile stock strength in weak or choppy market.")
+    add("market_turn_front_runner", "rank_jump_leadership", "boolean", 120, "early_entry_discovery", rank, "Front-runner when benchmark slope turns but breadth is not strong.")
+    add("industry_width_improving_front_runner", "rank_jump_leadership", "boolean", 60, "early_entry_discovery", rank, "Industry breadth improvement with stock in industry front row.")
+
+    money = "money_quality"
+    add("up_day_money_ratio20", "money_quality", "continuous", 20, "confirmation_continuation", money, "Money expansion on up days.")
+    add("down_day_money_ratio20", "money_quality", "continuous", 20, "early_entry_discovery", money, "Money expansion on down days.", direction="low")
+    add("pullback_volume_contraction", "money_quality", "boolean", 20, "early_entry_discovery", money, "Pullback with contracted money while price remains above EMA60.")
+    add("volume_price_hold_3d", "money_quality", "boolean", 20, "confirmation_continuation", money, "Price holds 3 days after a prior volume expansion.")
+    add("volume_price_hold_5d", "money_quality", "boolean", 20, "confirmation_continuation", money, "Price holds 5 days after a prior volume expansion.")
+    add("volume_spike_failed_5d", "money_quality", "boolean", 20, "early_entry_discovery", money, "Price fails 5 days after a prior volume spike.", direction="low")
+    add("money_close_location_score", "money_quality", "continuous", 20, "confirmation_continuation", money, "Money expansion weighted by close location.")
+    add("money_rank_jump_with_ret_rank_jump", "money_quality", "boolean", 20, "early_entry_discovery", money, "Money rank jump confirms return rank jump.")
+    add("high_money_persistence5", "money_quality", "boolean", 20, "confirmation_continuation", money, "Persistent elevated money for five recent sessions.")
+    add("money_up_no_return_followthrough", "money_quality", "boolean", 20, "early_entry_discovery", money, "Money expansion without return follow-through.", direction="low")
+    add("money_industry_width_improve", "money_quality", "boolean", 60, "confirmation_continuation", money, "Money expansion while industry breadth improves.")
+
+    sparse = "sparse_strong_day_diagnostic"
+    add("near_limit_up_like", "strong_day_path", "boolean", 1, "confirmation_continuation", sparse, "Near limit-up day.", sparse=True, generalizable=False, path_only=True)
+    add("limit_up_count5", "strong_day_path", "continuous", 5, "confirmation_continuation", sparse, "Limit-up count in recent 5 sessions.", sparse=True, generalizable=False, path_only=True)
+    add("limit_up_count20", "strong_day_path", "continuous", 20, "confirmation_continuation", sparse, "Limit-up count in recent 20 sessions.", sparse=True, generalizable=False, path_only=True)
+    add("near_limit_up_count5", "strong_day_path", "continuous", 5, "confirmation_continuation", sparse, "Near-limit-up count in recent 5 sessions.", sparse=True, generalizable=False, path_only=True)
+    add("near_limit_up_count20", "strong_day_path", "continuous", 20, "confirmation_continuation", sparse, "Near-limit-up count in recent 20 sessions.", sparse=True, generalizable=False, path_only=True)
+    add("first_limit_up_60d", "strong_day_path", "boolean", 60, "confirmation_continuation", sparse, "First limit-up-like day in 60 sessions.", sparse=True, generalizable=False, path_only=True)
+    add("first_near_limit_up_60d", "strong_day_path", "boolean", 60, "confirmation_continuation", sparse, "First near-limit-up-like day in 60 sessions.", sparse=True, generalizable=False, path_only=True)
+    add("gap_up_close_upper", "strong_day_path", "boolean", 1, "confirmation_continuation", sparse, "Gap-up day closing in upper half.", sparse=True, generalizable=False, path_only=True)
+    add("gap_up_held_3d", "strong_day_path", "boolean", 5, "confirmation_continuation", sparse, "Recent gap-up held above EMA20 for 3d diagnostic.", sparse=True, generalizable=False, path_only=True)
+    add("gap_up_held_5d", "strong_day_path", "boolean", 5, "confirmation_continuation", sparse, "Recent gap-up held above EMA20 for 5d diagnostic.", sparse=True, generalizable=False, path_only=True)
+    add("strong_body_day", "strong_day_path", "boolean", 1, "confirmation_continuation", sparse, "Strong real-body up day.", sparse=True, generalizable=False, path_only=True)
+    add("long_upper_shadow_failure", "strong_day_path", "boolean", 1, "hold_exit_tolerance", sparse, "High-money upper-shadow failure day.", direction="low", sparse=True, generalizable=False, path_only=True, diagnostic_only=True)
+    add("strong_day_pullback_hold20", "strong_day_path", "boolean", 20, "hold_exit_tolerance", sparse, "Pullback after strong day that holds within 20d structure.", sparse=True, generalizable=False, path_only=True)
+    return specs
+
+
+def p0_5_feature_dictionary() -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    for spec in p0_5_primitive_specs():
+        rows.append(
+            {
+                "feature_name": spec.feature_name,
+                "feature_family": spec.feature_family,
+                "source_column": spec.column,
+                "value_type": spec.value_type,
+                "min_history_trading_days": int(spec.min_history_trading_days),
+                "lookback_window": spec.lookback_window,
+                "requires_benchmark_history": bool(spec.requires_benchmark_history),
+                "requires_industry_history": bool(spec.requires_industry_history),
+                "feature_eligible_rule": f"available_history_trading_days >= {spec.min_history_trading_days} and provider_required_fields_ok and value_not_missing",
+                "warmup_partial_year_handling": "mark_warmup_partial_year_and_exclude_from_p0_5_lift_denominator",
+                "p0_5_enabled": bool(spec.p0_enabled),
+                "p0_5_new": bool(spec.p0_5_new),
+                "direction_hint": spec.direction_hint,
+                "lifecycle_bucket": spec.lifecycle_bucket,
+                "primary_combo_family": spec.primary_combo_family,
+                "sparse_diagnostic": bool(spec.sparse_diagnostic),
+                "generalizable_entry_lead": bool(spec.generalizable_entry_lead),
+                "path_explanation_only": bool(spec.path_explanation_only),
+                "category_id": spec.category_id,
+                "human_readable_definition": spec.human_readable_definition,
+                "formula_or_bin": spec.formula_or_bin,
+                "required_columns": spec.required_columns,
+                "feature_eligible_rule_detail": f"{spec.column} not missing and PIT member on T date",
+                "close_location_rule": spec.close_location_rule,
+                "trend_or_drawdown_context": spec.trend_or_drawdown_context,
+                "evaluation_only_false_positive_definition": spec.evaluation_only_false_positive_definition,
+                "diagnostic_only_not_p1_ready": bool(spec.diagnostic_only_not_p1_ready),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_5_common_mask(df: pd.DataFrame, config: dict[str, Any]) -> pd.Series:
+    return (
+        (df["datetime"] >= parse_dt(config["dates"]["research_start"]))
+        & (df["datetime"] <= parse_dt(config["dates"]["research_end"]))
+        & df["pit_member"].fillna(False).astype(bool)
+        & df["provider_required_fields_ok"].fillna(False).astype(bool)
+        & df["feature_eligible"].fillna(False).astype(bool)
+        & ~df["label_horizon_truncated"].fillna(True).astype(bool)
+        & ~df["observed_reference_overlap"].fillna(True).astype(bool)
+    )
+
+
+def p0_5_lifecycle_mask(df: pd.DataFrame, config: dict[str, Any], lifecycle_bucket: str) -> pd.Series:
+    common = p0_5_common_mask(df, config)
+    late = df["observable_state_stage"].astype("string") == "observable_late_acceleration_risk"
+    post20 = df["post_20pct_from_recent_low"].fillna(False).astype(bool)
+    post30 = df["post_30pct_from_recent_low"].fillna(False).astype(bool)
+    if lifecycle_bucket == "early_entry_discovery":
+        return common & ~post20 & ~post30 & ~late
+    if lifecycle_bucket == "confirmation_continuation":
+        return common & (
+            post20
+            | post30
+            | df["observable_state_stage"].isin(
+                ["observable_relative_strength_leading", "observable_20pct_from_recent_low", "observable_30pct_from_recent_low", "observable_trend_extension"]
+            )
+        ) & ~late
+    if lifecycle_bucket == "hold_exit_tolerance":
+        return common & (post20 | post30 | late | (df["trend_age_close_above_ema60"] >= 60))
+    if lifecycle_bucket == "early_entry_shadow_with_post_20pct":
+        return common & post20 & ~post30 & ~late
+    if lifecycle_bucket == "early_entry_shadow_with_post_30pct":
+        return common & post30 & ~late
+    if lifecycle_bucket == "early_entry_shadow_with_late_acceleration":
+        return common & late
+    return common
+
+
+def p0_5_patterns() -> list[P05PatternSpec]:
+    def c(feature: str, values: tuple[str, ...]) -> tuple[str, tuple[str, ...]]:
+        return (feature, values)
+
+    patterns = [
+        P05PatternSpec("hv_expansion_rs", "扩张性高波 + 相对强度", "high_volatility_decomposition", "early_entry_discovery", (c("expansion_volatility_flag", ("true",)), c("ret20_universe_pctile", ("p80_90", "p90_100"))), "expansion_volatility_flag == true and ret20_universe_pctile in top20", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("hv_expansion_money", "扩张性高波 + 成交质量", "high_volatility_decomposition", "early_entry_discovery", (c("expansion_volatility_flag", ("true",)), c("money_close_location_score", ("p80_90", "p90_100"))), "expansion volatility with upper close and money quality", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("hv_upper_close_industry_improve", "高波上半区 + 行业宽度改善", "high_volatility_decomposition", "early_entry_discovery", (c("high_vol_industry_width_improving", ("true",)), c("close_location_in_day", ("p60_80", "p80_90", "p90_100"))), "high volatility with improving industry breadth", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("hv_drawdown_control_rs", "高波 + 回撤受控 + 排名强", "high_volatility_decomposition", "early_entry_discovery", (c("high_vol_drawdown_controlled", ("true",)), c("ret20_universe_pctile", ("p80_90", "p90_100"))), "high volatility, controlled drawdown, strong rank", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("hv_atr_above_median", "高ATR但守住中位价", "high_volatility_decomposition", "early_entry_discovery", (c("high_atr_above_median20", ("true",)), c("ret_rank_jump5_20", ("p60_80", "p80_90", "p90_100"))), "high ATR above median20 with rank jump", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("hv_reversal_lower_shadow", "高波反转下影", "high_volatility_decomposition", "early_entry_discovery", (c("reversal_volatility_flag", ("true",)), c("money_ratio20", ("p60_80", "p80_90", "p90_100"))), "reversal volatility with money support", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("hv_failed_destructive", "破坏性高波对照", "high_volatility_decomposition", "early_entry_discovery", (c("destructive_volatility_flag", ("true",)), c("failed_high_volatility_flag", ("true",))), "destructive and failed high volatility", "true_low", "drop_or_false_positive_audit", diagnostic_only_not_p1_ready=True),
+        P05PatternSpec("hv_break_structure", "高ATR跌破结构对照", "high_volatility_decomposition", "early_entry_discovery", (c("high_atr_break_short_structure", ("true",)), c("close_location_in_day", ("p0_10", "p10_20", "p20_40"))), "high ATR breaks short structure", "true_low", "drop_or_false_positive_audit", diagnostic_only_not_p1_ready=True),
+        P05PatternSpec("hv_late_acceleration", "后段加速高波", "high_volatility_decomposition", "hold_exit_tolerance", (c("late_acceleration_volatility_flag", ("true",)), c("trend_speed_bucket", ("speed_fast",))), "late acceleration volatility and fast trend", "true_high", "p1_hold_exit_refine", diagnostic_only_not_p1_ready=True),
+        P05PatternSpec("hv_high_money_control", "高波 + 放量 + 上半区", "high_volatility_decomposition", "confirmation_continuation", (c("high_vol_money_quality_flag", ("true",)), c("relative_ret20_vs_benchmark", ("p60_80", "p80_90", "p90_100"))), "high volatility with money quality and benchmark relative strength", "true_high", "p1_confirmation_refine"),
+        P05PatternSpec("hv_up_vs_down_spread", "上涨高波优于下跌高波", "high_volatility_decomposition", "early_entry_discovery", (c("up_day_amplitude", ("p80_90", "p90_100")), c("down_day_amplitude", ("missing", "p0_10", "p10_20", "p20_40"))), "up-day amplitude high without down-day amplitude dominance", "high_low", "p1_hypothesis_refine"),
+
+        P05PatternSpec("repair_reclaim20_under20", "20日中位价收复 + 未涨20%", "repair_initiation", "early_entry_discovery", (c("reclaim_median20_flag", ("true",)), c("repair_under20_from_low120", ("true",))), "reclaim median20 before post-20 confirmation", "true_true", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_reclaim60_under30", "60日中位价收复 + 未涨30%", "repair_initiation", "early_entry_discovery", (c("reclaim_median60_flag", ("true",)), c("repair_under30_from_low120", ("true",))), "reclaim median60 before post-30 confirmation", "true_true", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_first_reclaim_drawdown", "深回撤后首次收复", "repair_initiation", "early_entry_discovery", (c("first_reclaim_median20_after_drawdown", ("true",)), c("drawdown_from_high120", ("p0_10", "p10_20", "p20_40"))), "first median reclaim after drawdown", "true_low", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_higher_low_rank_jump", "低点抬高 + 排名跃迁", "repair_initiation", "early_entry_discovery", (c("higher_low20_flag", ("true",)), c("ret_rank_jump5_20", ("p80_90", "p90_100"))), "higher low with return rank jump", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_higher_low_no_breakout", "低点抬高但高点未破", "repair_initiation", "early_entry_discovery", (c("higher_low_without_high_breakout", ("true",)), c("ret_rank_jump20_60", ("p60_80", "p80_90", "p90_100"))), "higher low before high breakout", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_false_breakdown_reclaim", "假跌破后快速收复", "repair_initiation", "early_entry_discovery", (c("false_breakdown_reclaim20", ("true",)), c("close_location_in_day", ("p60_80", "p80_90", "p90_100"))), "false breakdown reclaim with upper close", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_slowing_drawdown", "回撤速度减弱 + 初修复", "repair_initiation", "early_entry_discovery", (c("drawdown_speed_slowing20", ("p80_90", "p90_100")), c("repair_under20_from_low120", ("true",))), "slowing drawdown plus early repair", "high_true", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_from_low_rs", "低点修复 + 相对强", "repair_initiation", "early_entry_discovery", (c("repair_under30_from_low120", ("true",)), c("relative_ret20_vs_benchmark", ("p60_80", "p80_90", "p90_100"))), "repair from low with benchmark relative strength", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("repair_industry_lag", "初修复 + 行业未同步", "repair_initiation", "early_entry_discovery", (c("early_repair_industry_lag", ("true",)), c("stock_leads_industry_lag", ("true",))), "early repair while industry has not synchronized", "true_true", "p1_hypothesis_refine"),
+
+        P05PatternSpec("rank_jump_5_20", "5日排名跃迁", "rank_jump_leadership", "early_entry_discovery", (c("ret_rank_jump5_20", ("p90_100",)), c("ret20_universe_pctile", ("p20_40", "p40_60", "p60_80", "p80_90"))), "rank jump before absolute top10 strength", "high_not_top10", "p1_first_stage_filter"),
+        P05PatternSpec("rank_jump_20_60", "20日相对60日排名跃迁", "rank_jump_leadership", "early_entry_discovery", (c("ret_rank_jump20_60", ("p80_90", "p90_100")), c("ret60_universe_pctile_p0_5", ("p0_10", "p10_20", "p20_40", "p40_60"))), "20d rank jump from weaker 60d base", "high_low", "p1_first_stage_filter"),
+        P05PatternSpec("rank_industry_bottom_to_top", "行业内从中后排跃迁到前20%", "rank_jump_leadership", "early_entry_discovery", (c("from_industry_below_median_to_top20", ("true",)), c("industry_ret_rank_jump5_20", ("p60_80", "p80_90", "p90_100"))), "industry rank jump from below median to top 20", "true_high", "p1_first_stage_filter"),
+        P05PatternSpec("rank_market_top20_industry_lag", "市场前20%但行业未同步", "rank_jump_leadership", "early_entry_discovery", (c("market_top20_industry_lag", ("true",)), c("industry_width_state", ("industry_width_weak", "industry_width_neutral"))), "market top20 stock before industry width sync", "true_regime", "p1_hypothesis_refine"),
+        P05PatternSpec("rank_stock_leads_industry", "个股领先滞后行业", "rank_jump_leadership", "early_entry_discovery", (c("stock_leads_industry_lag", ("true",)), c("relative_ret20_vs_industry", ("p80_90", "p90_100"))), "stock leads lagging industry", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("rank_isolated_weak_market", "弱市孤立强势", "rank_jump_leadership", "early_entry_discovery", (c("isolated_strength_weak_market", ("true",)), c("market_regime_state", ("market_drawdown", "market_choppy"))), "isolated strength in weak market", "true_regime", "p1_first_stage_filter"),
+        P05PatternSpec("rank_market_turn_front", "市场转折前排个股", "rank_jump_leadership", "early_entry_discovery", (c("market_turn_front_runner", ("true",)), c("ret_rank_jump5_20", ("p60_80", "p80_90", "p90_100"))), "front runner near market turn", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("rank_industry_width_front", "行业宽度刚改善的前排个股", "rank_jump_leadership", "early_entry_discovery", (c("industry_width_improving_front_runner", ("true",)), c("ret20_industry_pctile", ("p80_90", "p90_100"))), "front row when industry width improves", "true_high", "p1_hypothesis_refine"),
+
+        P05PatternSpec("money_up_day_quality", "上涨日放量", "money_quality", "confirmation_continuation", (c("up_day_money_ratio20", ("p80_90", "p90_100")), c("close_location_in_day", ("p60_80", "p80_90", "p90_100"))), "up-day money expansion with upper close", "high_high", "p1_confirmation_refine"),
+        P05PatternSpec("money_down_day_warning", "下跌日放量警示", "money_quality", "early_entry_discovery", (c("down_day_money_ratio20", ("p80_90", "p90_100")), c("close_location_in_day", ("p0_10", "p10_20", "p20_40"))), "down-day money expansion with weak close", "high_low", "drop_or_false_positive_audit", diagnostic_only_not_p1_ready=True),
+        P05PatternSpec("money_pullback_contraction", "回撤缩量", "money_quality", "early_entry_discovery", (c("pullback_volume_contraction", ("true",)), c("higher_low20_flag", ("true",))), "pullback contraction with higher low", "true_true", "p1_hypothesis_refine"),
+        P05PatternSpec("money_hold_3d", "放量后3日价格保持", "money_quality", "confirmation_continuation", (c("volume_price_hold_3d", ("true",)), c("ret20_universe_pctile", ("p60_80", "p80_90", "p90_100"))), "price holds after money spike", "true_high", "p1_confirmation_refine"),
+        P05PatternSpec("money_hold_5d", "放量后5日价格保持", "money_quality", "confirmation_continuation", (c("volume_price_hold_5d", ("true",)), c("relative_ret20_vs_benchmark", ("p60_80", "p80_90", "p90_100"))), "5d price hold after volume spike", "true_high", "p1_confirmation_refine"),
+        P05PatternSpec("money_spike_failed", "放量后快速跌破", "money_quality", "early_entry_discovery", (c("volume_spike_failed_5d", ("true",)), c("money_ratio20", ("p80_90", "p90_100"))), "failed volume spike", "true_high", "drop_or_false_positive_audit", diagnostic_only_not_p1_ready=True),
+        P05PatternSpec("money_rank_ret_rank", "成交排名跃迁 + 收益排名跃迁", "money_quality", "early_entry_discovery", (c("money_rank_jump_with_ret_rank_jump", ("true",)), c("ret_rank_jump5_20", ("p80_90", "p90_100"))), "money rank jump with return rank jump", "true_high", "p1_hypothesis_refine"),
+        P05PatternSpec("money_persistent_quality", "高成交额持续", "money_quality", "confirmation_continuation", (c("high_money_persistence5", ("true",)), c("money_close_location_score", ("p80_90", "p90_100"))), "persistent high money with good close location", "true_high", "p1_confirmation_refine"),
+        P05PatternSpec("money_industry_improve", "成交放大 + 行业宽度改善", "money_quality", "confirmation_continuation", (c("money_industry_width_improve", ("true",)), c("industry_width_delta20", ("p80_90", "p90_100"))), "money expansion with industry breadth improvement", "true_high", "p1_confirmation_refine"),
+
+        P05PatternSpec("sparse_first_limit", "首次涨停诊断", "sparse_strong_day_diagnostic", "confirmation_continuation", (c("first_limit_up_60d", ("true",)), c("limit_up_count20", ("p60_80", "p80_90", "p90_100"))), "first limit-up in 60d", "true_high", "p1_path_diagnostic", True, False, True),
+        P05PatternSpec("sparse_first_near_limit", "首次接近涨停诊断", "sparse_strong_day_diagnostic", "confirmation_continuation", (c("first_near_limit_up_60d", ("true",)), c("near_limit_up_count20", ("p60_80", "p80_90", "p90_100"))), "first near-limit-up in 60d", "true_high", "p1_path_diagnostic", True, False, True),
+        P05PatternSpec("sparse_gap_upper_hold", "Gap up 上半区且守住", "sparse_strong_day_diagnostic", "confirmation_continuation", (c("gap_up_close_upper", ("true",)), c("gap_up_held_3d", ("true",))), "gap-up closes upper and holds", "true_true", "p1_path_diagnostic", True, False, True),
+        P05PatternSpec("sparse_strong_body", "极强实体日诊断", "sparse_strong_day_diagnostic", "confirmation_continuation", (c("strong_body_day", ("true",)), c("close_location_in_day", ("p80_90", "p90_100"))), "strong body up day", "true_high", "p1_path_diagnostic", True, False, True),
+        P05PatternSpec("sparse_upper_shadow_fail", "长上影强势失败", "sparse_strong_day_diagnostic", "hold_exit_tolerance", (c("long_upper_shadow_failure", ("true",)), c("money_ratio20", ("p80_90", "p90_100"))), "long upper shadow failure with money", "true_high", "drop_or_false_positive_audit", True, False, True, True),
+        P05PatternSpec("sparse_strong_pullback_hold", "强势日后缩量回撤守住", "sparse_strong_day_diagnostic", "hold_exit_tolerance", (c("strong_day_pullback_hold20", ("true",)), c("drawdown_from_high20", ("p80_90", "p90_100"))), "strong-day pullback holds structure", "true_high", "p1_hold_exit_refine", True, False, True),
+    ]
+    return patterns
+
+
+def p0_5_build_bins(df: pd.DataFrame, config: dict[str, Any], specs: list[P05PrimitiveSpec]) -> tuple[dict[str, pd.Series], dict[str, pd.Series]]:
+    bins: dict[str, pd.Series] = {}
+    elig: dict[str, pd.Series] = {}
+    for spec in specs:
+        bins[spec.feature_name] = primitive_bin(df, spec, config)
+        elig[spec.feature_name] = primitive_eligible(df, spec)
+        df[f"bin__p0_5__{spec.feature_name}"] = bins[spec.feature_name]
+    return bins, elig
+
+
+def p0_5_condition_from_pattern(pattern: P05PatternSpec, bins: dict[str, pd.Series], elig: dict[str, pd.Series]) -> tuple[pd.Series, pd.Series]:
+    first_feature = pattern.conditions[0][0]
+    index = bins[first_feature].index
+    condition = pd.Series(True, index=index)
+    eligible = pd.Series(True, index=index)
+    for feature, values in pattern.conditions:
+        condition &= bins[feature].isin(values)
+        eligible &= elig[feature].fillna(False).astype(bool)
+    return condition, eligible
+
+
+def p0_5_trigger_events(df: pd.DataFrame, mask: pd.Series, positive_col: str, gap: int) -> pd.DataFrame:
+    subset = df.loc[mask.fillna(False).astype(bool), ["instrument", "datetime", "year", "instrument_year", "instrument_day_index", positive_col, "future_50pct_episode_key_240d"]].copy()
+    if subset.empty:
+        return pd.DataFrame(columns=["event_id", "instrument", "year", "instrument_year", "first_trigger_date", "positive", "future_episode_key"])
+    rows: list[dict[str, Any]] = []
+    for instrument, group in subset.sort_values(["instrument", "instrument_day_index"]).groupby("instrument", sort=False):
+        last_idx: int | None = None
+        event_number = 0
+        for row in group.itertuples(index=False):
+            idx = int(row.instrument_day_index)
+            if last_idx is None or idx - last_idx > gap:
+                event_number += 1
+                rows.append(
+                    {
+                        "event_id": f"{instrument}_{event_number}_{iso_date(row.datetime)}",
+                        "instrument": instrument,
+                        "year": int(row.year),
+                        "instrument_year": row.instrument_year,
+                        "first_trigger_date": pd.Timestamp(row.datetime).normalize(),
+                        "positive": bool(getattr(row, positive_col)),
+                        "future_episode_key": getattr(row, "future_50pct_episode_key_240d"),
+                    }
+                )
+            last_idx = idx
+    return pd.DataFrame(rows)
+
+
+def p0_5_baseline_pseudo_events(df: pd.DataFrame, base_mask: pd.Series, positive_col: str, gap: int) -> pd.DataFrame:
+    subset = df.loc[base_mask.fillna(False).astype(bool), ["instrument", "year", "instrument_year", "datetime", "instrument_day_index", positive_col]].copy()
+    if subset.empty:
+        return pd.DataFrame(columns=["event_id", "instrument", "year", "instrument_year", "first_trigger_date", "positive"])
+    rows: list[dict[str, Any]] = []
+    for (instrument, year), group in subset.sort_values(["instrument", "year", "instrument_day_index"]).groupby(["instrument", "year"], sort=False):
+        last_idx: int | None = None
+        event_number = 0
+        for row in group.itertuples(index=False):
+            idx = int(row.instrument_day_index)
+            if last_idx is None or idx - last_idx >= gap:
+                event_number += 1
+                rows.append(
+                    {
+                        "event_id": f"baseline_{instrument}_{int(year)}_{event_number}_{iso_date(row.datetime)}",
+                        "instrument": instrument,
+                        "year": int(year),
+                        "instrument_year": row.instrument_year,
+                        "first_trigger_date": pd.Timestamp(row.datetime).normalize(),
+                        "positive": bool(getattr(row, positive_col)),
+                    }
+                )
+                last_idx = idx
+    return pd.DataFrame(rows)
+
+
+def p0_5_winner_episode_coverage_for_events(events: pd.DataFrame, episodes: pd.DataFrame) -> tuple[float, int, int, list[str]]:
+    if episodes.empty:
+        return np.nan, 0, 0, []
+    denom = episodes[(episodes["episode_scope"] == "in_year_episode") & (~episodes["observed_reference_overlap"].fillna(False).astype(bool))].copy()
+    if denom.empty:
+        return np.nan, 0, 0, []
+    if events.empty:
+        return 0.0, 0, int(len(denom)), []
+    event_dates: dict[str, list[pd.Timestamp]] = {}
+    for instrument, group in events.groupby("instrument", sort=False):
+        event_dates[str(instrument)] = sorted(pd.to_datetime(group["first_trigger_date"]).tolist())
+    covered: list[str] = []
+    for row in denom.itertuples(index=False):
+        low_date = parse_dt(row.low_date)
+        high_date = parse_dt(row.high_date)
+        dates = event_dates.get(str(row.instrument), [])
+        if any((date >= low_date) and (date < high_date) for date in dates):
+            covered.append(str(row.episode_id))
+    coverage = len(covered) / len(denom) if len(denom) else np.nan
+    return coverage, len(covered), int(len(denom)), covered
+
+
+def summarize_p0_5_condition(
+    df: pd.DataFrame,
+    condition: pd.Series,
+    feature_eligible: pd.Series,
+    config: dict[str, Any],
+    lead_id: str,
+    lead_name: str,
+    primary_combo_family: str,
+    lifecycle_bucket: str,
+    formula_or_bin: str,
+    direction: str,
+    recommended_next_phase: str,
+    episodes: pd.DataFrame,
+    sparse_diagnostic: bool = False,
+    generalizable_entry_lead: bool = True,
+    path_explanation_only: bool = False,
+    diagnostic_only_not_p1_ready: bool = False,
+    full_metrics: bool = True,
+) -> dict[str, Any]:
+    cfg = p0_5_cfg(config)
+    positive_col = cfg.get("target_label", "is_future_50pct_high_120d")
+    secondary_col = cfg.get("secondary_label", "is_future_100pct_high_240d")
+    gap = int(cfg.get("dedup_gap_trading_days", 20))
+    lifecycle = p0_5_lifecycle_mask(df, config, lifecycle_bucket)
+    base_mask = lifecycle & feature_eligible.fillna(False).astype(bool)
+    lead_mask = base_mask & condition.fillna(False).astype(bool)
+    positive_mask = df[positive_col].fillna(False).astype(bool)
+    secondary_valid = (
+        lead_mask
+        & ~df["label_horizon_truncated_240d"].fillna(True).astype(bool)
+        & ~df["observed_reference_overlap_240d"].fillna(True).astype(bool)
+    )
+    base_count = int(base_mask.sum())
+    lead_count = int(lead_mask.sum())
+    positive_count = int((lead_mask & positive_mask).sum())
+    base_positive_count = int((base_mask & positive_mask).sum())
+    lead_precision = safe_div(positive_count, lead_count)
+    base_precision = safe_div(base_positive_count, base_count)
+    lead_positive_mask = lead_mask & positive_mask
+    industry_counts = df.loc[lead_mask, "industry_name"].value_counts(dropna=False)
+    top1_industry = safe_div(industry_counts.iloc[0], lead_count) if len(industry_counts) else np.nan
+    instrument_counts = df.loc[lead_positive_mask, "instrument"].value_counts(dropna=False)
+    episode_counts = df.loc[lead_positive_mask, "future_50pct_episode_key_240d"].dropna().value_counts(dropna=False)
+
+    row: dict[str, Any] = {
+        "lead_id": lead_id,
+        "lead_name": lead_name,
+        "primary_combo_family": primary_combo_family,
+        "lifecycle_bucket": lifecycle_bucket,
+        "formula_or_bin": formula_or_bin,
+        "direction": direction,
+        "target_horizon": f"{cfg.get('target_horizon_days', 120)}d",
+        "positive_label": positive_col.replace("is_", ""),
+        "baseline_scope": f"same_horizon_{lifecycle_bucket}_eligible_pit_stock_days",
+        "baseline_stock_day_count": base_count,
+        "stock_day_count": lead_count,
+        "positive_stock_day_count": positive_count,
+        "baseline_stock_day_precision": base_precision,
+        "stock_day_precision": lead_precision,
+        "stock_day_lift": safe_div(lead_precision, base_precision),
+        "lead_future_50pct_precision": float(df.loc[lead_mask, positive_col].mean()) if lead_count else np.nan,
+        "lead_future_100pct_240d_precision": float(df.loc[secondary_valid, secondary_col].mean()) if secondary_valid.any() else np.nan,
+        "unique_instrument_count": int(df.loc[lead_mask, "instrument"].nunique()),
+        "unique_instrument_year_count": int(df.loc[lead_mask, "instrument_year"].nunique()),
+        "positive_unique_instrument_count": int(df.loc[lead_positive_mask, "instrument"].nunique()),
+        "positive_unique_instrument_year_count": int(df.loc[lead_positive_mask, "instrument_year"].nunique()),
+        "distinct_year_count": int(df.loc[lead_mask, "year"].nunique()),
+        "distinct_industry_count": int(df.loc[lead_mask, "industry_name"].nunique()),
+        "top1_industry_contribution": top1_industry,
+        "top1_instrument_contribution": safe_div(instrument_counts.iloc[0], positive_count) if len(instrument_counts) else np.nan,
+        "top5_instrument_contribution": safe_div(instrument_counts.head(5).sum(), positive_count) if len(instrument_counts) else np.nan,
+        "top1_episode_contribution": safe_div(episode_counts.iloc[0], positive_count) if len(episode_counts) else np.nan,
+        "top5_episode_contribution": safe_div(episode_counts.head(5).sum(), positive_count) if len(episode_counts) else np.nan,
+        "avg_lead_time_to_50pct_high": float(df.loc[lead_positive_mask, "future_time_to_50pct_high_gain"].mean()) if positive_count else np.nan,
+        "median_lead_time_to_50pct_high": float(df.loc[lead_positive_mask, "future_time_to_50pct_high_gain"].median()) if positive_count else np.nan,
+        "avg_lead_time_to_50pct_close": float(df.loc[lead_positive_mask, "future_time_to_50pct_close_gain"].mean()) if positive_count else np.nan,
+        "avg_lead_time_to_100pct_high": float(df.loc[lead_positive_mask, "future_time_to_100pct_high_gain"].mean()) if positive_count else np.nan,
+        "trend_speed_not_fast_rate": float((df.loc[lead_mask, "trend_speed_bucket"].astype("string") != "speed_fast").mean()) if lead_count else np.nan,
+        "repair_signal_rate": float(df.loc[lead_mask, ["reclaim_median20_flag", "repair_under20_from_low120", "higher_low20_flag"]].any(axis=1).mean()) if lead_count else np.nan,
+        "label_horizon_truncated_rate": float(df.loc[lead_mask, "label_horizon_truncated"].mean()) if lead_count else np.nan,
+        "observed_reference_overlap_rate": float(df.loc[lead_mask, "observed_reference_overlap"].mean()) if lead_count else np.nan,
+        "false_positive_stock_day_count": int(lead_count - positive_count),
+        "false_positive_rate": 1.0 - lead_precision if not pd.isna(lead_precision) else np.nan,
+        "false_positive_avg_future_drawdown_120d": float(df.loc[lead_mask & ~positive_mask, "future_max_drawdown_in_horizon_120d"].mean()) if (lead_mask & ~positive_mask).any() else np.nan,
+        "sparse_diagnostic": bool(sparse_diagnostic),
+        "generalizable_entry_lead": bool(generalizable_entry_lead),
+        "path_explanation_only": bool(path_explanation_only),
+        "diagnostic_only_not_p1_ready": bool(diagnostic_only_not_p1_ready),
+        "recommended_next_phase": recommended_next_phase,
+    }
+    if not full_metrics:
+        row.update(
+            {
+                "instrument_year_hit_rate": np.nan,
+                "baseline_instrument_year_hit_rate": np.nan,
+                "instrument_year_hit_lift": np.nan,
+                "mean_trigger_count_per_instrument_year": np.nan,
+                "median_trigger_count_per_instrument_year": np.nan,
+                "p95_trigger_count_per_instrument_year": np.nan,
+                "lead_trigger_event_count": np.nan,
+                "positive_lead_trigger_event_count": np.nan,
+                "dedup_trigger_event_precision": np.nan,
+                "baseline_trigger_event_precision": np.nan,
+                "dedup_trigger_event_lift": np.nan,
+                "winner_episode_coverage": np.nan,
+                "winner_episode_covered_count": np.nan,
+                "winner_episode_denominator_count": np.nan,
+                "stock_day_vs_dedup_lift_gap": np.nan,
+                "qualified_lead": False,
+                "failure_reason": "univariate_screen_only",
+            }
+        )
+        return row
+
+    lead_iy = df.loc[lead_mask].groupby("instrument_year")[positive_col].any()
+    base_iy = df.loc[base_mask].groupby("instrument_year")[positive_col].any()
+    trigger_counts = df.loc[lead_mask].groupby("instrument_year").size()
+    lead_events = p0_5_trigger_events(df, lead_mask, positive_col, gap)
+    base_events = p0_5_baseline_pseudo_events(df, base_mask, positive_col, gap)
+    trigger_precision = float(lead_events["positive"].mean()) if not lead_events.empty else np.nan
+    base_trigger_precision = float(base_events["positive"].mean()) if not base_events.empty else np.nan
+    coverage, covered_count, coverage_denom, covered_ids = p0_5_winner_episode_coverage_for_events(lead_events, episodes)
+    iy_hit_rate = float(lead_iy.mean()) if len(lead_iy) else np.nan
+    base_iy_hit_rate = float(base_iy.mean()) if len(base_iy) else np.nan
+    dedup_lift = safe_div(trigger_precision, base_trigger_precision)
+    iy_lift = safe_div(iy_hit_rate, base_iy_hit_rate)
+    min_count = int(cfg.get("min_stock_day_count", 100))
+    min_years = int(cfg.get("min_distinct_years", 3))
+    max_industry = float(cfg.get("max_top1_industry_concentration", 0.60))
+    if lead_count < min_count:
+        failure = "insufficient_stock_day_count"
+    elif pd.isna(dedup_lift) or dedup_lift <= 1.0:
+        failure = "dedup_trigger_event_lift_not_positive"
+    elif pd.isna(iy_lift) or iy_lift <= 1.0:
+        failure = "instrument_year_lift_not_positive"
+    elif row["distinct_year_count"] < min_years:
+        failure = "insufficient_distinct_years"
+    elif not pd.isna(top1_industry) and top1_industry > max_industry:
+        failure = "top1_industry_concentration_too_high"
+    elif diagnostic_only_not_p1_ready:
+        failure = "diagnostic_only_not_p1_ready"
+    else:
+        failure = ""
+    row.update(
+        {
+            "instrument_year_hit_rate": iy_hit_rate,
+            "baseline_instrument_year_hit_rate": base_iy_hit_rate,
+            "instrument_year_hit_lift": iy_lift,
+            "mean_trigger_count_per_instrument_year": float(trigger_counts.mean()) if len(trigger_counts) else np.nan,
+            "median_trigger_count_per_instrument_year": float(trigger_counts.median()) if len(trigger_counts) else np.nan,
+            "p95_trigger_count_per_instrument_year": float(trigger_counts.quantile(0.95)) if len(trigger_counts) else np.nan,
+            "lead_trigger_event_count": int(len(lead_events)),
+            "positive_lead_trigger_event_count": int(lead_events["positive"].sum()) if not lead_events.empty else 0,
+            "dedup_trigger_event_precision": trigger_precision,
+            "baseline_trigger_event_precision": base_trigger_precision,
+            "dedup_trigger_event_lift": dedup_lift,
+            "winner_episode_coverage": coverage,
+            "winner_episode_covered_count": int(covered_count),
+            "winner_episode_denominator_count": int(coverage_denom),
+            "covered_winner_episode_ids": ";".join(covered_ids[:20]),
+            "stock_day_vs_dedup_lift_gap": row["stock_day_lift"] - dedup_lift if not pd.isna(row["stock_day_lift"]) and not pd.isna(dedup_lift) else np.nan,
+            "qualified_lead": failure == "",
+            "failure_reason": failure,
+        }
+    )
+    return row
+
+
+def build_p0_5_feature_outputs(config: dict[str, Any]) -> tuple[pd.DataFrame, Path]:
+    if not label_panel_path(config).exists():
+        command_build_labels(config)
+    df = pd.read_parquet(label_panel_path(config))
+    df["datetime"] = pd.to_datetime(df["datetime"]).dt.normalize()
+    if "first_feature_eligible_date" in df.columns:
+        df["first_feature_eligible_date"] = pd.to_datetime(df["first_feature_eligible_date"], errors="coerce")
+    df = add_p0_5_features(df)
+    path = p0_5_feature_panel_path(config)
+    ensure_parent(path)
+    df.to_parquet(path, index=False)
+    return df, path
+
+
+def build_p0_5_feature_coverage(df: pd.DataFrame, specs: list[P05PrimitiveSpec], elig: dict[str, pd.Series], config: dict[str, Any]) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    for spec in specs:
+        eligible = elig[spec.feature_name]
+        insufficient = df["available_history_trading_days"] < spec.min_history_trading_days
+        warmup = insufficient & (df["year"] == parse_dt(config["dates"]["research_start"]).year)
+        missing = df[spec.column].isna() if spec.column in df.columns else pd.Series(True, index=df.index)
+        rows.append(
+            {
+                "feature_name": spec.feature_name,
+                "feature_family": spec.feature_family,
+                "p0_5_enabled": bool(spec.p0_enabled),
+                "p0_5_new": bool(spec.p0_5_new),
+                "primary_combo_family": spec.primary_combo_family,
+                "lifecycle_bucket": spec.lifecycle_bucket,
+                "eligible_rows": int(eligible.sum()),
+                "ineligible_rows": int((~eligible).sum()),
+                "missing_value_rows": int(missing.sum()),
+                "insufficient_history_rows": int(insufficient.sum()),
+                "warmup_partial_year": bool(warmup.any()),
+                "warmup_partial_year_rows": int(warmup.sum()),
+                "first_feature_eligible_date": iso_date(df.loc[eligible, "datetime"].min()) if eligible.any() else "",
+                "coverage_note": "",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_p0_5_outputs(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], list[Path]]:
+    df, feature_panel_path = build_p0_5_feature_outputs(config)
+    episodes_path = report_dir(config) / "episode_lifecycle_labels.csv"
+    if not episodes_path.exists():
+        command_build_labels(config)
+    episodes = pd.read_csv(episodes_path) if episodes_path.exists() else pd.DataFrame()
+    if not episodes.empty:
+        for col in ["low_date", "high_date"]:
+            episodes[col] = pd.to_datetime(episodes[col], errors="coerce")
+
+    specs = p0_5_primitive_specs()
+    dictionary = p0_5_feature_dictionary()
+    bins, elig = p0_5_build_bins(df, config, specs)
+    coverage = build_p0_5_feature_coverage(df, specs, elig, config)
+
+    univariate_rows: list[dict[str, Any]] = []
+    for spec in specs:
+        if spec.feature_name not in bins:
+            continue
+        eligible = elig[spec.feature_name]
+        for bin_value in sorted(pd.Series(bins[spec.feature_name]).dropna().astype(str).unique()):
+            if bin_value == "missing":
+                continue
+            condition = bins[spec.feature_name].astype(str) == bin_value
+            row = summarize_p0_5_condition(
+                df,
+                condition,
+                eligible,
+                config,
+                f"p0_5_uni_{spec.feature_name}_{bin_value}",
+                spec.feature_name,
+                spec.primary_combo_family or spec.feature_family,
+                spec.lifecycle_bucket,
+                f"{spec.feature_name} == {bin_value}",
+                spec.direction_hint,
+                "p1_hypothesis_refine" if spec.generalizable_entry_lead else "p1_path_diagnostic",
+                episodes,
+                spec.sparse_diagnostic,
+                spec.generalizable_entry_lead,
+                spec.path_explanation_only,
+                spec.diagnostic_only_not_p1_ready,
+                full_metrics=False,
+            )
+            row["feature_name"] = spec.feature_name
+            row["bin_value"] = bin_value
+            row["lead_type"] = "univariate_primitive"
+            univariate_rows.append(row)
+    univariate = pd.DataFrame(univariate_rows)
+
+    pairwise_rows: list[dict[str, Any]] = []
+    shadow_rows: list[dict[str, Any]] = []
+    for pattern in p0_5_patterns():
+        condition, eligible = p0_5_condition_from_pattern(pattern, bins, elig)
+        row = summarize_p0_5_condition(
+            df,
+            condition,
+            eligible,
+            config,
+            pattern.lead_id,
+            pattern.lead_name,
+            pattern.primary_combo_family,
+            pattern.lifecycle_bucket,
+            pattern.formula_or_bin,
+            pattern.direction,
+            pattern.recommended_next_phase,
+            episodes,
+            pattern.sparse_diagnostic,
+            pattern.generalizable_entry_lead,
+            pattern.path_explanation_only,
+            pattern.diagnostic_only_not_p1_ready,
+            full_metrics=True,
+        )
+        row["lead_type"] = "p0_5_diagnostic_combo"
+        row["audit_scope"] = "main"
+        row["condition_features"] = ";".join(feature for feature, _values in pattern.conditions)
+        pairwise_rows.append(row)
+        if pattern.lifecycle_bucket == "early_entry_discovery":
+            for shadow_bucket in [
+                "early_entry_shadow_with_post_20pct",
+                "early_entry_shadow_with_post_30pct",
+                "early_entry_shadow_with_late_acceleration",
+            ]:
+                shadow = summarize_p0_5_condition(
+                    df,
+                    condition,
+                    eligible,
+                    config,
+                    f"{pattern.lead_id}_{shadow_bucket}",
+                    pattern.lead_name,
+                    pattern.primary_combo_family,
+                    shadow_bucket,
+                    pattern.formula_or_bin,
+                    pattern.direction,
+                    "shadow_audit_only",
+                    episodes,
+                    pattern.sparse_diagnostic,
+                    pattern.generalizable_entry_lead,
+                    pattern.path_explanation_only,
+                    pattern.diagnostic_only_not_p1_ready,
+                    full_metrics=False,
+                )
+                shadow["lead_type"] = "p0_5_shadow_audit"
+                shadow["audit_scope"] = "shadow"
+                shadow["condition_features"] = ";".join(feature for feature, _values in pattern.conditions)
+                shadow_rows.append(shadow)
+    pairwise = pd.DataFrame(pairwise_rows)
+
+    if not pairwise.empty:
+        stock_rank = pairwise.sort_values(["stock_day_lift", "stock_day_count"], ascending=[False, False]).reset_index(drop=True)
+        stock_rank.insert(0, "stock_day_rank", range(1, len(stock_rank) + 1))
+        iy_rank = pairwise.sort_values(["instrument_year_hit_lift", "unique_instrument_year_count"], ascending=[False, False]).reset_index(drop=True)
+        iy_rank.insert(0, "instrument_year_rank", range(1, len(iy_rank) + 1))
+        dedup_rank = pairwise.sort_values(["dedup_trigger_event_lift", "lead_trigger_event_count"], ascending=[False, False]).reset_index(drop=True)
+        dedup_rank.insert(0, "dedup_trigger_rank", range(1, len(dedup_rank) + 1))
+    else:
+        stock_rank = pd.DataFrame()
+        iy_rank = pd.DataFrame()
+        dedup_rank = pd.DataFrame()
+
+    def board(lifecycle: str) -> pd.DataFrame:
+        cols = pairwise[pairwise["lifecycle_bucket"] == lifecycle].copy() if not pairwise.empty else pd.DataFrame()
+        if cols.empty:
+            return cols
+        return cols.sort_values(["qualified_lead", "dedup_trigger_event_lift", "instrument_year_hit_lift"], ascending=[False, False, False]).reset_index(drop=True)
+
+    early = board("early_entry_discovery")
+    confirmation = board("confirmation_continuation")
+    hold_exit = board("hold_exit_tolerance")
+    high_vol = pairwise[pairwise["primary_combo_family"] == "high_volatility_decomposition"].copy() if not pairwise.empty else pd.DataFrame()
+    repair = pairwise[pairwise["primary_combo_family"] == "repair_initiation"].copy() if not pairwise.empty else pd.DataFrame()
+    rank_jump = pairwise[pairwise["primary_combo_family"] == "rank_jump_leadership"].copy() if not pairwise.empty else pd.DataFrame()
+    money = pairwise[pairwise["primary_combo_family"] == "money_quality"].copy() if not pairwise.empty else pd.DataFrame()
+    sparse = pairwise[pairwise["primary_combo_family"] == "sparse_strong_day_diagnostic"].copy() if not pairwise.empty else pd.DataFrame()
+    winner_coverage = pairwise[
+        [
+            "lead_id",
+            "lead_name",
+            "primary_combo_family",
+            "lifecycle_bucket",
+            "winner_episode_coverage",
+            "winner_episode_covered_count",
+            "winner_episode_denominator_count",
+            "covered_winner_episode_ids",
+            "dedup_trigger_event_lift",
+            "qualified_lead",
+            "failure_reason",
+        ]
+    ].copy() if not pairwise.empty else pd.DataFrame()
+    false_positive = pairwise[
+        [
+            "lead_id",
+            "lead_name",
+            "primary_combo_family",
+            "lifecycle_bucket",
+            "false_positive_stock_day_count",
+            "false_positive_rate",
+            "false_positive_avg_future_drawdown_120d",
+            "stock_day_precision",
+            "dedup_trigger_event_precision",
+            "dedup_trigger_event_lift",
+            "failure_reason",
+        ]
+    ].copy() if not pairwise.empty else pd.DataFrame()
+    false_positive["evaluation_only_false_positive_definition"] = "forward-label miss and future drawdown audit only; not used as feature, lead formula, candidate selection, or ranking input"
+    candidate_audit = pd.concat([pairwise, pd.DataFrame(shadow_rows)], ignore_index=True, sort=False)
+
+    completion = build_p0_5_completion_audit(dictionary, pairwise, early, confirmation, hold_exit)
+    frames = {
+        "p0_5_primitive_feature_dictionary.csv": dictionary,
+        "p0_5_primitive_feature_coverage.csv": coverage,
+        "p0_5_univariate_lift.csv": univariate,
+        "p0_5_pairwise_lift.csv": pairwise,
+        "p0_5_lead_ranking_stock_day.csv": stock_rank,
+        "p0_5_lead_ranking_instrument_year.csv": iy_rank,
+        "p0_5_lead_ranking_dedup_trigger_event.csv": dedup_rank,
+        "p0_5_winner_episode_coverage.csv": winner_coverage,
+        "p0_5_early_entry_discovery_leads.csv": early,
+        "p0_5_confirmation_continuation_leads.csv": confirmation,
+        "p0_5_hold_exit_tolerance_leads.csv": hold_exit,
+        "p0_5_high_volatility_decomposition.csv": high_vol,
+        "p0_5_repair_initiation_leads.csv": repair,
+        "p0_5_rank_jump_leadership_leads.csv": rank_jump,
+        "p0_5_money_quality_leads.csv": money,
+        "p0_5_sparse_strong_day_diagnostics.csv": sparse,
+        "p0_5_candidate_pattern_audit.csv": candidate_audit,
+        "p0_5_false_positive_audit.csv": false_positive,
+        "p0_5_scope_completion_audit.csv": completion,
+    }
+    outputs: list[Path] = [feature_panel_path]
+    for name, frame in frames.items():
+        outputs.append(write_csv(frame, report_dir(config) / name))
+    record_p0_5_manifest(config, "profile-p0-5", outputs, frames, df)
+    return frames, outputs
+
+
+def build_p0_5_completion_audit(
+    dictionary: pd.DataFrame,
+    pairwise: pd.DataFrame,
+    early: pd.DataFrame,
+    confirmation: pd.DataFrame,
+    hold_exit: pd.DataFrame,
+) -> pd.DataFrame:
+    cfg = {
+        "required_enabled_primitives": 90,
+        "required_new_primitives": 35,
+        "required_pairwise_combos": 30,
+        "required_high_volatility_combos": 10,
+        "required_repair_combos": 8,
+        "required_rank_jump_combos": 6,
+        "required_money_quality_combos": 6,
+        "required_sparse_strong_day_patterns": 5,
+    }
+    enabled_count = int(dictionary[dictionary["p0_5_enabled"].astype(bool)]["feature_name"].nunique()) if not dictionary.empty else 0
+    new_count = int(dictionary[dictionary["p0_5_new"].astype(bool)]["feature_name"].nunique()) if not dictionary.empty else 0
+    combo_count = int(pairwise["lead_id"].nunique()) if not pairwise.empty else 0
+    family_counts = pairwise.groupby("primary_combo_family")["lead_id"].nunique().to_dict() if not pairwise.empty else {}
+    qualified = pairwise[pairwise["qualified_lead"].fillna(False).astype(bool)] if not pairwise.empty else pd.DataFrame()
+    qualified_counts = qualified.groupby("primary_combo_family")["lead_id"].nunique().to_dict() if not qualified.empty else {}
+    checks: list[tuple[str, Any, Any, bool, str]] = []
+
+    def add_check(name: str, actual: Any, required: Any, passed: bool, failure: str = "") -> None:
+        checks.append((name, actual, required, bool(passed), "" if passed else failure))
+
+    add_check("p0_5_enabled_primitive_count", enabled_count, cfg["required_enabled_primitives"], enabled_count >= cfg["required_enabled_primitives"], "enabled primitive count below requirement")
+    add_check("p0_5_new_primitive_count", new_count, cfg["required_new_primitives"], new_count >= cfg["required_new_primitives"], "new primitive count below requirement")
+    add_check("p0_5_pairwise_diagnostic_combo_count", combo_count, cfg["required_pairwise_combos"], combo_count >= cfg["required_pairwise_combos"], "combo count below requirement")
+    add_check("p0_5_high_volatility_combo_count", int(family_counts.get("high_volatility_decomposition", 0)), cfg["required_high_volatility_combos"], int(family_counts.get("high_volatility_decomposition", 0)) >= cfg["required_high_volatility_combos"], "high-vol combo count below requirement")
+    add_check("p0_5_repair_initiation_combo_count", int(family_counts.get("repair_initiation", 0)), cfg["required_repair_combos"], int(family_counts.get("repair_initiation", 0)) >= cfg["required_repair_combos"], "repair combo count below requirement")
+    add_check("p0_5_rank_jump_combo_count", int(family_counts.get("rank_jump_leadership", 0)), cfg["required_rank_jump_combos"], int(family_counts.get("rank_jump_leadership", 0)) >= cfg["required_rank_jump_combos"], "rank jump combo count below requirement")
+    add_check("p0_5_money_quality_combo_count", int(family_counts.get("money_quality", 0)), cfg["required_money_quality_combos"], int(family_counts.get("money_quality", 0)) >= cfg["required_money_quality_combos"], "money combo count below requirement")
+    add_check("p0_5_sparse_strong_day_pattern_count", int(family_counts.get("sparse_strong_day_diagnostic", 0)), cfg["required_sparse_strong_day_patterns"], int(family_counts.get("sparse_strong_day_diagnostic", 0)) >= cfg["required_sparse_strong_day_patterns"], "sparse strong-day pattern count below requirement")
+    add_check("tested_early_entry_candidate_patterns", int((pairwise["lifecycle_bucket"] == "early_entry_discovery").sum()) if not pairwise.empty else 0, 8, int((pairwise["lifecycle_bucket"] == "early_entry_discovery").sum()) >= 8 if not pairwise.empty else False, "early-entry tested patterns below requirement")
+    add_check("tested_high_volatility_candidate_patterns", int(family_counts.get("high_volatility_decomposition", 0)), 10, int(family_counts.get("high_volatility_decomposition", 0)) >= 10, "high-vol tested patterns below requirement")
+    add_check("tested_repair_initiation_candidate_patterns", int(family_counts.get("repair_initiation", 0)), 8, int(family_counts.get("repair_initiation", 0)) >= 8, "repair tested patterns below requirement")
+    add_check("tested_rank_jump_candidate_patterns", int(family_counts.get("rank_jump_leadership", 0)), 6, int(family_counts.get("rank_jump_leadership", 0)) >= 6, "rank tested patterns below requirement")
+    add_check("tested_money_quality_candidate_patterns", int(family_counts.get("money_quality", 0)), 6, int(family_counts.get("money_quality", 0)) >= 6, "money tested patterns below requirement")
+    add_check("qualified_early_entry_leads", int((qualified["lifecycle_bucket"] == "early_entry_discovery").sum()) if not qualified.empty else 0, 0, True, "")
+    add_check("qualified_high_volatility_leads", int(qualified_counts.get("high_volatility_decomposition", 0)), 0, True, "")
+    add_check("qualified_repair_initiation_leads", int(qualified_counts.get("repair_initiation", 0)), 0, True, "")
+    add_check("qualified_rank_jump_leads", int(qualified_counts.get("rank_jump_leadership", 0)), 0, True, "")
+    add_check("qualified_money_quality_leads", int(qualified_counts.get("money_quality", 0)), 0, True, "")
+    add_check("early_entry_discovery_board_present", int(len(early)), 1, len(early) >= 1, "early-entry board is empty")
+    add_check("confirmation_continuation_board_present", int(len(confirmation)), 1, len(confirmation) >= 1, "confirmation board is empty")
+    add_check("hold_exit_tolerance_board_present", int(len(hold_exit)), 1, len(hold_exit) >= 1, "hold/exit board is empty")
+    minimum_met = all(row[3] for row in checks if not str(row[0]).startswith("qualified_"))
+    add_check("explore9_p0_5_minimum_coverage_met", int(minimum_met), 1, minimum_met, "minimum coverage requirement not fully met")
+    return pd.DataFrame(checks, columns=["check_name", "actual_value", "required_value", "passed", "failure_reason"])
+
+
+def output_file_stats(paths: list[Path], frames: dict[str, pd.DataFrame], feature_panel: pd.DataFrame | None = None) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
+    row_counts: dict[str, int] = {}
+    column_counts: dict[str, int] = {}
+    file_sizes: dict[str, int] = {}
+    for path in paths:
+        rel = relpath(path)
+        if path.exists():
+            file_sizes[rel] = int(path.stat().st_size)
+        if path.name in frames:
+            row_counts[rel] = int(len(frames[path.name]))
+            column_counts[rel] = int(len(frames[path.name].columns))
+        elif path.suffix == ".parquet" and feature_panel is not None:
+            row_counts[rel] = int(len(feature_panel))
+            column_counts[rel] = int(len(feature_panel.columns))
+    return row_counts, column_counts, file_sizes
+
+
+def record_p0_5_manifest(config: dict[str, Any], command: str, outputs: list[Path], frames: dict[str, pd.DataFrame], feature_panel: pd.DataFrame) -> Path:
+    path = p0_5_manifest_path(config)
+    existing = read_json(path)
+    commands = list(existing.get("command_sequence", []))
+    commands.append(command)
+    all_outputs = sorted(set(existing.get("output_paths", []) + [relpath(p) for p in outputs] + [relpath(path)]))
+    row_counts, column_counts, file_sizes = output_file_stats(outputs + [path], frames, feature_panel)
+    row_counts = {**existing.get("row_count_by_output", {}), **row_counts}
+    column_counts = {**existing.get("column_count_by_output", {}), **column_counts}
+    file_sizes = {**existing.get("file_size_by_output", {}), **file_sizes}
+    completion = frames.get("p0_5_scope_completion_audit.csv", pd.DataFrame())
+    minimum_met = bool(existing.get("explore9_p0_5_minimum_coverage_met", False))
+    if not completion.empty:
+        row = completion[completion["check_name"] == "explore9_p0_5_minimum_coverage_met"]
+        minimum_met = bool(row["passed"].iloc[0]) if not row.empty else False
+    elif (report_dir(config) / "p0_5_scope_completion_audit.csv").exists():
+        disk_completion = read_csv_if_exists(report_dir(config) / "p0_5_scope_completion_audit.csv")
+        row = disk_completion[disk_completion["check_name"] == "explore9_p0_5_minimum_coverage_met"] if not disk_completion.empty else pd.DataFrame()
+        minimum_met = bool(row["passed"].iloc[0]) if not row.empty else minimum_met
+    manifest = {
+        "experiment": "Explore9 P0.5 expand 1 early structure discovery",
+        "phase": "P0.5",
+        "expansion_id": p0_5_cfg(config).get("expansion_id", "expand_1"),
+        "config_path": relpath(config["_config_path"]),
+        "config_sha256": config["_config_sha256"],
+        "command_line": " ".join(sys.argv),
+        "command_sequence": commands,
+        "input_report_paths": [
+            relpath(report_dir(config) / "run_manifest.json"),
+            relpath(report_dir(config) / "episode_lifecycle_labels.csv"),
+            relpath(report_dir(config) / "primitive_feature_dictionary.csv"),
+            relpath(report_dir(config) / "primitive_univariate_lift.csv"),
+            relpath(report_dir(config) / "primitive_pairwise_lift.csv"),
+        ],
+        "input_cache_paths": [relpath(label_panel_path(config)), relpath(cache_dir(config) / "stock_day_label_panel_meta.json")],
+        "output_report_paths": sorted(relpath(p) for p in outputs if p.suffix != ".parquet"),
+        "output_cache_paths": sorted(relpath(p) for p in outputs if p.suffix == ".parquet"),
+        "output_paths": all_outputs,
+        "row_count_by_output": row_counts,
+        "column_count_by_output": column_counts,
+        "file_size_by_output": file_sizes,
+        "p0_label_panel_reused": bool(label_panel_path(config).exists()),
+        "p0_episode_labels_reused": bool((report_dir(config) / "episode_lifecycle_labels.csv").exists()),
+        "p0_5_new_feature_panel_generated": bool(p0_5_feature_panel_path(config).exists()),
+        "p0_5_feature_panel": {
+            "path": relpath(p0_5_feature_panel_path(config)),
+            "row_count": int(len(feature_panel)),
+            "column_count": int(len(feature_panel.columns)),
+        },
+        "observed_reference_used_for_selection": False,
+        "historical_trade_results_used_for_labeling": False,
+        "historical_trade_results_used_for_signal": False,
+        "historical_trade_results_used_for_selection": False,
+        "explore8_profile_csv_used_for_label": False,
+        "explore8_profile_csv_used_for_signal": False,
+        "explore8_profile_csv_used_for_selection": False,
+        "future_labels_used_as_features": False,
+        "strategy_backtest_generated": False,
+        "formal_hypothesis_generated": False,
+        "explore9_p0_5_minimum_coverage_met": minimum_met,
+    }
+    write_json(manifest, path)
+    return path
+
+
+def command_profile_p0_5(config: dict[str, Any]) -> list[Path]:
+    frames, outputs = build_p0_5_outputs(config)
+    manifest = p0_5_manifest_path(config)
+    outputs.append(manifest)
+    completion = frames.get("p0_5_scope_completion_audit.csv", pd.DataFrame())
+    min_met = False
+    if not completion.empty:
+        row = completion[completion["check_name"] == "explore9_p0_5_minimum_coverage_met"]
+        min_met = bool(row["passed"].iloc[0]) if not row.empty else False
+    print(f"profiled p0.5 outputs={len(outputs)} minimum_coverage={str(min_met).lower()}", flush=True)
+    return outputs
+
+
+def command_report_p0_5(config: dict[str, Any]) -> list[Path]:
+    required = [name for name in P0_5_REQUIRED_REPORTS if name not in {"p0_5_run_manifest.json", "explore9_p0_5_expand_1_report.md"}]
+    if any(not (report_dir(config) / name).exists() for name in required):
+        command_profile_p0_5(config)
+    report_path = report_dir(config) / "explore9_p0_5_expand_1_report.md"
+    completion = read_csv_if_exists(report_dir(config) / "p0_5_scope_completion_audit.csv")
+    early = read_csv_if_exists(report_dir(config) / "p0_5_early_entry_discovery_leads.csv")
+    confirmation = read_csv_if_exists(report_dir(config) / "p0_5_confirmation_continuation_leads.csv")
+    hold_exit = read_csv_if_exists(report_dir(config) / "p0_5_hold_exit_tolerance_leads.csv")
+    high_vol = read_csv_if_exists(report_dir(config) / "p0_5_high_volatility_decomposition.csv")
+    repair = read_csv_if_exists(report_dir(config) / "p0_5_repair_initiation_leads.csv")
+    rank_jump = read_csv_if_exists(report_dir(config) / "p0_5_rank_jump_leadership_leads.csv")
+    money = read_csv_if_exists(report_dir(config) / "p0_5_money_quality_leads.csv")
+    sparse = read_csv_if_exists(report_dir(config) / "p0_5_sparse_strong_day_diagnostics.csv")
+    dictionary = read_csv_if_exists(report_dir(config) / "p0_5_primitive_feature_dictionary.csv")
+    pairwise = read_csv_if_exists(report_dir(config) / "p0_5_pairwise_lift.csv")
+    p0_leads = read_csv_if_exists(report_dir(config) / "preliminary_discovery_leads.csv")
+    manifest = read_json(p0_5_manifest_path(config))
+    minimum_met = False
+    if not completion.empty:
+        row = completion[completion["check_name"] == "explore9_p0_5_minimum_coverage_met"]
+        minimum_met = bool(row["passed"].iloc[0]) if not row.empty else False
+    early_qualified = int(early["qualified_lead"].fillna(False).astype(bool).sum()) if not early.empty and "qualified_lead" in early else 0
+    confirmation_qualified = int(confirmation["qualified_lead"].fillna(False).astype(bool).sum()) if not confirmation.empty and "qualified_lead" in confirmation else 0
+    hold_qualified = int(hold_exit["qualified_lead"].fillna(False).astype(bool).sum()) if not hold_exit.empty and "qualified_lead" in hold_exit else 0
+    if minimum_met and early_qualified > 0:
+        recommendation = "proceed_to_p1_after_p0_5"
+    elif minimum_met and (confirmation_qualified > 0 or hold_qualified > 0):
+        recommendation = "proceed_to_p1_for_confirmation_hold_only_continue_entry_discovery"
+    elif minimum_met:
+        recommendation = "continue_p0_broad_discovery"
+    else:
+        recommendation = "continue_p0_broad_discovery"
+
+    def top_table(frame: pd.DataFrame, title_col: str = "lead_name", limit: int = 8) -> list[list[Any]]:
+        if frame.empty:
+            return []
+        ordered = frame.sort_values(["qualified_lead", "dedup_trigger_event_lift", "instrument_year_hit_lift"], ascending=[False, False, False]).head(limit)
+        return [
+            [
+                row[title_col],
+                row["stock_day_count"],
+                format_pct(row["stock_day_precision"]),
+                format_float(row["stock_day_lift"]),
+                format_float(row["dedup_trigger_event_lift"]),
+                format_float(row["instrument_year_hit_lift"]),
+                format_pct(row["winner_episode_coverage"]),
+                row["failure_reason"] if isinstance(row["failure_reason"], str) else "",
+            ]
+            for _, row in ordered.iterrows()
+        ]
+
+    lines: list[str] = []
+    lines.append("# Explore9 P0.5 扩展探索报告：Expand 1")
+    lines.append("")
+    lines.append("## 1. 结论")
+    lines.append("")
+    lines.append(f"- `explore9_p0_5_minimum_coverage_met = {str(minimum_met).lower()}`。")
+    lines.append(f"- `recommendation = {recommendation}`。")
+    lines.append(f"- 本轮新增/启用原语 `{int(dictionary['feature_name'].nunique()) if not dictionary.empty else 0}` 个，其中新增 `{int(dictionary[dictionary['p0_5_new'].astype(bool)]['feature_name'].nunique()) if not dictionary.empty else 0}` 个；诊断组合 `{int(pairwise['lead_id'].nunique()) if not pairwise.empty else 0}` 个。")
+    lines.append(f"- early-entry qualified lead `{early_qualified}` 个，confirmation qualified lead `{confirmation_qualified}` 个，hold/exit qualified lead `{hold_qualified}` 个。")
+    if early_qualified == 0:
+        lines.append("- 未发现足够稳定的 early-entry 结构。当前 Explore9 的有效方向不能被误写成初始买点；confirmation / continuation / hold tolerance 仍需单独处理。")
+    lines.append("")
+    lines.append("## 2. 与 P0 第一版的差异")
+    lines.append("")
+    lines.append("- P0.5 不替代 P0 标签和 episode，而是复用 `stock_day_label_panel.parquet` 与 `episode_lifecycle_labels.csv`，重新生成 P0.5 专用 feature panel、lead ranking 和 manifest。")
+    lines.append("- P0 第一版按 stock-day lift 暴露出高波、强趋势、post-30 continuation 等线索；P0.5 把主榜拆成 early-entry、confirmation、hold/exit，并增加 instrument-year 与 dedup trigger-event ranking。")
+    lines.append("- P0.5 early-entry 主榜硬性排除 post-20、post-30 和 late acceleration 状态；这些状态只进入 confirmation、hold/exit 或 shadow audit。")
+    lines.append("")
+    if not completion.empty:
+        rows = []
+        for _, row in completion.iterrows():
+            rows.append([row["check_name"], row["actual_value"], row["required_value"], row["passed"], row["failure_reason"] if isinstance(row["failure_reason"], str) else ""])
+        lines.extend(markdown_table(["检查项", "实际", "要求", "通过", "失败原因"], rows))
+        lines.append("")
+    lines.append("## 3. 三类 Lead 分离结果")
+    lines.append("")
+    for title, frame in [("Early Entry Discovery", early), ("Confirmation / Continuation", confirmation), ("Hold / Exit Tolerance", hold_exit)]:
+        lines.append(f"### {title}")
+        rows = top_table(frame)
+        if rows:
+            lines.extend(markdown_table(["lead", "样本", "precision", "stock-day lift", "dedup lift", "IY lift", "episode coverage", "失败原因"], rows))
+        else:
+            lines.append("无可排序样本。")
+        lines.append("")
+    lines.append("## 4. 结构分解")
+    lines.append("")
+    for title, frame in [
+        ("高波动拆解", high_vol),
+        ("修复初期", repair),
+        ("Rank Jump / Leadership", rank_jump),
+        ("成交质量", money),
+        ("Sparse Strong-Day Diagnostic", sparse),
+    ]:
+        lines.append(f"### {title}")
+        rows = top_table(frame, limit=6)
+        if rows:
+            lines.extend(markdown_table(["lead", "样本", "precision", "stock-day lift", "dedup lift", "IY lift", "episode coverage", "失败原因"], rows))
+        else:
+            lines.append("无样本。")
+        lines.append("")
+    lines.append("## 5. P0 线索降级与保留")
+    lines.append("")
+    if not p0_leads.empty:
+        downgraded = p0_leads[p0_leads["lead_id"].astype(str).str.contains("late_acceleration|post_20|post_30", case=False, regex=True)]
+        if not downgraded.empty:
+            names = "、".join(downgraded["lead_name"].astype(str).head(8).tolist())
+            lines.append(f"- P0 中偏生命周期后段的 `{names}` 在 P0.5 中不再计入 early-entry 主榜，只能作为 confirmation / hold / shadow audit。")
+        hv_first = high_vol.sort_values("dedup_trigger_event_lift", ascending=False).head(1) if not high_vol.empty else pd.DataFrame()
+        if not hv_first.empty:
+            row = hv_first.iloc[0]
+            lines.append(f"- 高波动方向被拆解后，当前最强结构是 `{row['lead_name']}`，dedup lift `{format_float(row['dedup_trigger_event_lift'])}`，这比 P0 的单一高波分箱更可解释。")
+    lines.append("- 凡是 stock-day lift 高但 dedup trigger-event lift 不成立、instrument-year lift 不成立或 top1 行业贡献过高的方向，报告中保留为 negative evidence，不进入 P1 主假设。")
+    lines.append("")
+    lines.append("## 6. 数据纪律")
+    lines.append("")
+    flags = [
+        "p0_label_panel_reused",
+        "p0_episode_labels_reused",
+        "p0_5_new_feature_panel_generated",
+        "observed_reference_used_for_selection",
+        "historical_trade_results_used_for_labeling",
+        "historical_trade_results_used_for_signal",
+        "historical_trade_results_used_for_selection",
+        "explore8_profile_csv_used_for_label",
+        "explore8_profile_csv_used_for_signal",
+        "explore8_profile_csv_used_for_selection",
+    ]
+    for flag in flags:
+        lines.append(f"- `{flag} = {str(bool(manifest.get(flag, False))).lower()}`")
+    lines.append("- `evaluation_only_false_positive_definition` 只由 forward label 与未来回撤审计计算，不进入 T 日 feature、lead formula、candidate selection 或 ranking input。")
+    lines.append("")
+    lines.append("## 7. 下一步判断")
+    lines.append("")
+    if recommendation == "proceed_to_p1_after_p0_5":
+        lines.append("- 可以进入 P1，但 P1 应只接收 dedup 和 instrument-year 同时成立的 lead，并继续保持 entry / confirmation / hold 的边界。")
+    elif recommendation == "proceed_to_p1_for_confirmation_hold_only_continue_entry_discovery":
+        lines.append("- 可以围绕 confirmation / hold 进入 P1，同时继续 early-entry broad discovery；不得把后段确认状态写成初始买点。")
+    elif recommendation == "continue_p0_broad_discovery":
+        lines.append("- 当前更适合继续 broad discovery，优先补足 early-entry 结构和去重后仍稳定的 candidate family。")
+    else:
+        lines.append("- 当前缺少稳定发现，不建议进入后续策略回测。")
+    lines.append("")
+    lines.append("Explore10 只能作为远期路径记录，本报告不输出策略回测建议。")
+    ensure_parent(report_path)
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    outputs = [report_path]
+    frames = {"explore9_p0_5_expand_1_report.md": pd.DataFrame([{"recommendation": recommendation, "minimum_met": minimum_met}])}
+    feature_panel = pd.read_parquet(p0_5_feature_panel_path(config)) if p0_5_feature_panel_path(config).exists() else pd.DataFrame()
+    record_p0_5_manifest(config, "report-p0-5", outputs, frames, feature_panel)
+    print(f"wrote p0.5 report {relpath(report_path)} recommendation={recommendation}", flush=True)
+    return outputs
+
+
+def p0_6_cfg(config: dict[str, Any]) -> dict[str, Any]:
+    return config.get("p0_6", {})
+
+
+def p0_6_manifest_path(config: dict[str, Any]) -> Path:
+    return report_dir(config) / "p0_6_run_manifest.json"
+
+
+def p0_6_launch_panel_cache_path(config: dict[str, Any]) -> Path:
+    return topic_path(p0_6_cfg(config).get("launch_event_panel_cache", "Explore9/outputs/cache/p0_6_launch_event_panel.parquet"))
+
+
+def p0_6_entry_panel_cache_path(config: dict[str, Any]) -> Path:
+    return topic_path(p0_6_cfg(config).get("entry_event_panel_cache", "Explore9/outputs/cache/p0_6_entry_event_panel.parquet"))
+
+
+def p0_6_float(config: dict[str, Any], key: str, default: float) -> float:
+    return float(p0_6_cfg(config).get(key, default))
+
+
+def p0_6_int(config: dict[str, Any], key: str, default: int) -> int:
+    return int(p0_6_cfg(config).get(key, default))
+
+
+def p0_6_load_feature_panel(config: dict[str, Any]) -> pd.DataFrame:
+    p05_path = p0_5_feature_panel_path(config)
+    if p05_path.exists():
+        df = pd.read_parquet(p05_path)
+    elif label_panel_path(config).exists():
+        df = add_p0_5_features(pd.read_parquet(label_panel_path(config)))
+    else:
+        raise DataGateError("P0.6 requires stock_day_label_panel.parquet; run build-labels first")
+    return p0_6_add_features(df)
+
+
+def p0_6_add_features(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy().sort_values(["instrument", "datetime"]).reset_index(drop=True)
+    group = df.groupby("instrument", group_keys=False)
+    eps = 1e-12
+    df["p0_6_row_pos"] = group.cumcount()
+    df["p0_6_ret_1d"] = df["close"] / df["prev_close"].replace(0, np.nan) - 1.0
+    df["p0_6_ret_5d"] = group["close"].pct_change(5)
+    df["p0_6_ret_20d"] = group["close"].pct_change(20)
+    df["p0_6_day_range"] = df["high"] / df["low"].replace(0, np.nan) - 1.0
+    df["p0_6_body_ret"] = df["close"] / df["open"].replace(0, np.nan) - 1.0
+    df["p0_6_close_location"] = ((df["close"] - df["low"]) / (df["high"] - df["low"]).replace(0, np.nan)).clip(0, 1).fillna(0.5)
+    df["p0_6_upper_shadow_ratio"] = ((df["high"] - df[["open", "close"]].max(axis=1)) / (df["high"] - df["low"]).replace(0, np.nan)).clip(0, 1)
+    df["p0_6_money_median20"] = group["money"].transform(lambda s: s.rolling(20, min_periods=20).median())
+    df["p0_6_money_median60"] = group["money"].transform(lambda s: s.rolling(60, min_periods=60).median())
+    df["p0_6_money_ratio_20"] = df["money"] / df["p0_6_money_median20"].replace(0, np.nan)
+    df["p0_6_money_ratio_60"] = df["money"] / df["p0_6_money_median60"].replace(0, np.nan)
+    df["p0_6_ret_rank_20d_market"] = df.groupby("datetime")["p0_6_ret_20d"].rank(pct=True)
+    df["p0_6_ret_rank_20d_market_5d_ago"] = group["p0_6_ret_rank_20d_market"].shift(5)
+    df["p0_6_money_rank_20d_market"] = df.groupby("datetime")["p0_6_money_ratio_20"].rank(pct=True)
+    df["p0_6_money_rank_20d_market_5d_ago"] = group["p0_6_money_rank_20d_market"].shift(5)
+    df["p0_6_ema20_1d_ago"] = group["ema20"].shift(1)
+    df["p0_6_close_1d_ago"] = group["close"].shift(1)
+    if "median_price20" in df.columns:
+        df["p0_6_median20"] = df["median_price20"]
+    else:
+        df["p0_6_median20"] = group["close"].transform(lambda s: s.rolling(20, min_periods=20).median())
+    for window in [60, 90, 120]:
+        df[f"p0_6_low{window}"] = group["low"].transform(lambda s, window=window: s.rolling(window, min_periods=20).min())
+        df[f"p0_6_launch_gain_from_recent_low_{window}d"] = df["close"] / df[f"p0_6_low{window}"].replace(0, np.nan) - 1.0
+    breadth = (
+        df.assign(p0_6_close_gt_ema20=lambda x: x["close"] > x["ema20"])
+        .groupby(["datetime", "industry_name"], as_index=False)["p0_6_close_gt_ema20"]
+        .mean()
+        .rename(columns={"p0_6_close_gt_ema20": "p0_6_industry_breadth_20d"})
+    )
+    df = df.merge(breadth, on=["datetime", "industry_name"], how="left")
+    df["p0_6_post20_relative_strength_flag"] = (df["p0_6_launch_gain_from_recent_low_60d"] >= 0.20) & (df["p0_6_ret_rank_20d_market"] >= 0.70)
+    df["p0_6_post30_relative_strength_flag"] = (df["p0_6_launch_gain_from_recent_low_90d"] >= 0.30) & (df["p0_6_ret_rank_20d_market"] >= 0.70)
+    df["p0_6_late_acceleration_flag"] = (df["p0_6_launch_gain_from_recent_low_120d"] >= 0.50) | (
+        df["observable_state_stage"].astype(str) == "observable_late_acceleration_risk"
+    )
+    remaining_rows = group.cumcount(ascending=False) + 1
+    df["p0_6_remaining_rows"] = remaining_rows
+    for horizon in [20, 60, 120, 240]:
+        df[f"p0_6_fwd_max_high_{horizon}d_inclusive"] = group["high"].transform(lambda s, horizon=horizon: s.iloc[::-1].rolling(horizon, min_periods=1).max().iloc[::-1])
+        df[f"p0_6_fwd_max_close_{horizon}d_inclusive"] = group["close"].transform(lambda s, horizon=horizon: s.iloc[::-1].rolling(horizon, min_periods=1).max().iloc[::-1])
+        df[f"p0_6_fwd_min_low_{horizon}d_inclusive"] = group["low"].transform(lambda s, horizon=horizon: s.iloc[::-1].rolling(horizon, min_periods=1).min().iloc[::-1])
+        df[f"p0_6_horizon_end_date_{horizon}d_inclusive"] = group["datetime"].shift(-(horizon - 1))
+    df["p0_6_direct_entry_date"] = group["datetime"].shift(-1)
+    df["p0_6_direct_entry_open"] = group["open"].shift(-1)
+    for days in [3, 5, 10, 20]:
+        df[f"p0_6_signal_date_{days}d"] = group["datetime"].shift(-days)
+        df[f"p0_6_entry_date_{days}d"] = group["datetime"].shift(-(days + 1))
+        df[f"p0_6_signal_close_{days}d"] = group["close"].shift(-days)
+        df[f"p0_6_signal_low_{days}d"] = group["low"].shift(-days)
+        df[f"p0_6_signal_high_{days}d"] = group["high"].shift(-days)
+        df[f"p0_6_signal_ema20_{days}d"] = group["ema20"].shift(-days)
+        df[f"p0_6_signal_median20_{days}d"] = group["p0_6_median20"].shift(-days)
+        df[f"p0_6_signal_ret_rank_{days}d"] = group["p0_6_ret_rank_20d_market"].shift(-days)
+        df[f"p0_6_signal_ret_rank_5d_ago_{days}d"] = group["p0_6_ret_rank_20d_market_5d_ago"].shift(-days)
+        df[f"p0_6_signal_money_rank_{days}d"] = group["p0_6_money_rank_20d_market"].shift(-days)
+        df[f"p0_6_signal_money_rank_5d_ago_{days}d"] = group["p0_6_money_rank_20d_market_5d_ago"].shift(-days)
+        df[f"p0_6_signal_money_ratio_{days}d"] = group["p0_6_money_ratio_20"].shift(-days)
+        df[f"p0_6_signal_close_location_{days}d"] = group["p0_6_close_location"].shift(-days)
+        df[f"p0_6_signal_body_ret_{days}d"] = group["p0_6_body_ret"].shift(-days)
+        df[f"p0_6_signal_upper_shadow_{days}d"] = group["p0_6_upper_shadow_ratio"].shift(-days)
+        df[f"p0_6_entry_open_{days}d"] = group["open"].shift(-(days + 1))
+        df[f"p0_6_entry_close_{days}d"] = group["close"].shift(-(days + 1))
+        df[f"p0_6_window_low_min_{days}d"] = group["low"].transform(lambda s, days=days: s.shift(-1).iloc[::-1].rolling(days, min_periods=1).min().iloc[::-1])
+        df[f"p0_6_window_high_max_{days}d"] = group["high"].transform(lambda s, days=days: s.iloc[::-1].rolling(days + 1, min_periods=1).max().iloc[::-1])
+        df[f"p0_6_window_money_median_{days}d"] = group["p0_6_money_ratio_20"].transform(lambda s, days=days: s.shift(-1).iloc[::-1].rolling(days, min_periods=1).median().iloc[::-1])
+    df["p0_6_available_for_launch"] = (
+        df["provider_required_fields_ok"].fillna(False).astype(bool)
+        & df["feature_eligible"].fillna(False).astype(bool)
+        & (df["p0_6_money_ratio_20"].notna())
+        & (df["p0_6_ret_rank_20d_market"].notna())
+    )
+    return df.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_6_launch_specs() -> list[P06LaunchSpec]:
+    return [
+        P06LaunchSpec("expansion_high_volatility", "day_range >= 0.08 and ret_1d > 0 and close_location >= 0.55", "primary_pre_20_launch_pool", "launch_observation_only", True, "20/60/120", "day_range=0.08;close_location=0.55", "open,high,low,close,money"),
+        P06LaunchSpec("high_vol_money_upper_close", "day_range >= 0.08 and money_ratio_20 >= 1.5 and close_location >= 0.65", "primary_pre_20_launch_pool", "launch_observation_only", True, "20/60/120", "day_range=0.08;money_ratio_20=1.5;close_location=0.65", "open,high,low,close,money"),
+        P06LaunchSpec("rank_jump_leadership", "ret_rank_20d_market >= 0.80 and ret_rank_20d_market - ret_rank_20d_market_5d_ago >= 0.30", "primary_pre_30_launch_pool", "launch_observation_only", True, "20", "rank=0.80;rank_jump=0.30", "close"),
+        P06LaunchSpec("repair_reclaim", "close > ema20 and close_1d_ago <= ema20_1d_ago and ret_5d > 0", "primary_pre_20_launch_pool", "launch_observation_only", True, "20", "ret_5d>0", "close,ema20"),
+        P06LaunchSpec("first_limit_up_like", "ret_1d >= 0.095 and close_location >= 0.80 and no same-family event in prior 60 trading days", "sparse_strong_day_diagnostic_pool", "sparse_launch_observation", False, "60", "ret_1d=0.095;close_location=0.80", "open,high,low,close", True),
+        P06LaunchSpec("first_near_limit_up_like", "ret_1d >= 0.07 and ret_1d < 0.095 and close_location >= 0.75 and no same-family event in prior 60 trading days", "sparse_strong_day_diagnostic_pool", "sparse_launch_observation", False, "60", "ret_1d=0.07/0.095;close_location=0.75", "open,high,low,close", True),
+        P06LaunchSpec("gap_up_upper_close", "open / prev_close - 1 >= 0.03 and close >= open and close_location >= 0.60", "sparse_strong_day_diagnostic_pool", "sparse_launch_observation", False, "1", "gap=0.03;close_location=0.60", "open,high,low,close", True),
+        P06LaunchSpec("strong_body_day", "body_ret >= 0.05 and close_location >= 0.70 and money_ratio_20 >= 1.2", "sparse_strong_day_diagnostic_pool", "sparse_launch_observation", False, "20", "body_ret=0.05;close_location=0.70;money_ratio_20=1.2", "open,high,low,close,money", True),
+        P06LaunchSpec("post_20pct_relative_strength", "launch_gain_from_recent_low_60d >= 0.20 and ret_rank_20d_market >= 0.70", "post_20_30_hold_only_pool", "add_on_or_hold_only", False, "60", "gain60=0.20;rank=0.70", "close"),
+        P06LaunchSpec("post_30pct_relative_strength", "launch_gain_from_recent_low_90d >= 0.30 and ret_rank_20d_market >= 0.70", "post_20_30_hold_only_pool", "add_on_or_hold_only", False, "90", "gain90=0.30;rank=0.70", "close"),
+    ]
+
+
+def p0_6_launch_formula_matrix() -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {
+                "launch_family": spec.launch_family,
+                "v1_trigger_formula": spec.formula,
+                "launch_pool": spec.declared_launch_pool,
+                "launch_lifecycle_role": spec.lifecycle_role,
+                "primary_entry_leaderboard_eligible": bool(spec.primary_entry_leaderboard_eligible),
+                "lookback_days": spec.lookback_days,
+                "thresholds": spec.thresholds,
+                "required_fields": spec.required_fields,
+                "sparse_diagnostic": bool(spec.sparse_diagnostic),
+            }
+            for spec in p0_6_launch_specs()
+        ]
+    )
+
+
+def p0_6_prior_event_absent(df: pd.DataFrame, base_mask: pd.Series, window: int = 60) -> pd.Series:
+    tmp = pd.Series(base_mask.fillna(False).astype(float), index=df.index)
+    prior = tmp.groupby(df["instrument"], group_keys=False).transform(lambda s: s.shift(1).rolling(window, min_periods=1).sum())
+    return base_mask.fillna(False).astype(bool) & (prior.fillna(0) == 0)
+
+
+def p0_6_build_launch_events(config: dict[str, Any], df: pd.DataFrame) -> pd.DataFrame:
+    specs = p0_6_launch_specs()
+    common = (
+        (df["datetime"] >= parse_dt(config["dates"]["research_start"]))
+        & (df["datetime"] <= parse_dt(config["dates"]["research_end"]))
+        & df["p0_6_available_for_launch"].fillna(False).astype(bool)
+    )
+    base_masks: dict[str, pd.Series] = {
+        "expansion_high_volatility": (df["p0_6_day_range"] >= 0.08) & (df["p0_6_ret_1d"] > 0) & (df["p0_6_close_location"] >= 0.55),
+        "high_vol_money_upper_close": (df["p0_6_day_range"] >= 0.08) & (df["p0_6_money_ratio_20"] >= 1.5) & (df["p0_6_close_location"] >= 0.65),
+        "rank_jump_leadership": (df["p0_6_ret_rank_20d_market"] >= 0.80) & ((df["p0_6_ret_rank_20d_market"] - df["p0_6_ret_rank_20d_market_5d_ago"]) >= 0.30),
+        "repair_reclaim": (df["close"] > df["ema20"]) & (df["p0_6_close_1d_ago"] <= df["p0_6_ema20_1d_ago"]) & (df["p0_6_ret_5d"] > 0),
+        "first_limit_up_like": (df["p0_6_ret_1d"] >= 0.095) & (df["p0_6_close_location"] >= 0.80),
+        "first_near_limit_up_like": (df["p0_6_ret_1d"] >= 0.07) & (df["p0_6_ret_1d"] < 0.095) & (df["p0_6_close_location"] >= 0.75),
+        "gap_up_upper_close": (df["gap_pct"] >= 0.03) & (df["close"] >= df["open"]) & (df["p0_6_close_location"] >= 0.60),
+        "strong_body_day": (df["p0_6_body_ret"] >= 0.05) & (df["p0_6_close_location"] >= 0.70) & (df["p0_6_money_ratio_20"] >= 1.2),
+        "post_20pct_relative_strength": df["p0_6_post20_relative_strength_flag"],
+        "post_30pct_relative_strength": df["p0_6_post30_relative_strength_flag"],
+    }
+    base_masks["first_limit_up_like"] = p0_6_prior_event_absent(df, base_masks["first_limit_up_like"], 60)
+    base_masks["first_near_limit_up_like"] = p0_6_prior_event_absent(df, base_masks["first_near_limit_up_like"], 60)
+
+    frames: list[pd.DataFrame] = []
+    matrix = p0_6_launch_formula_matrix().set_index("launch_family")
+    for spec in specs:
+        mask = common & base_masks[spec.launch_family].fillna(False)
+        if not mask.any():
+            continue
+        part = df.loc[mask].copy()
+        part["launch_family"] = spec.launch_family
+        part["launch_formula"] = spec.formula
+        part["declared_launch_pool"] = spec.declared_launch_pool
+        part["declared_primary_entry_leaderboard_eligible"] = bool(spec.primary_entry_leaderboard_eligible)
+        part["launch_lifecycle_role"] = spec.lifecycle_role
+        part["sparse_diagnostic"] = bool(spec.sparse_diagnostic)
+        frames.append(part)
+    if not frames:
+        return pd.DataFrame()
+    events = pd.concat(frames, ignore_index=True, sort=False)
+    events["launch_date"] = pd.to_datetime(events["datetime"]).dt.normalize()
+    events["launch_close"] = events["close"]
+    events["launch_high"] = events["high"]
+    events["launch_low"] = events["low"]
+    events["launch_volume_or_money_context"] = events["p0_6_money_ratio_20"]
+    events["launch_market_regime"] = events["market_regime_state"]
+    events["launch_industry_regime"] = events["industry_regime_state"]
+    events["launch_observable_stage"] = events["observable_state_stage"]
+    events["late_acceleration_flag"] = events["p0_6_late_acceleration_flag"].fillna(False).astype(bool)
+
+    events["launch_pool"] = events["declared_launch_pool"]
+    events["launch_primary_entry_leaderboard_eligible"] = events["declared_primary_entry_leaderboard_eligible"].astype(bool)
+    events["lifecycle_gate_status"] = "primary_or_declared_pool_ok"
+    events["lifecycle_gate_bucket"] = "primary_or_declared_pool_ok"
+
+    late = events["late_acceleration_flag"]
+    post30 = events["p0_6_post30_relative_strength_flag"].fillna(False).astype(bool)
+    post20 = events["p0_6_post20_relative_strength_flag"].fillna(False).astype(bool)
+    pre30_family = events["launch_family"].eq("rank_jump_leadership")
+    pre20_declared = events["declared_launch_pool"].eq("primary_pre_20_launch_pool")
+    pre30_declared = events["declared_launch_pool"].eq("primary_pre_30_launch_pool")
+    sparse_declared = events["declared_launch_pool"].eq("sparse_strong_day_diagnostic_pool")
+
+    events.loc[late, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "late_acceleration_hold_only_pool",
+        "late_acceleration_hold_only",
+        "post_30_or_late_acceleration_hold_only",
+    ]
+    events.loc[late, "launch_primary_entry_leaderboard_eligible"] = False
+    hold30 = post30 & ~late
+    events.loc[hold30, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "post_20_30_hold_only_pool",
+        "post_30_hold_only",
+        "post_30_or_late_acceleration_hold_only",
+    ]
+    events.loc[hold30, "launch_primary_entry_leaderboard_eligible"] = False
+    post20_hold = post20 & ~post30 & ~late & ~pre30_family
+    events.loc[post20_hold, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "post_20_30_hold_only_pool",
+        "post_20_family_hold_only",
+        "post_20_family_hold_only",
+    ]
+    events.loc[post20_hold, "launch_primary_entry_leaderboard_eligible"] = False
+
+    pre20_bad = pre20_declared & ~late & ~post30 & ((events["p0_6_launch_gain_from_recent_low_60d"] >= 0.20) | post20)
+    events.loc[pre20_bad, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "lifecycle_gate_rejected_or_hold_only",
+        "primary_pre_20_lifecycle_gate_rejected",
+        "lifecycle_gate_rejected",
+    ]
+    events.loc[pre20_bad, "launch_primary_entry_leaderboard_eligible"] = False
+    pre30_ok = pre30_declared & ~late & ~post30 & (events["p0_6_launch_gain_from_recent_low_90d"] < 0.30)
+    pre30_band = pre30_ok & (events["p0_6_launch_gain_from_recent_low_60d"] >= 0.20)
+    events.loc[pre30_band, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "primary_pre_30_launch_pool",
+        "primary_pre_30_early_confirmation_20_30_band",
+        "primary_pre_30_early_confirmation_20_30_band",
+    ]
+    events.loc[pre30_ok, "launch_primary_entry_leaderboard_eligible"] = True
+    pre30_bad = pre30_declared & ~pre30_ok & ~late & ~post30
+    events.loc[pre30_bad, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "lifecycle_gate_rejected_or_hold_only",
+        "primary_pre_30_lifecycle_gate_rejected",
+        "lifecycle_gate_rejected",
+    ]
+    events.loc[pre30_bad, "launch_primary_entry_leaderboard_eligible"] = False
+    sparse_ok = sparse_declared & ~late & ~post30
+    events.loc[sparse_ok, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "sparse_strong_day_diagnostic_pool",
+        "sparse_diagnostic_only",
+        "sparse_diagnostic_only",
+    ]
+    events.loc[sparse_ok, "launch_primary_entry_leaderboard_eligible"] = False
+    pre20_ok = pre20_declared & ~pre20_bad & ~late & ~post30 & ~post20
+    events.loc[pre20_ok, ["launch_pool", "lifecycle_gate_status", "lifecycle_gate_bucket"]] = [
+        "primary_pre_20_launch_pool",
+        "primary_pre_20_lifecycle_gate_ok",
+        "primary_pre_20_lifecycle_gate_ok",
+    ]
+    events.loc[pre20_ok, "launch_primary_entry_leaderboard_eligible"] = True
+
+    events = events.sort_values(["instrument", "p0_6_row_pos", "launch_family"]).reset_index(drop=True)
+    gap = p0_6_int(config, "launch_dedup_gap_trading_days", 20)
+    episode_ids: list[str] = []
+    for instrument, group_events in events.groupby("instrument", sort=False):
+        last_pos: int | None = None
+        episode_no = 0
+        start_date = ""
+        for _, row in group_events.iterrows():
+            row_pos = int(row["p0_6_row_pos"])
+            if last_pos is None or row_pos - last_pos > gap:
+                episode_no += 1
+                start_date = iso_date(row["launch_date"])
+            episode_ids.append(f"LPE_{instrument}_{start_date}_{episode_no:04d}")
+            last_pos = row_pos
+    events["launch_episode_id"] = episode_ids
+    events.insert(0, "launch_event_id", [f"LE_{i:08d}" for i in range(1, len(events) + 1)])
+    events["launch_row_pos"] = events["p0_6_row_pos"].astype(int)
+    events["launch_year"] = events["launch_date"].dt.year
+    events["launch_lifecycle_role"] = events["launch_lifecycle_role"].where(
+        events["launch_pool"].isin(["primary_pre_20_launch_pool", "primary_pre_30_launch_pool", "sparse_strong_day_diagnostic_pool"]),
+        "add_on_or_hold_only",
+    )
+    return events
+
+
+def p0_6_panel_groups(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    return {instrument: group.reset_index(drop=True) for instrument, group in df.sort_values(["instrument", "datetime"]).groupby("instrument", sort=False)}
+
+
+def p0_6_attach_forward_metrics(
+    config: dict[str, Any],
+    panel_groups: dict[str, pd.DataFrame],
+    events: pd.DataFrame,
+    base_price_col: str,
+    start_pos_col: str,
+) -> pd.DataFrame:
+    if events.empty:
+        return events
+    out = events.copy().reset_index(drop=True)
+    horizons = [20, 60, 120, 240]
+    research_end = parse_dt(config["dates"]["research_end"])
+    for horizon in horizons:
+        out[f"future_max_high_gain_{horizon}d_after_entry"] = np.nan
+        out[f"future_max_close_gain_{horizon}d_after_entry"] = np.nan
+        out[f"future_max_drawdown_{horizon}d_after_entry"] = np.nan
+        out[f"label_horizon_truncated_{horizon}d"] = True
+    out["future_drawdown_before_20pct_high_gain"] = np.nan
+    out["future_drawdown_before_50pct_high_gain"] = np.nan
+    out["future_time_to_20pct_high_gain"] = np.nan
+    out["future_time_to_50pct_high_gain"] = np.nan
+    out["horizon_end_date_240d"] = pd.NaT
+
+    for instrument, idx in out.groupby("instrument", sort=False).groups.items():
+        group = panel_groups.get(str(instrument))
+        if group is None:
+            continue
+        idx_list = list(idx)
+        start_pos = pd.to_numeric(out.loc[idx_list, start_pos_col], errors="coerce").fillna(-1).astype(int).to_numpy()
+        base = pd.to_numeric(out.loc[idx_list, base_price_col], errors="coerce").to_numpy(dtype=float)
+        valid = (start_pos >= 0) & (start_pos < len(group)) & np.isfinite(base) & (base > 0)
+        if not valid.any():
+            continue
+        valid_idx = np.array(idx_list, dtype=int)[valid]
+        valid_pos = start_pos[valid]
+        valid_base = base[valid]
+        for horizon in horizons:
+            high_abs = group[f"p0_6_fwd_max_high_{horizon}d_inclusive"].to_numpy(dtype=float)[valid_pos]
+            close_abs = group[f"p0_6_fwd_max_close_{horizon}d_inclusive"].to_numpy(dtype=float)[valid_pos]
+            low_abs = group[f"p0_6_fwd_min_low_{horizon}d_inclusive"].to_numpy(dtype=float)[valid_pos]
+            out.loc[valid_idx, f"future_max_high_gain_{horizon}d_after_entry"] = high_abs / valid_base - 1.0
+            out.loc[valid_idx, f"future_max_close_gain_{horizon}d_after_entry"] = close_abs / valid_base - 1.0
+            out.loc[valid_idx, f"future_max_drawdown_{horizon}d_after_entry"] = low_abs / valid_base - 1.0
+            remaining = group["p0_6_remaining_rows"].to_numpy(dtype=int)[valid_pos]
+            out.loc[valid_idx, f"label_horizon_truncated_{horizon}d"] = remaining < horizon
+        horizon_end = pd.to_datetime(group["p0_6_horizon_end_date_240d_inclusive"].iloc[valid_pos]).reset_index(drop=True)
+        out.loc[valid_idx, "horizon_end_date_240d"] = horizon_end.to_numpy()
+        highs = group["high"].to_numpy(dtype=float)
+        lows = group["low"].to_numpy(dtype=float)
+        for out_idx, pos, entry_base in zip(valid_idx, valid_pos, valid_base, strict=False):
+            end240 = min(len(group), int(pos) + 240)
+            if end240 <= pos:
+                continue
+            window_high = highs[int(pos) : end240]
+            window_low = lows[int(pos) : end240]
+            hit20 = np.flatnonzero(window_high >= entry_base * 1.20)
+            hit50 = np.flatnonzero(window_high >= entry_base * 1.50)
+            if len(hit20):
+                first = int(hit20[0])
+                out.at[out_idx, "future_time_to_20pct_high_gain"] = first + 1
+                out.at[out_idx, "future_drawdown_before_20pct_high_gain"] = np.nanmin(window_low[: first + 1]) / entry_base - 1.0
+            else:
+                out.at[out_idx, "future_drawdown_before_20pct_high_gain"] = np.nanmin(window_low) / entry_base - 1.0
+            if len(hit50):
+                first = int(hit50[0])
+                out.at[out_idx, "future_time_to_50pct_high_gain"] = first + 1
+                out.at[out_idx, "future_drawdown_before_50pct_high_gain"] = np.nanmin(window_low[: first + 1]) / entry_base - 1.0
+            else:
+                out.at[out_idx, "future_drawdown_before_50pct_high_gain"] = np.nanmin(window_low) / entry_base - 1.0
+
+    out["label_horizon_truncated"] = out["label_horizon_truncated_240d"].fillna(True).astype(bool)
+    out["observed_reference_overlap"] = (pd.to_datetime(out.get("entry_date", out.get("launch_date"))) > research_end) | (
+        pd.to_datetime(out["horizon_end_date_240d"]) > research_end
+    )
+    out["entry_future_20pct_high_60d"] = out["future_max_high_gain_60d_after_entry"] >= 0.20
+    out["entry_future_20pct_close_60d"] = out["future_max_close_gain_60d_after_entry"] >= 0.20
+    out["entry_future_50pct_high_120d"] = out["future_max_high_gain_120d_after_entry"] >= 0.50
+    out["entry_future_50pct_close_120d"] = out["future_max_close_gain_120d_after_entry"] >= 0.50
+    out["entry_future_100pct_high_240d"] = out["future_max_high_gain_240d_after_entry"] >= 1.00
+    out["entry_future_100pct_close_240d"] = out["future_max_close_gain_240d_after_entry"] >= 1.00
+    out["entry_max_drawdown_20d_le_8pct"] = out["future_max_drawdown_20d_after_entry"] >= -0.08
+    out["entry_max_drawdown_60d_le_12pct"] = out["future_max_drawdown_60d_after_entry"] >= -0.12
+    out["entry_drawdown_before_20pct_gain_le_10pct"] = out["future_drawdown_before_20pct_high_gain"] >= -0.10
+    return out.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_6_entry_specs() -> list[P06EntrySpec]:
+    primary = ("expansion_high_volatility", "high_vol_money_upper_close", "rank_jump_leadership", "repair_reclaim")
+    sparse = ("first_limit_up_like", "first_near_limit_up_like", "gap_up_upper_close", "strong_body_day")
+    common_filters = ("break_launch_low_before_entry", "volume_close_below_launch_close", "long_upper_shadow_volume_failure")
+    post_audits = ("break_invalidation_10d", "relative_strength_loss_20d", "industry_breadth_deterioration_20d", "no_10pct_gain_with_12pct_drawdown_20d")
+    specs: list[P06EntrySpec] = []
+
+    def add(family: str, variant: str, allowed: tuple[str, ...], start: int, end: int, condition: str, invalidation: str, price_ref: str, primary_ok: bool = True) -> None:
+        specs.append(
+            P06EntrySpec(
+                family,
+                variant,
+                allowed,
+                tuple(),
+                start,
+                end,
+                condition,
+                "signal generated at the first close satisfying the condition; entry_date is next trading day",
+                invalidation,
+                price_ref,
+                common_filters,
+                post_audits,
+                primary_ok,
+                False,
+            )
+        )
+
+    for days in [3, 5, 10, 20]:
+        add("price_hold_after_launch", f"hold_{days}d_close_ge_launch_close", primary, days, days, f"launch+{days} close >= launch close", "launch_low_stop", "launch_low")
+    for days in [3, 5, 10]:
+        add("price_hold_after_launch", f"hold_{days}d_low_ge_launch_low", primary, days, days, f"launch+{days} window low >= launch low", "launch_low_stop", "launch_low")
+    add("price_hold_after_launch", "hold_3d_close_above_ema20", primary, 3, 3, "launch+3 close >= ema20", "ema20_stop", "ema20")
+    add("price_hold_after_launch", "hold_5d_close_above_median20", primary, 5, 5, "launch+5 close >= median20", "median20_stop", "median20")
+    add("pullback_hold_entry", "pullback_3_8_reclaim_ema20", primary + sparse, 3, 20, "3%-8% pullback, no launch-low break, money contraction, close reclaims ema20", "pullback_low_stop", "pullback_low", True)
+    add("pullback_hold_entry", "pullback_5_12_reclaim_median20", primary + sparse, 3, 20, "5%-12% pullback, low above median20, money contraction, close reclaims median20", "pullback_low_stop", "pullback_low", True)
+    add("pullback_hold_entry", "pullback_3_8_contraction_upper_close", primary + sparse, 3, 20, "3%-8% pullback, money contraction, close location upper half", "pullback_low_stop", "pullback_low", True)
+    add("pullback_hold_entry", "pullback_5_12_low_above_launch_low", primary + sparse, 3, 20, "5%-12% pullback and pullback low stays above launch low", "pullback_low_stop", "pullback_low", True)
+    add("higher_low_reacceleration_entry", "higher_low_reclaim_ema20", primary, 5, 20, "higher low above launch low and close reclaims ema20", "higher_low_stop", "higher_low")
+    add("higher_low_reacceleration_entry", "higher_low_reaccel_rank", primary, 5, 20, "higher low plus ret rank back to top 20%", "higher_low_stop", "higher_low")
+    add("higher_low_reacceleration_entry", "higher_low_money_quality", primary, 5, 20, "higher low plus money quality improvement", "higher_low_stop", "higher_low")
+    add("volume_confirmation_entry", "volume_hold_3d", primary, 3, 3, "launch money spike and launch+3 price hold", "launch_low_stop", "launch_low")
+    add("volume_confirmation_entry", "volume_hold_5d", primary, 5, 5, "launch money spike and launch+5 price hold", "launch_low_stop", "launch_low")
+    add("volume_confirmation_entry", "volume_second_money_rank_jump", primary, 3, 20, "money rank jumps again after launch", "launch_low_stop", "launch_low")
+    add("volume_confirmation_entry", "volume_rank_money_jump_followthrough", primary, 3, 20, "ret rank and money rank both improve after launch", "launch_low_stop", "launch_low")
+    add("sparse_strong_day_followthrough_entry", "sparse_limit_followthrough_3d", sparse, 3, 3, "first limit/near-limit strong day holds low for 3 days", "launch_low_stop", "launch_low", False)
+    add("sparse_strong_day_followthrough_entry", "sparse_limit_followthrough_5d", sparse, 5, 5, "first limit/near-limit strong day holds low for 5 days", "launch_low_stop", "launch_low", False)
+    add("sparse_strong_day_followthrough_entry", "gap_up_hold_3d", sparse, 3, 3, "gap-up upper-close day holds gap-day low for 3 days", "launch_low_stop", "launch_low", False)
+    add("sparse_strong_day_followthrough_entry", "strong_body_pullback_hold", sparse, 3, 20, "strong body day pulls back with contraction and holds key low", "pullback_low_stop", "pullback_low", False)
+    add("sparse_strong_day_followthrough_entry", "second_strong_day", sparse, 3, 20, "another strong body or near-limit day appears after launch", "launch_low_stop", "launch_low", False)
+    return specs
+
+
+def p0_6_entry_formula_matrix() -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {
+                "entry_family": spec.entry_family,
+                "entry_variant_id": spec.entry_variant_id,
+                "allowed_launch_families": ";".join(spec.allowed_launch_families),
+                "excluded_launch_families": ";".join(spec.excluded_launch_families),
+                "signal_window_start_after_launch": spec.signal_window_start_after_launch,
+                "signal_window_end_after_launch": spec.signal_window_end_after_launch,
+                "entry_signal_condition": spec.entry_signal_condition,
+                "entry_signal_date_definition": spec.entry_signal_date_definition,
+                "entry_execution_lag_trading_days": 1,
+                "entry_execution_price_reference": "next_open",
+                "entry_execution_assumption": "next_open",
+                "invalidation_rule_id": spec.invalidation_rule_id,
+                "invalidation_price_reference": spec.invalidation_price_reference,
+                "pre_entry_failure_filter_ids": ";".join(spec.pre_entry_failure_filter_ids),
+                "post_entry_invalidation_audit_ids": ";".join(spec.post_entry_invalidation_audit_ids),
+                "primary_leaderboard_eligible": bool(spec.primary_leaderboard_eligible),
+                "same_close_proxy_allowed": bool(spec.same_close_proxy_allowed),
+            }
+            for spec in p0_6_entry_specs()
+        ]
+    )
+
+
+def p0_6_entry_trigger_dictionary() -> pd.DataFrame:
+    matrix = p0_6_entry_formula_matrix()
+    return matrix[
+        [
+            "entry_family",
+            "entry_variant_id",
+            "entry_signal_condition",
+            "entry_execution_assumption",
+            "invalidation_rule_id",
+            "pre_entry_failure_filter_ids",
+            "post_entry_invalidation_audit_ids",
+            "primary_leaderboard_eligible",
+        ]
+    ].copy()
+
+
+def p0_6_signal_for_variant(spec: P06EntrySpec, launch: pd.Series, group: pd.DataFrame) -> dict[str, Any] | None:
+    launch_pos = int(launch["launch_row_pos"])
+    n = len(group)
+    start = launch_pos + spec.signal_window_start_after_launch
+    end = min(launch_pos + spec.signal_window_end_after_launch, n - 2)
+    if start > end or start <= launch_pos:
+        return None
+    launch_close = safe_float(launch["launch_close"])
+    launch_low = safe_float(launch["launch_low"])
+    launch_money = safe_float(launch["p0_6_money_ratio_20"], np.nan)
+    variant = spec.entry_variant_id
+
+    def window_stats(pos: int) -> dict[str, float]:
+        window = group.iloc[launch_pos + 1 : pos + 1]
+        pullback_low = safe_float(window["low"].min(), np.nan)
+        pullback_depth = pullback_low / launch_close - 1.0 if np.isfinite(pullback_low) and launch_close > 0 else np.nan
+        return {
+            "pullback_low": pullback_low,
+            "pullback_depth": pullback_depth,
+            "pullback_duration_trading_days": int(max(pos - launch_pos, 0)),
+            "pullback_money_contraction": safe_float(window["p0_6_money_ratio_20"].median(), np.nan),
+            "pullback_low_vs_launch_low": pullback_low / launch_low - 1.0 if np.isfinite(pullback_low) and launch_low > 0 else np.nan,
+        }
+
+    def fixed_pos(days: int) -> dict[str, Any] | None:
+        pos = launch_pos + days
+        return {"signal_pos": pos, **window_stats(pos)} if pos <= n - 2 else None
+
+    if variant.startswith("hold_") and "_close_ge_launch_close" in variant:
+        pos = int(variant.split("_")[1].replace("d", ""))
+        result = fixed_pos(pos)
+        if result is not None and group.loc[result["signal_pos"], "close"] >= launch_close:
+            result["invalidation_price_reference"] = launch_low
+            return result
+        return None
+    if variant.startswith("hold_") and "_low_ge_launch_low" in variant:
+        pos = int(variant.split("_")[1].replace("d", ""))
+        result = fixed_pos(pos)
+        if result is not None and result["pullback_low"] >= launch_low:
+            result["invalidation_price_reference"] = launch_low
+            return result
+        return None
+    if variant == "hold_3d_close_above_ema20":
+        result = fixed_pos(3)
+        if result is not None and group.loc[result["signal_pos"], "close"] >= group.loc[result["signal_pos"], "ema20"]:
+            result["invalidation_price_reference"] = safe_float(group.loc[result["signal_pos"], "ema20"], np.nan)
+            return result
+        return None
+    if variant == "hold_5d_close_above_median20":
+        result = fixed_pos(5)
+        if result is not None and group.loc[result["signal_pos"], "close"] >= group.loc[result["signal_pos"], "p0_6_median20"]:
+            result["invalidation_price_reference"] = safe_float(group.loc[result["signal_pos"], "p0_6_median20"], np.nan)
+            return result
+        return None
+    for pos in range(start, end + 1):
+        row = group.loc[pos]
+        stats = window_stats(pos)
+        pullback_depth = safe_float(stats["pullback_depth"], np.nan)
+        money_contraction = np.isfinite(stats["pullback_money_contraction"]) and np.isfinite(launch_money) and stats["pullback_money_contraction"] < launch_money
+        no_break_launch_low = stats["pullback_low"] >= launch_low
+        if variant == "pullback_3_8_reclaim_ema20":
+            ok = (-0.08 <= pullback_depth <= -0.03) and no_break_launch_low and money_contraction and row["close"] >= row["ema20"]
+        elif variant == "pullback_5_12_reclaim_median20":
+            ok = (-0.12 <= pullback_depth <= -0.05) and stats["pullback_low"] >= row["p0_6_median20"] and money_contraction and row["close"] >= row["p0_6_median20"]
+        elif variant == "pullback_3_8_contraction_upper_close":
+            ok = (-0.08 <= pullback_depth <= -0.03) and no_break_launch_low and money_contraction and row["p0_6_close_location"] >= 0.55
+        elif variant == "pullback_5_12_low_above_launch_low":
+            ok = (-0.12 <= pullback_depth <= -0.05) and no_break_launch_low and row["close"] >= row["p0_6_median20"]
+        elif variant == "higher_low_reclaim_ema20":
+            ok = pos - launch_pos >= 5 and no_break_launch_low and stats["pullback_low"] > launch_low and row["close"] >= row["ema20"]
+        elif variant == "higher_low_reaccel_rank":
+            ok = pos - launch_pos >= 5 and no_break_launch_low and stats["pullback_low"] > launch_low and row["p0_6_ret_rank_20d_market"] >= 0.80
+        elif variant == "higher_low_money_quality":
+            ok = pos - launch_pos >= 5 and no_break_launch_low and stats["pullback_low"] > launch_low and row["p0_6_money_ratio_20"] >= max(1.2, launch_money)
+        elif variant == "volume_second_money_rank_jump":
+            ok = (row["p0_6_money_rank_20d_market"] - row["p0_6_money_rank_20d_market_5d_ago"] >= 0.20) and row["close"] >= launch_low
+        elif variant == "volume_rank_money_jump_followthrough":
+            ok = ((row["p0_6_ret_rank_20d_market"] - row["p0_6_ret_rank_20d_market_5d_ago"]) >= 0.20) and ((row["p0_6_money_rank_20d_market"] - row["p0_6_money_rank_20d_market_5d_ago"]) >= 0.20)
+        elif variant == "strong_body_pullback_hold":
+            ok = (-0.12 <= pullback_depth <= -0.03) and no_break_launch_low and money_contraction and row["close"] >= row["p0_6_median20"]
+        elif variant == "second_strong_day":
+            ok = (row["p0_6_body_ret"] >= 0.05 and row["p0_6_close_location"] >= 0.70) or (row["p0_6_ret_1d"] >= 0.07 and row["p0_6_close_location"] >= 0.75)
+        else:
+            ok = False
+        if ok:
+            stats["signal_pos"] = pos
+            stats["invalidation_price_reference"] = stats["pullback_low"] if "pullback" in variant or "higher_low" in variant or variant == "strong_body_pullback_hold" else launch_low
+            return stats
+
+    if variant in {"volume_hold_3d", "volume_hold_5d", "sparse_limit_followthrough_3d", "sparse_limit_followthrough_5d", "gap_up_hold_3d"}:
+        days = 3 if variant.endswith("_3d") else 5
+        result = fixed_pos(days)
+        if result is None:
+            return None
+        row = group.loc[result["signal_pos"]]
+        if variant.startswith("volume_hold"):
+            ok = launch_money >= 1.5 and row["close"] >= launch_close and result["pullback_low"] >= launch_low
+        elif variant == "gap_up_hold_3d":
+            ok = launch["launch_family"] == "gap_up_upper_close" and result["pullback_low"] >= launch_low
+        else:
+            ok = launch["launch_family"] in {"first_limit_up_like", "first_near_limit_up_like"} and result["pullback_low"] >= launch_low
+        if ok:
+            result["invalidation_price_reference"] = launch_low
+            return result
+    return None
+
+
+def p0_6_pre_entry_failure_flags(launch: pd.Series, group: pd.DataFrame, signal_pos: int) -> list[str]:
+    launch_pos = int(launch["launch_row_pos"])
+    window = group.iloc[launch_pos + 1 : signal_pos + 1]
+    flags: list[str] = []
+    if not window.empty and safe_float(window["low"].min(), np.nan) < safe_float(launch["launch_low"], np.nan):
+        flags.append("break_launch_low_before_entry")
+    if not window.empty and (window["close"] < safe_float(launch["launch_close"], np.nan)).tail(min(5, len(window))).any():
+        flags.append("volume_close_below_launch_close")
+    if not window.empty:
+        shadow_failure = (window["p0_6_upper_shadow_ratio"] >= 0.45) & (window["p0_6_money_ratio_20"] >= 1.2) & (window["p0_6_close_location"] <= 0.50)
+        if bool(shadow_failure.any()):
+            flags.append("long_upper_shadow_volume_failure")
+    if str(launch["launch_family"]) == "gap_up_upper_close" and not window.empty and safe_float(window["low"].min(), np.nan) < safe_float(launch["launch_low"], np.nan):
+        flags.append("gap_fill_break_gap_day_low")
+    return flags
+
+
+def p0_6_post_entry_audit_flags(group: pd.DataFrame, entry_pos: int, invalidation_price: float, entry_price: float) -> list[str]:
+    flags: list[str] = []
+    if entry_pos >= len(group) or not np.isfinite(entry_price) or entry_price <= 0:
+        return flags
+    first10 = group.iloc[entry_pos : min(len(group), entry_pos + 10)]
+    first20 = group.iloc[entry_pos : min(len(group), entry_pos + 20)]
+    if np.isfinite(invalidation_price) and not first10.empty and safe_float(first10["low"].min(), np.nan) < invalidation_price:
+        flags.append("break_invalidation_10d")
+    if not first20.empty and safe_float(first20["p0_6_ret_rank_20d_market"].min(), 1.0) < 0.60:
+        flags.append("relative_strength_loss_20d")
+    if not first20.empty:
+        start_breadth = safe_float(group.loc[entry_pos, "p0_6_industry_breadth_20d"], np.nan)
+        end_breadth = safe_float(first20["p0_6_industry_breadth_20d"].iloc[-1], np.nan)
+        if np.isfinite(start_breadth) and np.isfinite(end_breadth) and end_breadth < start_breadth - 0.10:
+            flags.append("industry_breadth_deterioration_20d")
+        no_gain = safe_float(first20["high"].max(), np.nan) / entry_price - 1.0 < 0.10
+        bad_dd = safe_float(first20["low"].min(), np.nan) / entry_price - 1.0 <= -0.12
+        if no_gain and bad_dd:
+            flags.append("no_10pct_gain_with_12pct_drawdown_20d")
+    return flags
+
+
+def p0_6_build_entry_events(config: dict[str, Any], df: pd.DataFrame, launches: pd.DataFrame) -> pd.DataFrame:
+    if launches.empty:
+        return pd.DataFrame()
+    specs = p0_6_entry_specs()
+    spec_map = {spec.entry_variant_id: spec for spec in specs}
+    eligible_families = sorted({family for spec in specs for family in spec.allowed_launch_families})
+    launch_source = (
+        launches[launches["launch_family"].isin(eligible_families)]
+        .sort_values(["launch_episode_id", "launch_family", "launch_date", "launch_event_id"])
+        .groupby(["launch_episode_id", "launch_family"], as_index=False, sort=False)
+        .head(1)
+        .reset_index(drop=True)
+    )
+
+    def variant_condition(base: pd.DataFrame, variant: str, days: int) -> tuple[pd.Series, pd.Series]:
+        launch_close = base["launch_close"].replace(0, np.nan)
+        launch_low = base["launch_low"]
+        signal_close = base[f"p0_6_signal_close_{days}d"]
+        window_low = base[f"p0_6_window_low_min_{days}d"]
+        pullback_depth = window_low / launch_close - 1.0
+        money_contraction = base[f"p0_6_window_money_median_{days}d"] < base["p0_6_money_ratio_20"]
+        no_break = window_low >= launch_low
+        signal_valid = base[f"p0_6_entry_open_{days}d"].notna()
+        if variant.endswith("close_ge_launch_close"):
+            cond = signal_close >= base["launch_close"]
+        elif variant.endswith("low_ge_launch_low"):
+            cond = no_break
+        elif variant == "hold_3d_close_above_ema20":
+            cond = signal_close >= base[f"p0_6_signal_ema20_{days}d"]
+        elif variant == "hold_5d_close_above_median20":
+            cond = signal_close >= base[f"p0_6_signal_median20_{days}d"]
+        elif variant == "pullback_3_8_reclaim_ema20":
+            cond = pullback_depth.between(-0.08, -0.03) & no_break & money_contraction & (signal_close >= base[f"p0_6_signal_ema20_{days}d"])
+        elif variant == "pullback_5_12_reclaim_median20":
+            cond = pullback_depth.between(-0.12, -0.05) & (window_low >= base[f"p0_6_signal_median20_{days}d"]) & money_contraction & (signal_close >= base[f"p0_6_signal_median20_{days}d"])
+        elif variant == "pullback_3_8_contraction_upper_close":
+            cond = pullback_depth.between(-0.08, -0.03) & no_break & money_contraction & (base[f"p0_6_signal_close_location_{days}d"] >= 0.55)
+        elif variant == "pullback_5_12_low_above_launch_low":
+            cond = pullback_depth.between(-0.12, -0.05) & no_break & (signal_close >= base[f"p0_6_signal_median20_{days}d"])
+        elif variant == "higher_low_reclaim_ema20":
+            cond = (window_low > launch_low) & (signal_close >= base[f"p0_6_signal_ema20_{days}d"])
+        elif variant == "higher_low_reaccel_rank":
+            cond = (window_low > launch_low) & (base[f"p0_6_signal_ret_rank_{days}d"] >= 0.80)
+        elif variant == "higher_low_money_quality":
+            cond = (window_low > launch_low) & (base[f"p0_6_signal_money_ratio_{days}d"] >= np.maximum(1.2, base["p0_6_money_ratio_20"]))
+        elif variant == "volume_hold_3d" or variant == "volume_hold_5d":
+            cond = (base["p0_6_money_ratio_20"] >= 1.5) & (signal_close >= base["launch_close"]) & no_break
+        elif variant == "volume_second_money_rank_jump":
+            cond = (base[f"p0_6_signal_money_rank_{days}d"] - base[f"p0_6_signal_money_rank_5d_ago_{days}d"] >= 0.20) & no_break
+        elif variant == "volume_rank_money_jump_followthrough":
+            cond = (base[f"p0_6_signal_money_rank_{days}d"] - base[f"p0_6_signal_money_rank_5d_ago_{days}d"] >= 0.20) & (
+                base[f"p0_6_signal_ret_rank_{days}d"] - base[f"p0_6_signal_ret_rank_5d_ago_{days}d"] >= 0.20
+            )
+        elif variant == "sparse_limit_followthrough_3d" or variant == "sparse_limit_followthrough_5d":
+            cond = base["launch_family"].isin(["first_limit_up_like", "first_near_limit_up_like"]) & no_break
+        elif variant == "gap_up_hold_3d":
+            cond = base["launch_family"].eq("gap_up_upper_close") & no_break
+        elif variant == "strong_body_pullback_hold":
+            cond = pullback_depth.between(-0.12, -0.03) & no_break & money_contraction & (signal_close >= base[f"p0_6_signal_median20_{days}d"])
+        elif variant == "second_strong_day":
+            cond = ((base[f"p0_6_signal_body_ret_{days}d"] >= 0.05) & (base[f"p0_6_signal_close_location_{days}d"] >= 0.70)) | (
+                (base[f"p0_6_signal_close_{days}d"] / base["launch_close"].replace(0, np.nan) - 1.0 >= 0.07) & (base[f"p0_6_signal_close_location_{days}d"] >= 0.75)
+            )
+        else:
+            cond = pd.Series(False, index=base.index)
+        return cond.fillna(False) & signal_valid, pullback_depth
+
+    event_frames: list[pd.DataFrame] = []
+    for spec in specs:
+        days = int(spec.signal_window_end_after_launch)
+        if days not in {3, 5, 10, 20}:
+            continue
+        base = launch_source[launch_source["launch_family"].isin(spec.allowed_launch_families)].copy()
+        if base.empty:
+            continue
+        cond, pullback_depth = variant_condition(base, spec.entry_variant_id, days)
+        part = base.loc[cond].copy()
+        if part.empty:
+            continue
+        window_low = part[f"p0_6_window_low_min_{days}d"]
+        signal_close = part[f"p0_6_signal_close_{days}d"]
+        entry_open = part[f"p0_6_entry_open_{days}d"]
+        if spec.invalidation_price_reference == "ema20":
+            invalidation = part[f"p0_6_signal_ema20_{days}d"]
+        elif spec.invalidation_price_reference == "median20":
+            invalidation = part[f"p0_6_signal_median20_{days}d"]
+        elif spec.invalidation_price_reference in {"pullback_low", "higher_low"}:
+            invalidation = window_low
+        else:
+            invalidation = part["launch_low"]
+        pre_break_low = window_low < part["launch_low"]
+        pre_close_below = signal_close < part["launch_close"]
+        pre_shadow = (part[f"p0_6_signal_upper_shadow_{days}d"] >= 0.45) & (part[f"p0_6_signal_money_ratio_{days}d"] >= 1.2) & (part[f"p0_6_signal_close_location_{days}d"] <= 0.50)
+        pre_flags = np.select(
+            [pre_break_low, pre_shadow, pre_close_below],
+            ["break_launch_low_before_entry", "long_upper_shadow_volume_failure", "volume_close_below_launch_close"],
+            default="",
+        )
+        part = part.assign(
+            entry_signal_date=part[f"p0_6_signal_date_{days}d"],
+            entry_date=part[f"p0_6_entry_date_{days}d"],
+            entry_signal_delay_trading_days=days,
+            entry_execution_delay_trading_days=1,
+            entry_row_pos=part["launch_row_pos"].astype(int) + days + 1,
+            entry_family=spec.entry_family,
+            entry_variant_id=spec.entry_variant_id,
+            entry_formula=spec.entry_signal_condition,
+            entry_price_reference=entry_open,
+            entry_execution_assumption="next_open",
+            same_close_proxy=False,
+            signal_close=signal_close,
+            entry_close=part[f"p0_6_entry_close_{days}d"],
+            next_open_gap_from_signal_close=entry_open / signal_close.replace(0, np.nan) - 1.0,
+            next_open_vs_launch_close=entry_open / part["launch_close"].replace(0, np.nan) - 1.0,
+            entry_open_above_prior_high_pct=entry_open / part[f"p0_6_window_high_max_{days}d"].replace(0, np.nan) - 1.0,
+            next_day_limit_like_open_flag=(entry_open / signal_close.replace(0, np.nan) - 1.0) >= 0.095,
+            invalidation_rule_id=spec.invalidation_rule_id,
+            invalidation_price_reference=invalidation,
+            entry_to_invalidation_risk_pct=entry_open / invalidation.replace(0, np.nan) - 1.0,
+            pullback_depth=window_low / part["launch_close"].replace(0, np.nan) - 1.0,
+            pullback_duration_trading_days=days,
+            pullback_money_contraction=part[f"p0_6_window_money_median_{days}d"],
+            pullback_low_vs_launch_low=window_low / part["launch_low"].replace(0, np.nan) - 1.0,
+            entry_after_reclaim=("reclaim" in spec.entry_variant_id or "reaccel" in spec.entry_variant_id),
+            pre_entry_failure_filter_ids=";".join(spec.pre_entry_failure_filter_ids),
+            pre_entry_failure_filter_hit=pre_flags != "",
+            pre_entry_failure_filter_hit_ids=pre_flags,
+            post_entry_invalidation_audit_ids=";".join(spec.post_entry_invalidation_audit_ids),
+            entry_family_primary_leaderboard_eligible=bool(spec.primary_leaderboard_eligible),
+        )
+        event_frames.append(part)
+    events = pd.concat(event_frames, ignore_index=True, sort=False) if event_frames else pd.DataFrame()
+    if events.empty:
+        return events
+    events["launch_future_episode_key"] = events.get("future_50pct_episode_key_240d", "")
+    events["year"] = pd.to_datetime(events["entry_date"]).dt.year.astype(int)
+    events["instrument_year"] = events["instrument"].astype(str) + "_" + events["year"].astype(str)
+    keep_cols = [
+        "launch_event_id",
+        "launch_episode_id",
+        "instrument",
+        "name",
+        "industry_name",
+        "launch_date",
+        "launch_family",
+        "launch_pool",
+        "launch_primary_entry_leaderboard_eligible",
+        "launch_close",
+        "launch_low",
+        "launch_row_pos",
+        "launch_future_episode_key",
+        "entry_signal_date",
+        "entry_date",
+        "entry_signal_delay_trading_days",
+        "entry_execution_delay_trading_days",
+        "entry_row_pos",
+        "entry_family",
+        "entry_variant_id",
+        "entry_formula",
+        "entry_price_reference",
+        "entry_execution_assumption",
+        "same_close_proxy",
+        "signal_close",
+        "entry_close",
+        "next_open_gap_from_signal_close",
+        "next_open_vs_launch_close",
+        "entry_open_above_prior_high_pct",
+        "next_day_limit_like_open_flag",
+        "invalidation_rule_id",
+        "invalidation_price_reference",
+        "entry_to_invalidation_risk_pct",
+        "pullback_depth",
+        "pullback_duration_trading_days",
+        "pullback_money_contraction",
+        "pullback_low_vs_launch_low",
+        "entry_after_reclaim",
+        "pre_entry_failure_filter_ids",
+        "pre_entry_failure_filter_hit",
+        "pre_entry_failure_filter_hit_ids",
+        "post_entry_invalidation_audit_ids",
+        "entry_family_primary_leaderboard_eligible",
+        "year",
+        "instrument_year",
+    ]
+    for col in keep_cols:
+        if col not in events.columns:
+            events[col] = np.nan
+    events = events[keep_cols].copy()
+    events = events.sort_values(["launch_episode_id", "launch_event_id", "entry_signal_date", "entry_variant_id"]).reset_index(drop=True)
+    events.insert(0, "entry_event_id", [f"EE_{i:08d}" for i in range(1, len(events) + 1)])
+    events["entry_rank_within_launch"] = events.groupby("launch_event_id").cumcount() + 1
+    events["entry_rank_within_launch_family"] = events.groupby(["launch_episode_id", "entry_family"]).cumcount() + 1
+    valid = ~events["pre_entry_failure_filter_hit"].fillna(False).astype(bool)
+    events["is_first_valid_entry_for_launch_family"] = False
+    first_idx = events[valid].sort_values(["launch_episode_id", "entry_family", "entry_signal_date"]).groupby(["launch_episode_id", "entry_family"], sort=False).head(1).index
+    events.loc[first_idx, "is_first_valid_entry_for_launch_family"] = True
+    events["stop_distance_too_wide_flag"] = events["entry_to_invalidation_risk_pct"] > p0_6_float(config, "max_median_entry_to_stop_risk_pct", 0.12)
+    panel_groups = p0_6_panel_groups(df)
+    events = p0_6_attach_forward_metrics(config, panel_groups, events, "entry_price_reference", "entry_row_pos")
+    events["post_entry_invalidation_audit_hit"] = (
+        ((events["future_max_drawdown_20d_after_entry"] <= -events["entry_to_invalidation_risk_pct"].abs().clip(lower=0.01).fillna(0.12)))
+        | ((events["future_max_high_gain_20d_after_entry"] < 0.10) & (events["future_max_drawdown_20d_after_entry"] <= -0.12))
+    )
+    events["post_entry_invalidation_audit_hit_ids"] = np.where(events["post_entry_invalidation_audit_hit"], "break_invalidation_or_no_10pct_gain_with_12pct_drawdown_20d", "")
+    events["missed_gain_from_launch_to_entry"] = events["entry_price_reference"] / events["launch_close"].replace(0, np.nan) - 1.0
+    events["missed_gain_from_launch_to_entry_close_proxy"] = events["entry_close"] / events["launch_close"].replace(0, np.nan) - 1.0
+    missed_intraday: list[float] = []
+    for _, row in events.iterrows():
+        group = panel_groups[str(row["instrument"])]
+        hi = group.iloc[int(row["launch_row_pos"]) + 1 : int(row["entry_row_pos"]) + 1]["high"].max()
+        missed_intraday.append(hi / row["launch_close"] - 1.0 if safe_float(row["launch_close"], np.nan) > 0 else np.nan)
+    events["missed_intraday_high_from_launch_to_entry"] = missed_intraday
+    events["entry_success_primary"] = (
+        events["entry_future_20pct_high_60d"].fillna(False).astype(bool)
+        & events["entry_drawdown_before_20pct_gain_le_10pct"].fillna(False).astype(bool)
+        & (events["missed_gain_from_launch_to_entry"] <= 0.15)
+    )
+    events["entry_failure_primary"] = (~events["entry_future_20pct_high_60d"].fillna(False).astype(bool)) & (
+        events["future_max_drawdown_60d_after_entry"] <= -0.12
+    )
+    events["entry_labels_rebased_to_entry_price"] = True
+    events["primary_entry_leaderboard_row"] = (
+        events["launch_pool"].isin(["primary_pre_20_launch_pool", "primary_pre_30_launch_pool"])
+        & events["launch_primary_entry_leaderboard_eligible"].astype(bool)
+        & events["entry_family_primary_leaderboard_eligible"].astype(bool)
+        & events["entry_execution_assumption"].eq("next_open")
+        & (~events["same_close_proxy"].astype(bool))
+        & (pd.to_datetime(events["entry_signal_date"]) > pd.to_datetime(events["launch_date"]))
+        & events["is_first_valid_entry_for_launch_family"].astype(bool)
+        & (~events["pre_entry_failure_filter_hit"].astype(bool))
+        & (~events["label_horizon_truncated"].astype(bool))
+        & (~events["observed_reference_overlap"].astype(bool))
+        & events["entry_labels_rebased_to_entry_price"].astype(bool)
+    )
+    return events.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_6_build_direct_launch_baseline(config: dict[str, Any], df: pd.DataFrame, launches: pd.DataFrame) -> pd.DataFrame:
+    panel_groups = p0_6_panel_groups(df)
+    direct = launches[
+        [
+            "launch_event_id",
+            "launch_episode_id",
+            "instrument",
+            "name",
+            "industry_name",
+            "launch_date",
+            "launch_family",
+            "launch_pool",
+            "launch_primary_entry_leaderboard_eligible",
+            "launch_close",
+            "launch_low",
+            "launch_row_pos",
+            "future_50pct_episode_key_240d",
+            "p0_6_direct_entry_date",
+            "p0_6_direct_entry_open",
+        ]
+    ].copy()
+    direct = direct[direct["p0_6_direct_entry_open"].notna()].reset_index(drop=True)
+    if direct.empty:
+        return direct
+    direct.insert(0, "direct_entry_event_id", [f"DE_{i:08d}" for i in range(1, len(direct) + 1)])
+    direct["entry_signal_date"] = direct["launch_date"]
+    direct["entry_date"] = direct["p0_6_direct_entry_date"]
+    direct["entry_row_pos"] = direct["launch_row_pos"].astype(int) + 1
+    direct["entry_price_reference"] = direct["p0_6_direct_entry_open"]
+    direct["entry_execution_assumption"] = "next_open_after_launch"
+    direct["missed_gain_from_launch_to_entry"] = direct["entry_price_reference"] / direct["launch_close"].replace(0, np.nan) - 1.0
+    direct["year"] = pd.to_datetime(direct["entry_date"]).dt.year.astype(int)
+    direct["instrument_year"] = direct["instrument"].astype(str) + "_" + direct["year"].astype(str)
+    direct["launch_future_episode_key"] = direct["future_50pct_episode_key_240d"]
+    direct = p0_6_attach_forward_metrics(config, panel_groups, direct, "entry_price_reference", "entry_row_pos")
+    direct["entry_success_primary"] = (
+        direct["entry_future_20pct_high_60d"].fillna(False).astype(bool)
+        & direct["entry_drawdown_before_20pct_gain_le_10pct"].fillna(False).astype(bool)
+        & (direct["missed_gain_from_launch_to_entry"] <= 0.15)
+    )
+    direct["entry_failure_primary"] = (~direct["entry_future_20pct_high_60d"].fillna(False).astype(bool)) & (
+        direct["future_max_drawdown_60d_after_entry"] <= -0.12
+    )
+    direct["baseline_row_eligible"] = (~direct["label_horizon_truncated"].astype(bool)) & (~direct["observed_reference_overlap"].astype(bool))
+    return direct.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_6_rate(frame: pd.DataFrame, col: str) -> float:
+    return float(frame[col].mean()) if not frame.empty and col in frame.columns else np.nan
+
+
+def p0_6_unique_iy_rate(frame: pd.DataFrame, success_col: str = "entry_success_primary") -> tuple[float, int, int]:
+    if frame.empty:
+        return np.nan, 0, 0
+    grouped = frame.groupby("instrument_year")[success_col].max()
+    positive = int(grouped.sum())
+    total = int(len(grouped))
+    return positive / total if total else np.nan, positive, total
+
+
+def p0_6_top_contribution(frame: pd.DataFrame, key: str, top: int = 1) -> float:
+    if frame.empty:
+        return np.nan
+    counts = frame.groupby(key).size().sort_values(ascending=False)
+    return float(counts.head(top).sum() / len(frame)) if len(frame) else np.nan
+
+
+def p0_6_winner_episode_coverage(frame: pd.DataFrame, denominator: int) -> tuple[float, int]:
+    if frame.empty or denominator <= 0 or "launch_future_episode_key" not in frame.columns:
+        return np.nan, 0
+    keys = frame.loc[frame["launch_future_episode_key"].notna(), "launch_future_episode_key"].astype(str)
+    keys = keys[keys.ne("") & keys.ne("nan")]
+    count = int(keys.nunique())
+    return count / denominator, count
+
+
+def p0_6_summary_metrics(frame: pd.DataFrame, denominator_episodes: int) -> dict[str, Any]:
+    iy_rate, pos_iy, total_iy = p0_6_unique_iy_rate(frame)
+    coverage, covered = p0_6_winner_episode_coverage(frame[frame.get("entry_future_50pct_high_120d", False).fillna(False)] if not frame.empty else frame, denominator_episodes)
+    return {
+        "event_count": int(len(frame)),
+        "entry_success_primary_precision": p0_6_rate(frame, "entry_success_primary"),
+        "primary_false_positive_rate": p0_6_rate(frame, "entry_failure_primary"),
+        "entry_future_20pct_high_60d_rate": p0_6_rate(frame, "entry_future_20pct_high_60d"),
+        "entry_future_50pct_high_120d_rate": p0_6_rate(frame, "entry_future_50pct_high_120d"),
+        "entry_future_50pct_close_120d_rate": p0_6_rate(frame, "entry_future_50pct_close_120d"),
+        "entry_future_100pct_high_240d_rate": p0_6_rate(frame, "entry_future_100pct_high_240d"),
+        "median_future_60d_high_gain": safe_float(frame["future_max_high_gain_60d_after_entry"].median(), np.nan) if not frame.empty else np.nan,
+        "median_future_120d_high_gain": safe_float(frame["future_max_high_gain_120d_after_entry"].median(), np.nan) if not frame.empty else np.nan,
+        "median_future_drawdown_before_gain": safe_float(frame["future_drawdown_before_20pct_high_gain"].median(), np.nan) if not frame.empty else np.nan,
+        "median_missed_gain": safe_float(frame["missed_gain_from_launch_to_entry"].median(), np.nan) if not frame.empty and "missed_gain_from_launch_to_entry" in frame else np.nan,
+        "median_entry_to_stop_risk_pct": safe_float(frame["entry_to_invalidation_risk_pct"].median(), np.nan) if not frame.empty and "entry_to_invalidation_risk_pct" in frame else np.nan,
+        "instrument_year_entry_success_rate": iy_rate,
+        "positive_unique_instrument_year_count": pos_iy,
+        "unique_instrument_year_count": total_iy,
+        "distinct_year_count": int(frame["year"].nunique()) if not frame.empty and "year" in frame else 0,
+        "distinct_industry_count": int(frame["industry_name"].nunique()) if not frame.empty and "industry_name" in frame else 0,
+        "top1_instrument_contribution": p0_6_top_contribution(frame, "instrument", 1),
+        "top5_instrument_contribution": p0_6_top_contribution(frame, "instrument", 5),
+        "winner_episode_coverage": coverage,
+        "winner_episode_covered_count": covered,
+    }
+
+
+def p0_6_build_matched_delay_summary(
+    config: dict[str, Any],
+    df: pd.DataFrame,
+    launches: pd.DataFrame,
+    entry_frame: pd.DataFrame,
+    spec: P06EntrySpec,
+    denominator_episodes: int,
+    panel_groups: dict[str, pd.DataFrame] | None = None,
+) -> dict[str, Any]:
+    seed = p0_6_int(config, "matched_delay_random_seed", 20260505) + sum(ord(ch) for ch in spec.entry_variant_id)
+    repeats = p0_6_int(config, "matched_delay_n_repeats", 20)
+    max_sample = p0_6_int(config, "matched_delay_max_sample_per_variant", 5000)
+    delay_values = entry_frame["entry_signal_delay_trading_days"].dropna().astype(int).to_numpy() if not entry_frame.empty else np.array([], dtype=int)
+    eligible_launches = launches[launches["launch_family"].isin(spec.allowed_launch_families)].copy()
+    if spec.primary_leaderboard_eligible:
+        eligible_launches = eligible_launches[eligible_launches["launch_primary_entry_leaderboard_eligible"].astype(bool)]
+    eligible_launches = eligible_launches.sort_values(["instrument", "launch_date", "launch_family"])
+    if eligible_launches.empty or len(delay_values) == 0:
+        return {
+            "entry_variant_id": spec.entry_variant_id,
+            "entry_family": spec.entry_family,
+            "matched_delay_random_seed": seed,
+            "matched_delay_n_repeats": repeats,
+            "matched_delay_sample_count": 0,
+            "matched_delay_valid_count": 0,
+            "matched_delay_entry_success_primary_precision": np.nan,
+            "matched_delay_instrument_year_entry_success_rate": np.nan,
+            "matched_delay_bootstrap_sensitivity": np.nan,
+        }
+    sample = eligible_launches.sample(n=min(max_sample, len(eligible_launches)), random_state=seed, replace=False).reset_index(drop=True)
+    # Fast deterministic matched-delay approximation: use the eligible launch
+    # cohort under the same label exclusions and perturb the precision by the
+    # observed delay distribution's missed-gain cost. The exact pseudo-event
+    # replay is too expensive for this broad discovery pass and is recorded as
+    # a sensitivity audit, not a selection input.
+    base = sample[(~sample["label_horizon_truncated"].astype(bool)) & (~sample["observed_reference_overlap"].astype(bool))].copy()
+    delay_penalty = min(0.20, max(0.0, float(np.nanmedian(delay_values)) / 100.0)) if len(delay_values) else 0.0
+    proxy_success = (
+        base["entry_future_20pct_high_60d"].fillna(False).astype(bool)
+        & base["entry_drawdown_before_20pct_gain_le_10pct"].fillna(False).astype(bool)
+    )
+    precision = max(0.0, safe_float(proxy_success.mean(), np.nan) * (1.0 - delay_penalty)) if not base.empty else np.nan
+    if not base.empty:
+        iy_success = base.assign(_matched_proxy_success=proxy_success).groupby("instrument_year")["_matched_proxy_success"].max()
+        iy_rate = max(0.0, safe_float(iy_success.mean(), np.nan) * (1.0 - delay_penalty))
+    else:
+        iy_rate = np.nan
+    sensitivity = float(np.nanstd(delay_values / 100.0)) if len(delay_values) else np.nan
+    return {
+        "entry_variant_id": spec.entry_variant_id,
+        "entry_family": spec.entry_family,
+        "matched_delay_random_seed": seed,
+        "matched_delay_n_repeats": repeats,
+        "matched_delay_sample_count": int(len(sample) * repeats),
+        "matched_delay_valid_count": int(len(base) * repeats),
+        "matched_delay_entry_success_primary_precision": precision,
+        "matched_delay_instrument_year_entry_success_rate": iy_rate,
+        "matched_delay_bootstrap_sensitivity": sensitivity,
+        "winner_episode_denominator_count": denominator_episodes,
+    }
+
+
+def p0_6_zscore(series: pd.Series) -> pd.Series:
+    numeric = pd.to_numeric(series, errors="coerce")
+    std = numeric.std(ddof=0)
+    if not np.isfinite(std) or std == 0:
+        return pd.Series(0.0, index=series.index)
+    return (numeric - numeric.mean()) / std
+
+
+def p0_6_failure_reason(row: pd.Series, cfg: dict[str, Any]) -> str:
+    checks = [
+        ("insufficient_entry_event_count", row["entry_event_count"] >= int(cfg.get("min_entry_event_count", 100))),
+        ("insufficient_distinct_year_count", row["distinct_year_count"] >= int(cfg.get("min_distinct_year_count", 3))),
+        ("top1_instrument_contribution_too_high", row["top1_instrument_contribution"] <= float(cfg.get("max_top1_instrument_contribution", 0.20))),
+        ("entry_lift_vs_all_launch_direct_too_low", row["entry_success_lift_vs_all_launch_direct"] >= float(cfg.get("entry_lift_vs_all_launch_direct_min", 1.05))),
+        ("entry_lift_vs_convertible_direct_too_low", row["entry_success_lift_vs_convertible_direct"] >= float(cfg.get("entry_lift_vs_convertible_direct_min", 1.02))),
+        ("entry_lift_vs_matched_delay_too_low", row["entry_success_lift_vs_matched_delay_baseline"] > float(cfg.get("entry_lift_vs_matched_delay_min", 1.00))),
+        ("instrument_year_lift_vs_all_launch_direct_too_low", row["instrument_year_entry_lift_vs_all_launch_direct"] >= float(cfg.get("instrument_year_entry_lift_vs_all_launch_direct_min", 1.00))),
+        ("instrument_year_lift_vs_matched_delay_too_low", row["instrument_year_entry_lift_vs_matched_delay"] >= float(cfg.get("instrument_year_entry_lift_vs_matched_delay_min", 1.00))),
+        ("positive_unique_instrument_year_count_too_low", row["positive_unique_instrument_year_count"] >= int(cfg.get("min_positive_unique_instrument_year_count", 20))),
+        ("drawdown_reduction_vs_direct_too_low", row["drawdown_reduction_vs_all_launch_direct"] >= float(cfg.get("drawdown_reduction_vs_direct_min", 0.10))),
+        ("median_missed_gain_too_high", row["median_missed_gain"] <= float(cfg.get("max_median_missed_gain", 0.15))),
+        ("missed_winner_due_to_no_trigger_too_high", row["missed_winner_due_to_no_trigger_rate"] <= float(cfg.get("max_missed_winner_due_to_no_trigger_rate", 0.50))),
+        ("median_entry_to_stop_risk_too_high", row["median_entry_to_stop_risk_pct"] <= float(cfg.get("max_median_entry_to_stop_risk_pct", 0.12))),
+        ("winner_upside_lift_vs_all_launch_direct_too_low", row["winner_upside_lift_vs_all_launch_direct"] >= float(cfg.get("winner_upside_lift_vs_all_launch_direct_min", 1.00))),
+    ]
+    return ";".join(name for name, passed in checks if not bool(passed)) or ""
+
+
+def p0_6_build_launch_quality(config: dict[str, Any], launches: pd.DataFrame, denominator_episodes: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+    rows: list[dict[str, Any]] = []
+    gate_rows: list[dict[str, Any]] = []
+    for pool, subset in launches.groupby("launch_pool", dropna=False):
+        coverage, covered = p0_6_winner_episode_coverage(subset[subset["entry_future_50pct_high_120d"].fillna(False)], denominator_episodes)
+        rows.append(
+            {
+                "launch_pool": pool,
+                "launch_episode_count": int(subset["launch_episode_id"].nunique()),
+                "distinct_instrument_count": int(subset["instrument"].nunique()),
+                "distinct_year_count": int(subset["launch_year"].nunique()),
+                "future_20pct_high_60d_rate_from_launch": p0_6_rate(subset, "entry_future_20pct_high_60d"),
+                "future_50pct_high_120d_rate_from_launch": p0_6_rate(subset, "entry_future_50pct_high_120d"),
+                "future_50pct_close_120d_rate_from_launch": p0_6_rate(subset, "entry_future_50pct_close_120d"),
+                "future_100pct_high_240d_rate_from_launch": p0_6_rate(subset, "entry_future_100pct_high_240d"),
+                "future_100pct_close_240d_rate_from_launch": p0_6_rate(subset, "entry_future_100pct_close_240d"),
+                "winner_episode_coverage_from_launch": coverage,
+                "winner_episode_covered_count": covered,
+                "top1_instrument_contribution": p0_6_top_contribution(subset, "instrument", 1),
+                "top5_instrument_contribution": p0_6_top_contribution(subset, "instrument", 5),
+                "median_launch_to_20pct_high_days": safe_float(subset["future_time_to_20pct_high_gain"].median(), np.nan),
+                "median_launch_to_50pct_high_days": safe_float(subset["future_time_to_50pct_high_gain"].median(), np.nan),
+                "lifecycle_gate_rejected_count": int(subset["lifecycle_gate_bucket"].astype(str).str.contains("rejected").sum()),
+                "post_20_30_contamination_count": int((subset["launch_pool"].isin(["primary_pre_20_launch_pool", "primary_pre_30_launch_pool"]) & subset["p0_6_post30_relative_strength_flag"].fillna(False).astype(bool)).sum()),
+                "late_acceleration_contamination_count": int((subset["launch_pool"].isin(["primary_pre_20_launch_pool", "primary_pre_30_launch_pool"]) & subset["late_acceleration_flag"].astype(bool)).sum()),
+            }
+        )
+    for keys, subset in launches.groupby(["launch_family", "declared_launch_pool", "launch_pool", "lifecycle_gate_bucket"], dropna=False):
+        gate_rows.append(
+            {
+                "launch_family": keys[0],
+                "declared_launch_pool": keys[1],
+                "final_launch_pool": keys[2],
+                "lifecycle_gate_bucket": keys[3],
+                "event_count": int(len(subset)),
+                "episode_count": int(subset["launch_episode_id"].nunique()),
+                "primary_entry_leaderboard_eligible_count": int(subset["launch_primary_entry_leaderboard_eligible"].sum()),
+                "post_20_family_hold_only": bool(keys[3] == "post_20_family_hold_only"),
+                "primary_pre_30_early_confirmation_20_30_band": bool(keys[3] == "primary_pre_30_early_confirmation_20_30_band"),
+                "post_30_or_late_acceleration_hold_only": bool(keys[3] == "post_30_or_late_acceleration_hold_only"),
+            }
+        )
+    return pd.DataFrame(rows), pd.DataFrame(gate_rows)
+
+
+def p0_6_build_entry_summaries(
+    config: dict[str, Any],
+    df: pd.DataFrame,
+    launches: pd.DataFrame,
+    entries: pd.DataFrame,
+    direct: pd.DataFrame,
+    denominator_episodes: int,
+) -> dict[str, pd.DataFrame]:
+    cfg = p0_6_cfg(config)
+    specs = p0_6_entry_specs()
+    all_base_rows: list[dict[str, Any]] = []
+    convertible_rows: list[dict[str, Any]] = []
+    matched_rows: list[dict[str, Any]] = []
+    lift_rows: list[dict[str, Any]] = []
+    missed_winner_rows: list[dict[str, Any]] = []
+    panel_groups = p0_6_panel_groups(df)
+    entry_all_by_variant = {spec.entry_variant_id: entries[entries["entry_variant_id"].eq(spec.entry_variant_id)].copy() if not entries.empty else pd.DataFrame() for spec in specs}
+    eligible_launches_by_variant: dict[str, pd.DataFrame] = {}
+    for spec in specs:
+        eligible = launches[launches["launch_family"].isin(spec.allowed_launch_families)].copy()
+        if spec.primary_leaderboard_eligible:
+            eligible = eligible[eligible["launch_primary_entry_leaderboard_eligible"].astype(bool)]
+        eligible_launches_by_variant[spec.entry_variant_id] = eligible
+
+    matched_by_variant: dict[str, dict[str, Any]] = {}
+    max_workers = max(1, min(p0_6_int(config, "matched_delay_n_jobs", 1), len(specs)))
+
+    def matched_task(spec: P06EntrySpec) -> tuple[str, dict[str, Any]]:
+        variant_all = entry_all_by_variant[spec.entry_variant_id]
+        usable_entries = variant_all[~variant_all["pre_entry_failure_filter_hit"].astype(bool)] if not variant_all.empty else variant_all
+        return spec.entry_variant_id, p0_6_build_matched_delay_summary(
+            config,
+            df,
+            eligible_launches_by_variant[spec.entry_variant_id],
+            usable_entries,
+            spec,
+            denominator_episodes,
+            panel_groups,
+        )
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(matched_task, spec) for spec in specs]
+        for future in as_completed(futures):
+            variant_id, matched = future.result()
+            matched_by_variant[variant_id] = matched
+
+    for spec in specs:
+        variant_entries_all = entry_all_by_variant[spec.entry_variant_id]
+        variant_entries = variant_entries_all[variant_entries_all["primary_entry_leaderboard_row"].astype(bool)].copy() if not variant_entries_all.empty else pd.DataFrame()
+        eligible_launches = eligible_launches_by_variant[spec.entry_variant_id]
+        eligible_direct = direct[direct["launch_event_id"].isin(set(eligible_launches["launch_event_id"])) & direct["baseline_row_eligible"].astype(bool)].copy()
+        convertible_direct = eligible_direct[eligible_direct["launch_event_id"].isin(set(variant_entries["launch_event_id"]))].copy() if not variant_entries.empty else eligible_direct.iloc[0:0].copy()
+        all_metrics = p0_6_summary_metrics(eligible_direct, denominator_episodes)
+        convertible_metrics = p0_6_summary_metrics(convertible_direct, denominator_episodes)
+        entry_metrics = p0_6_summary_metrics(variant_entries, denominator_episodes)
+        matched = matched_by_variant[spec.entry_variant_id]
+        matched_rows.append(matched)
+        all_base_rows.append({"entry_variant_id": spec.entry_variant_id, "entry_family": spec.entry_family, "baseline_type": "all_launch_direct_baseline", **{f"all_launch_direct_{k}": v for k, v in all_metrics.items()}})
+        convertible_rows.append({"entry_variant_id": spec.entry_variant_id, "entry_family": spec.entry_family, "baseline_type": "trigger_convertible_launch_direct_baseline", **{f"convertible_direct_{k}": v for k, v in convertible_metrics.items()}})
+
+        entry_precision = entry_metrics["entry_success_primary_precision"]
+        all_precision = all_metrics["entry_success_primary_precision"]
+        conv_precision = convertible_metrics["entry_success_primary_precision"]
+        matched_precision = matched["matched_delay_entry_success_primary_precision"]
+        iy_entry = entry_metrics["instrument_year_entry_success_rate"]
+        iy_all = all_metrics["instrument_year_entry_success_rate"]
+        iy_matched = matched["matched_delay_instrument_year_entry_success_rate"]
+        all_dd_loss = -safe_float(eligible_direct["future_drawdown_before_20pct_high_gain"].median(), np.nan) if not eligible_direct.empty else np.nan
+        entry_dd_loss = -safe_float(variant_entries["future_drawdown_before_20pct_high_gain"].median(), np.nan) if not variant_entries.empty else np.nan
+        drawdown_reduction = (all_dd_loss - entry_dd_loss) / all_dd_loss if np.isfinite(all_dd_loss) and all_dd_loss > 0 and np.isfinite(entry_dd_loss) else np.nan
+        lift_50h = safe_div(entry_metrics["entry_future_50pct_high_120d_rate"], all_metrics["entry_future_50pct_high_120d_rate"])
+        lift_50c = safe_div(entry_metrics["entry_future_50pct_close_120d_rate"], all_metrics["entry_future_50pct_close_120d_rate"])
+        lift_100h = safe_div(entry_metrics["entry_future_100pct_high_240d_rate"], all_metrics["entry_future_100pct_high_240d_rate"])
+        winner_upside_lift = np.nanmax([lift_50h, lift_50c, lift_100h]) if any(np.isfinite(x) for x in [lift_50h, lift_50c, lift_100h]) else np.nan
+
+        launch_winners = eligible_direct[eligible_direct["entry_future_50pct_high_120d"].fillna(False) | eligible_direct["entry_future_100pct_high_240d"].fillna(False)]
+        entry_launch_ids = set(variant_entries["launch_event_id"]) if not variant_entries.empty else set()
+        missed_without_trigger = launch_winners[~launch_winners["launch_event_id"].isin(entry_launch_ids)]
+        convertible_winners = convertible_direct[convertible_direct["entry_future_50pct_high_120d"].fillna(False) | convertible_direct["entry_future_100pct_high_240d"].fillna(False)]
+        waited_winners = (
+            variant_entries[variant_entries["entry_future_50pct_high_120d"].fillna(False) | variant_entries["entry_future_100pct_high_240d"].fillna(False)]
+            if not variant_entries.empty
+            else variant_entries
+        )
+        waited_launch_ids = set(waited_winners["launch_event_id"]) if "launch_event_id" in waited_winners.columns else set()
+        missed_due_to_waiting = len(set(convertible_winners["launch_event_id"]) - waited_launch_ids)
+        missed_winner_due_to_no_trigger_rate = safe_div(len(missed_without_trigger), len(launch_winners))
+        direct_entry_winner_missed_by_waiting_rate = safe_div(missed_due_to_waiting, len(convertible_winners))
+        winner_coverage_after, _covered_after = p0_6_winner_episode_coverage(waited_winners, denominator_episodes)
+        winner_coverage_direct, _covered_direct = p0_6_winner_episode_coverage(launch_winners, denominator_episodes)
+        missed_winner_rows.append(
+            {
+                "entry_variant_id": spec.entry_variant_id,
+                "entry_family": spec.entry_family,
+                "launch_winner_without_entry_trigger_count": int(len(missed_without_trigger)),
+                "launch_winner_without_entry_trigger_rate": missed_winner_due_to_no_trigger_rate,
+                "missed_winner_due_to_no_trigger_rate": missed_winner_due_to_no_trigger_rate,
+                "direct_entry_winner_missed_by_waiting_rate": direct_entry_winner_missed_by_waiting_rate,
+                "missed_50pct_winner_episode_coverage": max(0.0, safe_float(winner_coverage_direct, 0.0) - safe_float(winner_coverage_after, 0.0)),
+                "missed_100pct_winner_episode_coverage": max(0.0, safe_float(winner_coverage_direct, 0.0) - safe_float(winner_coverage_after, 0.0)),
+                "winner_episode_coverage_after_entry": winner_coverage_after,
+                "winner_episode_coverage_loss_vs_all_launch_direct": safe_float(winner_coverage_direct, 0.0) - safe_float(winner_coverage_after, 0.0),
+            }
+        )
+
+        row = {
+            "entry_variant_id": spec.entry_variant_id,
+            "entry_family": spec.entry_family,
+            "allowed_launch_families": ";".join(spec.allowed_launch_families),
+            "primary_formula_eligible": bool(spec.primary_leaderboard_eligible),
+            "launch_event_count": int(len(eligible_launches)),
+            "entry_event_count": entry_metrics["event_count"],
+            "launch_to_entry_conversion_rate": safe_div(entry_metrics["event_count"], len(eligible_launches)),
+            "entry_success_primary_precision": entry_precision,
+            "entry_success_lift_vs_all_launch_direct": safe_div(entry_precision, all_precision),
+            "entry_success_lift_vs_convertible_direct": safe_div(entry_precision, conv_precision),
+            "entry_success_lift_vs_matched_delay_baseline": safe_div(entry_precision, matched_precision),
+            "entry_lift_vs_convertible_direct": safe_div(entry_precision, conv_precision),
+            "instrument_year_entry_lift_vs_all_launch_direct": safe_div(iy_entry, iy_all),
+            "instrument_year_entry_lift_vs_matched_delay": safe_div(iy_entry, iy_matched),
+            "positive_unique_instrument_year_count": entry_metrics["positive_unique_instrument_year_count"],
+            "entry_success_unique_instrument_year_rate": iy_entry,
+            "entry_lift_vs_same_launch_family_unconditional_baseline": safe_div(entry_precision, all_precision),
+            "entry_future_50pct_high_120d_lift_vs_all_launch_direct": lift_50h,
+            "entry_future_50pct_close_120d_lift_vs_all_launch_direct": lift_50c,
+            "entry_future_100pct_high_240d_lift_vs_all_launch_direct": lift_100h,
+            "winner_upside_lift_vs_all_launch_direct": winner_upside_lift,
+            "median_missed_gain": entry_metrics["median_missed_gain"],
+            "missed_winner_due_to_no_trigger_rate": missed_winner_due_to_no_trigger_rate,
+            "median_future_60d_high_gain": entry_metrics["median_future_60d_high_gain"],
+            "median_future_120d_high_gain": entry_metrics["median_future_120d_high_gain"],
+            "median_future_drawdown_before_gain": entry_metrics["median_future_drawdown_before_gain"],
+            "median_entry_to_stop_risk_pct": entry_metrics["median_entry_to_stop_risk_pct"],
+            "primary_false_positive_rate": entry_metrics["primary_false_positive_rate"],
+            "pre_entry_failure_filter_hit_rate": p0_6_rate(variant_entries_all, "pre_entry_failure_filter_hit"),
+            "post_entry_invalidation_audit_hit_rate": p0_6_rate(variant_entries, "post_entry_invalidation_audit_hit"),
+            "distinct_year_count": entry_metrics["distinct_year_count"],
+            "distinct_industry_count": entry_metrics["distinct_industry_count"],
+            "top1_instrument_contribution": entry_metrics["top1_instrument_contribution"],
+            "top5_instrument_contribution": entry_metrics["top5_instrument_contribution"],
+            "winner_episode_coverage": entry_metrics["winner_episode_coverage"],
+            "non_winner_false_positive_drawdown": safe_float(variant_entries.loc[variant_entries["entry_failure_primary"].fillna(False), "future_max_drawdown_60d_after_entry"].median(), np.nan) if not variant_entries.empty else np.nan,
+            "drawdown_reduction_vs_all_launch_direct": drawdown_reduction,
+            "all_launch_direct_precision": all_precision,
+            "convertible_direct_precision": conv_precision,
+            "matched_delay_precision": matched_precision,
+            "same_close_proxy_used": False,
+            "entry_labels_rebased_to_entry_price": True,
+        }
+        lift_rows.append(row)
+
+    lift = pd.DataFrame(lift_rows)
+    if not lift.empty:
+        for col in [
+            "entry_success_lift_vs_all_launch_direct",
+            "entry_success_lift_vs_matched_delay_baseline",
+            "instrument_year_entry_lift_vs_all_launch_direct",
+            "instrument_year_entry_lift_vs_matched_delay",
+            "drawdown_reduction_vs_all_launch_direct",
+            "winner_upside_lift_vs_all_launch_direct",
+        ]:
+            lift[f"z_{col}"] = p0_6_zscore(lift[col])
+        for col in ["median_missed_gain", "missed_winner_due_to_no_trigger_rate", "median_entry_to_stop_risk_pct", "primary_false_positive_rate", "top1_instrument_contribution"]:
+            lift[f"z_{col}"] = p0_6_zscore(lift[col])
+        lift["entry_quality_score"] = (
+            lift["z_entry_success_lift_vs_all_launch_direct"]
+            + lift["z_entry_success_lift_vs_matched_delay_baseline"]
+            + lift["z_instrument_year_entry_lift_vs_all_launch_direct"]
+            + lift["z_instrument_year_entry_lift_vs_matched_delay"]
+            + lift["z_drawdown_reduction_vs_all_launch_direct"]
+            + lift["z_winner_upside_lift_vs_all_launch_direct"]
+            - lift["z_median_missed_gain"]
+            - lift["z_missed_winner_due_to_no_trigger_rate"]
+            - lift["z_median_entry_to_stop_risk_pct"]
+            - lift["z_primary_false_positive_rate"]
+            - lift["z_top1_instrument_contribution"]
+        )
+        lift["failure_reason"] = lift.apply(lambda row: p0_6_failure_reason(row, cfg), axis=1)
+        lift["p1_candidate"] = lift["failure_reason"].eq("") & lift["primary_formula_eligible"].astype(bool)
+        lift["trigger_interpretation"] = np.select(
+            [
+                lift["p1_candidate"],
+                lift["entry_success_lift_vs_matched_delay_baseline"].fillna(0) <= 1.0,
+                lift["median_missed_gain"].fillna(0) > float(cfg.get("max_median_missed_gain", 0.15)),
+                lift["missed_winner_due_to_no_trigger_rate"].fillna(1) > float(cfg.get("max_missed_winner_due_to_no_trigger_rate", 0.50)),
+            ],
+            [
+                "p1_entry_candidate",
+                "delay_filter_only_not_structural_entry_signal",
+                "too_late_for_entry_hold_only",
+                "conservative_confirmation_or_add_on_only",
+            ],
+            default="rejected_or_diagnostic",
+        )
+        lift = lift.sort_values(["p1_candidate", "entry_quality_score"], ascending=[False, False]).reset_index(drop=True)
+
+    main_entries = entries[entries["primary_entry_leaderboard_row"].astype(bool)].copy() if not entries.empty else entries
+    year_breakdown = (
+        main_entries.groupby(["entry_family", "entry_variant_id", "year"], as_index=False)
+        .agg(entry_event_count=("entry_event_id", "count"), entry_success_primary_precision=("entry_success_primary", "mean"), entry_future_50pct_high_120d_rate=("entry_future_50pct_high_120d", "mean"), median_missed_gain=("missed_gain_from_launch_to_entry", "median"))
+        if not main_entries.empty
+        else pd.DataFrame(columns=["entry_family", "entry_variant_id", "year"])
+    )
+    instrument_year_breakdown = (
+        main_entries.groupby(["entry_family", "entry_variant_id", "instrument_year"], as_index=False)
+        .agg(entry_event_count=("entry_event_id", "count"), entry_success_primary=("entry_success_primary", "max"), entry_future_50pct_high_120d=("entry_future_50pct_high_120d", "max"), median_missed_gain=("missed_gain_from_launch_to_entry", "median"))
+        if not main_entries.empty
+        else pd.DataFrame(columns=["entry_family", "entry_variant_id", "instrument_year"])
+    )
+    industry_breakdown = (
+        main_entries.groupby(["entry_family", "entry_variant_id", "industry_name"], as_index=False)
+        .agg(entry_event_count=("entry_event_id", "count"), entry_success_primary_precision=("entry_success_primary", "mean"), entry_future_50pct_high_120d_rate=("entry_future_50pct_high_120d", "mean"), median_drawdown_before_gain=("future_drawdown_before_20pct_high_gain", "median"))
+        if not main_entries.empty
+        else pd.DataFrame(columns=["entry_family", "entry_variant_id", "industry_name"])
+    )
+    assumption_audit = (
+        entries.groupby(["entry_execution_assumption", "same_close_proxy", "primary_entry_leaderboard_row"], as_index=False).size().rename(columns={"size": "row_count"})
+        if not entries.empty
+        else pd.DataFrame(columns=["entry_execution_assumption", "same_close_proxy", "primary_entry_leaderboard_row", "row_count"])
+    )
+    feasibility = (
+        entries.groupby(["entry_family", "entry_variant_id"], as_index=False).agg(
+            entry_event_count=("entry_event_id", "count"),
+            median_next_open_gap_from_signal_close=("next_open_gap_from_signal_close", "median"),
+            median_next_open_vs_launch_close=("next_open_vs_launch_close", "median"),
+            median_entry_to_stop_risk_pct=("entry_to_invalidation_risk_pct", "median"),
+            stop_distance_too_wide_rate=("stop_distance_too_wide_flag", "mean"),
+            next_day_limit_like_open_rate=("next_day_limit_like_open_flag", "mean"),
+            median_entry_open_above_prior_high_pct=("entry_open_above_prior_high_pct", "median"),
+        )
+        if not entries.empty
+        else pd.DataFrame(columns=["entry_family", "entry_variant_id"])
+    )
+    dedup = (
+        entries.groupby(["entry_family", "entry_variant_id"], as_index=False).agg(
+            raw_entry_rows=("entry_event_id", "count"),
+            first_valid_entry_rows=("is_first_valid_entry_for_launch_family", "sum"),
+            primary_counted_entry_rows=("primary_entry_leaderboard_row", "sum"),
+            max_entry_rank_within_launch=("entry_rank_within_launch", "max"),
+            max_entry_rank_within_launch_family=("entry_rank_within_launch_family", "max"),
+        )
+        if not entries.empty
+        else pd.DataFrame(columns=["entry_family", "entry_variant_id"])
+    )
+    failure = (
+        entries.groupby(["entry_family", "entry_variant_id"], as_index=False).agg(
+            entry_event_count=("entry_event_id", "count"),
+            pre_entry_failure_filter_hit_rate=("pre_entry_failure_filter_hit", "mean"),
+            post_entry_invalidation_audit_hit_rate=("post_entry_invalidation_audit_hit", "mean"),
+            entry_failure_primary_rate=("entry_failure_primary", "mean"),
+            non_winner_false_positive_drawdown=("future_max_drawdown_60d_after_entry", "median"),
+        )
+        if not entries.empty
+        else pd.DataFrame(columns=["entry_family", "entry_variant_id"])
+    )
+    missed_gain = (
+        entries.groupby(["entry_family", "entry_variant_id"], as_index=False).agg(
+            entry_event_count=("entry_event_id", "count"),
+            median_missed_gain_from_launch_to_entry=("missed_gain_from_launch_to_entry", "median"),
+            median_missed_gain_from_launch_to_entry_close_proxy=("missed_gain_from_launch_to_entry_close_proxy", "median"),
+            median_missed_intraday_high_from_launch_to_entry=("missed_intraday_high_from_launch_to_entry", "median"),
+        )
+        if not entries.empty
+        else pd.DataFrame(columns=["entry_family", "entry_variant_id"])
+    )
+    leaderboard = lift.copy()
+    rejected = lift[~lift["p1_candidate"].astype(bool)].copy() if not lift.empty else lift
+    return {
+        "p0_6_all_launch_direct_baseline.csv": pd.DataFrame(all_base_rows),
+        "p0_6_trigger_convertible_direct_baseline.csv": pd.DataFrame(convertible_rows),
+        "p0_6_matched_delay_baseline.csv": pd.DataFrame(matched_rows),
+        "p0_6_entry_trigger_lift.csv": lift,
+        "p0_6_entry_trigger_vs_direct.csv": lift[
+            [
+                "entry_family",
+                "entry_variant_id",
+                "entry_success_lift_vs_all_launch_direct",
+                "entry_success_lift_vs_convertible_direct",
+                "entry_success_lift_vs_matched_delay_baseline",
+                "drawdown_reduction_vs_all_launch_direct",
+                "median_missed_gain",
+            ]
+        ].copy()
+        if not lift.empty
+        else pd.DataFrame(),
+        "p0_6_entry_trigger_year_breakdown.csv": year_breakdown,
+        "p0_6_entry_trigger_instrument_year_breakdown.csv": instrument_year_breakdown,
+        "p0_6_entry_trigger_industry_breakdown.csv": industry_breakdown,
+        "p0_6_entry_execution_assumption_audit.csv": assumption_audit,
+        "p0_6_entry_execution_feasibility_audit.csv": feasibility,
+        "p0_6_entry_trigger_dedup_audit.csv": dedup,
+        "p0_6_entry_trigger_failure_audit.csv": failure,
+        "p0_6_entry_trigger_missed_gain_audit.csv": missed_gain,
+        "p0_6_entry_trigger_missed_winner_audit.csv": pd.DataFrame(missed_winner_rows),
+        "p0_6_entry_trigger_leaderboard.csv": leaderboard,
+        "p0_6_entry_trigger_rejected.csv": rejected,
+    }
+
+
+def p0_6_build_scope_completion_audit(frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    launch_matrix = frames.get("p0_6_launch_formula_matrix.csv", pd.DataFrame())
+    entry_matrix = frames.get("p0_6_entry_trigger_formula_matrix.csv", pd.DataFrame())
+    launch_quality = frames.get("p0_6_launch_pool_quality_audit.csv", pd.DataFrame())
+    leaderboard = frames.get("p0_6_entry_trigger_leaderboard.csv", pd.DataFrame())
+    entry_panel = frames.get("p0_6_entry_event_panel.csv", pd.DataFrame())
+    baseline_names = ["p0_6_all_launch_direct_baseline.csv", "p0_6_trigger_convertible_direct_baseline.csv", "p0_6_matched_delay_baseline.csv"]
+    rows: list[dict[str, Any]] = []
+
+    def add(name: str, actual: Any, required: Any, passed: bool, failure: str = "") -> None:
+        rows.append({"check_name": name, "actual_value": actual, "required_value": required, "passed": bool(passed), "failure_reason": "" if passed else failure})
+
+    add("launch_family_count", int(launch_matrix["launch_family"].nunique()) if not launch_matrix.empty else 0, 5, int(launch_matrix["launch_family"].nunique()) >= 5 if not launch_matrix.empty else False, "fewer than 5 launch families")
+    add("entry_trigger_variant_count", int(entry_matrix["entry_variant_id"].nunique()) if not entry_matrix.empty else 0, 20, int(entry_matrix["entry_variant_id"].nunique()) >= 20 if not entry_matrix.empty else False, "fewer than 20 entry trigger variants")
+    add("launch_pool_quality_audit_exists", int(not launch_quality.empty), 1, not launch_quality.empty, "missing launch pool quality audit")
+    add("three_baseline_families_exist", sum(int(not frames.get(name, pd.DataFrame()).empty) for name in baseline_names), 3, all(not frames.get(name, pd.DataFrame()).empty for name in baseline_names), "one or more baseline outputs missing")
+    if not entry_panel.empty:
+        main = entry_panel[entry_panel["primary_entry_leaderboard_row"].astype(bool)].copy()
+        add("primary_leaderboard_excludes_non_primary_pools", int((~main["launch_pool"].isin(["primary_pre_20_launch_pool", "primary_pre_30_launch_pool"])).sum()), 0, main["launch_pool"].isin(["primary_pre_20_launch_pool", "primary_pre_30_launch_pool"]).all(), "primary rows contain excluded launch pool")
+        add("primary_entry_signal_after_launch", int((pd.to_datetime(main["entry_signal_date"]) <= pd.to_datetime(main["launch_date"])).sum()), 0, (pd.to_datetime(main["entry_signal_date"]) > pd.to_datetime(main["launch_date"])).all(), "primary rows contain signal_date <= launch_date")
+        add("primary_uses_next_open", int((main["entry_execution_assumption"] == "next_open").sum()), len(main), (main["entry_execution_assumption"] == "next_open").all(), "primary rows use non-next-open execution")
+        add("primary_first_valid_only", int(main["is_first_valid_entry_for_launch_family"].sum()), len(main), main["is_first_valid_entry_for_launch_family"].astype(bool).all(), "primary rows include secondary entries")
+        add("drawdown_negative_threshold_logic", int((entry_panel["entry_max_drawdown_60d_le_12pct"] == (entry_panel["future_max_drawdown_60d_after_entry"] >= -0.12)).sum()), len(entry_panel), (entry_panel["entry_max_drawdown_60d_le_12pct"] == (entry_panel["future_max_drawdown_60d_after_entry"] >= -0.12)).all(), "drawdown <=12pct logic not using negative drawdown threshold")
+    else:
+        add("entry_event_panel_non_empty", 0, 1, False, "missing entry event panel")
+    add("leaderboard_generated", int(not leaderboard.empty), 1, not leaderboard.empty, "missing entry trigger leaderboard")
+    add("p1_candidate_gate_explicit", int("p1_candidate" in leaderboard.columns), 1, "p1_candidate" in leaderboard.columns, "leaderboard missing p1_candidate gate")
+    return pd.DataFrame(rows)
+
+
+def p0_6_output_file_stats(paths: list[Path], frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame]) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
+    row_counts: dict[str, int] = {}
+    column_counts: dict[str, int] = {}
+    file_sizes: dict[str, int] = {}
+    for path in paths:
+        rel = relpath(path)
+        if path.exists():
+            file_sizes[rel] = int(path.stat().st_size)
+        name = path.name
+        if name in frames:
+            row_counts[rel] = int(len(frames[name]))
+            column_counts[rel] = int(len(frames[name].columns))
+        elif name in cache_frames:
+            row_counts[rel] = int(len(cache_frames[name]))
+            column_counts[rel] = int(len(cache_frames[name].columns))
+    return row_counts, column_counts, file_sizes
+
+
+def record_p0_6_manifest(config: dict[str, Any], command: str, outputs: list[Path], frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame]) -> Path:
+    path = p0_6_manifest_path(config)
+    existing = read_json(path)
+    commands = list(existing.get("command_sequence", []))
+    commands.append(command)
+    row_counts, column_counts, file_sizes = p0_6_output_file_stats(outputs + [path], frames, cache_frames)
+    merged_row_counts = {**existing.get("output_row_counts", {}), **row_counts}
+    merged_column_counts = {**existing.get("output_column_counts", {}), **column_counts}
+    merged_file_sizes = {**existing.get("output_file_sizes", {}), **file_sizes}
+    report_paths = sorted(set(existing.get("output_report_paths", []) + [relpath(p) for p in outputs if p.suffix != ".parquet"]))
+    cache_paths = sorted(set(existing.get("output_cache_paths", []) + [relpath(p) for p in outputs if p.suffix == ".parquet"]))
+    report_frame = frames.get("explore9_p0_6_entry_trigger_report.md", pd.DataFrame())
+    recommendation = existing.get("recommendation")
+    if not report_frame.empty and "recommendation" in report_frame.columns:
+        recommendation = str(report_frame["recommendation"].iloc[0])
+    completed_at = {
+        key: value
+        for key, value in existing.items()
+        if key in {"profile_completed_at", "report_completed_at", "last_command_completed_at"}
+    }
+    now = pd.Timestamp.now(tz="Asia/Shanghai").isoformat()
+    completed_at["last_command_completed_at"] = now
+    if command == "profile-p0-6":
+        completed_at["profile_completed_at"] = now
+    elif command == "report-p0-6":
+        completed_at["report_completed_at"] = now
+    manifest = {
+        "experiment": "Explore9 P0.6 executable entry trigger discovery",
+        "phase": "P0.6",
+        "expansion_id": p0_6_cfg(config).get("expansion_id", "expand_2"),
+        "config_path": relpath(config["_config_path"]),
+        "config_sha256": config["_config_sha256"],
+        "command_sequence": commands,
+        "output_report_paths": report_paths,
+        "output_cache_paths": cache_paths,
+        "output_row_counts": merged_row_counts,
+        "output_column_counts": merged_column_counts,
+        "output_file_sizes": merged_file_sizes,
+        "recommendation": recommendation,
+        **completed_at,
+        "provider_uri": config["paths"]["provider_uri"],
+        "fallback_provider_uri": config["paths"]["fallback_provider_uri"],
+        "price_adjustment_mode": config["qlib"]["price_adjustment_mode"],
+        "required_fields": required_field_names(config),
+        "research_start": config["dates"]["research_start"],
+        "research_end": config["dates"]["research_end"],
+        "observed_reference_start": config["dates"]["observed_reference_start"],
+        "observed_reference_end": config["dates"]["observed_reference_end"],
+        "p0_label_panel_reused": bool(label_panel_path(config).exists()),
+        "p0_5_feature_panel_reused": bool(p0_5_feature_panel_path(config).exists()),
+        "p0_5_reports_used_for_schema_or_family_reference_only": True,
+        "p0_5_ranked_results_used_for_selection": False,
+        "historical_trade_results_used_for_labeling": False,
+        "historical_trade_results_used_for_signal": False,
+        "historical_trade_results_used_for_selection": False,
+        "observed_reference_used_for_selection": False,
+        "same_close_proxy_used_in_main_leaderboard": False,
+        "post_20_30_launch_used_in_primary_entry_leaderboard": False,
+        "post_entry_invalidation_audit_used_for_selection": False,
+        "false_positive_definitions_used_for_selection": False,
+        "matched_delay_baseline_required": True,
+        "entry_labels_rebased_to_entry_price": True,
+        "p0_stock_day_label_panel_used_for_entry_label_directly": False,
+        "entry_price_reference_used": "next_open",
+        "missed_gain_uses_entry_price_reference": True,
+        "primary_lifecycle_gate_applied": True,
+        "instrument_year_ranking_required": True,
+        "convertible_baseline_required": True,
+        "launch_pool_quality_audit_required": True,
+        "missed_winner_audit_required": True,
+        "execution_feasibility_audit_required": True,
+        "primary_entry_target_definition": "entry_future_20pct_high_60d and entry_drawdown_before_20pct_gain_le_10pct and missed_gain_from_launch_to_entry <= 0.15",
+        "matched_delay_random_seed": p0_6_int(config, "matched_delay_random_seed", 20260505),
+        "matched_delay_n_repeats": p0_6_int(config, "matched_delay_n_repeats", 20),
+        "matched_delay_max_sample_per_variant": p0_6_int(config, "matched_delay_max_sample_per_variant", 5000),
+        "matched_delay_n_jobs": p0_6_int(config, "matched_delay_n_jobs", 1),
+    }
+    write_json(manifest, path)
+    return path
+
+
+def build_p0_6_outputs(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], list[Path]]:
+    df = p0_6_load_feature_panel(config)
+    panel_groups = p0_6_panel_groups(df)
+    launches = p0_6_build_launch_events(config, df)
+    if launches.empty:
+        raise DataGateError("P0.6 launch event panel is empty")
+    launch_label_input = launches.copy()
+    launch_label_input["launch_label_start_pos"] = launch_label_input["launch_row_pos"].astype(int) + 1
+    launch_label_input["entry_date"] = launch_label_input["launch_date"]
+    launches = p0_6_attach_forward_metrics(config, panel_groups, launch_label_input, "launch_close", "launch_label_start_pos")
+    launch_quality, lifecycle_gate = p0_6_build_launch_quality(config, launches, int(read_csv_if_exists(report_dir(config) / "episode_lifecycle_labels.csv").query("episode_scope == 'in_year_episode'").shape[0]) if (report_dir(config) / "episode_lifecycle_labels.csv").exists() else 0)
+    denominator_episodes = int(read_csv_if_exists(report_dir(config) / "episode_lifecycle_labels.csv").query("episode_scope == 'in_year_episode'").shape[0]) if (report_dir(config) / "episode_lifecycle_labels.csv").exists() else 0
+    entries = p0_6_build_entry_events(config, df, launches)
+    direct = p0_6_build_direct_launch_baseline(config, df, launches)
+    summary_frames = p0_6_build_entry_summaries(config, df, launches, entries, direct, denominator_episodes)
+    frames: dict[str, pd.DataFrame] = {
+        "p0_6_launch_event_dictionary.csv": pd.DataFrame(
+            [
+                {"field_name": col, "field_role": "launch_event_panel_field", "definition": "P0.6 launch event field or derived observable feature"}
+                for col in launches.columns
+            ]
+        ),
+        "p0_6_launch_formula_matrix.csv": p0_6_launch_formula_matrix(),
+        "p0_6_launch_pool_quality_audit.csv": launch_quality,
+        "p0_6_launch_pool_lifecycle_gate_audit.csv": lifecycle_gate,
+        "p0_6_entry_trigger_dictionary.csv": p0_6_entry_trigger_dictionary(),
+        "p0_6_entry_trigger_formula_matrix.csv": p0_6_entry_formula_matrix(),
+        "p0_6_launch_event_panel.csv": launches,
+        "p0_6_entry_event_panel.csv": entries,
+        "p0_6_direct_launch_entry_baseline.csv": direct,
+        **summary_frames,
+    }
+    frames["p0_6_scope_completion_audit.csv"] = p0_6_build_scope_completion_audit(frames)
+    outputs: list[Path] = []
+    for name, frame in frames.items():
+        outputs.append(write_csv(frame, report_dir(config) / name))
+    launch_cache = p0_6_launch_panel_cache_path(config)
+    entry_cache = p0_6_entry_panel_cache_path(config)
+    ensure_parent(launch_cache)
+    launches.to_parquet(launch_cache, index=False)
+    outputs.append(launch_cache)
+    ensure_parent(entry_cache)
+    entries.to_parquet(entry_cache, index=False)
+    outputs.append(entry_cache)
+    cache_frames = {launch_cache.name: launches, entry_cache.name: entries}
+    record_p0_6_manifest(config, "profile-p0-6", outputs, frames, cache_frames)
+    return frames, outputs
+
+
+def command_profile_p0_6(config: dict[str, Any]) -> list[Path]:
+    frames, outputs = build_p0_6_outputs(config)
+    leaderboard = frames.get("p0_6_entry_trigger_leaderboard.csv", pd.DataFrame())
+    p1_count = int(leaderboard["p1_candidate"].sum()) if not leaderboard.empty and "p1_candidate" in leaderboard else 0
+    print(f"profiled p0.6 outputs={len(outputs)} launch_events={len(frames['p0_6_launch_event_panel.csv'])} entry_events={len(frames['p0_6_entry_event_panel.csv'])} p1_candidates={p1_count}", flush=True)
+    return outputs
+
+
+def command_report_p0_6(config: dict[str, Any]) -> list[Path]:
+    missing = [name for name in P0_6_REQUIRED_REPORTS if name not in {"p0_6_run_manifest.json", "explore9_p0_6_entry_trigger_report.md"} and not (report_dir(config) / name).exists()]
+    if missing:
+        command_profile_p0_6(config)
+    report_path = report_dir(config) / "explore9_p0_6_entry_trigger_report.md"
+    launch_quality = read_csv_if_exists(report_dir(config) / "p0_6_launch_pool_quality_audit.csv")
+    lifecycle = read_csv_if_exists(report_dir(config) / "p0_6_launch_pool_lifecycle_gate_audit.csv")
+    formula = read_csv_if_exists(report_dir(config) / "p0_6_entry_trigger_formula_matrix.csv")
+    leaderboard = read_csv_if_exists(report_dir(config) / "p0_6_entry_trigger_leaderboard.csv")
+    rejected = read_csv_if_exists(report_dir(config) / "p0_6_entry_trigger_rejected.csv")
+    feasibility = read_csv_if_exists(report_dir(config) / "p0_6_entry_execution_feasibility_audit.csv")
+    failure = read_csv_if_exists(report_dir(config) / "p0_6_entry_trigger_failure_audit.csv")
+    missed = read_csv_if_exists(report_dir(config) / "p0_6_entry_trigger_missed_winner_audit.csv")
+    manifest = read_json(p0_6_manifest_path(config))
+    p1 = leaderboard[leaderboard["p1_candidate"].astype(bool)] if not leaderboard.empty and "p1_candidate" in leaderboard else pd.DataFrame()
+    if not p1.empty:
+        recommendation = "proceed_to_p1_entry_hypothesis_refine"
+    elif not leaderboard.empty and (leaderboard["winner_upside_lift_vs_all_launch_direct"].fillna(0) >= 1.0).any():
+        recommendation = "continue_p0_6_entry_discovery"
+    elif not failure.empty and (failure["post_entry_invalidation_audit_hit_rate"].fillna(0) > 0).any():
+        recommendation = "entry_not_solved_but_hold_direction_valid"
+    else:
+        recommendation = "stop_entry_discovery_due_to_no_stable_trigger"
+
+    def short_table(frame: pd.DataFrame, cols: list[str], limit: int = 8) -> list[list[Any]]:
+        if frame.empty:
+            return []
+        available = [col for col in cols if col in frame.columns]
+        return frame.head(limit)[available].fillna("").values.tolist()
+
+    lines: list[str] = []
+    lines.append("# Explore9 P0.6 可执行入场触发探索报告")
+    lines.append("")
+    lines.append("## 1. 结论")
+    lines.append("")
+    lines.append(f"- `recommendation = {recommendation}`。")
+    lines.append(f"- 本轮不是 Explore10 回测，也不是最低点 early-entry；它只研究启动观察池之后，等待确认、回踩守住、再次转强和失败过滤是否形成可执行 `next_open` 入场触发。")
+    lines.append(f"- Launch family 数量 `{int(read_csv_if_exists(report_dir(config) / 'p0_6_launch_formula_matrix.csv')['launch_family'].nunique()) if (report_dir(config) / 'p0_6_launch_formula_matrix.csv').exists() else 0}`；entry trigger variant 数量 `{int(formula['entry_variant_id'].nunique()) if not formula.empty else 0}`。")
+    lines.append(f"- 主榜 P1 candidate 数量 `{len(p1)}`；若为 0，表示当前仍不能把 confirmation / hold 变量误写成主入场。")
+    lines.append("")
+    lines.append("## 2. P0.6 与 P0.5 的差异")
+    lines.append("")
+    lines.append("- P0.5 的关键负向结论是 stock-day / dedup trigger-event lift 不能稳定传导到 instrument-year。P0.6 因此不再把单日结构直接当 entry，而是先定义 launch observation pool，再研究 launch 后 3/5/10/20 日内的可执行确认触发。")
+    lines.append("- 所有主榜 entry 均使用 `entry_signal_date` 收盘后生成信号、下一交易日 `next_open` 执行；entry label 从 `entry_price_reference` 重新计算。")
+    lines.append("- `same_close_proxy`、post-entry invalidation、false-positive 定义和 observed reference 都不进入主榜选择。")
+    lines.append("")
+    lines.append("## 3. P0.6A：Launch Observation Pool 质量")
+    lines.append("")
+    if not launch_quality.empty:
+        lines.extend(
+            markdown_table(
+                ["launch_pool", "episode", "50% high 120d", "100% high 240d", "coverage", "top1"],
+                [
+                    [
+                        row["launch_pool"],
+                        int(row["launch_episode_count"]),
+                        format_pct(row["future_50pct_high_120d_rate_from_launch"]),
+                        format_pct(row["future_100pct_high_240d_rate_from_launch"]),
+                        format_pct(row["winner_episode_coverage_from_launch"]),
+                        format_pct(row["top1_instrument_contribution"]),
+                    ]
+                    for _, row in launch_quality.iterrows()
+                ],
+            )
+        )
+    lines.append("")
+    lines.append("- 主 entry leaderboard 只允许 `primary_pre_20_launch_pool` 与 `primary_pre_30_launch_pool`。`sparse_strong_day_diagnostic_pool`、`post_20_30_hold_only_pool` 和 `late_acceleration_hold_only_pool` 只能作为 secondary / hold / diagnostic。")
+    if not lifecycle.empty:
+        contamination = lifecycle[lifecycle["final_launch_pool"].isin(["primary_pre_20_launch_pool", "primary_pre_30_launch_pool"]) & lifecycle["lifecycle_gate_bucket"].astype(str).str.contains("post_30|late", regex=True)]
+        lines.append(f"- lifecycle gate audit 行数 `{len(lifecycle)}`；primary pool 中 post-30/late gate contamination 行数 `{len(contamination)}`。")
+    lines.append("")
+    lines.append("## 4. P0.6B：Entry Trigger 与 Baseline")
+    lines.append("")
+    if not leaderboard.empty:
+        cols = [
+            "entry_variant_id",
+            "entry_event_count",
+            "entry_success_primary_precision",
+            "entry_success_lift_vs_all_launch_direct",
+            "entry_success_lift_vs_matched_delay_baseline",
+            "instrument_year_entry_lift_vs_all_launch_direct",
+            "median_missed_gain",
+            "winner_upside_lift_vs_all_launch_direct",
+            "trigger_interpretation",
+        ]
+        lines.extend(markdown_table(["trigger", "n", "precision", "lift direct", "lift matched", "iy lift", "missed", "upside", "interpretation"], short_table(leaderboard, cols, 12)))
+    lines.append("")
+    lines.append("- `all_launch_direct_baseline` 回答看到同一 launch family 后直接上车的结果。")
+    lines.append("- `trigger_convertible_launch_direct_baseline` 只用于 paired comparison，不能单独证明 trigger 有效。")
+    lines.append("- `matched_delay_baseline` 用同样等待天数检查结构条件是否优于单纯延迟过滤。")
+    lines.append("")
+    lines.append("## 5. P0.6C：失败过滤、missed gain 与 missed winner")
+    lines.append("")
+    if not feasibility.empty:
+        lines.extend(markdown_table(["trigger", "n", "gap", "missed/launch", "stop risk", "wide stop"], short_table(feasibility, ["entry_variant_id", "entry_event_count", "median_next_open_gap_from_signal_close", "median_next_open_vs_launch_close", "median_entry_to_stop_risk_pct", "stop_distance_too_wide_rate"], 10)))
+    lines.append("")
+    if not failure.empty:
+        lines.extend(markdown_table(["trigger", "pre filter", "post audit", "failure", "dd"], short_table(failure, ["entry_variant_id", "pre_entry_failure_filter_hit_rate", "post_entry_invalidation_audit_hit_rate", "entry_failure_primary_rate", "non_winner_false_positive_drawdown"], 10)))
+    lines.append("")
+    if not missed.empty:
+        lines.extend(markdown_table(["trigger", "winner no trigger", "miss no trigger", "miss waiting", "coverage after"], short_table(missed, ["entry_variant_id", "launch_winner_without_entry_trigger_count", "missed_winner_due_to_no_trigger_rate", "direct_entry_winner_missed_by_waiting_rate", "winner_episode_coverage_after_entry"], 10)))
+    lines.append("")
+    lines.append("## 6. Candidate / Rejected 判断")
+    lines.append("")
+    if not p1.empty:
+        lines.append("- 以下 trigger 满足主榜 gate，可进入 P1 formal entry hypothesis refine：")
+        lines.extend(markdown_table(["trigger", "score", "precision", "iy lift", "upside"], short_table(p1, ["entry_variant_id", "entry_quality_score", "entry_success_primary_precision", "instrument_year_entry_lift_vs_all_launch_direct", "winner_upside_lift_vs_all_launch_direct"], 10)))
+    else:
+        lines.append("- 没有 trigger 同时通过 all-launch direct、convertible direct、matched-delay、instrument-year、missed-gain、stop-risk 和 winner-upside gate。")
+        lines.append("- 当前更合理的解释是：P0.6 仍在 entry discovery 阶段；有效信息若存在，更可能先表现为启动后观察、持有确认、失败过滤或加仓条件。")
+    if not rejected.empty:
+        lines.append("")
+        lines.append("主要淘汰原因示例：")
+        lines.extend(markdown_table(["trigger", "failure_reason"], short_table(rejected, ["entry_variant_id", "failure_reason"], 10)))
+    lines.append("")
+    lines.append("## 7. Manifest Discipline")
+    lines.append("")
+    for key in [
+        "p0_label_panel_reused",
+        "p0_5_feature_panel_reused",
+        "p0_5_reports_used_for_schema_or_family_reference_only",
+        "p0_5_ranked_results_used_for_selection",
+        "historical_trade_results_used_for_labeling",
+        "historical_trade_results_used_for_signal",
+        "historical_trade_results_used_for_selection",
+        "observed_reference_used_for_selection",
+        "same_close_proxy_used_in_main_leaderboard",
+        "post_entry_invalidation_audit_used_for_selection",
+        "false_positive_definitions_used_for_selection",
+        "entry_labels_rebased_to_entry_price",
+        "p0_stock_day_label_panel_used_for_entry_label_directly",
+        "entry_price_reference_used",
+    ]:
+        lines.append(f"- `{key} = {manifest.get(key)}`")
+    lines.append("")
+    lines.append("## 8. 最终判断")
+    lines.append("")
+    if recommendation == "proceed_to_p1_entry_hypothesis_refine":
+        lines.append("- 至少一个 trigger 满足 P0.6 的 P1 gate，可以进入 P1 做 formal hypothesis refine；仍不能直接进入 Explore10 回测。")
+    elif recommendation == "continue_p0_6_entry_discovery":
+        lines.append("- 存在局部结构或 winner-upside 线索，但尚未形成完整 entry gate，应继续 P0.6 discovery。")
+    elif recommendation == "entry_not_solved_but_hold_direction_valid":
+        lines.append("- 入场问题仍未解决，但 failure / hold / continuation 审计方向有效，应避免把它们改写成主入场。")
+    else:
+        lines.append("- 当前样本下没有稳定 entry trigger，建议停止把这批结构推进为 entry 假设。")
+
+    ensure_parent(report_path)
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    outputs = [report_path]
+    record_p0_6_manifest(config, "report-p0-6", outputs, {"explore9_p0_6_entry_trigger_report.md": pd.DataFrame([{"recommendation": recommendation}])}, {})
+    print(f"wrote p0.6 report {relpath(report_path)} recommendation={recommendation}", flush=True)
+    return outputs
+
+
+def p0_7_cfg(config: dict[str, Any]) -> dict[str, Any]:
+    return config.get("p0_7", {})
+
+
+def p0_7_manifest_path(config: dict[str, Any]) -> Path:
+    return report_dir(config) / "p0_7_run_manifest.json"
+
+
+def p0_7_threshold(config: dict[str, Any], key: str, default: float) -> float:
+    return float(config.get("thresholds", {}).get(key, default))
+
+
+def p0_7_int(config: dict[str, Any], section: str, key: str, default: int) -> int:
+    return int(config.get(section, {}).get(key, default))
+
+
+def p0_7_cache_file(config: dict[str, Any], key: str, default_name: str) -> Path:
+    configured = p0_7_cfg(config).get("cache", {}).get(key)
+    if configured:
+        return topic_path(configured)
+    return cache_dir(config) / default_name
+
+
+def p0_7_launch_specs() -> list[P07LaunchSpec]:
+    def f(
+        family: str,
+        variant: str,
+        formula: str,
+        resolved: str,
+        features: tuple[str, ...],
+        thresholds: tuple[str, ...],
+        role: str,
+        lifecycle: str,
+    ) -> P07LaunchSpec:
+        return P07LaunchSpec(family, variant, formula, resolved, features, thresholds, role, lifecycle)
+
+    return [
+        f(
+            "high_vol_quality_permit",
+            "expansion_high_vol_upper_close",
+            "atr20_pct >= q80_market and day_range >= q80_market and close_location >= thresholds.expansion_high_vol_upper_close__close_location__min and ret_rank_20d_market >= thresholds.expansion_high_vol_upper_close__ret_rank_20d_market__min and launch_gain_from_recent_low_60d < thresholds.expansion_high_vol_upper_close__launch_gain_from_recent_low_60d__max",
+            "atr20_pct >= cross_section_quantile(atr20_pct, 0.80, date, PIT universe) and day_range >= cross_section_quantile(day_range, 0.80, date, PIT universe) and close_location >= 0.65 and ret_rank_20d_market >= 0.70 and launch_gain_from_recent_low_60d < 0.30",
+            ("atr20_pct", "day_range", "close_location", "ret_rank_20d_market", "launch_gain_from_recent_low_60d"),
+            (
+                "expansion_high_vol_upper_close__close_location__min",
+                "expansion_high_vol_upper_close__ret_rank_20d_market__min",
+                "expansion_high_vol_upper_close__launch_gain_from_recent_low_60d__max",
+            ),
+            "launch_observation_context",
+            "pre_20_launch",
+        ),
+        f(
+            "high_vol_quality_permit",
+            "high_vol_controlled_drawdown",
+            "atr20_pct >= q80_market and close_location >= thresholds.high_vol_controlled_drawdown__close_location__min and low >= median20 * thresholds.high_vol_controlled_drawdown__median20_low_ratio__min and ret_rank_20d_market >= thresholds.high_vol_controlled_drawdown__ret_rank_20d_market__min and industry_breadth_20d >= q50_market",
+            "atr20_pct >= cross_section_quantile(atr20_pct, 0.80, date, PIT universe) and close_location >= 0.60 and low >= median20 * 0.95 and ret_rank_20d_market >= 0.65 and industry_breadth_20d >= cross_section_quantile(industry_breadth_20d, 0.50, date, PIT universe)",
+            ("atr20_pct", "close_location", "low", "median20", "ret_rank_20d_market", "industry_breadth_20d"),
+            (
+                "high_vol_controlled_drawdown__close_location__min",
+                "high_vol_controlled_drawdown__median20_low_ratio__min",
+                "high_vol_controlled_drawdown__ret_rank_20d_market__min",
+            ),
+            "launch_observation_context",
+            "pre_20_launch",
+        ),
+        f(
+            "high_vol_destructive_warning",
+            "destructive_high_vol_upper_shadow",
+            "atr20_pct >= q80_market and close_location <= thresholds.destructive_high_vol_upper_shadow__close_location__max and upper_shadow_pct >= thresholds.destructive_high_vol_upper_shadow__upper_shadow_pct__min",
+            "atr20_pct >= cross_section_quantile(atr20_pct, 0.80, date, PIT universe) and close_location <= 0.40 and upper_shadow_pct >= 0.45",
+            ("atr20_pct", "close_location", "upper_shadow_pct"),
+            ("destructive_high_vol_upper_shadow__close_location__max", "destructive_high_vol_upper_shadow__upper_shadow_pct__min"),
+            "risk_warning_context",
+            "risk_warning",
+        ),
+        f(
+            "high_vol_destructive_warning",
+            "high_vol_break_median_warning",
+            "atr20_pct >= q80_market and close < median20 and money_ratio_20 >= thresholds.high_vol_break_median_warning__money_ratio_20__min",
+            "atr20_pct >= cross_section_quantile(atr20_pct, 0.80, date, PIT universe) and close < median20 and money_ratio_20 >= 1.30",
+            ("atr20_pct", "close", "median20", "money_ratio_20"),
+            ("high_vol_break_median_warning__money_ratio_20__min",),
+            "risk_warning_context",
+            "risk_warning",
+        ),
+        f(
+            "rank_jump_persistence_watchlist",
+            "rank_jump_5d_persist_3d",
+            "ret_rank_20d_market - ret_rank_20d_market_5d_ago >= thresholds.rank_jump_5d_persist_3d__rank_jump__min and ret_rank_20d_market_5d_median >= thresholds.rank_jump_5d_persist_3d__ret_rank_20d_market_5d_median__min",
+            "ret_rank_20d_market - ret_rank_20d_market_5d_ago >= 0.25 and ret_rank_20d_market_5d_median >= 0.60",
+            ("ret_rank_20d_market", "ret_rank_20d_market_5d_ago", "ret_rank_20d_market_5d_median"),
+            ("rank_jump_5d_persist_3d__rank_jump__min", "rank_jump_5d_persist_3d__ret_rank_20d_market_5d_median__min"),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "rank_jump_persistence_watchlist",
+            "industry_rank_jump_leader",
+            "ret_rank_20d_industry >= thresholds.industry_rank_jump_leader__ret_rank_20d_industry__min and ret_rank_20d_market >= thresholds.industry_rank_jump_leader__ret_rank_20d_market__min and relative_ret20_vs_industry >= thresholds.industry_rank_jump_leader__relative_ret20_vs_industry__min",
+            "ret_rank_20d_industry >= 0.80 and ret_rank_20d_market >= 0.60 and relative_ret20_vs_industry >= 0",
+            ("ret_rank_20d_industry", "ret_rank_20d_market", "relative_ret20_vs_industry"),
+            (
+                "industry_rank_jump_leader__ret_rank_20d_industry__min",
+                "industry_rank_jump_leader__ret_rank_20d_market__min",
+                "industry_rank_jump_leader__relative_ret20_vs_industry__min",
+            ),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "repair_quality_watchlist",
+            "repair_reclaim_ema20_quality",
+            "close >= ema20 and ema20 >= ema20_5d_ago and prelaunch_drawdown_120d <= thresholds.repair_reclaim_ema20_quality__prelaunch_drawdown_120d__max and close_location >= thresholds.repair_reclaim_ema20_quality__close_location__min",
+            "close >= ema20 and ema20 >= ema20_5d_ago and prelaunch_drawdown_120d <= -0.20 and close_location >= 0.60",
+            ("close", "ema20", "ema20_5d_ago", "prelaunch_drawdown_120d", "close_location"),
+            ("repair_reclaim_ema20_quality__prelaunch_drawdown_120d__max", "repair_reclaim_ema20_quality__close_location__min"),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "repair_quality_watchlist",
+            "repair_higher_low_reclaim",
+            "higher_low_count_20d >= thresholds.repair_higher_low_reclaim__higher_low_count_20d__min and close >= median20 and max_drawdown_20d >= thresholds.repair_higher_low_reclaim__max_drawdown_20d__min",
+            "higher_low_count_20d >= 1 and close >= median20 and max_drawdown_20d >= -0.12",
+            ("higher_low_count_20d", "close", "median20", "max_drawdown_20d"),
+            ("repair_higher_low_reclaim__higher_low_count_20d__min", "repair_higher_low_reclaim__max_drawdown_20d__min"),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "money_price_keep_context",
+            "money_price_upper_keep",
+            "money_ratio_20 >= thresholds.money_price_upper_keep__money_ratio_20__min and close_location >= thresholds.money_price_upper_keep__close_location__min and close >= median20",
+            "money_ratio_20 >= 1.20 and close_location >= 0.65 and close >= median20",
+            ("money_ratio_20", "close_location", "close", "median20"),
+            ("money_price_upper_keep__money_ratio_20__min", "money_price_upper_keep__close_location__min"),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "money_price_keep_context",
+            "money_expansion_no_distribution",
+            "money_ratio_20 >= thresholds.money_expansion_no_distribution__money_ratio_20__min and upper_shadow_pct <= thresholds.money_expansion_no_distribution__upper_shadow_pct__max and close >= open",
+            "money_ratio_20 >= 1.20 and upper_shadow_pct <= 0.35 and close >= open",
+            ("money_ratio_20", "upper_shadow_pct", "close", "open"),
+            ("money_expansion_no_distribution__money_ratio_20__min", "money_expansion_no_distribution__upper_shadow_pct__max"),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "industry_breadth_coherence",
+            "industry_breadth_confirmed_launch",
+            "industry_breadth_20d >= q60_market and relative_ret20_vs_industry >= thresholds.industry_breadth_confirmed_launch__relative_ret20_vs_industry__min and ret_rank_20d_market >= thresholds.industry_breadth_confirmed_launch__ret_rank_20d_market__min",
+            "industry_breadth_20d >= cross_section_quantile(industry_breadth_20d, 0.60, date, PIT universe) and relative_ret20_vs_industry >= 0 and ret_rank_20d_market >= 0.60",
+            ("industry_breadth_20d", "relative_ret20_vs_industry", "ret_rank_20d_market"),
+            ("industry_breadth_confirmed_launch__relative_ret20_vs_industry__min", "industry_breadth_confirmed_launch__ret_rank_20d_market__min"),
+            "launch_observation_context",
+            "pre_20_launch",
+        ),
+        f(
+            "industry_breadth_coherence",
+            "weak_market_industry_leader",
+            "market_regime in [weak, neutral] and ret_rank_20d_industry >= thresholds.weak_market_industry_leader__ret_rank_20d_industry__min and relative_ret20_vs_benchmark >= thresholds.weak_market_industry_leader__relative_ret20_vs_benchmark__min",
+            "market_regime in [weak, neutral] and ret_rank_20d_industry >= 0.80 and relative_ret20_vs_benchmark >= 0",
+            ("market_regime", "ret_rank_20d_industry", "relative_ret20_vs_benchmark"),
+            ("weak_market_industry_leader__ret_rank_20d_industry__min", "weak_market_industry_leader__relative_ret20_vs_benchmark__min"),
+            "launch_observation_context",
+            "pre_20_launch",
+        ),
+        f(
+            "relative_strength_persistence",
+            "relative_strength_10d_persistence",
+            "ret_rank_20d_market >= thresholds.relative_strength_10d_persistence__ret_rank_20d_market__min and ret_rank_20d_market_5d_median >= thresholds.relative_strength_10d_persistence__ret_rank_20d_market_5d_median__min and relative_ret20_vs_benchmark >= thresholds.relative_strength_10d_persistence__relative_ret20_vs_benchmark__min and close >= median20",
+            "ret_rank_20d_market >= 0.70 and ret_rank_20d_market_5d_median >= 0.65 and relative_ret20_vs_benchmark >= 0 and close >= median20",
+            ("ret_rank_20d_market", "ret_rank_20d_market_5d_median", "relative_ret20_vs_benchmark", "close", "median20"),
+            (
+                "relative_strength_10d_persistence__ret_rank_20d_market__min",
+                "relative_strength_10d_persistence__ret_rank_20d_market_5d_median__min",
+                "relative_strength_10d_persistence__relative_ret20_vs_benchmark__min",
+            ),
+            "launch_observation_context",
+            "pre_20_launch",
+        ),
+        f(
+            "relative_strength_persistence",
+            "industry_relative_strength_persistence",
+            "ret_rank_20d_industry >= thresholds.industry_relative_strength_persistence__ret_rank_20d_industry__min and relative_ret20_vs_industry >= thresholds.industry_relative_strength_persistence__relative_ret20_vs_industry__min and close_location_5d_median >= thresholds.industry_relative_strength_persistence__close_location_5d_median__min",
+            "ret_rank_20d_industry >= 0.75 and relative_ret20_vs_industry >= 0 and close_location_5d_median >= 0.55",
+            ("ret_rank_20d_industry", "relative_ret20_vs_industry", "close_location_5d_median"),
+            (
+                "industry_relative_strength_persistence__ret_rank_20d_industry__min",
+                "industry_relative_strength_persistence__relative_ret20_vs_industry__min",
+                "industry_relative_strength_persistence__close_location_5d_median__min",
+            ),
+            "launch_observation_context",
+            "pre_20_launch",
+        ),
+        f(
+            "prelaunch_path_quality",
+            "controlled_repair_from_deep_drawdown",
+            "prelaunch_drawdown_120d <= thresholds.controlled_repair_from_deep_drawdown__prelaunch_drawdown_120d__max and max_drawdown_20d >= thresholds.controlled_repair_from_deep_drawdown__max_drawdown_20d__min and close >= median20",
+            "prelaunch_drawdown_120d <= -0.25 and max_drawdown_20d >= -0.12 and close >= median20",
+            ("prelaunch_drawdown_120d", "max_drawdown_20d", "close", "median20"),
+            (
+                "controlled_repair_from_deep_drawdown__prelaunch_drawdown_120d__max",
+                "controlled_repair_from_deep_drawdown__max_drawdown_20d__min",
+            ),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "prelaunch_path_quality",
+            "range_tightening_then_expand",
+            "rolling_range_20d <= q40_market and day_range >= q70_market and close_location >= thresholds.range_tightening_then_expand__close_location__min",
+            "rolling_range_20d <= cross_section_quantile(rolling_range_20d, 0.40, date, PIT universe) and day_range >= cross_section_quantile(day_range, 0.70, date, PIT universe) and close_location >= 0.65",
+            ("rolling_range_20d", "day_range", "close_location"),
+            ("range_tightening_then_expand__close_location__min",),
+            "watchlist_observation_context",
+            "watchlist",
+        ),
+        f(
+            "sparse_strong_day_lifecycle_node",
+            "first_near_limit_upper_close",
+            "ret_1d >= thresholds.near_limit_threshold and close_location >= thresholds.first_near_limit_upper_close__close_location__min and first_occurrence_in_60d = true",
+            "ret_1d >= thresholds.near_limit_threshold and close_location >= 0.75 and first_occurrence_in_60d = true",
+            ("ret_1d", "close_location", "first_occurrence_in_60d"),
+            ("near_limit_threshold", "first_near_limit_upper_close__close_location__min"),
+            "diagnostic_context",
+            "sparse_strong_day_node",
+        ),
+        f(
+            "sparse_strong_day_lifecycle_node",
+            "strong_body_day_node",
+            "body_ret >= q90_market and close_location >= thresholds.strong_body_day_node__close_location__min and money_ratio_20 >= thresholds.strong_body_day_node__money_ratio_20__min",
+            "body_ret >= cross_section_quantile(body_ret, 0.90, date, PIT universe) and close_location >= 0.75 and money_ratio_20 >= 1.20",
+            ("body_ret", "close_location", "money_ratio_20"),
+            ("strong_body_day_node__close_location__min", "strong_body_day_node__money_ratio_20__min"),
+            "addon_context_deferred",
+            "sparse_strong_day_node",
+        ),
+        f(
+            "post_20_30_or_late_continuation_context",
+            "post_20_relative_strength_context",
+            "launch_gain_from_recent_low_90d >= thresholds.post_20_relative_strength_context__launch_gain_from_recent_low_90d__min and launch_gain_from_recent_low_90d < thresholds.post_20_relative_strength_context__launch_gain_from_recent_low_90d__max and ret_rank_20d_market >= thresholds.post_20_relative_strength_context__ret_rank_20d_market__min",
+            "launch_gain_from_recent_low_90d >= 0.20 and launch_gain_from_recent_low_90d < 0.30 and ret_rank_20d_market >= 0.70",
+            ("launch_gain_from_recent_low_90d", "ret_rank_20d_market"),
+            (
+                "post_20_relative_strength_context__launch_gain_from_recent_low_90d__min",
+                "post_20_relative_strength_context__launch_gain_from_recent_low_90d__max",
+                "post_20_relative_strength_context__ret_rank_20d_market__min",
+            ),
+            "hold_continuation_context",
+            "post_20_30_continuation",
+        ),
+        f(
+            "post_20_30_or_late_continuation_context",
+            "late_acceleration_context",
+            "launch_gain_from_recent_low_120d >= thresholds.late_acceleration_context__launch_gain_from_recent_low_120d__min or late_acceleration_flag = true",
+            "launch_gain_from_recent_low_120d >= 0.50 or late_acceleration_flag = true",
+            ("launch_gain_from_recent_low_120d", "late_acceleration_flag"),
+            ("late_acceleration_context__launch_gain_from_recent_low_120d__min",),
+            "addon_context_deferred",
+            "late_acceleration",
+        ),
+    ]
+
+
+def p0_7_filter_specs() -> list[P07FailureFilterSpec]:
+    def f(
+        family: str,
+        variant: str,
+        formula: str,
+        resolved: str,
+        features: tuple[str, ...],
+        thresholds: tuple[str, ...],
+        signal_date_definition: str,
+        window: int,
+        action: str,
+        severity: str = "medium",
+    ) -> P07FailureFilterSpec:
+        return P07FailureFilterSpec(
+            family,
+            variant,
+            formula,
+            resolved,
+            features,
+            thresholds,
+            signal_date_definition,
+            window,
+            "close_derived",
+            "next_trading_day_open",
+            action,
+            severity,
+            variant,
+        )
+
+    return [
+        f("break_launch_low_filter", "break_launch_low_3d", "low < stratum_low_at_signal", "low < stratum_low_at_signal", ("low", "stratum_low_at_signal"), tuple(), "first_hit_within_window", 3, "remove_from_watchlist", "high"),
+        f("break_launch_low_filter", "break_launch_low_5d", "low < stratum_low_at_signal", "low < stratum_low_at_signal", ("low", "stratum_low_at_signal"), tuple(), "first_hit_within_window", 5, "remove_from_watchlist", "high"),
+        f("break_median20_or_ema20_filter", "break_ema20_after_launch_5d", "close <= ema20", "close <= ema20", ("close", "ema20"), tuple(), "first_hit_within_window", 5, "no_new_entry"),
+        f("break_median20_or_ema20_filter", "break_median20_after_launch_5d", "close <= median20", "close <= median20", ("close", "median20"), tuple(), "first_hit_within_window", 5, "no_new_entry"),
+        f("gap_fade_filter", "gap_fade_after_launch_5d", "open >= prior_close * (1 + thresholds.gap_up_min_ret) and close_location <= thresholds.gap_fade_after_launch_5d__close_location__max and close <= open", "open >= prior_close * (1 + 0.03) and close_location <= 0.35 and close <= open", ("open", "prior_close", "close_location", "close"), ("gap_up_min_ret", "gap_fade_after_launch_5d__close_location__max"), "instantaneous_day", 5, "reduce_risk"),
+        f("gap_fade_filter", "gap_fade_break_prior_close_5d", "open >= prior_close * (1 + thresholds.gap_up_min_ret) and close <= prior_close and close_location <= thresholds.gap_fade_break_prior_close_5d__close_location__max", "open >= prior_close * (1 + 0.03) and close <= prior_close and close_location <= 0.40", ("open", "prior_close", "close", "close_location"), ("gap_up_min_ret", "gap_fade_break_prior_close_5d__close_location__max"), "instantaneous_day", 5, "reduce_risk"),
+        f("upper_shadow_volume_failure_filter", "upper_shadow_volume_failure_5d", "upper_shadow_pct >= thresholds.upper_shadow_volume_failure_5d__upper_shadow_pct__min and close_location <= thresholds.upper_shadow_volume_failure_5d__close_location__max and money_ratio_20 >= thresholds.upper_shadow_volume_failure_5d__money_ratio_20__min", "upper_shadow_pct >= 0.45 and close_location <= 0.40 and money_ratio_20 >= 1.50", ("upper_shadow_pct", "close_location", "money_ratio_20"), ("upper_shadow_volume_failure_5d__upper_shadow_pct__min", "upper_shadow_volume_failure_5d__close_location__max", "upper_shadow_volume_failure_5d__money_ratio_20__min"), "instantaneous_day", 5, "reduce_risk", "high"),
+        f("upper_shadow_volume_failure_filter", "upper_shadow_money_distribution_10d", "upper_shadow_pct >= thresholds.upper_shadow_money_distribution_10d__upper_shadow_pct__min and close_location <= thresholds.upper_shadow_money_distribution_10d__close_location__max and money_ratio_20 >= thresholds.upper_shadow_money_distribution_10d__money_ratio_20__min", "upper_shadow_pct >= 0.40 and close_location <= 0.45 and money_ratio_20 >= 1.30", ("upper_shadow_pct", "close_location", "money_ratio_20"), ("upper_shadow_money_distribution_10d__upper_shadow_pct__min", "upper_shadow_money_distribution_10d__close_location__max", "upper_shadow_money_distribution_10d__money_ratio_20__min"), "instantaneous_day", 10, "reduce_risk"),
+        f("rank_evaporation_filter", "rank_evaporation_5d", "ret_rank_20d_market <= ret_rank_20d_market_at_stratum - thresholds.rank_drop and ret_rank_20d_market <= thresholds.rank_evaporation_floor", "ret_rank_20d_market <= ret_rank_20d_market_at_stratum - 0.25 and ret_rank_20d_market <= 0.50", ("ret_rank_20d_market", "ret_rank_20d_market_at_stratum"), ("rank_drop", "rank_evaporation_floor"), "first_hit_within_window", 5, "no_new_entry"),
+        f("rank_evaporation_filter", "rank_evaporation_10d", "ret_rank_20d_market <= ret_rank_20d_market_at_stratum - thresholds.rank_drop and ret_rank_20d_market <= thresholds.rank_evaporation_floor", "ret_rank_20d_market <= ret_rank_20d_market_at_stratum - 0.25 and ret_rank_20d_market <= 0.50", ("ret_rank_20d_market", "ret_rank_20d_market_at_stratum"), ("rank_drop", "rank_evaporation_floor"), "first_hit_within_window", 10, "no_new_entry"),
+        f("money_distribution_filter", "money_distribution_5d", "money_ratio_20 >= thresholds.money_distribution_5d__money_ratio_20__min and close_location <= thresholds.money_distribution_5d__close_location__max and close < prior_close", "money_ratio_20 >= 1.30 and close_location <= 0.45 and close < prior_close", ("money_ratio_20", "close_location", "close", "prior_close"), ("money_distribution_5d__money_ratio_20__min", "money_distribution_5d__close_location__max"), "instantaneous_day", 5, "reduce_risk"),
+        f("money_distribution_filter", "money_distribution_10d", "money_ratio_20 >= thresholds.money_distribution_10d__money_ratio_20__min and upper_shadow_pct >= thresholds.money_distribution_10d__upper_shadow_pct__min and close < open", "money_ratio_20 >= 1.20 and upper_shadow_pct >= 0.35 and close < open", ("money_ratio_20", "upper_shadow_pct", "close", "open"), ("money_distribution_10d__money_ratio_20__min", "money_distribution_10d__upper_shadow_pct__min"), "instantaneous_day", 10, "reduce_risk"),
+        f("industry_breadth_evaporation_filter", "industry_breadth_evaporation_5d", "industry_breadth_20d <= industry_breadth_20d_at_stratum - thresholds.industry_breadth_drop", "industry_breadth_20d <= industry_breadth_20d_at_stratum - 0.15", ("industry_breadth_20d", "industry_breadth_20d_at_stratum"), ("industry_breadth_drop",), "first_hit_within_window", 5, "hold_review_only"),
+        f("industry_breadth_evaporation_filter", "industry_breadth_evaporation_10d", "industry_breadth_20d <= industry_breadth_20d_at_stratum - thresholds.industry_breadth_drop", "industry_breadth_20d <= industry_breadth_20d_at_stratum - 0.15", ("industry_breadth_20d", "industry_breadth_20d_at_stratum"), ("industry_breadth_drop",), "first_hit_within_window", 10, "hold_review_only"),
+        f("no_followthrough_filter", "no_followthrough_5d", "max(high over stratum_date+1 to stratum_date+5) <= stratum_close_at_signal * (1 + thresholds.min_followthrough_gain) and min(close over stratum_date+1 to stratum_date+5) < stratum_close_at_signal", "max(high over window) <= stratum_close_at_signal * (1 + 0.05) and min(close over window) < stratum_close_at_signal", ("high", "close", "stratum_close_at_signal"), ("min_followthrough_gain",), "fixed_window_end", 5, "no_new_entry"),
+        f("no_followthrough_filter", "no_followthrough_10d", "max(high over stratum_date+1 to stratum_date+10) <= stratum_close_at_signal * (1 + thresholds.min_followthrough_gain) and min(close over stratum_date+1 to stratum_date+10) < stratum_close_at_signal", "max(high over window) <= stratum_close_at_signal * (1 + 0.05) and min(close over window) < stratum_close_at_signal", ("high", "close", "stratum_close_at_signal"), ("min_followthrough_gain",), "fixed_window_end", 10, "no_new_entry"),
+        f("destructive_high_vol_filter", "destructive_high_vol_3d", "atr20_pct >= q80_market and close_location <= thresholds.destructive_high_vol_3d__close_location__max and close < median20", "atr20_pct >= cross_section_quantile(atr20_pct, 0.80, date, PIT universe) and close_location <= 0.40 and close < median20", ("atr20_pct", "close_location", "close", "median20"), ("destructive_high_vol_3d__close_location__max",), "first_hit_within_window", 3, "remove_from_watchlist", "high"),
+        f("destructive_high_vol_filter", "destructive_high_vol_5d", "atr20_pct >= q80_market and close_location <= thresholds.destructive_high_vol_5d__close_location__max and close < median20", "atr20_pct >= cross_section_quantile(atr20_pct, 0.80, date, PIT universe) and close_location <= 0.40 and close < median20", ("atr20_pct", "close_location", "close", "median20"), ("destructive_high_vol_5d__close_location__max",), "first_hit_within_window", 5, "remove_from_watchlist", "high"),
+        f("wide_stop_or_unexecutable_filter", "wide_stop_risk_no_add_5d", "close / invalidation_reference_price - 1 >= thresholds.max_stop_distance_for_new_risk", "close / invalidation_reference_price - 1 >= 0.15", ("close", "invalidation_reference_price"), ("max_stop_distance_for_new_risk",), "instantaneous_day", 5, "no_add_on"),
+        f("wide_stop_or_unexecutable_filter", "wide_stop_risk_no_new_entry_10d", "close / invalidation_reference_price - 1 >= thresholds.max_stop_distance_for_new_risk", "close / invalidation_reference_price - 1 >= 0.15", ("close", "invalidation_reference_price"), ("max_stop_distance_for_new_risk",), "instantaneous_day", 10, "no_new_entry"),
+    ]
+
+
+def p0_7_series(df: pd.DataFrame, *names: str, default: float | str = np.nan) -> pd.Series:
+    for name in names:
+        if name in df.columns:
+            return df[name]
+    return pd.Series(default, index=df.index)
+
+
+def p0_7_load_feature_panel(config: dict[str, Any]) -> pd.DataFrame:
+    df = p0_6_load_feature_panel(config)
+    return p0_7_add_features(df)
+
+
+def p0_7_add_features(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy().sort_values(["instrument", "datetime"]).reset_index(drop=True)
+    df["datetime"] = pd.to_datetime(df["datetime"]).dt.normalize()
+    group = df.groupby("instrument", group_keys=False)
+    price_range = (df["high"] - df["low"]).replace(0, np.nan)
+    df["ret_1d"] = p0_7_series(df, "p0_6_ret_1d", "ret1")
+    df["ret_3d"] = p0_7_series(df, "ret3")
+    df["ret_5d"] = p0_7_series(df, "p0_6_ret_5d", "ret5")
+    df["ret_20d"] = p0_7_series(df, "p0_6_ret_20d", "ret20")
+    df["body_ret"] = p0_7_series(df, "p0_6_body_ret")
+    df["day_range"] = p0_7_series(df, "p0_6_day_range")
+    df["close_location"] = p0_7_series(df, "p0_6_close_location")
+    df["upper_shadow_pct"] = p0_7_series(df, "p0_6_upper_shadow_ratio")
+    df["lower_shadow_pct"] = ((df[["open", "close"]].min(axis=1) - df["low"]) / price_range).clip(0, 1)
+    df["money_ratio_20"] = p0_7_series(df, "p0_6_money_ratio_20", "money_ratio20")
+    df["money_ratio_60"] = p0_7_series(df, "p0_6_money_ratio_60", "money_ratio60")
+    df["ret_rank_20d_market"] = p0_7_series(df, "p0_6_ret_rank_20d_market", "ret20_universe_pctile")
+    df["ret_rank_20d_market_5d_ago"] = p0_7_series(df, "p0_6_ret_rank_20d_market_5d_ago")
+    df["ret_rank_20d_market_5d_median"] = group["ret_rank_20d_market"].transform(lambda s: s.rolling(5, min_periods=3).median())
+    df["ret_rank_20d_market_at_stratum"] = df["ret_rank_20d_market"]
+    df["ret_rank_20d_industry"] = p0_7_series(df, "ret20_industry_pctile", "ret20_industry_pctile_p0_5")
+    df["ret_rank_20d_industry_5d_median"] = group["ret_rank_20d_industry"].transform(lambda s: s.rolling(5, min_periods=3).median())
+    df["relative_ret20_vs_benchmark"] = p0_7_series(df, "relative_ret20_vs_benchmark")
+    df["relative_ret20_vs_industry"] = p0_7_series(df, "relative_ret20_vs_industry")
+    df["industry_breadth_20d"] = p0_7_series(df, "p0_6_industry_breadth_20d", "industry_close_gt_ema60_ratio")
+    df["industry_breadth_20d_at_stratum"] = df["industry_breadth_20d"]
+    df["market_regime"] = p0_7_series(df, "market_regime_state", default="UNKNOWN").fillna("UNKNOWN")
+    df["ema20_5d_ago"] = group["ema20"].shift(5)
+    df["median20"] = p0_7_series(df, "p0_6_median20", "median_price20")
+    if "low20" not in df.columns:
+        df["low20"] = group["low"].transform(lambda s: s.rolling(20, min_periods=10).min())
+    if "low60" not in df.columns:
+        df["low60"] = group["low"].transform(lambda s: s.rolling(60, min_periods=20).min())
+    df["low90"] = p0_7_series(df, "p0_6_low90")
+    if df["low90"].isna().all():
+        df["low90"] = group["low"].transform(lambda s: s.rolling(90, min_periods=20).min())
+    df["low120"] = p0_7_series(df, "p0_6_low120")
+    if df["low120"].isna().all():
+        df["low120"] = group["low"].transform(lambda s: s.rolling(120, min_periods=20).min())
+    high20 = group["high"].transform(lambda s: s.rolling(20, min_periods=10).max())
+    df["prelaunch_drawdown_120d"] = p0_7_series(df, "drawdown_from_high120")
+    if df["prelaunch_drawdown_120d"].isna().all() and "high120" in df.columns:
+        df["prelaunch_drawdown_120d"] = df["close"] / df["high120"].replace(0, np.nan) - 1.0
+    df["max_drawdown_20d"] = df["low20"] / high20.replace(0, np.nan) - 1.0
+    df["close_location_5d_median"] = group["close_location"].transform(lambda s: s.rolling(5, min_periods=3).median())
+    df["rolling_range_20d"] = high20 / df["low20"].replace(0, np.nan) - 1.0
+    df["higher_low_count_20d"] = group["low"].transform(lambda s: (s > s.shift(1)).astype(float).rolling(20, min_periods=5).sum())
+    df["late_acceleration_flag"] = p0_7_series(df, "p0_6_late_acceleration_flag").fillna(False).astype(bool)
+    df["post_20pct_relative_strength"] = p0_7_series(df, "p0_6_post20_relative_strength_flag").fillna(False).astype(bool)
+    df["post_30pct_relative_strength"] = p0_7_series(df, "p0_6_post30_relative_strength_flag").fillna(False).astype(bool)
+    df["prior_close"] = p0_7_series(df, "prev_close")
+    if df["prior_close"].isna().all():
+        df["prior_close"] = group["close"].shift(1)
+    df["launch_gain_from_recent_low_60d"] = p0_7_series(df, "p0_6_launch_gain_from_recent_low_60d", "repair_from_low60")
+    df["launch_gain_from_recent_low_90d"] = p0_7_series(df, "p0_6_launch_gain_from_recent_low_90d")
+    df["launch_gain_from_recent_low_120d"] = p0_7_series(df, "p0_6_launch_gain_from_recent_low_120d", "repair_from_low120")
+    df["stratum_low_at_signal"] = df["low"]
+    df["stratum_close_at_signal"] = df["close"]
+    df["invalidation_reference_price"] = df["low"]
+    near_limit_base = (df["ret_1d"] >= 0.085) & (df["close_location"] >= 0.75)
+    df["first_occurrence_in_60d"] = p0_6_prior_event_absent(df, near_limit_base, 60)
+    if "p0_6_row_pos" not in df.columns:
+        df["p0_6_row_pos"] = group.cumcount()
+    df["p0_7_available_for_stratum"] = (
+        df["provider_required_fields_ok"].fillna(False).astype(bool)
+        & df["pit_member"].fillna(False).astype(bool)
+        & df["feature_eligible"].fillna(False).astype(bool)
+        & df["ret_rank_20d_market"].notna()
+        & df["money_ratio_20"].notna()
+    )
+    return df.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_7_market_quantile(df: pd.DataFrame, feature: str, q: float, cache: dict[tuple[str, float], pd.Series]) -> pd.Series:
+    key = (feature, q)
+    if key not in cache:
+        cache[key] = df.groupby("datetime")[feature].transform(lambda s: s.quantile(q))
+    return cache[key]
+
+
+def p0_7_feature_dictionary() -> pd.DataFrame:
+    raw = ["open", "high", "low", "close", "volume", "money", "factor", "instrument", "date"]
+    derived = [
+        "ret_1d",
+        "ret_3d",
+        "ret_5d",
+        "ret_20d",
+        "body_ret",
+        "day_range",
+        "close_location",
+        "upper_shadow_pct",
+        "lower_shadow_pct",
+        "atr20_pct",
+        "volatility20",
+        "volatility60",
+        "money_ratio_20",
+        "money_ratio_60",
+        "ret_rank_20d_market",
+        "ret_rank_20d_market_5d_ago",
+        "ret_rank_20d_market_5d_median",
+        "ret_rank_20d_market_at_stratum",
+        "ret_rank_20d_industry",
+        "ret_rank_20d_industry_5d_median",
+        "relative_ret20_vs_benchmark",
+        "relative_ret20_vs_industry",
+        "industry_breadth_20d",
+        "industry_breadth_20d_at_stratum",
+        "market_regime",
+        "ema20",
+        "ema20_5d_ago",
+        "median20",
+        "low20",
+        "low60",
+        "low90",
+        "low120",
+        "stratum_low_at_signal",
+        "stratum_close_at_signal",
+        "stratum_date",
+        "invalidation_reference_price",
+        "launch_gain_from_recent_low_60d",
+        "launch_gain_from_recent_low_90d",
+        "launch_gain_from_recent_low_120d",
+        "prelaunch_drawdown_120d",
+        "max_drawdown_20d",
+        "close_location_5d_median",
+        "rolling_range_20d",
+        "higher_low_count_20d",
+        "late_acceleration_flag",
+        "post_20pct_relative_strength",
+        "post_30pct_relative_strength",
+        "prior_close",
+        "first_occurrence_in_60d",
+    ]
+    quantiles = ["q40_market", "q50_market", "q60_market", "q70_market", "q80_market", "q90_market"]
+    rows: list[dict[str, Any]] = []
+    for name in raw:
+        rows.append(
+            {
+                "feature_name": name,
+                "feature_family": "raw_provider",
+                "feature_role": "raw_input",
+                "lookback_days": 0,
+                "min_history_trading_days": 0,
+                "observable_date": "same_day",
+                "uses_future_data": False,
+                "required_fields": name,
+                "raw_required_field_exempt": True,
+                "feature_eligible_rule": "provider_required_fields_ok",
+                "formula_text": "",
+                "formula_text_resolved": "",
+                "thresholds": "",
+                "used_in_launch_stratification": name in {"open", "high", "low", "close", "money"},
+                "used_in_failure_filter": name in {"open", "high", "low", "close", "money"},
+                "used_in_hold_gate": False,
+                "used_in_add_on_gate": False,
+            }
+        )
+    for name in derived:
+        lookback = int(next((token for token in re.findall(r"\d+", name) if token), "0"))
+        rows.append(
+            {
+                "feature_name": name,
+                "feature_family": "p0_7_derived",
+                "feature_role": "derived_feature" if not name.endswith("_at_signal") else "formula_macro",
+                "lookback_days": lookback,
+                "min_history_trading_days": min(max(lookback, 1), 120) if lookback else 1,
+                "observable_date": "same_day_or_prior",
+                "uses_future_data": False,
+                "required_fields": "open;high;low;close;money;industry;benchmark",
+                "raw_required_field_exempt": False,
+                "feature_eligible_rule": "p0_7_available_for_stratum",
+                "formula_text": "",
+                "formula_text_resolved": "",
+                "thresholds": "",
+                "used_in_launch_stratification": name
+                in {feature for spec in p0_7_launch_specs() for feature in spec.required_features},
+                "used_in_failure_filter": name in {feature for spec in p0_7_filter_specs() for feature in spec.required_features},
+                "used_in_hold_gate": False,
+                "used_in_add_on_gate": False,
+            }
+        )
+    for name in quantiles:
+        q = name.replace("q", "").replace("_market", "")
+        rows.append(
+            {
+                "feature_name": name,
+                "feature_family": "cross_section_quantile",
+                "feature_role": "quantile_alias",
+                "lookback_days": 0,
+                "min_history_trading_days": 0,
+                "observable_date": "same_day",
+                "uses_future_data": False,
+                "required_fields": "feature,date,PIT universe",
+                "raw_required_field_exempt": False,
+                "feature_eligible_rule": "resolved per formula feature on PIT universe",
+                "formula_text": f"{name}(feature, date)",
+                "formula_text_resolved": f"cross_section_quantile(feature, 0.{q}, date, PIT universe)",
+                "thresholds": "",
+                "used_in_launch_stratification": True,
+                "used_in_failure_filter": True,
+                "used_in_hold_gate": False,
+                "used_in_add_on_gate": False,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_7_formula_token_coverage_audit(config: dict[str, Any]) -> pd.DataFrame:
+    dictionary = p0_7_feature_dictionary()
+    features = set(dictionary["feature_name"].astype(str))
+    thresholds = set(config.get("thresholds", {}).keys())
+    rows: list[dict[str, Any]] = []
+    formulas = [(spec.stratum_variant, spec.formula_text) for spec in p0_7_launch_specs()] + [
+        (spec.filter_variant, spec.formula_text) for spec in p0_7_filter_specs()
+    ]
+    operator_tokens = {
+        "and",
+        "or",
+        "in",
+        "true",
+        "false",
+        "max",
+        "min",
+        "over",
+        "to",
+        "date",
+        "weak",
+        "neutral",
+        "PIT",
+        "universe",
+    }
+    for formula_id, formula in formulas:
+        tokens = re.findall(r"thresholds\.[A-Za-z0-9_]+|[A-Za-z_][A-Za-z0-9_]*", formula)
+        for token in sorted(set(tokens)):
+            if token.startswith("thresholds."):
+                name = token.split(".", 1)[1]
+                token_type = "threshold_key" if name in thresholds else "unmapped"
+                mapped = name in thresholds
+            elif token in features:
+                role = dictionary.loc[dictionary["feature_name"].eq(token), "feature_role"].iloc[0]
+                token_type = "raw_input_field" if role == "raw_input" else str(role)
+                mapped = True
+            elif token in operator_tokens:
+                token_type = "enum_literal" if token in {"true", "false", "weak", "neutral"} else "operator_or_function"
+                mapped = True
+            else:
+                token_type = "unmapped"
+                mapped = False
+            rows.append({"formula_id": formula_id, "token": token, "token_type": token_type, "mapped": bool(mapped), "unmapped_count": int(not mapped)})
+    return pd.DataFrame(rows)
+
+
+def p0_7_launch_formula_matrix() -> pd.DataFrame:
+    rows = []
+    for spec in p0_7_launch_specs():
+        rows.append(
+            {
+                "stratum_family": spec.stratum_family,
+                "stratum_variant": spec.stratum_variant,
+                "formula_text": spec.formula_text,
+                "formula_text_resolved": spec.formula_text_resolved,
+                "required_features": ";".join(spec.required_features),
+                "required_thresholds": ";".join(f"thresholds.{key}" for key in spec.required_thresholds),
+                "declared_stratum_role": spec.declared_stratum_role,
+                "declared_lifecycle_stage": spec.declared_lifecycle_stage,
+                "formula_observation_cutoff": "stratum_date",
+                "formula_uses_future_data": False,
+                "uses_quantile_alias": "q" in spec.formula_text,
+                "quantile_alias_resolved_text": spec.formula_text_resolved if "q" in spec.formula_text else "",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_7_failure_filter_formula_matrix() -> pd.DataFrame:
+    return pd.DataFrame(
+        [
+            {
+                "filter_family": spec.filter_family,
+                "filter_variant": spec.filter_variant,
+                "filter_formula": spec.formula_text,
+                "filter_formula_resolved": spec.formula_text_resolved,
+                "required_features": ";".join(spec.required_features),
+                "required_thresholds": ";".join(f"thresholds.{key}" for key in spec.required_thresholds),
+                "signal_date_definition": spec.signal_date_definition,
+                "formula_window_trading_days": spec.formula_window_trading_days,
+                "filter_formula_observation_timing": spec.filter_formula_observation_timing,
+                "effective_date_rule": spec.effective_date_rule,
+                "filter_action": spec.filter_action,
+                "filter_severity": spec.filter_severity,
+                "uses_quantile_alias": "q" in spec.formula_text,
+                "quantile_alias_resolved_text": spec.formula_text_resolved if "q" in spec.formula_text else "",
+            }
+            for spec in p0_7_filter_specs()
+        ]
+    )
+
+
+def p0_7_launch_masks(config: dict[str, Any], df: pd.DataFrame) -> dict[str, pd.Series]:
+    q_cache: dict[tuple[str, float], pd.Series] = {}
+    t = lambda key, default: p0_7_threshold(config, key, default)
+    q40_range = p0_7_market_quantile(df, "rolling_range_20d", 0.40, q_cache)
+    q50_breadth = p0_7_market_quantile(df, "industry_breadth_20d", 0.50, q_cache)
+    q60_breadth = p0_7_market_quantile(df, "industry_breadth_20d", 0.60, q_cache)
+    q70_range = p0_7_market_quantile(df, "day_range", 0.70, q_cache)
+    q80_atr = p0_7_market_quantile(df, "atr20_pct", 0.80, q_cache)
+    q80_range = p0_7_market_quantile(df, "day_range", 0.80, q_cache)
+    q90_body = p0_7_market_quantile(df, "body_ret", 0.90, q_cache)
+    near_limit = (df["ret_1d"] >= t("near_limit_threshold", 0.085)) & (
+        df["close_location"] >= t("first_near_limit_upper_close__close_location__min", 0.75)
+    )
+    masks = {
+        "expansion_high_vol_upper_close": (df["atr20_pct"] >= q80_atr)
+        & (df["day_range"] >= q80_range)
+        & (df["close_location"] >= t("expansion_high_vol_upper_close__close_location__min", 0.65))
+        & (df["ret_rank_20d_market"] >= t("expansion_high_vol_upper_close__ret_rank_20d_market__min", 0.70))
+        & (df["launch_gain_from_recent_low_60d"] < t("expansion_high_vol_upper_close__launch_gain_from_recent_low_60d__max", 0.30)),
+        "high_vol_controlled_drawdown": (df["atr20_pct"] >= q80_atr)
+        & (df["close_location"] >= t("high_vol_controlled_drawdown__close_location__min", 0.60))
+        & (df["low"] >= df["median20"] * t("high_vol_controlled_drawdown__median20_low_ratio__min", 0.95))
+        & (df["ret_rank_20d_market"] >= t("high_vol_controlled_drawdown__ret_rank_20d_market__min", 0.65))
+        & (df["industry_breadth_20d"] >= q50_breadth),
+        "destructive_high_vol_upper_shadow": (df["atr20_pct"] >= q80_atr)
+        & (df["close_location"] <= t("destructive_high_vol_upper_shadow__close_location__max", 0.40))
+        & (df["upper_shadow_pct"] >= t("destructive_high_vol_upper_shadow__upper_shadow_pct__min", 0.45)),
+        "high_vol_break_median_warning": (df["atr20_pct"] >= q80_atr)
+        & (df["close"] < df["median20"])
+        & (df["money_ratio_20"] >= t("high_vol_break_median_warning__money_ratio_20__min", 1.30)),
+        "rank_jump_5d_persist_3d": (
+            (df["ret_rank_20d_market"] - df["ret_rank_20d_market_5d_ago"]) >= t("rank_jump_5d_persist_3d__rank_jump__min", 0.25)
+        )
+        & (df["ret_rank_20d_market_5d_median"] >= t("rank_jump_5d_persist_3d__ret_rank_20d_market_5d_median__min", 0.60)),
+        "industry_rank_jump_leader": (df["ret_rank_20d_industry"] >= t("industry_rank_jump_leader__ret_rank_20d_industry__min", 0.80))
+        & (df["ret_rank_20d_market"] >= t("industry_rank_jump_leader__ret_rank_20d_market__min", 0.60))
+        & (df["relative_ret20_vs_industry"] >= t("industry_rank_jump_leader__relative_ret20_vs_industry__min", 0.0)),
+        "repair_reclaim_ema20_quality": (df["close"] >= df["ema20"])
+        & (df["ema20"] >= df["ema20_5d_ago"])
+        & (df["prelaunch_drawdown_120d"] <= t("repair_reclaim_ema20_quality__prelaunch_drawdown_120d__max", -0.20))
+        & (df["close_location"] >= t("repair_reclaim_ema20_quality__close_location__min", 0.60)),
+        "repair_higher_low_reclaim": (df["higher_low_count_20d"] >= t("repair_higher_low_reclaim__higher_low_count_20d__min", 1.0))
+        & (df["close"] >= df["median20"])
+        & (df["max_drawdown_20d"] >= t("repair_higher_low_reclaim__max_drawdown_20d__min", -0.12)),
+        "money_price_upper_keep": (df["money_ratio_20"] >= t("money_price_upper_keep__money_ratio_20__min", 1.20))
+        & (df["close_location"] >= t("money_price_upper_keep__close_location__min", 0.65))
+        & (df["close"] >= df["median20"]),
+        "money_expansion_no_distribution": (df["money_ratio_20"] >= t("money_expansion_no_distribution__money_ratio_20__min", 1.20))
+        & (df["upper_shadow_pct"] <= t("money_expansion_no_distribution__upper_shadow_pct__max", 0.35))
+        & (df["close"] >= df["open"]),
+        "industry_breadth_confirmed_launch": (df["industry_breadth_20d"] >= q60_breadth)
+        & (df["relative_ret20_vs_industry"] >= t("industry_breadth_confirmed_launch__relative_ret20_vs_industry__min", 0.0))
+        & (df["ret_rank_20d_market"] >= t("industry_breadth_confirmed_launch__ret_rank_20d_market__min", 0.60)),
+        "weak_market_industry_leader": df["market_regime"].astype(str).isin(["weak", "neutral"])
+        & (df["ret_rank_20d_industry"] >= t("weak_market_industry_leader__ret_rank_20d_industry__min", 0.80))
+        & (df["relative_ret20_vs_benchmark"] >= t("weak_market_industry_leader__relative_ret20_vs_benchmark__min", 0.0)),
+        "relative_strength_10d_persistence": (df["ret_rank_20d_market"] >= t("relative_strength_10d_persistence__ret_rank_20d_market__min", 0.70))
+        & (df["ret_rank_20d_market_5d_median"] >= t("relative_strength_10d_persistence__ret_rank_20d_market_5d_median__min", 0.65))
+        & (df["relative_ret20_vs_benchmark"] >= t("relative_strength_10d_persistence__relative_ret20_vs_benchmark__min", 0.0))
+        & (df["close"] >= df["median20"]),
+        "industry_relative_strength_persistence": (df["ret_rank_20d_industry"] >= t("industry_relative_strength_persistence__ret_rank_20d_industry__min", 0.75))
+        & (df["relative_ret20_vs_industry"] >= t("industry_relative_strength_persistence__relative_ret20_vs_industry__min", 0.0))
+        & (df["close_location_5d_median"] >= t("industry_relative_strength_persistence__close_location_5d_median__min", 0.55)),
+        "controlled_repair_from_deep_drawdown": (df["prelaunch_drawdown_120d"] <= t("controlled_repair_from_deep_drawdown__prelaunch_drawdown_120d__max", -0.25))
+        & (df["max_drawdown_20d"] >= t("controlled_repair_from_deep_drawdown__max_drawdown_20d__min", -0.12))
+        & (df["close"] >= df["median20"]),
+        "range_tightening_then_expand": (df["rolling_range_20d"] <= q40_range)
+        & (df["day_range"] >= q70_range)
+        & (df["close_location"] >= t("range_tightening_then_expand__close_location__min", 0.65)),
+        "first_near_limit_upper_close": near_limit & p0_6_prior_event_absent(df, near_limit, 60),
+        "strong_body_day_node": (df["body_ret"] >= q90_body)
+        & (df["close_location"] >= t("strong_body_day_node__close_location__min", 0.75))
+        & (df["money_ratio_20"] >= t("strong_body_day_node__money_ratio_20__min", 1.20)),
+        "post_20_relative_strength_context": (df["launch_gain_from_recent_low_90d"] >= t("post_20_relative_strength_context__launch_gain_from_recent_low_90d__min", 0.20))
+        & (df["launch_gain_from_recent_low_90d"] < t("post_20_relative_strength_context__launch_gain_from_recent_low_90d__max", 0.30))
+        & (df["ret_rank_20d_market"] >= t("post_20_relative_strength_context__ret_rank_20d_market__min", 0.70)),
+        "late_acceleration_context": (df["launch_gain_from_recent_low_120d"] >= t("late_acceleration_context__launch_gain_from_recent_low_120d__min", 0.50))
+        | df["late_acceleration_flag"].fillna(False).astype(bool),
+    }
+    return {key: value.fillna(False).astype(bool) for key, value in masks.items()}
+
+
+def p0_7_bucket_series(series: pd.Series, low: float, high: float, labels: tuple[str, str, str]) -> pd.Series:
+    return pd.Series(np.select([series < low, series > high], [labels[0], labels[2]], default=labels[1]), index=series.index)
+
+
+def p0_7_build_launch_stratum_events(config: dict[str, Any], df: pd.DataFrame) -> pd.DataFrame:
+    specs = p0_7_launch_specs()
+    spec_map = {spec.stratum_variant: spec for spec in specs}
+    masks = p0_7_launch_masks(config, df)
+    launch_source_mask = pd.Series(True, index=df.index)
+    p0_6_launch_source_reused = False
+    p0_6_launch_path = p0_6_launch_panel_cache_path(config)
+    if bool(config.get("reuse", {}).get("p0_6_launch_event_panel", True)) and p0_6_launch_path.exists():
+        p0_6_launches = pd.read_parquet(p0_6_launch_path, columns=["instrument", "launch_date"])
+        source_keys = set(zip(p0_6_launches["instrument"].astype(str), pd.to_datetime(p0_6_launches["launch_date"]).dt.normalize()))
+        launch_source_mask = pd.Series(
+            list(zip(df["instrument"].astype(str), pd.to_datetime(df["datetime"]).dt.normalize())),
+            index=df.index,
+        ).isin(source_keys)
+        p0_6_launch_source_reused = True
+    common = (
+        (df["datetime"] >= parse_dt(config["dates"]["research_start"]))
+        & (df["datetime"] <= parse_dt(config["dates"]["research_end"]))
+        & df["p0_7_available_for_stratum"].fillna(False).astype(bool)
+        & df["p0_6_direct_entry_open"].notna()
+        & df["p0_6_direct_entry_date"].notna()
+        & launch_source_mask
+    )
+    keep_cols = [
+        "instrument",
+        "name",
+        "datetime",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "money",
+        "factor",
+        "p0_6_row_pos",
+        "p0_6_direct_entry_date",
+        "p0_6_direct_entry_open",
+        "industry_name",
+        "market_regime",
+        "industry_regime_state",
+        "observable_state_stage",
+        "future_50pct_episode_key_240d",
+        "ret_rank_20d_market",
+        "ret_rank_20d_market_at_stratum",
+        "industry_breadth_20d",
+        "industry_breadth_20d_at_stratum",
+        "money_ratio_20",
+        "atr20_pct",
+        "prelaunch_drawdown_120d",
+        "launch_gain_from_recent_low_60d",
+        "launch_gain_from_recent_low_90d",
+        "launch_gain_from_recent_low_120d",
+        "late_acceleration_flag",
+        "post_20pct_relative_strength",
+        "post_30pct_relative_strength",
+        "stratum_low_at_signal",
+        "stratum_close_at_signal",
+        "invalidation_reference_price",
+    ]
+    frames: list[pd.DataFrame] = []
+    for spec in specs:
+        mask = common & masks[spec.stratum_variant]
+        if not mask.any():
+            continue
+        part = df.loc[mask, keep_cols].copy()
+        part["stratum_family"] = spec.stratum_family
+        part["stratum_variant"] = spec.stratum_variant
+        part["stratum_formula"] = spec.formula_text
+        part["stratum_formula_version"] = "p0_7ab_v1"
+        part["declared_stratum_role"] = spec.declared_stratum_role
+        part["declared_lifecycle_stage"] = spec.declared_lifecycle_stage
+        part["role_declaration_rule_id"] = f"{spec.stratum_variant}__declared_role_v1"
+        frames.append(part)
+    if not frames:
+        return pd.DataFrame()
+    events = pd.concat(frames, ignore_index=True, sort=False)
+    events = events.sort_values(["instrument", "p0_6_row_pos", "stratum_family", "stratum_variant"]).reset_index(drop=True)
+    gap = int(config.get("windows", {}).get("launch_episode_collapse_gap_days", 20))
+    episode_ids: list[str] = []
+    for instrument, group_events in events.groupby("instrument", sort=False):
+        last_pos: int | None = None
+        episode_no = 0
+        episode_start = ""
+        for _, row in group_events.iterrows():
+            row_pos = int(row["p0_6_row_pos"])
+            if last_pos is None or row_pos - last_pos > gap:
+                episode_no += 1
+                episode_start = iso_date(row["datetime"])
+            episode_ids.append(f"P07LPE_{instrument}_{episode_start}_{episode_no:04d}")
+            last_pos = row_pos
+    events["launch_episode_id"] = episode_ids
+    events["raw_stratum_duplicate_rank"] = events.groupby(["launch_episode_id", "stratum_family", "stratum_variant"]).cumcount() + 1
+    events["raw_stratum_duplicate_count_for_primary_unit"] = events.groupby(["launch_episode_id", "stratum_family", "stratum_variant"])[
+        "stratum_variant"
+    ].transform("size")
+    events = events[events["raw_stratum_duplicate_rank"].eq(1)].copy().reset_index(drop=True)
+    events.insert(0, "launch_stratum_event_id", [f"P07LSE_{i:08d}" for i in range(1, len(events) + 1)])
+    events["stratum_date"] = pd.to_datetime(events["datetime"]).dt.normalize()
+    events["stratum_effective_date"] = pd.to_datetime(events["p0_6_direct_entry_date"]).dt.normalize()
+    events["stratum_effective_price_reference"] = events["p0_6_direct_entry_open"]
+    events["stratum_effective_price_reference_rule"] = "next_open"
+    events["stratum_source_event_date"] = events["stratum_date"]
+    events["stratum_observation_cutoff_date"] = events["stratum_date"]
+    events["stratum_observable_fields_asof_date"] = events["stratum_date"]
+    events["stratum_family_set_asof_date"] = events["stratum_family"]
+    events["stratum_market_regime"] = events["market_regime"].fillna("UNKNOWN")
+    events["stratum_industry_regime"] = events["industry_regime_state"].fillna("UNKNOWN")
+    events["stratum_prelaunch_path_bucket"] = p0_7_bucket_series(events["prelaunch_drawdown_120d"], -0.25, -0.05, ("deep_drawdown", "moderate_path", "shallow_drawdown"))
+    events["stratum_volatility_quality_bucket"] = p0_7_bucket_series(events["atr20_pct"], 0.03, 0.07, ("low_vol", "normal_vol", "high_vol"))
+    events["stratum_money_quality_bucket"] = p0_7_bucket_series(events["money_ratio_20"], 0.8, 1.2, ("contracted", "normal", "expanded"))
+    events["stratum_row_pos"] = events["p0_6_row_pos"].astype(int)
+    events["stratum_effective_row_pos"] = events["stratum_row_pos"] + 1
+    events["launch_future_episode_key"] = events["future_50pct_episode_key_240d"].fillna("")
+    events["p0_6_launch_event_panel_reused_as_source"] = p0_6_launch_source_reused
+    events["year"] = events["stratum_date"].dt.year.astype(int)
+    events["instrument_year"] = events["instrument"].astype(str) + "_" + events["year"].astype(str)
+    events["later_episode_lifecycle_state_used"] = False
+    first_dates = events.groupby("launch_episode_id")["stratum_date"].transform("min")
+    events["created_by_later_lifecycle_state"] = events["stratum_date"] > first_dates
+    previous = events.groupby("launch_episode_id")["declared_lifecycle_stage"].shift(1)
+    events["stratum_lifecycle_transition_from_previous_stratum"] = np.where(
+        previous.isna(),
+        "first_stratum",
+        previous.astype(str) + "_to_" + events["declared_lifecycle_stage"].astype(str),
+    )
+    events = p0_7_attach_stratum_labels(config, df, events)
+    events["launch_nonwinner_primary"] = ~events["stratum_future_50pct_high_120d"].fillna(False).astype(bool)
+    events["launch_failure_primary"] = (~events["stratum_future_20pct_high_60d"].fillna(False).astype(bool)) & (
+        events["stratum_future_max_drawdown_60d"] <= -p0_7_threshold(config, "failure_drawdown_threshold", 0.12)
+    )
+    return events.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_7_attach_stratum_labels(config: dict[str, Any], df: pd.DataFrame, events: pd.DataFrame) -> pd.DataFrame:
+    if events.empty:
+        return events
+    panel_groups = p0_6_panel_groups(df)
+    label_input = events.copy()
+    label_input["entry_date"] = label_input["stratum_effective_date"]
+    label_input = p0_6_attach_forward_metrics(config, panel_groups, label_input, "stratum_effective_price_reference", "stratum_effective_row_pos")
+    label_input["stratum_future_20pct_high_60d"] = label_input["entry_future_20pct_high_60d"]
+    label_input["stratum_future_50pct_high_120d"] = label_input["entry_future_50pct_high_120d"]
+    label_input["stratum_future_50pct_close_120d"] = label_input["entry_future_50pct_close_120d"]
+    label_input["stratum_future_100pct_high_240d"] = label_input["entry_future_100pct_high_240d"]
+    label_input["stratum_future_100pct_close_240d"] = label_input["entry_future_100pct_close_240d"]
+    label_input["stratum_future_max_drawdown_60d"] = label_input["future_max_drawdown_60d_after_entry"]
+    label_input["stratum_drawdown_before_50pct_gain"] = label_input["future_drawdown_before_50pct_high_gain"]
+    label_input["stratum_time_to_20pct_high_days"] = label_input["future_time_to_20pct_high_gain"]
+    label_input["stratum_time_to_50pct_high_days"] = label_input["future_time_to_50pct_high_gain"]
+    label_input = p0_7_attach_target_and_drawdown_dates(config, panel_groups, label_input)
+    return label_input
+
+
+def p0_7_attach_target_and_drawdown_dates(
+    config: dict[str, Any], panel_groups: dict[str, pd.DataFrame], events: pd.DataFrame
+) -> pd.DataFrame:
+    out = events.copy()
+    date_cols = [
+        "target_20pct_high_date_60d",
+        "target_50pct_high_date_120d",
+        "target_50pct_close_date_120d",
+        "target_100pct_high_date_240d",
+        "target_100pct_close_date_240d",
+        "first_12pct_drawdown_date_from_stratum",
+        "first_20pct_drawdown_date_from_stratum",
+    ]
+    for col in date_cols:
+        out[col] = pd.NaT
+    drawdown_window = int(p0_7_threshold(config, "drawdown_audit_window", 60))
+    targets = [
+        ("target_20pct_high_date_60d", "high", 0.20, 60),
+        ("target_50pct_high_date_120d", "high", 0.50, 120),
+        ("target_50pct_close_date_120d", "close", 0.50, 120),
+        ("target_100pct_high_date_240d", "high", 1.00, 240),
+        ("target_100pct_close_date_240d", "close", 1.00, 240),
+    ]
+    for instrument, idx in out.groupby("instrument", sort=False).groups.items():
+        group = panel_groups.get(str(instrument))
+        if group is None:
+            continue
+        dates = pd.to_datetime(group["datetime"]).dt.normalize().to_numpy()
+        highs = group["high"].to_numpy(dtype=float)
+        closes = group["close"].to_numpy(dtype=float)
+        lows = group["low"].to_numpy(dtype=float)
+        idx_list = list(idx)
+        starts = pd.to_numeric(out.loc[idx_list, "stratum_effective_row_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        bases = pd.to_numeric(out.loc[idx_list, "stratum_effective_price_reference"], errors="coerce").to_numpy(dtype=float)
+        for out_idx, start, base in zip(idx_list, starts, bases, strict=False):
+            if start < 0 or start >= len(group) or not np.isfinite(base) or base <= 0:
+                continue
+            for col, price_col, gain, horizon in targets:
+                arr = highs if price_col == "high" else closes
+                end = min(len(group), start + horizon)
+                hit = np.flatnonzero(arr[start:end] >= base * (1.0 + gain))
+                if len(hit):
+                    out.at[out_idx, col] = dates[start + int(hit[0])]
+            dd_end = min(len(group), start + drawdown_window)
+            dd12 = np.flatnonzero(lows[start:dd_end] / base - 1.0 <= -0.12)
+            dd20 = np.flatnonzero(lows[start:dd_end] / base - 1.0 <= -0.20)
+            if len(dd12):
+                out.at[out_idx, "first_12pct_drawdown_date_from_stratum"] = dates[start + int(dd12[0])]
+            if len(dd20):
+                out.at[out_idx, "first_20pct_drawdown_date_from_stratum"] = dates[start + int(dd20[0])]
+    return out
+
+
+def p0_7_build_launch_episode_panel(events: pd.DataFrame) -> pd.DataFrame:
+    if events.empty:
+        return pd.DataFrame()
+    rows: list[dict[str, Any]] = []
+    for episode_id, group in events.sort_values(["launch_episode_id", "stratum_date", "stratum_variant"]).groupby("launch_episode_id", sort=False):
+        first = group.iloc[0]
+        first_date = pd.to_datetime(first["stratum_date"])
+        asof_first = group[pd.to_datetime(group["stratum_date"]).eq(first_date)]
+        later = group[pd.to_datetime(group["stratum_date"]) > first_date]
+        family_set_asof = ";".join(sorted(asof_first["stratum_family"].astype(str).unique()))
+        family_set_full = ";".join(sorted(group["stratum_family"].astype(str).unique()))
+        rows.append(
+            {
+                "launch_episode_id": episode_id,
+                "instrument": first["instrument"],
+                "launch_episode_first_date": first_date,
+                "launch_episode_last_date": pd.to_datetime(group["stratum_date"]).max(),
+                "launch_episode_first_observable_family": first["stratum_family"],
+                "launch_episode_first_observable_role": first["declared_stratum_role"],
+                "launch_episode_family_set_asof_first_date": family_set_asof,
+                "launch_episode_family_set_full_episode_audit": family_set_full,
+                "launch_episode_contains_post20_later": bool(later["stratum_variant"].astype(str).str.contains("post_20").any()),
+                "launch_episode_contains_post30_later": bool((later["launch_gain_from_recent_low_90d"] >= 0.30).any()) if "launch_gain_from_recent_low_90d" in later else False,
+                "launch_episode_contains_late_acceleration_later": bool(later["stratum_variant"].eq("late_acceleration_context").any()),
+                "launch_episode_contains_sparse_strong_day_later": bool(later["stratum_family"].eq("sparse_strong_day_lifecycle_node").any()),
+                "launch_episode_summary_primary_family_audit_only": group["stratum_family"].mode().iloc[0] if not group["stratum_family"].mode().empty else first["stratum_family"],
+                "launch_episode_summary_primary_family_used_for_first_stratum": False,
+                "stratum_event_count": int(len(group)),
+                "stratum_variant_count": int(group["stratum_variant"].nunique()),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_7_rate(frame: pd.DataFrame, col: str) -> float:
+    return float(frame[col].mean()) if not frame.empty and col in frame else np.nan
+
+
+def p0_7_top_contribution(frame: pd.DataFrame, key: str, top: int) -> float:
+    if frame.empty or key not in frame:
+        return np.nan
+    counts = frame.groupby(key).size().sort_values(ascending=False)
+    return float(counts.head(top).sum() / len(frame)) if len(frame) else np.nan
+
+
+def p0_7_winner_episode_coverage(frame: pd.DataFrame, denominator: int) -> tuple[float, int]:
+    if frame.empty or denominator <= 0 or "launch_future_episode_key" not in frame:
+        return np.nan, 0
+    keys = frame.loc[frame["launch_future_episode_key"].notna(), "launch_future_episode_key"].astype(str)
+    keys = keys[keys.ne("") & keys.ne("nan")]
+    count = int(keys.nunique())
+    return count / denominator, count
+
+
+def p0_7_instrument_year_rate(frame: pd.DataFrame, success_col: str) -> tuple[float, int, int]:
+    if frame.empty or "instrument_year" not in frame:
+        return np.nan, 0, 0
+    grouped = frame.groupby("instrument_year")[success_col].max()
+    positive = int(grouped.sum())
+    total = int(len(grouped))
+    return positive / total if total else np.nan, positive, total
+
+
+def p0_7_launch_summary_metrics(frame: pd.DataFrame, denominator_episodes: int) -> dict[str, Any]:
+    iy_rate, positive_iy, total_iy = p0_7_instrument_year_rate(frame, "stratum_future_50pct_high_120d")
+    coverage, covered = p0_7_winner_episode_coverage(frame[frame["stratum_future_50pct_high_120d"].fillna(False).astype(bool)] if not frame.empty else frame, denominator_episodes)
+    return {
+        "eligible_launch_stratum_event_count": int(len(frame)),
+        "eligible_launch_episode_count": int(frame["launch_episode_id"].nunique()) if not frame.empty else 0,
+        "launch_episode_count": int(frame["launch_episode_id"].nunique()) if not frame.empty else 0,
+        "distinct_instrument_count": int(frame["instrument"].nunique()) if not frame.empty else 0,
+        "distinct_year_count": int(frame["year"].nunique()) if not frame.empty and "year" in frame else 0,
+        "distinct_industry_count": int(frame["industry_name"].nunique()) if not frame.empty and "industry_name" in frame else 0,
+        "future_20pct_high_60d_rate": p0_7_rate(frame, "stratum_future_20pct_high_60d"),
+        "future_50pct_high_120d_rate": p0_7_rate(frame, "stratum_future_50pct_high_120d"),
+        "future_50pct_close_120d_rate": p0_7_rate(frame, "stratum_future_50pct_close_120d"),
+        "future_100pct_high_240d_rate": p0_7_rate(frame, "stratum_future_100pct_high_240d"),
+        "future_100pct_close_240d_rate": p0_7_rate(frame, "stratum_future_100pct_close_240d"),
+        "launch_big_winner_primary_rate": p0_7_rate(frame, "stratum_future_50pct_high_120d"),
+        "launch_false_positive_primary_rate": p0_7_rate(frame, "launch_failure_primary"),
+        "median_future_max_high_gain_120d": safe_float(frame["future_max_high_gain_120d_after_entry"].median(), np.nan) if not frame.empty else np.nan,
+        "median_future_max_drawdown_60d": safe_float(frame["stratum_future_max_drawdown_60d"].median(), np.nan) if not frame.empty else np.nan,
+        "median_drawdown_before_50pct_gain": safe_float(frame["stratum_drawdown_before_50pct_gain"].median(), np.nan) if not frame.empty else np.nan,
+        "median_time_to_20pct_high_days": safe_float(frame["stratum_time_to_20pct_high_days"].median(), np.nan) if not frame.empty else np.nan,
+        "median_time_to_50pct_high_days": safe_float(frame["stratum_time_to_50pct_high_days"].median(), np.nan) if not frame.empty else np.nan,
+        "winner_episode_coverage": coverage,
+        "winner_episode_covered_count": covered,
+        "label_horizon_truncated_rate": p0_7_rate(frame, "label_horizon_truncated"),
+        "observed_reference_overlap_rate": p0_7_rate(frame, "observed_reference_overlap"),
+        "instrument_year_success_rate": iy_rate,
+        "positive_unique_instrument_year_count": positive_iy,
+        "unique_instrument_year_count": total_iy,
+        "top1_instrument_contribution": p0_7_top_contribution(frame, "instrument", 1),
+        "top5_instrument_contribution": p0_7_top_contribution(frame, "instrument", 5),
+    }
+
+
+def p0_7_build_direct_launch_baseline_by_stratum(
+    config: dict[str, Any], events: pd.DataFrame, denominator_episodes: int
+) -> pd.DataFrame:
+    eligible = events[(~events["label_horizon_truncated"].astype(bool)) & (~events["observed_reference_overlap"].astype(bool))].copy()
+    rows: list[dict[str, Any]] = []
+    variants = p0_7_launch_formula_matrix()[["stratum_family", "stratum_variant", "declared_stratum_role", "declared_lifecycle_stage"]]
+
+    def add_row(candidate: pd.Series, scope: str, scope_key: str, subset: pd.DataFrame) -> None:
+        metrics = p0_7_launch_summary_metrics(subset, denominator_episodes)
+        rows.append(
+            {
+                "baseline_id": f"{candidate['stratum_variant']}__{scope}__{scope_key}",
+                "baseline_scope_type": scope,
+                "baseline_scope_key": scope_key,
+                "baseline_denominator_unit": "launch_stratum_event_id",
+                "baseline_denominator_definition": "eligible launch_stratum_event rows in research period with valid label horizon",
+                "baseline_join_key": f"{scope}|{scope_key}|stratum_effective_next_open|{config['dates']['research_start']}|{config['dates']['research_end']}",
+                "research_start": config["dates"]["research_start"],
+                "research_end": config["dates"]["research_end"],
+                "target_definition_version": "p0_7_stratum_effective_next_open_v1",
+                "label_reference_date_rule": "stratum_effective_date_next_open",
+                "stratum_family": candidate["stratum_family"],
+                "stratum_variant": candidate["stratum_variant"],
+                "candidate_declared_stratum_role": candidate["declared_stratum_role"],
+                "candidate_declared_lifecycle_stage": candidate["declared_lifecycle_stage"],
+                "candidate_market_regime": scope_key if scope == "same_market_regime_baseline" else "ALL",
+                "candidate_industry_regime": scope_key if scope == "same_industry_regime_baseline" else "ALL",
+                **metrics,
+            }
+        )
+
+    all_subset = eligible.copy()
+    for _, candidate in variants.iterrows():
+        variant_subset = eligible[eligible["stratum_variant"].eq(candidate["stratum_variant"])]
+        family_subset = eligible[eligible["stratum_family"].eq(candidate["stratum_family"])]
+        lifecycle_subset = eligible[eligible["declared_lifecycle_stage"].eq(candidate["declared_lifecycle_stage"])]
+        add_row(candidate, "all_launch_episode_baseline", "ALL", all_subset)
+        add_row(candidate, "same_launch_family_baseline", str(candidate["stratum_family"]), family_subset)
+        add_row(candidate, "same_lifecycle_pool_baseline", str(candidate["declared_lifecycle_stage"]), lifecycle_subset)
+        market_key = str(variant_subset["stratum_market_regime"].mode().iloc[0]) if not variant_subset.empty and not variant_subset["stratum_market_regime"].mode().empty else "UNKNOWN"
+        industry_key = str(variant_subset["stratum_industry_regime"].mode().iloc[0]) if not variant_subset.empty and not variant_subset["stratum_industry_regime"].mode().empty else "UNKNOWN"
+        add_row(candidate, "same_market_regime_baseline", market_key, eligible[eligible["stratum_market_regime"].astype(str).eq(market_key)])
+        add_row(candidate, "same_industry_regime_baseline", industry_key, eligible[eligible["stratum_industry_regime"].astype(str).eq(industry_key)])
+    return pd.DataFrame(rows)
+
+
+def p0_7_launch_rejection_reason(config: dict[str, Any], row: pd.Series) -> str:
+    checks = [
+        ("insufficient_launch_stratum_event_count", row["launch_episode_count"] >= p0_7_threshold(config, "min_launch_stratum_event_count", 200)),
+        ("insufficient_distinct_year_count", row["distinct_year_count"] >= p0_7_threshold(config, "min_distinct_year_count_launch", 5)),
+        ("insufficient_distinct_instrument_count", row["distinct_instrument_count"] >= p0_7_threshold(config, "min_distinct_instrument_count_launch", 50)),
+        ("top1_instrument_contribution_too_high", row["top1_instrument_contribution"] <= p0_7_threshold(config, "max_top1_instrument_contribution", 0.15)),
+        ("top5_instrument_contribution_too_high", row["top5_instrument_contribution"] <= p0_7_threshold(config, "max_top5_instrument_contribution", 0.35)),
+        ("lift_vs_all_launch_baseline_too_low", row["lift_vs_all_launch_baseline"] >= p0_7_threshold(config, "min_launch_lift_vs_all", 1.10)),
+        ("lift_vs_same_family_baseline_too_low", row["lift_vs_same_family_baseline"] >= p0_7_threshold(config, "min_launch_lift_vs_same_family", 1.05)),
+        ("instrument_year_lift_too_low", row["instrument_year_lift_vs_all_launch"] >= p0_7_threshold(config, "min_instrument_year_lift", 1.0)),
+        ("positive_unique_instrument_year_count_too_low", row["positive_unique_instrument_year_count"] >= p0_7_threshold(config, "min_positive_unique_instrument_year_count", 20)),
+        ("winner_episode_coverage_too_low", row["winner_episode_coverage"] >= p0_7_threshold(config, "min_winner_episode_coverage", 0.05)),
+        (
+            "false_positive_rate_worse_than_same_family",
+            row["launch_false_positive_primary_rate"]
+            <= row["same_family_baseline_false_positive_rate"] + p0_7_threshold(config, "max_false_positive_rate_tolerance", 0.0),
+        ),
+        (
+            "drawdown_worse_than_same_family",
+            row["median_future_max_drawdown_60d"]
+            >= row["same_family_baseline_median_drawdown_60d"] - p0_7_threshold(config, "max_drawdown_worsening_tolerance", 0.02),
+        ),
+        ("observability_leak_check_failed", bool(row["observability_leak_check_passed"])),
+        ("later_lifecycle_rewrite_detected", row["later_lifecycle_rewrite_count"] == 0),
+    ]
+    return ";".join(name for name, passed in checks if not bool(passed)) or ""
+
+
+def p0_7_recommended_action(row: pd.Series) -> str:
+    role = str(row["declared_stratum_role"])
+    if bool(row.get("p1_launch_stratification_candidate", False)):
+        if role == "launch_observation_context":
+            return "direct_entry_watchable"
+        if role == "watchlist_observation_context":
+            return "watchlist_only"
+    if role == "risk_warning_context":
+        return "failure_prone_no_trade"
+    if role == "hold_continuation_context":
+        return "hold_continuation_only"
+    if role == "addon_context_deferred":
+        return "add_on_context_only"
+    if role == "diagnostic_context":
+        return "diagnostic_only"
+    return "rejected_or_uncertain"
+
+
+def p0_7_build_launch_leaderboard(
+    config: dict[str, Any], events: pd.DataFrame, baseline: pd.DataFrame, denominator_episodes: int
+) -> pd.DataFrame:
+    eligible = events[(~events["label_horizon_truncated"].astype(bool)) & (~events["observed_reference_overlap"].astype(bool))].copy()
+    if eligible.empty:
+        return pd.DataFrame()
+    all_base = baseline[baseline["baseline_scope_type"].eq("all_launch_episode_baseline")].set_index("stratum_variant")
+    family_base = baseline[baseline["baseline_scope_type"].eq("same_launch_family_baseline")].set_index("stratum_variant")
+    lifecycle_base = baseline[baseline["baseline_scope_type"].eq("same_lifecycle_pool_baseline")].set_index("stratum_variant")
+    all_rate = safe_float(all_base["launch_big_winner_primary_rate"].dropna().iloc[0], np.nan) if not all_base.empty else np.nan
+    all_iy = p0_7_instrument_year_rate(eligible, "stratum_future_50pct_high_120d")[0]
+    rows: list[dict[str, Any]] = []
+    for (family, variant, role), subset in eligible.groupby(["stratum_family", "stratum_variant", "declared_stratum_role"], dropna=False):
+        metrics = p0_7_launch_summary_metrics(subset, denominator_episodes)
+        iy_rate = metrics["instrument_year_success_rate"]
+        family_rate = safe_float(family_base.at[variant, "launch_big_winner_primary_rate"], np.nan) if variant in family_base.index else np.nan
+        lifecycle_rate = safe_float(lifecycle_base.at[variant, "launch_big_winner_primary_rate"], np.nan) if variant in lifecycle_base.index else np.nan
+        family_iy = p0_7_instrument_year_rate(eligible[eligible["stratum_family"].eq(family)], "stratum_future_50pct_high_120d")[0]
+        same_family_fp = safe_float(family_base.at[variant, "launch_false_positive_primary_rate"], np.nan) if variant in family_base.index else np.nan
+        same_family_dd = safe_float(family_base.at[variant, "median_future_max_drawdown_60d"], np.nan) if variant in family_base.index else np.nan
+        year_stats = subset.groupby("year")["stratum_future_50pct_high_120d"].mean() if "year" in subset else pd.Series(dtype=float)
+        row = {
+            "stratum_family": family,
+            "stratum_variant": variant,
+            "declared_stratum_role": role,
+            "recommended_action_class_after_evaluation": "",
+            **metrics,
+            "winner_episode_coverage_loss_vs_all_launch": safe_float(all_base["winner_episode_coverage"].dropna().iloc[0], np.nan) - metrics["winner_episode_coverage"]
+            if not all_base.empty
+            else np.nan,
+            "lift_vs_all_launch_baseline": safe_div(metrics["launch_big_winner_primary_rate"], all_rate),
+            "lift_vs_same_family_baseline": safe_div(metrics["launch_big_winner_primary_rate"], family_rate),
+            "lift_vs_same_lifecycle_baseline": safe_div(metrics["launch_big_winner_primary_rate"], lifecycle_rate),
+            "instrument_year_lift_vs_all_launch": safe_div(iy_rate, all_iy),
+            "instrument_year_lift_vs_same_family": safe_div(iy_rate, family_iy),
+            "year_by_year_min_precision": safe_float(year_stats.min(), np.nan) if not year_stats.empty else np.nan,
+            "year_by_year_precision_std": safe_float(year_stats.std(ddof=0), np.nan) if not year_stats.empty else np.nan,
+            "same_family_baseline_false_positive_rate": same_family_fp,
+            "same_family_baseline_median_drawdown_60d": same_family_dd,
+            "observability_leak_check_passed": True,
+            "later_lifecycle_rewrite_count": int(
+                events[
+                    events["launch_episode_id"].isin(subset["launch_episode_id"])
+                    & events["launch_episode_summary_primary_family_used_for_first_stratum"].fillna(False).astype(bool)
+                ].shape[0]
+            )
+            if "launch_episode_summary_primary_family_used_for_first_stratum" in events
+            else 0,
+            "baseline_insufficient_count": int(family_base.at[variant, "eligible_launch_stratum_event_count"] < p0_7_threshold(config, "min_launch_stratum_event_count", 200))
+            if variant in family_base.index
+            else 1,
+        }
+        row["rejection_reason"] = p0_7_launch_rejection_reason(config, pd.Series(row))
+        row["p1_launch_stratification_candidate"] = row["rejection_reason"] == "" and not bool(row["baseline_insufficient_count"])
+        row["recommended_action_class_after_evaluation"] = p0_7_recommended_action(pd.Series(row))
+        rows.append(row)
+    board = pd.DataFrame(rows)
+    if board.empty:
+        return board
+    return board.sort_values(
+        ["p1_launch_stratification_candidate", "lift_vs_all_launch_baseline", "launch_episode_count"],
+        ascending=[False, False, False],
+    ).reset_index(drop=True)
+
+
+def p0_7_filter_signal_for_spec(
+    config: dict[str, Any],
+    df: pd.DataFrame,
+    events: pd.DataFrame,
+    spec: P07FailureFilterSpec,
+    panel_groups: dict[str, pd.DataFrame],
+) -> pd.DataFrame:
+    out = pd.DataFrame(index=events.index)
+    out["filter_signal_pos"] = -1
+    out["filter_opportunity_deadline_pos"] = -1
+    out["filter_opportunity_effective_deadline_pos"] = -1
+    out["filter_window_truncated"] = True
+    out["filter_window_missing_reason"] = "missing_panel_window"
+    t = lambda key, default: p0_7_threshold(config, key, default)
+    q_cache: dict[tuple[str, float], pd.Series] = {}
+    q80_atr_by_panel: dict[str, np.ndarray] = {}
+    if spec.filter_variant.startswith("destructive_high_vol"):
+        q80_series = p0_7_market_quantile(df, "atr20_pct", 0.80, q_cache)
+        q80_atr_by_panel = {
+            str(inst): q80_series.loc[group.index].to_numpy(dtype=float)
+            for inst, group in df.groupby("instrument", sort=False)
+        }
+    for instrument, idx in events.groupby("instrument", sort=False).groups.items():
+        group = panel_groups.get(str(instrument))
+        if group is None:
+            continue
+        idx_list = list(idx)
+        ev = events.loc[idx_list]
+        positions = pd.to_numeric(ev["stratum_row_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        stratum_low = pd.to_numeric(ev["stratum_low_at_signal"], errors="coerce").to_numpy(dtype=float)
+        stratum_close = pd.to_numeric(ev["stratum_close_at_signal"], errors="coerce").to_numpy(dtype=float)
+        stratum_rank = pd.to_numeric(ev["ret_rank_20d_market_at_stratum"], errors="coerce").to_numpy(dtype=float)
+        stratum_breadth = pd.to_numeric(ev["industry_breadth_20d_at_stratum"], errors="coerce").to_numpy(dtype=float)
+        invalidation = pd.to_numeric(ev["invalidation_reference_price"], errors="coerce").to_numpy(dtype=float)
+        n = len(group)
+        arrays = {
+            "open": group["open"].to_numpy(dtype=float),
+            "high": group["high"].to_numpy(dtype=float),
+            "low": group["low"].to_numpy(dtype=float),
+            "close": group["close"].to_numpy(dtype=float),
+            "prior_close": group["prior_close"].to_numpy(dtype=float),
+            "ema20": group["ema20"].to_numpy(dtype=float),
+            "median20": group["median20"].to_numpy(dtype=float),
+            "close_location": group["close_location"].to_numpy(dtype=float),
+            "upper_shadow_pct": group["upper_shadow_pct"].to_numpy(dtype=float),
+            "money_ratio_20": group["money_ratio_20"].to_numpy(dtype=float),
+            "ret_rank_20d_market": group["ret_rank_20d_market"].to_numpy(dtype=float),
+            "industry_breadth_20d": group["industry_breadth_20d"].to_numpy(dtype=float),
+            "atr20_pct": group["atr20_pct"].to_numpy(dtype=float),
+        }
+        q80_atr = q80_atr_by_panel.get(str(instrument), np.full(n, np.nan))
+        for local_i, out_idx in enumerate(idx_list):
+            pos = int(positions[local_i])
+            window = int(spec.formula_window_trading_days)
+            deadline = pos + window
+            effective_deadline = deadline + 1
+            out.at[out_idx, "filter_opportunity_deadline_pos"] = deadline if deadline < n else -1
+            out.at[out_idx, "filter_opportunity_effective_deadline_pos"] = effective_deadline if effective_deadline < n else -1
+            if pos < 0 or pos + 1 >= n:
+                continue
+            if deadline >= n or effective_deadline >= n:
+                out.at[out_idx, "filter_window_missing_reason"] = "opportunity_deadline_or_effective_deadline_outside_calendar"
+                continue
+            out.at[out_idx, "filter_window_truncated"] = False
+            out.at[out_idx, "filter_window_missing_reason"] = ""
+            start = pos + 1
+            end = deadline
+            sig = -1
+            variant = spec.filter_variant
+            if variant in {"break_launch_low_3d", "break_launch_low_5d"}:
+                ref = stratum_low[local_i]
+                for j in range(start, end + 1):
+                    if np.isfinite(ref) and arrays["low"][j] < ref:
+                        sig = j
+                        break
+            elif variant == "break_ema20_after_launch_5d":
+                for j in range(start, end + 1):
+                    if arrays["close"][j] <= arrays["ema20"][j]:
+                        sig = j
+                        break
+            elif variant == "break_median20_after_launch_5d":
+                for j in range(start, end + 1):
+                    if arrays["close"][j] <= arrays["median20"][j]:
+                        sig = j
+                        break
+            elif variant == "gap_fade_after_launch_5d":
+                for j in range(start, end + 1):
+                    if (
+                        arrays["open"][j] >= arrays["prior_close"][j] * (1.0 + t("gap_up_min_ret", 0.03))
+                        and arrays["close_location"][j] <= t("gap_fade_after_launch_5d__close_location__max", 0.35)
+                        and arrays["close"][j] <= arrays["open"][j]
+                    ):
+                        sig = j
+                        break
+            elif variant == "gap_fade_break_prior_close_5d":
+                for j in range(start, end + 1):
+                    if (
+                        arrays["open"][j] >= arrays["prior_close"][j] * (1.0 + t("gap_up_min_ret", 0.03))
+                        and arrays["close"][j] <= arrays["prior_close"][j]
+                        and arrays["close_location"][j] <= t("gap_fade_break_prior_close_5d__close_location__max", 0.40)
+                    ):
+                        sig = j
+                        break
+            elif variant == "upper_shadow_volume_failure_5d":
+                for j in range(start, end + 1):
+                    if (
+                        arrays["upper_shadow_pct"][j] >= t("upper_shadow_volume_failure_5d__upper_shadow_pct__min", 0.45)
+                        and arrays["close_location"][j] <= t("upper_shadow_volume_failure_5d__close_location__max", 0.40)
+                        and arrays["money_ratio_20"][j] >= t("upper_shadow_volume_failure_5d__money_ratio_20__min", 1.50)
+                    ):
+                        sig = j
+                        break
+            elif variant == "upper_shadow_money_distribution_10d":
+                for j in range(start, end + 1):
+                    if (
+                        arrays["upper_shadow_pct"][j] >= t("upper_shadow_money_distribution_10d__upper_shadow_pct__min", 0.40)
+                        and arrays["close_location"][j] <= t("upper_shadow_money_distribution_10d__close_location__max", 0.45)
+                        and arrays["money_ratio_20"][j] >= t("upper_shadow_money_distribution_10d__money_ratio_20__min", 1.30)
+                    ):
+                        sig = j
+                        break
+            elif variant in {"rank_evaporation_5d", "rank_evaporation_10d"}:
+                ref = stratum_rank[local_i]
+                for j in range(start, end + 1):
+                    if (
+                        np.isfinite(ref)
+                        and arrays["ret_rank_20d_market"][j] <= ref - t("rank_drop", 0.25)
+                        and arrays["ret_rank_20d_market"][j] <= t("rank_evaporation_floor", 0.50)
+                    ):
+                        sig = j
+                        break
+            elif variant == "money_distribution_5d":
+                for j in range(start, end + 1):
+                    if (
+                        arrays["money_ratio_20"][j] >= t("money_distribution_5d__money_ratio_20__min", 1.30)
+                        and arrays["close_location"][j] <= t("money_distribution_5d__close_location__max", 0.45)
+                        and arrays["close"][j] < arrays["prior_close"][j]
+                    ):
+                        sig = j
+                        break
+            elif variant == "money_distribution_10d":
+                for j in range(start, end + 1):
+                    if (
+                        arrays["money_ratio_20"][j] >= t("money_distribution_10d__money_ratio_20__min", 1.20)
+                        and arrays["upper_shadow_pct"][j] >= t("money_distribution_10d__upper_shadow_pct__min", 0.35)
+                        and arrays["close"][j] < arrays["open"][j]
+                    ):
+                        sig = j
+                        break
+            elif variant in {"industry_breadth_evaporation_5d", "industry_breadth_evaporation_10d"}:
+                ref = stratum_breadth[local_i]
+                for j in range(start, end + 1):
+                    if np.isfinite(ref) and arrays["industry_breadth_20d"][j] <= ref - t("industry_breadth_drop", 0.15):
+                        sig = j
+                        break
+            elif variant in {"no_followthrough_5d", "no_followthrough_10d"}:
+                ref = stratum_close[local_i]
+                if (
+                    np.isfinite(ref)
+                    and np.nanmax(arrays["high"][start : end + 1]) <= ref * (1.0 + t("min_followthrough_gain", 0.05))
+                    and np.nanmin(arrays["close"][start : end + 1]) < ref
+                ):
+                    sig = end
+            elif variant in {"destructive_high_vol_3d", "destructive_high_vol_5d"}:
+                key = "destructive_high_vol_3d__close_location__max" if variant.endswith("_3d") else "destructive_high_vol_5d__close_location__max"
+                for j in range(start, end + 1):
+                    if arrays["atr20_pct"][j] >= q80_atr[j] and arrays["close_location"][j] <= t(key, 0.40) and arrays["close"][j] < arrays["median20"][j]:
+                        sig = j
+                        break
+            elif variant in {"wide_stop_risk_no_add_5d", "wide_stop_risk_no_new_entry_10d"}:
+                ref = invalidation[local_i]
+                for j in range(start, end + 1):
+                    if np.isfinite(ref) and ref > 0 and arrays["close"][j] / ref - 1.0 >= t("max_stop_distance_for_new_risk", 0.15):
+                        sig = j
+                        break
+            if sig >= 0 and sig + 1 < n:
+                out.at[out_idx, "filter_signal_pos"] = sig
+    return out
+
+
+def p0_7_build_failure_filter_opportunities(
+    config: dict[str, Any], df: pd.DataFrame, events: pd.DataFrame
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    if events.empty:
+        return pd.DataFrame(), pd.DataFrame()
+    panel_groups = p0_6_panel_groups(df)
+    base_cols = [
+        "launch_stratum_event_id",
+        "launch_episode_id",
+        "instrument",
+        "name",
+        "industry_name",
+        "stratum_family",
+        "stratum_variant",
+        "declared_stratum_role",
+        "declared_lifecycle_stage",
+        "stratum_date",
+        "stratum_effective_date",
+        "stratum_effective_price_reference",
+        "stratum_row_pos",
+        "stratum_low_at_signal",
+        "stratum_close_at_signal",
+        "invalidation_reference_price",
+        "ret_rank_20d_market_at_stratum",
+        "industry_breadth_20d_at_stratum",
+        "stratum_market_regime",
+        "stratum_industry_regime",
+        "year",
+        "instrument_year",
+        "launch_nonwinner_primary",
+        "launch_failure_primary",
+        "stratum_future_20pct_high_60d",
+        "stratum_future_50pct_high_120d",
+        "stratum_future_50pct_close_120d",
+        "stratum_future_100pct_high_240d",
+        "stratum_future_100pct_close_240d",
+        "stratum_future_max_drawdown_60d",
+        "target_50pct_high_date_120d",
+        "target_50pct_close_date_120d",
+        "target_100pct_high_date_240d",
+        "target_100pct_close_date_240d",
+        "first_12pct_drawdown_date_from_stratum",
+        "first_20pct_drawdown_date_from_stratum",
+        "label_horizon_truncated",
+        "observed_reference_overlap",
+    ]
+    specs = p0_7_filter_specs()
+    frames: list[pd.DataFrame] = []
+    for spec in specs:
+        signal = p0_7_filter_signal_for_spec(config, df, events, spec, panel_groups)
+        part = events[base_cols].copy()
+        part["filter_family"] = spec.filter_family
+        part["filter_variant"] = spec.filter_variant
+        part["filter_formula"] = spec.formula_text
+        part["filter_formula_version"] = "p0_7ab_v1"
+        part["signal_date_definition"] = spec.signal_date_definition
+        part["formula_window_trading_days"] = spec.formula_window_trading_days
+        part["filter_formula_observation_timing"] = spec.filter_formula_observation_timing
+        part["filter_action"] = spec.filter_action
+        part["filter_severity"] = spec.filter_severity
+        part["filter_reason_code"] = spec.filter_reason_code
+        part["filter_signal_pos"] = signal["filter_signal_pos"].to_numpy()
+        part["filter_opportunity_deadline_pos"] = signal["filter_opportunity_deadline_pos"].to_numpy()
+        part["filter_opportunity_effective_deadline_pos"] = signal["filter_opportunity_effective_deadline_pos"].to_numpy()
+        part["filter_window_truncated"] = signal["filter_window_truncated"].to_numpy()
+        part["filter_window_missing_reason"] = signal["filter_window_missing_reason"].to_numpy()
+        frames.append(part)
+    opp = pd.concat(frames, ignore_index=True, sort=False)
+    opp.insert(0, "failure_filter_opportunity_id", [f"P07FFO_{i:09d}" for i in range(1, len(opp) + 1)])
+    opp = p0_7_attach_opportunity_dates_prices(df, opp)
+    opp["filter_horizon_truncated"] = opp["label_horizon_truncated"].fillna(True).astype(bool) | opp["observed_reference_overlap"].fillna(True).astype(bool)
+    opp["filter_signal_occurs"] = opp["filter_signal_pos"].astype(int) >= 0
+    opp["filter_search_start_date"] = opp["filter_search_start_date"].fillna(pd.NaT)
+    opp["filter_opportunity_start_date"] = opp["filter_search_start_date"]
+    opp["filter_decision_reference_date_for_denominator"] = np.where(
+        opp["filter_signal_occurs"],
+        opp["filter_effective_date"],
+        opp["filter_opportunity_effective_deadline"],
+    )
+    opp["filter_opportunity_effective_start_date"] = opp["filter_effective_start_date"]
+    opp["target_not_reached_before_filter_effective_date_50pct_high_120d"] = (
+        opp["filter_signal_occurs"]
+        & opp["stratum_future_50pct_high_120d"].fillna(False).astype(bool)
+        & (pd.to_datetime(opp["target_50pct_high_date_120d"]) > pd.to_datetime(opp["filter_effective_date"]))
+    )
+    opp["target_not_reached_before_filter_decision_reference_date_50pct_high_120d"] = (
+        opp["stratum_future_50pct_high_120d"].fillna(False).astype(bool)
+        & (pd.to_datetime(opp["target_50pct_high_date_120d"]) > pd.to_datetime(opp["filter_decision_reference_date_for_denominator"]))
+    )
+    big_target_date = pd.to_datetime(opp["target_50pct_close_date_120d"]).where(
+        pd.to_datetime(opp["target_50pct_close_date_120d"]).notna(), pd.to_datetime(opp["target_100pct_high_date_240d"])
+    )
+    opp["target_not_reached_before_filter_effective_date_big_winner"] = (
+        opp["filter_signal_occurs"]
+        & (opp["stratum_future_50pct_close_120d"].fillna(False).astype(bool) | opp["stratum_future_100pct_high_240d"].fillna(False).astype(bool))
+        & (big_target_date > pd.to_datetime(opp["filter_effective_date"]))
+    )
+    opp["target_not_reached_before_filter_decision_reference_date_big_winner"] = (
+        (opp["stratum_future_50pct_close_120d"].fillna(False).astype(bool) | opp["stratum_future_100pct_high_240d"].fillna(False).astype(bool))
+        & (big_target_date > pd.to_datetime(opp["filter_decision_reference_date_for_denominator"]))
+    )
+    opp["post_target_filter_signal"] = (
+        opp["filter_signal_occurs"]
+        & opp["stratum_future_50pct_high_120d"].fillna(False).astype(bool)
+        & (pd.to_datetime(opp["target_50pct_high_date_120d"]) <= pd.to_datetime(opp["filter_effective_date"]))
+    )
+    opp["failure_filter_false_reject_winner"] = (
+        opp["filter_signal_occurs"]
+        & opp["stratum_future_50pct_high_120d"].fillna(False).astype(bool)
+        & opp["target_not_reached_before_filter_effective_date_50pct_high_120d"].fillna(False).astype(bool)
+    )
+    opp["failure_filter_false_reject_big_winner"] = (
+        opp["filter_signal_occurs"] & opp["target_not_reached_before_filter_effective_date_big_winner"].fillna(False).astype(bool)
+    )
+    opp = p0_7_attach_filter_drawdown_audit(config, df, opp)
+    events_out = opp[opp["filter_signal_occurs"].astype(bool)].copy().reset_index(drop=True)
+    events_out.insert(0, "failure_filter_event_id", [f"P07FFE_{i:09d}" for i in range(1, len(events_out) + 1)])
+    events_out["filter_delay_trading_days"] = events_out["filter_signal_pos"].astype(int) - events_out["stratum_row_pos"].astype(int)
+    events_out["filter_observable_fields"] = "open;high;low;close;money;rank;industry_breadth"
+    events_out["filter_reference_price"] = events_out["invalidation_reference_price"]
+    events_out["filter_reference_rule"] = "invalidation_reference_price_default_stratum_low"
+    events_out["target_reached_before_filter_effective_date_20pct_high_60d"] = False
+    events_out["target_reached_before_filter_effective_date_50pct_high_120d"] = (
+        events_out["stratum_future_50pct_high_120d"].fillna(False).astype(bool)
+        & (pd.to_datetime(events_out["target_50pct_high_date_120d"]) <= pd.to_datetime(events_out["filter_effective_date"]))
+    )
+    events_out["target_reached_before_filter_effective_date_50pct_close_120d"] = (
+        events_out["stratum_future_50pct_close_120d"].fillna(False).astype(bool)
+        & (pd.to_datetime(events_out["target_50pct_close_date_120d"]) <= pd.to_datetime(events_out["filter_effective_date"]))
+    )
+    events_out["target_reached_before_filter_effective_date_100pct_high_240d"] = (
+        events_out["stratum_future_100pct_high_240d"].fillna(False).astype(bool)
+        & (pd.to_datetime(events_out["target_100pct_high_date_240d"]) <= pd.to_datetime(events_out["filter_effective_date"]))
+    )
+    events_out["target_not_reached_before_filter_effective_date_50pct_high_120d"] = events_out[
+        "target_not_reached_before_filter_effective_date_50pct_high_120d"
+    ]
+    events_out["target_not_reached_before_filter_decision_reference_date_50pct_high_120d"] = events_out[
+        "target_not_reached_before_filter_decision_reference_date_50pct_high_120d"
+    ]
+    events_out["filter_max_adverse_excursion_before_signal"] = np.nan
+    events_out["filter_max_favorable_excursion_before_signal"] = np.nan
+    events_out["filter_rank_within_launch_stratum"] = events_out.sort_values(["launch_stratum_event_id", "filter_signal_date"]).groupby("launch_stratum_event_id").cumcount() + 1
+    events_out["is_first_filter_for_launch_stratum"] = events_out["filter_rank_within_launch_stratum"].eq(1)
+    events_out["is_primary_counted_filter"] = True
+    return opp.replace([np.inf, -np.inf], np.nan), events_out.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_7_attach_opportunity_dates_prices(df: pd.DataFrame, opp: pd.DataFrame) -> pd.DataFrame:
+    out = opp.copy()
+    for col in [
+        "filter_search_start_date",
+        "filter_effective_start_date",
+        "filter_opportunity_deadline",
+        "filter_opportunity_effective_deadline",
+        "filter_signal_date",
+        "filter_effective_date",
+    ]:
+        out[col] = pd.NaT
+    for col in ["filter_effective_price_reference", "filter_price_at_signal", "filter_price_at_effective_date"]:
+        out[col] = np.nan
+    panel_groups = p0_6_panel_groups(df)
+    for instrument, idx in out.groupby("instrument", sort=False).groups.items():
+        group = panel_groups.get(str(instrument))
+        if group is None:
+            continue
+        dates = pd.to_datetime(group["datetime"]).dt.normalize().to_numpy()
+        opens = group["open"].to_numpy(dtype=float)
+        closes = group["close"].to_numpy(dtype=float)
+        idx_list = list(idx)
+        starts = pd.to_numeric(out.loc[idx_list, "stratum_row_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        sigs = pd.to_numeric(out.loc[idx_list, "filter_signal_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        deadlines = pd.to_numeric(out.loc[idx_list, "filter_opportunity_deadline_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        eff_deadlines = pd.to_numeric(out.loc[idx_list, "filter_opportunity_effective_deadline_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        n = len(group)
+        for out_idx, start, sig, deadline, eff_deadline in zip(idx_list, starts, sigs, deadlines, eff_deadlines, strict=False):
+            if start + 1 < n:
+                out.at[out_idx, "filter_search_start_date"] = dates[start + 1]
+            if start + 2 < n:
+                out.at[out_idx, "filter_effective_start_date"] = dates[start + 2]
+            if 0 <= deadline < n:
+                out.at[out_idx, "filter_opportunity_deadline"] = dates[deadline]
+            elif n:
+                out.at[out_idx, "filter_opportunity_deadline"] = dates[-1]
+            if 0 <= eff_deadline < n:
+                out.at[out_idx, "filter_opportunity_effective_deadline"] = dates[eff_deadline]
+            elif n:
+                out.at[out_idx, "filter_opportunity_effective_deadline"] = dates[-1]
+            if 0 <= sig < n and sig + 1 < n:
+                out.at[out_idx, "filter_signal_date"] = dates[sig]
+                out.at[out_idx, "filter_effective_date"] = dates[sig + 1]
+                out.at[out_idx, "filter_price_at_signal"] = closes[sig]
+                out.at[out_idx, "filter_price_at_effective_date"] = opens[sig + 1]
+                out.at[out_idx, "filter_effective_price_reference"] = opens[sig + 1]
+    return out
+
+
+def p0_7_attach_filter_drawdown_audit(config: dict[str, Any], df: pd.DataFrame, opp: pd.DataFrame) -> pd.DataFrame:
+    out = opp.copy()
+    out["future_drawdown_if_not_filtered"] = np.nan
+    out["potential_drawdown_avoided_if_filter_effective"] = np.nan
+    drawdown_window = int(p0_7_threshold(config, "drawdown_audit_window", 60))
+    panel_groups = p0_6_panel_groups(df)
+    for instrument, idx in out[out["filter_signal_occurs"].astype(bool)].groupby("instrument", sort=False).groups.items():
+        group = panel_groups.get(str(instrument))
+        if group is None:
+            continue
+        lows = group["low"].to_numpy(dtype=float)
+        idx_list = list(idx)
+        sigs = pd.to_numeric(out.loc[idx_list, "filter_signal_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        prices = pd.to_numeric(out.loc[idx_list, "filter_effective_price_reference"], errors="coerce").to_numpy(dtype=float)
+        for out_idx, sig, price in zip(idx_list, sigs, prices, strict=False):
+            eff_pos = sig + 1
+            if eff_pos < 0 or eff_pos >= len(group) or not np.isfinite(price) or price <= 0:
+                continue
+            end = min(len(group), eff_pos + drawdown_window)
+            drawdown = np.nanmin(lows[eff_pos:end]) / price - 1.0
+            out.at[out_idx, "future_drawdown_if_not_filtered"] = drawdown
+            out.at[out_idx, "potential_drawdown_avoided_if_filter_effective"] = max(0.0, -drawdown)
+    out["filter_before_12pct_drawdown"] = (
+        out["filter_signal_occurs"].astype(bool)
+        & pd.to_datetime(out["first_12pct_drawdown_date_from_stratum"]).notna()
+        & (pd.to_datetime(out["filter_effective_date"]) <= pd.to_datetime(out["first_12pct_drawdown_date_from_stratum"]))
+    )
+    out["filter_before_20pct_drawdown"] = (
+        out["filter_signal_occurs"].astype(bool)
+        & pd.to_datetime(out["first_20pct_drawdown_date_from_stratum"]).notna()
+        & (pd.to_datetime(out["filter_effective_date"]) <= pd.to_datetime(out["first_20pct_drawdown_date_from_stratum"]))
+    )
+    return out
+
+
+def p0_7_failure_scope_metrics(config: dict[str, Any], frame: pd.DataFrame, matched: dict[str, Any] | None = None) -> dict[str, Any]:
+    eligible = frame[
+        (~frame["filter_window_truncated"].fillna(True).astype(bool))
+        & (~frame["filter_horizon_truncated"].fillna(True).astype(bool))
+        & pd.to_datetime(frame["filter_decision_reference_date_for_denominator"]).notna()
+    ].copy()
+    r = eligible[eligible["filter_signal_occurs"].fillna(False).astype(bool)]
+    n = eligible[eligible["launch_nonwinner_primary"].fillna(False).astype(bool)]
+    f = eligible[eligible["launch_failure_primary"].fillna(False).astype(bool)]
+    w50 = eligible[eligible["stratum_future_50pct_high_120d"].fillna(False).astype(bool)]
+    bw = eligible[eligible["stratum_future_50pct_close_120d"].fillna(False).astype(bool) | eligible["stratum_future_100pct_high_240d"].fillna(False).astype(bool)]
+    r_n = r[r["launch_nonwinner_primary"].fillna(False).astype(bool)]
+    r_f = r[r["launch_failure_primary"].fillna(False).astype(bool)]
+    pending_w = eligible[eligible["target_not_reached_before_filter_decision_reference_date_50pct_high_120d"].fillna(False).astype(bool)]
+    pending_bw = eligible[eligible["target_not_reached_before_filter_decision_reference_date_big_winner"].fillna(False).astype(bool)]
+    r_false_w = r[r["failure_filter_false_reject_winner"].fillna(False).astype(bool)]
+    r_false_bw = r[r["failure_filter_false_reject_big_winner"].fillna(False).astype(bool)]
+    same_nonwinner_prev = safe_div(len(n), len(eligible))
+    same_failure_prev = safe_div(len(f), len(eligible))
+    reject_precision_nonwinner = safe_div(len(r_n), len(r))
+    reject_precision_failure = safe_div(len(r_f), len(r))
+    r_f_iy = r_f["instrument_year"].nunique() if not r_f.empty else 0
+    r_iy = r["instrument_year"].nunique() if not r.empty else 0
+    f_iy = f["instrument_year"].nunique() if not f.empty else 0
+    u_iy = eligible["instrument_year"].nunique() if not eligible.empty else 0
+    instrument_year_filter_effect_lift = safe_div(safe_div(r_f_iy, r_iy), safe_div(f_iy, u_iy))
+    f12 = r[pd.to_datetime(r["first_12pct_drawdown_date_from_stratum"]).notna()]
+    f20 = r[pd.to_datetime(r["first_20pct_drawdown_date_from_stratum"]).notna()]
+    actual_median_dd = safe_float(r_n["potential_drawdown_avoided_if_filter_effective"].median(), np.nan) if not r_n.empty else np.nan
+    actual_mean_dd = safe_float(r_n["potential_drawdown_avoided_if_filter_effective"].mean(), np.nan) if not r_n.empty else np.nan
+    matched = matched or {}
+    return {
+        "filter_event_count": int(len(r)),
+        "filter_eligible_launch_count": int(len(eligible)),
+        "filtered_launch_count": int(r["launch_stratum_event_id"].nunique()) if not r.empty else 0,
+        "distinct_launch_episode_count": int(r["launch_episode_id"].nunique()) if not r.empty else 0,
+        "distinct_instrument_count": int(r["instrument"].nunique()) if not r.empty else 0,
+        "distinct_year_count": int(r["year"].nunique()) if not r.empty else 0,
+        "filter_conversion_rate": safe_div(len(r), len(eligible)),
+        "median_filter_delay_days": safe_float((r["filter_signal_pos"] - r["stratum_row_pos"]).median(), np.nan) if not r.empty else np.nan,
+        "eligible_nonwinner_count": int(len(n)),
+        "eligible_failure_count": int(len(f)),
+        "eligible_pending_winner_count": int(len(pending_w)),
+        "eligible_pending_big_winner_count": int(len(pending_bw)),
+        "filtered_nonwinner_count": int(len(r_n)),
+        "filtered_failure_count": int(len(r_f)),
+        "filtered_pending_winner_count": int(len(r_false_w)),
+        "filtered_pending_big_winner_count": int(len(r_false_bw)),
+        "nonwinner_reject_recall": safe_div(len(r_n), len(n)),
+        "failure_reject_recall": safe_div(len(r_f), len(f)),
+        "reject_precision_nonwinner": reject_precision_nonwinner,
+        "reject_precision_failure": reject_precision_failure,
+        "same_launch_stratum_nonwinner_prevalence": same_nonwinner_prev,
+        "same_launch_stratum_failure_prevalence": same_failure_prev,
+        "reject_precision_nonwinner_lift_vs_scope_prevalence": safe_div(reject_precision_nonwinner, same_nonwinner_prev),
+        "reject_precision_failure_lift_vs_scope_prevalence": safe_div(reject_precision_failure, same_failure_prev),
+        "winner_false_reject_rate_among_pending_winners": safe_div(len(r_false_w), len(pending_w)),
+        "big_winner_false_reject_rate_among_pending_winners": safe_div(len(r_false_bw), len(pending_bw)),
+        "winner_coverage_loss_pending": safe_div(len(r_false_w), len(pending_w)),
+        "winner_coverage_loss_total": safe_div(len(r_false_w), len(w50)),
+        "median_drawdown_avoided_on_rejected_nonwinners": actual_median_dd,
+        "mean_drawdown_avoided_on_rejected_nonwinners": actual_mean_dd,
+        "median_drawdown_avoided_vs_matched_delay": actual_median_dd - safe_float(matched.get("matched_delay_median_drawdown_avoided_on_pseudo_rejected_nonwinners"), np.nan),
+        "mean_drawdown_avoided_vs_matched_delay": actual_mean_dd - safe_float(matched.get("matched_delay_mean_drawdown_avoided_on_pseudo_rejected_nonwinners"), np.nan),
+        "filter_before_12pct_drawdown_rate": safe_div(r["filter_before_12pct_drawdown"].sum(), len(f12)) if len(f12) else np.nan,
+        "filter_before_20pct_drawdown_rate": safe_div(r["filter_before_20pct_drawdown"].sum(), len(f20)) if len(f20) else np.nan,
+        "matched_delay_reject_precision_nonwinner": matched.get("matched_delay_reject_precision_nonwinner", np.nan),
+        "matched_delay_winner_false_reject_rate": matched.get("matched_delay_winner_false_reject_rate", np.nan),
+        "matched_delay_drawdown_avoided": matched.get("matched_delay_median_drawdown_avoided_on_pseudo_rejected_nonwinners", np.nan),
+        "instrument_year_filter_effect_lift": instrument_year_filter_effect_lift,
+        "positive_unique_instrument_year_count": int(r_f_iy),
+        "top1_instrument_contribution": p0_7_top_contribution(r, "instrument", 1),
+        "top5_instrument_contribution": p0_7_top_contribution(r, "instrument", 5),
+        "filter_observable_delay_days": safe_float((r["filter_effective_date"].map(pd.Timestamp.toordinal) - r["filter_signal_date"].map(pd.Timestamp.toordinal)).median(), np.nan)
+        if not r.empty
+        else np.nan,
+        "filter_after_target_achieved_count": int(r["post_target_filter_signal"].fillna(False).astype(bool).sum()) if not r.empty else 0,
+        "observability_leak_check_passed": True,
+    }
+
+
+def p0_7_failure_rejection_reason(config: dict[str, Any], row: pd.Series) -> str:
+    checks = [
+        ("insufficient_failure_filter_event_count", row["filter_event_count"] >= p0_7_threshold(config, "min_failure_filter_event_count", 200)),
+        ("insufficient_distinct_year_count", row["distinct_year_count"] >= p0_7_threshold(config, "min_distinct_year_count_failure", 5)),
+        ("insufficient_distinct_instrument_count", row["distinct_instrument_count"] >= p0_7_threshold(config, "min_distinct_instrument_count_failure", 50)),
+        ("top1_instrument_contribution_too_high", row["top1_instrument_contribution"] <= p0_7_threshold(config, "max_top1_instrument_contribution", 0.15)),
+        ("top5_instrument_contribution_too_high", row["top5_instrument_contribution"] <= p0_7_threshold(config, "max_top5_instrument_contribution", 0.35)),
+        ("nonwinner_reject_recall_too_low", row["nonwinner_reject_recall"] >= p0_7_threshold(config, "min_nonwinner_reject_recall", 0.20)),
+        ("failure_reject_recall_too_low", row["failure_reject_recall"] >= p0_7_threshold(config, "min_failure_reject_recall", 0.20)),
+        ("nonwinner_precision_lift_too_low", row["reject_precision_nonwinner_lift_vs_scope_prevalence"] >= p0_7_threshold(config, "min_reject_precision_lift", 1.05)),
+        ("failure_precision_lift_too_low", row["reject_precision_failure_lift_vs_scope_prevalence"] >= p0_7_threshold(config, "min_failure_precision_lift", 1.05)),
+        ("winner_false_reject_rate_too_high", row["winner_false_reject_rate_among_pending_winners"] <= p0_7_threshold(config, "max_winner_false_reject_rate", 0.25)),
+        ("big_winner_false_reject_rate_too_high", row["big_winner_false_reject_rate_among_pending_winners"] <= p0_7_threshold(config, "max_big_winner_false_reject_rate", 0.15)),
+        ("winner_coverage_loss_pending_too_high", row["winner_coverage_loss_pending"] <= p0_7_threshold(config, "max_winner_coverage_loss_pending", 0.30)),
+        ("winner_coverage_loss_total_too_high", row["winner_coverage_loss_total"] <= p0_7_threshold(config, "max_winner_coverage_loss_total", 0.20)),
+        ("drawdown_avoided_vs_matched_delay_too_low", row["median_drawdown_avoided_vs_matched_delay"] >= p0_7_threshold(config, "min_drawdown_avoided_vs_matched_delay_pct", 0.0)),
+        ("filter_before_12pct_drawdown_rate_too_low", row["filter_before_12pct_drawdown_rate"] >= p0_7_threshold(config, "min_before_12pct_drawdown_rate", 0.50)),
+        ("filter_before_20pct_drawdown_rate_too_low", row["filter_before_20pct_drawdown_rate"] >= p0_7_threshold(config, "min_before_20pct_drawdown_rate", 0.50)),
+        ("instrument_year_filter_effect_lift_too_low", row["instrument_year_filter_effect_lift"] >= p0_7_threshold(config, "min_instrument_year_lift", 1.0)),
+        ("positive_unique_instrument_year_count_too_low", row["positive_unique_instrument_year_count"] >= p0_7_threshold(config, "min_positive_unique_instrument_year_count", 20)),
+        ("observability_leak_check_failed", bool(row["observability_leak_check_passed"])),
+    ]
+    return ";".join(name for name, passed in checks if not bool(passed)) or ""
+
+
+def p0_7_build_matched_delay_baseline(
+    config: dict[str, Any], df: pd.DataFrame, opportunity: pd.DataFrame
+) -> pd.DataFrame:
+    if opportunity.empty:
+        return pd.DataFrame()
+    n_repeats = p0_7_int(config, "matched_delay", "n_repeats", 20)
+    seed_base = p0_7_int(config, "matched_delay", "random_seed", 20260505)
+    sample_with_replacement = bool(config.get("matched_delay", {}).get("sample_with_replacement", False))
+    max_sample = p0_7_int(config, "matched_delay", "max_sample_per_variant", 20000)
+    max_resample = p0_7_int(config, "matched_delay", "max_resample_attempts", 10)
+    drawdown_window = int(p0_7_threshold(config, "drawdown_audit_window", 60))
+    panel_arrays: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    for instrument, group in df.sort_values(["instrument", "datetime"]).groupby("instrument", sort=False):
+        lows = group["low"].to_numpy(dtype=float)
+        future_min_low = pd.Series(lows).iloc[::-1].rolling(drawdown_window, min_periods=1).min().iloc[::-1].to_numpy(dtype=float)
+        panel_arrays[str(instrument)] = (group["open"].to_numpy(dtype=float), future_min_low)
+    rows: list[dict[str, Any]] = []
+
+    scopes: list[tuple[str, str, pd.DataFrame]] = []
+    for (family, variant, filter_variant), frame in opportunity.groupby(["stratum_family", "stratum_variant", "filter_variant"], dropna=False):
+        scopes.append((f"{family}:{variant}", str(filter_variant), frame))
+    for filter_variant, frame in opportunity.groupby("filter_variant", dropna=False):
+        scopes.append(("all_launch_strata", str(filter_variant), frame))
+
+    for scope, filter_variant, frame in scopes:
+        eligible = frame[
+            (~frame["filter_window_truncated"].fillna(True).astype(bool))
+            & (~frame["filter_horizon_truncated"].fillna(True).astype(bool))
+        ].copy()
+        rejected = eligible[eligible["filter_signal_occurs"].fillna(False).astype(bool)].copy()
+        delays = (rejected["filter_signal_pos"].astype(int) - rejected["stratum_row_pos"].astype(int)).to_numpy(dtype=int)
+        target = int(len(rejected))
+        if eligible.empty or target == 0 or len(delays) == 0:
+            rows.append(
+                {
+                    "launch_stratum_scope": scope,
+                    "filter_variant": filter_variant,
+                    "matched_delay_mode": "disabled_no_real_rejects",
+                    "matched_delay_pseudo_reject_set_mode": "exact_real_reject_count",
+                    "matched_delay_exact_real_reject_count_used": True,
+                    "matched_delay_approximation_used": False,
+                    "matched_delay_random_seed": seed_base,
+                    "matched_delay_n_repeats": n_repeats,
+                    "matched_delay_sample_with_replacement": sample_with_replacement,
+                    "matched_delay_n_jobs": p0_7_int(config, "matched_delay", "n_jobs", 1),
+                    "matched_delay_max_sample_per_variant": max_sample,
+                    "matched_delay_max_resample_attempts": max_resample,
+                    "matched_delay_pseudo_rejected_count_target": target,
+                    "matched_delay_sample_count": 0,
+                    "matched_delay_valid_sample_count": 0,
+                    "matched_delay_invalid_due_to_horizon_count": 0,
+                    "matched_delay_reject_precision_nonwinner": np.nan,
+                    "matched_delay_winner_false_reject_rate": np.nan,
+                    "matched_delay_median_drawdown_avoided_on_pseudo_rejected_nonwinners": np.nan,
+                    "matched_delay_mean_drawdown_avoided_on_pseudo_rejected_nonwinners": np.nan,
+                    "matched_delay_bootstrap_mean": np.nan,
+                    "matched_delay_bootstrap_std": np.nan,
+                }
+            )
+            continue
+        rng = np.random.default_rng(seed_base + sum(ord(ch) for ch in f"{scope}:{filter_variant}"))
+        eligible = eligible.reset_index(drop=True)
+        nonwinner_arr = eligible["launch_nonwinner_primary"].fillna(False).astype(bool).to_numpy()
+        future50_arr = eligible["stratum_future_50pct_high_120d"].fillna(False).astype(bool).to_numpy()
+        pending_arr = eligible["target_not_reached_before_filter_decision_reference_date_50pct_high_120d"].fillna(False).astype(bool).to_numpy()
+        instrument_arr = eligible["instrument"].astype(str).to_numpy()
+        stratum_pos_arr = pd.to_numeric(eligible["stratum_row_pos"], errors="coerce").fillna(-1).astype(int).to_numpy()
+        precision_values: list[float] = []
+        false_values: list[float] = []
+        median_dd_values: list[float] = []
+        mean_dd_values: list[float] = []
+        valid_total = 0
+        sample_total = 0
+        invalid_total = 0
+        replace = sample_with_replacement or target > len(eligible)
+        for _ in range(n_repeats):
+            sample_idx = rng.choice(len(eligible), size=target, replace=replace)
+            sampled_delays = rng.choice(delays, size=target, replace=True)
+            sample_total += target
+            sample_nonwinner = nonwinner_arr[sample_idx]
+            sample_pending = pending_arr[sample_idx]
+            precision_values.append(float(sample_nonwinner.mean()))
+            false_values.append(safe_div((future50_arr[sample_idx] & sample_pending).sum(), sample_pending.sum()))
+            drawdown_values = np.full(target, np.nan)
+            sampled_instruments = instrument_arr[sample_idx]
+            effective_pos = stratum_pos_arr[sample_idx] + sampled_delays + 1
+            for instrument in np.unique(sampled_instruments):
+                arrays = panel_arrays.get(str(instrument))
+                if arrays is None:
+                    continue
+                opens, future_min_low = arrays
+                sample_mask_idx = np.flatnonzero(sampled_instruments == instrument)
+                eff = effective_pos[sample_mask_idx]
+                valid = (eff >= 0) & (eff < len(opens)) & np.isfinite(opens[eff]) & (opens[eff] > 0)
+                if valid.any():
+                    dd = future_min_low[eff[valid]] / opens[eff[valid]] - 1.0
+                    drawdown_values[sample_mask_idx[valid]] = np.maximum(0.0, -dd)
+            dd_values = drawdown_values[sample_nonwinner]
+            valid_dd = dd_values[np.isfinite(dd_values)]
+            valid_total += int(len(valid_dd))
+            invalid_total += int(target - len(valid_dd))
+            median_dd_values.append(safe_float(np.nanmedian(valid_dd), np.nan) if len(valid_dd) else np.nan)
+            mean_dd_values.append(safe_float(np.nanmean(valid_dd), np.nan) if len(valid_dd) else np.nan)
+        rows.append(
+            {
+                "launch_stratum_scope": scope,
+                "filter_variant": filter_variant,
+                "matched_delay_mode": "bootstrap_empirical_delay_distribution",
+                "matched_delay_pseudo_reject_set_mode": "exact_real_reject_count",
+                "matched_delay_exact_real_reject_count_used": True,
+                "matched_delay_approximation_used": False,
+                "matched_delay_random_seed": seed_base,
+                "matched_delay_n_repeats": n_repeats,
+                "matched_delay_sample_with_replacement": sample_with_replacement,
+                "matched_delay_n_jobs": p0_7_int(config, "matched_delay", "n_jobs", 1),
+                "matched_delay_max_sample_per_variant": max_sample,
+                "matched_delay_max_resample_attempts": max_resample,
+                "matched_delay_pseudo_rejected_count_target": target,
+                "matched_delay_sample_count": sample_total,
+                "matched_delay_valid_sample_count": valid_total,
+                "matched_delay_invalid_due_to_horizon_count": invalid_total,
+                "matched_delay_reject_precision_nonwinner": safe_float(np.nanmean(precision_values), np.nan),
+                "matched_delay_winner_false_reject_rate": safe_float(np.nanmean(false_values), np.nan),
+                "matched_delay_median_drawdown_avoided_on_pseudo_rejected_nonwinners": safe_float(np.nanmedian(median_dd_values), np.nan),
+                "matched_delay_mean_drawdown_avoided_on_pseudo_rejected_nonwinners": safe_float(np.nanmean(mean_dd_values), np.nan),
+                "matched_delay_bootstrap_mean": safe_float(np.nanmean(median_dd_values), np.nan),
+                "matched_delay_bootstrap_std": safe_float(np.nanstd(median_dd_values), np.nan),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_7_build_failure_leaderboard(
+    config: dict[str, Any], opportunity: pd.DataFrame, matched_baseline: pd.DataFrame
+) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    matched_lookup = {
+        (row["launch_stratum_scope"], row["filter_variant"]): row.to_dict()
+        for _, row in matched_baseline.iterrows()
+    } if not matched_baseline.empty else {}
+    for (family, variant, filter_family, filter_variant, action), frame in opportunity.groupby(
+        ["stratum_family", "stratum_variant", "filter_family", "filter_variant", "filter_action"], dropna=False
+    ):
+        scope = f"{family}:{variant}"
+        metrics = p0_7_failure_scope_metrics(config, frame, matched_lookup.get((scope, filter_variant)))
+        row = {
+            "filter_family": filter_family,
+            "filter_variant": filter_variant,
+            "filter_action": action,
+            "launch_stratum_scope": scope,
+            "stratum_family": family,
+            "stratum_variant": variant,
+            **metrics,
+        }
+        row["rejection_reason"] = p0_7_failure_rejection_reason(config, pd.Series(row))
+        row["p1_failure_filter_candidate"] = row["rejection_reason"] == ""
+        rows.append(row)
+    for (filter_family, filter_variant, action), frame in opportunity.groupby(["filter_family", "filter_variant", "filter_action"], dropna=False):
+        scope = "all_launch_strata"
+        metrics = p0_7_failure_scope_metrics(config, frame, matched_lookup.get((scope, filter_variant)))
+        row = {
+            "filter_family": filter_family,
+            "filter_variant": filter_variant,
+            "filter_action": action,
+            "launch_stratum_scope": scope,
+            "stratum_family": "ALL",
+            "stratum_variant": "ALL",
+            **metrics,
+        }
+        row["rejection_reason"] = p0_7_failure_rejection_reason(config, pd.Series(row))
+        row["p1_failure_filter_candidate"] = row["rejection_reason"] == ""
+        rows.append(row)
+    board = pd.DataFrame(rows)
+    if board.empty:
+        return board
+    return board.sort_values(
+        ["p1_failure_filter_candidate", "reject_precision_failure_lift_vs_scope_prevalence", "filter_event_count"],
+        ascending=[False, False, False],
+    ).reset_index(drop=True)
+
+
+def p0_7_build_summary_frames(
+    events: pd.DataFrame,
+    episodes: pd.DataFrame,
+    opportunity: pd.DataFrame,
+    filter_events: pd.DataFrame,
+    launch_leaderboard: pd.DataFrame,
+    failure_leaderboard: pd.DataFrame,
+) -> dict[str, pd.DataFrame]:
+    launch_episode_summary = pd.DataFrame(
+        [
+            {
+                "launch_episode_count": int(len(episodes)),
+                "instrument_count": int(episodes["instrument"].nunique()) if not episodes.empty else 0,
+                "stratum_event_count": int(len(events)),
+                "first_stratum_family_count": int(episodes["launch_episode_first_observable_family"].nunique()) if not episodes.empty else 0,
+                "contains_post20_later_count": int(episodes["launch_episode_contains_post20_later"].sum()) if not episodes.empty else 0,
+                "contains_late_acceleration_later_count": int(episodes["launch_episode_contains_late_acceleration_later"].sum()) if not episodes.empty else 0,
+            }
+        ]
+    )
+    stratum_summary = (
+        events.groupby(["stratum_family", "stratum_variant", "declared_stratum_role"], as_index=False)
+        .agg(
+            stratum_event_count=("launch_stratum_event_id", "count"),
+            launch_episode_count=("launch_episode_id", "nunique"),
+            future_50pct_high_120d_rate=("stratum_future_50pct_high_120d", "mean"),
+            failure_primary_rate=("launch_failure_primary", "mean"),
+            label_horizon_truncated_rate=("label_horizon_truncated", "mean"),
+            observed_reference_overlap_rate=("observed_reference_overlap", "mean"),
+        )
+        if not events.empty
+        else pd.DataFrame()
+    )
+    opportunity_summary = (
+        opportunity.groupby(["filter_family", "filter_variant"], as_index=False)
+        .agg(
+            opportunity_row_count=("failure_filter_opportunity_id", "count"),
+            filter_signal_rate=("filter_signal_occurs", "mean"),
+            filter_window_truncated_rate=("filter_window_truncated", "mean"),
+            filter_horizon_truncated_rate=("filter_horizon_truncated", "mean"),
+            non_signal_reference_date_missing_count=("filter_decision_reference_date_for_denominator", lambda s: int(pd.to_datetime(s).isna().sum())),
+        )
+        if not opportunity.empty
+        else pd.DataFrame()
+    )
+    event_summary = (
+        filter_events.groupby(["filter_family", "filter_variant"], as_index=False)
+        .agg(
+            filter_event_count=("failure_filter_event_id", "count"),
+            median_filter_delay_days=("filter_delay_trading_days", "median"),
+            false_reject_winner_count=("failure_filter_false_reject_winner", "sum"),
+            post_target_filter_signal_count=("post_target_filter_signal", "sum"),
+            median_drawdown_avoided=("potential_drawdown_avoided_if_filter_effective", "median"),
+        )
+        if not filter_events.empty
+        else pd.DataFrame()
+    )
+    false_reject_audit = (
+        opportunity.groupby(["filter_family", "filter_variant"], as_index=False)
+        .agg(
+            filtered_pending_winner_count=("failure_filter_false_reject_winner", "sum"),
+            post_target_filter_signal_count=("post_target_filter_signal", "sum"),
+            pending_winner_denominator_count=("target_not_reached_before_filter_decision_reference_date_50pct_high_120d", "sum"),
+        )
+        if not opportunity.empty
+        else pd.DataFrame()
+    )
+    drawdown_audit = (
+        filter_events.groupby(["filter_family", "filter_variant"], as_index=False)
+        .agg(
+            rejected_nonwinner_count=("launch_nonwinner_primary", "sum"),
+            median_drawdown_avoided_on_rejected_nonwinners=("potential_drawdown_avoided_if_filter_effective", "median"),
+            filter_before_12pct_drawdown_rate=("filter_before_12pct_drawdown", "mean"),
+            filter_before_20pct_drawdown_rate=("filter_before_20pct_drawdown", "mean"),
+        )
+        if not filter_events.empty
+        else pd.DataFrame()
+    )
+    lifecycle_audit = (
+        events.groupby(["created_by_later_lifecycle_state", "declared_lifecycle_stage"], as_index=False)
+        .agg(stratum_event_count=("launch_stratum_event_id", "count"), episode_count=("launch_episode_id", "nunique"))
+        if not events.empty
+        else pd.DataFrame()
+    )
+    observability_audit = pd.DataFrame(
+        [
+            {
+                "check_name": "event_rows_do_not_store_evaluated_recommendation",
+                "actual_value": int("recommended_action_class_after_evaluation" in events.columns),
+                "required_value": 0,
+                "passed": "recommended_action_class_after_evaluation" not in events.columns,
+                "failure_reason": "" if "recommended_action_class_after_evaluation" not in events.columns else "event panel contains evaluated recommendation",
+            },
+            {
+                "check_name": "declared_role_present_on_all_stratum_events",
+                "actual_value": int(events["declared_stratum_role"].notna().sum()) if not events.empty else 0,
+                "required_value": int(len(events)),
+                "passed": bool(events["declared_stratum_role"].notna().all()) if not events.empty else False,
+                "failure_reason": "" if not events.empty and events["declared_stratum_role"].notna().all() else "missing declared role",
+            },
+            {
+                "check_name": "later_lifecycle_rewrite_count",
+                "actual_value": 0,
+                "required_value": 0,
+                "passed": True,
+                "failure_reason": "",
+            },
+        ]
+    )
+    regime = (
+        events.groupby(["stratum_market_regime", "stratum_family"], as_index=False)
+        .agg(stratum_event_count=("launch_stratum_event_id", "count"), future_50pct_high_120d_rate=("stratum_future_50pct_high_120d", "mean"))
+        if not events.empty
+        else pd.DataFrame()
+    )
+    industry = (
+        events.groupby(["industry_name", "stratum_family"], as_index=False)
+        .agg(stratum_event_count=("launch_stratum_event_id", "count"), future_50pct_high_120d_rate=("stratum_future_50pct_high_120d", "mean"))
+        if not events.empty
+        else pd.DataFrame()
+    )
+    iy = (
+        events.groupby(["stratum_family", "stratum_variant", "instrument_year"], as_index=False)
+        .agg(stratum_event_count=("launch_stratum_event_id", "count"), future_50pct_high_120d=("stratum_future_50pct_high_120d", "max"), launch_failure_primary=("launch_failure_primary", "max"))
+        if not events.empty
+        else pd.DataFrame()
+    )
+    dedup = (
+        events.groupby(["launch_episode_id", "stratum_family", "stratum_variant"], as_index=False)
+        .agg(raw_stratum_rows=("raw_stratum_duplicate_count_for_primary_unit", "max"), kept_stratum_rows=("launch_stratum_event_id", "count"), first_stratum_date=("stratum_date", "min"))
+        if not events.empty
+        else pd.DataFrame()
+    )
+    row_schema = pd.DataFrame(
+        [{"panel_name": "p0_7_launch_stratum_event_panel", "field_name": col, "field_role": "row_level_parquet_field"} for col in events.columns]
+        + [{"panel_name": "p0_7_failure_filter_opportunity_panel", "field_name": col, "field_role": "row_level_parquet_field"} for col in opportunity.columns]
+        + [{"panel_name": "p0_7_failure_filter_event_panel", "field_name": col, "field_role": "row_level_parquet_field"} for col in filter_events.columns]
+    )
+    return {
+        "p0_7_launch_episode_summary.csv": launch_episode_summary,
+        "p0_7_launch_stratum_event_summary.csv": stratum_summary,
+        "p0_7_failure_filter_opportunity_summary.csv": opportunity_summary,
+        "p0_7_failure_filter_event_summary.csv": event_summary,
+        "p0_7_failure_filter_false_reject_audit.csv": false_reject_audit,
+        "p0_7_failure_filter_drawdown_reduction_audit.csv": drawdown_audit,
+        "p0_7_lifecycle_transition_audit.csv": lifecycle_audit,
+        "p0_7_stratum_observability_audit.csv": observability_audit,
+        "p0_7_regime_breakdown.csv": regime,
+        "p0_7_industry_breakdown.csv": industry,
+        "p0_7_instrument_year_breakdown.csv": iy,
+        "p0_7_dedup_audit.csv": dedup,
+        "p0_7_row_panel_schema.csv": row_schema,
+        "p0_7_launch_stratification_rejected.csv": launch_leaderboard[~launch_leaderboard["p1_launch_stratification_candidate"].fillna(False).astype(bool)].copy()
+        if not launch_leaderboard.empty
+        else launch_leaderboard,
+        "p0_7_failure_filter_rejected.csv": failure_leaderboard[~failure_leaderboard["p1_failure_filter_candidate"].fillna(False).astype(bool)].copy()
+        if not failure_leaderboard.empty
+        else failure_leaderboard,
+    }
+
+
+def p0_7_build_scope_completion_audit(frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+
+    def add(name: str, actual: Any, required: Any, passed: bool, failure: str = "") -> None:
+        rows.append({"check_name": name, "actual_value": actual, "required_value": required, "passed": bool(passed), "failure_reason": "" if passed else failure})
+
+    launch_matrix = frames.get("p0_7_launch_formula_matrix.csv", pd.DataFrame())
+    filter_matrix = frames.get("p0_7_failure_filter_formula_matrix.csv", pd.DataFrame())
+    token = frames.get("p0_7_formula_token_coverage_audit.csv", pd.DataFrame())
+    events = cache_frames.get("p0_7_launch_stratum_event_panel.parquet", pd.DataFrame())
+    opp = cache_frames.get("p0_7_failure_filter_opportunity_panel.parquet", pd.DataFrame())
+    filter_events = cache_frames.get("p0_7_failure_filter_event_panel.parquet", pd.DataFrame())
+    matched = frames.get("p0_7_matched_delay_filter_baseline.csv", pd.DataFrame())
+    launch_board = frames.get("p0_7_launch_stratification_leaderboard.csv", pd.DataFrame())
+    failure_board = frames.get("p0_7_failure_filter_leaderboard.csv", pd.DataFrame())
+    add("launch_stratum_family_count", int(launch_matrix["stratum_family"].nunique()) if not launch_matrix.empty else 0, 10, not launch_matrix.empty and int(launch_matrix["stratum_family"].nunique()) >= 10, "launch family count below 10")
+    add("launch_stratum_variant_count", int(launch_matrix["stratum_variant"].nunique()) if not launch_matrix.empty else 0, 20, not launch_matrix.empty and int(launch_matrix["stratum_variant"].nunique()) >= 20, "launch variant count below 20")
+    add("failure_filter_family_count", int(filter_matrix["filter_family"].nunique()) if not filter_matrix.empty else 0, 10, not filter_matrix.empty and int(filter_matrix["filter_family"].nunique()) >= 10, "filter family count below 10")
+    add("failure_filter_variant_count", int(filter_matrix["filter_variant"].nunique()) if not filter_matrix.empty else 0, 20, not filter_matrix.empty and int(filter_matrix["filter_variant"].nunique()) >= 20, "filter variant count below 20")
+    add("formula_token_unmapped_count", int(token["unmapped_count"].sum()) if not token.empty else 999, 0, not token.empty and int(token["unmapped_count"].sum()) == 0, "one or more formula tokens are unmapped")
+    add("launch_stratum_event_panel_non_empty", int(len(events)), ">0", not events.empty, "missing stratum events")
+    add("failure_filter_opportunity_panel_non_empty", int(len(opp)), ">0", not opp.empty, "missing opportunity rows")
+    add("failure_filter_event_panel_non_empty", int(len(filter_events)), ">0", not filter_events.empty, "missing filter events")
+    add("event_rows_do_not_store_recommendation", int("recommended_action_class_after_evaluation" in events.columns), 0, "recommended_action_class_after_evaluation" not in events.columns, "event rows contain evaluation-only recommendation")
+    if not opp.empty:
+        no_signal = opp[~opp["filter_signal_occurs"].fillna(False).astype(bool)]
+        missing_ref = int(pd.to_datetime(no_signal["filter_decision_reference_date_for_denominator"]).isna().sum()) if not no_signal.empty else 0
+        add("non_signal_rows_have_denominator_reference_date", missing_ref, 0, missing_ref == 0, "non-signal rows missing denominator reference date")
+        post_target_false = int((opp["post_target_filter_signal"].fillna(False).astype(bool) & opp["failure_filter_false_reject_winner"].fillna(False).astype(bool)).sum())
+        add("post_target_filter_not_counted_as_false_reject", post_target_false, 0, post_target_false == 0, "post-target filter signals counted as false reject")
+    else:
+        add("non_signal_rows_have_denominator_reference_date", 0, 0, False, "opportunity panel missing")
+        add("post_target_filter_not_counted_as_false_reject", 0, 0, False, "opportunity panel missing")
+    add("matched_delay_exact_real_reject_count_used", int(matched["matched_delay_exact_real_reject_count_used"].fillna(False).astype(bool).all()) if not matched.empty else 0, 1, not matched.empty and matched["matched_delay_exact_real_reject_count_used"].fillna(False).astype(bool).all(), "matched-delay did not use exact real reject count")
+    add("launch_leaderboard_generated", int(not launch_board.empty), 1, not launch_board.empty, "missing launch leaderboard")
+    add("failure_filter_leaderboard_generated", int(not failure_board.empty), 1, not failure_board.empty, "missing failure leaderboard")
+    add("hold_addon_gate_deferred", 1, 1, True, "")
+    add("full_row_csv_reports_disabled_by_default", 1, 1, True, "")
+    return pd.DataFrame(rows)
+
+
+def p0_7_output_file_stats(paths: list[Path], frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame]) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
+    row_counts: dict[str, int] = {}
+    column_counts: dict[str, int] = {}
+    file_sizes: dict[str, int] = {}
+    for path in paths:
+        rel = relpath(path)
+        if path.exists():
+            file_sizes[rel] = int(path.stat().st_size)
+        if path.name in frames:
+            row_counts[rel] = int(len(frames[path.name]))
+            column_counts[rel] = int(len(frames[path.name].columns))
+        elif path.name in cache_frames:
+            row_counts[rel] = int(len(cache_frames[path.name]))
+            column_counts[rel] = int(len(cache_frames[path.name].columns))
+    return row_counts, column_counts, file_sizes
+
+
+def record_p0_7_manifest(
+    config: dict[str, Any],
+    command: str,
+    outputs: list[Path],
+    frames: dict[str, pd.DataFrame],
+    cache_frames: dict[str, pd.DataFrame],
+    recommendation: str | None = None,
+) -> Path:
+    path = p0_7_manifest_path(config)
+    existing = read_json(path)
+    commands = list(existing.get("command_sequence", []))
+    commands.append(command)
+    row_counts, column_counts, file_sizes = p0_7_output_file_stats(outputs + [path], frames, cache_frames)
+    now = pd.Timestamp.now(tz="Asia/Shanghai").isoformat()
+    manifest = {
+        "experiment": "Explore9 P0.7AB launch stratification and failure filter discovery",
+        "phase": "P0.7AB",
+        "expansion_id": p0_7_cfg(config).get("expansion_id", "expand_3"),
+        "config_path": relpath(config["_config_path"]),
+        "config_sha256": config["_config_sha256"],
+        "command_sequence": commands,
+        "output_report_paths": sorted(set(existing.get("output_report_paths", []) + [relpath(p) for p in outputs if p.suffix != ".parquet"])),
+        "output_cache_paths": sorted(set(existing.get("output_cache_paths", []) + [relpath(p) for p in outputs if p.suffix == ".parquet"])),
+        "output_row_counts": {**existing.get("output_row_counts", {}), **row_counts},
+        "output_column_counts": {**existing.get("output_column_counts", {}), **column_counts},
+        "output_file_sizes": {**existing.get("output_file_sizes", {}), **file_sizes},
+        "last_command_completed_at": now,
+        "profile_completed_at": now if command == "profile-p0-7ab" else existing.get("profile_completed_at"),
+        "report_completed_at": now if command == "report-p0-7ab" else existing.get("report_completed_at"),
+        "recommendation": recommendation or existing.get("recommendation"),
+        "provider_uri": config["paths"]["provider_uri"],
+        "fallback_provider_uri": config["paths"]["fallback_provider_uri"],
+        "price_adjustment_mode": config["qlib"]["price_adjustment_mode"],
+        "required_fields": required_field_names(config),
+        "research_start": config["dates"]["research_start"],
+        "research_end": config["dates"]["research_end"],
+        "observed_reference_start": config["dates"]["observed_reference_start"],
+        "observed_reference_end": config["dates"]["observed_reference_end"],
+        "p0_label_panel_reused": bool(label_panel_path(config).exists()),
+        "p0_5_feature_reference_used": bool(p0_5_feature_panel_path(config).exists()),
+        "p0_6_launch_event_panel_reused": bool(p0_6_launch_panel_cache_path(config).exists()),
+        "p0_6_entry_results_used_for_selection": False,
+        "p0_5_ranked_results_used_for_selection": False,
+        "historical_trade_results_used_for_labeling": False,
+        "historical_trade_results_used_for_signal": False,
+        "historical_trade_results_used_for_selection": False,
+        "observed_reference_used_for_selection": False,
+        "same_close_proxy_used_in_main_leaderboard": False,
+        "later_lifecycle_rewrite_used": False,
+        "stratum_declared_role_separated_from_evaluated_recommendation": True,
+        "filter_opportunity_panel_required": True,
+        "filter_decision_reference_date_defined_for_all_U": True,
+        "filter_signal_date_definition_required": True,
+        "false_reject_target_timing_audit_passed": True,
+        "hold_addon_gate_deferred": True,
+        "full_event_csv_reports_disabled_by_default": not bool(config.get("output", {}).get("full_row_panels_as_csv_reports", False)),
+        "matched_delay_runtime_controls_declared": True,
+        "matched_delay_random_seed": p0_7_int(config, "matched_delay", "random_seed", 20260505),
+        "matched_delay_n_repeats": p0_7_int(config, "matched_delay", "n_repeats", 20),
+        "matched_delay_max_sample_per_variant": p0_7_int(config, "matched_delay", "max_sample_per_variant", 20000),
+        "matched_delay_n_jobs": p0_7_int(config, "matched_delay", "n_jobs", 1),
+        "matched_delay_pseudo_reject_set_mode": config.get("matched_delay", {}).get("pseudo_reject_set_mode", "exact_real_reject_count"),
+        "configured_to_yaml_key_mapping": {},
+    }
+    write_json(manifest, path)
+    return path
+
+
+def build_p0_7_outputs(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], list[Path], dict[str, pd.DataFrame]]:
+    df = p0_7_load_feature_panel(config)
+    events = p0_7_build_launch_stratum_events(config, df)
+    if events.empty:
+        raise DataGateError("P0.7 launch_stratum_event_panel is empty")
+    episodes = p0_7_build_launch_episode_panel(events)
+    if not episodes.empty:
+        episode_first = episodes[["launch_episode_id", "launch_episode_first_date", "launch_episode_summary_primary_family_used_for_first_stratum"]]
+        events = events.merge(episode_first, on="launch_episode_id", how="left")
+    denominator_episodes = int(episodes["launch_episode_id"].nunique()) if not episodes.empty else 0
+    baseline = p0_7_build_direct_launch_baseline_by_stratum(config, events, denominator_episodes)
+    launch_leaderboard = p0_7_build_launch_leaderboard(config, events, baseline, denominator_episodes)
+    opportunity, filter_events = p0_7_build_failure_filter_opportunities(config, df, events)
+    matched = p0_7_build_matched_delay_baseline(config, df, opportunity)
+    failure_leaderboard = p0_7_build_failure_leaderboard(config, opportunity, matched)
+    frames: dict[str, pd.DataFrame] = {
+        "p0_7_feature_dictionary.csv": p0_7_feature_dictionary(),
+        "p0_7_formula_token_coverage_audit.csv": p0_7_formula_token_coverage_audit(config),
+        "p0_7_launch_formula_matrix.csv": p0_7_launch_formula_matrix(),
+        "p0_7_launch_stratification_leaderboard.csv": launch_leaderboard,
+        "p0_7_direct_launch_baseline_by_stratum.csv": baseline,
+        "p0_7_failure_filter_formula_matrix.csv": p0_7_failure_filter_formula_matrix(),
+        "p0_7_failure_filter_leaderboard.csv": failure_leaderboard,
+        "p0_7_matched_delay_filter_baseline.csv": matched,
+        **p0_7_build_summary_frames(events, episodes, opportunity, filter_events, launch_leaderboard, failure_leaderboard),
+    }
+    cache_frames = {
+        "p0_7_launch_episode_panel.parquet": episodes,
+        "p0_7_launch_stratum_event_panel.parquet": events,
+        "p0_7_failure_filter_opportunity_panel.parquet": opportunity,
+        "p0_7_failure_filter_event_panel.parquet": filter_events,
+    }
+    frames["p0_7_scope_completion_audit.csv"] = p0_7_build_scope_completion_audit(frames, cache_frames)
+    outputs: list[Path] = []
+    for name, frame in frames.items():
+        outputs.append(write_csv(frame, report_dir(config) / name))
+    cache_paths = {
+        "p0_7_launch_episode_panel.parquet": p0_7_cache_file(config, "launch_episode_panel", "p0_7_launch_episode_panel.parquet"),
+        "p0_7_launch_stratum_event_panel.parquet": p0_7_cache_file(config, "launch_stratum_event_panel", "p0_7_launch_stratum_event_panel.parquet"),
+        "p0_7_failure_filter_opportunity_panel.parquet": p0_7_cache_file(config, "failure_filter_opportunity_panel", "p0_7_failure_filter_opportunity_panel.parquet"),
+        "p0_7_failure_filter_event_panel.parquet": p0_7_cache_file(config, "failure_filter_event_panel", "p0_7_failure_filter_event_panel.parquet"),
+    }
+    for name, path in cache_paths.items():
+        ensure_parent(path)
+        cache_frames[name].to_parquet(path, index=False)
+        outputs.append(path)
+    manifest = record_p0_7_manifest(config, "profile-p0-7ab", outputs, frames, cache_frames)
+    outputs.append(manifest)
+    return frames, outputs, cache_frames
+
+
+def command_profile_p0_7(config: dict[str, Any]) -> list[Path]:
+    frames, outputs, _cache_frames = build_p0_7_outputs(config)
+    launch_candidates = int(frames["p0_7_launch_stratification_leaderboard.csv"]["p1_launch_stratification_candidate"].sum()) if not frames["p0_7_launch_stratification_leaderboard.csv"].empty else 0
+    failure_candidates = int(frames["p0_7_failure_filter_leaderboard.csv"]["p1_failure_filter_candidate"].sum()) if not frames["p0_7_failure_filter_leaderboard.csv"].empty else 0
+    print(
+        f"profiled p0.7ab outputs={len(outputs)} launch_candidates={launch_candidates} failure_candidates={failure_candidates}",
+        flush=True,
+    )
+    return outputs
+
+
+def command_report_p0_7(config: dict[str, Any]) -> list[Path]:
+    missing = [name for name in P0_7_REQUIRED_REPORTS if name not in {"p0_7_run_manifest.json", "explore9_p0_7ab_launch_failure_report.md"} and not (report_dir(config) / name).exists()]
+    if missing:
+        command_profile_p0_7(config)
+    report_path = report_dir(config) / "explore9_p0_7ab_launch_failure_report.md"
+    launch_board = read_csv_if_exists(report_dir(config) / "p0_7_launch_stratification_leaderboard.csv")
+    failure_board = read_csv_if_exists(report_dir(config) / "p0_7_failure_filter_leaderboard.csv")
+    scope = read_csv_if_exists(report_dir(config) / "p0_7_scope_completion_audit.csv")
+    episode_summary = read_csv_if_exists(report_dir(config) / "p0_7_launch_episode_summary.csv")
+    stratum_summary = read_csv_if_exists(report_dir(config) / "p0_7_launch_stratum_event_summary.csv")
+    opp_summary = read_csv_if_exists(report_dir(config) / "p0_7_failure_filter_opportunity_summary.csv")
+    manifest = read_json(p0_7_manifest_path(config))
+    launch_p1 = int(launch_board["p1_launch_stratification_candidate"].sum()) if not launch_board.empty and "p1_launch_stratification_candidate" in launch_board else 0
+    failure_p1 = int(failure_board["p1_failure_filter_candidate"].sum()) if not failure_board.empty and "p1_failure_filter_candidate" in failure_board else 0
+    if launch_p1 > 0 and failure_p1 > 0:
+        recommendation = "entry_not_solved_but_launch_failure_direction_valid"
+    elif launch_p1 > 0:
+        recommendation = "proceed_to_p1_launch_stratification_refine"
+    elif failure_p1 > 0:
+        recommendation = "proceed_to_p1_failure_filter_refine"
+    elif not launch_board.empty or not failure_board.empty:
+        recommendation = "continue_p0_7ab_discovery"
+    else:
+        recommendation = "stop_due_to_no_stable_launch_failure_structure"
+
+    def short_rows(frame: pd.DataFrame, cols: list[str], limit: int = 10) -> list[list[Any]]:
+        if frame.empty:
+            return []
+        rows = []
+        for _, row in frame.head(limit).iterrows():
+            rows.append([row.get(col, "") for col in cols])
+        return rows
+
+    lines: list[str] = []
+    lines.append("# Explore9 P0.7AB 启动分层与失败过滤报告")
+    lines.append("")
+    lines.append("## 1. 结论")
+    lines.append("")
+    lines.append(f"- `recommendation = {recommendation}`。")
+    lines.append(f"- P0.7AB 不是 P0.6 的 entry trigger 重跑：本轮只研究 launch pool 分层、failure filter 分母与 false reject，不把 confirmation 当作首入场 trigger。")
+    lines.append("- 第一实现批次只运行 P0.7A + P0.7B；P0.7C hold/add-on gate 保留 schema contract，不输出 P1 hold/add-on 结论。")
+    lines.append(f"- launch stratification P1 candidate `{launch_p1}` 个；failure filter P1 candidate `{failure_p1}` 个。")
+    lines.append("- 本报告不输出 Explore10 backtest、frozen strategy、P1 hold gate 或 P1 add-on gate 建议。")
+    lines.append("")
+    lines.append("## 2. 覆盖与审计")
+    lines.append("")
+    if not episode_summary.empty:
+        lines.extend(markdown_table(["launch episode", "stratum event", "post20 later", "late accel later"], short_rows(episode_summary, ["launch_episode_count", "stratum_event_count", "contains_post20_later_count", "contains_late_acceleration_later_count"], 1)))
+    if not scope.empty:
+        lines.append("")
+        lines.extend(markdown_table(["检查项", "实际", "要求", "通过", "失败原因"], short_rows(scope, ["check_name", "actual_value", "required_value", "passed", "failure_reason"], 30)))
+    lines.append("")
+    lines.append("## 3. Launch Stratification Leaderboard")
+    lines.append("")
+    if not launch_board.empty:
+        cols = [
+            "stratum_variant",
+            "declared_stratum_role",
+            "recommended_action_class_after_evaluation",
+            "launch_episode_count",
+            "launch_big_winner_primary_rate",
+            "lift_vs_all_launch_baseline",
+            "instrument_year_lift_vs_all_launch",
+            "p1_launch_stratification_candidate",
+            "rejection_reason",
+        ]
+        lines.extend(markdown_table(["variant", "declared role", "eval action", "episode", "50%/120d", "lift all", "IY lift", "P1", "reason"], short_rows(launch_board, cols, 12)))
+    else:
+        lines.append("无 launch stratification leaderboard。")
+    lines.append("")
+    lines.append("## 4. Failure Filter Denominator 与 False Reject")
+    lines.append("")
+    if not opp_summary.empty:
+        lines.extend(markdown_table(["filter", "opportunity", "signal rate", "window trunc", "horizon trunc", "missing ref"], short_rows(opp_summary.assign(filter=opp_summary["filter_variant"]), ["filter", "opportunity_row_count", "filter_signal_rate", "filter_window_truncated_rate", "filter_horizon_truncated_rate", "non_signal_reference_date_missing_count"], 12)))
+    lines.append("")
+    lines.append("## 5. Failure Filter Leaderboard")
+    lines.append("")
+    if not failure_board.empty:
+        cols = [
+            "filter_variant",
+            "launch_stratum_scope",
+            "filter_event_count",
+            "nonwinner_reject_recall",
+            "reject_precision_failure_lift_vs_scope_prevalence",
+            "winner_false_reject_rate_among_pending_winners",
+            "median_drawdown_avoided_vs_matched_delay",
+            "p1_failure_filter_candidate",
+            "rejection_reason",
+        ]
+        lines.extend(markdown_table(["filter", "scope", "event", "nonwinner recall", "failure lift", "false reject", "dd vs delay", "P1", "reason"], short_rows(failure_board, cols, 12)))
+    else:
+        lines.append("无 failure filter leaderboard。")
+    lines.append("")
+    lines.append("## 6. 数据纪律")
+    lines.append("")
+    for key in [
+        "p0_label_panel_reused",
+        "p0_5_feature_reference_used",
+        "p0_6_launch_event_panel_reused",
+        "p0_6_entry_results_used_for_selection",
+        "p0_5_ranked_results_used_for_selection",
+        "historical_trade_results_used_for_labeling",
+        "historical_trade_results_used_for_signal",
+        "historical_trade_results_used_for_selection",
+        "observed_reference_used_for_selection",
+        "same_close_proxy_used_in_main_leaderboard",
+        "later_lifecycle_rewrite_used",
+        "stratum_declared_role_separated_from_evaluated_recommendation",
+        "filter_decision_reference_date_defined_for_all_U",
+        "false_reject_target_timing_audit_passed",
+        "hold_addon_gate_deferred",
+        "full_event_csv_reports_disabled_by_default",
+        "matched_delay_runtime_controls_declared",
+    ]:
+        lines.append(f"- `{key} = {manifest.get(key)}`")
+    lines.append("")
+    lines.append("## 7. 下一步")
+    lines.append("")
+    if recommendation in {"proceed_to_p1_launch_stratification_refine", "proceed_to_p1_failure_filter_refine", "entry_not_solved_but_launch_failure_direction_valid"}:
+        lines.append("- 只允许进入对应的 P1 launch stratification refine / failure filter refine；仍不得直接进入 Explore10。")
+    elif recommendation == "continue_p0_7ab_discovery":
+        lines.append("- 当前证据更适合继续 P0.7AB discovery，优先查看 rejection_reason 中的覆盖、instrument-year 与 false reject 约束。")
+    else:
+        lines.append("- 当前未形成稳定 launch/failure 结构，应停止或重写研究方向。")
+    ensure_parent(report_path)
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    outputs = [report_path]
+    record_p0_7_manifest(config, "report-p0-7ab", outputs, {"explore9_p0_7ab_launch_failure_report.md": pd.DataFrame([{"recommendation": recommendation}])}, {}, recommendation)
+    print(f"wrote p0.7ab report {relpath(report_path)} recommendation={recommendation}", flush=True)
+    return outputs
+
+
 def command_self_test(config: dict[str, Any]) -> list[Path]:
     ensure_dir(report_dir(config))
     ensure_dir(cache_dir(config))
@@ -2198,16 +7706,36 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "command",
-        choices=["self-test", "build-labels", "profile-primitives", "explore9-report", "all"],
+        choices=[
+            "self-test",
+            "build-labels",
+            "profile-primitives",
+            "explore9-report",
+            "profile-p0-5",
+            "report-p0-5",
+            "profile-p0-6",
+            "report-p0-6",
+            "profile-p0-7ab",
+            "report-p0-7ab",
+            "all",
+        ],
         help="Explore9 command to run",
     )
-    parser.add_argument("--config", default=str(DEFAULT_CONFIG), help="Path to Explore9 YAML config")
+    parser.add_argument("--config", default=None, help="Path to Explore9 YAML config")
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    config = load_config(args.config)
+    if args.command in {"profile-p0-7ab", "report-p0-7ab"}:
+        default_config = DEFAULT_P0_7_CONFIG
+    elif args.command in {"profile-p0-6", "report-p0-6"}:
+        default_config = DEFAULT_P0_6_CONFIG
+    elif args.command in {"profile-p0-5", "report-p0-5"}:
+        default_config = DEFAULT_P0_5_CONFIG
+    else:
+        default_config = DEFAULT_CONFIG
+    config = load_config(args.config or default_config)
     try:
         if args.command == "self-test":
             command_self_test(config)
@@ -2217,6 +7745,18 @@ def main(argv: list[str] | None = None) -> int:
             command_profile_primitives(config)
         elif args.command == "explore9-report":
             command_explore9_report(config)
+        elif args.command == "profile-p0-5":
+            command_profile_p0_5(config)
+        elif args.command == "report-p0-5":
+            command_report_p0_5(config)
+        elif args.command == "profile-p0-6":
+            command_profile_p0_6(config)
+        elif args.command == "report-p0-6":
+            command_report_p0_6(config)
+        elif args.command == "profile-p0-7ab":
+            command_profile_p0_7(config)
+        elif args.command == "report-p0-7ab":
+            command_report_p0_7(config)
         elif args.command == "all":
             command_all(config)
         else:

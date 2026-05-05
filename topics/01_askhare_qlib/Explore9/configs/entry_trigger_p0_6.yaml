@@ -1,0 +1,119 @@
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  fallback_provider_uri: Explore1/data/qlib/cn_data
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  cache_dir: Explore9/outputs/cache
+  report_dir: Explore9/outputs/reports
+
+sources:
+  background_reference:
+    - Explore8/outputs/reports/explore8_big_winner_profile_report.md
+    - Explore8/expand_requirement.md
+    - Explore8/requirement.md
+  schema_reference:
+    - Explore9/outputs/reports/episode_lifecycle_labels.csv
+    - Explore9/outputs/reports/p0_5_primitive_feature_dictionary.csv
+    - Explore9/outputs/reports/p0_5_pairwise_lift.csv
+    - Explore9/outputs/reports/p0_5_candidate_pattern_audit.csv
+  forbidden_result_path_patterns:
+    - Explore3/outputs/
+    - Explore4/outputs/
+    - Explore5/outputs/
+    - Explore6/outputs/
+    - Explore7/outputs/
+    - Explore8/outputs/backtests/
+  forbidden_result_name_tokens:
+    - trade_detail
+    - portfolio_daily
+    - signals
+    - daily_candidates
+    - model_predictions
+    - year_metrics
+    - predictions
+    - model
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  research_start: "2017-01-01"
+  research_end: "2024-12-31"
+  observed_reference_start: "2025-01-01"
+  observed_reference_end: "2026-04-30"
+
+universe:
+  name: pit_mcap500_mainboard
+  point_in_time: true
+  membership_frequency: daily
+  qlib_instrument_file_role: data_availability_superset
+  tradable_universe_authority: daily_pit_membership
+
+industry:
+  point_in_time: true
+  missing_industry: UNKNOWN
+
+qlib:
+  market: pit_mcap500_mainboard
+  benchmark: SH000300
+  broad_market_key: broad_market
+  freq: day
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  price_adjustment_mode: provider_ohlc_already_adjusted
+
+coverage:
+  coverage_ok_min: 0.98
+  coverage_limited_min: 0.90
+  required_field_coverage_ok_min: 0.98
+
+labels:
+  horizons: [20, 60, 120, 240]
+  high_gain_thresholds: [0.5, 1.0]
+  close_gain_thresholds: [0.5, 1.0]
+  episode_threshold: 0.5
+  time_to_max_horizon: 240
+
+primitives:
+  quantile_cuts: [0.1, 0.2, 0.4, 0.6, 0.8, 0.9]
+  sparse_bin_min_samples: 100
+  min_lead_samples: 200
+  duplicate_positive_stock_day_per_episode_max: 5.0
+  lead_score:
+    lift_weight: 1.0
+    sample_log_weight: 0.20
+    year_weight: 0.12
+    industry_penalty: 0.25
+
+p0_5:
+  feature_panel_cache: Explore9/outputs/cache/p0_5_feature_panel_expand_1.parquet
+
+p0_6:
+  phase: P0.6
+  expansion_id: expand_2
+  launch_event_panel_cache: Explore9/outputs/cache/p0_6_launch_event_panel.parquet
+  entry_event_panel_cache: Explore9/outputs/cache/p0_6_entry_event_panel.parquet
+  launch_dedup_gap_trading_days: 20
+  max_entry_signal_wait_trading_days: 20
+  max_entry_execution_wait_trading_days: 21
+  entry_execution_price_reference: next_open
+  matched_delay_random_seed: 20260505
+  matched_delay_n_repeats: 20
+  matched_delay_max_sample_per_variant: 100
+  matched_delay_n_jobs: 24
+  min_entry_event_count: 100
+  min_distinct_year_count: 3
+  max_top1_instrument_contribution: 0.20
+  entry_lift_vs_all_launch_direct_min: 1.05
+  entry_lift_vs_convertible_direct_min: 1.02
+  entry_lift_vs_matched_delay_min: 1.00
+  instrument_year_entry_lift_vs_all_launch_direct_min: 1.00
+  instrument_year_entry_lift_vs_matched_delay_min: 1.00
+  min_positive_unique_instrument_year_count: 20
+  drawdown_reduction_vs_direct_min: 0.10
+  max_median_missed_gain: 0.15
+  max_median_entry_to_stop_risk_pct: 0.12
+  max_missed_winner_due_to_no_trigger_rate: 0.50
+  winner_upside_lift_vs_all_launch_direct_min: 1.00

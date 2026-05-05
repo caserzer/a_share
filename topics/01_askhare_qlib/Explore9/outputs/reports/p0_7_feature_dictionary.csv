@@ -1,0 +1,65 @@
+feature_name,feature_family,feature_role,lookback_days,min_history_trading_days,observable_date,uses_future_data,required_fields,raw_required_field_exempt,feature_eligible_rule,formula_text,formula_text_resolved,thresholds,used_in_launch_stratification,used_in_failure_filter,used_in_hold_gate,used_in_add_on_gate
+open,raw_provider,raw_input,0,0,same_day,False,open,True,provider_required_fields_ok,,,,True,True,False,False
+high,raw_provider,raw_input,0,0,same_day,False,high,True,provider_required_fields_ok,,,,True,True,False,False
+low,raw_provider,raw_input,0,0,same_day,False,low,True,provider_required_fields_ok,,,,True,True,False,False
+close,raw_provider,raw_input,0,0,same_day,False,close,True,provider_required_fields_ok,,,,True,True,False,False
+volume,raw_provider,raw_input,0,0,same_day,False,volume,True,provider_required_fields_ok,,,,False,False,False,False
+money,raw_provider,raw_input,0,0,same_day,False,money,True,provider_required_fields_ok,,,,True,True,False,False
+factor,raw_provider,raw_input,0,0,same_day,False,factor,True,provider_required_fields_ok,,,,False,False,False,False
+instrument,raw_provider,raw_input,0,0,same_day,False,instrument,True,provider_required_fields_ok,,,,False,False,False,False
+date,raw_provider,raw_input,0,0,same_day,False,date,True,provider_required_fields_ok,,,,False,False,False,False
+ret_1d,p0_7_derived,derived_feature,1,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+ret_3d,p0_7_derived,derived_feature,3,3,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+ret_5d,p0_7_derived,derived_feature,5,5,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+ret_20d,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+body_ret,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+day_range,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+close_location,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+upper_shadow_pct,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+lower_shadow_pct,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+atr20_pct,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+volatility20,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+volatility60,p0_7_derived,derived_feature,60,60,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+money_ratio_20,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+money_ratio_60,p0_7_derived,derived_feature,60,60,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+ret_rank_20d_market,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+ret_rank_20d_market_5d_ago,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+ret_rank_20d_market_5d_median,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+ret_rank_20d_market_at_stratum,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,True,False,False
+ret_rank_20d_industry,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+ret_rank_20d_industry_5d_median,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+relative_ret20_vs_benchmark,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+relative_ret20_vs_industry,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+industry_breadth_20d,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+industry_breadth_20d_at_stratum,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,True,False,False
+market_regime,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+ema20,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+ema20_5d_ago,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+median20,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,True,False,False
+low20,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+low60,p0_7_derived,derived_feature,60,60,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+low90,p0_7_derived,derived_feature,90,90,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+low120,p0_7_derived,derived_feature,120,120,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+stratum_low_at_signal,p0_7_derived,formula_macro,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,True,False,False
+stratum_close_at_signal,p0_7_derived,formula_macro,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,True,False,False
+stratum_date,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+invalidation_reference_price,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,True,False,False
+launch_gain_from_recent_low_60d,p0_7_derived,derived_feature,60,60,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+launch_gain_from_recent_low_90d,p0_7_derived,derived_feature,90,90,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+launch_gain_from_recent_low_120d,p0_7_derived,derived_feature,120,120,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+prelaunch_drawdown_120d,p0_7_derived,derived_feature,120,120,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+max_drawdown_20d,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+close_location_5d_median,p0_7_derived,derived_feature,5,5,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+rolling_range_20d,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+higher_low_count_20d,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+late_acceleration_flag,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+post_20pct_relative_strength,p0_7_derived,derived_feature,20,20,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+post_30pct_relative_strength,p0_7_derived,derived_feature,30,30,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,False,False,False
+prior_close,p0_7_derived,derived_feature,0,1,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,False,True,False,False
+first_occurrence_in_60d,p0_7_derived,derived_feature,60,60,same_day_or_prior,False,open;high;low;close;money;industry;benchmark,False,p0_7_available_for_stratum,,,,True,False,False,False
+q40_market,cross_section_quantile,quantile_alias,0,0,same_day,False,"feature,date,PIT universe",False,resolved per formula feature on PIT universe,"q40_market(feature, date)","cross_section_quantile(feature, 0.40, date, PIT universe)",,True,True,False,False
+q50_market,cross_section_quantile,quantile_alias,0,0,same_day,False,"feature,date,PIT universe",False,resolved per formula feature on PIT universe,"q50_market(feature, date)","cross_section_quantile(feature, 0.50, date, PIT universe)",,True,True,False,False
+q60_market,cross_section_quantile,quantile_alias,0,0,same_day,False,"feature,date,PIT universe",False,resolved per formula feature on PIT universe,"q60_market(feature, date)","cross_section_quantile(feature, 0.60, date, PIT universe)",,True,True,False,False
+q70_market,cross_section_quantile,quantile_alias,0,0,same_day,False,"feature,date,PIT universe",False,resolved per formula feature on PIT universe,"q70_market(feature, date)","cross_section_quantile(feature, 0.70, date, PIT universe)",,True,True,False,False
+q80_market,cross_section_quantile,quantile_alias,0,0,same_day,False,"feature,date,PIT universe",False,resolved per formula feature on PIT universe,"q80_market(feature, date)","cross_section_quantile(feature, 0.80, date, PIT universe)",,True,True,False,False
+q90_market,cross_section_quantile,quantile_alias,0,0,same_day,False,"feature,date,PIT universe",False,resolved per formula feature on PIT universe,"q90_market(feature, date)","cross_section_quantile(feature, 0.90, date, PIT universe)",,True,True,False,False
