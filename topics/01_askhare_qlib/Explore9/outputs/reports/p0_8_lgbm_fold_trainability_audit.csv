@@ -1,0 +1,11 @@
+fold_id,model_task,train_event_count_after_purge,train_positive_count_after_purge,train_negative_count_after_purge,train_distinct_instrument_year,inner_validation_event_count,inner_validation_positive_count,outer_validation_event_count_eligible,outer_validation_positive_count_eligible,outer_validation_distinct_instrument_year,purge_rate,label_horizon_truncated_rate,observed_reference_label_measurement_overlap_rate,trainability_status,trainability_rejection_reason,lgbm_training_enabled_for_fold,fold_excluded_from_lgbm_oof_aggregation
+fold_2020,launch_winner_score_lgbm,4877,510,4367,283,3599,509,4052,1271,220,0.0,0.08170856849666495,0.1694971780400205,trainable,,True,False
+fold_2021,launch_winner_score_lgbm,8476,1019,7457,447,4052,1271,4814,769,232,0.0,0.08170856849666495,0.1694971780400205,trainable,,True,False
+fold_2022,launch_winner_score_lgbm,12528,2290,10238,667,4814,769,5358,505,229,0.0,0.08170856849666495,0.1694971780400205,trainable,,True,False
+fold_2023,launch_winner_score_lgbm,17342,3059,14283,899,5358,505,5040,325,214,0.0,0.08170856849666495,0.1694971780400205,trainable,,True,False
+fold_2024,launch_winner_score_lgbm,22700,3564,19136,1128,5040,325,88,14,31,0.0,0.08170856849666495,0.1694971780400205,disabled_due_to_insufficient_sample,outer_validation_event_count_eligible,False,True
+fold_2020,failure_reject_score_lgbm,14520,6178,8342,282,10644,3281,11973,3347,218,0.0,0.083658286300667,0.19862322558577047,trainable,,True,False
+fold_2021,failure_reject_score_lgbm,25164,9459,15705,448,11973,3347,14521,6105,234,0.0,0.083658286300667,0.19862322558577047,trainable,,True,False
+fold_2022,failure_reject_score_lgbm,37137,12806,24331,666,14521,6105,15829,6900,229,0.0,0.083658286300667,0.19862322558577047,trainable,,True,False
+fold_2023,failure_reject_score_lgbm,51658,18911,32747,900,15829,6900,14547,5389,215,0.0,0.083658286300667,0.19862322558577047,trainable,,True,False
+fold_2024,failure_reject_score_lgbm,67487,25811,41676,1129,14547,5389,280,75,80,0.0,0.083658286300667,0.19862322558577047,trainable,,True,False

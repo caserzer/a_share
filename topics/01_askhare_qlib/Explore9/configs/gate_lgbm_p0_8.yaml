@@ -1,0 +1,318 @@
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  fallback_provider_uri: Explore1/data/qlib/cn_data
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  cache_dir: Explore9/outputs/cache
+  report_dir: Explore9/outputs/reports
+
+sources:
+  background_reference:
+    - Explore9/outputs/reports/explore9_p0_7ab_launch_failure_report.md
+    - Explore9/requirement_expand_4.md
+  schema_reference:
+    - Explore9/outputs/cache/p0_7_launch_episode_panel.parquet
+    - Explore9/outputs/cache/p0_7_launch_stratum_event_panel.parquet
+    - Explore9/outputs/cache/p0_7_failure_filter_opportunity_panel.parquet
+    - Explore9/outputs/cache/p0_7_failure_filter_event_panel.parquet
+    - Explore9/outputs/reports/p0_7_feature_dictionary.csv
+    - Explore9/outputs/cache/stock_day_label_panel.parquet
+  forbidden_result_path_patterns:
+    - Explore3/outputs/
+    - Explore4/outputs/
+    - Explore5/outputs/
+    - Explore6/outputs/
+    - Explore7/outputs/
+    - Explore8/outputs/backtests/
+  forbidden_result_name_tokens:
+    - trade_detail
+    - portfolio_daily
+    - signals
+    - daily_candidates
+    - model_predictions
+    - year_metrics
+    - predictions
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  research_start: "2017-01-01"
+  research_end: "2024-12-31"
+  observed_reference_start: "2025-01-01"
+  observed_reference_end: "2026-04-30"
+
+universe:
+  name: pit_mcap500_mainboard
+  point_in_time: true
+  membership_frequency: daily
+  qlib_instrument_file_role: data_availability_superset
+  tradable_universe_authority: daily_pit_membership
+
+industry:
+  point_in_time: true
+  missing_industry: UNKNOWN
+
+qlib:
+  market: pit_mcap500_mainboard
+  benchmark: SH000300
+  broad_market_key: broad_market
+  freq: day
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  price_adjustment_mode: provider_ohlc_already_adjusted
+
+coverage:
+  coverage_ok_min: 0.98
+  coverage_limited_min: 0.90
+  required_field_coverage_ok_min: 0.98
+
+labels:
+  horizons: [20, 60, 120, 240]
+  high_gain_thresholds: [0.5, 1.0]
+  close_gain_thresholds: [0.5, 1.0]
+  episode_threshold: 0.5
+  time_to_max_horizon: 240
+
+p0_5:
+  feature_panel_cache: Explore9/outputs/cache/p0_5_feature_panel_expand_1.parquet
+
+p0_6:
+  launch_event_panel_cache: Explore9/outputs/cache/p0_6_launch_event_panel.parquet
+  entry_event_panel_cache: Explore9/outputs/cache/p0_6_entry_event_panel.parquet
+  launch_dedup_gap_trading_days: 20
+
+p0_7:
+  phase: P0.7AB
+  expansion_id: expand_3
+  cache:
+    launch_episode_panel: Explore9/outputs/cache/p0_7_launch_episode_panel.parquet
+    launch_stratum_event_panel: Explore9/outputs/cache/p0_7_launch_stratum_event_panel.parquet
+    failure_filter_opportunity_panel: Explore9/outputs/cache/p0_7_failure_filter_opportunity_panel.parquet
+    failure_filter_event_panel: Explore9/outputs/cache/p0_7_failure_filter_event_panel.parquet
+
+p0_8:
+  phase: P0.8
+  expansion_id: expand_4
+  cache:
+    launch_model_sample_panel: Explore9/outputs/cache/p0_8_launch_model_sample_panel.parquet
+    failure_model_sample_panel: Explore9/outputs/cache/p0_8_failure_model_sample_panel.parquet
+    failure_multi_window_event_level_dedup_panel: Explore9/outputs/cache/p0_8_failure_multi_window_event_level_dedup_panel.parquet
+    lgbm_launch_predictions_walkforward: Explore9/outputs/cache/p0_8_lgbm_launch_predictions_walkforward.parquet
+    lgbm_failure_predictions_walkforward: Explore9/outputs/cache/p0_8_lgbm_failure_predictions_walkforward.parquet
+  feature_set_version: p0_8_feature_set_v1
+  label_version: p0_8_label_v1
+
+walk_forward:
+  split_mode: purged_expanding_walk_forward
+  validation_years: [2020, 2021, 2022, 2023, 2024]
+  p1_promotion_validation_years: [2020, 2021, 2022, 2023]
+  robustness_audit_only_years: [2024]
+  purge_by_label_end_date: true
+  random_split_used: false
+  validation_role: robustness_validation_not_clean_oos_proof
+  p1_check_unit: stable_candidate_aggregated_out_of_fold
+  p1_aggregation_excludes_robustness_audit_only_folds: true
+
+label_boundary:
+  observed_reference_decision_overlap_allowed_in_main_oof: false
+  observed_reference_feature_overlap_allowed_in_main_oof: false
+  observed_reference_label_measurement_overlap_allowed_for_pre_2025_decisions: true
+  fold_2024_allowed_to_use_2025_2026_for_forward_label_measurement: true
+  fold_2024_included_in_p1_promotion_oof: false
+  observed_reference_label_measurement_audit_enabled: true
+
+sample_weight:
+  mode: episode_balanced_with_group_cap
+  group_key_date_field: event_effective_date
+  max_instrument_year_weight_share: 0.08
+  max_group_cap_iterations: 20
+  normalize_total_weight_per_split: true
+  output_base_sample_weight: true
+  output_final_sample_weight: true
+  sample_weight_alias: final_sample_weight
+  equal_row_sensitivity: true
+
+failure_dedup:
+  failure_window_group_policy: merge_3d_5d_10d_for_main_p1_metrics
+  window_specific_candidate_protocol: false
+  main_metric_dedup_key: failure_event_dedup_candidate_id_plus_launch_stratum_event_id
+
+failure_decision_windows: [3, 5, 10]
+
+gate_search:
+  enabled: true
+  modes: [manual_seeded_combo, beam_search_combo]
+  min_tokens_per_gate: 2
+  max_tokens_per_gate: 4
+  max_negated_tokens_per_gate: 1
+  max_industry_or_regime_tokens_per_gate: 1
+  beam_width: 50
+  max_candidates_per_depth: 200
+  max_final_gate_candidates_per_fold: 300
+  min_train_event_count: 100
+  min_train_distinct_instrument_year: 25
+  min_train_distinct_years: 3
+  random_seed: 20260505
+
+lgbm:
+  enabled: true
+  tasks: [launch_winner_score_lgbm, failure_reject_score_lgbm]
+  trainability_gate_enabled: true
+  skip_untrainable_fold: true
+  objective: binary
+  boosting_type: gbdt
+  learning_rate: 0.03
+  num_leaves: 31
+  max_depth: 5
+  min_data_in_leaf: 80
+  feature_fraction: 0.75
+  bagging_fraction: 0.75
+  bagging_freq: 1
+  lambda_l1: 0.1
+  lambda_l2: 1.0
+  n_estimators: 2000
+  early_stopping_rounds: 100
+  inner_validation_mode: latest_fully_eligible_train_year_after_purge
+  early_stopping_uses_outer_validation_fold: false
+  early_stopping_uses_inner_train_split_only: true
+  inner_validation_fallback_to_outer_allowed: false
+  disable_fold_when_inner_validation_unavailable: true
+  metric: [binary_logloss, auc]
+  n_jobs: 24
+  random_seed: 20260505
+  hyperparameter_search_enabled: false
+  validation_bucket_selection_allowed: false
+  predeclared_launch_score_buckets:
+    - launch_top_10pct_by_train_threshold
+    - launch_top_5pct_by_train_threshold
+    - launch_top_2pct_by_train_threshold
+  predeclared_failure_score_buckets:
+    - failure_top_risk_10pct_by_train_threshold
+    - failure_top_risk_5pct_by_train_threshold
+    - failure_top_risk_2pct_by_train_threshold
+  feature_columns:
+    - ret_rank_20d_market
+    - ret_rank_20d_industry
+    - relative_ret20_vs_benchmark
+    - relative_ret20_vs_industry
+    - money_ratio_20
+    - atr20_pct
+    - prelaunch_drawdown_120d
+    - launch_gain_from_recent_low_60d
+    - launch_gain_from_recent_low_120d
+    - close_location
+    - upper_shadow_pct
+    - lower_shadow_pct
+    - rolling_range_20d
+    - higher_low_count_20d
+    - industry_breadth_20d
+    - failure_decision_window
+  categorical_feature_columns:
+    - industry
+    - market_regime
+    - lifecycle_pool
+    - launch_family
+    - launch_variant
+
+search_bias_audit:
+  enabled: true
+  primary_null_mode: train_label_permutation_search_then_real_validation_eval
+  validation_label_permutation_for_primary_null: false
+  permutation_group_preserve: instrument_year_or_episode
+  permutation_n_repeats: 100
+  same_search_budget_as_real: true
+  lgbm_null_full_retrain_required: true
+  candidate_count_reporting: true
+  empirical_p_value_enabled: true
+  fdr_q_value_enabled: true
+
+industry_regime_ablation:
+  enabled: true
+  train_without_industry_regime_features: true
+  industry_regime_only_model_enabled: true
+
+matched_delay:
+  enabled: true
+  mode: exact_real_reject_count
+  n_repeats: 50
+  n_jobs: 24
+  max_sample_per_variant: 20000
+  random_seed: 20260505
+
+thresholds:
+  min_validation_years: 3
+  min_validation_folds: 3
+  min_positive_validation_folds: 2
+  min_fold_launch_event_count: 30
+  min_fold_launch_winner_count: 3
+  min_fold_launch_positive_lift_vs_all: 1.00
+  min_fold_launch_positive_lift_vs_family: 1.00
+  min_fold_winner_episode_coverage: 0.02
+  max_fold_drawdown_degradation: 0.02
+  min_fold_failure_reject_count: 30
+  min_fold_failure_positive_count: 3
+  min_fold_nonwinner_precision_lift: 1.00
+  min_fold_failure_precision_lift: 1.00
+  max_fold_false_positive_ratio_vs_family: 1.05
+  max_fold_winner_false_reject_rate: 0.25
+  max_fold_pending_winner_coverage_loss: 0.20
+  min_fold_drawdown_avoided_vs_delay: 0.00
+  min_launch_gate_event_count: 100
+  min_failure_gate_event_count: 200
+  min_distinct_instrument_year: 25
+  min_launch_lift_vs_all: 1.10
+  min_launch_lift_vs_same_family: 1.05
+  min_instrument_year_lift: 1.00
+  min_winner_episode_coverage: 0.05
+  max_false_positive_ratio_vs_family: 1.00
+  max_drawdown_degradation: 0.02
+  min_nonwinner_precision_lift: 1.05
+  min_failure_precision_lift: 1.05
+  max_winner_false_reject_rate: 0.25
+  max_big_winner_false_reject_rate: 0.15
+  max_secondary_decision_false_reject_rate: 0.30
+  max_secondary_decision_big_winner_false_reject_rate: 0.20
+  max_pending_winner_coverage_loss: 0.30
+  max_total_winner_coverage_loss: 0.20
+  min_drawdown_avoided_vs_delay: 0.00
+  min_before_12pct_drawdown_rate: 0.50
+  min_instrument_year_filter_effect_lift: 1.00
+  max_top1_instrument_contribution: 0.10
+  max_top5_instrument_contribution: 0.35
+  max_top_instrument_year_weight_share: 0.08
+  max_instrument_year_weight_hhi: 0.05
+  max_industry_hhi: 0.18
+  max_top1_industry_contribution: 0.35
+  max_top3_industry_contribution: 0.65
+  max_regime_hhi: 0.50
+  max_top1_regime_contribution: 0.70
+  min_industry_count_with_min_events: 3
+  min_lift_vs_industry_only_baseline: 1.02
+  min_without_industry_regime_ablation_lift: 1.00
+  min_industry_regime_ablation_lift_ratio: 0.85
+  max_candidate_baseline_missing_row_rate: 0.05
+  max_candidate_baseline_missing_weight_share: 0.05
+  max_train_optimized_threshold_dispersion: 0.05
+  min_lgbm_train_event_count: 1000
+  min_lgbm_train_positive_count: 50
+  min_lgbm_train_negative_count: 200
+  min_lgbm_inner_validation_event_count: 200
+  min_lgbm_inner_validation_positive_count: 10
+  min_lgbm_outer_validation_event_count: 200
+  min_lgbm_outer_validation_positive_count: 10
+  min_lgbm_train_distinct_instrument_year: 25
+  min_lgbm_validation_distinct_instrument_year: 10
+  max_search_bias_empirical_p: 0.10
+  max_search_bias_fdr_q: 0.20
+  require_search_bias_audit: true
+  require_candidate_lift_exceeds_null_p95: true
+  failure_drawdown_threshold: 0.12
+  drawdown_audit_window: 60
+
+runtime:
+  n_jobs: 24
+  max_memory_gb: 64
+  parquet_compression: zstd
