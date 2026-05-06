@@ -1,0 +1,6 @@
+fold_id,validation_year,validation_start_date,validation_end_date,train_raw_start_date,train_raw_end_date,fold_role,is_core_probe_fold,is_robustness_audit_fold,observed_reference_label_measurement_allowed
+fold_2020,2020,2020-01-01,2020-12-31,2017-01-01,2019-12-31,core_trainability_probe,True,False,False
+fold_2021,2021,2021-01-01,2021-12-31,2017-01-01,2020-12-31,core_trainability_probe,True,False,False
+fold_2022,2022,2022-01-01,2022-12-31,2017-01-01,2021-12-31,core_trainability_probe,True,False,False
+fold_2023,2023,2023-01-01,2023-12-31,2017-01-01,2022-12-31,core_trainability_probe,True,False,False
+fold_2024,2024,2024-01-01,2024-12-31,2017-01-01,2023-12-31,robustness_trainability_audit_only,False,True,True

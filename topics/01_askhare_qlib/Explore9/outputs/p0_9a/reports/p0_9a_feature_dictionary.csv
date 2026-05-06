@@ -1,0 +1,21 @@
+feature_name,feature_in_allowlist,feature_available,feature_source,feature_asof_contract,validation_metric_selected
+ret_rank_20d_market,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+ret_rank_20d_industry,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+relative_ret20_vs_benchmark,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+relative_ret20_vs_industry,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+money_ratio_20,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+atr20_pct,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+prelaunch_drawdown_120d,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+launch_gain_from_recent_low_60d,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+launch_gain_from_recent_low_120d,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+close_location,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+upper_shadow_pct,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+lower_shadow_pct,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+rolling_range_20d,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+higher_low_count_20d,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+industry_breadth_20d,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+failure_decision_window,True,True,PIT observable primitive feature,feature_asof_date <= signal_date,False
+market_regime,True,True,PIT observable categorical state,feature_asof_date <= signal_date,False
+lifecycle_pool,True,True,PIT observable categorical state,feature_asof_date <= signal_date,False
+launch_family,True,True,PIT observable categorical state,feature_asof_date <= signal_date,False
+launch_variant,True,True,PIT observable categorical state,feature_asof_date <= signal_date,False

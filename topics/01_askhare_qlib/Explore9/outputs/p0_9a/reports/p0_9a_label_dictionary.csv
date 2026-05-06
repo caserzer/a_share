@@ -1,0 +1,6 @@
+label_name,model_task,reference_date,window,positive_definition,training_label
+launch_winner_50h120,industry_launch_winner_score_lgbm,stratum_effective_date,120 trading days,max_high_gain >= 50%,True
+launch_false_positive_primary,industry_launch_winner_score_lgbm,stratum_effective_date,60 trading days,not launch_winner_50h120 and drawdown <= -12%,False
+failure_reject_positive_primary,industry_failure_reject_score_lgbm,failure_decision_effective_date,60 trading days,target_50h120 pending and drawdown from decision <= -12%,True
+failure_false_reject_vs_launch_target_50h120,industry_failure_reject_score_lgbm,launch_effective_date,launch 120 trading days,reject before 50h120 target but launch eventually wins,False
+failure_false_reject_vs_decision_target_50h120,industry_failure_reject_score_lgbm,failure_decision_effective_date,decision 120 trading days,decision reference still reaches 50h120,False
