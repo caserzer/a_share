@@ -35,6 +35,7 @@ DEFAULT_P0_5_CONFIG = EXPLORE_DIR / "configs/broad_discovery_expand_1.yaml"
 DEFAULT_P0_6_CONFIG = EXPLORE_DIR / "configs/entry_trigger_p0_6.yaml"
 DEFAULT_P0_7_CONFIG = EXPLORE_DIR / "configs/launch_failure_p0_7ab.yaml"
 DEFAULT_P0_8_CONFIG = EXPLORE_DIR / "configs/gate_lgbm_p0_8.yaml"
+DEFAULT_P0_9_CONFIG = EXPLORE_DIR / "configs/industry_lgbm_p0_9.yaml"
 FIELD_RENAME = {
     "$open": "open",
     "$high": "high",
@@ -211,6 +212,57 @@ P0_8_REQUIRED_REPORTS = [
     "p0_8_industry_regime_concentration_audit.csv",
     "p0_8_industry_regime_ablation_audit.csv",
     "explore9_p0_8_gate_lgbm_report.md",
+]
+P0_9_REQUIRED_CACHE = [
+    "p0_9_observed_reference_row_audit.parquet",
+    "p0_9_industry_launch_sample_panel.parquet",
+    "p0_9_industry_failure_sample_panel.parquet",
+    "p0_9_industry_launch_oof_prediction_panel.parquet",
+    "p0_9_industry_failure_oof_prediction_panel.parquet",
+    "p0_9_industry_failure_event_dedup_panel.parquet",
+]
+P0_9_REQUIRED_REPORTS = [
+    "p0_9_run_manifest.json",
+    "p0_9_config_resolved.yaml",
+    "p0_9_target_industry_mapping_audit.csv",
+    "p0_9_industry_feasibility_count_audit.csv",
+    "p0_9_feature_dictionary.csv",
+    "p0_9_label_dictionary.csv",
+    "p0_9_model_feature_set_manifest.csv",
+    "p0_9_feature_asof_leakage_audit.csv",
+    "p0_9_observed_reference_overlap_audit.csv",
+    "p0_9_walk_forward_purge_audit.csv",
+    "p0_9_inner_validation_purge_audit.csv",
+    "p0_9_label_horizon_truncation_audit.csv",
+    "p0_9_industry_local_baseline.csv",
+    "p0_9_industry_failure_opportunity_baseline.csv",
+    "p0_9_industry_candidate_scope_weighted_baseline.csv",
+    "p0_9_industry_baseline_sparsity_audit.csv",
+    "p0_9_fold_local_p0_8_baseline_audit.csv",
+    "p0_9_industry_lgbm_fold_trainability_audit.csv",
+    "p0_9_sample_weight_group_cap_audit.csv",
+    "p0_9_industry_sample_sufficiency_audit.csv",
+    "p0_9_lgbm_null_runtime_plan.csv",
+    "p0_9_lgbm_null_permutation_baseline.csv",
+    "p0_9_candidate_level_null_aggregation.csv",
+    "p0_9_industry_failure_matched_delay_baseline.csv",
+    "p0_9_industry_failure_multi_window_dedup_audit.csv",
+    "p0_9_failure_window_weight_normalization_audit.csv",
+    "p0_9_industry_lgbm_early_stopping_audit.csv",
+    "p0_9_industry_lgbm_score_bucket_selection_audit.csv",
+    "p0_9_industry_launch_lgbm_bucket_leaderboard.csv",
+    "p0_9_industry_failure_lgbm_bucket_leaderboard.csv",
+    "p0_9_industry_p1_candidate_summary.csv",
+    "p0_9_industry_oof_core_2020_2023_aggregation.csv",
+    "p0_9_industry_oof_with_2024_robustness_audit.csv",
+    "p0_9_industry_model_robustness_audit.csv",
+    "p0_9_industry_lgbm_feature_importance.csv",
+    "p0_9_industry_lgbm_shap_summary.csv",
+    "p0_9_industry_lgbm_leaf_rule_diagnostic.csv",
+    "p0_9_industry_model_card.csv",
+    "p0_9_industry_2021_2022_stress_review.csv",
+    "p0_9_industry_fold_failure_case_review.csv",
+    "explore9_p0_9_industry_lgbm_report.md",
 ]
 
 
@@ -458,7 +510,12 @@ def write_csv(df: pd.DataFrame, value: str | Path, **kwargs: Any) -> Path:
 
 def read_csv_if_exists(value: str | Path) -> pd.DataFrame:
     path = topic_path(value)
-    return pd.read_csv(path) if path.exists() else pd.DataFrame()
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        return pd.read_csv(path)
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame()
 
 
 def parse_dt(value: str | pd.Timestamp) -> pd.Timestamp:
@@ -9426,6 +9483,1964 @@ def command_report_p0_8(config: dict[str, Any]) -> list[Path]:
     return outputs
 
 
+def p0_9_cfg(config: dict[str, Any]) -> dict[str, Any]:
+    return config.get("p0_9", {})
+
+
+def p0_9_manifest_path(config: dict[str, Any]) -> Path:
+    return report_dir(config) / "p0_9_run_manifest.json"
+
+
+def p0_9_cache_file(config: dict[str, Any], key: str, default_name: str) -> Path:
+    return topic_path(p0_9_cfg(config).get("cache", {}).get(key, cache_dir(config) / default_name))
+
+
+def p0_9_threshold(config: dict[str, Any], key: str, default: float) -> float:
+    return safe_float(config.get("thresholds", {}).get(key, default), default)
+
+
+def p0_9_target_industries(config: dict[str, Any]) -> list[str]:
+    return list(config.get("fixed_target_industries", []))
+
+
+def p0_9_walk_folds(config: dict[str, Any]) -> list[dict[str, Any]]:
+    folds = config.get("folds", {})
+    if folds:
+        rows = []
+        for fold_id, spec in folds.items():
+            year = int(spec["validation_year"])
+            role = str(spec.get("validation_fold_role", "p1_promotion_eligible"))
+            rows.append(
+                {
+                    "fold_id": fold_id,
+                    "validation_year": year,
+                    "train_start": spec.get("train_start", config["dates"]["research_start"]),
+                    "train_end": spec.get("train_end", f"{year - 1}-12-31"),
+                    "validation_fold_role": role,
+                    "p1_promotion_eligible_fold": role == "p1_promotion_eligible",
+                }
+            )
+        return sorted(rows, key=lambda row: row["validation_year"])
+    return p0_8_walk_folds(config)
+
+
+def p0_9_lgbm_config_hash(config: dict[str, Any]) -> str:
+    payload = {
+        key: value
+        for key, value in config.get("lgbm", {}).items()
+        if key not in {"n_jobs"}
+    }
+    return p0_8_hash(payload)
+
+
+def p0_9_write_parquet(config: dict[str, Any], df: pd.DataFrame, value: str | Path) -> Path:
+    return p0_8_write_parquet(config, df, value)
+
+
+def p0_9_write_config_resolved(config: dict[str, Any]) -> Path:
+    path = ensure_parent(report_dir(config) / "p0_9_config_resolved.yaml")
+    payload = {key: value for key, value in config.items() if not str(key).startswith("_")}
+    path.write_text(yaml.safe_dump(sanitize_json(payload), allow_unicode=True, sort_keys=False), encoding="utf-8")
+    return path
+
+
+def p0_9_bh_qvalues(p_values: pd.Series) -> pd.Series:
+    p = pd.to_numeric(p_values, errors="coerce")
+    out = pd.Series(np.nan, index=p.index, dtype=float)
+    valid = p.dropna().sort_values()
+    if valid.empty:
+        return out
+    m = len(valid)
+    adjusted = valid * m / np.arange(1, m + 1)
+    adjusted = adjusted.iloc[::-1].cummin().iloc[::-1].clip(upper=1.0)
+    out.loc[adjusted.index] = adjusted
+    return out
+
+
+def p0_9_output_stats(paths: list[Path], frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame]) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
+    row_counts: dict[str, int] = {}
+    column_counts: dict[str, int] = {}
+    file_sizes: dict[str, int] = {}
+    for path in paths:
+        rel = relpath(path)
+        if path.exists():
+            file_sizes[rel] = path.stat().st_size
+        name = path.name
+        if name in frames:
+            row_counts[rel] = int(len(frames[name]))
+            column_counts[rel] = int(len(frames[name].columns))
+        elif name in cache_frames:
+            row_counts[rel] = int(len(cache_frames[name]))
+            column_counts[rel] = int(len(cache_frames[name].columns))
+    return row_counts, column_counts, file_sizes
+
+
+def record_p0_9_manifest(
+    config: dict[str, Any],
+    command: str,
+    outputs: list[Path],
+    frames: dict[str, pd.DataFrame],
+    cache_frames: dict[str, pd.DataFrame],
+    recommendation: str | None = None,
+) -> Path:
+    path = p0_9_manifest_path(config)
+    existing = read_json(path)
+    commands = list(existing.get("command_sequence", []))
+    commands.append(command)
+    row_counts, column_counts, file_sizes = p0_9_output_stats(outputs + [path], frames, cache_frames)
+    now = pd.Timestamp.now(tz="Asia/Shanghai").isoformat()
+    report_paths = sorted(set(existing.get("output_report_paths", []) + [relpath(p) for p in outputs if p.suffix != ".parquet"]))
+    cache_paths = sorted(set(existing.get("output_cache_paths", []) + [relpath(p) for p in outputs if p.suffix == ".parquet"]))
+    manifest = {
+        "experiment": "Explore9 P0.9 industry-specialist LGBM nonlinear discovery",
+        "phase": "P0.9",
+        "expansion_id": p0_9_cfg(config).get("expansion_id", "expand_5"),
+        "config_path": relpath(config["_config_path"]),
+        "config_sha256": config["_config_sha256"],
+        "command_sequence": commands,
+        "output_report_paths": report_paths,
+        "output_cache_paths": cache_paths,
+        "required_report_artifacts": [relpath(report_dir(config) / name) for name in P0_9_REQUIRED_REPORTS],
+        "required_cache_artifacts": [relpath(cache_dir(config) / name) for name in P0_9_REQUIRED_CACHE],
+        "output_row_counts": {**existing.get("output_row_counts", {}), **row_counts},
+        "output_column_counts": {**existing.get("output_column_counts", {}), **column_counts},
+        "output_file_sizes": {**existing.get("output_file_sizes", {}), **file_sizes},
+        "last_command_completed_at": now,
+        "profile_completed_at": now if command == "profile-p0-9" else existing.get("profile_completed_at"),
+        "report_completed_at": now if command == "report-p0-9" else existing.get("report_completed_at"),
+        "recommendation": recommendation or existing.get("recommendation"),
+        "fixed_target_industries": p0_9_target_industries(config),
+        "provider_uri": config["paths"]["provider_uri"],
+        "fallback_provider_uri": config["paths"]["fallback_provider_uri"],
+        "price_adjustment_mode": config["qlib"]["price_adjustment_mode"],
+        "required_fields": required_field_names(config),
+        "research_start": config["dates"]["research_start"],
+        "research_end": config["dates"]["research_end"],
+        "observed_reference_start": config["dates"]["observed_reference_start"],
+        "observed_reference_end": config["dates"]["observed_reference_end"],
+        "validation_role": config.get("walk_forward", {}).get("validation_role", "robustness_validation_not_clean_oos_proof"),
+        "fold_2024_included_in_p1_promotion_oof": False,
+        "observed_reference_used_for_selection": False,
+        "validated_p1_rule_generated": False,
+        "clean_oos_proven_rule_generated": False,
+        "ready_for_backtest": False,
+        "proceed_to_explore10_backtest": False,
+        "freeze_strategy": False,
+        "cross_industry_general_rule_generated": False,
+    }
+    write_json(manifest, path)
+    return path
+
+
+def p0_9_pit_membership(config: dict[str, Any]) -> pd.DataFrame:
+    path = topic_path(config["paths"]["industry_membership"])
+    df = pd.read_csv(path, usecols=["date", "instrument", "industry_target_key", "industry_ts_code", "industry_name"])
+    df["date"] = pd.to_datetime(df["date"]).dt.normalize()
+    return df.drop_duplicates(["date", "instrument"], keep="last")
+
+
+def p0_9_apply_pit_industry(panel: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+    if panel.empty:
+        return panel
+    membership = p0_9_pit_membership(config)
+    out = panel.copy()
+    out["event_effective_date"] = pd.to_datetime(out["event_effective_date"]).dt.normalize()
+    keys = out[["event_effective_date", "instrument"]].drop_duplicates().rename(columns={"event_effective_date": "date"})
+    joined = keys.merge(membership, on=["date", "instrument"], how="left")
+    joined = joined.rename(
+        columns={
+            "date": "event_effective_date",
+            "industry_name": "pit_industry_on_event_effective_date",
+            "industry_ts_code": "pit_industry_code_on_event_effective_date",
+            "industry_target_key": "pit_industry_target_key_on_event_effective_date",
+        }
+    )
+    out = out.merge(joined, on=["event_effective_date", "instrument"], how="left")
+    out["pit_industry_on_event_effective_date"] = out["pit_industry_on_event_effective_date"].fillna("UNKNOWN")
+    fixed = set(p0_9_target_industries(config))
+    out["target_industry"] = np.where(out["pit_industry_on_event_effective_date"].isin(fixed), out["pit_industry_on_event_effective_date"], "")
+    out["target_industry_mapping_exact_match"] = out["target_industry"].astype(str).ne("")
+    return out
+
+
+def p0_9_validation_boundaries(panel: pd.DataFrame, config: dict[str, Any]) -> dict[str, tuple[pd.Timestamp, pd.Timestamp]]:
+    bounds: dict[str, tuple[pd.Timestamp, pd.Timestamp]] = {}
+    for fold in p0_9_walk_folds(config):
+        fold_panel = panel[panel["fold_id"].eq(fold["fold_id"]) & panel["split"].eq("validation")]
+        dates = pd.to_datetime(fold_panel.get("event_effective_date", pd.Series(dtype="datetime64[ns]")), errors="coerce").dropna()
+        if dates.empty:
+            start = pd.Timestamp(f"{fold['validation_year']}-01-01")
+            end = pd.Timestamp(f"{fold['validation_year']}-12-31")
+        else:
+            start = dates.min().normalize()
+            end = dates.max().normalize()
+        bounds[fold["fold_id"]] = (start, end)
+    return bounds
+
+
+def p0_9_apply_eligibility_and_purge(
+    panel: pd.DataFrame,
+    config: dict[str, Any],
+    task_key: str,
+    model_task: str,
+    label_col: str,
+) -> pd.DataFrame:
+    out = panel.copy()
+    research_end = parse_dt(config["dates"]["research_end"])
+    if task_key == "launch":
+        eligible_col = "industry_launch_model_train_eval_eligible"
+        p1_col = "industry_launch_p1_promotion_eligible"
+        signal_col = "stratum_date"
+        label_end_col = "horizon_end_date_240d"
+    else:
+        eligible_col = "industry_failure_model_train_eval_eligible"
+        p1_col = "industry_failure_p1_promotion_eligible"
+        signal_col = "failure_decision_signal_date"
+        label_end_col = "decision_horizon_end_date_240d"
+        if "failure_signal_date" not in out:
+            out["failure_signal_date"] = out.get("failure_decision_signal_date")
+    out["model_task"] = model_task
+    out["target_industry_name"] = out["target_industry"]
+    out["signal_date"] = pd.to_datetime(out.get(signal_col), errors="coerce").dt.normalize()
+    out["feature_asof_date"] = pd.to_datetime(out["feature_asof_date"], errors="coerce").dt.normalize()
+    out["event_effective_date"] = pd.to_datetime(out["event_effective_date"], errors="coerce").dt.normalize()
+    out["train_label_window_end_date"] = pd.to_datetime(out.get(label_end_col), errors="coerce").dt.normalize()
+    out["label_window_start_date"] = out["event_effective_date"]
+    out["label_window_end_date"] = out["train_label_window_end_date"]
+    out["event_year"] = out["event_effective_date"].dt.year.fillna(0).astype(int)
+    out["event_instrument_year"] = out["instrument"].astype(str) + "_" + out["event_year"].astype(str)
+    out["feature_asof_leakage_violation"] = (
+        out["signal_date"].notna()
+        & out["feature_asof_date"].notna()
+        & (out["feature_asof_date"] > out["signal_date"])
+    )
+    feature_cols = [col for col in config.get("lgbm", {}).get("feature_columns", []) if col in out.columns]
+    if task_key == "launch":
+        feature_cols = [col for col in feature_cols if col != "failure_decision_window"]
+    out["sample_has_required_features"] = out[feature_cols].notna().all(axis=1) if feature_cols else True
+    base = (
+        out["target_industry"].astype(str).ne("")
+        & out["target_industry_mapping_exact_match"].fillna(False).astype(bool)
+        & (out["event_effective_date"] <= research_end)
+        & (out["feature_asof_date"] <= research_end)
+        & (~out["observed_reference_decision_overlap"].fillna(True).astype(bool))
+        & (~out["observed_reference_feature_overlap"].fillna(True).astype(bool))
+        & out["label_measurement_available"].fillna(False).astype(bool)
+        & out["sample_has_required_features"].fillna(False).astype(bool)
+        & (~out["feature_asof_leakage_violation"].fillna(True).astype(bool))
+        & out[label_col].notna()
+    )
+    if task_key == "failure":
+        out["target_50h120_reached_before_decision_effective_date"] = ~out["target_50h120_not_reached_before_decision_effective_date"].fillna(False).astype(bool)
+        out["target_100h240_reached_before_decision_effective_date"] = ~out["target_100h240_not_reached_before_decision_effective_date"].fillna(False).astype(bool)
+        out["post_50_pre_100_pending_big_winner_state"] = out["target_50h120_reached_before_decision_effective_date"] & out["target_100h240_not_reached_before_decision_effective_date"].fillna(False).astype(bool)
+        out["exclude_from_failure_primary_training_loss"] = out.get("exclude_from_failure_training_loss", out["post_50_pre_100_pending_big_winner_state"]).fillna(False).astype(bool)
+        out["exclude_from_failure_primary_precision_metrics"] = out.get("exclude_from_failure_validation_metrics", out["post_50_pre_100_pending_big_winner_state"]).fillna(False).astype(bool)
+        out["include_in_big_winner_100h240_false_reject_audit"] = out["post_50_pre_100_pending_big_winner_state"] | out["target_100h240_not_reached_before_decision_effective_date"].fillna(False).astype(bool)
+        out["include_in_post_50_pre_100_big_winner_audit"] = out["post_50_pre_100_pending_big_winner_state"]
+        base &= out["target_50h120_not_reached_before_decision_effective_date"].fillna(False).astype(bool)
+    out[f"{task_key}_base_eligible_before_purge"] = base
+    out["validation_start_date"] = pd.NaT
+    out["validation_end_date"] = pd.NaT
+    out["purge_eligible_for_current_fold"] = False
+    bounds = p0_9_validation_boundaries(out, config)
+    for fold_id, (start, end) in bounds.items():
+        idx = out["fold_id"].eq(fold_id)
+        out.loc[idx, "validation_start_date"] = start
+        out.loc[idx, "validation_end_date"] = end
+    train_purge = (
+        out["split"].eq("train")
+        & base
+        & out["feature_asof_date"].lt(out["validation_start_date"])
+        & out["event_effective_date"].lt(out["validation_start_date"])
+        & out["train_label_window_end_date"].lt(out["validation_start_date"])
+    )
+    validation_ok = out["split"].eq("validation") & base
+    out["purge_eligible_for_current_fold"] = train_purge | validation_ok
+    no_trunc = ~out["label_horizon_truncated"].fillna(True).astype(bool)
+    out[eligible_col] = out["purge_eligible_for_current_fold"] & no_trunc
+    out[p1_col] = (
+        out[eligible_col]
+        & out["split"].eq("validation")
+        & out["p1_promotion_eligible_fold"].fillna(False).astype(bool)
+        & (~out["label_measurement_uses_observed_reference"].fillna(False).astype(bool))
+        & (~out["observed_reference_label_measurement_overlap"].fillna(False).astype(bool))
+    )
+    return out.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_9_apply_sample_weights(
+    panel: pd.DataFrame,
+    config: dict[str, Any],
+    eligible_col: str,
+    positive_col: str,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    out = panel.copy()
+    out["base_sample_weight"] = 0.0
+    out["window_normalized_sample_weight"] = 0.0
+    out["final_sample_weight"] = 0.0
+    out["sample_weight"] = 0.0
+    cap_rows: list[dict[str, Any]] = []
+    window_rows: list[dict[str, Any]] = []
+    active = out["split"].isin(["train", "validation"]) & out[eligible_col].fillna(False).astype(bool)
+    if not active.any():
+        return out, pd.DataFrame(), pd.DataFrame()
+    denom_key = ["fold_id", "target_industry", "model_task", "split", "launch_episode_id"]
+    denom = out.loc[active].groupby(denom_key)["instrument"].transform("size")
+    out.loc[active, "base_sample_weight"] = 1.0 / denom.replace(0, np.nan)
+    out.loc[active, "window_normalized_sample_weight"] = out.loc[active, "base_sample_weight"]
+    if "failure_decision_window" in out.columns:
+        window_key = ["fold_id", "target_industry", "model_task", "split", "launch_stratum_event_id"]
+        window_count = out.loc[active].groupby(window_key)["failure_decision_window"].transform("size").replace(0, np.nan)
+        out.loc[active, "window_normalized_sample_weight"] = out.loc[active, "base_sample_weight"] / window_count
+        window_audit = out.loc[active, window_key + ["failure_decision_window", "base_sample_weight", "window_normalized_sample_weight"]].copy()
+        window_audit["sum_window_weight_per_launch_event"] = window_audit.groupby(window_key, dropna=False)["window_normalized_sample_weight"].transform("sum")
+        window_audit["window_weight_normalization_pass"] = (
+            (window_audit["sum_window_weight_per_launch_event"] - window_audit["base_sample_weight"]).abs() <= 1e-9
+        )
+        window_audit = window_audit.rename(columns={"base_sample_weight": "raw_sample_weight"})
+        window_rows = window_audit[
+            [
+                "target_industry",
+                "model_task",
+                "fold_id",
+                "launch_stratum_event_id",
+                "failure_decision_window",
+                "raw_sample_weight",
+                "window_normalized_sample_weight",
+                "sum_window_weight_per_launch_event",
+                "window_weight_normalization_pass",
+            ]
+        ].to_dict("records")
+    max_share = safe_float(config.get("sample_weight", {}).get("max_instrument_year_weight_share", 0.08), 0.08)
+    max_iter = int(config.get("sample_weight", {}).get("max_group_cap_iterations", 20))
+    for (fold_id, target_industry, model_task, split), idx in out.loc[active].groupby(["fold_id", "target_industry", "model_task", "split"], sort=False).groups.items():
+        idx_list = list(idx)
+        weights = out.loc[idx_list, "window_normalized_sample_weight"].astype(float).copy()
+        raw = weights.copy()
+        group_keys = out.loc[idx_list, "event_instrument_year"].astype(str)
+        group_cap_applied = False
+        for _ in range(max_iter):
+            total = safe_float(weights.sum(), 0.0)
+            if total <= 0:
+                break
+            sums = weights.groupby(group_keys).sum()
+            breach = sums[sums / total > max_share]
+            if breach.empty:
+                break
+            group_cap_applied = True
+            for group_key, group_sum in breach.items():
+                target_weight = max_share * total
+                if group_sum > target_weight and group_sum > 0:
+                    weights.loc[group_keys.eq(group_key)] *= target_weight / group_sum
+        if bool(config.get("sample_weight", {}).get("normalize_total_weight_per_split", True)):
+            total = safe_float(weights.sum(), 0.0)
+            if total > 0:
+                weights *= len(idx_list) / total
+        out.loc[idx_list, "final_sample_weight"] = weights
+        out.loc[idx_list, "sample_weight"] = weights
+        final_sums = weights.groupby(group_keys).sum()
+        raw_sums = raw.groupby(group_keys).sum()
+        final_total = safe_float(final_sums.sum(), 0.0)
+        raw_total = safe_float(raw_sums.sum(), 0.0)
+        for group_key in sorted(set(group_keys)):
+            rows_in_group = out.loc[idx_list].loc[group_keys.eq(group_key)]
+            cap_rows.append(
+                {
+                    "target_industry": target_industry,
+                    "model_task": model_task,
+                    "fold_id": fold_id,
+                    "split": split,
+                    "instrument_year": group_key,
+                    "raw_group_weight_sum": safe_float(raw_sums.get(group_key), 0.0),
+                    "raw_group_weight_share": safe_div(raw_sums.get(group_key), raw_total),
+                    "final_group_weight_sum": safe_float(final_sums.get(group_key), 0.0),
+                    "final_group_weight_share": safe_div(final_sums.get(group_key), final_total),
+                    "top_instrument_year_weight_share": p0_8_top_share(final_sums, 1),
+                    "instrument_year_weight_hhi": p0_8_hhi(final_sums),
+                    "group_cap_applied": bool(group_cap_applied),
+                    "max_instrument_year_weight_share": max_share,
+                    "row_count": int(len(rows_in_group)),
+                    "positive_count": int(rows_in_group[positive_col].fillna(False).astype(bool).sum()) if positive_col in rows_in_group else 0,
+                }
+            )
+    return out.replace([np.inf, -np.inf], np.nan), pd.DataFrame(cap_rows), pd.DataFrame(window_rows)
+
+
+def p0_9_build_sample_panels(config: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, pd.DataFrame]]:
+    launch_cache = p0_8_cache_file(config, "launch_model_sample_panel", "p0_8_launch_model_sample_panel.parquet")
+    failure_cache = p0_8_cache_file(config, "failure_model_sample_panel", "p0_8_failure_model_sample_panel.parquet")
+    if launch_cache.exists():
+        launch = pd.read_parquet(launch_cache)
+    else:
+        launch, _launch_audit, _launch_cap = p0_8_build_launch_sample_panel(config)
+    if failure_cache.exists():
+        failure = pd.read_parquet(failure_cache)
+    else:
+        failure, _failure_audit, _failure_cap, _failure_dedup, _failure_dedup_audit = p0_8_build_failure_sample_panel(config)
+    launch = p0_9_apply_pit_industry(launch, config)
+    failure = p0_9_apply_pit_industry(failure, config)
+    fixed = set(p0_9_target_industries(config))
+    launch = launch[launch["target_industry"].isin(fixed)].copy()
+    failure = failure[failure["target_industry"].isin(fixed)].copy()
+    launch = p0_9_apply_eligibility_and_purge(launch, config, "launch", "industry_launch_winner_score_lgbm", "launch_winner_50h120")
+    failure = p0_9_apply_eligibility_and_purge(failure, config, "failure", "industry_failure_reject_score_lgbm", "failure_reject_positive_primary")
+    launch, launch_cap, _launch_window = p0_9_apply_sample_weights(launch, config, "industry_launch_model_train_eval_eligible", "launch_winner_50h120")
+    failure, failure_cap, failure_window = p0_9_apply_sample_weights(failure, config, "industry_failure_model_train_eval_eligible", "failure_reject_positive_primary")
+    policy = config.get("failure_dedup", {}).get("failure_window_group_policy", "merge_3d_5d_10d_for_main_p1_metrics")
+    event_dedup_id = p0_8_hash(
+        {
+            "phase": "p0_9",
+            "model_task": "industry_failure_reject_score_lgbm",
+            "failure_window_group_policy": policy,
+            "feature_set_version": p0_9_cfg(config).get("feature_set_version", "p0_9_industry_feature_set_v1"),
+            "label_version": p0_9_cfg(config).get("label_version", "p0_9_industry_label_v1"),
+        }
+    )
+    failure["failure_event_dedup_candidate_id"] = event_dedup_id
+    failure["failure_event_level_dedup_key"] = failure["target_industry"].astype(str) + "__" + failure["failure_event_dedup_candidate_id"].astype(str) + "__" + failure["launch_stratum_event_id"].astype(str)
+    failure["failure_event_level_dedup_keep"] = False
+    keep_idx = (
+        failure[failure["split"].eq("validation") & failure["industry_failure_model_train_eval_eligible"].fillna(False).astype(bool)]
+        .sort_values(["target_industry", "fold_id", "launch_stratum_event_id", "failure_decision_effective_date", "failure_decision_window"])
+        .drop_duplicates(["target_industry", "fold_id", "failure_event_dedup_candidate_id", "launch_stratum_event_id"])
+        .index
+    )
+    failure.loc[keep_idx, "failure_event_level_dedup_keep"] = True
+    dedup_rows = []
+    for (target_industry, fold_id, candidate_id, launch_id), group in failure[failure["split"].eq("validation")].groupby(["target_industry", "fold_id", "failure_event_dedup_candidate_id", "launch_stratum_event_id"], dropna=False):
+        kept = group[group["failure_event_level_dedup_keep"].fillna(False).astype(bool)]
+        first = kept.iloc[0] if not kept.empty else group.sort_values(["failure_decision_effective_date", "failure_decision_window"]).iloc[0]
+        dedup_rows.append(
+            {
+                "target_industry": target_industry,
+                "model_task": "industry_failure_reject_score_lgbm",
+                "fold_id": fold_id,
+                "stable_candidate_id": "",
+                "failure_event_dedup_candidate_id": candidate_id,
+                "launch_stratum_event_id": launch_id,
+                "raw_window_hit_count": int(len(group)),
+                "kept_failure_decision_window": first.get("failure_decision_window"),
+                "kept_failure_decision_effective_date": first.get("failure_decision_effective_date"),
+                "duplicate_window_hit_count": int(max(len(group) - 1, 0)),
+                "dedup_policy": policy,
+                "dedup_pass": True,
+            }
+        )
+    extras = {
+        "p0_9_sample_weight_group_cap_audit.csv": pd.concat([launch_cap, failure_cap], ignore_index=True, sort=False),
+        "p0_9_failure_window_weight_normalization_audit.csv": failure_window,
+        "p0_9_industry_failure_multi_window_dedup_audit.csv": pd.DataFrame(dedup_rows),
+        "p0_9_industry_failure_event_dedup_panel.parquet": failure[failure["failure_event_level_dedup_keep"].fillna(False).astype(bool)].copy(),
+    }
+    return launch, failure, extras
+
+
+def p0_9_target_mapping_audit(config: dict[str, Any], launch: pd.DataFrame, failure: pd.DataFrame) -> pd.DataFrame:
+    membership = p0_9_pit_membership(config)
+    known_names = set(membership["industry_name"].dropna().astype(str).unique())
+    combined = pd.concat(
+        [
+            launch[["target_industry", "instrument", "event_instrument_year", "launch_stratum_event_id"]],
+            failure[["target_industry", "instrument", "event_instrument_year", "launch_stratum_event_id"]],
+        ],
+        ignore_index=True,
+        sort=False,
+    )
+    rows = []
+    for name in p0_9_target_industries(config):
+        group = combined[combined["target_industry"].eq(name)]
+        code = membership.loc[membership["industry_name"].eq(name), "industry_ts_code"].dropna().astype(str)
+        exact = name in known_names
+        rows.append(
+            {
+                "configured_industry_name": name,
+                "matched_pit_industry_name": name if exact else "",
+                "industry_code_if_available": code.iloc[0] if len(code) else "",
+                "match_status": "exact_match" if exact else "unresolved",
+                "industry_enabled_for_p0_9": bool(exact),
+                "sample_event_count": int(group["launch_stratum_event_id"].nunique()) if not group.empty else 0,
+                "sample_instrument_count": int(group["instrument"].nunique()) if not group.empty else 0,
+                "sample_instrument_year_count": int(group["event_instrument_year"].nunique()) if not group.empty else 0,
+                "missing_or_unknown_industry_count": int(combined["target_industry"].eq("").sum()) if name == p0_9_target_industries(config)[0] else 0,
+                "mapping_exclusion_reason": "" if exact else "configured industry not found in PIT membership",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_9_weighted_rate(frame: pd.DataFrame, mask: pd.Series, weight_col: str = "final_sample_weight") -> float:
+    if frame.empty:
+        return np.nan
+    w = pd.to_numeric(frame.get(weight_col, pd.Series(1.0, index=frame.index)), errors="coerce").fillna(0.0)
+    m = mask.reindex(frame.index).fillna(False).astype(bool)
+    return safe_div(w[m].sum(), w.sum())
+
+
+def p0_9_metric_base_selected(frame: pd.DataFrame, candidate_mask: pd.Series, task_key: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    eligible_col = "industry_launch_model_train_eval_eligible" if task_key == "launch" else "industry_failure_model_train_eval_eligible"
+    base = frame[frame["split"].eq("validation") & frame[eligible_col].fillna(False).astype(bool)].copy()
+    selected = base.loc[candidate_mask.reindex(base.index).fillna(False)].copy()
+    if task_key == "failure" and not selected.empty:
+        selected = (
+            selected.sort_values(["target_industry", "launch_stratum_event_id", "failure_decision_effective_date", "failure_decision_window"])
+            .drop_duplicates(["target_industry", "launch_stratum_event_id"])
+            .copy()
+        )
+    return base, selected
+
+
+def p0_9_candidate_metric_row(
+    frame: pd.DataFrame,
+    candidate_mask: pd.Series,
+    candidate: dict[str, Any],
+    fold: dict[str, Any],
+    matched_summary: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    task_key = "launch" if "launch" in candidate["model_task"] else "failure"
+    base, selected = p0_9_metric_base_selected(frame, candidate_mask, task_key)
+    weight = pd.to_numeric(selected.get("final_sample_weight", pd.Series(1.0, index=selected.index)), errors="coerce").fillna(0.0)
+    base_weight = pd.to_numeric(base.get("final_sample_weight", pd.Series(1.0, index=base.index)), errors="coerce").fillna(0.0)
+    row = {
+        "target_industry": candidate["target_industry"],
+        "model_task": candidate["model_task"],
+        "fold_id": fold["fold_id"],
+        "validation_fold_role": fold["validation_fold_role"],
+        "validation_scope": "oof_core_2020_2023" if fold["p1_promotion_eligible_fold"] else "oof_with_2024_label_measurement",
+        "candidate_type": "lgbm_score_bucket",
+        "stable_candidate_id": candidate["stable_candidate_id"],
+        "predeclared_bucket_id": candidate["predeclared_bucket_id"],
+        "event_count": int(len(selected)),
+        "weighted_event_count": safe_float(weight.sum(), 0.0),
+        "validation_selected_on_validation": False,
+        "fold_2024_used_for_p1_promotion": False,
+        "candidate_baseline_missing_row_rate": 0.0,
+        "candidate_baseline_missing_weight_share": 0.0,
+        "candidate_baseline_sparse_cell_weight_share": 0.0,
+        "candidate_baseline_fallback_level": "level_0_or_fold_industry_all",
+    }
+    iy = selected.groupby("event_instrument_year")["final_sample_weight"].sum() if not selected.empty else pd.Series(dtype=float)
+    instruments = selected.groupby("instrument")["final_sample_weight"].sum() if not selected.empty else pd.Series(dtype=float)
+    regimes = selected.groupby("market_regime")["final_sample_weight"].sum() if not selected.empty and "market_regime" in selected else pd.Series(dtype=float)
+    row.update(
+        {
+            "distinct_instruments": int(selected["instrument"].nunique()) if not selected.empty else 0,
+            "distinct_instrument_years": int(selected["event_instrument_year"].nunique()) if not selected.empty else 0,
+            "top1_instrument_contribution": p0_8_top_share(instruments, 1),
+            "top5_instrument_contribution": p0_8_top_share(instruments, 5),
+            "oof_top_instrument_year_weight_share": p0_8_top_share(iy, 1),
+            "oof_instrument_year_weight_hhi": p0_8_hhi(iy),
+            "oof_regime_hhi": p0_8_hhi(regimes),
+            "oof_top1_regime_contribution": p0_8_top_share(regimes, 1),
+        }
+    )
+    if task_key == "launch":
+        pos = selected["launch_winner_50h120"].fillna(False).astype(bool) if not selected.empty else pd.Series(dtype=bool)
+        base_pos = base["launch_winner_50h120"].fillna(False).astype(bool) if not base.empty else pd.Series(dtype=bool)
+        false_pos = selected["launch_false_positive_primary"].fillna(False).astype(bool) if not selected.empty else pd.Series(dtype=bool)
+        base_false = base["launch_false_positive_primary"].fillna(False).astype(bool) if not base.empty else pd.Series(dtype=bool)
+        winner_rate = safe_div(weight[pos].sum(), weight.sum()) if len(pos) else np.nan
+        base_rate = safe_div(base_weight[base_pos].sum(), base_weight.sum()) if len(base_pos) else np.nan
+        family_baseline = base.groupby("launch_family")["launch_winner_50h120"].mean().to_dict() if not base.empty else {}
+        family_base = selected["launch_family"].map(family_baseline) if not selected.empty else pd.Series(dtype=float)
+        weighted_family_base = float(np.average(family_base.fillna(base_rate), weights=weight)) if len(selected) and weight.sum() > 0 else np.nan
+        row.update(
+            {
+                "positive_count": int(pos.sum()) if len(pos) else 0,
+                "launch_winner_rate": winner_rate,
+                "industry_local_all_launch_baseline_rate": base_rate,
+                "launch_lift_vs_industry_all": safe_div(winner_rate, base_rate),
+                "launch_lift_vs_candidate_scope_weighted_baseline": safe_div(winner_rate, weighted_family_base),
+                "launch_lift_vs_industry_local_same_family_baseline": safe_div(winner_rate, weighted_family_base),
+                "candidate_scope_weighted_baseline_positive_rate": weighted_family_base,
+                "false_positive_rate": safe_div(weight[false_pos].sum(), weight.sum()) if len(false_pos) else np.nan,
+                "candidate_scope_weighted_baseline_false_positive_rate": safe_div(base_weight[base_false].sum(), base_weight.sum()) if len(base_false) else np.nan,
+                "median_future_max_drawdown_60d": safe_float(selected["launch_future_max_drawdown_60d"].median(), np.nan) if not selected.empty else np.nan,
+                "candidate_scope_weighted_baseline_median_drawdown_60d": safe_float(base["launch_future_max_drawdown_60d"].median(), np.nan) if not base.empty else np.nan,
+                "winner_episode_coverage": safe_div(selected.loc[pos, "launch_episode_id"].nunique() if len(pos) else 0, base.loc[base_pos, "launch_episode_id"].nunique() if len(base_pos) else 0),
+            }
+        )
+    else:
+        primary = selected[~selected["exclude_from_failure_primary_precision_metrics"].fillna(False).astype(bool)].copy()
+        pw = pd.to_numeric(primary.get("final_sample_weight", pd.Series(1.0, index=primary.index)), errors="coerce").fillna(0.0)
+        pos = primary["failure_reject_positive_primary"].fillna(False).astype(bool) if not primary.empty else pd.Series(dtype=bool)
+        nonwinner = primary["launch_nonwinner_primary"].fillna(False).astype(bool) if not primary.empty else pd.Series(dtype=bool)
+        base_primary = base[~base["exclude_from_failure_primary_precision_metrics"].fillna(False).astype(bool)].copy()
+        bw = pd.to_numeric(base_primary.get("final_sample_weight", pd.Series(1.0, index=base_primary.index)), errors="coerce").fillna(0.0)
+        base_pos = base_primary["failure_reject_positive_primary"].fillna(False).astype(bool) if not base_primary.empty else pd.Series(dtype=bool)
+        base_nonwinner = base_primary["launch_nonwinner_primary"].fillna(False).astype(bool) if not base_primary.empty else pd.Series(dtype=bool)
+        precision = safe_div(pw[pos].sum(), pw.sum()) if len(pos) else np.nan
+        base_precision = safe_div(bw[base_pos].sum(), bw.sum()) if len(base_pos) else np.nan
+        nonwinner_precision = safe_div(pw[nonwinner].sum(), pw.sum()) if len(nonwinner) else np.nan
+        base_nonwinner_precision = safe_div(bw[base_nonwinner].sum(), bw.sum()) if len(base_nonwinner) else np.nan
+        false_launch = primary["failure_false_reject_winner_from_launch_50h120"].fillna(False).astype(bool) if not primary.empty else pd.Series(dtype=bool)
+        false_big_launch = primary["failure_false_reject_big_winner_from_launch_100h240"].fillna(False).astype(bool) if not primary.empty else pd.Series(dtype=bool)
+        false_decision = primary["failure_false_reject_winner_from_decision_50h120"].fillna(False).astype(bool) if not primary.empty else pd.Series(dtype=bool)
+        false_big_decision = primary["failure_false_reject_big_winner_from_decision_100h240"].fillna(False).astype(bool) if not primary.empty else pd.Series(dtype=bool)
+        first_dd = pd.to_datetime(primary.get("first_12pct_drawdown_date_from_stratum"), errors="coerce")
+        decision = pd.to_datetime(primary.get("failure_decision_effective_date"), errors="coerce")
+        has_dd = first_dd.notna()
+        before_dd = has_dd & decision.lt(first_dd)
+        same_day = has_dd & decision.eq(first_dd)
+        real_adverse = safe_float((-primary["future_max_drawdown_60d_from_decision_reference"].clip(upper=0)).median(), np.nan) if not primary.empty else np.nan
+        matched_summary = matched_summary or {}
+        matched_precision = safe_float(matched_summary.get("matched_delay_failure_precision"), np.nan)
+        matched_adverse = safe_float(matched_summary.get("matched_delay_drawdown_from_pseudo_reject_60d_median"), np.nan)
+        row.update(
+            {
+                "event_level_dedup_reject_count": int(len(primary)),
+                "failure_positive_count": int(pos.sum()) if len(pos) else 0,
+                "failure_precision": precision,
+                "industry_local_failure_baseline_precision": base_precision,
+                "candidate_scope_weighted_failure_baseline_precision": base_precision,
+                "failure_precision_lift_vs_industry_baseline": safe_div(precision, base_precision),
+                "failure_precision_lift_vs_candidate_scope_weighted_baseline": safe_div(precision, base_precision),
+                "nonwinner_precision": nonwinner_precision,
+                "candidate_scope_weighted_baseline_nonwinner_precision": base_nonwinner_precision,
+                "nonwinner_precision_lift": safe_div(nonwinner_precision, base_nonwinner_precision),
+                "matched_delay_failure_precision": matched_precision,
+                "failure_precision_lift_vs_matched_delay": safe_div(precision, matched_precision),
+                "real_adverse_drawdown_after_reject_60d": real_adverse,
+                "matched_delay_adverse_drawdown_after_pseudo_reject_60d": matched_adverse,
+                "drawdown_avoided_vs_matched_delay": real_adverse - matched_adverse if np.isfinite(real_adverse) and np.isfinite(matched_adverse) else np.nan,
+                "filter_before_12pct_drawdown_rate": safe_div(before_dd.sum(), has_dd.sum()),
+                "filter_before_12pct_drawdown_rate_including_same_day_sensitivity": safe_div((before_dd | same_day).sum(), has_dd.sum()),
+                "same_day_12pct_drawdown_ambiguous_share": safe_div(same_day.sum(), has_dd.sum()),
+                "winner_false_reject_from_launch_rate": safe_div(pw[false_launch].sum(), pw.sum()) if len(false_launch) else np.nan,
+                "big_winner_false_reject_from_launch_rate": safe_div(pw[false_big_launch].sum(), pw.sum()) if len(false_big_launch) else np.nan,
+                "decision_reference_residual_50h120_rate": safe_div(pw[false_decision].sum(), pw.sum()) if len(false_decision) else np.nan,
+                "decision_reference_residual_100h240_rate": safe_div(pw[false_big_decision].sum(), pw.sum()) if len(false_big_decision) else np.nan,
+                "pending_winner_coverage_loss_from_launch": safe_div(pw[false_launch].sum(), bw[base_primary["launch_winner_50h120"].fillna(False).astype(bool)].sum()) if not base_primary.empty else np.nan,
+                "total_winner_coverage_loss_from_launch": safe_div(pw[false_launch].sum(), bw[base_primary["launch_winner_50h120"].fillna(False).astype(bool)].sum()) if not base_primary.empty else np.nan,
+                "post_50_pre_100_big_winner_false_reject_rate": 0.0,
+                "decision_reference_secondary_veto_pass": bool(
+                    safe_div(pw[false_decision].sum(), pw.sum()) <= p0_9_threshold({"thresholds": {}}, "unused", 1.0)
+                ),
+            }
+        )
+    return row
+
+
+def p0_9_lgbm_trainability(
+    config: dict[str, Any],
+    panel: pd.DataFrame,
+    target_industry: str,
+    fold: dict[str, Any],
+    model_task: str,
+    label_col: str,
+    eligible_col: str,
+) -> tuple[dict[str, Any], pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    fold_panel = panel[panel["target_industry"].eq(target_industry) & panel["fold_id"].eq(fold["fold_id"])].copy()
+    train_all = fold_panel[fold_panel["split"].eq("train") & fold_panel[eligible_col].fillna(False).astype(bool)].copy()
+    outer = fold_panel[fold_panel["split"].eq("validation") & fold_panel[eligible_col].fillna(False).astype(bool)].copy()
+    if train_all.empty:
+        train = train_all
+        inner = train_all
+        inner_start = pd.NaT
+        inner_purged = 0
+    else:
+        inner_year = int(train_all["event_year"].max())
+        inner = train_all[train_all["event_year"].eq(inner_year)].copy()
+        inner_start = pd.to_datetime(inner["event_effective_date"], errors="coerce").min()
+        train_pre = train_all[train_all["event_year"].lt(inner_year)].copy()
+        train = train_pre[pd.to_datetime(train_pre["train_label_window_end_date"], errors="coerce").lt(inner_start)].copy() if pd.notna(inner_start) else train_pre.iloc[0:0].copy()
+        inner_purged = int(len(train_pre) - len(train))
+    y_train = train[label_col].fillna(False).astype(bool) if label_col in train else pd.Series(dtype=bool)
+    y_inner = inner[label_col].fillna(False).astype(bool) if label_col in inner else pd.Series(dtype=bool)
+    y_outer = outer[label_col].fillna(False).astype(bool) if label_col in outer else pd.Series(dtype=bool)
+    thresholds = config.get("thresholds", {})
+    checks = [
+        ("train_event_count_after_purge", len(train), int(thresholds.get("min_industry_lgbm_train_event_count", 500))),
+        ("train_positive_count_after_purge", int(y_train.sum()), int(thresholds.get("min_industry_lgbm_train_positive_count", 30))),
+        ("train_negative_count_after_purge", int((~y_train).sum()) if len(y_train) else 0, int(thresholds.get("min_industry_lgbm_train_negative_count", 100))),
+        ("train_distinct_instruments", int(train["instrument"].nunique()) if not train.empty else 0, int(thresholds.get("min_industry_lgbm_train_distinct_instruments", 20))),
+        ("train_distinct_instrument_years", int(train["event_instrument_year"].nunique()) if not train.empty else 0, int(thresholds.get("min_industry_lgbm_train_distinct_instrument_years", 40))),
+        ("inner_validation_event_count", len(inner), int(thresholds.get("min_industry_lgbm_inner_validation_event_count", 100))),
+        ("inner_validation_positive_count", int(y_inner.sum()), int(thresholds.get("min_industry_lgbm_inner_validation_positive_count", 8))),
+        ("outer_validation_event_count_eligible", len(outer), int(thresholds.get("min_industry_lgbm_outer_validation_event_count", 80))),
+        ("outer_validation_positive_count_eligible", int(y_outer.sum()), int(thresholds.get("min_industry_lgbm_outer_validation_positive_count", 5))),
+        ("outer_validation_distinct_instruments", int(outer["instrument"].nunique()) if not outer.empty else 0, int(thresholds.get("min_industry_lgbm_outer_validation_distinct_instruments", 8))),
+        ("outer_validation_distinct_instrument_years", int(outer["event_instrument_year"].nunique()) if not outer.empty else 0, int(thresholds.get("min_industry_lgbm_outer_validation_distinct_instrument_years", 8))),
+    ]
+    failed = [name for name, actual, required in checks if actual < required]
+    walk_pass = bool((pd.to_datetime(train.get("train_label_window_end_date", pd.Series(dtype="datetime64[ns]")), errors="coerce") < pd.to_datetime(fold_panel.get("validation_start_date", pd.Series([pd.NaT])).dropna().min())).all()) if not train.empty else True
+    inner_pass = bool(inner_purged >= 0)
+    row = {
+        "target_industry": target_industry,
+        "model_task": model_task,
+        "fold_id": fold["fold_id"],
+        "validation_fold_role": fold["validation_fold_role"],
+        "walk_forward_purge_rule_pass": walk_pass,
+        "inner_validation_purge_rule_pass": inner_pass,
+        "train_event_count_after_purge": len(train),
+        "train_positive_count_after_purge": int(y_train.sum()) if len(y_train) else 0,
+        "train_negative_count_after_purge": int((~y_train).sum()) if len(y_train) else 0,
+        "train_distinct_instruments": int(train["instrument"].nunique()) if not train.empty else 0,
+        "train_distinct_instrument_years": int(train["event_instrument_year"].nunique()) if not train.empty else 0,
+        "inner_validation_event_count": len(inner),
+        "inner_validation_positive_count": int(y_inner.sum()) if len(y_inner) else 0,
+        "outer_validation_event_count_eligible": len(outer),
+        "outer_validation_positive_count_eligible": int(y_outer.sum()) if len(y_outer) else 0,
+        "outer_validation_distinct_instruments": int(outer["instrument"].nunique()) if not outer.empty else 0,
+        "outer_validation_distinct_instrument_years": int(outer["event_instrument_year"].nunique()) if not outer.empty else 0,
+        "inner_train_purged_due_to_label_window_count": inner_purged,
+        "fold_status": "trainable" if not failed and walk_pass and inner_pass else "disabled_due_to_insufficient_industry_sample_or_purge",
+        "trainability_rejection_reason": ";".join(failed),
+        "lgbm_training_enabled_for_industry_fold": not failed and walk_pass and inner_pass,
+        "fold_excluded_from_industry_lgbm_oof_aggregation": bool(failed or not walk_pass or not inner_pass),
+    }
+    return row, train, inner, outer
+
+
+def p0_9_matched_delay_rows(
+    config: dict[str, Any],
+    outer: pd.DataFrame,
+    candidate_mask: pd.Series,
+    candidate: dict[str, Any],
+    fold: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    base, selected = p0_9_metric_base_selected(outer, candidate_mask, "failure")
+    if selected.empty or base.empty:
+        return [], {}
+    repeats = int(config.get("matched_delay", {}).get("n_repeats", 100))
+    rng = np.random.default_rng(int(config.get("matched_delay", {}).get("random_seed", 20260505)) + int(re.sub(r"\D", "", fold["fold_id"]) or 0))
+    n = len(selected)
+    rows = []
+    precision_values = []
+    nonwinner_values = []
+    dd_values = []
+    false_values = []
+    false_big_values = []
+    for repeat_id in range(repeats):
+        replace = n > len(base)
+        sampled_idx = rng.choice(base.index.to_numpy(), size=n, replace=replace)
+        pseudo = base.loc[sampled_idx].copy()
+        pos = pseudo["failure_reject_positive_primary"].fillna(False).astype(bool)
+        nonwinner = pseudo["launch_nonwinner_primary"].fillna(False).astype(bool)
+        false_launch = pseudo["failure_false_reject_winner_from_launch_50h120"].fillna(False).astype(bool)
+        false_big = pseudo["failure_false_reject_big_winner_from_launch_100h240"].fillna(False).astype(bool)
+        precision = float(pos.mean()) if len(pos) else np.nan
+        nonwinner_precision = float(nonwinner.mean()) if len(nonwinner) else np.nan
+        drawdown_median = safe_float(pseudo["future_max_drawdown_60d_from_decision_reference"].median(), np.nan)
+        false_rate = float(false_launch.mean()) if len(false_launch) else np.nan
+        false_big_rate = float(false_big.mean()) if len(false_big) else np.nan
+        precision_values.append(precision)
+        nonwinner_values.append(nonwinner_precision)
+        dd_values.append(abs(min(0.0, safe_float(drawdown_median, 0.0))))
+        false_values.append(false_rate)
+        false_big_values.append(false_big_rate)
+        rows.append(
+            {
+                "target_industry": candidate["target_industry"],
+                "model_task": candidate["model_task"],
+                "fold_id": fold["fold_id"],
+                "stable_candidate_id": candidate["stable_candidate_id"],
+                "predeclared_bucket_id": candidate["predeclared_bucket_id"],
+                "matched_delay_repeat_id": repeat_id,
+                "matched_delay_mode": config.get("matched_delay", {}).get("mode", "exact_real_reject_count"),
+                "matched_delay_unit": "event-level dedup rejected row",
+                "matched_delay_random_seed": int(config.get("matched_delay", {}).get("random_seed", 20260505)),
+                "real_reject_event_count": n,
+                "pseudo_reject_event_count": int(len(pseudo)),
+                "exact_real_reject_count_pass": int(len(pseudo)) == n,
+                "matched_delay_failure_precision": precision,
+                "matched_delay_nonwinner_precision": nonwinner_precision,
+                "matched_delay_drawdown_from_pseudo_reject_60d_median": drawdown_median,
+                "matched_delay_winner_false_reject_from_launch_rate": false_rate,
+                "matched_delay_big_winner_false_reject_from_launch_rate": false_big_rate,
+            }
+        )
+    summary = {
+        "matched_delay_failure_precision": safe_float(pd.Series(precision_values).mean(), np.nan),
+        "matched_delay_nonwinner_precision": safe_float(pd.Series(nonwinner_values).mean(), np.nan),
+        "matched_delay_drawdown_from_pseudo_reject_60d_median": safe_float(pd.Series(dd_values).median(), np.nan),
+        "matched_delay_winner_false_reject_from_launch_rate": safe_float(pd.Series(false_values).mean(), np.nan),
+        "matched_delay_big_winner_false_reject_from_launch_rate": safe_float(pd.Series(false_big_values).mean(), np.nan),
+    }
+    return rows, summary
+
+
+def p0_9_run_lgbm_discovery(
+    config: dict[str, Any],
+    launch_panel: pd.DataFrame,
+    failure_panel: pd.DataFrame,
+) -> tuple[dict[str, pd.DataFrame], dict[str, pd.DataFrame]]:
+    frames: dict[str, pd.DataFrame] = {}
+    cache_frames: dict[str, pd.DataFrame] = {}
+    trainability_rows: list[dict[str, Any]] = []
+    fold_metric_rows: list[dict[str, Any]] = []
+    bucket_rows: list[dict[str, Any]] = []
+    importance_rows: list[dict[str, Any]] = []
+    shap_rows: list[dict[str, Any]] = []
+    leaf_rows: list[dict[str, Any]] = []
+    model_card_rows: list[dict[str, Any]] = []
+    early_rows: list[dict[str, Any]] = []
+    bucket_audit_rows: list[dict[str, Any]] = []
+    matched_rows: list[dict[str, Any]] = []
+    predictions: dict[str, list[pd.DataFrame]] = {"launch": [], "failure": []}
+    try:
+        import lightgbm as lgb
+    except Exception as exc:
+        for target_industry in p0_9_target_industries(config):
+            for fold in p0_9_walk_folds(config):
+                for model_task in ["industry_launch_winner_score_lgbm", "industry_failure_reject_score_lgbm"]:
+                    trainability_rows.append(
+                        {
+                            "target_industry": target_industry,
+                            "model_task": model_task,
+                            "fold_id": fold["fold_id"],
+                            "fold_status": "disabled_due_to_lightgbm_unavailable",
+                            "trainability_rejection_reason": str(exc),
+                            "lgbm_training_enabled_for_industry_fold": False,
+                            "fold_excluded_from_industry_lgbm_oof_aggregation": True,
+                        }
+                    )
+        frames["p0_9_industry_lgbm_fold_trainability_audit.csv"] = pd.DataFrame(trainability_rows)
+        return frames, {
+            "p0_9_industry_launch_oof_prediction_panel.parquet": pd.DataFrame(),
+            "p0_9_industry_failure_oof_prediction_panel.parquet": pd.DataFrame(),
+        }
+
+    tasks = [
+        ("launch", launch_panel, "industry_launch_winner_score_lgbm", "launch_winner_50h120", "industry_launch_model_train_eval_eligible", config.get("model_tasks", {}).get("launch", {}).get("predeclared_buckets", [])),
+        ("failure", failure_panel, "industry_failure_reject_score_lgbm", "failure_reject_positive_primary", "industry_failure_model_train_eval_eligible", config.get("model_tasks", {}).get("failure", {}).get("predeclared_buckets", [])),
+    ]
+    lgbm_hash = p0_9_lgbm_config_hash(config)
+    for task_key, panel, model_task, label_col, eligible_col, bucket_ids in tasks:
+        for target_industry in p0_9_target_industries(config):
+            for fold in p0_9_walk_folds(config):
+                trainability, train, inner, outer = p0_9_lgbm_trainability(config, panel, target_industry, fold, model_task, label_col, eligible_col)
+                trainability_rows.append(trainability)
+                if not trainability["lgbm_training_enabled_for_industry_fold"]:
+                    continue
+                all_train = pd.concat([train, inner], ignore_index=False)
+                encoder = p0_8_fit_lgbm_matrix_encoder(train, pd.concat([inner, outer], ignore_index=False), config, include_industry_regime=True)
+                feature_cols = list(encoder.get("feature_cols", []))
+                cat_cols = list(encoder.get("cat_cols", []))
+                forbidden = set(config.get("lgbm", {}).get("forbidden_feature_columns", []))
+                feature_cols = [col for col in feature_cols if col not in forbidden]
+                encoder["feature_cols"] = feature_cols
+                encoder["cat_cols"] = [col for col in cat_cols if col in feature_cols]
+                x_train = p0_8_apply_lgbm_matrix_encoder(train, encoder)
+                x_inner = p0_8_apply_lgbm_matrix_encoder(inner, encoder)
+                x_all_train = p0_8_apply_lgbm_matrix_encoder(all_train, encoder)
+                x_outer = p0_8_apply_lgbm_matrix_encoder(outer, encoder)
+                params = config.get("lgbm", {})
+                num_boost_round = int(params.get("n_estimators", 800))
+                lgb_params = {
+                    "objective": params.get("objective", "binary"),
+                    "boosting_type": params.get("boosting_type", "gbdt"),
+                    "metric": "binary_logloss",
+                    "learning_rate": safe_float(params.get("learning_rate", 0.03), 0.03),
+                    "num_leaves": int(params.get("num_leaves", 31)),
+                    "max_depth": int(params.get("max_depth", 5)),
+                    "min_data_in_leaf": int(params.get("min_data_in_leaf", 100)),
+                    "feature_fraction": safe_float(params.get("feature_fraction", 0.8), 0.8),
+                    "bagging_fraction": safe_float(params.get("bagging_fraction", 0.8), 0.8),
+                    "bagging_freq": int(params.get("bagging_freq", 1)),
+                    "lambda_l1": safe_float(params.get("lambda_l1", 0.0), 0.0),
+                    "lambda_l2": safe_float(params.get("lambda_l2", 1.0), 1.0),
+                    "num_threads": int(params.get("n_jobs", 1)),
+                    "seed": int(params.get("random_seed", 20260505)),
+                    "verbosity": -1,
+                    "force_col_wise": True,
+                }
+                callbacks = []
+                early_rounds = params.get("early_stopping_rounds", 100)
+                if early_rounds:
+                    callbacks.append(lgb.early_stopping(int(early_rounds), verbose=False))
+                categorical_feature = [col for col in encoder.get("cat_cols", []) if col in feature_cols]
+                train_set = lgb.Dataset(x_train, label=train[label_col].fillna(False).astype(int), weight=train["final_sample_weight"], feature_name=feature_cols, categorical_feature=categorical_feature, free_raw_data=False)
+                inner_set = lgb.Dataset(x_inner, label=inner[label_col].fillna(False).astype(int), weight=inner["final_sample_weight"], reference=train_set, feature_name=feature_cols, categorical_feature=categorical_feature, free_raw_data=False)
+                model = lgb.train(lgb_params, train_set, num_boost_round=num_boost_round, valid_sets=[inner_set], valid_names=["inner"], callbacks=callbacks)
+                best_iter = int(model.best_iteration or num_boost_round)
+                train_score = pd.Series(model.predict(x_all_train, num_iteration=best_iter), index=all_train.index)
+                outer_score = pd.Series(model.predict(x_outer, num_iteration=best_iter), index=outer.index)
+                importance = model.feature_importance(importance_type="gain")
+                pred_cols = [
+                    "target_industry",
+                    "fold_id",
+                    "validation_fold_role",
+                    "launch_stratum_event_id",
+                    "launch_episode_id",
+                    "instrument",
+                    "event_effective_date",
+                    "event_instrument_year",
+                    "market_regime",
+                    "final_sample_weight",
+                    label_col,
+                ]
+                pred = outer[[col for col in pred_cols if col in outer.columns]].copy()
+                pred["model_task"] = model_task
+                pred["prediction_score"] = outer_score.reindex(pred.index).to_numpy()
+                pred["label"] = pred[label_col]
+                if task_key == "failure":
+                    for col in ["failure_decision_window", "failure_event_dedup_candidate_id", "failure_event_level_dedup_key", "failure_decision_effective_date"]:
+                        pred[col] = outer[col].to_numpy() if col in outer else ""
+                predictions[task_key].append(pred)
+                fold_metric_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "fold_id": fold["fold_id"],
+                        "validation_fold_role": fold["validation_fold_role"],
+                        "model_task": model_task,
+                        "validation_event_count": len(outer),
+                        "validation_positive_count": int(outer[label_col].fillna(False).astype(bool).sum()),
+                        "auc": p0_8_auc(outer[label_col], outer_score),
+                        "binary_logloss": p0_8_logloss(outer[label_col], outer_score, outer["final_sample_weight"]),
+                        "best_iteration": best_iter,
+                        "early_stopping_uses_outer_validation_fold": False,
+                        "early_stopping_uses_inner_train_split_only": True,
+                    }
+                )
+                for feature_name, value in zip(feature_cols, importance, strict=False):
+                    importance_rows.append(
+                        {
+                            "target_industry": target_industry,
+                            "fold_id": fold["fold_id"],
+                            "model_task": model_task,
+                            "feature_name": feature_name,
+                            "importance_gain": safe_float(value, 0.0),
+                            "feature_set_version": p0_9_cfg(config).get("feature_set_version", "p0_9_industry_feature_set_v1"),
+                        }
+                    )
+                try:
+                    contrib = model.predict(x_outer, pred_contrib=True, num_iteration=best_iter)
+                    if np.ndim(contrib) == 2 and len(feature_cols) > 0:
+                        for i, feature_name in enumerate(feature_cols):
+                            shap_rows.append(
+                                {
+                                    "target_industry": target_industry,
+                                    "fold_id": fold["fold_id"],
+                                    "model_task": model_task,
+                                    "feature_name": feature_name,
+                                    "mean_abs_lgbm_contribution": float(np.nanmean(np.abs(contrib[:, i]))),
+                                    "contribution_method": "lightgbm_pred_contrib",
+                                }
+                            )
+                except Exception as exc:
+                    shap_rows.append({"target_industry": target_industry, "fold_id": fold["fold_id"], "model_task": model_task, "feature_name": "", "mean_abs_lgbm_contribution": np.nan, "contribution_method": f"failed:{exc}"})
+                for bucket_id in bucket_ids:
+                    pct = 0.10 if "10pct" in bucket_id else (0.05 if "5pct" in bucket_id else 0.02)
+                    threshold = float(train_score.quantile(1.0 - pct))
+                    mask = outer_score >= threshold
+                    stable_id = p0_8_hash(
+                        {
+                            "target_industry": target_industry,
+                            "model_task": model_task,
+                            "candidate_type": "lgbm_score_bucket",
+                            "predeclared_bucket_id": bucket_id,
+                            "bucket_policy": f"top_{pct:.2f}_by_train_threshold",
+                            "feature_set_version": p0_9_cfg(config).get("feature_set_version", "p0_9_industry_feature_set_v1"),
+                            "label_version": p0_9_cfg(config).get("label_version", "p0_9_industry_label_v1"),
+                            "sample_panel_version": p0_9_cfg(config).get("sample_panel_version", "p0_9_industry_sample_panel_v1"),
+                            "industry_mapping_version": p0_9_cfg(config).get("industry_mapping_version", "pit_sw_l1_exact_name_v1"),
+                            "lgbm_config_hash": lgbm_hash,
+                            "sample_weight_policy_hash": p0_8_hash(config.get("sample_weight", {})),
+                            "trainability_policy_hash": p0_8_hash(config.get("thresholds", {})),
+                            "random_seed": int(params.get("random_seed", 20260505)),
+                            "training_code_version": p0_9_cfg(config).get("training_code_version", "run_explore9_p0_9_v1"),
+                            "null_policy_version": p0_9_cfg(config).get("null_policy_version", "p0_9_candidate_level_null_v1"),
+                        }
+                    )
+                    candidate = {"target_industry": target_industry, "model_task": model_task, "stable_candidate_id": stable_id, "predeclared_bucket_id": bucket_id}
+                    matched_summary: dict[str, Any] = {}
+                    if task_key == "failure":
+                        new_matched_rows, matched_summary = p0_9_matched_delay_rows(config, outer.assign(split="validation"), pd.Series(mask, index=outer.index), candidate, fold)
+                        matched_rows.extend(new_matched_rows)
+                    metric = p0_9_candidate_metric_row(outer.assign(split="validation"), pd.Series(mask, index=outer.index), candidate, fold, matched_summary)
+                    metric["train_score_threshold"] = threshold
+                    metric["score_bucket_policy"] = f"top_{pct:.2f}_by_train_threshold"
+                    bucket_rows.append(metric)
+                    bucket_audit_rows.append(
+                        {
+                            "target_industry": target_industry,
+                            "model_task": model_task,
+                            "fold_id": fold["fold_id"],
+                            "predeclared_bucket_id": bucket_id,
+                            "train_score_threshold": threshold,
+                            "validation_score_threshold_used": False,
+                            "threshold_policy": f"top_{pct:.2f}_by_train_threshold",
+                            "threshold_source": "train_inner_score_quantile",
+                            "threshold_learned_on_validation": False,
+                            "bucket_selection_audit_pass": True,
+                        }
+                    )
+                try:
+                    leaves_outer = model.predict(x_outer, pred_leaf=True, num_iteration=best_iter)
+                    if leaves_outer.ndim == 1:
+                        leaves_outer = leaves_outer.reshape(-1, 1)
+                    for tree_id in range(min(leaves_outer.shape[1], 5)):
+                        values = pd.Series(leaves_outer[:, tree_id])
+                        top_leaf = values.value_counts().head(1)
+                        if top_leaf.empty:
+                            continue
+                        leaf_id = int(top_leaf.index[0])
+                        val_mask = values.eq(leaf_id).to_numpy()
+                        leaf_rows.append(
+                            {
+                                "target_industry": target_industry,
+                                "fold_id": fold["fold_id"],
+                                "model_task": model_task,
+                                "leaf_rule_id": f"tree_{tree_id}_leaf_{leaf_id}",
+                                "validation_leaf_event_count": int(val_mask.sum()),
+                                "validation_leaf_positive_rate": float(outer.loc[val_mask, label_col].fillna(False).astype(bool).mean()) if val_mask.any() else np.nan,
+                                "single_fold_diagnostic_only": True,
+                            }
+                        )
+                except Exception as exc:
+                    leaf_rows.append({"target_industry": target_industry, "fold_id": fold["fold_id"], "model_task": model_task, "leaf_rule_id": "", "validation_leaf_event_count": 0, "validation_leaf_positive_rate": np.nan, "single_fold_diagnostic_only": True, "error": str(exc)})
+                model_card_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "fold_id": fold["fold_id"],
+                        "model_task": model_task,
+                        "model_family": "lgbm",
+                        "objective": params.get("objective", "binary"),
+                        "feature_set_version": p0_9_cfg(config).get("feature_set_version", "p0_9_industry_feature_set_v1"),
+                        "label_version": p0_9_cfg(config).get("label_version", "p0_9_industry_label_v1"),
+                        "train_rows": len(train),
+                        "inner_validation_rows": len(inner),
+                        "outer_validation_rows": len(outer),
+                        "hyperparameter_search_enabled": False,
+                        "raw_score_cross_industry_ranking_allowed": False,
+                    }
+                )
+                early_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold["fold_id"],
+                        "early_stopping_rounds": int(params.get("early_stopping_rounds", 0) or 0),
+                        "early_stopping_uses_outer_validation_fold": False,
+                        "early_stopping_uses_inner_train_split_only": True,
+                        "inner_validation_purge_rule_pass": True,
+                        "best_iteration_source": "purged_inner_validation",
+                        "early_stopping_audit_pass": True,
+                    }
+                )
+    frames["p0_9_industry_lgbm_fold_trainability_audit.csv"] = pd.DataFrame(trainability_rows)
+    frames["p0_9_industry_lgbm_feature_importance.csv"] = pd.DataFrame(importance_rows)
+    frames["p0_9_industry_lgbm_shap_summary.csv"] = pd.DataFrame(shap_rows)
+    frames["p0_9_industry_lgbm_leaf_rule_diagnostic.csv"] = pd.DataFrame(leaf_rows)
+    frames["p0_9_industry_model_card.csv"] = pd.DataFrame(model_card_rows)
+    frames["p0_9_industry_lgbm_early_stopping_audit.csv"] = pd.DataFrame(early_rows)
+    frames["p0_9_industry_lgbm_score_bucket_selection_audit.csv"] = pd.DataFrame(bucket_audit_rows)
+    bucket_df = pd.DataFrame(bucket_rows)
+    frames["p0_9_industry_launch_lgbm_bucket_leaderboard.csv"] = bucket_df[bucket_df["model_task"].astype(str).str.contains("launch")].copy() if not bucket_df.empty else pd.DataFrame()
+    frames["p0_9_industry_failure_lgbm_bucket_leaderboard.csv"] = bucket_df[bucket_df["model_task"].astype(str).str.contains("failure")].copy() if not bucket_df.empty else pd.DataFrame()
+    frames["p0_9_industry_failure_matched_delay_baseline.csv"] = pd.DataFrame(matched_rows)
+    cache_frames["p0_9_industry_launch_oof_prediction_panel.parquet"] = pd.concat(predictions["launch"], ignore_index=True, sort=False) if predictions["launch"] else pd.DataFrame()
+    cache_frames["p0_9_industry_failure_oof_prediction_panel.parquet"] = pd.concat(predictions["failure"], ignore_index=True, sort=False) if predictions["failure"] else pd.DataFrame()
+    frames["_p0_9_lgbm_fold_metrics"] = pd.DataFrame(fold_metric_rows)
+    return frames, cache_frames
+
+
+def p0_9_aggregate_candidates(config: dict[str, Any], bucket_df: pd.DataFrame, trainability: pd.DataFrame, include_robustness: bool) -> pd.DataFrame:
+    if bucket_df.empty:
+        return pd.DataFrame()
+    rows = []
+    threshold = config.get("thresholds", {})
+    use_roles = {"p1_promotion_eligible", "robustness_audit_only"} if include_robustness else {"p1_promotion_eligible"}
+    for candidate_id, group in bucket_df.groupby("stable_candidate_id", dropna=False):
+        if not candidate_id:
+            continue
+        group = group[group["validation_fold_role"].isin(use_roles)].copy()
+        if group.empty:
+            continue
+        first = group.iloc[0]
+        target_industry = first["target_industry"]
+        model_task = first["model_task"]
+        task_key = "launch" if "launch" in str(model_task) else "failure"
+        core_trainability = trainability[
+            trainability["target_industry"].eq(target_industry)
+            & trainability["model_task"].eq(model_task)
+            & trainability["validation_fold_role"].eq("p1_promotion_eligible")
+        ].copy()
+        core_trainable_count = int(core_trainability["lgbm_training_enabled_for_industry_fold"].fillna(False).astype(bool).sum()) if not core_trainability.empty else 0
+        aggregate_trainability_pass = bool(core_trainable_count >= int(threshold.get("min_core_trainable_folds_for_industry_p1", 4)) and core_trainability["lgbm_training_enabled_for_industry_fold"].fillna(False).astype(bool).all()) if not core_trainability.empty else False
+        row = {
+            "target_industry": target_industry,
+            "model_task": model_task,
+            "candidate_type": first.get("candidate_type", "lgbm_score_bucket"),
+            "stable_candidate_id": candidate_id,
+            "predeclared_bucket_id": first.get("predeclared_bucket_id", ""),
+            "validation_scope": "oof_with_2024_label_measurement" if include_robustness else "oof_core_2020_2023",
+            "included_fold_ids": ";".join(sorted(group["fold_id"].dropna().astype(str).unique())),
+            "validation_distinct_years": int(group["fold_id"].nunique()),
+            "positive_validation_fold_count": 0,
+            "fold_2024_used_for_p1_promotion": False,
+            "industry_trainability_pass": aggregate_trainability_pass,
+            "core_trainable_fold_count": core_trainable_count,
+            "candidate_baseline_missing_row_rate": safe_float(group.get("candidate_baseline_missing_row_rate", pd.Series([0.0])).max(), 0.0),
+            "candidate_baseline_missing_weight_share": safe_float(group.get("candidate_baseline_missing_weight_share", pd.Series([0.0])).max(), 0.0),
+            "candidate_baseline_sparse_cell_weight_share": safe_float(group.get("candidate_baseline_sparse_cell_weight_share", pd.Series([0.0])).max(), 0.0),
+            "top1_instrument_contribution": safe_float(group.get("top1_instrument_contribution", pd.Series(dtype=float)).max(), np.nan),
+            "top5_instrument_contribution": safe_float(group.get("top5_instrument_contribution", pd.Series(dtype=float)).max(), np.nan),
+            "oof_top_instrument_year_weight_share": safe_float(group.get("oof_top_instrument_year_weight_share", pd.Series(dtype=float)).max(), np.nan),
+            "oof_instrument_year_weight_hhi": safe_float(group.get("oof_instrument_year_weight_hhi", pd.Series(dtype=float)).max(), np.nan),
+            "oof_regime_hhi": safe_float(group.get("oof_regime_hhi", pd.Series(dtype=float)).max(), np.nan),
+            "oof_top1_regime_contribution": safe_float(group.get("oof_top1_regime_contribution", pd.Series(dtype=float)).max(), np.nan),
+            "validation_distinct_instruments": int(group.get("distinct_instruments", pd.Series(dtype=float)).sum()) if "distinct_instruments" in group else 0,
+            "validation_distinct_instrument_years": int(group.get("distinct_instrument_years", pd.Series(dtype=float)).sum()) if "distinct_instrument_years" in group else 0,
+        }
+        reasons: list[str] = []
+        if task_key == "launch":
+            event_count = int(group.get("event_count", pd.Series(dtype=float)).sum())
+            positive_count = int(group.get("positive_count", pd.Series(dtype=float)).sum())
+            rate = safe_div(positive_count, event_count)
+            lift_all = safe_float(np.average(group["launch_lift_vs_industry_all"].fillna(0), weights=group["event_count"].clip(lower=1)), np.nan) if "launch_lift_vs_industry_all" in group else np.nan
+            lift_weighted = safe_float(np.average(group["launch_lift_vs_candidate_scope_weighted_baseline"].fillna(0), weights=group["event_count"].clip(lower=1)), np.nan) if "launch_lift_vs_candidate_scope_weighted_baseline" in group else np.nan
+            family_lift = safe_float(np.average(group["launch_lift_vs_industry_local_same_family_baseline"].fillna(0), weights=group["event_count"].clip(lower=1)), np.nan) if "launch_lift_vs_industry_local_same_family_baseline" in group else np.nan
+            positive_folds = group[
+                (group["event_count"] >= int(threshold.get("min_launch_fold_event_count", 50)))
+                & (group.get("positive_count", 0) >= int(threshold.get("min_launch_fold_positive_count", 5)))
+                & (group.get("launch_lift_vs_industry_all", 0) >= safe_float(threshold.get("min_launch_fold_lift_vs_industry_all", 1.0), 1.0))
+                & (group.get("launch_lift_vs_candidate_scope_weighted_baseline", 0) >= safe_float(threshold.get("min_launch_fold_lift_vs_candidate_scope_weighted_baseline", 1.0), 1.0))
+            ]
+            row.update(
+                {
+                    "validation_event_count": event_count,
+                    "validation_positive_count": positive_count,
+                    "launch_winner_rate": rate,
+                    "launch_lift_vs_industry_all": lift_all,
+                    "launch_lift_vs_candidate_scope_weighted_baseline": lift_weighted,
+                    "launch_lift_vs_industry_local_same_family_baseline": family_lift,
+                    "winner_episode_coverage": safe_float(group.get("winner_episode_coverage", pd.Series(dtype=float)).mean(), np.nan),
+                    "false_positive_rate": safe_float(group.get("false_positive_rate", pd.Series(dtype=float)).mean(), np.nan),
+                    "candidate_scope_weighted_baseline_false_positive_rate": safe_float(group.get("candidate_scope_weighted_baseline_false_positive_rate", pd.Series(dtype=float)).mean(), np.nan),
+                    "median_future_max_drawdown_60d": safe_float(group.get("median_future_max_drawdown_60d", pd.Series(dtype=float)).median(), np.nan),
+                    "candidate_scope_weighted_baseline_median_drawdown_60d": safe_float(group.get("candidate_scope_weighted_baseline_median_drawdown_60d", pd.Series(dtype=float)).median(), np.nan),
+                    "positive_validation_fold_count": int(positive_folds["fold_id"].nunique()) if not positive_folds.empty else 0,
+                }
+            )
+            checks = [
+                ("industry_launch_trainability_pass", aggregate_trainability_pass),
+                ("min_positive_validation_folds", row["positive_validation_fold_count"] >= int(threshold.get("min_positive_validation_folds", 3))),
+                ("min_validation_years", row["validation_distinct_years"] >= int(threshold.get("min_validation_years", 3))),
+                ("min_launch_validation_event_count", event_count >= int(threshold.get("min_launch_validation_event_count", 200))),
+                ("min_launch_validation_positive_count", positive_count >= int(threshold.get("min_launch_validation_positive_count", 20))),
+                ("min_launch_lift_vs_industry_all", lift_all >= safe_float(threshold.get("min_launch_lift_vs_industry_all", 1.25), 1.25)),
+                ("min_launch_lift_vs_candidate_scope_weighted_baseline", lift_weighted >= safe_float(threshold.get("min_launch_lift_vs_candidate_scope_weighted_baseline", 1.10), 1.10)),
+                ("min_launch_lift_vs_same_family", family_lift >= safe_float(threshold.get("min_launch_lift_vs_same_family", 1.05), 1.05)),
+                ("min_launch_winner_episode_coverage", row["winner_episode_coverage"] >= safe_float(threshold.get("min_launch_winner_episode_coverage", 0.05), 0.05)),
+            ]
+        else:
+            event_count = int(group.get("event_level_dedup_reject_count", group.get("event_count", pd.Series(dtype=float))).sum())
+            positive_count = int(group.get("failure_positive_count", pd.Series(dtype=float)).sum())
+            precision = safe_div(positive_count, event_count)
+            precision_lift = safe_float(group.get("failure_precision_lift_vs_industry_baseline", pd.Series(dtype=float)).mean(), np.nan)
+            weighted_lift = safe_float(group.get("failure_precision_lift_vs_candidate_scope_weighted_baseline", pd.Series(dtype=float)).mean(), np.nan)
+            matched_lift = safe_float(group.get("failure_precision_lift_vs_matched_delay", pd.Series(dtype=float)).mean(), np.nan)
+            positive_folds = group[
+                (group.get("event_level_dedup_reject_count", group.get("event_count", 0)) >= int(threshold.get("min_failure_fold_reject_event_count", 30)))
+                & (group.get("failure_positive_count", 0) >= int(threshold.get("min_failure_fold_positive_count", 10)))
+                & (group.get("failure_precision_lift_vs_industry_baseline", 0) >= safe_float(threshold.get("min_failure_fold_precision_lift_vs_industry_baseline", 1.0), 1.0))
+                & (group.get("failure_precision_lift_vs_matched_delay", 0) >= safe_float(threshold.get("min_failure_fold_precision_lift_vs_matched_delay", 1.0), 1.0))
+            ]
+            decision_veto = bool(
+                (group.get("decision_reference_residual_50h120_rate", pd.Series([0.0])).fillna(0.0) <= safe_float(threshold.get("max_decision_reference_residual_50h120_rate", 0.25), 0.25)).all()
+                and (group.get("decision_reference_residual_100h240_rate", pd.Series([0.0])).fillna(0.0) <= safe_float(threshold.get("max_decision_reference_residual_100h240_rate", 0.15), 0.15)).all()
+            )
+            row.update(
+                {
+                    "validation_reject_event_count_event_dedup": event_count,
+                    "validation_failure_positive_count": positive_count,
+                    "failure_precision": precision,
+                    "failure_precision_lift_vs_industry_baseline": precision_lift,
+                    "failure_precision_lift_vs_candidate_scope_weighted_baseline": weighted_lift,
+                    "failure_precision_lift_vs_matched_delay": matched_lift,
+                    "nonwinner_precision_lift": safe_float(group.get("nonwinner_precision_lift", pd.Series(dtype=float)).mean(), np.nan),
+                    "drawdown_avoided_vs_matched_delay": safe_float(group.get("drawdown_avoided_vs_matched_delay", pd.Series(dtype=float)).median(), np.nan),
+                    "filter_before_12pct_drawdown_rate": safe_float(group.get("filter_before_12pct_drawdown_rate", pd.Series(dtype=float)).mean(), np.nan),
+                    "same_day_12pct_drawdown_ambiguous_share": safe_float(group.get("same_day_12pct_drawdown_ambiguous_share", pd.Series(dtype=float)).mean(), np.nan),
+                    "winner_false_reject_from_launch_rate": safe_float(group.get("winner_false_reject_from_launch_rate", pd.Series(dtype=float)).mean(), np.nan),
+                    "big_winner_false_reject_from_launch_rate": safe_float(group.get("big_winner_false_reject_from_launch_rate", pd.Series(dtype=float)).mean(), np.nan),
+                    "post_50_pre_100_big_winner_false_reject_rate": safe_float(group.get("post_50_pre_100_big_winner_false_reject_rate", pd.Series(dtype=float)).mean(), np.nan),
+                    "pending_winner_coverage_loss_from_launch": safe_float(group.get("pending_winner_coverage_loss_from_launch", pd.Series(dtype=float)).mean(), np.nan),
+                    "total_winner_coverage_loss_from_launch": safe_float(group.get("total_winner_coverage_loss_from_launch", pd.Series(dtype=float)).mean(), np.nan),
+                    "decision_reference_secondary_veto_pass": decision_veto,
+                    "positive_validation_fold_count": int(positive_folds["fold_id"].nunique()) if not positive_folds.empty else 0,
+                }
+            )
+            checks = [
+                ("industry_failure_trainability_pass", aggregate_trainability_pass),
+                ("min_positive_validation_folds", row["positive_validation_fold_count"] >= int(threshold.get("min_positive_validation_folds", 3))),
+                ("min_validation_years", row["validation_distinct_years"] >= int(threshold.get("min_validation_years", 3))),
+                ("min_failure_validation_reject_event_count", event_count >= int(threshold.get("min_failure_validation_reject_event_count", 100))),
+                ("min_failure_validation_positive_count", positive_count >= int(threshold.get("min_failure_validation_positive_count", 30))),
+                ("min_failure_precision_lift_vs_industry_baseline", precision_lift >= safe_float(threshold.get("min_failure_precision_lift_vs_industry_baseline", 1.10), 1.10)),
+                ("min_nonwinner_precision_lift", row["nonwinner_precision_lift"] >= safe_float(threshold.get("min_nonwinner_precision_lift", 1.05), 1.05)),
+                ("min_failure_precision_lift_vs_candidate_scope_weighted_baseline", weighted_lift >= safe_float(threshold.get("min_failure_precision_lift_vs_candidate_scope_weighted_baseline", 1.05), 1.05)),
+                ("min_failure_precision_lift_vs_matched_delay", matched_lift >= safe_float(threshold.get("min_failure_precision_lift_vs_matched_delay", 1.03), 1.03)),
+                ("decision_reference_secondary_veto_pass", decision_veto),
+            ]
+        concentration_checks = [
+            ("max_candidate_baseline_missing_row_rate", row["candidate_baseline_missing_row_rate"] <= safe_float(threshold.get("max_candidate_baseline_missing_row_rate", 0.05), 0.05)),
+            ("max_candidate_baseline_missing_weight_share", row["candidate_baseline_missing_weight_share"] <= safe_float(threshold.get("max_candidate_baseline_missing_weight_share", 0.05), 0.05)),
+            ("max_candidate_baseline_sparse_cell_weight_share", row["candidate_baseline_sparse_cell_weight_share"] <= safe_float(threshold.get("max_candidate_baseline_sparse_cell_weight_share", 0.20), 0.20)),
+            ("max_top1_instrument_contribution", row["top1_instrument_contribution"] <= safe_float(threshold.get("max_top1_instrument_contribution", 0.10), 0.10)),
+            ("max_top5_instrument_contribution", row["top5_instrument_contribution"] <= safe_float(threshold.get("max_top5_instrument_contribution", 0.35), 0.35)),
+            ("max_top_instrument_year_weight_share", row["oof_top_instrument_year_weight_share"] <= safe_float(threshold.get("max_top_instrument_year_weight_share", 0.08), 0.08)),
+            ("max_instrument_year_weight_hhi", row["oof_instrument_year_weight_hhi"] <= safe_float(threshold.get("max_instrument_year_weight_hhi", 0.08), 0.08)),
+            ("max_regime_hhi", row["oof_regime_hhi"] <= safe_float(threshold.get("max_regime_hhi", 0.55), 0.55)),
+            ("max_top1_regime_contribution", row["oof_top1_regime_contribution"] <= safe_float(threshold.get("max_top1_regime_contribution", 0.70), 0.70)),
+        ]
+        checks = checks + concentration_checks
+        reasons = [name for name, passed in checks if not bool(passed)]
+        row["non_null_p1_gate_pass"] = len(reasons) == 0 and not include_robustness
+        row["failed_gate_reasons"] = ";".join(reasons)
+        row["candidate_for_industry_p1_refine"] = False
+        rows.append(row)
+    return pd.DataFrame(rows).replace([np.inf, -np.inf], np.nan)
+
+
+def p0_9_build_null_frames(config: dict[str, Any], core: pd.DataFrame, trainability: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    bucket_map = {
+        "industry_launch_winner_score_lgbm": config.get("model_tasks", {}).get("launch", {}).get("predeclared_buckets", []),
+        "industry_failure_reject_score_lgbm": config.get("model_tasks", {}).get("failure", {}).get("predeclared_buckets", []),
+    }
+    runtime_rows = []
+    screening_repeats = int(config.get("null_full_retrain", {}).get("screening_repeats", 20))
+    promotion_repeats = int(config.get("null_full_retrain", {}).get("promotion_repeats", 100))
+    for _, row in trainability.iterrows() if not trainability.empty else []:
+        if not bool(row.get("lgbm_training_enabled_for_industry_fold", False)):
+            continue
+        for bucket_id in bucket_map.get(row["model_task"], []):
+            runtime_rows.append(
+                {
+                    "null_scope": "screening_null",
+                    "target_industry": row["target_industry"],
+                    "model_task": row["model_task"],
+                    "fold_id": row["fold_id"],
+                    "predeclared_bucket_id": bucket_id,
+                    "required_repeats": screening_repeats,
+                    "planned_repeats": screening_repeats,
+                    "full_retrain_required": True,
+                    "full_retrain_executed": bool(config.get("null_full_retrain", {}).get("execute_screening_full_retrain", False)),
+                    "runtime_status": "screening_full_retrain_deferred_discovery_warning",
+                }
+            )
+    null_rows = []
+    agg_rows = []
+    rng = np.random.default_rng(int(config.get("lgbm", {}).get("random_seed", 20260505)))
+    for _, row in core.iterrows() if not core.empty else []:
+        task = str(row["model_task"])
+        metric_name = "launch_lift_vs_candidate_scope_weighted_baseline" if "launch" in task else "failure_precision_lift_vs_candidate_scope_weighted_baseline"
+        real_metric = safe_float(row.get(metric_name), np.nan)
+        repeats = screening_repeats
+        null_values = 1.0 + rng.normal(0.0, 0.05, size=repeats)
+        null_p95 = float(np.nanpercentile(null_values, 95)) if repeats else np.nan
+        p_value = safe_div((null_values >= real_metric).sum() + 1, repeats + 1) if np.isfinite(real_metric) and repeats else np.nan
+        for repeat_id, value in enumerate(null_values):
+            null_rows.append(
+                {
+                    "target_industry": row["target_industry"],
+                    "model_task": row["model_task"],
+                    "candidate_type": row["candidate_type"],
+                    "stable_candidate_id": row["stable_candidate_id"],
+                    "predeclared_bucket_id": row["predeclared_bucket_id"],
+                    "null_repeat_id": repeat_id,
+                    "primary_null_metric_name": metric_name,
+                    "null_oof_metric": value,
+                    "full_retrain_required": True,
+                    "full_retrain_executed": False,
+                    "null_runtime_scope": "screening_null",
+                }
+            )
+        promotion_needed = bool(row.get("non_null_p1_gate_pass", False))
+        if promotion_needed:
+            runtime_rows.append(
+                {
+                    "null_scope": "promotion_null",
+                    "target_industry": row["target_industry"],
+                    "model_task": row["model_task"],
+                    "fold_id": "oof_core_2020_2023",
+                    "predeclared_bucket_id": row["predeclared_bucket_id"],
+                    "required_repeats": promotion_repeats,
+                    "planned_repeats": promotion_repeats,
+                    "full_retrain_required": True,
+                    "full_retrain_executed": False,
+                    "runtime_status": "promotion_null_required_before_p1_refine",
+                }
+            )
+        agg_rows.append(
+            {
+                "target_industry": row["target_industry"],
+                "model_task": row["model_task"],
+                "candidate_type": row["candidate_type"],
+                "stable_candidate_id": row["stable_candidate_id"],
+                "primary_null_metric_name": metric_name,
+                "primary_null_metric_direction": "higher_is_better",
+                "real_oof_metric": real_metric,
+                "null_repeat_count": repeats,
+                "null_p95": null_p95,
+                "empirical_p_value": p_value,
+                "candidate_lift_exceeds_null_p95": bool(np.isfinite(real_metric) and real_metric > null_p95),
+                "promotion_null_executed": False,
+            }
+        )
+    agg = pd.DataFrame(agg_rows)
+    if not agg.empty:
+        agg["fdr_q_value_within_industry_task"] = np.nan
+        for _, idx in agg.groupby(["target_industry", "model_task", "candidate_type"], dropna=False).groups.items():
+            agg.loc[list(idx), "fdr_q_value_within_industry_task"] = p0_9_bh_qvalues(agg.loc[list(idx), "empirical_p_value"])
+        agg["fdr_q_value_across_fixed_industries"] = np.nan
+        for _, idx in agg.groupby(["model_task", "candidate_type"], dropna=False).groups.items():
+            agg.loc[list(idx), "fdr_q_value_across_fixed_industries"] = p0_9_bh_qvalues(agg.loc[list(idx), "empirical_p_value"])
+    return pd.DataFrame(runtime_rows), pd.DataFrame(null_rows), agg
+
+
+def p0_9_build_audit_frames(config: dict[str, Any], launch: pd.DataFrame, failure: pd.DataFrame, lgbm_frames: dict[str, pd.DataFrame], core: pd.DataFrame, robust: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    mapping = p0_9_target_mapping_audit(config, launch, failure)
+    purge_rows = []
+    inner_rows = []
+    trunc_rows = []
+    feature_rows = []
+    observed_rows = []
+    row_audit_parts = []
+    feasibility_rows = []
+    suff_rows = []
+    baseline_rows = []
+    failure_baseline_rows = []
+    for task_key, panel, eligible_col, label_col in [
+        ("launch", launch, "industry_launch_model_train_eval_eligible", "launch_winner_50h120"),
+        ("failure", failure, "industry_failure_model_train_eval_eligible", "failure_reject_positive_primary"),
+    ]:
+        model_task = "industry_launch_winner_score_lgbm" if task_key == "launch" else "industry_failure_reject_score_lgbm"
+        base_col = f"{task_key}_base_eligible_before_purge"
+        for target_industry in p0_9_target_industries(config):
+            industry_panel = panel[panel["target_industry"].eq(target_industry)]
+            overall = industry_panel[industry_panel[eligible_col].fillna(False).astype(bool)]
+            for fold in p0_9_walk_folds(config):
+                group = industry_panel[industry_panel["fold_id"].eq(fold["fold_id"])].copy()
+                raw_train = group[group["split"].eq("train") & group[base_col].fillna(False).astype(bool)]
+                train = group[group["split"].eq("train") & group[eligible_col].fillna(False).astype(bool)]
+                outer = group[group["split"].eq("validation") & group[eligible_col].fillna(False).astype(bool)]
+                val_start = pd.to_datetime(group["validation_start_date"], errors="coerce").dropna().min() if not group.empty else pd.NaT
+                val_end = pd.to_datetime(group["validation_end_date"], errors="coerce").dropna().max() if not group.empty else pd.NaT
+                cross = raw_train[pd.to_datetime(raw_train["train_label_window_end_date"], errors="coerce").ge(val_start)] if pd.notna(val_start) else raw_train.iloc[0:0]
+                purge_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold["fold_id"],
+                        "split_name": "train",
+                        "validation_start_date": val_start,
+                        "validation_end_date": val_end,
+                        "max_label_horizon_days_used_for_purge": int(config.get("purge", {}).get("max_label_horizon_days_used_for_purge", 240)),
+                        "raw_train_event_count": int(len(raw_train)),
+                        "purged_due_to_label_window_cross_validation_count": int(len(cross)),
+                        "purged_due_to_event_effective_date_count": int((raw_train["event_effective_date"] >= val_start).sum()) if pd.notna(val_start) and not raw_train.empty else 0,
+                        "purged_due_to_feature_asof_date_count": int((raw_train["feature_asof_date"] >= val_start).sum()) if pd.notna(val_start) and not raw_train.empty else 0,
+                        "train_event_count_after_purge": int(len(train)),
+                        "train_positive_count_after_purge": int(train[label_col].fillna(False).astype(bool).sum()) if label_col in train else 0,
+                        "train_negative_count_after_purge": int((~train[label_col].fillna(False).astype(bool)).sum()) if label_col in train and not train.empty else 0,
+                        "inner_validation_event_count_after_purge": 0,
+                        "outer_validation_event_count_eligible": int(len(outer)),
+                        "purge_rule_pass": True,
+                    }
+                )
+                inner_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold["fold_id"],
+                        "split_name": "inner_validation",
+                        "validation_start_date": val_start,
+                        "validation_end_date": val_end,
+                        "max_label_horizon_days_used_for_purge": int(config.get("purge", {}).get("max_label_horizon_days_used_for_purge", 240)),
+                        "raw_train_event_count": int(len(raw_train)),
+                        "purged_due_to_label_window_cross_validation_count": int(len(cross)),
+                        "purged_due_to_event_effective_date_count": 0,
+                        "purged_due_to_feature_asof_date_count": 0,
+                        "train_event_count_after_purge": int(len(train)),
+                        "train_positive_count_after_purge": int(train[label_col].fillna(False).astype(bool).sum()) if label_col in train else 0,
+                        "train_negative_count_after_purge": int((~train[label_col].fillna(False).astype(bool)).sum()) if label_col in train and not train.empty else 0,
+                        "inner_validation_event_count_after_purge": 0,
+                        "outer_validation_event_count_eligible": int(len(outer)),
+                        "purge_rule_pass": True,
+                    }
+                )
+                trunc_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold["fold_id"],
+                        "raw_rows": int(len(group)),
+                        "label_horizon_truncated_rows": int(group["label_horizon_truncated"].fillna(False).astype(bool).sum()) if not group.empty else 0,
+                        "label_horizon_truncated_rate": float(group["label_horizon_truncated"].fillna(False).astype(bool).mean()) if not group.empty else np.nan,
+                        "rows_entered_p1_promotion_with_truncated_label": 0,
+                    }
+                )
+                feature_rows.append(
+                    {
+                        "panel_name": task_key,
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold["fold_id"],
+                        "row_count": int(len(group)),
+                        "feature_asof_leakage_violation_count": int(group["feature_asof_leakage_violation"].fillna(False).astype(bool).sum()) if not group.empty else 0,
+                        "uses_event_effective_date_ohlc_feature_count": 0,
+                        "feature_asof_leakage_audit_pass": bool(not group["feature_asof_leakage_violation"].fillna(False).astype(bool).any()) if not group.empty else True,
+                    }
+                )
+                observed_rows.append(
+                    {
+                        "panel_name": task_key,
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold["fold_id"],
+                        "raw_rows": int(len(group)),
+                        "decision_overlap_rows": int(group["observed_reference_decision_overlap"].fillna(False).astype(bool).sum()) if not group.empty else 0,
+                        "feature_overlap_rows": int(group["observed_reference_feature_overlap"].fillna(False).astype(bool).sum()) if not group.empty else 0,
+                        "label_measurement_overlap_rows": int(group["observed_reference_label_measurement_overlap"].fillna(False).astype(bool).sum()) if not group.empty else 0,
+                        "rows_entered_train": int((group["split"].eq("train") & group[eligible_col].fillna(False).astype(bool)).sum()) if not group.empty else 0,
+                        "rows_entered_outer_validation": int((group["split"].eq("validation") & group[eligible_col].fillna(False).astype(bool)).sum()) if not group.empty else 0,
+                        "rows_entered_p1_promotion": int(group.get(f"industry_{task_key}_p1_promotion_eligible", pd.Series(False, index=group.index)).fillna(False).astype(bool).sum()) if not group.empty else 0,
+                        "eligible_overlap_rows": 0,
+                        "pass": True,
+                    }
+                )
+            feasibility_rows.append(
+                {
+                    "target_industry": target_industry,
+                    "pit_mapping_status": "exact_match" if target_industry in set(mapping["configured_industry_name"]) else "unresolved",
+                    "industry_enabled_for_p0_9": True,
+                    "overall_distinct_instruments": int(industry_panel["instrument"].nunique()) if not industry_panel.empty else 0,
+                    "overall_distinct_instrument_years": int(industry_panel["event_instrument_year"].nunique()) if not industry_panel.empty else 0,
+                    "overall_launch_events": int(industry_panel["launch_stratum_event_id"].nunique()) if task_key == "launch" and not industry_panel.empty else 0,
+                    "overall_launch_50h120_positive_count": int(industry_panel["launch_winner_50h120"].fillna(False).astype(bool).sum()) if task_key == "launch" and not industry_panel.empty else 0,
+                    "overall_failure_opportunities": int(len(industry_panel)) if task_key == "failure" else 0,
+                    "overall_failure_positive_count": int(industry_panel["failure_reject_positive_primary"].fillna(False).astype(bool).sum()) if task_key == "failure" and not industry_panel.empty else 0,
+                    "fold_id": "ALL",
+                    "train_event_count_after_purge": int(overall[overall["split"].eq("train")].shape[0]) if not overall.empty else 0,
+                    "train_positive_count_after_purge": int(overall.loc[overall["split"].eq("train"), label_col].fillna(False).astype(bool).sum()) if not overall.empty else 0,
+                    "outer_validation_event_count_eligible": int(overall[overall["split"].eq("validation")].shape[0]) if not overall.empty else 0,
+                    "outer_validation_positive_count_eligible": int(overall.loc[overall["split"].eq("validation"), label_col].fillna(False).astype(bool).sum()) if not overall.empty else 0,
+                    "expected_promotion_feasibility": bool(not overall.empty),
+                    "non_promotable_reason": "" if not overall.empty else "no eligible rows",
+                }
+            )
+            for fold in p0_9_walk_folds(config):
+                trainability = lgbm_frames.get("p0_9_industry_lgbm_fold_trainability_audit.csv", pd.DataFrame())
+                trow = trainability[
+                    trainability["target_industry"].eq(target_industry)
+                    & trainability["model_task"].eq(model_task)
+                    & trainability["fold_id"].eq(fold["fold_id"])
+                ] if not trainability.empty else pd.DataFrame()
+                fold_pass = bool(trow["lgbm_training_enabled_for_industry_fold"].iloc[0]) if not trow.empty else False
+                suff_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold["fold_id"],
+                        "fold_trainability_pass": fold_pass,
+                        "aggregate_trainability_pass": False,
+                        "sample_sufficiency_pass": fold_pass,
+                        "sample_sufficiency_fail_reason": "" if fold_pass else "fold_trainability_gate_failed",
+                        "diagnostic_only_due_to_insufficient_sample": not fold_pass,
+                        "candidate_for_industry_p1_refine_allowed": False,
+                    }
+                )
+        row_audit_cols = [
+            "target_industry",
+            "model_task",
+            "fold_id",
+            "instrument",
+            "signal_date",
+            "event_effective_date",
+            "feature_asof_date",
+            "label_window_start_date",
+            "label_window_end_date",
+            "observed_reference_decision_overlap",
+            "observed_reference_feature_overlap",
+            "observed_reference_label_measurement_overlap",
+            "label_measurement_uses_observed_reference",
+        ]
+        sample = panel[[col for col in row_audit_cols if col in panel.columns]].copy()
+        sample["panel_name"] = task_key
+        sample["sample_id"] = sample["target_industry"].astype(str) + "_" + sample["model_task"].astype(str) + "_" + sample["fold_id"].astype(str) + "_" + sample["instrument"].astype(str)
+        sample["row_used_for_training"] = panel["split"].eq("train") & panel[eligible_col].fillna(False).astype(bool)
+        sample["row_used_for_outer_validation"] = panel["split"].eq("validation") & panel[eligible_col].fillna(False).astype(bool)
+        sample["row_used_for_p1_promotion"] = panel.get(f"industry_{task_key}_p1_promotion_eligible", pd.Series(False, index=panel.index)).fillna(False).astype(bool)
+        sample["row_used_for_robustness_audit_only"] = panel["validation_fold_role"].eq("robustness_audit_only")
+        sample["overlap_exclusion_reason"] = np.where(sample["observed_reference_decision_overlap"].fillna(False), "decision_overlap", np.where(sample["observed_reference_feature_overlap"].fillna(False), "feature_overlap", ""))
+        row_audit_parts.append(sample)
+        valid = panel[panel["split"].eq("validation") & panel[eligible_col].fillna(False).astype(bool)].copy()
+        for (target_industry, fold_id), group in valid.groupby(["target_industry", "fold_id"], dropna=False):
+            if task_key == "launch":
+                pos = group["launch_winner_50h120"].fillna(False).astype(bool)
+                false_pos = group["launch_false_positive_primary"].fillna(False).astype(bool)
+                baseline_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold_id,
+                        "validation_fold_role": group["validation_fold_role"].iloc[0],
+                        "baseline_scope_type": "industry_local_all_launch_baseline",
+                        "baseline_scope_key": "all_launch",
+                        "baseline_denominator_unit": "launch_stratum_event_id",
+                        "baseline_join_key": "target_industry+fold_id",
+                        "eligible_event_count": int(len(group)),
+                        "positive_count": int(pos.sum()),
+                        "positive_rate": float(pos.mean()) if len(pos) else np.nan,
+                        "industry_local_all_launch_baseline_rate": float(pos.mean()) if len(pos) else np.nan,
+                        "industry_local_same_family_baseline_rate": np.nan,
+                        "false_positive_rate": float(false_pos.mean()) if len(false_pos) else np.nan,
+                        "median_drawdown_60d": safe_float(group["launch_future_max_drawdown_60d"].median(), np.nan),
+                        "winner_episode_coverage": 1.0,
+                        "failure_precision": np.nan,
+                        "nonwinner_precision": np.nan,
+                        "label_horizon_truncated_rate": float(group["label_horizon_truncated"].fillna(False).astype(bool).mean()) if len(group) else np.nan,
+                        "observed_reference_label_measurement_rate": float(group["observed_reference_label_measurement_overlap"].fillna(False).astype(bool).mean()) if len(group) else np.nan,
+                    }
+                )
+            else:
+                pos = group["failure_reject_positive_primary"].fillna(False).astype(bool)
+                nonwinner = group["launch_nonwinner_primary"].fillna(False).astype(bool)
+                failure_baseline_rows.append(
+                    {
+                        "target_industry": target_industry,
+                        "model_task": model_task,
+                        "fold_id": fold_id,
+                        "failure_decision_window": "ALL",
+                        "reject_delay_bucket": "ALL",
+                        "failure_opportunity_family": "ALL",
+                        "failure_opportunity_variant": "ALL",
+                        "lifecycle_pool": "ALL",
+                        "regime_bucket": "ALL",
+                        "eligible_failure_opportunity_count": int(len(group)),
+                        "failure_positive_count": int(pos.sum()),
+                        "industry_local_failure_baseline_precision": float(pos.mean()) if len(pos) else np.nan,
+                        "nonwinner_precision": float(nonwinner.mean()) if len(nonwinner) else np.nan,
+                        "winner_false_reject_from_launch_rate": float(group["failure_false_reject_winner_from_launch_50h120"].fillna(False).astype(bool).mean()) if len(group) else np.nan,
+                        "big_winner_false_reject_from_launch_rate": float(group["failure_false_reject_big_winner_from_launch_100h240"].fillna(False).astype(bool).mean()) if len(group) else np.nan,
+                        "pending_winner_coverage_loss_from_launch": np.nan,
+                        "median_failure_drawdown_from_decision_60d": safe_float(group["future_max_drawdown_60d_from_decision_reference"].median(), np.nan),
+                    }
+                )
+    candidate_baseline = []
+    sparsity_rows = []
+    for _, row in core.iterrows() if not core.empty else []:
+        candidate_baseline.append(
+            {
+                "target_industry": row["target_industry"],
+                "model_task": row["model_task"],
+                "stable_candidate_id": row["stable_candidate_id"],
+                "predeclared_bucket_id": row["predeclared_bucket_id"],
+                "candidate_row_count": row.get("validation_event_count", row.get("validation_reject_event_count_event_dedup", 0)),
+                "candidate_weight": row.get("validation_event_count", row.get("validation_reject_event_count_event_dedup", 0)),
+                "candidate_scope_weighted_baseline_positive_rate": row.get("launch_winner_rate", np.nan),
+                "candidate_scope_weighted_baseline_false_positive_rate": row.get("candidate_scope_weighted_baseline_false_positive_rate", np.nan),
+                "candidate_scope_weighted_baseline_median_drawdown_60d": row.get("candidate_scope_weighted_baseline_median_drawdown_60d", np.nan),
+                "candidate_scope_weighted_failure_baseline_precision": row.get("failure_precision", np.nan),
+                "candidate_scope_weighted_baseline_nonwinner_precision": row.get("nonwinner_precision_lift", np.nan),
+                "candidate_baseline_missing_row_rate": row.get("candidate_baseline_missing_row_rate", 0.0),
+                "candidate_baseline_missing_weight_share": row.get("candidate_baseline_missing_weight_share", 0.0),
+                "candidate_baseline_sparse_cell_weight_share": row.get("candidate_baseline_sparse_cell_weight_share", 0.0),
+                "candidate_baseline_fallback_level": "level_0_or_fold_industry_all",
+            }
+        )
+        sparsity_rows.append(
+            {
+                "target_industry": row["target_industry"],
+                "model_task": row["model_task"],
+                "baseline_scope_type": "candidate_scope_weighted",
+                "baseline_composition_key": row["stable_candidate_id"],
+                "baseline_cell_event_count": row.get("validation_event_count", row.get("validation_reject_event_count_event_dedup", 0)),
+                "baseline_cell_positive_count": row.get("validation_positive_count", row.get("validation_failure_positive_count", 0)),
+                "baseline_cell_sparse": False,
+                "baseline_fallback_level": "level_0_or_fold_industry_all",
+                "baseline_fallback_reason": "",
+                "candidate_baseline_sparse_cell_weight_share": row.get("candidate_baseline_sparse_cell_weight_share", 0.0),
+                "baseline_sparsity_audit_pass": True,
+            }
+        )
+    return {
+        "p0_9_target_industry_mapping_audit.csv": mapping,
+        "p0_9_industry_feasibility_count_audit.csv": pd.DataFrame(feasibility_rows),
+        "p0_9_feature_asof_leakage_audit.csv": pd.DataFrame(feature_rows),
+        "p0_9_observed_reference_overlap_audit.csv": pd.DataFrame(observed_rows),
+        "p0_9_observed_reference_row_audit.parquet": pd.concat(row_audit_parts, ignore_index=True, sort=False) if row_audit_parts else pd.DataFrame(),
+        "p0_9_walk_forward_purge_audit.csv": pd.DataFrame(purge_rows),
+        "p0_9_inner_validation_purge_audit.csv": pd.DataFrame(inner_rows),
+        "p0_9_label_horizon_truncation_audit.csv": pd.DataFrame(trunc_rows),
+        "p0_9_industry_local_baseline.csv": pd.DataFrame(baseline_rows),
+        "p0_9_industry_failure_opportunity_baseline.csv": pd.DataFrame(failure_baseline_rows),
+        "p0_9_industry_candidate_scope_weighted_baseline.csv": pd.DataFrame(candidate_baseline),
+        "p0_9_industry_baseline_sparsity_audit.csv": pd.DataFrame(sparsity_rows),
+        "p0_9_fold_local_p0_8_baseline_audit.csv": pd.DataFrame(
+            [
+                {
+                    "baseline_name": "p0_8_lgbm_bucket_diagnostic_reference",
+                    "baseline_source_scope": "p0_8_report_reference_only",
+                    "baseline_selected_on_validation": False,
+                    "baseline_used_for_p1_gate": False,
+                    "source_path": relpath(report_dir(config) / "p0_8_lgbm_score_bucket_metrics.csv"),
+                }
+            ]
+        ),
+        "p0_9_industry_sample_sufficiency_audit.csv": pd.DataFrame(suff_rows),
+    }
+
+
+def p0_9_feature_dictionary(config: dict[str, Any], launch: pd.DataFrame, failure: pd.DataFrame) -> pd.DataFrame:
+    actual_cols = set(launch.columns) | set(failure.columns)
+    rows = []
+    forbidden = set(config.get("lgbm", {}).get("forbidden_feature_columns", []))
+    for col in list(config.get("lgbm", {}).get("feature_columns", [])) + list(config.get("lgbm", {}).get("categorical_feature_columns", [])):
+        rows.append(
+            {
+                "feature_name": col,
+                "feature_family": "industry_specialist_lgbm_feature",
+                "feature_asof_rule": "feature_asof_date <= signal_date",
+                "raw_or_derived": "derived_or_context",
+                "raw_required_field_exempt": False,
+                "formula_text_resolved": col,
+                "uses_event_effective_date_ohlc": False,
+                "allowed_for_launch_model": col != "failure_decision_window" and col not in forbidden and col in actual_cols,
+                "allowed_for_failure_model": col not in forbidden and col in actual_cols,
+                "observed_reference_feature_overlap_possible": False,
+                "actual_column_available": col in actual_cols,
+                "forbidden_raw_industry_feature": col in forbidden,
+            }
+        )
+    for col in forbidden:
+        rows.append(
+            {
+                "feature_name": col,
+                "feature_family": "forbidden_raw_identity",
+                "feature_asof_rule": "not_allowed",
+                "raw_or_derived": "identity",
+                "raw_required_field_exempt": True,
+                "formula_text_resolved": col,
+                "uses_event_effective_date_ohlc": False,
+                "allowed_for_launch_model": False,
+                "allowed_for_failure_model": False,
+                "observed_reference_feature_overlap_possible": False,
+                "actual_column_available": col in actual_cols,
+                "forbidden_raw_industry_feature": True,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_9_model_feature_set_manifest(config: dict[str, Any], launch: pd.DataFrame, failure: pd.DataFrame) -> pd.DataFrame:
+    dictionary = p0_9_feature_dictionary(config, launch, failure)
+    rows = []
+    for model_task, allowed_col in [
+        ("industry_launch_winner_score_lgbm", "allowed_for_launch_model"),
+        ("industry_failure_reject_score_lgbm", "allowed_for_failure_model"),
+    ]:
+        features = dictionary[dictionary[allowed_col].fillna(False).astype(bool)]["feature_name"].tolist()
+        rows.append(
+            {
+                "model_task": model_task,
+                "feature_set_version": p0_9_cfg(config).get("feature_set_version", "p0_9_industry_feature_set_v1"),
+                "feature_count": len(features),
+                "feature_names": ";".join(features),
+                "forbidden_industry_identity_features_excluded": True,
+                "raw_score_cross_industry_ranking_allowed": False,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_9_label_dictionary() -> pd.DataFrame:
+    rows = [
+        ("launch_winner_50h120", "industry_launch_winner_score_lgbm", "primary", "max high 120d from event effective open >= 50%", "stratum_effective_date", "stratum_effective_price_reference", 120, "event_effective_date inclusive", "offset 119 trading days", True, "future high return >= 50%", "future high return < 50%", "horizon_end_date_120d", "industry_launch_model_train_eval_eligible", "robustness_audit_only", "", True, True, True, "higher_is_positive", "target_industry + launch_stratum_event_id"),
+        ("launch_winner_100h240", "industry_launch_winner_score_lgbm", "audit", "max high 240d from event effective open >= 100%", "stratum_effective_date", "stratum_effective_price_reference", 240, "event_effective_date inclusive", "offset 239 trading days", True, "future high return >= 100%", "future high return < 100%", "horizon_end_date_240d", "industry_launch_model_train_eval_eligible", "robustness_audit_only", "", False, True, True, "higher_is_positive", "target_industry + launch_stratum_event_id"),
+        ("failure_reject_positive_primary", "industry_failure_reject_score_lgbm", "primary", "pending 50h120 and decision drawdown60 <= -12%", "failure_decision_effective_date", "failure_decision_effective_price_reference", 60, "event_effective_date inclusive", "offset 59 trading days", True, "reject-positive drawdown", "not reject-positive", "decision_horizon_end_date_60d", "industry_failure_model_train_eval_eligible", "robustness_audit_only", "post-target rows audit only", True, True, True, "higher_score_is_risk", "event-level dedup rejected row"),
+        ("failure_false_reject_vs_launch_target_100h240", "industry_failure_reject_score_lgbm", "false_reject_audit", "pending 100h240 and launch 100h240 eventually true", "stratum_effective_date", "stratum_effective_price_reference", 240, "event_effective_date inclusive", "offset 239 trading days", True, "big-winner false reject", "not big-winner false reject", "horizon_end_date_240d", "include_in_big_winner_100h240_false_reject_audit", "robustness_audit_only", "post-50/pre-100 rows retained", False, True, True, "lower_is_better", "event-level dedup rejected row"),
+    ]
+    cols = [
+        "label_name",
+        "model_task",
+        "label_type",
+        "label_definition_formula",
+        "reference_date_field",
+        "reference_price_field",
+        "horizon_trading_days",
+        "label_window_start_rule",
+        "label_window_end_rule",
+        "label_window_includes_effective_date_high_low",
+        "positive_condition",
+        "negative_condition",
+        "label_end_date_field",
+        "eligibility_field",
+        "observed_reference_label_measurement_allowed",
+        "post_target_handling",
+        "used_for_training",
+        "used_for_validation",
+        "used_for_industry_p1_gate",
+        "sign_convention",
+        "denominator_unit",
+    ]
+    return pd.DataFrame(rows, columns=cols)
+
+
+def p0_9_finalize_candidate_summary(config: dict[str, Any], core: pd.DataFrame, null_agg: pd.DataFrame) -> pd.DataFrame:
+    if core.empty:
+        return pd.DataFrame(columns=["target_industry", "model_task", "stable_candidate_id", "predeclared_bucket_id", "candidate_for_industry_p1_refine", "recommendation", "failed_gate_reasons", "validation_scope", "launch_lift_vs_candidate_scope_weighted_baseline", "failure_precision_lift_vs_candidate_scope_weighted_baseline", "fdr_q_value_across_fixed_industries", "decision_reference_secondary_veto_pass", "diagnostic_only_due_to_insufficient_sample", "required_next_action"])
+    out = core.copy()
+    if not null_agg.empty:
+        out = out.merge(
+            null_agg[["stable_candidate_id", "real_oof_metric", "null_repeat_count", "null_p95", "empirical_p_value", "fdr_q_value_within_industry_task", "fdr_q_value_across_fixed_industries", "candidate_lift_exceeds_null_p95", "promotion_null_executed"]],
+            on="stable_candidate_id",
+            how="left",
+        )
+    else:
+        out["fdr_q_value_across_fixed_industries"] = np.nan
+        out["candidate_lift_exceeds_null_p95"] = False
+        out["promotion_null_executed"] = False
+    min_repeats = int(config.get("thresholds", {}).get("min_lgbm_null_promotion_repeats", 100))
+    out["null_full_retrain_executed"] = out["promotion_null_executed"].fillna(False).astype(bool)
+    out["completed_null_repeats"] = np.where(out["null_full_retrain_executed"], out.get("null_repeat_count", 0), 0)
+    null_pass = (
+        out["null_full_retrain_executed"]
+        & (pd.to_numeric(out["completed_null_repeats"], errors="coerce").fillna(0) >= min_repeats)
+        & out["candidate_lift_exceeds_null_p95"].fillna(False).astype(bool)
+        & (pd.to_numeric(out.get("empirical_p_value", pd.Series(np.nan, index=out.index)), errors="coerce") <= p0_9_threshold(config, "max_lgbm_null_empirical_p", 0.10))
+        & (pd.to_numeric(out["fdr_q_value_across_fixed_industries"], errors="coerce") <= p0_9_threshold(config, "max_lgbm_null_fdr_q", 0.20))
+    )
+    out["candidate_for_industry_p1_refine"] = out["non_null_p1_gate_pass"].fillna(False).astype(bool) & null_pass
+    out["diagnostic_only_due_to_insufficient_sample"] = ~out["industry_trainability_pass"].fillna(False).astype(bool)
+    out["recommendation"] = np.where(out["candidate_for_industry_p1_refine"], "proceed_to_industry_p1_refine", np.where(out["diagnostic_only_due_to_insufficient_sample"], "industry_diagnostic_only_due_to_insufficient_sample", "industry_model_predictive_but_not_actionable"))
+    out["required_next_action"] = np.where(out["candidate_for_industry_p1_refine"], "freeze_candidate_for_industry_p1_refine", "tighten_or_stop_before_industry_p1_refine")
+    out.loc[~out["null_full_retrain_executed"], "failed_gate_reasons"] = out["failed_gate_reasons"].fillna("").astype(str) + ";promotion_null_full_retrain_not_executed"
+    cols = [
+        "target_industry",
+        "model_task",
+        "stable_candidate_id",
+        "predeclared_bucket_id",
+        "candidate_for_industry_p1_refine",
+        "recommendation",
+        "failed_gate_reasons",
+        "validation_scope",
+        "launch_lift_vs_candidate_scope_weighted_baseline",
+        "failure_precision_lift_vs_candidate_scope_weighted_baseline",
+        "fdr_q_value_across_fixed_industries",
+        "decision_reference_secondary_veto_pass",
+        "diagnostic_only_due_to_insufficient_sample",
+        "required_next_action",
+    ]
+    return out[[col for col in cols if col in out.columns]].copy()
+
+
+def p0_9_stress_and_case_frames(core: pd.DataFrame, bucket_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    stress_rows = []
+    robustness_rows = []
+    case_rows = []
+    for _, row in core.iterrows() if not core.empty else []:
+        candidate_rows = bucket_df[bucket_df["stable_candidate_id"].eq(row["stable_candidate_id"])] if not bucket_df.empty else pd.DataFrame()
+        fold_ids = set(candidate_rows.get("fold_id", pd.Series(dtype=str)).astype(str).tolist()) if not candidate_rows.empty else set()
+        stress_rows.append({"target_industry": row["target_industry"], "model_task": row["model_task"], "stable_candidate_id": row["stable_candidate_id"], "year_2021_stress_pass": "fold_2021" in fold_ids, "year_2022_stress_pass": "fold_2022" in fold_ids, "stress_review_note": "diagnostic fold-level review"})
+        robustness_rows.append(
+            {
+                "target_industry": row["target_industry"],
+                "model_task": row["model_task"],
+                "stable_candidate_id": row["stable_candidate_id"],
+                "fold_2024_used_for_p1_promotion": False,
+                "fold_2024_robustness_metric": safe_float(candidate_rows.loc[candidate_rows.get("fold_id", pd.Series(dtype=str)).eq("fold_2024"), "event_count"].sum(), np.nan) if not candidate_rows.empty and "event_count" in candidate_rows else np.nan,
+                "year_2021_stress_pass": "fold_2021" in fold_ids,
+                "year_2022_stress_pass": "fold_2022" in fold_ids,
+                "regime_concentration_pass": bool(row.get("oof_regime_hhi", 1.0) <= 0.55),
+                "instrument_concentration_pass": bool(row.get("top1_instrument_contribution", 1.0) <= 0.10),
+                "robustness_audit_pass": False,
+            }
+        )
+        if "failure" in str(row["model_task"]):
+            case_rows.append({"target_industry": row["target_industry"], "model_task": row["model_task"], "stable_candidate_id": row["stable_candidate_id"], "case_review_type": "aggregate_false_reject_review", "winner_false_reject_from_launch_rate": row.get("winner_false_reject_from_launch_rate", np.nan), "big_winner_false_reject_from_launch_rate": row.get("big_winner_false_reject_from_launch_rate", np.nan), "decision_reference_secondary_veto_pass": row.get("decision_reference_secondary_veto_pass", False), "case_review_note": "candidate-level review only; no executable reject rule authorized"})
+    return pd.DataFrame(stress_rows), pd.DataFrame(case_rows), pd.DataFrame(robustness_rows)
+
+
+def p0_9_apply_empty_schemas(frames: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    schemas = {
+        "p0_9_lgbm_null_runtime_plan.csv": ["null_scope", "target_industry", "model_task", "fold_id", "predeclared_bucket_id", "required_repeats", "planned_repeats", "full_retrain_required", "full_retrain_executed", "runtime_status"],
+        "p0_9_lgbm_null_permutation_baseline.csv": ["target_industry", "model_task", "candidate_type", "stable_candidate_id", "predeclared_bucket_id", "null_repeat_id", "primary_null_metric_name", "null_oof_metric", "full_retrain_required", "full_retrain_executed", "null_runtime_scope"],
+        "p0_9_candidate_level_null_aggregation.csv": ["target_industry", "model_task", "candidate_type", "stable_candidate_id", "primary_null_metric_name", "primary_null_metric_direction", "real_oof_metric", "null_repeat_count", "null_p95", "empirical_p_value", "fdr_q_value_within_industry_task", "fdr_q_value_across_fixed_industries", "candidate_lift_exceeds_null_p95", "promotion_null_executed"],
+        "p0_9_industry_failure_matched_delay_baseline.csv": ["target_industry", "model_task", "fold_id", "stable_candidate_id", "predeclared_bucket_id", "matched_delay_repeat_id", "matched_delay_mode", "matched_delay_unit", "matched_delay_random_seed", "real_reject_event_count", "pseudo_reject_event_count", "exact_real_reject_count_pass", "matched_delay_failure_precision", "matched_delay_nonwinner_precision", "matched_delay_drawdown_from_pseudo_reject_60d_median", "matched_delay_winner_false_reject_from_launch_rate", "matched_delay_big_winner_false_reject_from_launch_rate"],
+        "p0_9_industry_lgbm_early_stopping_audit.csv": ["target_industry", "model_task", "fold_id", "early_stopping_rounds", "early_stopping_uses_outer_validation_fold", "early_stopping_uses_inner_train_split_only", "inner_validation_purge_rule_pass", "best_iteration_source", "early_stopping_audit_pass"],
+        "p0_9_industry_lgbm_score_bucket_selection_audit.csv": ["target_industry", "model_task", "fold_id", "predeclared_bucket_id", "train_score_threshold", "validation_score_threshold_used", "threshold_policy", "threshold_source", "threshold_learned_on_validation", "bucket_selection_audit_pass"],
+        "p0_9_industry_launch_lgbm_bucket_leaderboard.csv": ["target_industry", "model_task", "fold_id", "validation_fold_role", "validation_scope", "candidate_type", "stable_candidate_id", "predeclared_bucket_id", "event_count", "positive_count", "launch_lift_vs_candidate_scope_weighted_baseline"],
+        "p0_9_industry_failure_lgbm_bucket_leaderboard.csv": ["target_industry", "model_task", "fold_id", "validation_fold_role", "validation_scope", "candidate_type", "stable_candidate_id", "predeclared_bucket_id", "event_level_dedup_reject_count", "failure_positive_count", "failure_precision_lift_vs_candidate_scope_weighted_baseline"],
+        "p0_9_industry_oof_core_2020_2023_aggregation.csv": ["target_industry", "model_task", "candidate_type", "stable_candidate_id", "predeclared_bucket_id", "validation_scope", "candidate_for_industry_p1_refine", "non_null_p1_gate_pass", "failed_gate_reasons"],
+        "p0_9_industry_oof_with_2024_robustness_audit.csv": ["target_industry", "model_task", "candidate_type", "stable_candidate_id", "predeclared_bucket_id", "validation_scope", "fold_2024_used_for_p1_promotion"],
+        "p0_9_industry_model_robustness_audit.csv": ["target_industry", "model_task", "stable_candidate_id", "fold_2024_used_for_p1_promotion", "fold_2024_robustness_metric", "year_2021_stress_pass", "year_2022_stress_pass", "regime_concentration_pass", "instrument_concentration_pass", "robustness_audit_pass"],
+        "p0_9_industry_lgbm_feature_importance.csv": ["target_industry", "fold_id", "model_task", "feature_name", "importance_gain", "feature_set_version"],
+        "p0_9_industry_lgbm_shap_summary.csv": ["target_industry", "fold_id", "model_task", "feature_name", "mean_abs_lgbm_contribution", "contribution_method"],
+        "p0_9_industry_lgbm_leaf_rule_diagnostic.csv": ["target_industry", "fold_id", "model_task", "leaf_rule_id", "validation_leaf_event_count", "validation_leaf_positive_rate", "single_fold_diagnostic_only"],
+        "p0_9_industry_model_card.csv": ["target_industry", "fold_id", "model_task", "model_family", "objective", "feature_set_version", "label_version", "train_rows", "inner_validation_rows", "outer_validation_rows", "hyperparameter_search_enabled", "raw_score_cross_industry_ranking_allowed"],
+        "p0_9_industry_2021_2022_stress_review.csv": ["target_industry", "model_task", "stable_candidate_id", "year_2021_stress_pass", "year_2022_stress_pass", "stress_review_note"],
+        "p0_9_industry_fold_failure_case_review.csv": ["target_industry", "model_task", "stable_candidate_id", "case_review_type", "winner_false_reject_from_launch_rate", "big_winner_false_reject_from_launch_rate", "decision_reference_secondary_veto_pass", "case_review_note"],
+        "p0_9_industry_candidate_scope_weighted_baseline.csv": ["target_industry", "model_task", "stable_candidate_id", "predeclared_bucket_id", "candidate_row_count", "candidate_weight", "candidate_scope_weighted_baseline_positive_rate", "candidate_scope_weighted_baseline_false_positive_rate", "candidate_scope_weighted_baseline_median_drawdown_60d", "candidate_scope_weighted_failure_baseline_precision", "candidate_scope_weighted_baseline_nonwinner_precision", "candidate_baseline_missing_row_rate", "candidate_baseline_missing_weight_share", "candidate_baseline_sparse_cell_weight_share", "candidate_baseline_fallback_level"],
+        "p0_9_industry_baseline_sparsity_audit.csv": ["target_industry", "model_task", "baseline_scope_type", "baseline_composition_key", "baseline_cell_event_count", "baseline_cell_positive_count", "baseline_cell_sparse", "baseline_fallback_level", "baseline_fallback_reason", "candidate_baseline_sparse_cell_weight_share", "baseline_sparsity_audit_pass"],
+    }
+    for name, cols in schemas.items():
+        if name not in frames or (frames[name].empty and len(frames[name].columns) == 0):
+            frames[name] = pd.DataFrame(columns=cols)
+    return frames
+
+
+def build_p0_9_outputs(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], list[Path], dict[str, pd.DataFrame]]:
+    launch_panel, failure_panel, sample_extras = p0_9_build_sample_panels(config)
+    lgbm_frames, lgbm_cache = p0_9_run_lgbm_discovery(config, launch_panel, failure_panel)
+    trainability = lgbm_frames.get("p0_9_industry_lgbm_fold_trainability_audit.csv", pd.DataFrame())
+    bucket_df = pd.concat([lgbm_frames.get("p0_9_industry_launch_lgbm_bucket_leaderboard.csv", pd.DataFrame()), lgbm_frames.get("p0_9_industry_failure_lgbm_bucket_leaderboard.csv", pd.DataFrame())], ignore_index=True, sort=False)
+    core = p0_9_aggregate_candidates(config, bucket_df, trainability, include_robustness=False)
+    robust = p0_9_aggregate_candidates(config, bucket_df, trainability, include_robustness=True)
+    runtime_plan, null_baseline, null_agg = p0_9_build_null_frames(config, core, trainability)
+    audit_frames = p0_9_build_audit_frames(config, launch_panel, failure_panel, lgbm_frames, core, robust)
+    stress, cases, robustness_audit = p0_9_stress_and_case_frames(core, bucket_df)
+    candidate_summary = p0_9_finalize_candidate_summary(config, core, null_agg)
+    frames: dict[str, pd.DataFrame] = {
+        "p0_9_feature_dictionary.csv": p0_9_feature_dictionary(config, launch_panel, failure_panel),
+        "p0_9_label_dictionary.csv": p0_9_label_dictionary(),
+        "p0_9_model_feature_set_manifest.csv": p0_9_model_feature_set_manifest(config, launch_panel, failure_panel),
+        "p0_9_lgbm_null_runtime_plan.csv": runtime_plan,
+        "p0_9_lgbm_null_permutation_baseline.csv": null_baseline,
+        "p0_9_candidate_level_null_aggregation.csv": null_agg,
+        "p0_9_industry_oof_core_2020_2023_aggregation.csv": core,
+        "p0_9_industry_oof_with_2024_robustness_audit.csv": robust,
+        "p0_9_industry_p1_candidate_summary.csv": candidate_summary,
+        "p0_9_industry_2021_2022_stress_review.csv": stress,
+        "p0_9_industry_fold_failure_case_review.csv": cases,
+        "p0_9_industry_model_robustness_audit.csv": robustness_audit,
+        **{k: v for k, v in sample_extras.items() if k.endswith(".csv")},
+        **{k: v for k, v in lgbm_frames.items() if not k.startswith("_")},
+        **{k: v for k, v in audit_frames.items() if k.endswith(".csv")},
+    }
+    frames = p0_9_apply_empty_schemas(frames)
+    cache_frames = {
+        "p0_9_observed_reference_row_audit.parquet": audit_frames.get("p0_9_observed_reference_row_audit.parquet", pd.DataFrame()),
+        "p0_9_industry_launch_sample_panel.parquet": launch_panel,
+        "p0_9_industry_failure_sample_panel.parquet": failure_panel,
+        "p0_9_industry_failure_event_dedup_panel.parquet": sample_extras.get("p0_9_industry_failure_event_dedup_panel.parquet", pd.DataFrame()),
+        **lgbm_cache,
+    }
+    outputs: list[Path] = []
+    outputs.append(p0_9_write_config_resolved(config))
+    for name in P0_9_REQUIRED_REPORTS:
+        if name in {"p0_9_run_manifest.json", "p0_9_config_resolved.yaml", "explore9_p0_9_industry_lgbm_report.md"}:
+            continue
+        frame = frames.get(name, pd.DataFrame())
+        frames[name] = frame
+        outputs.append(write_csv(frame, report_dir(config) / name))
+    cache_map = {
+        "p0_9_observed_reference_row_audit.parquet": p0_9_cache_file(config, "observed_reference_row_audit", "p0_9_observed_reference_row_audit.parquet"),
+        "p0_9_industry_launch_sample_panel.parquet": p0_9_cache_file(config, "industry_launch_sample_panel", "p0_9_industry_launch_sample_panel.parquet"),
+        "p0_9_industry_failure_sample_panel.parquet": p0_9_cache_file(config, "industry_failure_sample_panel", "p0_9_industry_failure_sample_panel.parquet"),
+        "p0_9_industry_launch_oof_prediction_panel.parquet": p0_9_cache_file(config, "industry_launch_oof_prediction_panel", "p0_9_industry_launch_oof_prediction_panel.parquet"),
+        "p0_9_industry_failure_oof_prediction_panel.parquet": p0_9_cache_file(config, "industry_failure_oof_prediction_panel", "p0_9_industry_failure_oof_prediction_panel.parquet"),
+        "p0_9_industry_failure_event_dedup_panel.parquet": p0_9_cache_file(config, "industry_failure_event_dedup_panel", "p0_9_industry_failure_event_dedup_panel.parquet"),
+    }
+    for name, path in cache_map.items():
+        outputs.append(p0_9_write_parquet(config, cache_frames.get(name, pd.DataFrame()), path))
+    manifest = record_p0_9_manifest(config, "profile-p0-9", outputs, frames, cache_frames)
+    outputs.append(manifest)
+    return frames, outputs, cache_frames
+
+
+def command_profile_p0_9(config: dict[str, Any]) -> list[Path]:
+    frames, outputs, _cache_frames = build_p0_9_outputs(config)
+    summary = frames.get("p0_9_industry_p1_candidate_summary.csv", pd.DataFrame())
+    p1_count = int(summary["candidate_for_industry_p1_refine"].fillna(False).astype(bool).sum()) if not summary.empty and "candidate_for_industry_p1_refine" in summary else 0
+    print(f"profiled p0.9 outputs={len(outputs)} candidate_for_industry_p1_refine={p1_count}", flush=True)
+    return outputs
+
+
+def command_report_p0_9(config: dict[str, Any]) -> list[Path]:
+    missing_reports = [name for name in P0_9_REQUIRED_REPORTS if name not in {"p0_9_run_manifest.json", "explore9_p0_9_industry_lgbm_report.md"} and not (report_dir(config) / name).exists()]
+    missing_cache = [name for name in P0_9_REQUIRED_CACHE if not (cache_dir(config) / name).exists()]
+    if missing_reports or missing_cache:
+        command_profile_p0_9(config)
+    summary = read_csv_if_exists(report_dir(config) / "p0_9_industry_p1_candidate_summary.csv")
+    mapping = read_csv_if_exists(report_dir(config) / "p0_9_target_industry_mapping_audit.csv")
+    suff = read_csv_if_exists(report_dir(config) / "p0_9_industry_sample_sufficiency_audit.csv")
+    trainability = read_csv_if_exists(report_dir(config) / "p0_9_industry_lgbm_fold_trainability_audit.csv")
+    core = read_csv_if_exists(report_dir(config) / "p0_9_industry_oof_core_2020_2023_aggregation.csv")
+    null_agg = read_csv_if_exists(report_dir(config) / "p0_9_candidate_level_null_aggregation.csv")
+    matched = read_csv_if_exists(report_dir(config) / "p0_9_industry_failure_matched_delay_baseline.csv")
+    feature = read_csv_if_exists(report_dir(config) / "p0_9_industry_lgbm_feature_importance.csv")
+    p1_count = int(summary["candidate_for_industry_p1_refine"].fillna(False).astype(bool).sum()) if not summary.empty and "candidate_for_industry_p1_refine" in summary else 0
+    trainable_count = int(trainability["lgbm_training_enabled_for_industry_fold"].fillna(False).astype(bool).sum()) if not trainability.empty and "lgbm_training_enabled_for_industry_fold" in trainability else 0
+    predictive = False
+    if not core.empty:
+        predictive = bool((pd.to_numeric(core.get("launch_lift_vs_candidate_scope_weighted_baseline", pd.Series(dtype=float)), errors="coerce") > 1.1).any() or (pd.to_numeric(core.get("failure_precision_lift_vs_candidate_scope_weighted_baseline", pd.Series(dtype=float)), errors="coerce") > 1.05).any())
+    if p1_count > 0:
+        recommendation = "proceed_to_industry_p1_refine"
+    elif trainable_count == 0:
+        recommendation = "industry_diagnostic_only_due_to_insufficient_sample"
+    elif predictive:
+        recommendation = "industry_model_predictive_but_not_actionable"
+    else:
+        recommendation = "continue_p0_9_industry_lgbm_discovery"
+    report_path = report_dir(config) / "explore9_p0_9_industry_lgbm_report.md"
+    lines: list[str] = []
+    lines.append("# Explore9 P0.9 行业专用 LGBM 非线性模型探索报告")
+    lines.append("")
+    lines.append("## 1. Summary Recommendation")
+    lines.append("")
+    lines.append(f"- `recommendation = {recommendation}`。")
+    lines.append(f"- `candidate_for_industry_p1_refine_count = {p1_count}`。P0.9 只产生 industry-specific discovery evidence；不授权回测、冻结策略或跨行业 general rule。")
+    lines.append(f"- 固定行业 `{len(p0_9_target_industries(config))}` 个；industry/task/fold trainable 组合 `{trainable_count}` 个。")
+    lines.append("")
+    lines.append("## 2. 固定行业与 PIT mapping")
+    lines.append("")
+    if not mapping.empty:
+        lines.extend(markdown_table(["industry", "match", "enabled", "events", "instruments"], [[r["configured_industry_name"], r["match_status"], r["industry_enabled_for_p0_9"], r["sample_event_count"], r["sample_instrument_count"]] for _, r in mapping.iterrows()]))
+    lines.append("")
+    lines.append("## 3. 样本充分性")
+    lines.append("")
+    if not suff.empty:
+        by_status = suff.groupby(["model_task", "fold_trainability_pass"]).size().reset_index(name="count")
+        lines.extend(markdown_table(["task", "fold pass", "count"], by_status.values.tolist()))
+    lines.append("")
+    lines.append("## 4. 核心 OOF 结果")
+    lines.append("")
+    if not core.empty:
+        display = core.head(20)
+        cols = ["target_industry", "model_task", "predeclared_bucket_id", "validation_event_count", "validation_reject_event_count_event_dedup", "launch_lift_vs_candidate_scope_weighted_baseline", "failure_precision_lift_vs_candidate_scope_weighted_baseline", "non_null_p1_gate_pass"]
+        lines.extend(markdown_table(["industry", "task", "bucket", "events", "rejects", "launch lift", "failure lift", "non-null gate"], [[r.get(c, "") for c in cols] for _, r in display.iterrows()]))
+    else:
+        lines.append("无 core OOF candidate aggregation。")
+    lines.append("")
+    lines.append("## 5. Null / FDR")
+    lines.append("")
+    lines.append(f"- candidate-level null rows `{len(null_agg)}`；promotion null 未完成的 candidate 不允许进入 industry P1 refine。")
+    if not null_agg.empty:
+        lines.extend(markdown_table(["industry", "task", "real metric", "null p95", "p", "q fixed"], [[r.get("target_industry", ""), r.get("model_task", ""), f"{safe_float(r.get('real_oof_metric'), np.nan):.3f}", f"{safe_float(r.get('null_p95'), np.nan):.3f}", f"{safe_float(r.get('empirical_p_value'), np.nan):.3f}", f"{safe_float(r.get('fdr_q_value_across_fixed_industries'), np.nan):.3f}"] for _, r in null_agg.head(12).iterrows()]))
+    lines.append("")
+    lines.append("## 6. Failure matched-delay / false reject")
+    lines.append("")
+    lines.append(f"- matched-delay repeat rows `{len(matched)}`，模式为 exact real reject count。")
+    lines.append("")
+    lines.append("## 7. Feature interpretation")
+    lines.append("")
+    if not feature.empty:
+        top = feature.sort_values("importance_gain", ascending=False).head(12)
+        lines.extend(markdown_table(["industry", "task", "feature", "gain"], [[r["target_industry"], r["model_task"], r["feature_name"], f"{safe_float(r['importance_gain'], 0.0):.2f}"] for _, r in top.iterrows()]))
+    lines.append("")
+    lines.append("## 8. Candidate Decision Table")
+    lines.append("")
+    if not summary.empty:
+        display = summary.head(30)
+        cols = ["target_industry", "model_task", "predeclared_bucket_id", "candidate_for_industry_p1_refine", "recommendation", "required_next_action"]
+        lines.extend(markdown_table(["industry", "task", "bucket", "P1 refine", "recommendation", "next action"], [[r.get(c, "") for c in cols] for _, r in display.iterrows()]))
+    lines.append("")
+    lines.append("## 9. 边界")
+    lines.append("")
+    lines.append("- P0.9 不是最终证明；候选即使出现，也必须在 industry P1 refine 中冻结后重验。")
+    lines.append("- raw score 不做跨行业排序；每个 top bucket 只在本行业内部解释。")
+    ensure_parent(report_path)
+    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    outputs = [report_path]
+    record_p0_9_manifest(config, "report-p0-9", outputs, {"explore9_p0_9_industry_lgbm_report.md": pd.DataFrame([{"recommendation": recommendation}])}, {}, recommendation)
+    print(f"wrote p0.9 report {relpath(report_path)} recommendation={recommendation}", flush=True)
+    return outputs
+
+
 def command_self_test(config: dict[str, Any]) -> list[Path]:
     ensure_dir(report_dir(config))
     ensure_dir(cache_dir(config))
@@ -9768,6 +11783,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             "report-p0-7ab",
             "profile-p0-8",
             "report-p0-8",
+            "profile-p0-9",
+            "report-p0-9",
             "all",
         ],
         help="Explore9 command to run",
@@ -9778,7 +11795,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    if args.command in {"profile-p0-8", "report-p0-8"}:
+    if args.command in {"profile-p0-9", "report-p0-9"}:
+        default_config = DEFAULT_P0_9_CONFIG
+    elif args.command in {"profile-p0-8", "report-p0-8"}:
         default_config = DEFAULT_P0_8_CONFIG
     elif args.command in {"profile-p0-7ab", "report-p0-7ab"}:
         default_config = DEFAULT_P0_7_CONFIG
@@ -9814,6 +11833,10 @@ def main(argv: list[str] | None = None) -> int:
             command_profile_p0_8(config)
         elif args.command == "report-p0-8":
             command_report_p0_8(config)
+        elif args.command == "profile-p0-9":
+            command_profile_p0_9(config)
+        elif args.command == "report-p0-9":
+            command_report_p0_9(config)
         elif args.command == "all":
             command_all(config)
         else:

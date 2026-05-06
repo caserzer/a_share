@@ -1,0 +1,24 @@
+feature_name,feature_family,feature_asof_rule,raw_or_derived,raw_required_field_exempt,formula_text_resolved,uses_event_effective_date_ohlc,allowed_for_launch_model,allowed_for_failure_model,observed_reference_feature_overlap_possible,actual_column_available,forbidden_raw_industry_feature
+ret_rank_20d_market,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,ret_rank_20d_market,False,True,True,False,True,False
+ret_rank_20d_industry,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,ret_rank_20d_industry,False,True,True,False,True,False
+relative_ret20_vs_benchmark,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,relative_ret20_vs_benchmark,False,True,True,False,True,False
+relative_ret20_vs_industry,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,relative_ret20_vs_industry,False,True,True,False,True,False
+money_ratio_20,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,money_ratio_20,False,True,True,False,True,False
+atr20_pct,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,atr20_pct,False,True,True,False,True,False
+prelaunch_drawdown_120d,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,prelaunch_drawdown_120d,False,True,True,False,True,False
+launch_gain_from_recent_low_60d,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,launch_gain_from_recent_low_60d,False,True,True,False,True,False
+launch_gain_from_recent_low_120d,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,launch_gain_from_recent_low_120d,False,True,True,False,True,False
+close_location,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,close_location,False,True,True,False,True,False
+upper_shadow_pct,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,upper_shadow_pct,False,True,True,False,True,False
+lower_shadow_pct,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,lower_shadow_pct,False,True,True,False,True,False
+rolling_range_20d,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,rolling_range_20d,False,True,True,False,True,False
+higher_low_count_20d,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,higher_low_count_20d,False,True,True,False,True,False
+industry_breadth_20d,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,industry_breadth_20d,False,True,True,False,True,False
+failure_decision_window,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,failure_decision_window,False,False,True,False,True,False
+market_regime,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,market_regime,False,True,True,False,True,False
+lifecycle_pool,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,lifecycle_pool,False,True,True,False,True,False
+launch_family,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,launch_family,False,True,True,False,True,False
+launch_variant,industry_specialist_lgbm_feature,feature_asof_date <= signal_date,derived_or_context,False,launch_variant,False,True,True,False,True,False
+industry,forbidden_raw_identity,not_allowed,identity,True,industry,False,False,False,False,True,True
+target_industry_name,forbidden_raw_identity,not_allowed,identity,True,target_industry_name,False,False,False,False,True,True
+industry_code,forbidden_raw_identity,not_allowed,identity,True,industry_code,False,False,False,False,False,True

@@ -1,0 +1,320 @@
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  fallback_provider_uri: Explore1/data/qlib/cn_data
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  cache_dir: Explore9/outputs/cache
+  report_dir: Explore9/outputs/reports
+
+sources:
+  background_reference:
+    - Explore9/outputs/reports/explore9_p0_8_gate_lgbm_report.md
+    - Explore9/requirement_expand_5.md
+  schema_reference:
+    - Explore9/outputs/cache/p0_7_launch_stratum_event_panel.parquet
+    - Explore9/outputs/cache/p0_7_failure_filter_opportunity_panel.parquet
+    - Explore9/outputs/cache/p0_8_launch_model_sample_panel.parquet
+    - Explore9/outputs/cache/p0_8_failure_model_sample_panel.parquet
+  forbidden_result_path_patterns:
+    - Explore3/outputs/
+    - Explore4/outputs/
+    - Explore5/outputs/
+    - Explore6/outputs/
+    - Explore7/outputs/
+    - Explore8/outputs/
+  forbidden_result_name_tokens:
+    - trade_detail
+    - portfolio_daily
+    - signals
+    - daily_candidates
+    - model_predictions
+    - year_metrics
+    - predictions
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  research_start: "2017-01-01"
+  research_end: "2024-12-31"
+  observed_reference_start: "2025-01-01"
+  observed_reference_end: "2026-04-30"
+
+universe:
+  name: pit_mcap500_mainboard
+  point_in_time: true
+  membership_frequency: daily
+  qlib_instrument_file_role: data_availability_superset
+  tradable_universe_authority: daily_pit_membership
+
+industry:
+  point_in_time: true
+  missing_industry: UNKNOWN
+
+fixed_target_industries:
+  - 国防军工
+  - 基础化工
+  - 汽车
+  - 交通运输
+  - 机械设备
+  - 建筑材料
+  - 传媒
+  - 电力设备
+  - 电子
+
+qlib:
+  market: pit_mcap500_mainboard
+  benchmark: SH000300
+  broad_market_key: broad_market
+  freq: day
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  price_adjustment_mode: provider_ohlc_already_adjusted
+
+p0_7:
+  phase: P0.7AB
+  expansion_id: expand_3
+  cache:
+    launch_episode_panel: Explore9/outputs/cache/p0_7_launch_episode_panel.parquet
+    launch_stratum_event_panel: Explore9/outputs/cache/p0_7_launch_stratum_event_panel.parquet
+    failure_filter_opportunity_panel: Explore9/outputs/cache/p0_7_failure_filter_opportunity_panel.parquet
+    failure_filter_event_panel: Explore9/outputs/cache/p0_7_failure_filter_event_panel.parquet
+
+p0_8:
+  phase: P0.8
+  expansion_id: expand_4
+  feature_set_version: p0_8_feature_set_v1
+  label_version: p0_8_label_v1
+  cache:
+    launch_model_sample_panel: Explore9/outputs/cache/p0_8_launch_model_sample_panel.parquet
+    failure_model_sample_panel: Explore9/outputs/cache/p0_8_failure_model_sample_panel.parquet
+    failure_multi_window_event_level_dedup_panel: Explore9/outputs/cache/p0_8_failure_multi_window_event_level_dedup_panel.parquet
+    lgbm_launch_predictions_walkforward: Explore9/outputs/cache/p0_8_lgbm_launch_predictions_walkforward.parquet
+    lgbm_failure_predictions_walkforward: Explore9/outputs/cache/p0_8_lgbm_failure_predictions_walkforward.parquet
+
+p0_9:
+  phase: P0.9
+  expansion_id: expand_5
+  feature_set_version: p0_9_industry_feature_set_v1
+  label_version: p0_9_industry_label_v1
+  sample_panel_version: p0_9_industry_sample_panel_v1
+  industry_mapping_version: pit_sw_l1_exact_name_v1
+  null_policy_version: p0_9_candidate_level_null_v1
+  training_code_version: run_explore9_p0_9_v1
+  cache:
+    observed_reference_row_audit: Explore9/outputs/cache/p0_9_observed_reference_row_audit.parquet
+    industry_launch_sample_panel: Explore9/outputs/cache/p0_9_industry_launch_sample_panel.parquet
+    industry_failure_sample_panel: Explore9/outputs/cache/p0_9_industry_failure_sample_panel.parquet
+    industry_launch_oof_prediction_panel: Explore9/outputs/cache/p0_9_industry_launch_oof_prediction_panel.parquet
+    industry_failure_oof_prediction_panel: Explore9/outputs/cache/p0_9_industry_failure_oof_prediction_panel.parquet
+    industry_failure_event_dedup_panel: Explore9/outputs/cache/p0_9_industry_failure_event_dedup_panel.parquet
+
+folds:
+  fold_2020: {train_start: "2017-01-01", train_end: "2019-12-31", validation_year: 2020, validation_fold_role: p1_promotion_eligible}
+  fold_2021: {train_start: "2017-01-01", train_end: "2020-12-31", validation_year: 2021, validation_fold_role: p1_promotion_eligible}
+  fold_2022: {train_start: "2017-01-01", train_end: "2021-12-31", validation_year: 2022, validation_fold_role: p1_promotion_eligible}
+  fold_2023: {train_start: "2017-01-01", train_end: "2022-12-31", validation_year: 2023, validation_fold_role: p1_promotion_eligible}
+  fold_2024: {train_start: "2017-01-01", train_end: "2023-12-31", validation_year: 2024, validation_fold_role: robustness_audit_only}
+
+walk_forward:
+  split_mode: purged_expanding_walk_forward
+  validation_years: [2020, 2021, 2022, 2023, 2024]
+  p1_promotion_validation_years: [2020, 2021, 2022, 2023]
+  robustness_audit_only_years: [2024]
+  purge_by_label_end_date: true
+  random_split_used: false
+  validation_role: robustness_validation_not_clean_oos_proof
+  p1_check_unit: stable_candidate_aggregated_out_of_fold
+  p1_aggregation_excludes_robustness_audit_only_folds: true
+
+purge:
+  require_train_label_window_end_before_validation_start: true
+  require_inner_train_label_window_end_before_inner_validation_start: true
+  max_label_horizon_days_used_for_purge: 240
+
+feature_asof:
+  close_derived_signal_feature_asof_date: signal_date
+  event_effective_date_ohlc_features_allowed: false
+
+model_tasks:
+  launch:
+    enabled: true
+    model_name: industry_launch_winner_score_lgbm
+    primary_label: launch_winner_50h120
+    eligible_col: industry_launch_model_train_eval_eligible
+    predeclared_buckets:
+      - launch_top_10pct_by_train_threshold
+      - launch_top_5pct_by_train_threshold
+      - launch_top_2pct_by_train_threshold
+  failure:
+    enabled: true
+    model_name: industry_failure_reject_score_lgbm
+    primary_label: failure_reject_positive_primary
+    eligible_col: industry_failure_model_train_eval_eligible
+    predeclared_buckets:
+      - failure_top_risk_10pct_by_train_threshold
+      - failure_top_risk_5pct_by_train_threshold
+      - failure_top_risk_2pct_by_train_threshold
+
+failure_decision_windows: [3, 5, 10]
+
+lgbm:
+  enabled: true
+  objective: binary
+  boosting_type: gbdt
+  metric: [binary_logloss, auc]
+  learning_rate: 0.03
+  num_leaves: 31
+  max_depth: 5
+  min_data_in_leaf: 100
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l1: 0.0
+  lambda_l2: 1.0
+  n_estimators: 800
+  early_stopping_rounds: 100
+  inner_validation_mode: latest_fully_eligible_train_year_after_purge
+  early_stopping_uses_outer_validation_fold: false
+  early_stopping_uses_inner_train_split_only: true
+  inner_validation_fallback_to_outer_allowed: false
+  disable_fold_when_inner_validation_unavailable: true
+  hyperparameter_search_enabled: false
+  validation_bucket_selection_allowed: false
+  n_jobs: 4
+  random_seed: 20260505
+  feature_columns:
+    - ret_rank_20d_market
+    - ret_rank_20d_industry
+    - relative_ret20_vs_benchmark
+    - relative_ret20_vs_industry
+    - money_ratio_20
+    - atr20_pct
+    - prelaunch_drawdown_120d
+    - launch_gain_from_recent_low_60d
+    - launch_gain_from_recent_low_120d
+    - close_location
+    - upper_shadow_pct
+    - lower_shadow_pct
+    - rolling_range_20d
+    - higher_low_count_20d
+    - industry_breadth_20d
+    - failure_decision_window
+  categorical_feature_columns:
+    - market_regime
+    - lifecycle_pool
+    - launch_family
+    - launch_variant
+  forbidden_feature_columns:
+    - industry
+    - industry_code
+    - target_industry_name
+
+sample_weight:
+  mode: episode_balanced_with_group_cap
+  group_key_date_field: event_effective_date
+  max_instrument_year_weight_share: 0.08
+  max_group_cap_iterations: 20
+  normalize_total_weight_per_split: true
+  output_base_sample_weight: true
+  output_final_sample_weight: true
+  sample_weight_alias: final_sample_weight
+  equal_row_sensitivity: true
+
+baseline:
+  min_baseline_cell_event_count: 50
+  min_baseline_cell_positive_count: 5
+  fallback_hierarchy_pre_registered: true
+
+null_full_retrain:
+  enabled: true
+  screening_repeats: 20
+  promotion_repeats: 100
+  n_jobs: 4
+  primary_null_mode: train_label_permutation_full_retrain_then_real_validation_eval
+  candidate_level_aggregation: true
+  permutation_scope: target_industry_train_fold_model_task
+  execute_screening_full_retrain: false
+  execute_promotion_full_retrain: true
+
+matched_delay:
+  enabled_for_failure: true
+  mode: exact_real_reject_count
+  random_seed: 20260505
+  n_repeats: 100
+  n_jobs: 4
+  max_sample_per_variant: 20000
+
+thresholds:
+  min_positive_validation_folds: 3
+  min_validation_years: 3
+  min_validation_distinct_instruments: 8
+  min_validation_distinct_instrument_years: 8
+  min_core_trainable_folds_for_industry_p1: 4
+  min_baseline_cell_event_count: 50
+  min_baseline_cell_positive_count: 5
+  min_industry_lgbm_train_event_count: 500
+  min_industry_lgbm_train_positive_count: 30
+  min_industry_lgbm_train_negative_count: 100
+  min_industry_lgbm_train_distinct_instruments: 20
+  min_industry_lgbm_train_distinct_instrument_years: 40
+  min_industry_lgbm_inner_validation_event_count: 100
+  min_industry_lgbm_inner_validation_positive_count: 8
+  min_industry_lgbm_outer_validation_event_count: 80
+  min_industry_lgbm_outer_validation_positive_count: 5
+  min_industry_lgbm_outer_validation_distinct_instruments: 8
+  min_industry_lgbm_outer_validation_distinct_instrument_years: 8
+  min_launch_validation_event_count: 200
+  min_launch_validation_positive_count: 20
+  min_launch_lift_vs_industry_all: 1.25
+  min_launch_lift_vs_candidate_scope_weighted_baseline: 1.10
+  min_launch_lift_vs_same_family: 1.05
+  min_launch_winner_episode_coverage: 0.05
+  max_false_positive_worsening: 0.03
+  max_drawdown_worsening: 0.02
+  min_launch_fold_event_count: 50
+  min_launch_fold_positive_count: 5
+  min_launch_fold_lift_vs_industry_all: 1.00
+  min_launch_fold_lift_vs_candidate_scope_weighted_baseline: 1.00
+  min_launch_fold_winner_coverage: 0.01
+  max_fold_false_positive_worsening: 0.05
+  min_failure_validation_reject_event_count: 100
+  min_failure_validation_positive_count: 30
+  min_failure_precision_lift_vs_industry_baseline: 1.10
+  min_nonwinner_precision_lift: 1.05
+  min_failure_precision_lift_vs_candidate_scope_weighted_baseline: 1.05
+  min_failure_precision_lift_vs_matched_delay: 1.03
+  min_drawdown_avoided_vs_matched_delay: 0.01
+  min_filter_before_12pct_drawdown_rate: 0.50
+  max_same_day_12pct_drawdown_ambiguous_share: 0.20
+  max_winner_false_reject_from_launch_rate: 0.20
+  max_big_winner_false_reject_from_launch_rate: 0.15
+  max_post_50_pre_100_big_winner_false_reject_rate: 0.20
+  max_decision_reference_residual_50h120_rate: 0.25
+  max_decision_reference_residual_100h240_rate: 0.15
+  max_pending_winner_coverage_loss_from_launch: 0.35
+  max_total_winner_coverage_loss_from_launch: 0.35
+  min_failure_fold_reject_event_count: 30
+  min_failure_fold_positive_count: 10
+  min_failure_fold_precision_lift_vs_industry_baseline: 1.00
+  min_failure_fold_precision_lift_vs_matched_delay: 1.00
+  max_fold_winner_false_reject_from_launch_rate: 0.25
+  max_fold_big_winner_false_reject_from_launch_rate: 0.25
+  max_fold_pending_winner_coverage_loss_from_launch: 0.45
+  min_fold_drawdown_avoided_vs_matched_delay: 0.00
+  max_candidate_baseline_missing_row_rate: 0.05
+  max_candidate_baseline_missing_weight_share: 0.05
+  max_candidate_baseline_sparse_cell_weight_share: 0.20
+  max_top1_instrument_contribution: 0.10
+  max_top5_instrument_contribution: 0.35
+  max_top_instrument_year_weight_share: 0.08
+  max_instrument_year_weight_hhi: 0.08
+  max_regime_hhi: 0.55
+  max_top1_regime_contribution: 0.70
+  min_lgbm_null_screening_repeats: 20
+  min_lgbm_null_promotion_repeats: 100
+  max_lgbm_null_empirical_p: 0.10
+  max_lgbm_null_fdr_q: 0.20
+  failure_drawdown_threshold: 0.12
