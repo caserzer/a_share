@@ -1,0 +1,138 @@
+phase: explore10a
+title: automotive_sample_width_and_feature_bank_hygiene_audit
+output_root: Explore10/outputs/explore10a
+requirement_path: Explore10/requirement_explore10a.md
+
+paths:
+  explore10_report: Explore10/outputs/explore10/reports/explore10_report.md
+  explore10_manifest: Explore10/outputs/explore10/reports/explore10_run_manifest.json
+  explore10_reports_dir: Explore10/outputs/explore10/reports
+  explore10_cache_dir: Explore10/outputs/explore10/cache
+  explore10_lgbm_train_eval_panel: Explore10/outputs/explore10/cache/explore10_lgbm_train_eval_panel.parquet
+  explore10_atomic_launch_event_panel: Explore10/outputs/explore10/cache/explore10_atomic_launch_event_panel.parquet
+  explore10_atomic_failure_decision_panel: Explore10/outputs/explore10/cache/explore10_atomic_failure_decision_panel.parquet
+  p0_9b_report: Explore9/outputs/p0_9b/reports/p0_9b_report.md
+  p0_9b_train_eval_panel: Explore9/outputs/p0_9b/cache/p0_9b_locked_t1_train_eval_panel.parquet
+  p0_9b_prediction_panel: Explore9/outputs/p0_9b/cache/p0_9b_locked_t1_prediction_panel.parquet
+  p0_9a_recommendation_summary: Explore9/outputs/p0_9a/reports/p0_9a_recommendation_summary.csv
+  p0_9a_trainability_contract_matrix: Explore9/outputs/p0_9a/reports/p0_9a_trainability_contract_matrix.csv
+  p0_9a_sample_weight_group_cap_audit: Explore9/outputs/p0_9a/reports/p0_9a_sample_weight_group_cap_audit.csv
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  feature_bank_v1_dictionary: Explore10/outputs/explore10/reports/explore10_atomic_feature_dictionary.csv
+  feature_bank_v1_preflight: Explore10/outputs/explore10/reports/explore10_feature_bank_preflight_audit.csv
+  explore10_scope_lock: Explore10/outputs/explore10/reports/explore10_scope_lock.csv
+  explore10_trainability: Explore10/outputs/explore10/reports/explore10_fold_trainability_audit.csv
+
+scope:
+  primary:
+    industry: 汽车
+    task: launch_winner
+    role: primary_trainability_repair_audit
+  secondary:
+    industry: 汽车
+    task: failure_reject
+    role: secondary_sample_width_audit
+  placebo:
+    industry: 电子
+    tasks: [launch_winner, failure_reject]
+    role: negative_control_guardrail
+
+folds:
+  core: [fold_2020, fold_2021, fold_2022, fold_2023]
+  robustness_only: [fold_2024]
+  fold_2024_used_for_readiness: false
+
+data_discipline:
+  feature_asof_date_rule: signal_date
+  event_effective_date_rule: next_trading_day_after_signal_date
+  event_effective_ohlcvm_as_feature_allowed: false
+  train_label_window_end_before_validation_start: true
+  observed_reference_decision_feature_overlap_allowed: false
+  observed_reference_label_measurement_core_support_allowed: false
+
+phase_gates:
+  sample_width_root_cause_first: true
+  feature_bank_v2_allowed_before_sample_width_root_cause_proven_phase_level: false
+  trainability_counterfactual_allowed_before_sample_width_root_cause_proven_phase_level: false
+  explore10b_readiness_allowed_before_sample_width_root_cause_proven_phase_level: false
+  sample_width_root_cause_levels: [fold_level, task_level, phase_level]
+  explore10b_allowed_primary_bottleneck:
+    - feature_bank_v1_missingness
+    - panel_construction_or_scope_mismatch
+    - probe_contract_or_feature_eligibility
+  explore10b_forbidden_primary_bottleneck:
+    - automotive_scope_width
+    - unresolved
+  primary_bottleneck_allowed:
+    - automotive_scope_width
+    - feature_bank_v1_missingness
+    - panel_construction_or_scope_mismatch
+    - probe_contract_or_feature_eligibility
+    - unresolved
+
+feature_bank_hygiene:
+  source_version: alpha158_like_v1_from_explore10
+  target_version: alpha158_like_v2_hygiene
+  enabled_after_sample_width_root_cause_proven_phase_level: true
+  status_only_when_root_cause_unproven: true
+  selection_uses_labels: false
+  selection_uses_validation_metrics: false
+  duplicate_cluster_method: train_scope_correlation_and_formula_identity
+  duplicate_cluster_threshold_abs_corr: 0.98
+  representative_policy:
+    - lower_missing_weight_share
+    - higher_fold_availability_count
+    - lower_formula_complexity
+    - lower_family_overrepresentation_penalty
+    - simpler_asof_rule
+    - lexicographic_feature_name
+
+trainability_counterfactual:
+  enabled: true
+  enabled_after_sample_width_root_cause_proven_phase_level: true
+  model_fit_sanity_allowed: true
+  path_extraction_allowed: false
+  primitive_candidate_generation_allowed: false
+  feature_bank_versions: [v1_original, v2_hygiene]
+  min_distinct_instruments_grid: [20, 15, 12]
+  explore10b_eligible_min_distinct_instruments: 20
+
+thresholds:
+  max_feature_missing_weight_share: 0.20
+  max_feature_missing_row_rate: 0.30
+  max_duplicate_feature_cluster_count: 50
+  max_constant_feature_rate: 0.05
+  max_feature_family_share: 0.35
+  min_feature_family_coverage_after_hygiene: 0.80
+  min_trainable_core_folds_for_explore10b: 2
+  min_distinct_instruments_original: 20
+  max_unknown_loss_weight_share: 0.01
+  max_top_instrument_year_weight_share: 0.08
+  max_instrument_year_weight_hhi: 0.08
+
+recommendation_allowed:
+  - proceed_to_explore10b_atomic_feature_bank_v2_rerun
+  - continue_explore10a_sample_width_root_cause_audit
+  - continue_explore10a_repair_audit
+  - stop_automotive_single_industry_path_due_to_sample_width
+  - recommend_broader_cohort_requirement
+  - stop_due_to_feature_bank_hygiene_failure
+  - stop_due_to_feature_asof_or_data_discipline_violation
+  - stop_due_to_placebo_dominates_primary_risk
+  - stop_due_to_unresolved_sample_width_root_cause
+
+forbidden_outputs:
+  - proceed_to_explore11_manual_atomic_primitive_formula_discovery
+  - proceed_to_strategy_backtest
+  - candidate_for_p1_strategy
+  - validated_model
+  - selected_lgbm_model
+  - selected_score_bucket
+  - atomic_primitive_candidate_for_next_requirement
+  - freeze_strategy

@@ -1,0 +1,44 @@
+version: alpha158_like_v1
+description: Expanded Alpha158-like atomic feature bank for Explore10 path-to-primitive discovery.
+raw_inputs:
+  - {feature_name: open, feature_family: raw_provider, feature_role: raw_input, formula_template_id: raw_input, formula_text: open_t, raw_inputs: [open], window: 1, cross_section_scope: none, normalization_scope: none, feature_asof_rule: signal_date, missing_value_policy: require_finite, allowed_for_path_extraction: false, allowed_for_primitive_formula: false, raw_required_field_exempt: true}
+  - {feature_name: high, feature_family: raw_provider, feature_role: raw_input, formula_template_id: raw_input, formula_text: high_t, raw_inputs: [high], window: 1, cross_section_scope: none, normalization_scope: none, feature_asof_rule: signal_date, missing_value_policy: require_finite, allowed_for_path_extraction: false, allowed_for_primitive_formula: false, raw_required_field_exempt: true}
+  - {feature_name: low, feature_family: raw_provider, feature_role: raw_input, formula_template_id: raw_input, formula_text: low_t, raw_inputs: [low], window: 1, cross_section_scope: none, normalization_scope: none, feature_asof_rule: signal_date, missing_value_policy: require_finite, allowed_for_path_extraction: false, allowed_for_primitive_formula: false, raw_required_field_exempt: true}
+  - {feature_name: close, feature_family: raw_provider, feature_role: raw_input, formula_template_id: raw_input, formula_text: close_t, raw_inputs: [close], window: 1, cross_section_scope: none, normalization_scope: none, feature_asof_rule: signal_date, missing_value_policy: require_finite, allowed_for_path_extraction: false, allowed_for_primitive_formula: false, raw_required_field_exempt: true}
+  - {feature_name: volume, feature_family: raw_provider, feature_role: raw_input, formula_template_id: raw_input, formula_text: volume_t, raw_inputs: [volume], window: 1, cross_section_scope: none, normalization_scope: none, feature_asof_rule: signal_date, missing_value_policy: require_finite, allowed_for_path_extraction: false, allowed_for_primitive_formula: false, raw_required_field_exempt: true}
+  - {feature_name: money, feature_family: raw_provider, feature_role: raw_input, formula_template_id: raw_input, formula_text: money_t, raw_inputs: [money], window: 1, cross_section_scope: none, normalization_scope: none, feature_asof_rule: signal_date, missing_value_policy: require_finite, allowed_for_path_extraction: false, allowed_for_primitive_formula: false, raw_required_field_exempt: true}
+features:
+  kbar_candle_shape:
+    family: kbar_candle_shape
+    names: [open_close_ratio, high_close_ratio, low_close_ratio, close_open_return, intraday_range_pct, body_pct, upper_shadow_pct, lower_shadow_pct, close_location, gap_open_pct, gap_close_pct]
+  rolling_return:
+    family: rolling_return
+    windows: [1, 2, 3, 5, 10, 20, 40, 60, 120]
+    templates: [ret_Nd, close_over_close_Nd, return_slope_Nd]
+    extra: [return_acceleration_5_20, return_acceleration_20_60]
+  price_distance:
+    family: price_distance
+    windows: [5, 10, 20, 40, 60, 120]
+    templates: [close_over_ma_N, close_over_median_N, close_over_max_high_N, close_over_min_low_N, distance_to_high_N, distance_to_low_N, launch_gain_from_recent_low_N, drawdown_from_recent_high_N]
+  volatility_range:
+    family: volatility_range
+    names: [atr_like_10, atr_like_20, atr20_pct, volatility_return_std_5, volatility_return_std_10, volatility_return_std_20, volatility_return_std_60, amplitude_5, amplitude_10, amplitude_20, amplitude_60, range_expansion_ratio_5_20, range_expansion_ratio_20_60, high_vol_constructive_ratio, high_vol_destructive_ratio]
+  volume_money:
+    family: volume_money
+    windows: [5, 10, 20, 60]
+    templates: [volume_over_mean_N, money_over_mean_N, volume_zscore_N, money_zscore_N, turnover_proxy_ratio_N, money_price_coherence_N, volume_price_divergence_N]
+  cross_section_rank:
+    family: cross_section_rank
+    names: [ret_5d_market_rank, ret_10d_market_rank, ret_20d_market_rank, ret_60d_market_rank, ret_5d_industry_rank, ret_10d_industry_rank, ret_20d_industry_rank, ret_60d_industry_rank, money_5d_market_rank, money_20d_market_rank, money_5d_industry_rank, money_20d_industry_rank, atr20_pct_market_rank, atr20_pct_industry_rank, rank_jump_5d, rank_persistence_3d, rank_persistence_5d, rank_evaporation_2d, rank_evaporation_3d, rank_evaporation_5d]
+  industry_market_context:
+    family: industry_market_context
+    names: [industry_breadth_20d, industry_breadth_change_5d, industry_money_breadth_20d, industry_relative_strength_vs_market_20d, industry_relative_strength_vs_market_60d, market_breadth_20d, market_volatility_regime, market_regime, risk_on_off_bucket]
+  launch_lifecycle_context:
+    family: launch_lifecycle_context
+    names: [prelaunch_drawdown_60d, prelaunch_drawdown_120d, prelaunch_repair_age, sparse_strong_day_flag]
+context_slice_only:
+  - launch_family
+  - launch_lifecycle_pool
+  - post_20_state
+  - post_30_state
+  - late_acceleration_flag

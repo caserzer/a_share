@@ -1,0 +1,170 @@
+phase: explore10
+title: alpha158_like_atomic_feature_bank_path_to_primitive
+output_root: Explore10/outputs/explore10
+requirement_path: Explore10/requirement_explore10.md
+
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  fallback_provider_uri_for_schema_only: Explore1/data/qlib/cn_data
+  fallback_provider_allowed_for_eligible_rows: false
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  source_train_eval_panel: Explore9/outputs/p0_9b/cache/p0_9b_locked_t1_train_eval_panel.parquet
+  source_prediction_panel: Explore9/outputs/p0_9b/cache/p0_9b_locked_t1_prediction_panel.parquet
+  p0_9b_reports_dir: Explore9/outputs/p0_9b/reports
+  feature_bank_source_dictionary: Explore10/configs/atomic_feature_bank_v1.yaml
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  research_start: "2017-01-01"
+  research_end: "2024-12-31"
+  observed_reference_start: "2025-01-01"
+  observed_reference_end: "2026-04-30"
+
+qlib:
+  freq: day
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  price_adjustment_mode: provider_ohlc_already_adjusted
+
+scope:
+  tasks:
+    - industry: 汽车
+      source_task: industry_launch_winner_score_lgbm
+      task: launch_winner
+      role: primary_candidate_source
+      eligible_column: launch_model_train_eval_eligible
+      label_column: launch_winner_50h120
+      num_boost_round: 64
+      model_role: locked_lgbm_probe
+    - industry: 汽车
+      source_task: industry_failure_reject_score_lgbm
+      task: failure_reject
+      role: secondary_diagnostic
+      eligible_column: failure_model_train_eval_eligible
+      label_column: failure_reject_positive_primary
+      num_boost_round: 32
+      model_role: secondary_diagnostic_only
+    - industry: 电子
+      source_task: industry_launch_winner_score_lgbm
+      task: launch_winner
+      role: weak_signal_sanity_check
+      eligible_column: launch_model_train_eval_eligible
+      label_column: launch_winner_50h120
+      num_boost_round: 64
+      model_role: weak_signal_sanity_check
+    - industry: 电子
+      source_task: industry_failure_reject_score_lgbm
+      task: failure_reject
+      role: negative_control_placebo
+      eligible_column: failure_model_train_eval_eligible
+      label_column: failure_reject_positive_primary
+      num_boost_round: 32
+      model_role: negative_control_placebo
+  contract_id: T1_fixed_rounds_no_inner_validation
+  core_folds: [fold_2020, fold_2021, fold_2022, fold_2023]
+  robustness_folds: [fold_2024]
+  failure_decision_windows: [3, 5, 10]
+
+feature_bank:
+  version: alpha158_like_v1
+  quantile_buckets: [q05, q10, q20, q30, q40, q50, q60, q70, q80, q90, q95]
+  context_slice_only_features: [launch_family, launch_lifecycle_pool, post_20_state, post_30_state, late_acceleration_flag]
+
+feature_bank_preflight:
+  duplicate_high_corr_abs_threshold: 0.995
+  near_constant_uses_train_fold_only: true
+  fail_run_before_path_extraction_if_preflight_fails: true
+
+lgbm_probe:
+  objective: binary
+  metric: [auc, binary_logloss]
+  boosting_type: gbdt
+  max_depth: 3
+  num_leaves: 8
+  min_data_in_leaf: 30
+  learning_rate: 0.05
+  feature_fraction: 0.80
+  bagging_fraction: 0.80
+  bagging_freq: 1
+  lambda_l1: 0.0
+  lambda_l2: 1.0
+  early_stopping: false
+  hyperparameter_search: false
+  random_seed: 20260507
+  n_jobs: 4
+
+path_extraction:
+  max_raw_paths_considered: 2000
+  max_patterns_after_canonicalization: 300
+  max_primitive_candidates_per_task: 50
+  min_path_train_support_count: 30
+  max_tokens_per_candidate: 6
+
+thresholds:
+  min_train_event_count: 200
+  min_train_positive_count: 20
+  min_validation_event_count: 30
+  min_validation_positive_count: 5
+  min_distinct_instruments: 20
+  min_distinct_instrument_years: 20
+  min_feature_available_count: 50
+  min_prediction_uniqueness: 10
+  min_prediction_std: 0.000001
+  min_used_feature_count: 2
+  max_feature_missing_weight_share: 0.20
+  max_feature_family_missing_weight_share: 0.35
+  max_constant_feature_rate: 0.25
+  max_feature_family_share: 0.45
+  max_duplicate_feature_cluster_count: 50
+  min_feature_weighted_std: 0.000000000001
+  min_feature_distinct_value_count: 3
+  min_primitive_oof_support_count: 30
+  min_primitive_weighted_support: 30
+  min_supporting_core_folds: 2
+  min_supporting_validation_years: 2
+  min_supporting_primary_slices: 2
+  min_baseline_cell_event_count: 50
+  min_baseline_cell_positive_count: 5
+  max_candidate_baseline_missing_row_rate: 0.05
+  max_candidate_baseline_missing_weight_share: 0.05
+  max_candidate_baseline_sparse_cell_weight_share: 0.20
+  max_top1_instrument_contribution: 0.20
+  max_top5_instrument_contribution: 0.50
+  max_top_instrument_year_contribution: 0.12
+  max_instrument_year_hhi: 0.08
+  max_regime_hhi: 0.60
+  max_top1_regime_contribution: 0.75
+  max_empirical_p_value: 0.10
+  max_fdr_q_value: 0.20
+  max_weak_empirical_p_value: 0.25
+  min_null_metric_count_for_candidate_p_value: 30
+  min_null_repeat_count_for_promotion: 20
+  max_placebo_stable_candidate_count: 0
+  max_placebo_equal_or_stronger_candidate_count: 0
+  max_false_reject_vs_launch_target_rate: 0.20
+  max_pending_winner_coverage_loss: 0.25
+  min_drawdown_avoided_vs_matched_delay: 0.00
+
+null:
+  repeats_screening: 20
+  repeats_promotion: 20
+  random_seed: 20260507
+
+p0_9b_reference:
+  high_score_threshold_rule: prediction_score_top_decile_within_industry_task_fold
+  usage: audit_only_after_candidate_freeze
+
+forbidden_outputs:
+  - proceed_to_explore10_backtest
+  - proceed_to_strategy_backtest
+  - candidate_for_p1_strategy
+  - validated_model
+  - selected_lgbm_model
+  - selected_score_bucket
+  - freeze_strategy
+  - actionable_trade_rule
