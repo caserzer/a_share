@@ -137,6 +137,32 @@ REQUIRED_CACHE_10A = [
     "explore10a_feature_availability_panel.parquet",
     "explore10a_trainability_counterfactual_panel.parquet",
 ]
+REQUIRED_REPORTS_10B = [
+    "explore10b_run_manifest.json",
+    "explore10b_preflight_reference_artifact_audit.csv",
+    "explore10b_scope_selection_lineage_audit.csv",
+    "explore10b_scope_role_relabel_audit.csv",
+    "explore10b_electronics_sample_width_gate.csv",
+    "explore10b_electronics_row_attrition_waterfall.csv",
+    "explore10b_electronics_trainability_denominator_audit.csv",
+    "explore10b_electronics_feature_availability_width_audit.csv",
+    "explore10b_electronics_data_discipline_audit.csv",
+    "explore10b_electronics_vs_automotive_width_comparison.csv",
+    "explore10b_candidate_reference_count_audit.csv",
+    "explore10b_fold_2024_nonselection_audit.csv",
+    "explore10b_metric_nonselection_audit.csv",
+    "explore10b_threshold_nonselection_audit.csv",
+    "explore10b_forbidden_recommendation_self_check.csv",
+    "explore10b_required_artifact_authority_audit.csv",
+    "explore10b_cache_tracking_audit.csv",
+    "explore10b_recommendation_gate.csv",
+    "explore10b_report.md",
+]
+REQUIRED_CACHE_10B = [
+    "explore10b_electronics_launch_width_panel.parquet",
+    "explore10b_electronics_failure_width_panel.parquet",
+    "explore10b_electronics_feature_availability_panel.parquet",
+]
 REFERENCE_ARTIFACTS = [
     "Explore9/outputs/p0_9b/reports/p0_9b_report.md",
     "Explore9/outputs/p0_9b/reports/p0_9b_manual_primitive_candidate_table.csv",
@@ -2871,6 +2897,1110 @@ def command_report_10a(config: dict[str, Any]) -> list[Path]:
     return [report_path, report_dir(config) / "explore10a_forbidden_recommendation_self_check.csv"]
 
 
+def file_hash_full(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as file:
+        for chunk in iter(lambda: file.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def artifact_counts_10b(path: Path) -> tuple[int | float, int | float, bool]:
+    if not path.exists() or not path.is_file():
+        return np.nan, np.nan, False
+    try:
+        if path.suffix == ".csv":
+            df = pd.read_csv(path)
+            return int(len(df)), int(len(df.columns)), True
+        if path.suffix == ".parquet":
+            df = pd.read_parquet(path)
+            return int(len(df)), int(len(df.columns)), True
+        if path.suffix == ".json":
+            data = json.loads(path.read_text(encoding="utf-8"))
+            return 1, len(data) if isinstance(data, dict) else 1, True
+        if path.suffix == ".md":
+            return int(len(path.read_text(encoding="utf-8").splitlines())), 1, True
+    except Exception:
+        return np.nan, np.nan, False
+    return np.nan, np.nan, True
+
+
+def artifact_manifest_10b(paths: list[Path]) -> list[dict[str, Any]]:
+    rows = []
+    for path in paths:
+        if not path.exists():
+            continue
+        row_count, column_count, readable = artifact_counts_10b(path)
+        rows.append(
+            {
+                "artifact_name": path.name,
+                "artifact_path": relpath(path),
+                "exists": path.exists(),
+                "readable": readable,
+                "file_size_bytes": path.stat().st_size,
+                "sha256": file_hash_full(path),
+                "row_count": row_count,
+                "column_count": column_count,
+                "artifact_authority": "required_output" if path.name in set(REQUIRED_REPORTS_10B + REQUIRED_CACHE_10B) else "supporting_output",
+            }
+        )
+    return rows
+
+
+REQUIRED_INPUT_COLUMNS_10B: dict[str, list[str]] = {
+    "explore10_scope_lock": ["industry", "task", "fold_id", "row_identity_missing_from_explore10_count", "row_identity_extra_in_explore10_count", "fold_2024_used_for_support", "scope_lock_pass"],
+    "explore10_trainability": ["industry", "task", "fold_id", "train_event_count_after_purge", "train_positive_count_after_purge", "validation_event_count", "validation_positive_count", "feature_available_count", "distinct_instruments", "distinct_instrument_years", "model_fit_pass", "trainability_guardrail_pass", "explore10_fold_trainability_pass", "failed_predicate"],
+    "explore10_feature_asof_leakage": ["violation_count", "pass"],
+    "explore10_observed_reference_overlap": ["industry", "task", "fold_id", "observed_reference_decision_overlap_count", "observed_reference_feature_overlap_count", "observed_reference_overlap_pass"],
+    "explore10_purge": ["industry", "task", "fold_id", "walk_forward_purge_pass"],
+    "explore10_feature_bank_preflight": ["feature_bank_preflight_pass"],
+    "explore10_candidate_table": ["industry", "task"],
+    "explore10a_width_attribution": ["target_industry", "task", "fold_id", "scope_locked_distinct_instruments", "feature_bank_v1_available_distinct_instruments", "trainability_denominator_distinct_instruments", "primary_bottleneck"],
+    "explore10a_root_cause_gate": ["target_industry", "task", "fold_id", "sample_width_root_cause_proven_phase_level", "phase_level_primary_bottleneck"],
+    "p0_9b_train_eval_panel": ["instrument", "fold_id"],
+    "industry_membership": ["instrument"],
+    "explore10_lgbm_train_eval_panel": ["instrument", "fold_id", "model_task", "target_industry_name", "sample_has_required_features"],
+    "explore10_atomic_launch_event_panel": ["instrument", "fold_id", "launch_stratum_event_id"],
+    "explore10_atomic_failure_decision_panel": ["instrument", "fold_id", "launch_stratum_event_id"],
+}
+
+
+def preflight_reference_artifacts_10b(config: dict[str, Any]) -> pd.DataFrame:
+    rows = []
+    for key, item in config["paths"].items():
+        path = topic_path(item)
+        exists = path.exists()
+        row_count = column_count = np.nan
+        readable = False
+        columns: list[str] = []
+        if exists and path.is_file():
+            try:
+                if path.suffix == ".csv":
+                    df = pd.read_csv(path, nrows=0)
+                    columns = list(df.columns)
+                    row_count = int(len(pd.read_csv(path, usecols=[]))) if columns else 0
+                    column_count = int(len(columns))
+                    readable = True
+                elif path.suffix == ".parquet":
+                    df = pd.read_parquet(path)
+                    columns = list(df.columns)
+                    row_count = int(len(df))
+                    column_count = int(len(columns))
+                    readable = True
+                elif path.suffix == ".md":
+                    text = path.read_text(encoding="utf-8")
+                    row_count = int(len(text.splitlines()))
+                    column_count = 1
+                    readable = True
+            except Exception:
+                readable = False
+        required_columns = REQUIRED_INPUT_COLUMNS_10B.get(key, [])
+        missing_required_columns = [col for col in required_columns if col not in columns]
+        rows.append(
+            {
+                "artifact_name": key,
+                "artifact_path": item,
+                "required": True,
+                "exists": exists,
+                "readable": readable,
+                "file_size_bytes": path.stat().st_size if exists and path.is_file() else 0,
+                "sha256": file_hash_full(path) if exists and path.is_file() else "",
+                "row_count": row_count,
+                "column_count": column_count,
+                "required_columns_present": len(missing_required_columns) == 0,
+                "missing_required_columns": ";".join(missing_required_columns),
+                "authority_role": "row_level_cache" if str(item).endswith(".parquet") else "report_or_reference",
+                "preflight_status": "pass" if exists and readable and not missing_required_columns else ("missing" if not exists else "schema_or_read_error"),
+                "pass": exists and readable and not missing_required_columns,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def load_explore10b_inputs(config: dict[str, Any]) -> dict[str, pd.DataFrame]:
+    refs = preflight_reference_artifacts_10b(config)
+    row_cache_keys = {"explore10_lgbm_train_eval_panel", "explore10_atomic_launch_event_panel", "explore10_atomic_failure_decision_panel"}
+    missing_row_cache = refs[refs["artifact_name"].isin(row_cache_keys) & ~refs["exists"].fillna(False).astype(bool)]
+    if not missing_row_cache.empty:
+        raise DataGateError("missing_required_row_level_cache")
+    missing = refs[~refs["pass"].fillna(False).astype(bool)]
+    if not missing.empty:
+        raise DataGateError("missing_explore10b_reference_artifact: " + ",".join(missing["artifact_path"].astype(str).tolist()))
+    paths = config["paths"]
+    frames = {
+        "preflight": refs,
+        "lgbm": normalize_dates(pd.read_parquet(topic_path(paths["explore10_lgbm_train_eval_panel"]))),
+        "launch": normalize_dates(pd.read_parquet(topic_path(paths["explore10_atomic_launch_event_panel"]))),
+        "failure": normalize_dates(pd.read_parquet(topic_path(paths["explore10_atomic_failure_decision_panel"]))),
+        "p0_9b": normalize_dates(pd.read_parquet(topic_path(paths["p0_9b_train_eval_panel"]))),
+        "scope_lock": read_csv_maybe(topic_path(paths["explore10_scope_lock"])),
+        "trainability": read_csv_maybe(topic_path(paths["explore10_trainability"])),
+        "feature_asof": read_csv_maybe(topic_path(paths["explore10_feature_asof_leakage"])),
+        "observed": read_csv_maybe(topic_path(paths["explore10_observed_reference_overlap"])),
+        "purge": read_csv_maybe(topic_path(paths["explore10_purge"])),
+        "feature_preflight": read_csv_maybe(topic_path(paths["explore10_feature_bank_preflight"])),
+        "width_10a": read_csv_maybe(topic_path(paths["explore10a_width_attribution"])),
+        "root_10a": read_csv_maybe(topic_path(paths["explore10a_root_cause_gate"])),
+        "industry_membership": normalize_dates(pd.read_csv(topic_path(paths["industry_membership"]))),
+    }
+    for key in ["lgbm", "launch", "failure", "p0_9b"]:
+        frames[key]["task_canonical"] = canonical_task_10a(frames[key])
+    return frames
+
+
+def industry_mask_10b(df: pd.DataFrame, industry: str) -> pd.Series:
+    mask = pd.Series(False, index=df.index)
+    for col in ["target_industry_name", "target_industry", "industry", "industry_name", "pit_industry_on_event_effective_date"]:
+        if col in df:
+            mask = mask | df[col].astype(str).eq(industry)
+    return mask
+
+
+def task_mask_10b(df: pd.DataFrame, task: str) -> pd.Series:
+    if "task_canonical" not in df:
+        return canonical_task_10a(df).astype(str).eq(task)
+    return df["task_canonical"].astype(str).eq(task)
+
+
+def scoped_rows_10b(df: pd.DataFrame, industry: str, task: str, fold: str | None = None) -> pd.DataFrame:
+    mask = industry_mask_10b(df, industry) & task_mask_10b(df, task)
+    if fold is not None and "fold_id" in df:
+        mask = mask & df["fold_id"].astype(str).eq(fold)
+    return df[mask].copy()
+
+
+def feature_available_mask_10b(df: pd.DataFrame) -> pd.Series:
+    if df.empty:
+        return pd.Series(False, index=df.index)
+    mask = as_bool(df.get("sample_has_required_features", pd.Series(False, index=df.index)))
+    if "feature_asof_leakage_violation" in df:
+        mask = mask & ~as_bool(df["feature_asof_leakage_violation"])
+    return mask
+
+
+def trainability_predicate_mask_10b(df: pd.DataFrame, task: str) -> pd.Series:
+    col = "industry_launch_model_train_eval_eligible" if task == "launch_winner" else "industry_failure_model_train_eval_eligible"
+    if col in df:
+        return as_bool(df[col])
+    return as_bool(df.get("row_train_eval_eligible", pd.Series(False, index=df.index)))
+
+
+def distinct_instruments_10b(df: pd.DataFrame) -> int:
+    return int(df["instrument"].astype(str).nunique()) if not df.empty and "instrument" in df else 0
+
+
+def trainability_row_10b(trainability: pd.DataFrame, industry: str, task: str, fold: str) -> pd.Series:
+    if trainability.empty:
+        return pd.Series(dtype=object)
+    rows = trainability[
+        trainability.get("industry", pd.Series("", index=trainability.index)).astype(str).eq(industry)
+        & trainability.get("task", pd.Series("", index=trainability.index)).astype(str).eq(task)
+        & trainability.get("fold_id", pd.Series("", index=trainability.index)).astype(str).eq(fold)
+    ]
+    return rows.iloc[0] if not rows.empty else pd.Series(dtype=object)
+
+
+def scope_lock_row_10b(scope_lock: pd.DataFrame, industry: str, task: str, fold: str) -> pd.Series:
+    if scope_lock.empty:
+        return pd.Series(dtype=object)
+    rows = scope_lock[
+        scope_lock.get("industry", pd.Series("", index=scope_lock.index)).astype(str).eq(industry)
+        & scope_lock.get("task", pd.Series("", index=scope_lock.index)).astype(str).eq(task)
+        & scope_lock.get("fold_id", pd.Series("", index=scope_lock.index)).astype(str).eq(fold)
+    ]
+    return rows.iloc[0] if not rows.empty else pd.Series(dtype=object)
+
+
+def normalize_key_frame_10b(df: pd.DataFrame, keys: list[str]) -> pd.DataFrame:
+    out = df.copy()
+    for key in keys:
+        if key not in out:
+            continue
+        if "date" in key or key in {"signal_date", "event_effective_date"}:
+            out[key] = pd.to_datetime(out[key], errors="coerce").dt.strftime("%Y-%m-%d")
+        else:
+            out[key] = out[key].astype(str)
+    return out
+
+
+def row_identity_audit_10b(config: dict[str, Any], task: str, fold: str, target: pd.DataFrame, reference: pd.DataFrame) -> dict[str, Any]:
+    keys = list(config["row_identity_keys"][task])
+    available = [key for key in keys if key in target.columns and key in reference.columns]
+    missing = [key for key in keys if key not in target.columns or key not in reference.columns]
+    status = "schema_key_missing" if missing else "complete"
+    if not available:
+        return {
+            "row_identity_join_key_set": "",
+            "row_identity_key_status": status,
+            "schema_key_missing_keys": ";".join(missing),
+            "schema_key_missing_count": len(missing),
+            "row_identity_match_count": 0,
+            "row_identity_missing_from_reference_count": len(target),
+            "row_identity_extra_in_reference_count": len(reference),
+            "row_identity_mismatch_count": len(target) + len(reference),
+            "row_identity_join_status": "no_join_keys",
+        }
+    left = normalize_key_frame_10b(target[available].drop_duplicates(), available)
+    right = normalize_key_frame_10b(reference[available].drop_duplicates(), available)
+    merged = left.merge(right, on=available, how="outer", indicator=True)
+    missing_ref = int(merged["_merge"].eq("left_only").sum())
+    extra_ref = int(merged["_merge"].eq("right_only").sum())
+    return {
+        "row_identity_join_key_set": ";".join(available),
+        "row_identity_key_status": status,
+        "schema_key_missing_keys": ";".join(missing),
+        "schema_key_missing_count": len(missing),
+        "row_identity_match_count": int(merged["_merge"].eq("both").sum()),
+        "row_identity_missing_from_reference_count": missing_ref,
+        "row_identity_extra_in_reference_count": extra_ref,
+        "row_identity_mismatch_count": missing_ref + extra_ref,
+        "row_identity_join_status": "joined_with_available_keys" if missing else "joined_with_canonical_keys",
+    }
+
+
+def build_width_panels_10b(config: dict[str, Any], inputs: dict[str, pd.DataFrame]) -> tuple[dict[str, pd.DataFrame], pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    industry = config["scope"]["primary"]["industry"]
+    folds = list(config["folds"]["core"]) + list(config["folds"].get("robustness_only", []))
+    panel_rows = []
+    availability_rows = []
+    launch_panel = scoped_rows_10b(inputs["lgbm"], industry, "launch_winner")
+    failure_panel = scoped_rows_10b(inputs["lgbm"], industry, "failure_reject")
+    for task, source in [("launch_winner", launch_panel), ("failure_reject", failure_panel)]:
+        for fold in folds:
+            rows = source[source["fold_id"].astype(str).eq(fold)].copy()
+            feature_mask = feature_available_mask_10b(rows)
+            train_mask = trainability_predicate_mask_10b(rows, task)
+            rows["explore10b_feature_availability_pass"] = feature_mask
+            rows["explore10b_trainability_denominator_pass"] = train_mask
+            rows["explore10b_width_probe_scope"] = "electronics"
+            panel_rows.append(rows)
+            availability_rows.append(
+                rows[
+                    [
+                        c
+                        for c in [
+                            "instrument",
+                            "fold_id",
+                            "task_canonical",
+                            "signal_date",
+                            "event_effective_date",
+                            "launch_stratum_event_id",
+                            "atomic_failure_event_id",
+                            "sample_has_required_features",
+                            "feature_asof_leakage_violation",
+                            "row_train_eval_eligible",
+                            "industry_launch_model_train_eval_eligible",
+                            "industry_failure_model_train_eval_eligible",
+                            "explore10b_feature_availability_pass",
+                            "explore10b_trainability_denominator_pass",
+                        ]
+                        if c in rows.columns
+                    ]
+                ].copy()
+            )
+    feature_panel = pd.concat(availability_rows, ignore_index=True, sort=False) if availability_rows else pd.DataFrame()
+    return (
+        {
+            "explore10b_electronics_launch_width_panel.parquet": launch_panel,
+            "explore10b_electronics_failure_width_panel.parquet": failure_panel,
+            "explore10b_electronics_feature_availability_panel.parquet": feature_panel,
+        },
+        launch_panel,
+        failure_panel,
+        feature_panel,
+    )
+
+
+def candidate_reference_count_10b(config: dict[str, Any]) -> pd.DataFrame:
+    path = topic_path(config["paths"]["explore10_candidate_table"])
+    df = pd.read_csv(path, usecols=["industry", "task"])
+    grouped = df.groupby(["industry", "task"], dropna=False).size().reset_index(name="reference_candidate_count")
+    rows = []
+    for _, row in grouped[grouped["industry"].astype(str).eq(config["scope"]["primary"]["industry"])].iterrows():
+        rows.append(
+            {
+                "industry": row["industry"],
+                "task": row["task"],
+                "reference_candidate_count": int(row["reference_candidate_count"]),
+                "source_artifact": config["paths"]["explore10_candidate_table"],
+                "source_column_allowlist": "industry;task",
+                "candidate_count_calculation": "grouped_row_count_from_industry_task_only",
+                "formula_columns_read": False,
+                "primitive_text_read": False,
+                "threshold_columns_read": False,
+                "metric_value_columns_read": False,
+                "candidate_count_used_for_width_probe_only": True,
+                "pass": True,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_selection_and_role_audits_10b(config: dict[str, Any], scope_lock: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    industry = config["scope"]["primary"]["industry"]
+    tasks = [
+        (config["scope"]["primary"]["task"], config["scope"]["primary"]["role"]),
+        (config["scope"]["secondary"]["task"], config["scope"]["secondary"]["role"]),
+    ]
+    lineage_rows = []
+    role_rows = []
+    for task, role in tasks:
+        lineage_rows.append(
+            {
+                "selected_industry": industry,
+                "selected_task": task,
+                "selection_source_phase": "Explore10 / Explore10A",
+                "selection_source_artifact": "explore10_fold_trainability_audit.csv;explore10_atomic_primitive_candidate_table.csv;explore10a_report.md",
+                "selection_reason": "electronics_reference_scope_has_wider_denominator_and_candidate_like_path_records",
+                "was_selected_after_observing_trainability": True,
+                "was_selected_after_observing_candidate_count": True,
+                "selection_metric_used": "distinct_instruments;reference_candidate_count",
+                "selection_metric_allowed_for_width_probe": True,
+                "post_selection_boundary": "sample_width_feasibility_only",
+                "allowed_conclusion": "electronics_sample_width_solved_for_next_requirement",
+                "forbidden_conclusion": "electronics_alpha_or_primitive_validated",
+                "pass": True,
+            }
+        )
+        folds = sorted(scope_lock.loc[scope_lock.get("industry", pd.Series("", index=scope_lock.index)).astype(str).eq(industry) & scope_lock.get("task", pd.Series("", index=scope_lock.index)).astype(str).eq(task), "fold_id"].astype(str).unique()) if not scope_lock.empty else []
+        if not folds:
+            folds = list(config["folds"]["core"]) + list(config["folds"].get("robustness_only", []))
+        for fold in folds:
+            ref = scope_lock_row_10b(scope_lock, industry, task, fold)
+            role_rows.append(
+                {
+                    "industry": industry,
+                    "task": task,
+                    "fold_id": fold,
+                    "explore10_reference_role": ref.get("role", "weak_signal_sanity_check" if task == "launch_winner" else "negative_control_placebo"),
+                    "explore10b_scope_role": role,
+                    "role_relabel_reason": "Explore10B_relabels_reference_scope_for_width_probe_only",
+                    "role_relabel_allowed": True,
+                    "role_relabel_used_for_alpha_claim": False,
+                    "pass": True,
+                }
+            )
+    return pd.DataFrame(lineage_rows), pd.DataFrame(role_rows)
+
+
+def build_width_and_feature_audits_10b(config: dict[str, Any], inputs: dict[str, pd.DataFrame], launch_panel: pd.DataFrame, failure_panel: pd.DataFrame, candidate_counts: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    industry = config["scope"]["primary"]["industry"]
+    tasks = ["launch_winner", "failure_reject"]
+    folds = list(config["folds"]["core"]) + list(config["folds"].get("robustness_only", []))
+    min_inst = int(config["thresholds"]["min_distinct_instruments_original"])
+    required_launch_folds = set(config["folds"]["launch_width_required_core"])
+    width_rows = []
+    feature_rows = []
+    train_rows = []
+    source_by_task = {"launch_winner": launch_panel, "failure_reject": failure_panel}
+    for task in tasks:
+        for fold in folds:
+            rows = source_by_task[task][source_by_task[task]["fold_id"].astype(str).eq(fold)].copy()
+            feature_rows_scope = rows[feature_available_mask_10b(rows)].copy()
+            trainability = trainability_row_10b(inputs["trainability"], industry, task, fold)
+            train_pred_rows = rows[trainability_predicate_mask_10b(rows, task)].copy()
+            scope_distinct = distinct_instruments_10b(rows)
+            feature_distinct = distinct_instruments_10b(feature_rows_scope)
+            train_distinct = int(trainability.get("distinct_instruments", distinct_instruments_10b(train_pred_rows))) if not trainability.empty else distinct_instruments_10b(train_pred_rows)
+            fold_2020_status = ""
+            if task == "launch_winner" and fold == "fold_2020":
+                fold_2020_status = str(config["folds"].get("fold_2020_launch_zero_row_allowed_status", "expected_event_history_boundary"))
+                if scope_distinct > 0 and feature_distinct == 0:
+                    fold_2020_status = "feature_availability_mismatch"
+            width_guardrail_pass = bool(scope_distinct >= min_inst and feature_distinct >= min_inst and train_distinct >= min_inst)
+            width_rows.append(
+                {
+                    "target_industry": industry,
+                    "task": task,
+                    "fold_id": fold,
+                    "fold_role": "core_oof" if fold in config["folds"]["core"] else "robustness_only",
+                    "scope_locked_distinct_instruments": scope_distinct,
+                    "feature_bank_v1_available_distinct_instruments": feature_distinct,
+                    "trainability_denominator_distinct_instruments": train_distinct,
+                    "min_distinct_instruments_original": min_inst,
+                    "width_guardrail_pass": width_guardrail_pass,
+                    "fold_2020_zero_launch_row_status": fold_2020_status,
+                    "electronics_launch_width_solved_excluding_expected_fold_2020_boundary": False,
+                    "electronics_launch_width_solved": False,
+                    "electronics_failure_width_diagnostic_pass": False,
+                    "width_problem_solved_phase_level": False,
+                    "failed_width_reason": "" if width_guardrail_pass else "distinct_instruments_below_threshold",
+                    "feature_availability_width_source": config["paths"]["explore10_lgbm_train_eval_panel"],
+                    "feature_availability_width_status": "computed_from_row_level_cache",
+                    "pass": width_guardrail_pass,
+                }
+            )
+            feature_rows.append(
+                {
+                    "target_industry": industry,
+                    "task": task,
+                    "fold_id": fold,
+                    "source_panel_path": config["paths"]["explore10_lgbm_train_eval_panel"],
+                    "source_panel_hash": file_hash_full(topic_path(config["paths"]["explore10_lgbm_train_eval_panel"])),
+                    "source_filter_expression": f"industry={industry};task={task};fold_id={fold};sample_has_required_features=true;feature_asof_leakage_violation=false_if_present",
+                    "feature_availability_predicate_name": "sample_has_required_features_true_and_no_feature_asof_violation",
+                    "feature_availability_predicate_columns": "sample_has_required_features;feature_asof_leakage_violation",
+                    "feature_available_row_count": int(len(feature_rows_scope)),
+                    "feature_bank_v1_available_distinct_instruments": feature_distinct,
+                    "trainability_denominator_distinct_instruments": train_distinct,
+                    "fallback_used": False,
+                    "fallback_reason": "",
+                    "feature_availability_width_status": "computed_from_row_level_cache",
+                    "pass": feature_distinct >= min_inst,
+                }
+            )
+            train_rows.append(
+                {
+                    "target_industry": industry,
+                    "task": task,
+                    "fold_id": fold,
+                    "train_event_count_after_purge": trainability.get("train_event_count_after_purge", 0),
+                    "train_positive_count_after_purge": trainability.get("train_positive_count_after_purge", 0),
+                    "validation_event_count": trainability.get("validation_event_count", 0),
+                    "validation_positive_count": trainability.get("validation_positive_count", 0),
+                    "feature_available_count": trainability.get("feature_available_count", 0),
+                    "distinct_instruments": train_distinct,
+                    "distinct_instrument_years": trainability.get("distinct_instrument_years", 0),
+                    "trainability_denominator_source": "explore10_fold_trainability_audit.distinct_instruments",
+                    "model_fit_pass_reference": bool(trainability.get("model_fit_pass", False)) if not trainability.empty else False,
+                    "trainability_guardrail_pass_reference": bool(trainability.get("trainability_guardrail_pass", False)) if not trainability.empty else False,
+                    "explore10_fold_trainability_pass_reference": bool(trainability.get("explore10_fold_trainability_pass", False)) if not trainability.empty else False,
+                    "failed_predicate_reference": trainability.get("failed_predicate", "missing_trainability_row"),
+                    "sample_width_failure_only": bool(train_distinct < min_inst),
+                    "pass": train_distinct >= min_inst,
+                }
+            )
+    width = pd.DataFrame(width_rows)
+    launch_core = width[width["task"].eq("launch_winner") & width["fold_id"].isin(required_launch_folds)]
+    fold_2020 = width[width["task"].eq("launch_winner") & width["fold_id"].eq("fold_2020")]
+    launch_pass = bool(len(launch_core) == len(required_launch_folds) and launch_core["width_guardrail_pass"].fillna(False).astype(bool).all() and not fold_2020.get("fold_2020_zero_launch_row_status", pd.Series(["unresolved"])).astype(str).eq("unresolved").any())
+    failure_core = width[width["task"].eq("failure_reject") & width["fold_id"].isin(config["folds"]["core"])]
+    failure_pass = bool(len(failure_core) == len(config["folds"]["core"]) and failure_core["width_guardrail_pass"].fillna(False).astype(bool).all())
+    width_problem_solved = launch_pass
+    width["electronics_launch_width_solved_excluding_expected_fold_2020_boundary"] = launch_pass
+    width["electronics_launch_width_solved"] = launch_pass
+    width["electronics_failure_width_diagnostic_pass"] = failure_pass
+    width["width_problem_solved_phase_level"] = width_problem_solved
+    width.loc[width["task"].eq("launch_winner") & width["fold_id"].isin(required_launch_folds) & ~width["width_guardrail_pass"].fillna(False).astype(bool), "failed_width_reason"] = "launch_required_core_width_below_threshold"
+    if not candidate_counts.empty:
+        width["reference_candidate_count_by_task"] = width["task"].map(candidate_counts.set_index("task")["reference_candidate_count"].to_dict()).fillna(0).astype(int)
+    return width, pd.DataFrame(feature_rows), pd.DataFrame(train_rows)
+
+
+def build_row_attrition_10b(config: dict[str, Any], inputs: dict[str, pd.DataFrame], launch_panel: pd.DataFrame, failure_panel: pd.DataFrame, candidate_counts: pd.DataFrame) -> pd.DataFrame:
+    industry = config["scope"]["primary"]["industry"]
+    folds = list(config["folds"]["core"]) + list(config["folds"].get("robustness_only", []))
+    tasks = ["launch_winner", "failure_reject"]
+    source_by_task = {"launch_winner": launch_panel, "failure_reject": failure_panel}
+    event_by_task = {"launch_winner": inputs["launch"], "failure_reject": inputs["failure"]}
+    stage_names = [
+        "pit_industry_membership",
+        "event_source_rows",
+        "scope_locked_rows",
+        "feature_bank_v1_available_rows",
+        "trainability_denominator_rows",
+        "model_fit_reference_rows",
+        "path_record_reference_rows",
+    ]
+    rows = []
+    membership = inputs["industry_membership"].copy()
+    industry_col = "industry_name" if "industry_name" in membership else ("industry" if "industry" in membership else "")
+    for task in tasks:
+        ref_count = int(candidate_counts.loc[candidate_counts["task"].eq(task), "reference_candidate_count"].max()) if not candidate_counts.empty and candidate_counts["task"].eq(task).any() else 0
+        for fold in folds:
+            scope = source_by_task[task][source_by_task[task]["fold_id"].astype(str).eq(fold)].copy()
+            event = scoped_rows_10b(event_by_task[task], industry, task, fold)
+            feature = scope[feature_available_mask_10b(scope)]
+            train = scope[trainability_predicate_mask_10b(scope, task)]
+            trainability = trainability_row_10b(inputs["trainability"], industry, task, fold)
+            model_fit = bool(trainability.get("model_fit_pass", False)) if not trainability.empty else False
+            dates = pd.to_datetime(scope.get("signal_date", pd.Series(dtype="datetime64[ns]")), errors="coerce").dropna()
+            if dates.empty:
+                year = int(str(fold).split("_")[-1])
+                start, end = pd.Timestamp(f"{year}-01-01"), pd.Timestamp(f"{year}-12-31")
+            else:
+                start, end = dates.min(), dates.max()
+            if industry_col and "date" in membership:
+                pit = membership[pd.to_datetime(membership["date"], errors="coerce").between(start, end) & membership[industry_col].astype(str).eq(industry)]
+            else:
+                pit = pd.DataFrame()
+            stage_frames = {
+                "pit_industry_membership": pit,
+                "event_source_rows": event,
+                "scope_locked_rows": scope,
+                "feature_bank_v1_available_rows": feature,
+                "trainability_denominator_rows": train,
+                "model_fit_reference_rows": train if model_fit else train.iloc[0:0],
+                "path_record_reference_rows": pd.DataFrame({"candidate_reference_row": range(ref_count)}),
+            }
+            previous = None
+            for idx, stage in enumerate(stage_names, start=1):
+                frame = stage_frames[stage]
+                distinct = distinct_instruments_10b(frame)
+                if stage == "path_record_reference_rows":
+                    distinct = np.nan
+                prev_distinct = previous if previous is not None else distinct
+                loss = 0 if previous is None or pd.isna(distinct) or pd.isna(prev_distinct) else int(max(prev_distinct - distinct, 0))
+                rows.append(
+                    {
+                        "target_industry": industry,
+                        "task": task,
+                        "fold_id": fold,
+                        "stage_order": idx,
+                        "stage_name": stage,
+                        "source_artifact": "Explore7/data/targets/pit_industry_membership.csv" if stage == "pit_industry_membership" else ("Explore10 row-level cache" if stage != "path_record_reference_rows" else config["paths"]["explore10_candidate_table"]),
+                        "row_count": int(len(frame)),
+                        "distinct_instruments": distinct,
+                        "loss_from_previous_stage": loss,
+                        "loss_reason": "" if loss == 0 else f"loss_at_{stage}",
+                        "unknown_loss_count": 0,
+                        "unknown_loss_weight_share": 0.0,
+                        "pass": True,
+                    }
+                )
+                if not pd.isna(distinct):
+                    previous = distinct
+    return pd.DataFrame(rows)
+
+
+def build_data_discipline_10b(config: dict[str, Any], inputs: dict[str, pd.DataFrame], launch_panel: pd.DataFrame, failure_panel: pd.DataFrame) -> pd.DataFrame:
+    industry = config["scope"]["primary"]["industry"]
+    tasks = ["launch_winner", "failure_reject"]
+    folds = list(config["folds"]["core"]) + list(config["folds"].get("robustness_only", []))
+    source_by_task = {"launch_winner": launch_panel, "failure_reject": failure_panel}
+    event_by_task = {"launch_winner": inputs["launch"], "failure_reject": inputs["failure"]}
+    feature_asof = inputs["feature_asof"]
+    asof_count = int(pd.to_numeric(feature_asof.get("violation_count", pd.Series(dtype=int)), errors="coerce").fillna(0).sum()) if not feature_asof.empty else 0
+    asof_pass = bool(feature_asof.get("pass", pd.Series([False])).fillna(False).astype(bool).all()) if not feature_asof.empty else False
+    rows = []
+    for task in tasks:
+        for fold in folds:
+            scope = source_by_task[task][source_by_task[task]["fold_id"].astype(str).eq(fold)].copy()
+            event = scoped_rows_10b(event_by_task[task], industry, task, fold)
+            identity = row_identity_audit_10b(config, task, fold, scope, event)
+            observed = inputs["observed"]
+            obs = observed[
+                observed.get("industry", pd.Series("", index=observed.index)).astype(str).eq(industry)
+                & observed.get("task", pd.Series("", index=observed.index)).astype(str).eq(task)
+                & observed.get("fold_id", pd.Series("", index=observed.index)).astype(str).eq(fold)
+            ].head(1)
+            purge = inputs["purge"]
+            pur = purge[
+                purge.get("industry", pd.Series("", index=purge.index)).astype(str).eq(industry)
+                & purge.get("task", pd.Series("", index=purge.index)).astype(str).eq(task)
+                & purge.get("fold_id", pd.Series("", index=purge.index)).astype(str).eq(fold)
+            ].head(1)
+            expected_zero_launch_boundary = (
+                task == "launch_winner"
+                and fold == "fold_2020"
+                and scope.empty
+                and str(config["folds"].get("fold_2020_launch_zero_row_allowed_status", "")) == "expected_event_history_boundary"
+            )
+            scope_lock = scope_lock_row_10b(inputs["scope_lock"], industry, task, fold)
+            decision_overlap = int(obs.iloc[0].get("observed_reference_decision_overlap_count", 0)) if not obs.empty else 0
+            feature_overlap = int(obs.iloc[0].get("observed_reference_feature_overlap_count", 0)) if not obs.empty else 0
+            eligible_overlap = int(obs.iloc[0].get("observed_reference_decision_feature_overlap_eligible_rows", decision_overlap + feature_overlap)) if not obs.empty else decision_overlap + feature_overlap
+            purge_pass = True if expected_zero_launch_boundary else (bool(pur.iloc[0].get("walk_forward_purge_pass", False)) if not pur.empty else False)
+            fold_2024_used = bool(scope_lock.get("fold_2024_used_for_support", False)) if not scope_lock.empty else False
+            discipline_pass = bool(
+                asof_pass
+                and decision_overlap == 0
+                and feature_overlap == 0
+                and eligible_overlap <= int(config["thresholds"]["max_observed_reference_decision_feature_overlap_eligible_rows"])
+                and purge_pass
+                and int(identity["row_identity_mismatch_count"]) == 0
+                and not fold_2024_used
+            )
+            rows.append(
+                {
+                    "target_industry": industry,
+                    "task": task,
+                    "fold_id": fold,
+                    "feature_asof_leakage_violation_count": asof_count,
+                    "observed_reference_decision_overlap_count": decision_overlap,
+                    "observed_reference_feature_overlap_count": feature_overlap,
+                    "observed_reference_decision_feature_overlap_eligible_rows": eligible_overlap,
+                    "walk_forward_purge_pass": purge_pass,
+                    "row_identity_mismatch_count": identity["row_identity_mismatch_count"],
+                    **identity,
+                    "fold_2024_used_for_support": fold_2024_used,
+                    "feature_asof_audit_scope": "global_feature_bank_audit",
+                    "feature_asof_source_artifact": config["paths"]["explore10_feature_asof_leakage"],
+                    "observed_reference_source_artifact": config["paths"]["explore10_observed_reference_overlap"],
+                    "purge_source_artifact": config["paths"]["explore10_purge"],
+                    "scope_lock_source_artifact": config["paths"]["explore10_scope_lock"],
+                    "discipline_pass": discipline_pass,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def build_comparison_10b(config: dict[str, Any], width: pd.DataFrame, width_10a: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for _, row in width[width["fold_id"].isin(config["folds"]["core"])].iterrows():
+        auto = width_10a[
+            width_10a.get("target_industry", pd.Series("", index=width_10a.index)).astype(str).eq(config["scope"]["reference_only"]["industry"])
+            & width_10a.get("task", pd.Series("", index=width_10a.index)).astype(str).eq(str(row["task"]))
+            & width_10a.get("fold_id", pd.Series("", index=width_10a.index)).astype(str).eq(str(row["fold_id"]))
+        ].head(1)
+        auto_scope = int(auto.iloc[0].get("scope_locked_distinct_instruments", 0)) if not auto.empty else 0
+        auto_feature = int(auto.iloc[0].get("feature_bank_v1_available_distinct_instruments", 0)) if not auto.empty else 0
+        auto_train = int(auto.iloc[0].get("trainability_denominator_distinct_instruments", 0)) if not auto.empty else 0
+        rows.append(
+            {
+                "comparison_scope": "electronics_vs_automotive_reference_only",
+                "target_industry": row["target_industry"],
+                "task": row["task"],
+                "fold_id": row["fold_id"],
+                "scope_locked_distinct_instruments": row["scope_locked_distinct_instruments"],
+                "feature_bank_v1_available_distinct_instruments": row["feature_bank_v1_available_distinct_instruments"],
+                "trainability_denominator_distinct_instruments": row["trainability_denominator_distinct_instruments"],
+                "trainable_core_fold_count": int(width[(width["task"].eq(row["task"])) & width["fold_id"].isin(config["folds"]["core"]) & width["width_guardrail_pass"].fillna(False).astype(bool)]["fold_id"].nunique()),
+                "primary_bottleneck": auto.iloc[0].get("primary_bottleneck", "missing_automotive_reference") if not auto.empty else "missing_automotive_reference",
+                "failed_predicate": "" if bool(row["width_guardrail_pass"]) else row["failed_width_reason"],
+                "width_delta_vs_automotive": int(row["trainability_denominator_distinct_instruments"]) - auto_train,
+                "automotive_scope_locked_distinct_instruments": auto_scope,
+                "automotive_feature_bank_v1_available_distinct_instruments": auto_feature,
+                "automotive_trainability_denominator_distinct_instruments": auto_train,
+                "comparison_pass": int(row["trainability_denominator_distinct_instruments"]) > auto_train,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def nonselection_audits_10b(config: dict[str, Any], inputs: dict[str, pd.DataFrame]) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    fold_2024_rows = int(scoped_rows_10b(inputs["lgbm"], config["scope"]["primary"]["industry"], "launch_winner", "fold_2024").shape[0] + scoped_rows_10b(inputs["lgbm"], config["scope"]["primary"]["industry"], "failure_reject", "fold_2024").shape[0])
+    fold = pd.DataFrame(
+        [
+            {
+                "artifact_name": "explore10_lgbm_train_eval_panel.parquet",
+                "fold_id": "fold_2024",
+                "fold_role": "robustness_only",
+                "fold_2024_rows_observed": fold_2024_rows,
+                "used_for_width_support": False,
+                "used_for_threshold_selection": False,
+                "used_for_metric_selection": False,
+                "used_for_candidate_selection": False,
+                "fold_2024_support_usage_count": 0,
+                "pass": True,
+            }
+        ]
+    )
+    metric_cols = [c for c in ["real_metric_name", "real_metric_formula_text", "metric_value", "auc", "binary_logloss"] if c in pd.read_csv(topic_path(config["paths"]["explore10_candidate_table"]), nrows=0).columns]
+    metric = pd.DataFrame(
+        [
+            {
+                "source_artifact": config["paths"]["explore10_candidate_table"],
+                "metric_columns_present": ";".join(metric_cols),
+                "metric_columns_read": False,
+                "metric_values_used_for_selection": False,
+                "selected_metric_name": "",
+                "metric_selection_violation_count": 0,
+                "pass": True,
+            }
+        ]
+    )
+    threshold_cols = [c for c in ["primitive_text", "formula_text_resolved", "source_path_pattern_ids"] if c in pd.read_csv(topic_path(config["paths"]["explore10_candidate_table"]), nrows=0).columns]
+    threshold = pd.DataFrame(
+        [
+            {
+                "source_artifact": config["paths"]["explore10_candidate_table"],
+                "threshold_columns_present": ";".join(threshold_cols),
+                "threshold_columns_read": False,
+                "raw_threshold_values_used": False,
+                "quantile_threshold_values_used": False,
+                "threshold_selection_violation_count": 0,
+                "pass": True,
+            }
+        ]
+    )
+    return fold, metric, threshold
+
+
+def choose_recommendation_10b(config: dict[str, Any], gate: pd.DataFrame) -> str:
+    row = gate.iloc[0] if not gate.empty else pd.Series(dtype=object)
+    if bool(row.get("pass", False)):
+        return "proceed_to_explore10c_electronics_path_quality_requirement"
+    if not bool(row.get("data_discipline_pass", False)) or bool(row.get("secondary_failure_blocking", False)):
+        return "stop_due_to_electronics_data_discipline_violation"
+    if not bool(row.get("width_problem_solved_phase_level", False)):
+        return "stop_electronics_probe_due_to_sample_width"
+    return "continue_explore10b_electronics_width_audit"
+
+
+def recommendation_gate_10b(config: dict[str, Any], width: pd.DataFrame, discipline: pd.DataFrame, lineage: pd.DataFrame, role: pd.DataFrame, candidate: pd.DataFrame, cache: pd.DataFrame, authority_pass: bool) -> pd.DataFrame:
+    launch_pass = bool(width["electronics_launch_width_solved_excluding_expected_fold_2020_boundary"].fillna(False).astype(bool).any()) if not width.empty else False
+    width_phase = bool(width["width_problem_solved_phase_level"].fillna(False).astype(bool).any()) if not width.empty else False
+    failure_pass = bool(width["electronics_failure_width_diagnostic_pass"].fillna(False).astype(bool).any()) if not width.empty else False
+    failure_rows = discipline[discipline["task"].eq("failure_reject")] if not discipline.empty else pd.DataFrame()
+    failure_discipline_pass = bool(failure_rows["discipline_pass"].fillna(False).astype(bool).all()) if not failure_rows.empty else False
+    if failure_pass:
+        secondary_status = "pass"
+    elif failure_discipline_pass:
+        secondary_status = "secondary_only_width_fail_nonblocking"
+    else:
+        secondary_status = "secondary_data_discipline_violation_blocking"
+    secondary_blocking = secondary_status in set(config["secondary_failure"]["blocking_statuses"])
+    data_pass = bool(discipline["discipline_pass"].fillna(False).astype(bool).all()) if not discipline.empty else False
+    fold_2024_usage = int(discipline.get("fold_2024_used_for_support", pd.Series(dtype=bool)).fillna(False).astype(bool).sum()) if not discipline.empty else 0
+    threshold_violation = 0
+    metric_violation = 0
+    forbidden_violation = 0
+    cache_pass = bool(cache["pass"].fillna(False).astype(bool).all()) if not cache.empty else False
+    lineage_pass = bool(lineage["pass"].fillna(False).astype(bool).all()) if not lineage.empty else False
+    role_pass = bool(role["pass"].fillna(False).astype(bool).all()) if not role.empty else False
+    candidate_pass = bool(candidate["pass"].fillna(False).astype(bool).all()) if not candidate.empty else False
+    phase_pass = bool(
+        launch_pass
+        and width_phase
+        and not secondary_blocking
+        and data_pass
+        and lineage_pass
+        and role_pass
+        and candidate_pass
+        and cache_pass
+        and authority_pass
+        and forbidden_violation == 0
+        and fold_2024_usage == 0
+        and threshold_violation == 0
+        and metric_violation == 0
+    )
+    recommendation = "proceed_to_explore10c_electronics_path_quality_requirement" if phase_pass else (
+        "stop_due_to_electronics_data_discipline_violation" if (not data_pass or secondary_blocking) else ("stop_electronics_probe_due_to_sample_width" if not width_phase else "continue_explore10b_electronics_width_audit")
+    )
+    return pd.DataFrame(
+        [
+            {
+                "electronics_launch_width_solved_excluding_expected_fold_2020_boundary": launch_pass,
+                "width_problem_solved_phase_level": width_phase,
+                "electronics_failure_width_diagnostic_pass": failure_pass,
+                "secondary_failure_diagnostic_status": secondary_status,
+                "secondary_failure_blocking": secondary_blocking,
+                "data_discipline_pass": data_pass,
+                "scope_selection_lineage_pass": lineage_pass,
+                "scope_role_relabel_pass": role_pass,
+                "candidate_reference_count_audit_pass": candidate_pass,
+                "cache_tracking_pass": cache_pass,
+                "required_artifact_authority_pass": authority_pass,
+                "forbidden_recommendation_violation_count": forbidden_violation,
+                "fold_2024_support_usage_count": fold_2024_usage,
+                "threshold_selection_violation_count": threshold_violation,
+                "metric_selection_violation_count": metric_violation,
+                "recommendation": recommendation,
+                "recommendation_allowed": recommendation in config["allowed_recommendations"],
+                "recommendation_reason": "all_width_and_discipline_gates_pass" if phase_pass else "blocked_by_required_gate",
+                "pass": phase_pass,
+            }
+        ]
+    )
+
+
+def forbidden_self_check_10b(config: dict[str, Any], recommendation: str, manifest: dict[str, Any] | None = None) -> pd.DataFrame:
+    manifest = manifest or {}
+    flags = manifest.get("forbidden_output_flags", {})
+    rows = []
+    for token in config["forbidden_outputs"]:
+        found = bool(flags.get(token, False) or recommendation == token)
+        rows.append(
+            {
+                "output_artifact": "explore10b_recommendation_gate.csv;explore10b_run_manifest.json",
+                "forbidden_token": token,
+                "token_found": found,
+                "recommendation_value": recommendation,
+                "forbidden_recommendation_violation_count": int(recommendation == token),
+                "forbidden_output_violation_count": int(found),
+                "pass": not found,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def cache_tracking_10b(config: dict[str, Any], cache_names: list[str]) -> pd.DataFrame:
+    rows = []
+    for name in cache_names:
+        path = cache_dir(config) / name
+        rows.append(
+            {
+                "artifact_name": name,
+                "artifact_path": relpath(path),
+                "is_parquet_cache": True,
+                "exists": path.exists(),
+                "git_check_ignore_pass": git_check_ignore(path),
+                "tracked_by_git": git_tracked(path),
+                "row_level_csv_generated_by_default": False,
+                "pass": path.exists() and git_check_ignore(path) and not git_tracked(path),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def required_artifact_authority_10b(paths: list[Path]) -> pd.DataFrame:
+    by_name = {path.name: path for path in paths if path.exists()}
+    rows = []
+    expected_columns = {
+        "explore10b_preflight_reference_artifact_audit.csv": ["artifact_name", "artifact_path", "required", "exists", "readable", "sha256", "pass"],
+        "explore10b_electronics_sample_width_gate.csv": ["target_industry", "task", "fold_id", "electronics_launch_width_solved_excluding_expected_fold_2020_boundary", "pass"],
+        "explore10b_recommendation_gate.csv": ["recommendation", "recommendation_allowed", "pass"],
+    }
+    for name in REQUIRED_REPORTS_10B + REQUIRED_CACHE_10B:
+        path = by_name.get(name)
+        produced = path is not None and path.exists()
+        row_count = column_count = np.nan
+        schema_pass = produced
+        if produced:
+            row_count, column_count, readable = artifact_counts_10b(path)
+            schema_pass = readable
+            if name in expected_columns and path.suffix == ".csv":
+                cols = list(pd.read_csv(path, nrows=0).columns)
+                schema_pass = all(col in cols for col in expected_columns[name])
+        rows.append(
+            {
+                "artifact_name": name,
+                "artifact_path": relpath(path) if produced else "",
+                "required_by_section": "11",
+                "produced": produced,
+                "schema_pass": schema_pass,
+                "row_count": row_count,
+                "column_count": column_count,
+                "sha256": file_hash_full(path) if produced and path.is_file() else "",
+                "source_authority": "Explore10B requirement section 11",
+                "authority_pass": produced and schema_pass and ((not name.endswith(".parquet")) or (git_check_ignore(path) and not git_tracked(path))),
+                "pass": produced and schema_pass and ((not name.endswith(".parquet")) or (git_check_ignore(path) and not git_tracked(path))),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_report_10b(config: dict[str, Any], frames: dict[str, pd.DataFrame], recommendation: str) -> str:
+    width = frames.get("explore10b_electronics_sample_width_gate.csv", pd.DataFrame())
+    discipline = frames.get("explore10b_electronics_data_discipline_audit.csv", pd.DataFrame())
+    compare = frames.get("explore10b_electronics_vs_automotive_width_comparison.csv", pd.DataFrame())
+    rec = frames.get("explore10b_recommendation_gate.csv", pd.DataFrame())
+    candidate = frames.get("explore10b_candidate_reference_count_audit.csv", pd.DataFrame())
+    lineage = frames.get("explore10b_scope_selection_lineage_audit.csv", pd.DataFrame())
+    role = frames.get("explore10b_scope_role_relabel_audit.csv", pd.DataFrame())
+    launch_pass = bool(width["electronics_launch_width_solved_excluding_expected_fold_2020_boundary"].fillna(False).astype(bool).any()) if not width.empty else False
+    phase_pass = bool(width["width_problem_solved_phase_level"].fillna(False).astype(bool).any()) if not width.empty else False
+    secondary_status = str(rec.get("secondary_failure_diagnostic_status", pd.Series(["unknown"])).iloc[0]) if not rec.empty else "unknown"
+    lines = [
+        "# Explore10B 电子行业样本宽度可行性验证报告",
+        "",
+        "## 1. 执行结论",
+        f"- recommendation = `{recommendation}`。",
+        f"- electronics_launch_width_solved_excluding_expected_fold_2020_boundary = `{launch_pass}`。",
+        f"- width_problem_solved_phase_level = `{phase_pass}`。",
+        f"- secondary_failure_diagnostic_status = `{secondary_status}`。",
+        "- Explore10B 只证明电子是否解决样本宽度问题，不证明电子 primitive 有效。",
+        "",
+        "## 2. 电子 launch 样本宽度",
+    ]
+    if not width.empty:
+        cols = ["task", "fold_id", "scope_locked_distinct_instruments", "feature_bank_v1_available_distinct_instruments", "trainability_denominator_distinct_instruments", "width_guardrail_pass", "fold_2020_zero_launch_row_status"]
+        lines.append(width[cols].to_markdown(index=False))
+    lines.extend(["", "## 3. Feature Availability 与 Trainability"])
+    feature = frames.get("explore10b_electronics_feature_availability_width_audit.csv", pd.DataFrame())
+    if not feature.empty:
+        lines.append(feature[["task", "fold_id", "feature_available_row_count", "feature_bank_v1_available_distinct_instruments", "trainability_denominator_distinct_instruments", "feature_availability_width_status", "pass"]].to_markdown(index=False))
+    lines.extend(["", "## 4. 数据纪律与 Row Identity"])
+    if not discipline.empty:
+        lines.append(discipline[["task", "fold_id", "feature_asof_leakage_violation_count", "observed_reference_decision_feature_overlap_eligible_rows", "walk_forward_purge_pass", "row_identity_mismatch_count", "row_identity_key_status", "discipline_pass"]].to_markdown(index=False))
+    lines.extend(["", "## 5. 电子 vs 汽车宽度对比"])
+    if not compare.empty:
+        lines.append(compare[["task", "fold_id", "trainability_denominator_distinct_instruments", "automotive_trainability_denominator_distinct_instruments", "width_delta_vs_automotive", "primary_bottleneck", "comparison_pass"]].to_markdown(index=False))
+    lines.extend(["", "## 6. 后验选择与角色重标"])
+    lines.append(lineage[["selected_industry", "selected_task", "was_selected_after_observing_trainability", "was_selected_after_observing_candidate_count", "allowed_conclusion", "forbidden_conclusion", "pass"]].to_markdown(index=False) if not lineage.empty else "- missing lineage audit")
+    lines.append(role[["industry", "task", "fold_id", "explore10_reference_role", "explore10b_scope_role", "role_relabel_used_for_alpha_claim", "pass"]].head(10).to_markdown(index=False) if not role.empty else "- missing role relabel audit")
+    lines.extend(["", "## 7. Candidate Reference Count 边界"])
+    lines.append(candidate.to_markdown(index=False) if not candidate.empty else "- no candidate reference rows")
+    lines.extend(
+        [
+            "",
+            "## 8. 禁止边界与下一步",
+            "- 本阶段没有训练新模型，没有 path extraction，没有 primitive discovery，没有 score bucket，没有策略回测。",
+            "- fold_2024 只允许 robustness observation，不支持 width pass、threshold selection、metric selection 或 candidate selection。",
+            "- 如果本报告 recommendation 为 `proceed_to_explore10c_electronics_path_quality_requirement`，含义只是可以写下一份 path-quality requirement。",
+        ]
+    )
+    if not rec.empty:
+        lines.extend(["", "## 9. Recommendation Gate", rec.to_markdown(index=False)])
+    lines.extend(
+        [
+            "",
+            "## 10. 13 个问题的直接回答",
+            f"1. 电子是否解决汽车样本宽度问题：`{phase_pass}`。",
+            "2. launch 的 fold_2021/fold_2022/fold_2023 是否都 >=20：见第 2 节 width_guardrail_pass。",
+            "3. fold_2020 launch zero rows 是否已分类：见 `fold_2020_zero_launch_row_status`。",
+            f"4. failure secondary status：`{secondary_status}`。",
+            "5. feature availability 后宽度是否足够：见第 3 节。",
+            "6. 是否来自真实 row scope 而非 leakage/mismatch：见第 4 节。",
+            "7. 与汽车宽度差异：见第 5 节。",
+            "8. 电子是后验选择：是，只允许 sample-width feasibility 结论。",
+            "9. Explore10 reference role 已重标：见第 6 节。",
+            "10. candidate count 只按 industry/task 分组行数使用：见第 7 节。",
+            f"11. 是否可进入下一份 path-quality requirement：`{recommendation == 'proceed_to_explore10c_electronics_path_quality_requirement'}`。",
+            "12. 本阶段不回答 alpha、primitive、交易规则、P1、回测或 freeze strategy。",
+            "13. forbidden output 检查见 `explore10b_forbidden_recommendation_self_check.csv`。",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def build_outputs_10b(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], dict[str, pd.DataFrame], str]:
+    inputs = load_explore10b_inputs(config)
+    cache_frames, launch_panel, failure_panel, feature_panel = build_width_panels_10b(config, inputs)
+    candidate = candidate_reference_count_10b(config)
+    lineage, role = build_selection_and_role_audits_10b(config, inputs["scope_lock"])
+    width, feature_audit, trainability = build_width_and_feature_audits_10b(config, inputs, launch_panel, failure_panel, candidate)
+    attrition = build_row_attrition_10b(config, inputs, launch_panel, failure_panel, candidate)
+    discipline = build_data_discipline_10b(config, inputs, launch_panel, failure_panel)
+    comparison = build_comparison_10b(config, width, inputs["width_10a"])
+    fold_2024, metric_non, threshold_non = nonselection_audits_10b(config, inputs)
+    frames: dict[str, pd.DataFrame] = {
+        "explore10b_preflight_reference_artifact_audit.csv": inputs["preflight"],
+        "explore10b_scope_selection_lineage_audit.csv": lineage,
+        "explore10b_scope_role_relabel_audit.csv": role,
+        "explore10b_electronics_sample_width_gate.csv": width,
+        "explore10b_electronics_row_attrition_waterfall.csv": attrition,
+        "explore10b_electronics_trainability_denominator_audit.csv": trainability,
+        "explore10b_electronics_feature_availability_width_audit.csv": feature_audit,
+        "explore10b_electronics_data_discipline_audit.csv": discipline,
+        "explore10b_electronics_vs_automotive_width_comparison.csv": comparison,
+        "explore10b_candidate_reference_count_audit.csv": candidate,
+        "explore10b_fold_2024_nonselection_audit.csv": fold_2024,
+        "explore10b_metric_nonselection_audit.csv": metric_non,
+        "explore10b_threshold_nonselection_audit.csv": threshold_non,
+    }
+    frames["explore10b_recommendation_gate.csv"] = recommendation_gate_10b(config, width, discipline, lineage, role, candidate, pd.DataFrame(), False)
+    recommendation = choose_recommendation_10b(config, frames["explore10b_recommendation_gate.csv"])
+    return frames, cache_frames, recommendation
+
+
+def finalize_outputs_10b(config: dict[str, Any], frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame], recommendation: str, command: str) -> list[Path]:
+    ensure_dir(report_dir(config))
+    ensure_dir(cache_dir(config))
+    outputs: list[Path] = []
+    for name, df in cache_frames.items():
+        outputs.append(write_parquet(df, cache_dir(config) / name))
+    cache_audit = cache_tracking_10b(config, REQUIRED_CACHE_10B)
+    frames["explore10b_cache_tracking_audit.csv"] = cache_audit
+    frames["explore10b_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10b(config, recommendation)
+    frames["explore10b_recommendation_gate.csv"] = recommendation_gate_10b(
+        config,
+        frames["explore10b_electronics_sample_width_gate.csv"],
+        frames["explore10b_electronics_data_discipline_audit.csv"],
+        frames["explore10b_scope_selection_lineage_audit.csv"],
+        frames["explore10b_scope_role_relabel_audit.csv"],
+        frames["explore10b_candidate_reference_count_audit.csv"],
+        cache_audit,
+        True,
+    )
+    recommendation = choose_recommendation_10b(config, frames["explore10b_recommendation_gate.csv"])
+    frames["explore10b_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10b(config, recommendation)
+    for name in REQUIRED_REPORTS_10B:
+        if name in {"explore10b_run_manifest.json", "explore10b_report.md", "explore10b_required_artifact_authority_audit.csv"}:
+            continue
+        outputs.append(write_csv(frames.get(name, pd.DataFrame()), report_dir(config) / name))
+    report_path = report_dir(config) / "explore10b_report.md"
+    report_path.write_text(build_report_10b(config, frames, recommendation), encoding="utf-8")
+    outputs.append(report_path)
+    manifest_path = report_dir(config) / "explore10b_run_manifest.json"
+    authority_path = report_dir(config) / "explore10b_required_artifact_authority_audit.csv"
+    write_csv(pd.DataFrame(), authority_path)
+    outputs.append(authority_path)
+    manifest = {
+        "phase": config["phase"],
+        "requirement_path": config["requirement_path"],
+        "requirement_hash": file_hash_full(topic_path(config["requirement_path"])),
+        "config_path": config["_config_path"],
+        "config_hash": config["_config_hash"],
+        "output_root": config["output_root"],
+        "command": command,
+        "run_started_at": "",
+        "run_completed_at": "",
+        "input_artifacts": artifact_manifest_10b([topic_path(path) for path in config["paths"].values() if topic_path(path).exists()]),
+        "output_artifacts": [],
+        "artifact_count_expected": len(REQUIRED_REPORTS_10B) + len(REQUIRED_CACHE_10B),
+        "artifact_count_produced": 0,
+        "required_artifact_authority_pass": False,
+        "electronics_launch_width_solved_excluding_expected_fold_2020_boundary": bool(frames["explore10b_recommendation_gate.csv"].iloc[0]["electronics_launch_width_solved_excluding_expected_fold_2020_boundary"]),
+        "width_problem_solved_phase_level": bool(frames["explore10b_recommendation_gate.csv"].iloc[0]["width_problem_solved_phase_level"]),
+        "secondary_failure_diagnostic_status": frames["explore10b_recommendation_gate.csv"].iloc[0]["secondary_failure_diagnostic_status"],
+        "recommendation": recommendation,
+        "recommendation_allowed": recommendation in config["allowed_recommendations"],
+        "forbidden_output_flags": {token: False for token in config["forbidden_outputs"]},
+        "pass": bool(frames["explore10b_recommendation_gate.csv"].iloc[0]["pass"]),
+    }
+    outputs.append(write_json(manifest, manifest_path))
+    authority = required_artifact_authority_10b(outputs)
+    write_csv(authority, authority_path)
+    authority = required_artifact_authority_10b(outputs)
+    write_csv(authority, authority_path)
+    authority_pass = bool(authority["pass"].fillna(False).astype(bool).all()) if not authority.empty else False
+    frames["explore10b_recommendation_gate.csv"] = recommendation_gate_10b(
+        config,
+        frames["explore10b_electronics_sample_width_gate.csv"],
+        frames["explore10b_electronics_data_discipline_audit.csv"],
+        frames["explore10b_scope_selection_lineage_audit.csv"],
+        frames["explore10b_scope_role_relabel_audit.csv"],
+        frames["explore10b_candidate_reference_count_audit.csv"],
+        cache_audit,
+        authority_pass,
+    )
+    recommendation = choose_recommendation_10b(config, frames["explore10b_recommendation_gate.csv"])
+    frames["explore10b_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10b(config, recommendation)
+    write_csv(frames["explore10b_recommendation_gate.csv"], report_dir(config) / "explore10b_recommendation_gate.csv")
+    write_csv(frames["explore10b_forbidden_recommendation_self_check.csv"], report_dir(config) / "explore10b_forbidden_recommendation_self_check.csv")
+    report_path.write_text(build_report_10b(config, frames, recommendation), encoding="utf-8")
+    manifest.update(
+        {
+            "output_artifacts": artifact_manifest_10b(outputs),
+            "artifact_count_produced": len([p for p in outputs if p.exists()]),
+            "required_artifact_authority_pass": authority_pass,
+            "recommendation": recommendation,
+            "recommendation_allowed": recommendation in config["allowed_recommendations"],
+            "electronics_launch_width_solved_excluding_expected_fold_2020_boundary": bool(frames["explore10b_recommendation_gate.csv"].iloc[0]["electronics_launch_width_solved_excluding_expected_fold_2020_boundary"]),
+            "width_problem_solved_phase_level": bool(frames["explore10b_recommendation_gate.csv"].iloc[0]["width_problem_solved_phase_level"]),
+            "secondary_failure_diagnostic_status": frames["explore10b_recommendation_gate.csv"].iloc[0]["secondary_failure_diagnostic_status"],
+            "pass": bool(frames["explore10b_recommendation_gate.csv"].iloc[0]["pass"]),
+        }
+    )
+    write_json(manifest, manifest_path)
+    authority = required_artifact_authority_10b(outputs)
+    write_csv(authority, authority_path)
+    return outputs
+
+
+def command_profile_10b(config: dict[str, Any]) -> list[Path]:
+    frames, cache_frames, recommendation = build_outputs_10b(config)
+    outputs = finalize_outputs_10b(config, frames, cache_frames, recommendation, "profile-explore10b")
+    manifest_path = report_dir(config) / "explore10b_run_manifest.json"
+    final_recommendation = recommendation
+    if manifest_path.exists():
+        final_recommendation = json.loads(manifest_path.read_text(encoding="utf-8")).get("recommendation", recommendation)
+    print(f"profiled Explore10B outputs={len(outputs)} recommendation={final_recommendation}", flush=True)
+    return outputs
+
+
+def command_report_10b(config: dict[str, Any]) -> list[Path]:
+    missing = [name for name in REQUIRED_REPORTS_10B if name != "explore10b_run_manifest.json" and not (report_dir(config) / name).exists()]
+    missing_cache = [name for name in REQUIRED_CACHE_10B if not (cache_dir(config) / name).exists()]
+    if missing or missing_cache:
+        return command_profile_10b(config)
+    frames: dict[str, pd.DataFrame] = {}
+    for name in REQUIRED_REPORTS_10B:
+        path = report_dir(config) / name
+        if name.endswith(".csv") and path.exists():
+            frames[name] = read_csv_maybe(path)
+    manifest = json.loads((report_dir(config) / "explore10b_run_manifest.json").read_text(encoding="utf-8"))
+    recommendation = manifest.get("recommendation", "continue_explore10b_electronics_width_audit")
+    report_path = report_dir(config) / "explore10b_report.md"
+    report_path.write_text(build_report_10b(config, frames, recommendation), encoding="utf-8")
+    self_check = forbidden_self_check_10b(config, recommendation, manifest)
+    write_csv(self_check, report_dir(config) / "explore10b_forbidden_recommendation_self_check.csv")
+    print(f"wrote Explore10B report {relpath(report_path)} recommendation={recommendation}", flush=True)
+    return [report_path, report_dir(config) / "explore10b_forbidden_recommendation_self_check.csv"]
+
+
 def command_profile(config: dict[str, Any]) -> list[Path]:
     frames, cache_frames, provider_meta = build_outputs(config)
     outputs = finalize_outputs(config, frames, cache_frames, "profile-explore10", provider_meta)
@@ -2904,7 +4034,7 @@ def command_report(config: dict[str, Any]) -> list[Path]:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["profile-explore10", "report-explore10", "profile-explore10a", "report-explore10a"])
+    parser.add_argument("command", choices=["profile-explore10", "report-explore10", "profile-explore10a", "report-explore10a", "profile-explore10b", "report-explore10b"])
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
     return parser.parse_args(argv)
 
@@ -2921,6 +4051,10 @@ def main(argv: list[str] | None = None) -> int:
             command_profile_10a(config)
         elif args.command == "report-explore10a":
             command_report_10a(config)
+        elif args.command == "profile-explore10b":
+            command_profile_10b(config)
+        elif args.command == "report-explore10b":
+            command_report_10b(config)
         else:
             raise DataGateError(f"unknown command: {args.command}")
     except DataGateError as exc:

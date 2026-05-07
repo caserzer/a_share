@@ -1,0 +1,85 @@
+phase: explore10b
+title: electronics_sample_width_feasibility_probe
+output_root: Explore10/outputs/explore10b
+requirement_path: Explore10/requirement_explore10b.md
+
+scope:
+  primary:
+    industry: 电子
+    task: launch_winner
+    role: primary_sample_width_probe
+  secondary:
+    industry: 电子
+    task: failure_reject
+    role: secondary_width_diagnostic
+  reference_only:
+    industry: 汽车
+    tasks: [launch_winner, failure_reject]
+    role: failed_width_reference_only
+
+folds:
+  core: [fold_2020, fold_2021, fold_2022, fold_2023]
+  launch_width_required_core: [fold_2021, fold_2022, fold_2023]
+  robustness_only: [fold_2024]
+  fold_2024_used_for_support: false
+  fold_2020_launch_zero_row_allowed_status: expected_event_history_boundary
+
+thresholds:
+  min_distinct_instruments_original: 20
+  min_launch_width_pass_core_folds: 3
+  max_unknown_width_loss_weight_share: 0.01
+  max_feature_asof_leakage_violation_count: 0
+  max_observed_reference_decision_feature_overlap_eligible_rows: 0
+
+paths:
+  explore10_scope_lock: Explore10/outputs/explore10/reports/explore10_scope_lock.csv
+  explore10_trainability: Explore10/outputs/explore10/reports/explore10_fold_trainability_audit.csv
+  explore10_feature_asof_leakage: Explore10/outputs/explore10/reports/explore10_feature_asof_leakage_audit.csv
+  explore10_observed_reference_overlap: Explore10/outputs/explore10/reports/explore10_observed_reference_overlap_audit.csv
+  explore10_purge: Explore10/outputs/explore10/reports/explore10_walk_forward_purge_audit.csv
+  explore10_feature_bank_preflight: Explore10/outputs/explore10/reports/explore10_feature_bank_preflight_audit.csv
+  explore10_candidate_table: Explore10/outputs/explore10/reports/explore10_atomic_primitive_candidate_table.csv
+  explore10a_width_attribution: Explore10/outputs/explore10a/reports/explore10a_sample_width_attribution.csv
+  explore10a_root_cause_gate: Explore10/outputs/explore10a/reports/explore10a_sample_width_root_cause_gate.csv
+  explore10a_report: Explore10/outputs/explore10a/reports/explore10a_report.md
+  p0_9b_train_eval_panel: Explore9/outputs/p0_9b/cache/p0_9b_locked_t1_train_eval_panel.parquet
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  explore10_lgbm_train_eval_panel: Explore10/outputs/explore10/cache/explore10_lgbm_train_eval_panel.parquet
+  explore10_atomic_launch_event_panel: Explore10/outputs/explore10/cache/explore10_atomic_launch_event_panel.parquet
+  explore10_atomic_failure_decision_panel: Explore10/outputs/explore10/cache/explore10_atomic_failure_decision_panel.parquet
+
+source_authority:
+  feature_bank_v1_available_distinct_instruments: row_level_explore10_cache_only
+  trainability_denominator_distinct_instruments: explore10_fold_trainability_audit.distinct_instruments
+  reference_candidate_count: grouped_row_count_from_industry_task_only
+
+row_identity_keys:
+  launch_winner: [instrument, fold_id, signal_date, event_effective_date, launch_stratum_event_id]
+  failure_reject: [instrument, fold_id, failure_signal_date, failure_decision_effective_date, launch_stratum_event_id, atomic_failure_event_id]
+  missing_optional_key_status: schema_key_missing
+
+feature_availability_predicates:
+  common: [target_industry_name_or_industry_equals_scope, task_or_source_task_equals_scope, fold_id_equals_scope, sample_has_required_features_true]
+  launch_trainability_denominator: industry_launch_model_train_eval_eligible_true
+  failure_trainability_denominator: industry_failure_model_train_eval_eligible_true
+
+secondary_failure:
+  blocking_statuses: [secondary_data_discipline_violation_blocking, unresolved_blocking]
+  nonblocking_statuses: [pass, secondary_only_width_fail_nonblocking]
+
+allowed_recommendations:
+  - proceed_to_explore10c_electronics_path_quality_requirement
+  - continue_explore10b_electronics_width_audit
+  - stop_electronics_probe_due_to_sample_width
+  - stop_due_to_electronics_data_discipline_violation
+
+forbidden_outputs:
+  - proceed_to_explore10b_atomic_feature_bank_v2_rerun
+  - proceed_to_explore11_manual_atomic_primitive_formula_discovery
+  - candidate_for_p1_strategy
+  - proceed_to_strategy_backtest
+  - validated_model
+  - selected_lgbm_model
+  - selected_score_bucket
+  - atomic_primitive_candidate_for_next_requirement
+  - freeze_strategy

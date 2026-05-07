@@ -1,0 +1,11 @@
+target_industry,task,fold_id,train_event_count_after_purge,train_positive_count_after_purge,validation_event_count,validation_positive_count,feature_available_count,distinct_instruments,distinct_instrument_years,trainability_denominator_source,model_fit_pass_reference,trainability_guardrail_pass_reference,explore10_fold_trainability_pass_reference,failed_predicate_reference,sample_width_failure_only,pass
+电子,launch_winner,fold_2020,0,0,0,0,0,0,0,explore10_fold_trainability_audit.distinct_instruments,False,False,False,train_event_count_after_purge;train_positive_count_after_purge;validation_event_count;validation_positive_count;distinct_instruments;distinct_instrument_years;feature_available_count,True,False
+电子,launch_winner,fold_2021,643,277,412,53,160,24,68,explore10_fold_trainability_audit.distinct_instruments,True,True,True,,False,True
+电子,launch_winner,fold_2022,1033,360,356,10,160,24,84,explore10_fold_trainability_audit.distinct_instruments,True,True,True,,False,True
+电子,launch_winner,fold_2023,1425,362,372,31,160,25,98,explore10_fold_trainability_audit.distinct_instruments,True,True,True,,False,True
+电子,launch_winner,fold_2024,1811,389,4,0,160,25,100,explore10_fold_trainability_audit.distinct_instruments,False,False,False,validation_event_count;validation_positive_count,False,True
+电子,failure_reject,fold_2020,1155,358,1027,366,163,21,43,explore10_fold_trainability_audit.distinct_instruments,True,True,True,,False,True
+电子,failure_reject,fold_2021,2175,644,1200,633,163,24,70,explore10_fold_trainability_audit.distinct_instruments,True,True,True,,False,True
+电子,failure_reject,fold_2022,3349,1240,1039,606,163,24,85,explore10_fold_trainability_audit.distinct_instruments,True,True,True,,False,True
+电子,failure_reject,fold_2023,4459,1917,1043,541,163,25,98,explore10_fold_trainability_audit.distinct_instruments,True,True,True,,False,True
+电子,failure_reject,fold_2024,5592,2501,16,2,163,25,104,explore10_fold_trainability_audit.distinct_instruments,False,False,False,validation_event_count;validation_positive_count,False,True
