@@ -1,0 +1,194 @@
+phase: explore10c
+title: electronics_path_quality_and_primitive_quality_audit
+output_root: Explore10/outputs/explore10c
+requirement_path: Explore10/requirement_explore10c.md
+
+scope:
+  primary:
+    industry: 电子
+    task: launch_winner
+    role: primary_path_quality_audit
+  secondary:
+    industry: 电子
+    task: failure_reject
+    role: secondary_failure_diagnostic
+  reference_only:
+    industry: 汽车
+    role: failed_width_reference_only
+
+folds:
+  core_oof: [fold_2021, fold_2022, fold_2023]
+  launch_expected_event_history_boundary: [fold_2020]
+  robustness_only: [fold_2024]
+  fold_2024_used_for_support: false
+
+paths:
+  explore10b_manifest: Explore10/outputs/explore10b/reports/explore10b_run_manifest.json
+  explore10b_width_gate: Explore10/outputs/explore10b/reports/explore10b_electronics_sample_width_gate.csv
+  explore10b_recommendation_gate: Explore10/outputs/explore10b/reports/explore10b_recommendation_gate.csv
+  explore10b_data_discipline: Explore10/outputs/explore10b/reports/explore10b_electronics_data_discipline_audit.csv
+  explore10_train_eval_panel: Explore10/outputs/explore10/cache/explore10_lgbm_train_eval_panel.parquet
+  explore10_launch_event_panel: Explore10/outputs/explore10/cache/explore10_atomic_launch_event_panel.parquet
+  explore10_failure_decision_panel: Explore10/outputs/explore10/cache/explore10_atomic_failure_decision_panel.parquet
+  explore10_model_dump: Explore10/outputs/explore10/cache/explore10_lgbm_model_dump.parquet
+  explore10_full_path_candidate_panel: Explore10/outputs/explore10/cache/explore10_full_path_candidate_panel.parquet
+  feature_bank_v1_config: Explore10/configs/atomic_feature_bank_v1.yaml
+  explore10_feature_dictionary: Explore10/outputs/explore10/reports/explore10_atomic_feature_dictionary.csv
+  explore10_feature_bank_preflight: Explore10/outputs/explore10/reports/explore10_feature_bank_preflight_audit.csv
+  explore10_feature_asof_leakage: Explore10/outputs/explore10/reports/explore10_feature_asof_leakage_audit.csv
+  explore10_observed_reference_overlap: Explore10/outputs/explore10/reports/explore10_observed_reference_overlap_audit.csv
+  explore10_walk_forward_purge: Explore10/outputs/explore10/reports/explore10_walk_forward_purge_audit.csv
+  explore10_candidate_table: Explore10/outputs/explore10/reports/explore10_atomic_primitive_candidate_table.csv
+
+scope_selection_lineage:
+  selected_after_observing_trainability: true
+  selected_after_observing_candidate_count: true
+  selected_after_automotive_width_failure: true
+  selection_family_null_required: true
+
+data_discipline:
+  required_row_surfaces:
+    - v1_reference_train_eval_panel
+    - v2_hygiene_train_eval_panel
+    - v2_feature_availability_panel
+    - fixed_probe_prediction_panel
+    - path_support_panel
+    - primitive_seed_oof_panel
+    - null_placebo_panel
+  max_row_identity_duplicate_count: 0
+  max_row_identity_mismatch_count: 0
+  max_feature_asof_leakage_violation_count: 0
+  max_observed_reference_overlap_count: 0
+  max_walk_forward_purge_violation_count: 0
+
+feature_bank_hygiene:
+  source_version: alpha158_like_v1
+  target_version: alpha158_like_v2_hygiene
+  selection_scope: fold_local_train_scope_unsupervised_only
+  recommendation_dictionary_rule: intersection_of_core_fold_v2_features
+  labels_allowed: false
+  validation_metrics_allowed: false
+  validation_rows_allowed: false
+  fold_2024_allowed: false
+
+probe_contract:
+  contract_id: explore10c_fixed_lightgbm_no_inner_validation
+  fixed_lgbm_only: true
+  hyperparameter_search_allowed: false
+  early_stopping_allowed: false
+  metric_model_selection_allowed: false
+  feature_bank_versions: [v1_reference, v2_hygiene]
+  recommendation_eligible_feature_bank_version: v2_hygiene
+
+lgbm_probe:
+  objective: binary
+  metric: [auc, binary_logloss]
+  boosting_type: gbdt
+  max_depth: 3
+  num_leaves: 8
+  min_data_in_leaf: 30
+  learning_rate: 0.05
+  feature_fraction: 0.80
+  bagging_fraction: 0.80
+  bagging_freq: 1
+  lambda_l1: 0.0
+  lambda_l2: 1.0
+  early_stopping: false
+  hyperparameter_search: false
+  random_seed: 20260507
+  n_jobs: 4
+  num_boost_round:
+    launch_winner: 64
+    failure_reject: 32
+
+candidate_extraction:
+  max_raw_paths_considered: 2000
+  max_path_depth: 4
+  min_train_path_support_count: 30
+  min_train_path_weighted_support: 30.0
+  max_paths_per_fold_task: 40
+  max_paths_total: 120
+  max_paths_per_feature_family: 20
+  path_dedup_identity: normalized_feature_direction_quantile_sequence
+  path_sort_key: train_weighted_support_desc_then_path_depth_asc_then_feature_family_diversity_desc_then_path_pattern_id_asc
+
+candidate_freeze:
+  freeze_before_oof_metrics: true
+  freeze_before_null_metrics: true
+  freeze_before_placebo_metrics: true
+  freeze_before_manual_formula_edits: true
+  raw_numeric_threshold_in_formula_allowed: false
+  threshold_representation: train_fold_quantile_bucket
+
+threshold_canonicalization:
+  quantile_bucket_count: 20
+  quantile_source_rows: source_fold_training_rows_only
+  tie_policy: average_rank_then_lower_bucket
+  missing_value_policy: explicit_missing_branch_token
+  out_of_range_policy: clamp_to_edge_bucket
+  bucket_label_format: q_lower_pct_upper_pct
+
+thresholds:
+  min_distinct_instruments_original: 20
+  min_quality_seed_count: 1
+  min_core_fold_presence_count: 2
+  min_oof_support_count: 20
+  min_oof_weighted_support: 20.0
+  min_train_event_count: 200
+  min_train_positive_count: 20
+  min_validation_event_count: 30
+  min_validation_positive_count: 5
+  min_distinct_instruments: 20
+  min_distinct_instrument_years: 20
+  min_prediction_uniqueness: 10
+  min_prediction_std: 0.000001
+  min_used_feature_count: 2
+  max_feature_missing_weight_share: 0.20
+  max_feature_missing_row_rate: 0.20
+  max_duplicate_feature_cluster_count: 25
+  duplicate_corr_abs_threshold: 0.995
+  duplicate_min_pairwise_non_null_count: 100
+  max_constant_feature_rate: 0.02
+  max_top_value_share_for_nonconstant: 0.995
+  max_feature_family_share: 0.35
+  min_feature_family_coverage_after_hygiene: 0.80
+  min_feature_count_after_hygiene: 60
+  min_oof_lift_vs_baseline: 1.05
+  min_real_minus_null_p95: 0.0
+  max_empirical_p_value: 0.05
+  max_fdr_q: 0.10
+  max_top_instrument_weight_share: 0.25
+  max_top_instrument_year_weight_share: 0.20
+  max_top5_instrument_weight_share: 0.55
+  max_instrument_year_hhi: 0.15
+
+nulls:
+  families:
+    - label_permutation_null
+    - instrument_year_block_null
+    - path_structure_null
+    - feature_family_dropout_null
+  min_iterations: 100
+  random_seed: 20260507
+  pass_rule: real_metric_above_null_p95_with_fdr_and_not_placebo_dominated
+
+allowed_recommendations:
+  - proceed_to_explore10d_electronics_manual_primitive_formula_review_requirement
+  - continue_explore10c_path_quality_audit
+  - stop_due_to_feature_bank_v2_hygiene_failure
+  - stop_due_to_no_electronics_path_quality_evidence
+  - stop_due_to_null_or_placebo_collapse
+  - stop_due_to_concentration_or_slice_instability
+  - stop_due_to_data_discipline_violation
+
+forbidden_outputs:
+  - candidate_for_p1_strategy
+  - proceed_to_strategy_backtest
+  - validated_model
+  - selected_lgbm_model
+  - selected_score_bucket
+  - selected_threshold
+  - selected_trade_rule
+  - freeze_strategy
+  - electronics_alpha_validated
+  - electronics_primitive_validated_for_trading
