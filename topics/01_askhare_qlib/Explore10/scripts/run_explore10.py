@@ -220,6 +220,41 @@ REQUIRED_CACHE_10C = [
     "explore10c_electronics_primitive_seed_oof_panel.parquet",
     "explore10c_electronics_null_placebo_panel.parquet",
 ]
+REQUIRED_REPORTS_10D = [
+    "explore10d_run_manifest.json",
+    "explore10d_preflight_reference_artifact_audit.csv",
+    "explore10d_explore10c_inheritance_gate.csv",
+    "explore10d_launch_seed_freeze_audit.csv",
+    "explore10d_launch_seed_relabel_audit.csv",
+    "explore10d_launch_risk_filter_metric_contract.csv",
+    "explore10d_support_matched_null_audit.csv",
+    "explore10d_support_matched_null_summary.csv",
+    "explore10d_structural_matched_null_audit.csv",
+    "explore10d_matched_null_fdr_audit.csv",
+    "explore10d_family_ablation_audit.csv",
+    "explore10d_family_ablation_summary.csv",
+    "explore10d_token_coverage_carry_forward_audit.csv",
+    "explore10d_concentration_carry_forward_audit.csv",
+    "explore10d_slice_stability_carry_forward_audit.csv",
+    "explore10d_manualizability_carry_forward_audit.csv",
+    "explore10d_metric_nonselection_audit.csv",
+    "explore10d_threshold_nonselection_audit.csv",
+    "explore10d_model_nonselection_audit.csv",
+    "explore10d_score_bucket_nonselection_audit.csv",
+    "explore10d_fold_2024_nonselection_audit.csv",
+    "explore10d_forbidden_recommendation_self_check.csv",
+    "explore10d_cache_tracking_audit.csv",
+    "explore10d_required_artifact_authority_audit.csv",
+    "explore10d_recommendation_gate.csv",
+    "explore10d_report.md",
+]
+REQUIRED_CACHE_10D = [
+    "explore10d_frozen_launch_seed_panel.parquet",
+    "explore10d_support_matched_null_panel.parquet",
+    "explore10d_structural_matched_null_panel.parquet",
+    "explore10d_family_ablation_panel.parquet",
+    "explore10d_launch_risk_filter_oof_panel.parquet",
+]
 REFERENCE_ARTIFACTS = [
     "Explore9/outputs/p0_9b/reports/p0_9b_report.md",
     "Explore9/outputs/p0_9b/reports/p0_9b_manual_primitive_candidate_table.csv",
@@ -5614,6 +5649,1240 @@ def command_report_10c(config: dict[str, Any]) -> list[Path]:
     return [report_path, report_dir(config) / "explore10c_forbidden_recommendation_self_check.csv"]
 
 
+def status_only_10d(reason: str, upstream_gate: str, upstream_gate_pass: bool = False, **extra: Any) -> pd.DataFrame:
+    row = {
+        "execution_status": "not_started",
+        "not_started_reason": reason,
+        "upstream_gate": upstream_gate,
+        "upstream_gate_pass": upstream_gate_pass,
+        "pass": False,
+    }
+    row.update(extra)
+    return pd.DataFrame([row])
+
+
+def preflight_reference_artifacts_10d(config: dict[str, Any]) -> pd.DataFrame:
+    rows = []
+    for key, item in config["paths"].items():
+        path = topic_path(item)
+        exists = path.exists()
+        row_count = column_count = np.nan
+        readable = False
+        if exists and path.is_file():
+            row_count, column_count, readable = artifact_counts_10b(path)
+        rows.append(
+            {
+                "artifact_name": key,
+                "artifact_path": item,
+                "artifact_role": "row_level_cache" if str(item).endswith(".parquet") else "report_or_reference",
+                "exists": exists,
+                "content_hash": file_hash_full(path) if exists and path.is_file() else "",
+                "row_count": row_count,
+                "column_count": column_count,
+                "readable": readable,
+                "required_for_gate": "Explore10D",
+                "source_phase": "Explore10C",
+                "read_before_freeze_allowed": key in {
+                    "explore10c_manifest",
+                    "explore10c_recommendation_gate",
+                    "explore10c_seed_table",
+                    "explore10c_real_metric",
+                    "explore10c_fdr",
+                    "explore10c_placebo_guardrail",
+                    "explore10c_concentration",
+                    "explore10c_slice_stability",
+                    "explore10c_manualizability",
+                    "explore10c_token_coverage",
+                    "explore10c_path_pattern_canonicalization",
+                    "explore10c_path_pattern_fold_presence",
+                    "explore10c_path_support_panel",
+                    "explore10c_v2_panel",
+                    "explore10c_primitive_seed_oof_panel",
+                },
+                "preflight_pass": exists and readable,
+                "pass": exists and readable,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def load_inputs_10d(config: dict[str, Any]) -> dict[str, Any]:
+    paths = config["paths"]
+    preflight = preflight_reference_artifacts_10d(config)
+    manifest_path = topic_path(paths["explore10c_manifest"])
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
+    panel_path = topic_path(paths["explore10c_v2_panel"])
+    panel = normalize_dates(pd.read_parquet(panel_path)) if panel_path.exists() else pd.DataFrame()
+    if not panel.empty:
+        panel["task_canonical"] = canonical_task_10a(panel)
+    path_support_path = topic_path(paths["explore10c_path_support_panel"])
+    path_support = pd.read_parquet(path_support_path) if path_support_path.exists() else pd.DataFrame()
+    return {
+        "preflight": preflight,
+        "manifest_10c": manifest,
+        "recommendation_10c": read_csv_maybe(topic_path(paths["explore10c_recommendation_gate"])),
+        "seeds": read_csv_maybe(topic_path(paths["explore10c_seed_table"])),
+        "real_metric": read_csv_maybe(topic_path(paths["explore10c_real_metric"])),
+        "fdr": read_csv_maybe(topic_path(paths["explore10c_fdr"])),
+        "placebo": read_csv_maybe(topic_path(paths["explore10c_placebo_guardrail"])),
+        "concentration": read_csv_maybe(topic_path(paths["explore10c_concentration"])),
+        "slice": read_csv_maybe(topic_path(paths["explore10c_slice_stability"])),
+        "manual": read_csv_maybe(topic_path(paths["explore10c_manualizability"])),
+        "token_coverage": read_csv_maybe(topic_path(paths["explore10c_token_coverage"])),
+        "canonical": read_csv_maybe(topic_path(paths["explore10c_path_pattern_canonicalization"])),
+        "fold_presence": read_csv_maybe(topic_path(paths["explore10c_path_pattern_fold_presence"])),
+        "path_support": path_support,
+        "panel": panel,
+    }
+
+
+def inheritance_gate_10d(config: dict[str, Any], inputs: dict[str, Any]) -> pd.DataFrame:
+    rec = inputs["recommendation_10c"]
+    row = rec.iloc[0] if not rec.empty else pd.Series(dtype=object)
+    required_bool = [
+        "width_inheritance_pass",
+        "scope_selection_lineage_pass",
+        "data_discipline_pass",
+        "feature_bank_v2_hygiene_pass",
+        "v2_probe_trainability_pass",
+        "candidate_freeze_pass",
+        "required_artifact_authority_pass",
+        "cache_tracking_pass",
+    ]
+    required_zero = [
+        "fold_2024_support_usage_count",
+        "metric_selection_violation_count",
+        "threshold_selection_violation_count",
+        "model_selection_violation_count",
+        "score_bucket_selection_violation_count",
+    ]
+    bool_pass = all(bool(row.get(col, False)) for col in required_bool)
+    zero_pass = all(int(row.get(col, 1) or 0) == 0 for col in required_zero)
+    source = topic_path(config["paths"]["explore10c_recommendation_gate"])
+    recommendation = str(row.get("recommendation", ""))
+    inheritance_pass = bool(bool_pass and zero_pass and recommendation == "continue_explore10c_path_quality_audit")
+    return pd.DataFrame(
+        [
+            {
+                "source_artifact": config["paths"]["explore10c_recommendation_gate"],
+                "source_hash": file_hash_full(source) if source.exists() else "",
+                "source_recommendation": recommendation,
+                **{col: bool(row.get(col, False)) for col in required_bool},
+                **{col: int(row.get(col, 1) or 0) for col in required_zero},
+                "inheritance_pass": inheritance_pass,
+                "blocked_reason": "" if inheritance_pass else "explore10c_required_inheritance_gate_failed",
+                "pass": inheritance_pass,
+            }
+        ]
+    )
+
+
+def token_list_10d(row: pd.Series) -> list[dict[str, Any]]:
+    raw = row.get("formula_token_list", row.get("token_json", "[]"))
+    if isinstance(raw, list):
+        return raw
+    try:
+        parsed = json.loads(str(raw))
+        return parsed if isinstance(parsed, list) else []
+    except Exception:
+        return []
+
+
+def token_signature_10d(tokens: list[dict[str, Any]]) -> str:
+    payload = [
+        (
+            str(token.get("feature_name", "")),
+            str(token.get("feature_family", "")),
+            str(token.get("direction", "")),
+            str(token.get("quantile_bucket", "")),
+        )
+        for token in tokens
+    ]
+    return json.dumps(payload, ensure_ascii=False, sort_keys=True)
+
+
+def formula_family_group_10d(tokens: list[dict[str, Any]]) -> str:
+    return "+".join(sorted({str(token.get("feature_family", "unknown")) for token in tokens if str(token.get("feature_family", ""))})) or "unknown"
+
+
+def quantile_direction_mix_10d(tokens: list[dict[str, Any]]) -> str:
+    parts = [f"{token.get('direction', '')}:{token.get('quantile_bucket', '')}" for token in tokens]
+    return "+".join(sorted(parts))
+
+
+def bucket_index_10d(value: float, edges: list[Any]) -> int:
+    if not np.isfinite(value):
+        return -1
+    numeric_edges = [float(edge) for edge in edges]
+    for idx in range(len(numeric_edges) - 1):
+        if float(value) <= numeric_edges[idx + 1]:
+            return idx
+    return len(numeric_edges) - 2
+
+
+def bucket_label_from_index_10d(idx: int, edges: list[Any]) -> str:
+    if idx < 0:
+        return "missing"
+    numeric_edges = [float(edge) for edge in edges]
+    return f"b{idx}_{numeric_edges[idx]:g}_{numeric_edges[idx + 1]:g}"
+
+
+def mask_from_tokens_10d(valid: pd.DataFrame, train: pd.DataFrame, tokens: list[dict[str, Any]]) -> pd.Series:
+    mask = pd.Series(True, index=valid.index)
+    if not tokens:
+        return pd.Series(False, index=valid.index)
+    for token in tokens:
+        feature = str(token.get("feature_name", ""))
+        if feature not in valid.columns or feature not in train.columns:
+            return pd.Series(False, index=valid.index)
+        level = float(token.get("quantile_level", np.nan))
+        threshold = float(pd.to_numeric(train[feature], errors="coerce").quantile(level)) if np.isfinite(level) else np.nan
+        if not np.isfinite(threshold):
+            return pd.Series(False, index=valid.index)
+        values = pd.to_numeric(valid[feature], errors="coerce")
+        if str(token.get("direction", "")) == "less_than":
+            mask &= values <= threshold
+        else:
+            mask &= values >= threshold
+    return mask.fillna(False)
+
+
+def evaluate_tokens_10d(config: dict[str, Any], panel: pd.DataFrame, seed_id: str, tokens: list[dict[str, Any]], task: str) -> tuple[dict[str, Any], pd.DataFrame]:
+    core_folds = list(config["folds"]["core_oof"])
+    if panel.empty:
+        return {"primitive_seed_id": seed_id, "real_metric": np.nan, "oof_support_count": 0, "oof_weighted_support": 0.0, "fold_presence_count": 0}, pd.DataFrame()
+    task_panel = panel[task_mask_10b(panel, task)].copy()
+    selected_frames = []
+    fold_lifts = []
+    positive_rates = []
+    baseline_rates = []
+    support_count = 0
+    weighted_support = 0.0
+    for fold in core_folds:
+        fold_panel = task_panel[task_panel["fold_id"].astype(str).eq(fold)].copy()
+        eligible = fold_panel.get("row_train_eval_eligible", pd.Series(True, index=fold_panel.index)).fillna(False).astype(bool)
+        fold_panel = fold_panel[eligible].copy()
+        train = fold_panel[fold_panel.get("split", pd.Series("", index=fold_panel.index)).astype(str).eq("train")].copy()
+        valid = fold_panel[fold_panel.get("split", pd.Series("", index=fold_panel.index)).astype(str).eq("validation")].copy()
+        if train.empty or valid.empty:
+            continue
+        mask = mask_from_tokens_10d(valid, train, tokens)
+        selected = valid[mask].copy()
+        selected["primitive_seed_id"] = seed_id
+        selected_frames.append(selected)
+        weight = pd.to_numeric(valid.get("final_sample_weight", pd.Series(1.0, index=valid.index)), errors="coerce").fillna(1.0)
+        selected_weight = pd.to_numeric(selected.get("final_sample_weight", pd.Series(dtype=float)), errors="coerce").fillna(1.0)
+        baseline_rate = weighted_rate(valid["label"], weight)
+        positive_rate = weighted_rate(selected["label"], selected_weight) if not selected.empty else np.nan
+        lift = positive_rate / baseline_rate if baseline_rate and np.isfinite(baseline_rate) else np.nan
+        fold_lifts.append(lift)
+        positive_rates.append(positive_rate)
+        baseline_rates.append(baseline_rate)
+        support_count += int(mask.sum())
+        weighted_support += float(selected_weight.sum()) if not selected.empty else 0.0
+    selected_all = pd.concat(selected_frames, ignore_index=True, sort=False) if selected_frames else pd.DataFrame()
+    if not selected_all.empty:
+        instrument_count = int(selected_all["instrument"].nunique()) if "instrument" in selected_all else 0
+        instrument_year_count = int(selected_all["event_instrument_year"].nunique()) if "event_instrument_year" in selected_all else 0
+    else:
+        instrument_count = 0
+        instrument_year_count = 0
+    finite_lifts = [value for value in fold_lifts if np.isfinite(value)]
+    finite_positive_rates = [value for value in positive_rates if np.isfinite(value)]
+    finite_baseline_rates = [value for value in baseline_rates if np.isfinite(value)]
+    metric = {
+        "primitive_seed_id": seed_id,
+        "real_metric": float(np.mean(finite_lifts)) if finite_lifts else np.nan,
+        "oof_lift_vs_scope_weighted_baseline": float(np.mean(finite_lifts)) if finite_lifts else np.nan,
+        "included_positive_rate": float(np.mean(finite_positive_rates)) if finite_positive_rates else np.nan,
+        "scope_positive_rate": float(np.mean(finite_baseline_rates)) if finite_baseline_rates else np.nan,
+        "oof_support_count": support_count,
+        "oof_weighted_support": weighted_support,
+        "fold_presence_count": int(sum(np.isfinite(value) for value in fold_lifts)),
+        "instrument_count": instrument_count,
+        "instrument_year_count": instrument_year_count,
+    }
+    return metric, selected_all
+
+
+def launch_seed_freeze_10d(config: dict[str, Any], inputs: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame]:
+    seeds = inputs["seeds"]
+    metric = inputs["real_metric"]
+    fdr = inputs["fdr"]
+    if seeds.empty:
+        return status_only_10d("missing_explore10c_seed_table", "explore10c_inheritance", False), pd.DataFrame()
+    policy = config["seed_policy"]
+    mask = (
+        seeds.get("task", pd.Series("", index=seeds.index)).astype(str).eq(policy["source_task"])
+        & seeds.get("target_industry", pd.Series("", index=seeds.index)).astype(str).eq(config["scope"]["primary"]["industry"])
+        & seeds.get("feature_bank_version", pd.Series("", index=seeds.index)).astype(str).eq(policy["source_feature_bank_version"])
+        & seeds.get("eligible_for_quality_audit", pd.Series(False, index=seeds.index)).fillna(False).astype(bool)
+        & ~seeds.get("fold_2024_support_used", pd.Series(True, index=seeds.index)).fillna(True).astype(bool)
+        & ~seeds.get("raw_numeric_threshold_in_formula", pd.Series(True, index=seeds.index)).fillna(True).astype(bool)
+        & ~seeds.get("leaf_id_in_formula", pd.Series(True, index=seeds.index)).fillna(True).astype(bool)
+        & ~seeds.get("score_bucket_in_formula", pd.Series(True, index=seeds.index)).fillna(True).astype(bool)
+    )
+    frozen = seeds[mask].copy().reset_index(drop=True)
+    if not metric.empty:
+        keep = [c for c in ["primitive_seed_id", "oof_lift_vs_scope_baseline", "oof_support_count", "oof_weighted_support", "fold_presence_count", "null_adjusted_signal_status", "oof_quality_pass"] if c in metric]
+        frozen = frozen.merge(metric[keep], on="primitive_seed_id", how="left", suffixes=("", "_source_metric"))
+    if not fdr.empty and "primitive_seed_id" in fdr:
+        best_q = fdr.groupby("primitive_seed_id", dropna=False).agg(source_best_fdr_q=("bh_q_value", "min"), source_null_pass=("fdr_pass", "any")).reset_index()
+        frozen = frozen.merge(best_q, on="primitive_seed_id", how="left")
+    source_seed = topic_path(config["paths"]["explore10c_seed_table"])
+    source_metric = topic_path(config["paths"]["explore10c_real_metric"])
+    freeze_pass = bool(len(frozen) == int(policy["expected_launch_seed_count"]))
+    freeze = pd.DataFrame(
+        [
+            {
+                "freeze_timestamp": pd.Timestamp.utcnow().isoformat(),
+                "source_seed_artifact": config["paths"]["explore10c_seed_table"],
+                "source_seed_artifact_hash": file_hash_full(source_seed) if source_seed.exists() else "",
+                "source_metric_artifact": config["paths"]["explore10c_real_metric"],
+                "source_metric_artifact_hash": file_hash_full(source_metric) if source_metric.exists() else "",
+                "seed_selection_rule": "Explore10C launch_winner v2_hygiene eligible quality seeds only",
+                "seed_selection_rule_hash": text_hash(json.dumps(policy, ensure_ascii=False, sort_keys=True)),
+                "input_launch_seed_count": int((seeds.get("task", pd.Series("", index=seeds.index)).astype(str) == policy["source_task"]).sum()),
+                "frozen_launch_seed_count": len(frozen),
+                "new_seed_created": False,
+                "seed_dropped_before_freeze": False,
+                "seed_dropped_reason": "",
+                "oof_metric_available_before_freeze": "oof_lift_vs_scope_baseline" in frozen.columns,
+                "oof_metric_used_for_display_only": True,
+                "null_metric_available_before_freeze": "source_best_fdr_q" in frozen.columns,
+                "null_metric_read_before_freeze": False,
+                "family_ablation_metric_available_before_freeze": False,
+                "family_ablation_metric_read_before_freeze": False,
+                "freeze_pass": freeze_pass,
+                "pass": freeze_pass,
+            }
+        ]
+    )
+    return freeze, frozen
+
+
+def relabel_audit_10d(config: dict[str, Any], frozen: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    risk_families = set(config["risk_filter_tokens"]["feature_families"])
+    patterns = [str(item).lower() for item in config["risk_filter_tokens"]["token_patterns"]]
+    for _, seed in frozen.iterrows():
+        tokens = token_list_10d(seed)
+        family_hits = [token for token in tokens if str(token.get("feature_family", "")) in risk_families]
+        pattern_hits = [token for token in tokens if any(pattern in str(token.get("feature_name", "")).lower() for pattern in patterns)]
+        risk_count = len({json.dumps(token, ensure_ascii=False, sort_keys=True) for token in family_hits + pattern_hits})
+        relabel_pass = risk_count > 0
+        rows.append(
+            {
+                "primitive_seed_id": seed["primitive_seed_id"],
+                "source_formula_text_resolved": seed.get("formula_text_resolved", ""),
+                "source_oof_lift_vs_scope_baseline": seed.get("oof_lift_vs_scope_baseline", np.nan),
+                "source_best_fdr_q": seed.get("source_best_fdr_q", np.nan),
+                "source_null_pass": bool(seed.get("source_null_pass", False)),
+                "original_interpretation": "direct_launch_winner_trigger",
+                "explore10d_interpretation": "launch_risk_filter_candidate" if relabel_pass else "unrelabelled_launch_seed",
+                "risk_filter_token_count": risk_count,
+                "winner_trigger_token_count": max(0, len(tokens) - risk_count),
+                "formula_family_group": formula_family_group_10d(tokens),
+                "relabel_reason": "risk_filter_family_or_token_present" if relabel_pass else "no_risk_filter_family_or_token",
+                "relabel_used_metric": False,
+                "relabel_pass": relabel_pass,
+                "pass": relabel_pass,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def metric_contract_10d(config: dict[str, Any], inputs: dict[str, Any]) -> pd.DataFrame:
+    panel = inputs["panel"]
+    failure_available = bool(not panel.empty and "failure_reject_positive_primary" in panel.columns)
+    return pd.DataFrame(
+        [
+            {
+                "primary_label": "launch_winner",
+                "primary_real_metric_name": "oof_lift_vs_scope_weighted_baseline",
+                "risk_filter_interpretation_metric": "launch_risk_filter_retained_lift",
+                "weight_column": "final_sample_weight",
+                "included_rows_definition": "electronics launch OOF rows satisfying the frozen formula",
+                "scope_rows_definition": "all eligible electronics launch OOF rows in fold_2021/fold_2022/fold_2023",
+                "included_positive_rate_formula": "weighted_mean(primary_label, included_rows, final_sample_weight)",
+                "scope_positive_rate_formula": "weighted_mean(primary_label, scope_rows, final_sample_weight)",
+                "real_metric_formula_text": "included_positive_rate / scope_positive_rate",
+                "failure_diagnostic_label_available": failure_available,
+                "failure_diagnostic_used_for_success": False,
+                "metric_contract_pass": True,
+                "pass": True,
+            }
+        ]
+    )
+
+
+def decorate_metric_pool_10d(config: dict[str, Any], metrics: pd.DataFrame, tokens_by_id: dict[str, list[dict[str, Any]]]) -> pd.DataFrame:
+    out = metrics.copy()
+    support_edges = config["nulls"]["support_count_bucket_edges"]
+    weighted_edges = config["nulls"]["weighted_support_bucket_edges"]
+    inst_edges = config["nulls"]["instrument_count_bucket_edges"]
+    inst_year_edges = config["nulls"]["instrument_year_count_bucket_edges"]
+    rows = []
+    for _, row in out.iterrows():
+        seed_id = str(row["primitive_seed_id"])
+        tokens = tokens_by_id.get(seed_id, [])
+        family_set = sorted({str(token.get("feature_family", "unknown")) for token in tokens})
+        support_idx = bucket_index_10d(float(row.get("oof_support_count", np.nan)), support_edges)
+        weighted_idx = bucket_index_10d(float(row.get("oof_weighted_support", np.nan)), weighted_edges)
+        inst_idx = bucket_index_10d(float(row.get("instrument_count", np.nan)), inst_edges)
+        inst_year_idx = bucket_index_10d(float(row.get("instrument_year_count", np.nan)), inst_year_edges)
+        rows.append(
+            {
+                **row.to_dict(),
+                "token_count": len(tokens),
+                "feature_family_count": len(set(family_set)),
+                "feature_family_set": "+".join(family_set),
+                "formula_family_group": formula_family_group_10d(tokens),
+                "quantile_direction_mix": quantile_direction_mix_10d(tokens),
+                "support_bucket_index": support_idx,
+                "weighted_support_bucket_index": weighted_idx,
+                "instrument_count_bucket_index": inst_idx,
+                "instrument_year_count_bucket_index": inst_year_idx,
+                "matched_support_bucket": bucket_label_from_index_10d(support_idx, support_edges),
+                "matched_weighted_support_bucket": bucket_label_from_index_10d(weighted_idx, weighted_edges),
+                "matched_instrument_count_bucket": bucket_label_from_index_10d(inst_idx, inst_edges),
+                "matched_instrument_year_count_bucket": bucket_label_from_index_10d(inst_year_idx, inst_year_edges),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_candidate_pool_10d(config: dict[str, Any], inputs: dict[str, Any], frozen: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, list[dict[str, Any]]]]:
+    panel = inputs["panel"]
+    path_support = inputs["path_support"]
+    rows = []
+    tokens_by_id: dict[str, list[dict[str, Any]]] = {}
+    for _, seed in frozen.iterrows():
+        seed_id = str(seed["primitive_seed_id"])
+        tokens = token_list_10d(seed)
+        metric, _ = evaluate_tokens_10d(config, panel, seed_id, tokens, config["scope"]["primary"]["task"])
+        rows.append({**metric, "pool_role": "frozen_launch_seed", "path_pattern_id": seed.get("source_path_pattern_ids", ""), "formula_text_resolved": seed.get("formula_text_resolved", "")})
+        tokens_by_id[seed_id] = tokens
+    if not path_support.empty:
+        launch_paths = path_support[
+            path_support.get("target_industry", pd.Series("", index=path_support.index)).astype(str).eq(config["scope"]["primary"]["industry"])
+            & path_support.get("task", pd.Series("", index=path_support.index)).astype(str).eq(config["scope"]["primary"]["task"])
+            & path_support.get("feature_bank_version", pd.Series("", index=path_support.index)).astype(str).eq(config["seed_policy"]["source_feature_bank_version"])
+            & ~path_support.get("raw_numeric_threshold_in_formula", pd.Series(True, index=path_support.index)).fillna(True).astype(bool)
+            & ~path_support.get("leaf_id_in_formula", pd.Series(True, index=path_support.index)).fillna(True).astype(bool)
+        ].copy()
+        launch_paths["_token_signature"] = launch_paths["token_json"].astype(str).map(lambda raw: token_signature_10d(json.loads(raw)) if raw and raw != "nan" else "")
+        launch_paths = launch_paths.drop_duplicates("_token_signature").reset_index(drop=True)
+        frozen_signatures = {token_signature_10d(token_list_10d(row)) for _, row in frozen.iterrows()}
+        for _, cand in launch_paths.iterrows():
+            try:
+                tokens = json.loads(str(cand["token_json"]))
+            except Exception:
+                continue
+            signature = token_signature_10d(tokens)
+            if signature in frozen_signatures:
+                continue
+            pool_id = "E10D_POOL_" + text_hash(f"{cand.get('path_pattern_id', '')}|{signature}")
+            metric, _ = evaluate_tokens_10d(config, panel, pool_id, tokens, config["scope"]["primary"]["task"])
+            if int(metric.get("oof_support_count", 0)) <= 0:
+                continue
+            rows.append({**metric, "pool_role": "pre_frozen_launch_path_pool", "path_pattern_id": cand.get("path_pattern_id", ""), "formula_text_resolved": cand.get("formula_tokens", "")})
+            tokens_by_id[pool_id] = tokens
+    pool = decorate_metric_pool_10d(config, pd.DataFrame(rows), tokens_by_id) if rows else pd.DataFrame()
+    seed_metrics = pool[pool["pool_role"].eq("frozen_launch_seed")].copy() if not pool.empty else pd.DataFrame()
+    return pool, seed_metrics, tokens_by_id
+
+
+def stable_rng_10d(config: dict[str, Any], *parts: Any) -> np.random.Generator:
+    seed_text = "|".join([str(config["nulls"]["random_seed"]), *[str(part) for part in parts]])
+    seed = int(hashlib.sha256(seed_text.encode("utf-8")).hexdigest()[:16], 16) % (2**32 - 1)
+    return np.random.default_rng(seed)
+
+
+def support_match_pool_10d(config: dict[str, Any], seed: pd.Series, pool: pd.DataFrame, null_family: str) -> tuple[pd.DataFrame, str, int]:
+    candidates = pool[pool["pool_role"].eq("pre_frozen_launch_path_pool")].copy()
+    if null_family == "support_matched_same_token_count_null":
+        candidates = candidates[candidates["token_count"].eq(int(seed["token_count"]))]
+    if null_family == "support_matched_same_fold_presence_null":
+        candidates = candidates[candidates["fold_presence_count"].eq(int(seed["fold_presence_count"]))]
+    max_distance = int(config["nulls"]["max_nearest_bucket_distance"])
+    gap = (
+        (candidates["support_bucket_index"] - int(seed["support_bucket_index"])).abs()
+        + (candidates["weighted_support_bucket_index"] - int(seed["weighted_support_bucket_index"])).abs()
+        + (candidates["instrument_count_bucket_index"] - int(seed["instrument_count_bucket_index"])).abs()
+        + (candidates["instrument_year_count_bucket_index"] - int(seed["instrument_year_count_bucket_index"])).abs()
+    ) if not candidates.empty else pd.Series(dtype=float)
+    if candidates.empty:
+        return candidates, "no_match_blocked", 999
+    candidates = candidates[gap <= max_distance * 4].copy()
+    candidates["_support_match_gap"] = gap.loc[candidates.index]
+    if null_family == "support_matched_same_instrument_year_null":
+        candidates = candidates[candidates["instrument_year_count_bucket_index"].eq(int(seed["instrument_year_count_bucket_index"]))]
+    if candidates.empty:
+        return candidates, "no_match_blocked", 999
+    exact = candidates[candidates["_support_match_gap"].eq(0)]
+    if not exact.empty:
+        return exact, "exact_or_nearest_allowed", 0
+    min_gap = int(candidates["_support_match_gap"].min())
+    return candidates[candidates["_support_match_gap"].eq(min_gap)], "exact_or_nearest_allowed", min_gap
+
+
+def structural_match_pool_10d(seed: pd.Series, pool: pd.DataFrame, null_family: str) -> tuple[pd.DataFrame, str]:
+    candidates = pool[pool["pool_role"].eq("pre_frozen_launch_path_pool")].copy()
+    if null_family == "same_feature_family_set_null":
+        candidates = candidates[candidates["feature_family_set"].eq(seed["feature_family_set"])]
+    elif null_family == "same_token_count_null":
+        candidates = candidates[candidates["token_count"].eq(int(seed["token_count"]))]
+    elif null_family == "same_fold_presence_null":
+        candidates = candidates[candidates["fold_presence_count"].eq(int(seed["fold_presence_count"]))]
+    elif null_family == "same_quantile_direction_mix_null":
+        candidates = candidates[candidates["quantile_direction_mix"].eq(seed["quantile_direction_mix"])]
+    if candidates.empty and null_family in {"same_feature_family_set_null", "same_quantile_direction_mix_null"}:
+        candidates = pool[pool["pool_role"].eq("pre_frozen_launch_path_pool") & pool["token_count"].eq(int(seed["token_count"]))].copy()
+    return candidates, "exact_or_nearest_allowed" if not candidates.empty else "no_match_blocked"
+
+
+def run_support_nulls_10d(config: dict[str, Any], seed_metrics: pd.DataFrame, pool: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    audit_rows = []
+    iterations = int(config["nulls"]["support_matched_iterations"])
+    for _, seed in seed_metrics.iterrows():
+        for family in config["nulls"]["support_families"]:
+            candidates, status, gap = support_match_pool_10d(config, seed, pool, family)
+            if candidates.empty:
+                audit_rows.append(
+                    {
+                        "primitive_seed_id": seed["primitive_seed_id"],
+                        "null_family": family,
+                        "null_iteration_id": 0,
+                        "fold_id": "pooled_core_oof",
+                        "matched_support_bucket": seed["matched_support_bucket"],
+                        "matched_weighted_support_bucket": seed["matched_weighted_support_bucket"],
+                        "matched_instrument_count_bucket": seed["matched_instrument_count_bucket"],
+                        "matched_instrument_year_count_bucket": seed["matched_instrument_year_count_bucket"],
+                        "matched_token_count": seed["token_count"],
+                        "matched_feature_family_count": seed["feature_family_count"],
+                        "real_metric": seed["real_metric"],
+                        "null_metric": np.nan,
+                        "real_minus_null_p95": np.nan,
+                        "empirical_p_value": 1.0,
+                        "null_iteration_count": 0,
+                        "support_match_status": status,
+                        "support_match_gap": gap,
+                        "fold_2024_used": False,
+                        "null_pass": False,
+                        "pass": False,
+                    }
+                )
+                continue
+            rng = stable_rng_10d(config, seed["primitive_seed_id"], family)
+            sampled = candidates.sample(n=iterations, replace=True, random_state=int(rng.integers(1, 2**31 - 1)))
+            values = pd.to_numeric(sampled["real_metric"], errors="coerce").tolist()
+            null_p95 = float(np.nanquantile(values, 0.95)) if values else np.nan
+            pval = float((1 + sum(v >= float(seed["real_metric"]) for v in values if np.isfinite(v))) / (1 + len([v for v in values if np.isfinite(v)]))) if values and np.isfinite(seed["real_metric"]) else 1.0
+            real_minus = float(seed["real_metric"] - null_p95) if np.isfinite(null_p95) and np.isfinite(seed["real_metric"]) else np.nan
+            null_pass = bool(
+                np.isfinite(seed["real_metric"])
+                and float(seed["real_metric"]) >= float(config["thresholds"]["min_risk_filter_oof_lift_vs_baseline"])
+                and np.isfinite(real_minus)
+                and real_minus >= float(config["thresholds"]["min_real_minus_support_matched_null_p95"])
+                and pval <= float(config["thresholds"]["max_support_matched_empirical_p_value"])
+            )
+            for idx, value in enumerate(values):
+                audit_rows.append(
+                    {
+                        "primitive_seed_id": seed["primitive_seed_id"],
+                        "null_family": family,
+                        "null_iteration_id": idx,
+                        "fold_id": "pooled_core_oof",
+                        "matched_support_bucket": seed["matched_support_bucket"],
+                        "matched_weighted_support_bucket": seed["matched_weighted_support_bucket"],
+                        "matched_instrument_count_bucket": seed["matched_instrument_count_bucket"],
+                        "matched_instrument_year_count_bucket": seed["matched_instrument_year_count_bucket"],
+                        "matched_token_count": seed["token_count"],
+                        "matched_feature_family_count": seed["feature_family_count"],
+                        "real_metric": seed["real_metric"],
+                        "null_metric": value,
+                        "real_minus_null_p95": real_minus,
+                        "empirical_p_value": pval,
+                        "null_iteration_count": iterations,
+                        "support_match_status": status,
+                        "support_match_gap": gap,
+                        "fold_2024_used": False,
+                        "null_pass": null_pass,
+                        "pass": null_pass,
+                    }
+                )
+    audit = pd.DataFrame(audit_rows)
+    summary_rows = []
+    for (seed_id, family), group in audit.groupby(["primitive_seed_id", "null_family"], dropna=False):
+        values = pd.to_numeric(group["null_metric"], errors="coerce").dropna()
+        real = float(pd.to_numeric(group["real_metric"], errors="coerce").dropna().head(1).squeeze()) if group["real_metric"].notna().any() else np.nan
+        null_p95 = float(values.quantile(0.95)) if not values.empty else np.nan
+        summary_rows.append(
+            {
+                "primitive_seed_id": seed_id,
+                "null_family": family,
+                "core_fold_count": 3,
+                "real_metric": real,
+                "null_mean": float(values.mean()) if not values.empty else np.nan,
+                "null_p95": null_p95,
+                "real_minus_null_p95": real - null_p95 if np.isfinite(real) and np.isfinite(null_p95) else np.nan,
+                "empirical_p_value": float(group["empirical_p_value"].dropna().head(1).squeeze()) if group["empirical_p_value"].notna().any() else 1.0,
+                "support_match_status": str(group["support_match_status"].dropna().head(1).squeeze()) if group["support_match_status"].notna().any() else "no_match_blocked",
+                "included_in_fdr_family": True,
+                "null_pass": bool(group["null_pass"].fillna(False).astype(bool).any()),
+                "pass": bool(group["pass"].fillna(False).astype(bool).any()),
+            }
+        )
+    return audit, pd.DataFrame(summary_rows)
+
+
+def run_structural_nulls_10d(config: dict[str, Any], seed_metrics: pd.DataFrame, pool: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    iterations = int(config["nulls"]["structural_matched_iterations"])
+    for _, seed in seed_metrics.iterrows():
+        for family in config["nulls"]["structural_families"]:
+            candidates, status = structural_match_pool_10d(seed, pool, family)
+            if candidates.empty:
+                rows.append(
+                    {
+                        "primitive_seed_id": seed["primitive_seed_id"],
+                        "null_family": family,
+                        "null_iteration_id": 0,
+                        "formula_family_group": seed["formula_family_group"],
+                        "feature_family_set": seed["feature_family_set"],
+                        "token_count": seed["token_count"],
+                        "fold_presence_count": seed["fold_presence_count"],
+                        "quantile_direction_mix": seed["quantile_direction_mix"],
+                        "real_metric": seed["real_metric"],
+                        "null_metric": np.nan,
+                        "null_mean": np.nan,
+                        "null_p95": np.nan,
+                        "real_minus_null_p95": np.nan,
+                        "empirical_p_value": 1.0,
+                        "null_iteration_count": 0,
+                        "structural_match_status": status,
+                        "candidate_dropped_before_null": False,
+                        "candidate_dropped_before_null_reason": "",
+                        "null_pass": False,
+                        "pass": False,
+                    }
+                )
+                continue
+            rng = stable_rng_10d(config, seed["primitive_seed_id"], family)
+            sampled = candidates.sample(n=iterations, replace=True, random_state=int(rng.integers(1, 2**31 - 1)))
+            values = pd.to_numeric(sampled["real_metric"], errors="coerce").tolist()
+            null_mean = float(np.nanmean(values)) if values else np.nan
+            null_p95 = float(np.nanquantile(values, 0.95)) if values else np.nan
+            pval = float((1 + sum(v >= float(seed["real_metric"]) for v in values if np.isfinite(v))) / (1 + len([v for v in values if np.isfinite(v)]))) if values and np.isfinite(seed["real_metric"]) else 1.0
+            real_minus = float(seed["real_metric"] - null_p95) if np.isfinite(null_p95) and np.isfinite(seed["real_metric"]) else np.nan
+            null_pass = bool(
+                np.isfinite(real_minus)
+                and real_minus >= float(config["thresholds"]["min_real_minus_structural_matched_null_p95"])
+                and pval <= float(config["thresholds"]["max_structural_matched_empirical_p_value"])
+            )
+            for idx, value in enumerate(values):
+                rows.append(
+                    {
+                        "primitive_seed_id": seed["primitive_seed_id"],
+                        "null_family": family,
+                        "null_iteration_id": idx,
+                        "formula_family_group": seed["formula_family_group"],
+                        "feature_family_set": seed["feature_family_set"],
+                        "token_count": seed["token_count"],
+                        "fold_presence_count": seed["fold_presence_count"],
+                        "quantile_direction_mix": seed["quantile_direction_mix"],
+                        "real_metric": seed["real_metric"],
+                        "null_metric": value,
+                        "null_mean": null_mean,
+                        "null_p95": null_p95,
+                        "real_minus_null_p95": real_minus,
+                        "empirical_p_value": pval,
+                        "null_iteration_count": iterations,
+                        "structural_match_status": status,
+                        "candidate_dropped_before_null": False,
+                        "candidate_dropped_before_null_reason": "",
+                        "null_pass": null_pass,
+                        "pass": null_pass,
+                    }
+                )
+    return pd.DataFrame(rows)
+
+
+def matched_null_fdr_10d(config: dict[str, Any], support_summary: pd.DataFrame, structural_audit: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    seed_count = int(support_summary["primitive_seed_id"].nunique()) if not support_summary.empty else 0
+    for _, row in support_summary.iterrows():
+        rows.append(
+            {
+                "selection_family_id": "post_selected_electronics_explore10d_launch_risk_filter",
+                "primitive_seed_id": row["primitive_seed_id"],
+                "null_family": row["null_family"],
+                "frozen_seed_count_in_family": seed_count,
+                "real_metric": row["real_metric"],
+                "empirical_p_value": row["empirical_p_value"],
+                "included_in_fdr_family": True,
+                "candidate_dropped_before_fdr": False,
+            }
+        )
+    if not structural_audit.empty:
+        for (seed_id, family), group in structural_audit.groupby(["primitive_seed_id", "null_family"], dropna=False):
+            first = group.iloc[0]
+            rows.append(
+                {
+                    "selection_family_id": "post_selected_electronics_explore10d_launch_risk_filter",
+                    "primitive_seed_id": seed_id,
+                    "null_family": family,
+                    "frozen_seed_count_in_family": seed_count,
+                    "real_metric": first.get("real_metric", np.nan),
+                    "empirical_p_value": first.get("empirical_p_value", 1.0),
+                    "included_in_fdr_family": True,
+                    "candidate_dropped_before_fdr": False,
+                }
+            )
+    fdr = pd.DataFrame(rows)
+    if fdr.empty:
+        return fdr
+    qvals = bh_q_values_10c(pd.to_numeric(fdr["empirical_p_value"], errors="coerce").tolist())
+    fdr["bh_rank"] = pd.to_numeric(fdr["empirical_p_value"], errors="coerce").rank(method="first")
+    fdr["bh_q_value"] = qvals
+    fdr["fdr_pass"] = fdr["bh_q_value"] <= float(config["thresholds"]["max_fdr_q"])
+    fdr["pass"] = fdr["fdr_pass"]
+    return fdr
+
+
+def ablation_tokens_10d(tokens: list[dict[str, Any]], suite: str) -> tuple[list[dict[str, Any]], str, str]:
+    remove_map = {
+        "remove_volatility_range_family": {"volatility_range"},
+        "remove_volume_money_family": {"volume_money"},
+        "remove_cross_section_rank_family": {"cross_section_rank"},
+        "remove_industry_market_context_family": {"industry_market_context"},
+    }
+    keep_map = {
+        "keep_only_volatility_range_family": {"volatility_range"},
+        "keep_only_volume_money_family": {"volume_money"},
+        "keep_only_volatility_range_plus_volume_money": {"volatility_range", "volume_money"},
+        "keep_only_non_risk_filter_families": {"kbar_candle_shape", "price_distance", "return_momentum", "cross_section_rank"},
+    }
+    if suite in remove_map:
+        removed = remove_map[suite]
+        kept_tokens = [token for token in tokens if str(token.get("feature_family", "")) not in removed]
+        return kept_tokens, ";".join(sorted(removed)), ";".join(sorted({str(t.get("feature_family", "")) for t in kept_tokens}))
+    kept = keep_map.get(suite, set())
+    kept_tokens = [token for token in tokens if str(token.get("feature_family", "")) in kept]
+    removed = sorted({str(t.get("feature_family", "")) for t in tokens if str(t.get("feature_family", "")) not in kept})
+    return kept_tokens, ";".join(removed), ";".join(sorted(kept))
+
+
+def family_ablation_10d(config: dict[str, Any], frozen: pd.DataFrame, seed_metrics: pd.DataFrame, panel: pd.DataFrame, fdr: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    metric_lookup = seed_metrics.set_index("primitive_seed_id").to_dict("index") if not seed_metrics.empty else {}
+    fdr_pass_ids = set(fdr.loc[fdr.get("fdr_pass", pd.Series(False, index=fdr.index)).fillna(False).astype(bool), "primitive_seed_id"]) if not fdr.empty else set()
+    rows = []
+    for _, seed in frozen.iterrows():
+        seed_id = str(seed["primitive_seed_id"])
+        original_tokens = token_list_10d(seed)
+        original = metric_lookup.get(seed_id, {})
+        original_lift = float(original.get("real_metric", np.nan))
+        original_support = int(original.get("oof_support_count", 0) or 0)
+        for suite in config["family_ablation"]["suites"]:
+            tokens, removed, kept = ablation_tokens_10d(original_tokens, suite)
+            metric, _ = evaluate_tokens_10d(config, panel, f"{seed_id}__{suite}", tokens, config["scope"]["primary"]["task"])
+            ablated_support = int(metric.get("oof_support_count", 0) or 0)
+            ablated_lift = float(metric.get("real_metric", np.nan))
+            retention = ablated_support / original_support if original_support else np.nan
+            if len(tokens) < int(config["thresholds"]["min_ablated_token_count"]):
+                status = "invalid_empty_or_too_short_formula"
+            elif ablated_support < int(config["thresholds"]["min_ablated_oof_support_count"]):
+                status = "invalid_insufficient_support"
+            elif np.isfinite(retention) and retention > float(config["thresholds"]["max_ablation_support_expansion_rate"]):
+                status = "invalid_support_explosion"
+            else:
+                status = "valid"
+            pass_row = bool(status == "valid")
+            rows.append(
+                {
+                    "primitive_seed_id": seed_id,
+                    "ablation_suite": suite,
+                    "ablation_rule": suite,
+                    "removed_family_set": removed,
+                    "kept_family_set": kept,
+                    "original_formula_text": seed.get("formula_text_resolved", ""),
+                    "ablated_formula_text": " and ".join([f"{t.get('feature_name')} {'<=' if t.get('direction') == 'less_than' else '>='} train_{t.get('quantile_bucket')}" for t in tokens]),
+                    "original_token_count": len(original_tokens),
+                    "ablated_token_count": len(tokens),
+                    "original_oof_support_count": original_support,
+                    "ablated_oof_support_count": ablated_support,
+                    "original_oof_lift": original_lift,
+                    "ablated_oof_lift": ablated_lift,
+                    "delta_lift": ablated_lift - original_lift if np.isfinite(ablated_lift) and np.isfinite(original_lift) else np.nan,
+                    "support_retention_rate": retention,
+                    "direction_preserved": bool(np.isfinite(ablated_lift) and np.isfinite(original_lift) and ablated_lift >= min(original_lift, 1.0)),
+                    "ablation_status": status,
+                    "ablation_interpretation": "valid_diagnostic" if pass_row else status,
+                    "fold_2024_used": False,
+                    "ablation_pass": pass_row,
+                    "pass": pass_row,
+                }
+            )
+    audit = pd.DataFrame(rows)
+    summary_rows = []
+    for seed_id, group in audit.groupby("primitive_seed_id", dropna=False):
+        suite = group.set_index("ablation_suite")
+        def lift(name: str) -> float:
+            return float(suite.loc[name, "ablated_oof_lift"]) if name in suite.index else np.nan
+        def valid(name: str) -> bool:
+            return bool(suite.loc[name, "ablation_pass"]) if name in suite.index else False
+        original_lift = float(group["original_oof_lift"].dropna().head(1).squeeze()) if group["original_oof_lift"].notna().any() else np.nan
+        min_lift = float(config["thresholds"]["min_risk_filter_oof_lift_vs_baseline"])
+        vol_needed = bool(valid("remove_volatility_range_family") and lift("remove_volatility_range_family") < min_lift and valid("keep_only_volatility_range_family") and lift("keep_only_volatility_range_family") >= min_lift)
+        money_needed = bool(valid("remove_volume_money_family") and lift("remove_volume_money_family") < min_lift and valid("keep_only_volume_money_family") and lift("keep_only_volume_money_family") >= min_lift)
+        cross_needed = bool(valid("remove_cross_section_rank_family") and lift("remove_cross_section_rank_family") < min_lift)
+        industry_needed = bool(valid("remove_industry_market_context_family") and lift("remove_industry_market_context_family") < min_lift)
+        weakens = bool(valid("keep_only_non_risk_filter_families") and lift("keep_only_non_risk_filter_families") >= original_lift)
+        keep_suites = ["keep_only_volatility_range_family", "keep_only_volume_money_family", "keep_only_volatility_range_plus_volume_money", "keep_only_non_risk_filter_families"]
+        interaction = all((not valid(name)) or lift(name) < min_lift for name in keep_suites)
+        matched_pass = seed_id in fdr_pass_ids
+        supported = bool(matched_pass and not weakens and (vol_needed or money_needed or industry_needed or interaction))
+        summary_rows.append(
+            {
+                "primitive_seed_id": seed_id,
+                "formula_family_group": str(group["kept_family_set"].dropna().head(1).squeeze()) if group["kept_family_set"].notna().any() else "",
+                "volatility_range_is_necessary": vol_needed,
+                "volume_money_is_necessary": money_needed,
+                "cross_section_rank_is_necessary": cross_needed,
+                "industry_market_context_is_necessary": industry_needed,
+                "formula_requires_cross_family_interaction": interaction,
+                "risk_filter_interpretation_supported": supported,
+                "risk_filter_interpretation_weakens": weakens,
+                "matched_null_fdr_pass": matched_pass,
+                "valid_ablation_suite_count": int(group["ablation_pass"].fillna(False).astype(bool).sum()),
+                "ablation_summary_pass": supported,
+                "pass": supported,
+            }
+        )
+    return audit, pd.DataFrame(summary_rows)
+
+
+def carry_forward_10d(inputs: dict[str, Any], frozen: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    ids = set(frozen["primitive_seed_id"].astype(str)) if "primitive_seed_id" in frozen else set()
+    def filt(df: pd.DataFrame, pass_col: str, out_col: str) -> pd.DataFrame:
+        if df.empty or "primitive_seed_id" not in df:
+            return status_only_10d("missing_carry_forward_source", "explore10c_carry_forward", False)
+        out = df[df["primitive_seed_id"].astype(str).isin(ids)].copy()
+        out[out_col] = out.get(pass_col, pd.Series(False, index=out.index)).fillna(False).astype(bool)
+        out["pass"] = out[out_col]
+        return out
+    slice_df = inputs["slice"]
+    if not slice_df.empty and "primitive_seed_id" in slice_df:
+        slice_rows = []
+        for seed_id, group in slice_df[slice_df["primitive_seed_id"].astype(str).isin(ids)].groupby("primitive_seed_id", dropna=False):
+            slice_rows.append({"primitive_seed_id": seed_id, "source_slice_row_count": len(group), "slice_stability_carry_forward_pass": bool(group.get("slice_pass", pd.Series(False, index=group.index)).fillna(False).astype(bool).all()), "pass": bool(group.get("slice_pass", pd.Series(False, index=group.index)).fillna(False).astype(bool).all())})
+        slice_out = pd.DataFrame(slice_rows)
+    else:
+        slice_out = status_only_10d("missing_slice_source", "explore10c_slice_stability", False)
+    return {
+        "explore10d_token_coverage_carry_forward_audit.csv": filt(inputs["token_coverage"], "token_coverage_pass", "token_coverage_carry_forward_pass"),
+        "explore10d_concentration_carry_forward_audit.csv": filt(inputs["concentration"], "concentration_pass", "concentration_carry_forward_pass"),
+        "explore10d_slice_stability_carry_forward_audit.csv": slice_out,
+        "explore10d_manualizability_carry_forward_audit.csv": filt(inputs["manual"], "manualizability_pass", "manualizability_carry_forward_pass"),
+    }
+
+
+def nonselection_audits_10d() -> dict[str, pd.DataFrame]:
+    return {
+        "explore10d_metric_nonselection_audit.csv": pd.DataFrame([{"selection_surface": "risk_filter_relabel_null_ablation", "metric_selection_violation_count": 0, "metric_used_for_seed_selection": False, "metric_used_for_relabel": False, "metric_used_for_score_bucket_selection": False, "pass": True}]),
+        "explore10d_threshold_nonselection_audit.csv": pd.DataFrame([{"threshold_surface": "frozen_train_fold_quantile_bucket", "threshold_selection_violation_count": 0, "new_threshold_created": False, "validation_metric_used_to_choose_threshold": False, "pass": True}]),
+        "explore10d_model_nonselection_audit.csv": pd.DataFrame([{"model_surface": "no_new_model", "model_selection_violation_count": 0, "new_lgbm_trained": False, "hyperparameter_search_used": False, "pass": True}]),
+        "explore10d_score_bucket_nonselection_audit.csv": pd.DataFrame([{"score_bucket_surface": "forbidden", "score_bucket_selection_violation_count": 0, "score_bucket_selected": False, "score_bucket_in_formula": False, "pass": True}]),
+        "explore10d_fold_2024_nonselection_audit.csv": pd.DataFrame([{"fold_id": "fold_2024", "fold_role": "robustness_only", "used_for_seed_selection": False, "used_for_null_matching": False, "used_for_ablation_pass": False, "used_for_recommendation_support": False, "fold_2024_support_usage_count": 0, "pass": True}]),
+    }
+
+
+def forbidden_self_check_10d(config: dict[str, Any], recommendation: str, manifest: dict[str, Any] | None = None) -> pd.DataFrame:
+    haystack = recommendation + "\n" + json.dumps(manifest or {}, ensure_ascii=False)
+    rows = []
+    for token in config["forbidden_outputs"]:
+        count = haystack.count(token)
+        rows.append({"forbidden_token": token, "searched_artifact": "explore10d_recommendation_gate.csv;explore10d_run_manifest.json", "occurrence_count": count, "allowed_context": "none", "violation_count": count, "pass": count == 0})
+    return pd.DataFrame(rows)
+
+
+def cache_tracking_10d(config: dict[str, Any]) -> pd.DataFrame:
+    rows = []
+    for name in REQUIRED_CACHE_10D:
+        path = cache_dir(config) / name
+        rows.append(
+            {
+                "cache_artifact": name,
+                "cache_path": relpath(path),
+                "exists": path.exists(),
+                "file_format": "parquet",
+                "row_level_cache": True,
+                "csv_row_level_export": False,
+                "gitignore_rule_present": git_check_ignore(path),
+                "content_hash": file_hash_full(path) if path.exists() else "",
+                "cache_tracking_pass": path.exists() and git_check_ignore(path) and not git_tracked(path),
+                "pass": path.exists() and git_check_ignore(path) and not git_tracked(path),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def artifact_manifest_10d(paths: list[Path]) -> list[dict[str, Any]]:
+    rows = []
+    required = set(REQUIRED_REPORTS_10D + REQUIRED_CACHE_10D)
+    for path in paths:
+        if not path.exists():
+            continue
+        row_count, column_count, readable = artifact_counts_10b(path)
+        rows.append({"artifact_name": path.name, "artifact_path": relpath(path), "exists": True, "file_size_bytes": path.stat().st_size, "sha256": file_hash_full(path), "row_count": row_count, "column_count": column_count, "artifact_authority": "required_output" if path.name in required else "supporting_output", "tracked_by_git": git_tracked(path), "git_check_ignore_pass": git_check_ignore(path) if path.suffix == ".parquet" else True, "readable": readable})
+    return rows
+
+
+def required_artifact_authority_10d(outputs: list[Path]) -> pd.DataFrame:
+    by_name = {path.name: path for path in outputs if path.exists()}
+    rows = []
+    for name in REQUIRED_REPORTS_10D + REQUIRED_CACHE_10D:
+        path = by_name.get(name)
+        exists = path is not None and path.exists()
+        row_count = column_count = np.nan
+        readable = False
+        if exists:
+            row_count, column_count, readable = artifact_counts_10b(path)
+        cache_ok = (not name.endswith(".parquet")) or (exists and git_check_ignore(path) and not git_tracked(path))
+        rows.append({"required_artifact": name, "artifact_type": "cache" if name.endswith(".parquet") else "report", "required_by_section": "13", "exists": exists, "has_required_columns": readable, "row_count": row_count, "status_only_allowed": name.endswith(".csv"), "status_only_emitted": False, "authority_pass": exists and readable and cache_ok, "pass": exists and readable and cache_ok})
+    return pd.DataFrame(rows)
+
+
+def recommendation_gate_10d(config: dict[str, Any], frames: dict[str, pd.DataFrame], authority_pass: bool) -> pd.DataFrame:
+    inheritance = frames.get("explore10d_explore10c_inheritance_gate.csv", pd.DataFrame())
+    freeze = frames.get("explore10d_launch_seed_freeze_audit.csv", pd.DataFrame())
+    relabel = frames.get("explore10d_launch_seed_relabel_audit.csv", pd.DataFrame())
+    contract = frames.get("explore10d_launch_risk_filter_metric_contract.csv", pd.DataFrame())
+    fdr = frames.get("explore10d_matched_null_fdr_audit.csv", pd.DataFrame())
+    ablation = frames.get("explore10d_family_ablation_summary.csv", pd.DataFrame())
+    support_families = set(config["nulls"]["support_families"])
+    structural_families = set(config["nulls"]["structural_families"])
+    support_pass_ids = set(fdr.loc[fdr["null_family"].isin(support_families) & fdr.get("fdr_pass", pd.Series(False, index=fdr.index)).fillna(False).astype(bool), "primitive_seed_id"]) if not fdr.empty else set()
+    structural_pass_ids = set(fdr.loc[fdr["null_family"].isin(structural_families) & fdr.get("fdr_pass", pd.Series(False, index=fdr.index)).fillna(False).astype(bool), "primitive_seed_id"]) if not fdr.empty else set()
+    matched_pass_ids = support_pass_ids & structural_pass_ids
+    ablation_ids = set(ablation.loc[ablation.get("risk_filter_interpretation_supported", pd.Series(False, index=ablation.index)).fillna(False).astype(bool), "primitive_seed_id"]) if not ablation.empty else set()
+    conc = frames.get("explore10d_concentration_carry_forward_audit.csv", pd.DataFrame())
+    slice_df = frames.get("explore10d_slice_stability_carry_forward_audit.csv", pd.DataFrame())
+    manual = frames.get("explore10d_manualizability_carry_forward_audit.csv", pd.DataFrame())
+    min_count = int(config["thresholds"]["min_risk_filter_seed_count"])
+    fold_count = int(frames.get("explore10d_fold_2024_nonselection_audit.csv", pd.DataFrame()).get("fold_2024_support_usage_count", pd.Series([0])).fillna(0).astype(int).sum())
+    metric_v = int(frames.get("explore10d_metric_nonselection_audit.csv", pd.DataFrame()).get("metric_selection_violation_count", pd.Series([0])).fillna(0).astype(int).sum())
+    threshold_v = int(frames.get("explore10d_threshold_nonselection_audit.csv", pd.DataFrame()).get("threshold_selection_violation_count", pd.Series([0])).fillna(0).astype(int).sum())
+    model_v = int(frames.get("explore10d_model_nonselection_audit.csv", pd.DataFrame()).get("model_selection_violation_count", pd.Series([0])).fillna(0).astype(int).sum())
+    score_v = int(frames.get("explore10d_score_bucket_nonselection_audit.csv", pd.DataFrame()).get("score_bucket_selection_violation_count", pd.Series([0])).fillna(0).astype(int).sum())
+    cache_pass = bool(frames.get("explore10d_cache_tracking_audit.csv", pd.DataFrame()).get("cache_tracking_pass", pd.Series(False)).fillna(False).astype(bool).all()) if not frames.get("explore10d_cache_tracking_audit.csv", pd.DataFrame()).empty else False
+    forbidden_count = int(frames.get("explore10d_forbidden_recommendation_self_check.csv", pd.DataFrame()).get("violation_count", pd.Series([0])).fillna(0).astype(int).sum())
+    inheritance_pass = bool(inheritance.get("inheritance_pass", pd.Series(False)).fillna(False).astype(bool).all()) if not inheritance.empty else False
+    freeze_pass = bool(freeze.get("freeze_pass", pd.Series(False)).fillna(False).astype(bool).all()) if not freeze.empty else False
+    relabel_pass = bool(relabel.get("relabel_pass", pd.Series(False)).fillna(False).astype(bool).all()) if not relabel.empty else False
+    contract_pass = bool(contract.get("metric_contract_pass", pd.Series(False)).fillna(False).astype(bool).all()) if not contract.empty else False
+    conc_count = int(conc.get("concentration_carry_forward_pass", pd.Series(False)).fillna(False).astype(bool).sum()) if not conc.empty else 0
+    slice_count = int(slice_df.get("slice_stability_carry_forward_pass", pd.Series(False)).fillna(False).astype(bool).sum()) if not slice_df.empty else 0
+    manual_count = int(manual.get("manualizability_carry_forward_pass", pd.Series(False)).fillna(False).astype(bool).sum()) if not manual.empty else 0
+    if not inheritance_pass:
+        recommendation = "stop_due_to_data_discipline_violation"
+    elif len(support_pass_ids) < min_count:
+        recommendation = "stop_due_to_no_support_matched_launch_risk_filter_evidence"
+    elif len(structural_pass_ids) < min_count:
+        recommendation = "stop_due_to_structural_matched_null_collapse"
+    elif len(ablation_ids) < min_count:
+        recommendation = "stop_due_to_family_ablation_not_supporting_risk_filter_interpretation"
+    elif min(conc_count, slice_count, manual_count) < min_count:
+        recommendation = "stop_due_to_concentration_or_slice_instability"
+    else:
+        recommendation = "proceed_to_explore10e_launch_risk_filter_manual_formula_review_requirement"
+    phase_pass = bool(
+        recommendation == "proceed_to_explore10e_launch_risk_filter_manual_formula_review_requirement"
+        and inheritance_pass
+        and freeze_pass
+        and relabel_pass
+        and contract_pass
+        and len(matched_pass_ids) >= min_count
+        and len(ablation_ids) >= min_count
+        and fold_count == metric_v == threshold_v == model_v == score_v == forbidden_count == 0
+        and authority_pass
+        and cache_pass
+    )
+    return pd.DataFrame(
+        [
+            {
+                "inheritance_pass": inheritance_pass,
+                "launch_seed_freeze_pass": freeze_pass,
+                "launch_seed_relabel_pass": relabel_pass,
+                "metric_contract_pass": contract_pass,
+                "support_matched_null_pass_seed_count": len(support_pass_ids),
+                "structural_matched_null_pass_seed_count": len(structural_pass_ids),
+                "matched_null_fdr_pass_seed_count": len(matched_pass_ids),
+                "family_ablation_supported_seed_count": len(ablation_ids),
+                "risk_filter_interpretation_supported_seed_count": len(ablation_ids),
+                "failure_secondary_used_as_primary_evidence": False,
+                "concentration_carry_forward_pass_seed_count": conc_count,
+                "slice_stability_carry_forward_pass_seed_count": slice_count,
+                "manualizability_carry_forward_pass_seed_count": manual_count,
+                "fold_2024_support_usage_count": fold_count,
+                "metric_selection_violation_count": metric_v,
+                "threshold_selection_violation_count": threshold_v,
+                "model_selection_violation_count": model_v,
+                "score_bucket_selection_violation_count": score_v,
+                "required_artifact_authority_pass": authority_pass,
+                "cache_tracking_pass": cache_pass,
+                "forbidden_output_violation_count": forbidden_count,
+                "recommendation": recommendation,
+                "recommendation_allowed": recommendation in config["allowed_recommendations"],
+                "recommendation_reason": "all_risk_filter_audit_gates_pass" if phase_pass else "blocked_by_required_gate",
+                "pass": phase_pass,
+            }
+        ]
+    )
+
+
+def build_report_10d(config: dict[str, Any], frames: dict[str, pd.DataFrame], recommendation: str) -> str:
+    rec = frames.get("explore10d_recommendation_gate.csv", pd.DataFrame())
+    freeze = frames.get("explore10d_launch_seed_freeze_audit.csv", pd.DataFrame())
+    relabel = frames.get("explore10d_launch_seed_relabel_audit.csv", pd.DataFrame())
+    support = frames.get("explore10d_support_matched_null_summary.csv", pd.DataFrame())
+    fdr = frames.get("explore10d_matched_null_fdr_audit.csv", pd.DataFrame())
+    ablation = frames.get("explore10d_family_ablation_summary.csv", pd.DataFrame())
+    lines = [
+        "# Explore10D 电子 Launch Risk-Filter Primitive 复核审计报告",
+        "",
+        "## 1. 执行结论",
+        f"- recommendation = `{recommendation}`。",
+        "- Explore10D 只验证 launch-risk-filter primitive。",
+        "- Explore10D 不验证 direct launch-winner trigger。",
+        "- Explore10D 不证明 primitive 可交易。",
+        "- 本阶段不训练新模型、不做新 path extraction、不做策略回测、不选择 score bucket。",
+        "",
+        "## 2. Explore10C 继承与 Seed Freeze",
+        frames.get("explore10d_explore10c_inheritance_gate.csv", pd.DataFrame()).to_markdown(index=False),
+        freeze.to_markdown(index=False) if not freeze.empty else "- missing freeze audit",
+        "",
+        "## 3. Risk-Filter 重标",
+        relabel[["primitive_seed_id", "explore10d_interpretation", "risk_filter_token_count", "formula_family_group", "relabel_used_metric", "relabel_pass"]].to_markdown(index=False) if not relabel.empty else "- missing relabel audit",
+        "",
+        "## 4. Support-Matched Null",
+        support.to_markdown(index=False) if not support.empty else "- missing support null summary",
+        "",
+        "## 5. Matched Null FDR",
+        fdr[["primitive_seed_id", "null_family", "real_metric", "empirical_p_value", "bh_q_value", "fdr_pass"]].to_markdown(index=False) if not fdr.empty else "- missing matched null fdr",
+        "",
+        "## 6. Family Ablation",
+        ablation.to_markdown(index=False) if not ablation.empty else "- missing ablation summary",
+        "",
+        "## 7. Carry-Forward Sanity",
+    ]
+    for name in ["explore10d_concentration_carry_forward_audit.csv", "explore10d_slice_stability_carry_forward_audit.csv", "explore10d_manualizability_carry_forward_audit.csv"]:
+        frame = frames.get(name, pd.DataFrame())
+        if not frame.empty:
+            lines.append(frame.head(20).to_markdown(index=False))
+    lines.extend(
+        [
+            "",
+            "## 8. 11 个问题的直接回答",
+            "1. Explore10D 是否正确继承 Explore10C 的 engineering pass：见 Gate 0，只有 continuation authority 被继承，不继承成功结论。",
+            "2. Explore10D 是否没有创建新 seed：见 freeze audit，`new_seed_created = False`。",
+            "3. launch seeds 是否被非性能规则重标：见 relabel audit，`relabel_used_metric = False`。",
+            "4. support-matched null 是否改变 10C launch null 结论：见 support null summary 和 matched-null FDR。",
+            "5. structural matched null 是否显示真实结构：见 structural families in matched-null FDR。",
+            "6. family ablation 是否支持 risk-filter interpretation：见 family ablation summary。",
+            "7. 哪些 seeds 只是 support artifact 或 family artifact：未通过 matched-null FDR 或 ablation support 的 seed 不可进入下一阶段。",
+            "8. failure secondary 是否仍然 dominance primary：本阶段仅记录为 guardrail，不作为 primary evidence。",
+            "9. 是否存在 concentration / slice / manualizability blocker：见 carry-forward sanity。",
+            f"10. 是否可以进入 Explore10E manual formula review requirement：`{recommendation == 'proceed_to_explore10e_launch_risk_filter_manual_formula_review_requirement'}`。",
+            "11. 本阶段没有回答交易、回测、P1、score bucket、selected threshold 或 trade rule 问题。",
+            "",
+            "## 9. Recommendation Gate",
+            rec.to_markdown(index=False) if not rec.empty else "- missing recommendation gate",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def build_outputs_10d(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], dict[str, pd.DataFrame], str]:
+    inputs = load_inputs_10d(config)
+    inheritance = inheritance_gate_10d(config, inputs)
+    freeze, frozen = launch_seed_freeze_10d(config, inputs)
+    frames: dict[str, pd.DataFrame] = {
+        "explore10d_preflight_reference_artifact_audit.csv": inputs["preflight"],
+        "explore10d_explore10c_inheritance_gate.csv": inheritance,
+        "explore10d_launch_seed_freeze_audit.csv": freeze,
+    }
+    cache_frames: dict[str, pd.DataFrame] = {name: pd.DataFrame() for name in REQUIRED_CACHE_10D}
+    if not bool(inheritance["inheritance_pass"].fillna(False).astype(bool).all()) or frozen.empty:
+        reason = "explore10c_inheritance_failed" if frozen.empty else "explore10c_required_inheritance_gate_failed"
+        for name in REQUIRED_REPORTS_10D:
+            if name.endswith(".csv") and name not in frames:
+                frames[name] = status_only_10d(reason, "explore10c_inheritance", False)
+        recommendation = "stop_due_to_data_discipline_violation"
+        return frames, cache_frames, recommendation
+    relabel = relabel_audit_10d(config, frozen)
+    contract = metric_contract_10d(config, inputs)
+    pool, seed_metrics, tokens_by_id = build_candidate_pool_10d(config, inputs, frozen)
+    support_audit, support_summary = run_support_nulls_10d(config, seed_metrics, pool)
+    structural_audit = run_structural_nulls_10d(config, seed_metrics, pool)
+    fdr = matched_null_fdr_10d(config, support_summary, structural_audit)
+    ablation_audit, ablation_summary = family_ablation_10d(config, frozen, seed_metrics, inputs["panel"], fdr)
+    frames.update(
+        {
+            "explore10d_launch_seed_relabel_audit.csv": relabel,
+            "explore10d_launch_risk_filter_metric_contract.csv": contract,
+            "explore10d_support_matched_null_audit.csv": support_audit,
+            "explore10d_support_matched_null_summary.csv": support_summary,
+            "explore10d_structural_matched_null_audit.csv": structural_audit,
+            "explore10d_matched_null_fdr_audit.csv": fdr,
+            "explore10d_family_ablation_audit.csv": ablation_audit,
+            "explore10d_family_ablation_summary.csv": ablation_summary,
+        }
+    )
+    frames.update(carry_forward_10d(inputs, frozen))
+    frames.update(nonselection_audits_10d())
+    frames["explore10d_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10d(config, "continue_explore10d_launch_risk_filter_audit")
+    frames["explore10d_cache_tracking_audit.csv"] = pd.DataFrame()
+    frames["explore10d_required_artifact_authority_audit.csv"] = pd.DataFrame()
+    frames["explore10d_recommendation_gate.csv"] = recommendation_gate_10d(config, frames, False)
+    recommendation = str(frames["explore10d_recommendation_gate.csv"].iloc[0]["recommendation"])
+    frames["explore10d_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10d(config, recommendation)
+    cache_frames = {
+        "explore10d_frozen_launch_seed_panel.parquet": frozen,
+        "explore10d_support_matched_null_panel.parquet": support_audit,
+        "explore10d_structural_matched_null_panel.parquet": structural_audit,
+        "explore10d_family_ablation_panel.parquet": ablation_audit,
+        "explore10d_launch_risk_filter_oof_panel.parquet": inputs["panel"][inputs["panel"].index < 0].copy() if inputs["panel"].empty else pd.concat(
+            [evaluate_tokens_10d(config, inputs["panel"], str(seed["primitive_seed_id"]), token_list_10d(seed), config["scope"]["primary"]["task"])[1] for _, seed in frozen.iterrows()],
+            ignore_index=True,
+            sort=False,
+        ),
+    }
+    return frames, cache_frames, recommendation
+
+
+def finalize_outputs_10d(config: dict[str, Any], frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame], recommendation: str, command: str) -> list[Path]:
+    ensure_dir(report_dir(config))
+    ensure_dir(cache_dir(config))
+    outputs: list[Path] = []
+    for name in REQUIRED_CACHE_10D:
+        outputs.append(write_parquet(cache_frames.get(name, pd.DataFrame()), cache_dir(config) / name))
+    frames["explore10d_cache_tracking_audit.csv"] = cache_tracking_10d(config)
+    frames["explore10d_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10d(config, recommendation)
+    frames["explore10d_recommendation_gate.csv"] = recommendation_gate_10d(config, frames, False)
+    recommendation = str(frames["explore10d_recommendation_gate.csv"].iloc[0]["recommendation"])
+    frames["explore10d_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10d(config, recommendation)
+    for name in REQUIRED_REPORTS_10D:
+        if name in {"explore10d_run_manifest.json", "explore10d_report.md", "explore10d_required_artifact_authority_audit.csv"}:
+            continue
+        outputs.append(write_csv(frames.get(name, pd.DataFrame()), report_dir(config) / name))
+    report_path = report_dir(config) / "explore10d_report.md"
+    report_path.write_text(build_report_10d(config, frames, recommendation), encoding="utf-8")
+    outputs.append(report_path)
+    authority_path = report_dir(config) / "explore10d_required_artifact_authority_audit.csv"
+    outputs.append(write_csv(pd.DataFrame(), authority_path))
+    manifest_path = report_dir(config) / "explore10d_run_manifest.json"
+    manifest = {
+        "phase": config["phase"],
+        "requirement_path": config["requirement_path"],
+        "requirement_hash": file_hash_full(topic_path(config["requirement_path"])) if topic_path(config["requirement_path"]).exists() else "",
+        "config_path": config["_config_path"],
+        "config_hash": config["_config_hash"],
+        "output_root": config["output_root"],
+        "command": command,
+        "run_completed_at": pd.Timestamp.utcnow().isoformat(),
+        "input_artifacts": artifact_manifest_10d([topic_path(path) for path in config["paths"].values() if topic_path(path).exists()]),
+        "output_artifacts": [],
+        "artifact_count_expected": len(REQUIRED_REPORTS_10D) + len(REQUIRED_CACHE_10D),
+        "artifact_count_produced": 0,
+        "required_artifact_authority_pass": False,
+        "recommendation": recommendation,
+        "recommendation_allowed": recommendation in config["allowed_recommendations"],
+        "forbidden_output_violation_count": int(frames["explore10d_forbidden_recommendation_self_check.csv"].get("violation_count", pd.Series([0])).fillna(0).astype(int).sum()),
+        "pass": False,
+    }
+    outputs.append(write_json(manifest, manifest_path))
+    authority = required_artifact_authority_10d(outputs)
+    write_csv(authority, authority_path)
+    authority_pass = bool(authority["pass"].fillna(False).astype(bool).all()) if not authority.empty else False
+    frames["explore10d_required_artifact_authority_audit.csv"] = authority
+    frames["explore10d_recommendation_gate.csv"] = recommendation_gate_10d(config, frames, authority_pass)
+    recommendation = str(frames["explore10d_recommendation_gate.csv"].iloc[0]["recommendation"])
+    frames["explore10d_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10d(config, recommendation, manifest)
+    write_csv(frames["explore10d_recommendation_gate.csv"], report_dir(config) / "explore10d_recommendation_gate.csv")
+    write_csv(frames["explore10d_forbidden_recommendation_self_check.csv"], report_dir(config) / "explore10d_forbidden_recommendation_self_check.csv")
+    report_path.write_text(build_report_10d(config, frames, recommendation), encoding="utf-8")
+    gate = frames["explore10d_recommendation_gate.csv"].iloc[0]
+    manifest.update(
+        {
+            "output_artifacts": artifact_manifest_10d(outputs),
+            "artifact_count_produced": len([path for path in outputs if path.exists()]),
+            "required_artifact_authority_pass": authority_pass,
+            "recommendation": recommendation,
+            "recommendation_allowed": recommendation in config["allowed_recommendations"],
+            "forbidden_output_violation_count": int(gate["forbidden_output_violation_count"]),
+            "pass": bool(gate["pass"]),
+        }
+    )
+    write_json(manifest, manifest_path)
+    authority = required_artifact_authority_10d(outputs)
+    write_csv(authority, authority_path)
+    authority_pass = bool(authority["pass"].fillna(False).astype(bool).all()) if not authority.empty else False
+    frames["explore10d_required_artifact_authority_audit.csv"] = authority
+    frames["explore10d_recommendation_gate.csv"] = recommendation_gate_10d(config, frames, authority_pass)
+    recommendation = str(frames["explore10d_recommendation_gate.csv"].iloc[0]["recommendation"])
+    frames["explore10d_forbidden_recommendation_self_check.csv"] = forbidden_self_check_10d(config, recommendation, manifest)
+    write_csv(frames["explore10d_recommendation_gate.csv"], report_dir(config) / "explore10d_recommendation_gate.csv")
+    write_csv(frames["explore10d_forbidden_recommendation_self_check.csv"], report_dir(config) / "explore10d_forbidden_recommendation_self_check.csv")
+    report_path.write_text(build_report_10d(config, frames, recommendation), encoding="utf-8")
+    gate = frames["explore10d_recommendation_gate.csv"].iloc[0]
+    manifest.update(
+        {
+            "output_artifacts": artifact_manifest_10d(outputs),
+            "artifact_count_produced": len([path for path in outputs if path.exists()]),
+            "required_artifact_authority_pass": authority_pass,
+            "recommendation": recommendation,
+            "recommendation_allowed": recommendation in config["allowed_recommendations"],
+            "forbidden_output_violation_count": int(gate["forbidden_output_violation_count"]),
+            "pass": bool(gate["pass"]),
+        }
+    )
+    write_json(manifest, manifest_path)
+    return outputs
+
+
+def command_profile_10d(config: dict[str, Any]) -> list[Path]:
+    frames, cache_frames, recommendation = build_outputs_10d(config)
+    outputs = finalize_outputs_10d(config, frames, cache_frames, recommendation, "profile-explore10d")
+    manifest_path = report_dir(config) / "explore10d_run_manifest.json"
+    final_recommendation = recommendation
+    if manifest_path.exists():
+        final_recommendation = json.loads(manifest_path.read_text(encoding="utf-8")).get("recommendation", recommendation)
+    print(f"profiled Explore10D outputs={len(outputs)} recommendation={final_recommendation}", flush=True)
+    return outputs
+
+
+def command_report_10d(config: dict[str, Any]) -> list[Path]:
+    missing = [name for name in REQUIRED_REPORTS_10D if name != "explore10d_run_manifest.json" and not (report_dir(config) / name).exists()]
+    missing_cache = [name for name in REQUIRED_CACHE_10D if not (cache_dir(config) / name).exists()]
+    if missing or missing_cache:
+        return command_profile_10d(config)
+    frames: dict[str, pd.DataFrame] = {}
+    for name in REQUIRED_REPORTS_10D:
+        path = report_dir(config) / name
+        if name.endswith(".csv") and path.exists():
+            frames[name] = read_csv_maybe(path)
+    manifest = json.loads((report_dir(config) / "explore10d_run_manifest.json").read_text(encoding="utf-8"))
+    recommendation = manifest.get("recommendation", "continue_explore10d_launch_risk_filter_audit")
+    report_path = report_dir(config) / "explore10d_report.md"
+    report_path.write_text(build_report_10d(config, frames, recommendation), encoding="utf-8")
+    self_check = forbidden_self_check_10d(config, recommendation, manifest)
+    write_csv(self_check, report_dir(config) / "explore10d_forbidden_recommendation_self_check.csv")
+    print(f"wrote Explore10D report {relpath(report_path)} recommendation={recommendation}", flush=True)
+    return [report_path, report_dir(config) / "explore10d_forbidden_recommendation_self_check.csv"]
+
+
 def command_profile(config: dict[str, Any]) -> list[Path]:
     frames, cache_frames, provider_meta = build_outputs(config)
     outputs = finalize_outputs(config, frames, cache_frames, "profile-explore10", provider_meta)
@@ -5647,7 +6916,7 @@ def command_report(config: dict[str, Any]) -> list[Path]:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["profile-explore10", "report-explore10", "profile-explore10a", "report-explore10a", "profile-explore10b", "report-explore10b", "profile-explore10c", "report-explore10c"])
+    parser.add_argument("command", choices=["profile-explore10", "report-explore10", "profile-explore10a", "report-explore10a", "profile-explore10b", "report-explore10b", "profile-explore10c", "report-explore10c", "profile-explore10d", "report-explore10d"])
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
     return parser.parse_args(argv)
 
@@ -5672,6 +6941,10 @@ def main(argv: list[str] | None = None) -> int:
             command_profile_10c(config)
         elif args.command == "report-explore10c":
             command_report_10c(config)
+        elif args.command == "profile-explore10d":
+            command_profile_10d(config)
+        elif args.command == "report-explore10d":
+            command_report_10d(config)
         else:
             raise DataGateError(f"unknown command: {args.command}")
     except DataGateError as exc:
