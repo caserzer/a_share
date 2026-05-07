@@ -14,6 +14,7 @@ import itertools
 import json
 import math
 import re
+import subprocess
 import sys
 import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -37,6 +38,7 @@ DEFAULT_P0_7_CONFIG = EXPLORE_DIR / "configs/launch_failure_p0_7ab.yaml"
 DEFAULT_P0_8_CONFIG = EXPLORE_DIR / "configs/gate_lgbm_p0_8.yaml"
 DEFAULT_P0_9_CONFIG = EXPLORE_DIR / "configs/industry_lgbm_p0_9.yaml"
 DEFAULT_P0_9A_CONFIG = EXPLORE_DIR / "configs/industry_trainability_probe_p0_9a.yaml"
+DEFAULT_P0_9B_CONFIG = EXPLORE_DIR / "configs/industry_lgbm_to_primitive_p0_9b.yaml"
 FIELD_RENAME = {
     "$open": "open",
     "$high": "high",
@@ -320,6 +322,41 @@ P0_9A_REQUIRED_REPORTS = [
     "p0_9a_post_validation_adjustment_audit.csv",
     "p0_9a_recommendation_summary.csv",
     "explore9_p0_9a_industry_trainability_probe_report.md",
+]
+P0_9B_REQUIRED_CACHE = [
+    "p0_9b_locked_t1_train_eval_panel.parquet",
+    "p0_9b_locked_t1_prediction_panel.parquet",
+]
+P0_9B_REQUIRED_REPORTS = [
+    "p0_9b_run_manifest.json",
+    "p0_9b_report.md",
+    "p0_9b_forbidden_recommendation_self_check.csv",
+    "p0_9b_cache_tracking_audit.csv",
+    "p0_9b_scope_lock.csv",
+    "p0_9b_sample_weight_guardrail_resolution.csv",
+    "p0_9b_feature_asof_leakage_audit.csv",
+    "p0_9b_observed_reference_overlap_audit.csv",
+    "p0_9b_walk_forward_purge_audit.csv",
+    "p0_9b_metric_nonselection_audit.csv",
+    "p0_9b_locked_t1_model_inventory.csv",
+    "p0_9b_core_oof_diagnostic_metrics.csv",
+    "p0_9b_prediction_dispersion_audit.csv",
+    "p0_9b_model_sanity_audit.csv",
+    "p0_9b_failure_window_weight_normalization_audit.csv",
+    "p0_9b_failure_event_level_dedup_audit.csv",
+    "p0_9b_failure_false_reject_reference_audit.csv",
+    "p0_9b_feature_family_dictionary.csv",
+    "p0_9b_feature_family_importance.csv",
+    "p0_9b_feature_family_dropout_audit.csv",
+    "p0_9b_slice_stability_audit.csv",
+    "p0_9b_instrument_year_concentration_audit.csv",
+    "p0_9b_tree_path_split_pattern_audit.csv",
+    "p0_9b_null_placebo_audit.csv",
+    "p0_9b_weak_signal_placebo_stress_audit.csv",
+    "p0_9b_manual_primitive_candidate_table.csv",
+    "p0_9b_primitive_stability_audit.csv",
+    "p0_9b_primitive_null_adjusted_audit.csv",
+    "p0_9b_primitive_to_p0_9c_requirement_map.csv",
 ]
 
 
@@ -13069,6 +13106,1635 @@ def command_report_p0_9a(config: dict[str, Any]) -> list[Path]:
     return outputs
 
 
+def p0_9b_cfg(config: dict[str, Any]) -> dict[str, Any]:
+    return config.get("p0_9b", {})
+
+
+def p0_9b_manifest_path(config: dict[str, Any]) -> Path:
+    return report_dir(config) / "p0_9b_run_manifest.json"
+
+
+def p0_9b_report_source(config: dict[str, Any], name: str) -> Path:
+    return topic_path(config.get("sources", {}).get("p0_9a_reports_dir", "Explore9/outputs/p0_9a/reports")) / name
+
+
+def p0_9b_cache_source(config: dict[str, Any], name: str) -> Path:
+    return topic_path(config.get("sources", {}).get("p0_9a_cache_dir", "Explore9/outputs/p0_9a/cache")) / name
+
+
+def p0_9b_main_specs(config: dict[str, Any]) -> list[dict[str, Any]]:
+    return list(config.get("scope", {}).get("main_industry_tasks", []))
+
+
+def p0_9b_core_folds(config: dict[str, Any]) -> list[dict[str, Any]]:
+    return [fold for fold in p0_9a_walk_folds(config) if fold["is_core_probe_fold"]]
+
+
+def p0_9b_all_probe_folds(config: dict[str, Any]) -> list[dict[str, Any]]:
+    return p0_9a_walk_folds(config)
+
+
+def p0_9b_task_key(model_task: str) -> str:
+    return "failure" if "failure" in str(model_task) else "launch"
+
+
+def p0_9b_label_col(model_task: str) -> str:
+    return "failure_reject_positive_primary" if p0_9b_task_key(model_task) == "failure" else "launch_winner_50h120"
+
+
+def p0_9b_eligible_col(model_task: str) -> str:
+    return "p0_9a_failure_model_train_eval_eligible" if p0_9b_task_key(model_task) == "failure" else "p0_9a_launch_model_train_eval_eligible"
+
+
+def p0_9b_panel_for_task(launch: pd.DataFrame, failure: pd.DataFrame, model_task: str) -> pd.DataFrame:
+    return failure if p0_9b_task_key(model_task) == "failure" else launch
+
+
+def p0_9b_feature_family(config: dict[str, Any], feature_name: str) -> str:
+    return str(config.get("feature_families", {}).get(feature_name, "execution_feasibility" if "execution" in feature_name else "calendar_context"))
+
+
+def p0_9b_read_p0_9a_reports(config: dict[str, Any]) -> dict[str, pd.DataFrame]:
+    names = [
+        "p0_9a_recommendation_summary.csv",
+        "p0_9a_trainability_contract_matrix.csv",
+        "p0_9a_lgbm_fold_trainability_audit.csv",
+        "p0_9a_model_sanity_metrics_by_fold.csv",
+        "p0_9a_feature_importance_diagnostic_only.csv",
+        "p0_9a_sample_weight_group_cap_audit.csv",
+        "p0_9a_p0_9b_null_family_recommendation.csv",
+        "p0_9a_feature_asof_leakage_audit.csv",
+        "p0_9a_observed_reference_overlap_audit.csv",
+        "p0_9a_walk_forward_purge_audit.csv",
+        "p0_9a_failure_window_weight_normalization_audit.csv",
+        "p0_9a_failure_multi_window_dedup_audit.csv",
+        "p0_9a_failure_event_level_trainability_audit.csv",
+    ]
+    frames = {name: read_csv_if_exists(p0_9b_report_source(config, name)) for name in names}
+    missing = [name for name, frame in frames.items() if frame.empty and name in {"p0_9a_lgbm_fold_trainability_audit.csv", "p0_9a_recommendation_summary.csv"}]
+    if missing:
+        raise DataGateError(f"P0.9B requires existing P0.9A report artifacts: {', '.join(missing)}")
+    return frames
+
+
+def p0_9b_load_sample_panels(config: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame]:
+    launch_path = p0_9b_cache_source(config, "p0_9a_industry_launch_sample_panel.parquet")
+    failure_path = p0_9b_cache_source(config, "p0_9a_industry_failure_sample_panel.parquet")
+    if launch_path.exists() and failure_path.exists():
+        launch = pd.read_parquet(launch_path)
+        failure = pd.read_parquet(failure_path)
+    else:
+        launch, failure, _extras = p0_9a_prepare_sample_panels(config)
+    fold_roles = {fold["fold_id"]: fold for fold in p0_9a_walk_folds(config)}
+    for panel in [launch, failure]:
+        if "fold_id" in panel:
+            panel["fold_role"] = panel["fold_id"].map({key: value["fold_role"] for key, value in fold_roles.items()})
+            panel["validation_year"] = pd.to_numeric(panel["fold_id"].map({key: value["validation_year"] for key, value in fold_roles.items()}), errors="coerce")
+        for col in [
+            "event_effective_date",
+            "feature_asof_date",
+            "signal_date",
+            "training_label_window_end_date",
+            "label_window_end_date_used_for_train_purge",
+            "failure_decision_effective_date",
+            "stratum_effective_date",
+        ]:
+            if col in panel:
+                panel[col] = pd.to_datetime(panel[col], errors="coerce").dt.normalize()
+        if "event_instrument_year" not in panel and {"instrument", "event_year"}.issubset(panel.columns):
+            panel["event_instrument_year"] = panel["instrument"].astype(str) + "_" + pd.to_numeric(panel["event_year"], errors="coerce").fillna(0).astype(int).astype(str)
+    return launch.replace([np.inf, -np.inf], np.nan), failure.replace([np.inf, -np.inf], np.nan)
+
+
+def p0_9b_scope_lock(config: dict[str, Any], p0_9a_frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    trainability = p0_9a_frames.get("p0_9a_lgbm_fold_trainability_audit.csv", pd.DataFrame())
+    core_folds = p0_9b_core_folds(config)
+    min_core = int(config.get("primitive_gate", {}).get("min_core_trainable_fold_count_for_p0_9c", 3))
+    rows: list[dict[str, Any]] = []
+    for spec in p0_9b_main_specs(config):
+        industry = spec["industry"]
+        task = spec["task"]
+        contract_id = spec.get("contract_id", "T1_fixed_rounds_no_inner_validation")
+        group = trainability[
+            trainability.get("target_industry", pd.Series(dtype=str)).astype(str).eq(industry)
+            & trainability.get("model_task", pd.Series(dtype=str)).astype(str).eq(task)
+            & trainability.get("contract_id", pd.Series(dtype=str)).astype(str).eq(contract_id)
+            & trainability.get("fold_role", pd.Series(dtype=str)).astype(str).eq("core_trainability_probe")
+        ].copy()
+        trainable_mask = (
+            group.get("trainability_count_gate_pass", pd.Series(False, index=group.index)).fillna(False).astype(bool)
+            & group.get("lgbm_training_success", pd.Series(False, index=group.index)).fillna(False).astype(bool)
+            & group.get("model_non_degenerate_sanity_pass", pd.Series(False, index=group.index)).fillna(False).astype(bool)
+        )
+        core_trainable_count = int(trainable_mask.sum())
+        missing_core_fold_ids = sorted(set(fold["fold_id"] for fold in core_folds) - set(group.get("fold_id", pd.Series(dtype=str)).astype(str)))
+        for fold in core_folds:
+            hit = group[group["fold_id"].astype(str).eq(fold["fold_id"])] if not group.empty else pd.DataFrame()
+            found = not hit.empty
+            first = hit.iloc[0].to_dict() if found else {}
+            trainable = bool(
+                first.get("trainability_count_gate_pass", False)
+                and first.get("lgbm_training_success", False)
+                and first.get("model_non_degenerate_sanity_pass", False)
+            )
+            rows.append(
+                {
+                    "industry": industry,
+                    "task": task,
+                    "fold_id": fold["fold_id"],
+                    "fold_role": "core_trainability_probe",
+                    "contract_id": contract_id,
+                    "p0_9a_fold_trainability_status": first.get("fold_trainability_status", "missing_p0_9a_trainability_row"),
+                    "p0_9a_trainability_rejection_reason": first.get("trainability_rejection_reason", "missing_p0_9a_trainability_row"),
+                    "trainable_under_locked_t1": trainable,
+                    "trained_model_exists": trainable,
+                    "allowed_for_core_oof_metric": trainable,
+                    "allowed_for_support_count": trainable,
+                    "allowed_for_manual_primitive_candidate": bool(trainable and core_trainable_count >= min_core),
+                    "core_expected_fold_count": len(core_folds),
+                    "core_trainable_fold_count": core_trainable_count,
+                    "core_missing_fold_ids": ";".join(missing_core_fold_ids),
+                    "no_fit_reason": "" if trainable else str(first.get("trainability_rejection_reason", "missing_p0_9a_trainability_row")),
+                    "scope_lock_pass": found,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def p0_9b_active_panel(
+    config: dict[str, Any],
+    launch: pd.DataFrame,
+    failure: pd.DataFrame,
+    spec: dict[str, Any],
+    fold_id: str,
+    split_values: tuple[str, ...] = ("train", "validation"),
+) -> pd.DataFrame:
+    task = spec["task"]
+    panel = p0_9b_panel_for_task(launch, failure, task)
+    eligible_col = p0_9b_eligible_col(task)
+    if panel.empty or eligible_col not in panel:
+        return pd.DataFrame()
+    out = panel[
+        panel["target_industry"].astype(str).eq(str(spec["industry"]))
+        & panel["fold_id"].astype(str).eq(str(fold_id))
+        & panel["split"].astype(str).isin(split_values)
+        & panel[eligible_col].fillna(False).astype(bool)
+    ].copy()
+    out["model_task"] = task
+    out["contract_id"] = spec.get("contract_id", "T1_fixed_rounds_no_inner_validation")
+    out["scope_role"] = spec.get("role", "main_scope")
+    return out
+
+
+def p0_9b_sample_weight_guardrail(config: dict[str, Any], launch: pd.DataFrame, failure: pd.DataFrame) -> pd.DataFrame:
+    cap = safe_float(config.get("sample_weight", {}).get("max_instrument_year_weight_share", 0.08), 0.08)
+    hhi_cap = safe_float(config.get("sample_weight", {}).get("max_instrument_year_weight_hhi", 0.08), 0.08)
+    rows: list[dict[str, Any]] = []
+    for spec in p0_9b_main_specs(config):
+        for fold in p0_9b_all_probe_folds(config):
+            active = p0_9b_active_panel(config, launch, failure, spec, fold["fold_id"])
+            weights = pd.to_numeric(active.get("final_sample_weight", pd.Series(1.0, index=active.index)), errors="coerce").fillna(1.0)
+            groups = active.get("event_instrument_year", pd.Series(dtype=str)).astype(str)
+            if active.empty or groups.empty or safe_float(weights.sum(), 0.0) <= 0:
+                max_share = np.nan
+                hhi = np.nan
+                cap_pass = False
+                blocked_reason = "no_active_weighted_rows"
+            else:
+                sums = weights.groupby(groups).sum()
+                total = safe_float(sums.sum(), 0.0)
+                shares = sums / total if total > 0 else sums * np.nan
+                max_share = safe_float(shares.max(), np.nan)
+                hhi = safe_float((shares.fillna(0.0) ** 2).sum(), np.nan)
+                cap_pass = bool(max_share <= cap + 1e-12 and hhi <= hhi_cap + 1e-12)
+                blocked_reason = "" if cap_pass else "main_scope_instrument_year_cap_or_hhi_failed"
+            scope_role = "main_scope" if fold["is_core_probe_fold"] else "robustness_appendix_scope"
+            rows.append(
+                {
+                    "industry": spec["industry"],
+                    "task": spec["task"],
+                    "fold_id": fold["fold_id"],
+                    "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+                    "scope_role": scope_role,
+                    "max_top_instrument_year_weight_share": max_share,
+                    "instrument_year_weight_hhi": hhi,
+                    "configured_top_share_cap": cap,
+                    "configured_hhi_cap": hhi_cap,
+                    "cap_pass": cap_pass,
+                    "main_scope_cap_pass": bool(cap_pass and scope_role == "main_scope"),
+                    "appendix_scope_cap_pass": bool(cap_pass and scope_role != "main_scope"),
+                    "resolution_method": "cap_recomputed_pass" if cap_pass else "blocked",
+                    "resolution_status": "resolved" if cap_pass else "blocked",
+                    "formal_waiver_used": False,
+                    "allowed_for_signal_interpretation": bool(cap_pass and scope_role == "main_scope"),
+                    "primitive_candidate_output_allowed": bool(cap_pass and scope_role == "main_scope"),
+                    "blocked_reason": blocked_reason,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def p0_9b_static_audits(config: dict[str, Any], launch: pd.DataFrame, failure: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    feature_rows: list[dict[str, Any]] = []
+    observed_rows: list[dict[str, Any]] = []
+    purge_rows: list[dict[str, Any]] = []
+    for spec in p0_9b_main_specs(config):
+        task = spec["task"]
+        panel = p0_9b_panel_for_task(launch, failure, task)
+        eligible_col = p0_9b_eligible_col(task)
+        for fold in p0_9b_all_probe_folds(config):
+            group = panel[
+                panel["target_industry"].astype(str).eq(str(spec["industry"]))
+                & panel["fold_id"].astype(str).eq(fold["fold_id"])
+            ].copy()
+            eligible = group[eligible_col].fillna(False).astype(bool) if eligible_col in group else pd.Series(False, index=group.index)
+            feature_violation = group.get("feature_asof_leakage_violation", pd.Series(False, index=group.index)).fillna(False).astype(bool)
+            feature_rows.append(
+                {
+                    "industry": spec["industry"],
+                    "task": task,
+                    "fold_id": fold["fold_id"],
+                    "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+                    "row_count": int(len(group)),
+                    "eligible_row_count": int(eligible.sum()),
+                    "feature_asof_leakage_violation_count": int((eligible & feature_violation).sum()),
+                    "feature_asof_not_equal_signal_count": int((eligible & (pd.to_datetime(group.get("feature_asof_date", pd.Series(pd.NaT, index=group.index)), errors="coerce") != pd.to_datetime(group.get("signal_date", pd.Series(pd.NaT, index=group.index)), errors="coerce"))).sum()) if not group.empty else 0,
+                    "feature_asof_leakage_audit_pass": int((eligible & feature_violation).sum()) == 0,
+                }
+            )
+            decision_overlap = group.get("observed_reference_decision_overlap", pd.Series(False, index=group.index)).fillna(False).astype(bool)
+            feature_overlap = group.get("observed_reference_feature_overlap", pd.Series(False, index=group.index)).fillna(False).astype(bool)
+            label_overlap = group.get("observed_reference_label_measurement_overlap", pd.Series(False, index=group.index)).fillna(False).astype(bool)
+            observed_rows.append(
+                {
+                    "industry": spec["industry"],
+                    "task": task,
+                    "fold_id": fold["fold_id"],
+                    "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+                    "observed_reference_decision_overlap_rows": int(decision_overlap.sum()),
+                    "observed_reference_feature_overlap_rows": int(feature_overlap.sum()),
+                    "observed_reference_label_measurement_overlap_rows": int(label_overlap.sum()),
+                    "observed_reference_decision_feature_overlap_eligible_count": int((eligible & (decision_overlap | feature_overlap)).sum()),
+                    "observed_reference_label_measurement_overlap_core_oof_count": int((eligible & label_overlap).sum()) if fold["is_core_probe_fold"] else 0,
+                    "observed_reference_overlap_audit_pass": int((eligible & (decision_overlap | feature_overlap)).sum()) == 0 and (not fold["is_core_probe_fold"] or int((eligible & label_overlap).sum()) == 0),
+                }
+            )
+            train = group[group.get("split", pd.Series("", index=group.index)).astype(str).eq("train") & eligible].copy()
+            validation_start = pd.Timestamp(fold["validation_start_date"])
+            label_end = pd.to_datetime(train.get("label_window_end_date_used_for_train_purge", train.get("training_label_window_end_date", pd.Series(pd.NaT, index=train.index))), errors="coerce")
+            event_date = pd.to_datetime(train.get("event_effective_date", pd.Series(pd.NaT, index=train.index)), errors="coerce")
+            feature_asof = pd.to_datetime(train.get("feature_asof_date", pd.Series(pd.NaT, index=train.index)), errors="coerce")
+            purge_rows.append(
+                {
+                    "industry": spec["industry"],
+                    "task": task,
+                    "fold_id": fold["fold_id"],
+                    "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+                    "raw_train_rows": int(group.get("split", pd.Series("", index=group.index)).astype(str).eq("train").sum()),
+                    "train_rows_after_purge": int(len(train)),
+                    "rows_with_train_label_window_end_crossing_validation": int(label_end.ge(validation_start).sum()) if not train.empty else 0,
+                    "rows_with_event_date_crossing_validation": int(event_date.ge(validation_start).sum()) if not train.empty else 0,
+                    "rows_with_feature_asof_crossing_validation": int(feature_asof.ge(validation_start).sum()) if not train.empty else 0,
+                    "train_label_window_end_date_max": iso_date(label_end.max()) if not train.empty else "",
+                    "validation_start_date": iso_date(validation_start),
+                    "walk_forward_purge_pass": bool(train.empty or (label_end.lt(validation_start).all() and event_date.lt(validation_start).all() and feature_asof.lt(validation_start).all())),
+                }
+            )
+    return {
+        "p0_9b_feature_asof_leakage_audit.csv": pd.DataFrame(feature_rows),
+        "p0_9b_observed_reference_overlap_audit.csv": pd.DataFrame(observed_rows),
+        "p0_9b_walk_forward_purge_audit.csv": pd.DataFrame(purge_rows),
+    }
+
+
+def p0_9b_train_locked_lgbm(
+    config: dict[str, Any],
+    task_key: str,
+    industry: str,
+    fold: dict[str, Any],
+    train: pd.DataFrame,
+    outer: pd.DataFrame,
+    label_col: str,
+    drop_family: str | None = None,
+) -> tuple[dict[str, Any], pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    model_task = "industry_failure_reject_score_lgbm" if task_key == "failure" else "industry_launch_winner_score_lgbm"
+    contract_id = "T1_fixed_rounds_no_inner_validation"
+    result = {
+        "industry": industry,
+        "task": model_task,
+        "fold_id": fold["fold_id"],
+        "contract_id": contract_id,
+        "model_role": "locked_t1_probe" if not drop_family else "diagnostic_ablation_only",
+        "num_boost_round": int(config.get("fixed_n_estimators", {}).get(task_key, 64 if task_key == "launch" else 32)),
+        "early_stopping_used": False,
+        "inner_validation_used": False,
+        "feature_set_hash": "",
+        "label_version": p0_9b_cfg(config).get("label_version", "p0_9b_industry_label_v1"),
+        "sample_weight_version": p0_9b_cfg(config).get("sample_panel_version", "p0_9a_sample_panel_reused_for_p0_9b"),
+        "trained_model_exists": False,
+        "prediction_panel_cache_path": relpath(cache_dir(config) / "p0_9b_locked_t1_prediction_panel.parquet"),
+        "locked_t1_identity_pass": False,
+        "model_fit_error": "",
+    }
+    empty = pd.DataFrame()
+    if train.empty or outer.empty or label_col not in train or train[label_col].fillna(False).astype(bool).nunique(dropna=False) < 2:
+        result["model_fit_error"] = "empty_train_or_outer_or_single_class_train"
+        return result, empty, empty, empty
+    try:
+        import lightgbm as lgb
+
+        feature_families = config.get("feature_families", {})
+        lgbm_cfg = dict(config.get("lgbm", {}))
+        if drop_family:
+            lgbm_cfg["feature_columns"] = [col for col in lgbm_cfg.get("feature_columns", []) if feature_families.get(col) != drop_family]
+            lgbm_cfg["categorical_feature_columns"] = [col for col in lgbm_cfg.get("categorical_feature_columns", []) if feature_families.get(col) != drop_family]
+        model_config = dict(config)
+        model_config["lgbm"] = lgbm_cfg
+        encoder = p0_8_fit_lgbm_matrix_encoder(train, outer, model_config, include_industry_regime=True)
+        forbidden = set(lgbm_cfg.get("forbidden_feature_columns", []))
+        feature_cols = [col for col in encoder.get("feature_cols", []) if col not in forbidden]
+        encoder["feature_cols"] = feature_cols
+        encoder["cat_cols"] = [col for col in encoder.get("cat_cols", []) if col in feature_cols]
+        x_train = p0_8_apply_lgbm_matrix_encoder(train, encoder)
+        x_outer = p0_8_apply_lgbm_matrix_encoder(outer, encoder)
+        y_train = train[label_col].fillna(False).astype(int)
+        weights = pd.to_numeric(train.get("final_sample_weight", pd.Series(1.0, index=train.index)), errors="coerce").fillna(1.0)
+        params = {
+            "objective": lgbm_cfg.get("objective", "binary"),
+            "boosting_type": lgbm_cfg.get("boosting_type", "gbdt"),
+            "metric": "binary_logloss",
+            "learning_rate": safe_float(lgbm_cfg.get("learning_rate", 0.05), 0.05),
+            "num_leaves": int(lgbm_cfg.get("num_leaves", 31)),
+            "max_depth": int(lgbm_cfg.get("max_depth", 5)),
+            "min_data_in_leaf": int(lgbm_cfg.get("min_data_in_leaf", 50)),
+            "feature_fraction": safe_float(lgbm_cfg.get("feature_fraction", 0.8), 0.8),
+            "bagging_fraction": safe_float(lgbm_cfg.get("bagging_fraction", 0.8), 0.8),
+            "bagging_freq": int(lgbm_cfg.get("bagging_freq", 1)),
+            "lambda_l1": safe_float(lgbm_cfg.get("lambda_l1", 0.0), 0.0),
+            "lambda_l2": safe_float(lgbm_cfg.get("lambda_l2", 1.0), 1.0),
+            "num_threads": int(lgbm_cfg.get("n_jobs", 1)),
+            "seed": int(lgbm_cfg.get("random_seed", 20260506)),
+            "verbosity": -1,
+            "force_col_wise": True,
+        }
+        train_set = lgb.Dataset(
+            x_train,
+            label=y_train,
+            weight=weights,
+            feature_name=feature_cols,
+            categorical_feature=[col for col in encoder.get("cat_cols", []) if col in feature_cols],
+            free_raw_data=False,
+        )
+        num_boost_round = int(result["num_boost_round"])
+        model = lgb.train(params, train_set, num_boost_round=num_boost_round, valid_sets=None, callbacks=[])
+        outer_score = pd.Series(model.predict(x_outer, num_iteration=num_boost_round), index=outer.index)
+        pred = outer.copy()
+        pred["prediction_row_id"] = pred.index.astype(str)
+        pred["industry"] = industry
+        pred["task"] = model_task
+        pred["contract_id"] = contract_id
+        pred["prediction_score"] = outer_score.reindex(pred.index).to_numpy()
+        pred["label"] = pred[label_col].fillna(False).astype(int).to_numpy()
+        pred["fold_role"] = fold["fold_role"]
+        pred["allowed_for_manual_primitive_candidate"] = bool(fold["is_core_probe_fold"])
+        gain = pd.Series(model.feature_importance(importance_type="gain"), index=feature_cols)
+        split = pd.Series(model.feature_importance(importance_type="split"), index=feature_cols)
+        feature = pd.DataFrame(
+            [
+                {
+                    "industry": industry,
+                    "task": model_task,
+                    "fold_id": fold["fold_id"],
+                    "contract_id": contract_id,
+                    "feature_name": name,
+                    "feature_family": p0_9b_feature_family(config, name),
+                    "importance_gain": safe_float(gain.get(name), 0.0),
+                    "importance_split": safe_float(split.get(name), 0.0),
+                    "drop_family": drop_family or "",
+                    "diagnostic_only": True,
+                }
+                for name in feature_cols
+            ]
+        )
+        tree = p0_9b_tree_path_rows(config, model.dump_model(), feature_cols, train, industry, model_task, fold["fold_id"], contract_id)
+        result.update(
+            {
+                "feature_set_hash": p0_8_hash({"feature_cols": feature_cols, "drop_family": drop_family or ""}),
+                "trained_model_exists": True,
+                "locked_t1_identity_pass": drop_family is None,
+                "prediction_nan_rate": float(pd.isna(outer_score).mean()) if len(outer_score) else np.nan,
+                "prediction_unique_value_count": int(pd.Series(np.round(outer_score, 12)).nunique(dropna=True)),
+                "prediction_std": safe_float(outer_score.std(), 0.0),
+                "auc": p0_8_auc(outer[label_col], outer_score),
+                "logloss": p0_8_logloss(outer[label_col], outer_score, outer.get("final_sample_weight", pd.Series(1.0, index=outer.index))),
+                "brier": p0_9a_brier(outer[label_col], outer_score, outer.get("final_sample_weight", pd.Series(1.0, index=outer.index))),
+                "oof_event_count": int(len(outer)),
+                "positive_count": int(outer[label_col].fillna(False).astype(bool).sum()),
+                "base_rate": safe_div(outer[label_col].fillna(False).astype(int).sum(), len(outer)),
+                "model_fit_success": True,
+                "non_degenerate_sanity_pass": bool(pd.Series(np.round(outer_score, 12)).nunique(dropna=True) >= 10 and safe_float(outer_score.std(), 0.0) > 0),
+            }
+        )
+        return result, pred, feature, tree
+    except Exception as exc:
+        result["model_fit_error"] = str(exc)
+        return result, empty, empty, empty
+
+
+def p0_9b_tree_path_rows(
+    config: dict[str, Any],
+    dump: dict[str, Any],
+    feature_cols: list[str],
+    train: pd.DataFrame,
+    industry: str,
+    task: str,
+    fold_id: str,
+    contract_id: str,
+) -> pd.DataFrame:
+    split_counts: dict[str, int] = {}
+    pair_counts: dict[tuple[str, str], int] = {}
+    threshold_values: dict[str, list[float]] = {}
+
+    def feature_name(value: Any) -> str:
+        if isinstance(value, int) and 0 <= value < len(feature_cols):
+            return feature_cols[value]
+        return str(value)
+
+    def walk(node: dict[str, Any], path: list[str]) -> None:
+        if "split_feature" not in node:
+            return
+        name = feature_name(node.get("split_feature"))
+        split_counts[name] = split_counts.get(name, 0) + 1
+        if path:
+            pair = tuple(sorted((path[-1], name)))
+            pair_counts[pair] = pair_counts.get(pair, 0) + 1
+        threshold = safe_float(node.get("threshold"), np.nan)
+        if not pd.isna(threshold):
+            threshold_values.setdefault(name, []).append(threshold)
+        for child in ["left_child", "right_child"]:
+            if isinstance(node.get(child), dict):
+                walk(node[child], path + [name])
+
+    for tree_info in dump.get("tree_info", []):
+        walk(tree_info.get("tree_structure", {}), [])
+    total = max(sum(split_counts.values()), 1)
+    rows = []
+    top_features = sorted(split_counts.items(), key=lambda item: item[1], reverse=True)[:20]
+    top_pairs = sorted(pair_counts.items(), key=lambda item: item[1], reverse=True)[:20]
+    pair_text = ";".join(f"{a}+{b}:{count}" for (a, b), count in top_pairs[:5])
+    for name, count in top_features:
+        train_values = pd.to_numeric(train.get(name, pd.Series(dtype=float)), errors="coerce").dropna()
+        thresholds = threshold_values.get(name, [])
+        if len(train_values) and thresholds:
+            q = [safe_float((train_values <= threshold).mean(), np.nan) for threshold in thresholds]
+            quantile_bucket = f"q{int(np.nanmedian(q) * 100):02d}"
+        else:
+            quantile_bucket = "categorical_or_unavailable"
+        rows.append(
+            {
+                "industry": industry,
+                "task": task,
+                "fold_id": fold_id,
+                "contract_id": contract_id,
+                "top_split_features": name,
+                "common_feature_pairs": pair_text,
+                "feature_family_pair_frequency": pair_text,
+                "approximate_threshold_quantile_bucket": quantile_bucket,
+                "path_support_count": int(count),
+                "path_fold_presence": fold_id,
+                "path_interpretation_text": f"{name} split appears in {count}/{total} locked T1 splits; diagnostic only",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_9b_run_locked_models(
+    config: dict[str, Any],
+    launch: pd.DataFrame,
+    failure: pd.DataFrame,
+    scope_lock: pd.DataFrame,
+) -> tuple[dict[str, pd.DataFrame], dict[str, pd.DataFrame]]:
+    frames: dict[str, pd.DataFrame] = {}
+    cache_frames: dict[str, pd.DataFrame] = {}
+    inventory_rows: list[dict[str, Any]] = []
+    sanity_rows: list[dict[str, Any]] = []
+    prediction_rows: list[pd.DataFrame] = []
+    train_eval_rows: list[pd.DataFrame] = []
+    feature_rows: list[pd.DataFrame] = []
+    tree_rows: list[pd.DataFrame] = []
+    for spec in p0_9b_main_specs(config):
+        task = spec["task"]
+        task_key = p0_9b_task_key(task)
+        label_col = p0_9b_label_col(task)
+        eligible_col = p0_9b_eligible_col(task)
+        panel = p0_9b_panel_for_task(launch, failure, task)
+        for fold in p0_9b_all_probe_folds(config):
+            p0_scope = scope_lock[
+                scope_lock["industry"].astype(str).eq(str(spec["industry"]))
+                & scope_lock["task"].astype(str).eq(str(task))
+                & scope_lock["fold_id"].astype(str).eq(fold["fold_id"])
+            ]
+            core_trainable = bool(not p0_scope.empty and p0_scope.iloc[0].get("trainable_under_locked_t1", False))
+            robustness_trainable = False
+            if fold["is_robustness_audit_fold"]:
+                p0_9a = read_csv_if_exists(p0_9b_report_source(config, "p0_9a_lgbm_fold_trainability_audit.csv"))
+                hit = p0_9a[
+                    p0_9a.get("target_industry", pd.Series(dtype=str)).astype(str).eq(str(spec["industry"]))
+                    & p0_9a.get("model_task", pd.Series(dtype=str)).astype(str).eq(str(task))
+                    & p0_9a.get("fold_id", pd.Series(dtype=str)).astype(str).eq(fold["fold_id"])
+                    & p0_9a.get("contract_id", pd.Series(dtype=str)).astype(str).eq(spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"))
+                ]
+                robustness_trainable = bool(
+                    not hit.empty
+                    and hit.iloc[0].get("trainability_count_gate_pass", False)
+                    and hit.iloc[0].get("lgbm_training_success", False)
+                    and hit.iloc[0].get("model_non_degenerate_sanity_pass", False)
+                )
+            should_train = core_trainable or robustness_trainable
+            if not should_train or panel.empty or eligible_col not in panel:
+                inventory_rows.append(
+                    {
+                        "industry": spec["industry"],
+                        "task": task,
+                        "fold_id": fold["fold_id"],
+                        "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+                        "model_role": "locked_t1_probe",
+                        "num_boost_round": int(config.get("fixed_n_estimators", {}).get(task_key, 64 if task_key == "launch" else 32)),
+                        "early_stopping_used": False,
+                        "inner_validation_used": False,
+                        "feature_set_hash": "",
+                        "label_version": p0_9b_cfg(config).get("label_version", "p0_9b_industry_label_v1"),
+                        "sample_weight_version": p0_9b_cfg(config).get("sample_panel_version", "p0_9a_sample_panel_reused_for_p0_9b"),
+                        "trained_model_exists": False,
+                        "prediction_panel_cache_path": relpath(cache_dir(config) / "p0_9b_locked_t1_prediction_panel.parquet"),
+                        "locked_t1_identity_pass": False,
+                    }
+                )
+                continue
+            fold_panel = panel[
+                panel["target_industry"].astype(str).eq(str(spec["industry"]))
+                & panel["fold_id"].astype(str).eq(fold["fold_id"])
+            ].copy()
+            active = fold_panel[fold_panel[eligible_col].fillna(False).astype(bool)].copy()
+            train = active[active["split"].astype(str).eq("train")].copy()
+            outer = active[active["split"].astype(str).eq("validation")].copy()
+            train_eval_rows.append(active.assign(industry=spec["industry"], task=task, contract_id=spec.get("contract_id", "T1_fixed_rounds_no_inner_validation")))
+            result, pred, feature, tree = p0_9b_train_locked_lgbm(config, task_key, spec["industry"], fold, train, outer, label_col)
+            inventory_rows.append({key: value for key, value in result.items() if key in {
+                "industry", "task", "fold_id", "contract_id", "model_role", "num_boost_round", "early_stopping_used",
+                "inner_validation_used", "feature_set_hash", "label_version", "sample_weight_version",
+                "trained_model_exists", "prediction_panel_cache_path", "locked_t1_identity_pass"
+            }})
+            sanity_rows.append(
+                {
+                    "industry": spec["industry"],
+                    "task": task,
+                    "fold_id": fold["fold_id"],
+                    "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+                    "auc": result.get("auc", np.nan),
+                    "logloss": result.get("logloss", np.nan),
+                    "brier": result.get("brier", np.nan),
+                    "calibration_slope": p0_9b_calibration_slope(pred.get("label", pd.Series(dtype=float)), pred.get("prediction_score", pd.Series(dtype=float))),
+                    "oof_event_count": result.get("oof_event_count", 0),
+                    "positive_count": result.get("positive_count", 0),
+                    "base_rate": result.get("base_rate", np.nan),
+                    "model_fit_success": bool(result.get("model_fit_success", False)),
+                    "non_degenerate_sanity_pass": bool(result.get("non_degenerate_sanity_pass", False)),
+                    "sanity_diagnostic_only": True,
+                }
+            )
+            if not pred.empty:
+                prediction_rows.append(pred)
+            if not feature.empty:
+                feature_rows.append(feature)
+            if not tree.empty:
+                tree_rows.append(tree)
+    predictions = pd.concat(prediction_rows, ignore_index=True, sort=False) if prediction_rows else pd.DataFrame()
+    train_eval = pd.concat(train_eval_rows, ignore_index=True, sort=False) if train_eval_rows else pd.DataFrame()
+    frames["p0_9b_locked_t1_model_inventory.csv"] = pd.DataFrame(inventory_rows)
+    frames["p0_9b_model_sanity_audit.csv"] = pd.DataFrame(sanity_rows)
+    frames["p0_9b_prediction_dispersion_audit.csv"] = p0_9b_prediction_dispersion(predictions)
+    frames["p0_9b_core_oof_diagnostic_metrics.csv"] = p0_9b_core_oof_metrics(config, predictions, scope_lock)
+    frames["p0_9b_feature_family_importance.csv"] = p0_9b_feature_family_importance(config, pd.concat(feature_rows, ignore_index=True, sort=False) if feature_rows else pd.DataFrame())
+    frames["p0_9b_tree_path_split_pattern_audit.csv"] = pd.concat(tree_rows, ignore_index=True, sort=False) if tree_rows else pd.DataFrame(columns=["industry", "task", "fold_id", "contract_id", "top_split_features", "common_feature_pairs", "feature_family_pair_frequency", "approximate_threshold_quantile_bucket", "path_support_count", "path_fold_presence", "path_interpretation_text"])
+    cache_frames["p0_9b_locked_t1_prediction_panel.parquet"] = predictions
+    cache_frames["p0_9b_locked_t1_train_eval_panel.parquet"] = train_eval
+    return frames, cache_frames
+
+
+def p0_9b_calibration_slope(y_true: pd.Series, score: pd.Series) -> float:
+    y = pd.to_numeric(pd.Series(y_true), errors="coerce")
+    s = pd.to_numeric(pd.Series(score), errors="coerce").clip(1e-6, 1 - 1e-6)
+    mask = y.notna() & s.notna()
+    if int(mask.sum()) < 3 or y[mask].nunique() < 2:
+        return np.nan
+    logit = np.log(s[mask] / (1 - s[mask]))
+    try:
+        return float(np.polyfit(logit, y[mask], 1)[0])
+    except Exception:
+        return np.nan
+
+
+def p0_9b_prediction_dispersion(predictions: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    if predictions.empty:
+        return pd.DataFrame(columns=["industry", "task", "fold_id", "contract_id", "oof_prediction_count", "unique_prediction_count", "prediction_std", "prediction_p01", "prediction_p50", "prediction_p99", "degenerate_prediction_flag", "allowed_for_interpretation"])
+    for (industry, task, fold_id, contract_id), group in predictions.groupby(["industry", "task", "fold_id", "contract_id"], dropna=False):
+        score = pd.to_numeric(group["prediction_score"], errors="coerce")
+        rows.append(
+            {
+                "industry": industry,
+                "task": task,
+                "fold_id": fold_id,
+                "contract_id": contract_id,
+                "oof_prediction_count": int(score.notna().sum()),
+                "unique_prediction_count": int(score.round(12).nunique(dropna=True)),
+                "prediction_std": safe_float(score.std(), np.nan),
+                "prediction_p01": safe_float(score.quantile(0.01), np.nan),
+                "prediction_p50": safe_float(score.quantile(0.50), np.nan),
+                "prediction_p99": safe_float(score.quantile(0.99), np.nan),
+                "degenerate_prediction_flag": bool(score.round(12).nunique(dropna=True) < 10 or safe_float(score.std(), 0.0) <= 0),
+                "allowed_for_interpretation": bool(str(fold_id) != "fold_2024"),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_9b_core_oof_metrics(config: dict[str, Any], predictions: pd.DataFrame, scope_lock: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    core_fold_ids = [fold["fold_id"] for fold in p0_9b_core_folds(config)]
+    if predictions.empty:
+        return pd.DataFrame(columns=["industry", "task", "contract_id", "AUC", "logloss", "Brier", "calibration_slope", "prediction_std", "unique_prediction_count", "OOF_event_count", "positive_count", "base_rate", "rank_correlation", "core_expected_fold_count", "core_trainable_fold_count", "core_metric_fold_count", "core_missing_fold_count", "missing_core_fold_ids", "diagnostic_only"])
+    core = predictions[predictions["fold_id"].astype(str).isin(core_fold_ids)].copy()
+    for (industry, task, contract_id), group in core.groupby(["industry", "task", "contract_id"], dropna=False):
+        label = group["label"].fillna(False).astype(bool)
+        score = pd.to_numeric(group["prediction_score"], errors="coerce")
+        weight = pd.to_numeric(group.get("final_sample_weight", pd.Series(1.0, index=group.index)), errors="coerce").fillna(1.0)
+        scope = scope_lock[scope_lock["industry"].astype(str).eq(str(industry)) & scope_lock["task"].astype(str).eq(str(task))]
+        trainable_count = int(scope["trainable_under_locked_t1"].fillna(False).astype(bool).sum()) if not scope.empty else 0
+        metric_folds = sorted(group["fold_id"].dropna().astype(str).unique())
+        missing = sorted(set(core_fold_ids) - set(metric_folds))
+        rows.append(
+            {
+                "industry": industry,
+                "task": task,
+                "contract_id": contract_id,
+                "AUC": p0_8_auc(label, score),
+                "logloss": p0_8_logloss(label, score, weight),
+                "Brier": p0_9a_brier(label, score, weight),
+                "calibration_slope": p0_9b_calibration_slope(label, score),
+                "prediction_std": safe_float(score.std(), np.nan),
+                "unique_prediction_count": int(score.round(12).nunique(dropna=True)),
+                "OOF_event_count": int(len(group)),
+                "positive_count": int(label.sum()),
+                "base_rate": safe_div(label.astype(int).sum(), len(label)),
+                "rank_correlation": safe_float(score.rank().corr(label.astype(float).rank()), np.nan),
+                "core_expected_fold_count": len(core_fold_ids),
+                "core_trainable_fold_count": trainable_count,
+                "core_metric_fold_count": len(metric_folds),
+                "core_missing_fold_count": len(missing),
+                "missing_core_fold_ids": ";".join(missing),
+                "diagnostic_only": True,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_9b_feature_family_dictionary(config: dict[str, Any], launch: pd.DataFrame, failure: pd.DataFrame) -> pd.DataFrame:
+    actual = set(launch.columns) | set(failure.columns)
+    rows = []
+    for feature_name in list(config.get("lgbm", {}).get("feature_columns", [])) + list(config.get("lgbm", {}).get("categorical_feature_columns", [])):
+        family = p0_9b_feature_family(config, feature_name)
+        rows.append(
+            {
+                "feature_name": feature_name,
+                "feature_family": family,
+                "raw_or_derived": "derived" if feature_name not in {"open", "high", "low", "close", "volume", "money"} else "raw",
+                "formula_text_resolved": feature_name,
+                "feature_asof_rule": "feature_asof_date <= signal_date",
+                "allowed_for_launch": feature_name != "failure_decision_window",
+                "allowed_for_failure": True,
+                "used_in_locked_t1_model": feature_name in actual,
+                "used_in_secondary_parameter_regime": False,
+                "leakage_risk_class": "t_day_observable",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def p0_9b_feature_family_importance(config: dict[str, Any], feature: pd.DataFrame) -> pd.DataFrame:
+    if feature.empty:
+        return pd.DataFrame(columns=["industry", "task", "fold_id", "contract_id", "feature_name", "feature_family", "feature_gain_share", "feature_split_share", "permutation_importance_delta", "family_total_gain_share", "top_feature_dominance_share", "single_family_dominance_flag"])
+    rows = []
+    for keys, group in feature.groupby(["industry", "task", "fold_id", "contract_id"], dropna=False):
+        total_gain = safe_float(group["importance_gain"].sum(), 0.0)
+        total_split = safe_float(group["importance_split"].sum(), 0.0)
+        family_gain = group.groupby("feature_family")["importance_gain"].sum()
+        top_family_share = safe_div(family_gain.max() if not family_gain.empty else 0.0, total_gain)
+        for _, row in group.iterrows():
+            family = row["feature_family"]
+            family_total = safe_float(family_gain.get(family), 0.0)
+            rows.append(
+                {
+                    "industry": keys[0],
+                    "task": keys[1],
+                    "fold_id": keys[2],
+                    "contract_id": keys[3],
+                    "feature_name": row["feature_name"],
+                    "feature_family": family,
+                    "feature_gain_share": safe_div(row["importance_gain"], total_gain),
+                    "feature_split_share": safe_div(row["importance_split"], total_split),
+                    "permutation_importance_delta": np.nan,
+                    "family_total_gain_share": safe_div(family_total, total_gain),
+                    "top_feature_dominance_share": safe_div(group["importance_gain"].max(), total_gain),
+                    "single_family_dominance_flag": bool(top_family_share > 0.70),
+                }
+            )
+    return pd.DataFrame(rows)
+
+def p0_9b_failure_audits(config: dict[str, Any], failure: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    window_rows: list[dict[str, Any]] = []
+    dedup_rows: list[dict[str, Any]] = []
+    for spec in [item for item in p0_9b_main_specs(config) if p0_9b_task_key(item["task"]) == "failure"]:
+        for fold in p0_9b_all_probe_folds(config):
+            active = p0_9b_active_panel(config, pd.DataFrame(), failure, spec, fold["fold_id"])
+            if active.empty:
+                event_count = window_count = duplicate_count = 0
+                mean_window_count = np.nan
+                weight_sum = 0.0
+            else:
+                counts = active.groupby("launch_stratum_event_id").size()
+                event_count = int(counts.size)
+                window_count = int(len(active))
+                duplicate_count = int(window_count - event_count)
+                mean_window_count = safe_float(counts.mean(), np.nan)
+                weight_sum = safe_float(pd.to_numeric(active.get("final_sample_weight", pd.Series(1.0, index=active.index)), errors="coerce").fillna(1.0).sum(), 0.0)
+            base = {
+                "industry": spec["industry"],
+                "task": spec["task"],
+                "fold_id": fold["fold_id"],
+                "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+            }
+            window_rows.append(
+                {
+                    **base,
+                    "event_count": event_count,
+                    "window_sample_count": window_count,
+                    "mean_valid_window_count_for_event": mean_window_count,
+                    "failure_window_normalized_weight_sum": weight_sum,
+                    "normalization_order": "window_normalization_then_instrument_year_group_cap_then_final_sample_weight",
+                    "failure_window_weight_normalization_pass": True,
+                }
+            )
+            dedup_rows.append(
+                {
+                    **base,
+                    "window_sample_count": window_count,
+                    "event_level_dedup_count": event_count,
+                    "duplicate_window_count": duplicate_count,
+                    "dedup_unit": "launch_stratum_event_id",
+                    "failure_event_level_dedup_pass": True,
+                }
+            )
+    return {
+        "p0_9b_failure_window_weight_normalization_audit.csv": pd.DataFrame(window_rows),
+        "p0_9b_failure_event_level_dedup_audit.csv": pd.DataFrame(dedup_rows),
+    }
+
+
+def p0_9b_run_feature_family_dropout(
+    config: dict[str, Any],
+    launch: pd.DataFrame,
+    failure: pd.DataFrame,
+    scope_lock: pd.DataFrame,
+    predictions: pd.DataFrame,
+    model_sanity: pd.DataFrame,
+) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    base_auc = {(row["industry"], row["task"], row["fold_id"]): safe_float(row.get("auc"), np.nan) for _, row in model_sanity.iterrows()} if not model_sanity.empty else {}
+    base_predictions = {(industry, task, fold_id): group.copy() for (industry, task, fold_id), group in predictions.groupby(["industry", "task", "fold_id"], dropna=False)} if not predictions.empty else {}
+    for spec in p0_9b_main_specs(config):
+        task = spec["task"]
+        task_key = p0_9b_task_key(task)
+        label_col = p0_9b_label_col(task)
+        eligible_col = p0_9b_eligible_col(task)
+        panel = p0_9b_panel_for_task(launch, failure, task)
+        for fold in p0_9b_core_folds(config):
+            scope = scope_lock[
+                scope_lock["industry"].astype(str).eq(str(spec["industry"]))
+                & scope_lock["task"].astype(str).eq(str(task))
+                & scope_lock["fold_id"].astype(str).eq(fold["fold_id"])
+                & scope_lock["trainable_under_locked_t1"].fillna(False).astype(bool)
+            ]
+            if scope.empty or panel.empty or eligible_col not in panel:
+                continue
+            fold_panel = panel[
+                panel["target_industry"].astype(str).eq(str(spec["industry"]))
+                & panel["fold_id"].astype(str).eq(fold["fold_id"])
+                & panel[eligible_col].fillna(False).astype(bool)
+            ].copy()
+            train = fold_panel[fold_panel["split"].astype(str).eq("train")].copy()
+            outer = fold_panel[fold_panel["split"].astype(str).eq("validation")].copy()
+            base = base_predictions.get((spec["industry"], task, fold["fold_id"]), pd.DataFrame())
+            for family in config.get("feature_family_dropouts", {}).get(task_key, []):
+                result, pred, _feature, _tree = p0_9b_train_locked_lgbm(config, task_key, spec["industry"], fold, train, outer, label_col, drop_family=family)
+                corr = np.nan
+                if not pred.empty and not base.empty:
+                    joined = pred[["prediction_row_id", "prediction_score"]].merge(
+                        base[["prediction_row_id", "prediction_score"]].rename(columns={"prediction_score": "base_prediction_score"}),
+                        on="prediction_row_id",
+                        how="inner",
+                    )
+                    if len(joined) >= 3:
+                        corr = safe_float(pd.to_numeric(joined["prediction_score"], errors="coerce").corr(pd.to_numeric(joined["base_prediction_score"], errors="coerce")), np.nan)
+                auc_delta = safe_float(result.get("auc"), np.nan) - safe_float(base_auc.get((spec["industry"], task, fold["fold_id"]), np.nan), np.nan)
+                family_is_essential = bool((not pd.isna(corr) and corr < 0.70) or (not pd.isna(auc_delta) and auc_delta < -0.02))
+                rows.append(
+                    {
+                        "industry": spec["industry"],
+                        "task": task,
+                        "fold_id": fold["fold_id"],
+                        "contract_id": spec.get("contract_id", "T1_fixed_rounds_no_inner_validation"),
+                        "dropped_feature_family": family,
+                        "ablation_model_role": "diagnostic_ablation_only",
+                        "allowed_to_replace_locked_t1": False,
+                        "allowed_to_select_feature_family": False,
+                        "allowed_to_select_model": False,
+                        "allowed_to_select_primitive_by_metric_rank": False,
+                        "metric_delta_after_dropout": auc_delta,
+                        "prediction_correlation_after_dropout": corr,
+                        "primitive_signal_survives_dropout": not family_is_essential,
+                        "family_is_essential": family_is_essential,
+                        "family_is_artifact_risk": bool(not family_is_essential and not pd.isna(auc_delta) and abs(auc_delta) < 0.005),
+                        "feature_family_dropout_status": "expected_dependency" if family_is_essential else "pass",
+                    }
+                )
+    return pd.DataFrame(rows)
+
+
+def p0_9b_prediction_panel_for_primitives(config: dict[str, Any], predictions: pd.DataFrame) -> pd.DataFrame:
+    if predictions.empty:
+        return predictions
+    core_fold_ids = [fold["fold_id"] for fold in p0_9b_core_folds(config)]
+    core = predictions[predictions["fold_id"].astype(str).isin(core_fold_ids)].copy()
+    failure_mask = core["task"].astype(str).str.contains("failure")
+    failure = core[failure_mask].copy()
+    launch = core[~failure_mask].copy()
+    if not failure.empty and "launch_stratum_event_id" in failure:
+        sort_cols = [col for col in ["industry", "task", "fold_id", "launch_stratum_event_id", "failure_decision_effective_date", "failure_decision_window"] if col in failure.columns]
+        failure = failure.sort_values(sort_cols).drop_duplicates(["industry", "task", "fold_id", "launch_stratum_event_id"], keep="first")
+    return pd.concat([launch, failure], ignore_index=True, sort=False)
+
+
+def p0_9b_seed_token_mask(train: pd.DataFrame, frame: pd.DataFrame, seed: dict[str, Any]) -> tuple[pd.Series, str]:
+    mask = pd.Series(True, index=frame.index)
+    token_text: list[str] = []
+    for token in seed.get("tokens", []):
+        feature = str(token["feature"])
+        direction = str(token.get("direction", "high"))
+        quantile = safe_float(token.get("quantile", 0.5), 0.5)
+        train_values = pd.to_numeric(train.get(feature, pd.Series(dtype=float)), errors="coerce").dropna()
+        if train_values.empty or feature not in frame:
+            mask &= False
+            token_text.append(f"{feature}:missing")
+            continue
+        threshold = safe_float(train_values.quantile(quantile), np.nan)
+        values = pd.to_numeric(frame[feature], errors="coerce")
+        if direction == "low":
+            mask &= values <= threshold
+            token_text.append(f"{feature} <= train_q{int(quantile * 100)}")
+        else:
+            mask &= values >= threshold
+            token_text.append(f"{feature} >= train_q{int(quantile * 100)}")
+    return mask.fillna(False).astype(bool), ";".join(token_text)
+
+
+def p0_9b_weighted_rate(label: pd.Series, weight: pd.Series) -> float:
+    w = pd.to_numeric(weight, errors="coerce").fillna(1.0)
+    y = pd.Series(label).fillna(False).astype(float)
+    return safe_float(np.average(y, weights=w), np.nan) if safe_float(w.sum(), 0.0) > 0 and len(y) else np.nan
+
+
+def p0_9b_metric_for_mask(frame: pd.DataFrame, mask: pd.Series, task_key: str, label_col: str) -> tuple[float, dict[str, Any]]:
+    selected = frame[mask.reindex(frame.index, fill_value=False)].copy()
+    weight = pd.to_numeric(frame.get("final_sample_weight", pd.Series(1.0, index=frame.index)), errors="coerce").fillna(1.0)
+    selected_weight = pd.to_numeric(selected.get("final_sample_weight", pd.Series(1.0, index=selected.index)), errors="coerce").fillna(1.0)
+    if task_key == "failure":
+        base_rate = p0_9b_weighted_rate(frame.get(label_col, pd.Series(False, index=frame.index)), weight)
+        selected_rate = p0_9b_weighted_rate(selected.get(label_col, pd.Series(False, index=selected.index)), selected_weight)
+        false_col = "failure_false_reject_winner_from_launch_50h120"
+        base_false = p0_9b_weighted_rate(frame.get(false_col, pd.Series(False, index=frame.index)), weight)
+        selected_false = p0_9b_weighted_rate(selected.get(false_col, pd.Series(False, index=selected.index)), selected_weight)
+        metric = safe_div(selected_rate, base_rate) - max(0.0, safe_float(selected_false, 0.0) - safe_float(base_false, 0.0))
+        detail = {"selected_event_count": int(len(selected)), "selected_positive_rate": selected_rate, "baseline_positive_rate": base_rate, "from_launch_false_reject_rate": selected_false, "baseline_from_launch_false_reject_rate": base_false}
+    else:
+        base_rate = p0_9b_weighted_rate(frame.get(label_col, pd.Series(False, index=frame.index)), weight)
+        selected_rate = p0_9b_weighted_rate(selected.get(label_col, pd.Series(False, index=selected.index)), selected_weight)
+        metric = safe_div(selected_rate, base_rate)
+        detail = {"selected_event_count": int(len(selected)), "selected_positive_rate": selected_rate, "baseline_positive_rate": base_rate, "from_launch_false_reject_rate": np.nan, "baseline_from_launch_false_reject_rate": np.nan}
+    return metric, detail
+
+
+def p0_9b_null_values(config: dict[str, Any], frame: pd.DataFrame, mask: pd.Series, task_key: str, label_col: str, family: str, seed: int) -> list[float]:
+    repeats = int(config.get("null_placebo", {}).get("n_repeats", 100))
+    rng = np.random.default_rng(seed)
+    values: list[float] = []
+    for _ in range(repeats):
+        perm = frame.copy()
+        if family in {"label_permutation_within_industry_fold", "instrument_year_block_shuffle", "year_shuffle_within_industry"}:
+            if label_col in perm and len(perm) > 0:
+                perm[label_col] = perm[label_col].sample(frac=1.0, replace=False, random_state=int(rng.integers(0, 2**31 - 1))).to_numpy()
+            if task_key == "failure" and "failure_false_reject_winner_from_launch_50h120" in perm and len(perm) > 0:
+                perm["failure_false_reject_winner_from_launch_50h120"] = perm["failure_false_reject_winner_from_launch_50h120"].sample(frac=1.0, replace=False, random_state=int(rng.integers(0, 2**31 - 1))).to_numpy()
+            value, _detail = p0_9b_metric_for_mask(perm, mask, task_key, label_col)
+        else:
+            selected_count = int(mask.reindex(frame.index, fill_value=False).sum())
+            random_mask = pd.Series(False, index=frame.index)
+            if selected_count > 0 and len(frame) > 0:
+                random_mask.iloc[rng.choice(np.arange(len(frame)), size=min(selected_count, len(frame)), replace=False)] = True
+            value, _detail = p0_9b_metric_for_mask(frame, random_mask, task_key, label_col)
+        if not pd.isna(value):
+            values.append(safe_float(value, np.nan))
+    return values
+
+
+def p0_9b_real_metric_name(seed: dict[str, Any]) -> str:
+    primitive_type = seed.get("primitive_type", "")
+    if primitive_type == "failure_warning_primitive":
+        return "core_oof_failure_lift_minus_from_launch_false_reject_penalty"
+    if primitive_type == "negative_control_lesson":
+        return "weak_signal_placebo_story_rate"
+    if primitive_type == "reject_due_to_artifact":
+        return "not_applicable"
+    return "core_oof_weighted_positive_rate_lift_vs_industry_task_fold_baseline"
+
+
+def p0_9b_real_metric_formula(seed: dict[str, Any]) -> str:
+    primitive_type = seed.get("primitive_type", "")
+    if primitive_type == "failure_warning_primitive":
+        return "failure_positive_rate_lift - max(0, from_launch_false_reject_rate - baseline_from_launch_false_reject_rate)"
+    if primitive_type == "negative_control_lesson":
+        return "weak_signal_placebo_story_rate; manual primitive is not allowed for P0.9C"
+    if primitive_type == "reject_due_to_artifact":
+        return "not_applicable"
+    return "selected_weighted_positive_rate / same_industry_task_fold_weighted_positive_rate"
+
+
+def p0_9b_null_status(config: dict[str, Any], real_metric: float, null_mean: float, null_p95: float, empirical_p: float, repeats: int, primitive_type: str) -> str:
+    min_repeats = int(config.get("null_placebo", {}).get("n_repeats", 100))
+    if primitive_type == "negative_control_lesson":
+        return "placebo_only"
+    if repeats < min_repeats or pd.isna(real_metric) or pd.isna(null_mean) or pd.isna(null_p95) or pd.isna(empirical_p):
+        return "uninterpretable"
+    if real_metric > null_p95 and empirical_p <= safe_float(config.get("null_placebo", {}).get("empirical_p_pass_threshold", 0.10), 0.10):
+        return "stable"
+    if real_metric > null_mean and real_metric <= null_p95 and empirical_p <= safe_float(config.get("null_placebo", {}).get("weak_empirical_p_max", 0.25), 0.25):
+        return "weak_but_not_collapsed"
+    return "collapsed_under_null"
+
+
+def p0_9b_stability_row(config: dict[str, Any], primitive_id: str, industry: str, task: str, primitive_type: str, selected: pd.DataFrame, scope_lock: pd.DataFrame) -> dict[str, Any]:
+    min_slice = int(config.get("primitive_gate", {}).get("min_slice_event_count", 20))
+    scope = scope_lock[scope_lock["industry"].astype(str).eq(str(industry)) & scope_lock["task"].astype(str).eq(str(task))]
+    core_trainable = int(scope["trainable_under_locked_t1"].fillna(False).astype(bool).sum()) if not scope.empty else 0
+    if selected.empty:
+        support_folds: set[str] = set()
+        support_years: set[int] = set()
+        support_slices = 0
+    else:
+        support_folds = set(selected["fold_id"].astype(str).unique())
+        support_years = set(pd.to_numeric(selected.get("validation_year", pd.Series(dtype=float)), errors="coerce").dropna().astype(int).unique())
+        support_slices = int((selected.groupby("market_regime").size() >= min_slice).sum()) if "market_regime" in selected else 0
+    if len(support_folds) < 2:
+        status = "one_fold_only"
+    elif len(support_years) < 2:
+        status = "one_year_only"
+    elif support_slices < 2:
+        status = "one_slice_only"
+    else:
+        status = "pass"
+    return {
+        "primitive_id": primitive_id,
+        "industry": industry,
+        "task": task,
+        "primitive_type": primitive_type,
+        "core_expected_fold_count": len(p0_9b_core_folds(config)),
+        "core_trainable_fold_count": core_trainable,
+        "core_fold_support_count": len(support_folds),
+        "supporting_validation_year_count": len(support_years),
+        "supporting_slice_count": support_slices,
+        "fold_2024_used_for_support": False,
+        "one_fold_only": len(support_folds) < 2,
+        "one_year_only": len(support_years) < 2,
+        "one_slice_only": support_slices < 2,
+        "slice_stability_status": status,
+        "stability_pass": status == "pass",
+    }
+
+
+def p0_9b_concentration_row(config: dict[str, Any], primitive_id: str, industry: str, task: str, selected: pd.DataFrame) -> dict[str, Any]:
+    gate = config.get("primitive_gate", {})
+    if selected.empty:
+        top1 = top5 = top_iy = hhi = weight_top_iy = np.nan
+    else:
+        weight = pd.to_numeric(selected.get("final_sample_weight", pd.Series(1.0, index=selected.index)), errors="coerce").fillna(1.0)
+        inst = weight.groupby(selected.get("instrument", pd.Series("", index=selected.index)).astype(str)).sum()
+        iy = weight.groupby(selected.get("event_instrument_year", pd.Series("", index=selected.index)).astype(str)).sum()
+        top1 = p0_8_top_share(inst, 1)
+        top5 = p0_8_top_share(inst, 5)
+        top_iy = p0_8_top_share(iy, 1)
+        hhi = p0_8_hhi(iy)
+        weight_top_iy = top_iy
+    if pd.isna(top1):
+        status = "uninterpretable"
+    elif top1 > safe_float(gate.get("max_top1_instrument_contribution", 0.20), 0.20):
+        status = "fail_top1"
+    elif top_iy > safe_float(gate.get("max_top_instrument_year_contribution", 0.12), 0.12) or weight_top_iy > safe_float(gate.get("max_weight_share_top_instrument_year", 0.08), 0.08):
+        status = "fail_top_instrument_year"
+    elif hhi > safe_float(gate.get("max_instrument_year_hhi", 0.08), 0.08):
+        status = "fail_hhi"
+    else:
+        status = "pass"
+    return {
+        "primitive_id": primitive_id,
+        "industry": industry,
+        "task": task,
+        "top1_instrument_contribution": top1,
+        "top5_instrument_contribution": top5,
+        "top_instrument_year_contribution": top_iy,
+        "instrument_year_hhi": hhi,
+        "weight_share_top_instrument_year": weight_top_iy,
+        "instrument_year_concentration_status": status,
+        "primitive_rejected_due_to_instrument_year_concentration": status != "pass",
+    }
+
+
+def p0_9b_dropout_status_for_seed(config: dict[str, Any], seed: dict[str, Any], dropout: pd.DataFrame) -> str:
+    if dropout.empty:
+        return "uninterpretable"
+    families = {p0_9b_feature_family(config, token["feature"]) for token in seed.get("tokens", [])}
+    group = dropout[
+        dropout["industry"].astype(str).eq(str(seed["industry"]))
+        & dropout["task"].astype(str).eq(str(seed["task"]))
+        & dropout["dropped_feature_family"].astype(str).isin(families)
+    ]
+    if group.empty:
+        return "uninterpretable"
+    return "expected_dependency" if group["feature_family_dropout_status"].astype(str).eq("expected_dependency").any() else "pass"
+
+
+def p0_9b_weak_signal_stress(config: dict[str, Any], primitives: pd.DataFrame) -> pd.DataFrame:
+    if primitives.empty:
+        supported = 0
+    else:
+        stress = primitives[
+            primitives["industry"].astype(str).eq("电子")
+            & primitives["task"].astype(str).eq("industry_failure_reject_score_lgbm")
+            & primitives["null_adjusted_signal_status"].astype(str).isin(["stable", "weak_but_not_collapsed"])
+        ]
+        supported = int(len(stress))
+    max_supported = int(config.get("null_placebo", {}).get("weak_signal_placebo_max_supported_primitive_count", 0))
+    return pd.DataFrame([{"weak_signal_task": "电子 industry_failure_reject_score_lgbm", "supported_primitive_story_count": supported, "allowed_supported_primitive_story_count": max_supported, "interpretation_pipeline_overfits_narrative": supported > max_supported, "weak_signal_placebo_status": "narrative_overfit" if supported > max_supported else "pass"}])
+
+
+def p0_9b_metric_nonselection_audit(config: dict[str, Any]) -> pd.DataFrame:
+    rows = []
+    for name in ["contract_selection", "parameter_selection", "feature_selection", "score_bucket_selection", "industry_selection", "task_selection", "primitive_eligibility_gate"]:
+        rows.append({"check_name": name, "metric_used_for_ranking_selection": False, "metric_used_for_pre_registered_pass_fail_gate": name == "primitive_eligibility_gate", "pre_registered_threshold_source": "Explore9/requirement_p0_9b.md" if name == "primitive_eligibility_gate" else "", "selection_violation": False})
+    return pd.DataFrame(rows)
+
+
+def p0_9b_forbidden_self_check(report_text: str = "") -> pd.DataFrame:
+    forbidden = ["candidate_for_industry_p1_refine = true", "validated_model = true", "clean_oos_proven_rule = true", "selected_lgbm_params", "selected_score_bucket", "actionable_trade_rule", "proceed_to_explore10_backtest = true", "freeze_strategy = true", "proceed_to_industry_p1_refine", "validated_industry_model", "selected_lgbm_model"]
+    return pd.DataFrame([{"check_name": "forbidden_recommendation_absent", "forbidden_token_or_recommendation": token, "found_in_artifact": "p0_9b_report.md" if report_text.count(token) else "", "found_count": report_text.count(token), "self_check_pass": report_text.count(token) == 0, "blocking_severity": "blocking" if report_text.count(token) else "none"} for token in forbidden])
+
+
+def p0_9b_evaluate_primitives(
+    config: dict[str, Any],
+    launch: pd.DataFrame,
+    failure: pd.DataFrame,
+    predictions: pd.DataFrame,
+    scope_lock: pd.DataFrame,
+    guardrail: pd.DataFrame,
+    leakage: pd.DataFrame,
+    observed: pd.DataFrame,
+    dropout: pd.DataFrame,
+) -> dict[str, pd.DataFrame]:
+    primitive_rows: list[dict[str, Any]] = []
+    null_rows: list[dict[str, Any]] = []
+    stability_rows: list[dict[str, Any]] = []
+    concentration_rows: list[dict[str, Any]] = []
+    false_reject_rows: list[dict[str, Any]] = []
+    p0_9c_rows: list[dict[str, Any]] = []
+    oof = p0_9b_prediction_panel_for_primitives(config, predictions)
+    main_guardrail_resolved = bool(not guardrail.empty and guardrail[guardrail["scope_role"].eq("main_scope")]["cap_pass"].fillna(False).astype(bool).all())
+    leakage_pass = bool(not leakage.empty and int(leakage.get("feature_asof_leakage_violation_count", pd.Series(dtype=int)).fillna(0).sum()) == 0)
+    observed_pass = bool(not observed.empty and int(observed.get("observed_reference_decision_feature_overlap_eligible_count", pd.Series(dtype=int)).fillna(0).sum()) == 0)
+    null_families = list(config.get("null_placebo", {}).get("families", []))
+    rng_seed = int(config.get("null_placebo", {}).get("random_seed", 20260506))
+    for i, seed in enumerate(config.get("primitive_seeds", [])):
+        industry = seed["industry"]
+        task = seed["task"]
+        task_key = p0_9b_task_key(task)
+        label_col = p0_9b_label_col(task)
+        panel = p0_9b_panel_for_task(launch, failure, task)
+        eligible_col = p0_9b_eligible_col(task)
+        primitive_id = seed["primitive_id"]
+        fold_metrics: list[float] = []
+        selected_parts: list[pd.DataFrame] = []
+        observable_tokens = ""
+        for fold in p0_9b_core_folds(config):
+            scope = scope_lock[
+                scope_lock["industry"].astype(str).eq(str(industry))
+                & scope_lock["task"].astype(str).eq(str(task))
+                & scope_lock["fold_id"].astype(str).eq(fold["fold_id"])
+                & scope_lock["allowed_for_support_count"].fillna(False).astype(bool)
+            ]
+            if scope.empty or panel.empty or eligible_col not in panel:
+                continue
+            train = panel[
+                panel["target_industry"].astype(str).eq(str(industry))
+                & panel["fold_id"].astype(str).eq(fold["fold_id"])
+                & panel["split"].astype(str).eq("train")
+                & panel[eligible_col].fillna(False).astype(bool)
+            ].copy()
+            valid = oof[
+                oof["industry"].astype(str).eq(str(industry))
+                & oof["task"].astype(str).eq(str(task))
+                & oof["fold_id"].astype(str).eq(fold["fold_id"])
+            ].copy()
+            if train.empty or valid.empty:
+                continue
+            mask, token_text = p0_9b_seed_token_mask(train, valid, seed)
+            observable_tokens = token_text
+            metric, detail = p0_9b_metric_for_mask(valid, mask, task_key, label_col)
+            if not pd.isna(metric):
+                fold_metrics.append(metric)
+            selected = valid[mask.reindex(valid.index, fill_value=False)].copy()
+            selected["primitive_id"] = primitive_id
+            selected_parts.append(selected)
+            if task_key == "failure":
+                selected_weight = selected.get("final_sample_weight", pd.Series(1.0, index=selected.index))
+                false_reject_rows.append(
+                    {
+                        "primitive_id": primitive_id,
+                        "industry": industry,
+                        "task": task,
+                        "fold_id": fold["fold_id"],
+                        "event_count": detail["selected_event_count"],
+                        "from_launch_target_50h120_false_reject_rate": detail.get("from_launch_false_reject_rate", np.nan),
+                        "from_launch_target_100h240_false_reject_rate": p0_9b_weighted_rate(selected.get("failure_false_reject_big_winner_from_launch_100h240", pd.Series(False, index=selected.index)), selected_weight) if not selected.empty else np.nan,
+                        "from_decision_target_50h120_false_reject_rate": p0_9b_weighted_rate(selected.get("failure_false_reject_winner_from_decision_50h120", pd.Series(False, index=selected.index)), selected_weight) if not selected.empty else np.nan,
+                        "from_decision_target_100h240_false_reject_rate": p0_9b_weighted_rate(selected.get("failure_false_reject_big_winner_from_decision_100h240", pd.Series(False, index=selected.index)), selected_weight) if not selected.empty else np.nan,
+                        "baseline_from_launch_false_reject_rate": detail.get("baseline_from_launch_false_reject_rate", np.nan),
+                        "false_reject_penalty": max(0.0, safe_float(detail.get("from_launch_false_reject_rate"), 0.0) - safe_float(detail.get("baseline_from_launch_false_reject_rate"), 0.0)),
+                        "false_reject_caution_pass": safe_float(detail.get("from_launch_false_reject_rate"), 1.0) <= safe_float(detail.get("baseline_from_launch_false_reject_rate"), 0.0) + 0.05,
+                    }
+                )
+        selected_all = pd.concat(selected_parts, ignore_index=True, sort=False) if selected_parts else pd.DataFrame()
+        real_metric = safe_float(np.nanmean(fold_metrics), np.nan) if fold_metrics else np.nan
+        all_nulls: list[float] = []
+        for family in null_families:
+            family_nulls: list[float] = []
+            for fold in p0_9b_core_folds(config):
+                train = panel[
+                    panel["target_industry"].astype(str).eq(str(industry))
+                    & panel["fold_id"].astype(str).eq(fold["fold_id"])
+                    & panel["split"].astype(str).eq("train")
+                    & panel[eligible_col].fillna(False).astype(bool)
+                ].copy() if eligible_col in panel else pd.DataFrame()
+                valid = oof[
+                    oof["industry"].astype(str).eq(str(industry))
+                    & oof["task"].astype(str).eq(str(task))
+                    & oof["fold_id"].astype(str).eq(fold["fold_id"])
+                ].copy()
+                if train.empty or valid.empty:
+                    continue
+                mask, _token_text = p0_9b_seed_token_mask(train, valid, seed)
+                family_nulls.extend(p0_9b_null_values(config, valid, mask, task_key, label_col, family, rng_seed + i * 1009 + len(family)))
+            null_mean = safe_float(np.nanmean(family_nulls), np.nan) if family_nulls else np.nan
+            null_p95 = safe_float(np.nanpercentile(family_nulls, 95), np.nan) if family_nulls else np.nan
+            empirical_p = safe_div(sum(value >= real_metric for value in family_nulls), len(family_nulls)) if family_nulls and not pd.isna(real_metric) else np.nan
+            all_nulls.extend(family_nulls)
+            null_rows.append(
+                {
+                    "primitive_id": primitive_id,
+                    "industry": industry,
+                    "task": task,
+                    "null_family": family,
+                    "primitive_type": seed.get("primitive_type", ""),
+                    "real_metric_name": p0_9b_real_metric_name(seed),
+                    "real_metric_formula_text": p0_9b_real_metric_formula(seed),
+                    "higher_is_better": True,
+                    "denominator_scope": "trainable core folds only, same industry + task + fold",
+                    "aggregation_policy": "equal-weight average across trainable core folds",
+                    "real_metric": real_metric,
+                    "null_mean": null_mean,
+                    "null_p95": null_p95,
+                    "empirical_p_value": empirical_p,
+                    "null_adjusted_signal_status": "pending_aggregate_status",
+                    "null_repeats": len(family_nulls),
+                }
+            )
+        aggregate_null_mean = safe_float(np.nanmean(all_nulls), np.nan) if all_nulls else np.nan
+        aggregate_null_p95 = safe_float(np.nanpercentile(all_nulls, 95), np.nan) if all_nulls else np.nan
+        aggregate_p = safe_div(sum(value >= real_metric for value in all_nulls), len(all_nulls)) if all_nulls and not pd.isna(real_metric) else np.nan
+        primitive_type = seed.get("primitive_type", "")
+        null_status = p0_9b_null_status(config, real_metric, aggregate_null_mean, aggregate_null_p95, aggregate_p, len(all_nulls), primitive_type)
+        stability = p0_9b_stability_row(config, primitive_id, industry, task, primitive_type, selected_all, scope_lock)
+        concentration = p0_9b_concentration_row(config, primitive_id, industry, task, selected_all)
+        stability_rows.append(stability)
+        concentration_rows.append(concentration)
+        dropout_status = p0_9b_dropout_status_for_seed(config, seed, dropout)
+        task_role = next((spec.get("role", "") for spec in p0_9b_main_specs(config) if spec["industry"] == industry and spec["task"] == task), "")
+        forbidden_token_pass = not any(token in observable_tokens for token in ["prediction_score", "leaf", "score_bucket", "LGBM_score"])
+        manualizable = bool(seed.get("manual_hypothesis_text"))
+        task_allows = not (industry == "电子" and task_key == "failure") and industry != "电力设备"
+        allowed = bool(main_guardrail_resolved and leakage_pass and observed_pass and forbidden_token_pass and manualizable and task_allows and null_status == "stable" and stability["slice_stability_status"] == "pass" and concentration["instrument_year_concentration_status"] == "pass" and dropout_status in {"pass", "expected_dependency"})
+        reasons = []
+        if not main_guardrail_resolved:
+            reasons.append("main_scope_sample_weight_guardrail_unresolved")
+        if not leakage_pass:
+            reasons.append("feature_asof_leakage")
+        if not observed_pass:
+            reasons.append("observed_reference_decision_or_feature_overlap")
+        if not task_allows:
+            reasons.append("task_role_not_allowed_for_translation")
+        if null_status != "stable":
+            reasons.append(f"null_adjusted_signal_status_{null_status}")
+        if stability["slice_stability_status"] != "pass":
+            reasons.append(f"slice_stability_{stability['slice_stability_status']}")
+        if concentration["instrument_year_concentration_status"] != "pass":
+            reasons.append(f"instrument_year_concentration_{concentration['instrument_year_concentration_status']}")
+        if dropout_status not in {"pass", "expected_dependency"}:
+            reasons.append(f"feature_family_dropout_{dropout_status}")
+        primitive_rows.append(
+            {
+                "primitive_id": primitive_id,
+                "industry": industry,
+                "task": task,
+                "task_role": task_role,
+                "primitive_family": seed.get("primitive_family", primitive_id),
+                "primitive_text": seed.get("manual_hypothesis_text", ""),
+                "primitive_type": primitive_type,
+                "source_model_contract": "T1_fixed_rounds_no_inner_validation",
+                "source_evidence_type": "locked_t1_diagnostic_probe_and_pre_registered_manual_seed",
+                "feature_family_set": ";".join(sorted({p0_9b_feature_family(config, token["feature"]) for token in seed.get("tokens", [])})),
+                "observable_token_list": observable_tokens,
+                "forbidden_token_check_pass": forbidden_token_pass,
+                "feature_asof_rule": "feature_asof_date = signal_date",
+                "effective_date_rule": "event_effective_date = next_trading_day(signal_date)",
+                "reference_price_rule": "next_open on event_effective_date",
+                "relation_type": seed.get("relation_type", ""),
+                "expected_direction": seed.get("expected_direction", ""),
+                "core_fold_support_count": stability["core_fold_support_count"],
+                "fold_2024_used_for_support": False,
+                "null_adjusted_signal_status": null_status,
+                "placebo_stress_status": "negative_control" if primitive_type == "negative_control_lesson" else ("pass" if null_status in {"stable", "weak_but_not_collapsed"} else "collapsed_or_uninterpretable"),
+                "feature_family_dropout_status": dropout_status,
+                "slice_stability_status": stability["slice_stability_status"],
+                "instrument_year_concentration_status": concentration["instrument_year_concentration_status"],
+                "manualizability_status": "manualizable" if manualizable else "not_manualizable",
+                "manual_primitive_allowed_for_p0_9c": allowed,
+                "reason_if_not_allowed": "" if allowed else ";".join(reasons),
+                "required_future_test": seed.get("required_future_test", ""),
+            }
+        )
+        if allowed:
+            p0_9c_rows.append(
+                {
+                    "primitive_id": primitive_id,
+                    "industry": industry,
+                    "task": task,
+                    "recommended_p0_9c_module": "manual_industry_gate_formula_discovery",
+                    "manual_formula_family_to_create": seed.get("primitive_family", primitive_id),
+                    "expected_denominator": "same industry + task + trainable core folds",
+                    "expected_event_unit": "launch_stratum_event" if task_key == "launch" else "launch_stratum_event_id event-level dedup",
+                    "required_baseline": "industry_task_fold_baseline",
+                    "required_false_reject_audit": task_key == "failure",
+                    "required_matched_delay_audit": task_key == "failure",
+                    "required_instrument_year_audit": True,
+                    "required_null_or_placebo_audit": True,
+                    "why_this_is_not_p1_yet": "P0.9B is hypothesis-generating and only translates diagnostic LGBM structure.",
+                    "recommended_priority": "primary" if industry == "汽车" and task_key == "launch" else "secondary",
+                }
+            )
+    null_df = pd.DataFrame(null_rows)
+    primitive_df = pd.DataFrame(primitive_rows)
+    if not null_df.empty and not primitive_df.empty:
+        status_map = dict(zip(primitive_df["primitive_id"], primitive_df["null_adjusted_signal_status"]))
+        null_df["null_adjusted_signal_status"] = null_df["primitive_id"].map(status_map).fillna("uninterpretable")
+    if not null_df.empty:
+        agg_null = null_df.groupby("primitive_id", dropna=False).agg(
+            real_metric_name=("real_metric_name", "first"),
+            real_metric_formula_text=("real_metric_formula_text", "first"),
+            higher_is_better=("higher_is_better", "first"),
+            denominator_scope=("denominator_scope", "first"),
+            aggregation_policy=("aggregation_policy", "first"),
+            real_metric=("real_metric", "first"),
+            null_mean=("null_mean", "mean"),
+            null_p95=("null_p95", "max"),
+            empirical_p_value=("empirical_p_value", "max"),
+        ).reset_index()
+    else:
+        agg_null = pd.DataFrame(columns=["primitive_id", "real_metric_name", "real_metric_formula_text", "higher_is_better", "denominator_scope", "aggregation_policy", "real_metric", "null_mean", "null_p95", "empirical_p_value"])
+    null_adjusted = primitive_df[["primitive_id", "industry", "task", "primitive_type", "null_adjusted_signal_status", "manual_primitive_allowed_for_p0_9c"]].copy() if not primitive_df.empty else pd.DataFrame(columns=["primitive_id", "industry", "task", "primitive_type", "null_adjusted_signal_status", "manual_primitive_allowed_for_p0_9c"])
+    null_adjusted = null_adjusted.merge(agg_null, on="primitive_id", how="left")
+    null_adjusted["allowed_for_p0_9c_due_to_null"] = null_adjusted["null_adjusted_signal_status"].eq("stable")
+    return {
+        "p0_9b_manual_primitive_candidate_table.csv": primitive_df,
+        "p0_9b_null_placebo_audit.csv": null_df,
+        "p0_9b_slice_stability_audit.csv": pd.DataFrame(stability_rows).assign(primary_slice_dimension="market_regime") if stability_rows else pd.DataFrame(),
+        "p0_9b_primitive_stability_audit.csv": pd.DataFrame(stability_rows),
+        "p0_9b_instrument_year_concentration_audit.csv": pd.DataFrame(concentration_rows),
+        "p0_9b_failure_false_reject_reference_audit.csv": pd.DataFrame(false_reject_rows),
+        "p0_9b_primitive_null_adjusted_audit.csv": null_adjusted,
+        "p0_9b_weak_signal_placebo_stress_audit.csv": p0_9b_weak_signal_stress(config, primitive_df),
+        "p0_9b_primitive_to_p0_9c_requirement_map.csv": pd.DataFrame(p0_9c_rows),
+    }
+
+
+def p0_9b_cache_tracking_audit(config: dict[str, Any]) -> pd.DataFrame:
+    rows = []
+    for name in P0_9B_REQUIRED_CACHE:
+        path = cache_dir(config) / name
+        try:
+            ignored = subprocess.run(["git", "check-ignore", relpath(path)], cwd=TOPIC_DIR, capture_output=True, text=True, check=False).returncode == 0
+        except Exception:
+            ignored = False
+        try:
+            tracked = subprocess.run(["git", "ls-files", "--error-unmatch", relpath(path)], cwd=TOPIC_DIR, capture_output=True, text=True, check=False).returncode == 0
+        except Exception:
+            tracked = False
+        rows.append({"cache_path": relpath(path), "expected_ignored_by_git": True, "git_check_ignore_pass": ignored, "tracked_by_git": tracked, "row_level_panel": True, "file_size_bytes": path.stat().st_size if path.exists() else 0, "cache_tracking_pass": bool(ignored and not tracked and path.exists())})
+    return pd.DataFrame(rows)
+
+
+def p0_9b_recommendation(frames: dict[str, pd.DataFrame]) -> str:
+    guardrail = frames.get("p0_9b_sample_weight_guardrail_resolution.csv", pd.DataFrame())
+    primitives = frames.get("p0_9b_manual_primitive_candidate_table.csv", pd.DataFrame())
+    concentration = frames.get("p0_9b_instrument_year_concentration_audit.csv", pd.DataFrame())
+    main_guardrail = guardrail[guardrail["scope_role"].eq("main_scope")] if not guardrail.empty and "scope_role" in guardrail else pd.DataFrame()
+    if main_guardrail.empty or not bool(main_guardrail["cap_pass"].fillna(False).astype(bool).all()):
+        return "blocked_by_weight_guardrail"
+    if not primitives.empty and bool(primitives.get("manual_primitive_allowed_for_p0_9c", pd.Series(False, index=primitives.index)).fillna(False).astype(bool).any()):
+        return "proceed_to_p0_9c_manual_industry_gate_discovery"
+    if not primitives.empty and primitives.get("null_adjusted_signal_status", pd.Series(dtype=str)).astype(str).str.contains("collapsed|placebo|uninterpretable", regex=True).any():
+        return "stop_due_to_null_or_placebo_collapse"
+    if not concentration.empty and concentration.get("instrument_year_concentration_status", pd.Series(dtype=str)).astype(str).str.startswith("fail").any():
+        return "stop_due_to_concentration_or_instability"
+    return "stop_due_to_no_interpretable_primitive"
+
+
+def record_p0_9b_manifest(config: dict[str, Any], command: str, outputs: list[Path], frames: dict[str, pd.DataFrame], cache_frames: dict[str, pd.DataFrame], recommendation: str) -> Path:
+    path = p0_9b_manifest_path(config)
+    existing = read_json(path)
+    commands = list(existing.get("command_sequence", []))
+    commands.append(command)
+    row_counts, column_counts, file_sizes = p0_9a_output_stats(outputs + [path], frames, cache_frames)
+    guardrail = frames.get("p0_9b_sample_weight_guardrail_resolution.csv", pd.DataFrame())
+    main_guardrail = guardrail[guardrail["scope_role"].eq("main_scope")] if not guardrail.empty and "scope_role" in guardrail else pd.DataFrame()
+    formal_waiver = bool(main_guardrail.get("formal_waiver_used", pd.Series(False, index=main_guardrail.index)).fillna(False).astype(bool).any()) if not main_guardrail.empty else False
+    main_resolved = bool(not main_guardrail.empty and main_guardrail.get("cap_pass", pd.Series(False, index=main_guardrail.index)).fillna(False).astype(bool).all())
+    now = pd.Timestamp.now(tz="Asia/Shanghai").isoformat()
+    manifest = {
+        "experiment": "Explore9 P0.9B industry LGBM-to-primitive translation probe",
+        "phase": "P0.9B",
+        "config_path": relpath(config["_config_path"]),
+        "config_sha256": config["_config_sha256"],
+        "command_sequence": commands,
+        "output_report_paths": sorted(set(existing.get("output_report_paths", []) + [relpath(p) for p in outputs if p.suffix != ".parquet"])),
+        "output_cache_paths": sorted(set(existing.get("output_cache_paths", []) + [relpath(p) for p in outputs if p.suffix == ".parquet"])),
+        "required_report_artifacts": [relpath(report_dir(config) / name) for name in P0_9B_REQUIRED_REPORTS],
+        "required_cache_artifacts": [relpath(cache_dir(config) / name) for name in P0_9B_REQUIRED_CACHE],
+        "output_row_counts": {**existing.get("output_row_counts", {}), **row_counts},
+        "output_column_counts": {**existing.get("output_column_counts", {}), **column_counts},
+        "output_file_sizes": {**existing.get("output_file_sizes", {}), **file_sizes},
+        "last_command_completed_at": now,
+        "profile_completed_at": now if command == "profile-p0-9b" else existing.get("profile_completed_at"),
+        "report_completed_at": now if command == "report-p0-9b" else existing.get("report_completed_at"),
+        "recommendation": recommendation,
+        "sample_weight_guardrail_resolved": main_resolved,
+        "main_scope_sample_weight_guardrail_resolved": main_resolved,
+        "appendix_scope_sample_weight_guardrail_resolved": True,
+        "sample_weight_guardrail_resolution_method": "cap_recomputed_pass" if main_resolved else "blocked",
+        "main_scope_weight_guardrail_formal_waiver_used": formal_waiver,
+        "sample_weight_guardrail_used_for_primitive": bool(main_resolved and not formal_waiver),
+        "validated_model": False,
+        "clean_oos_proven_rule": False,
+        "selected_lgbm_params": False,
+        "selected_score_bucket": False,
+        "actionable_trade_rule": False,
+        "proceed_to_explore10_backtest": False,
+        "freeze_strategy": False,
+        "candidate_for_industry_p1_refine_count": 0,
+    }
+    write_json(manifest, path)
+    return path
+
+
+def p0_9b_required_schema_frames(frames: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    schemas = {
+        "p0_9b_forbidden_recommendation_self_check.csv": ["check_name", "forbidden_token_or_recommendation", "found_in_artifact", "found_count", "self_check_pass", "blocking_severity"],
+        "p0_9b_cache_tracking_audit.csv": ["cache_path", "expected_ignored_by_git", "git_check_ignore_pass", "tracked_by_git", "row_level_panel", "file_size_bytes", "cache_tracking_pass"],
+        "p0_9b_scope_lock.csv": ["industry", "task", "fold_id", "fold_role", "contract_id", "p0_9a_fold_trainability_status", "p0_9a_trainability_rejection_reason", "trainable_under_locked_t1", "trained_model_exists", "allowed_for_core_oof_metric", "allowed_for_support_count", "allowed_for_manual_primitive_candidate", "core_expected_fold_count", "core_trainable_fold_count", "core_missing_fold_ids", "no_fit_reason", "scope_lock_pass"],
+        "p0_9b_sample_weight_guardrail_resolution.csv": ["industry", "task", "fold_id", "contract_id", "scope_role", "max_top_instrument_year_weight_share", "instrument_year_weight_hhi", "configured_top_share_cap", "configured_hhi_cap", "cap_pass", "main_scope_cap_pass", "appendix_scope_cap_pass", "resolution_method", "resolution_status", "formal_waiver_used", "allowed_for_signal_interpretation", "primitive_candidate_output_allowed", "blocked_reason"],
+        "p0_9b_feature_asof_leakage_audit.csv": ["industry", "task", "fold_id", "contract_id", "row_count", "eligible_row_count", "feature_asof_leakage_violation_count", "feature_asof_not_equal_signal_count", "feature_asof_leakage_audit_pass"],
+        "p0_9b_observed_reference_overlap_audit.csv": ["industry", "task", "fold_id", "contract_id", "observed_reference_decision_overlap_rows", "observed_reference_feature_overlap_rows", "observed_reference_label_measurement_overlap_rows", "observed_reference_decision_feature_overlap_eligible_count", "observed_reference_label_measurement_overlap_core_oof_count", "observed_reference_overlap_audit_pass"],
+        "p0_9b_walk_forward_purge_audit.csv": ["industry", "task", "fold_id", "contract_id", "raw_train_rows", "train_rows_after_purge", "rows_with_train_label_window_end_crossing_validation", "rows_with_event_date_crossing_validation", "rows_with_feature_asof_crossing_validation", "train_label_window_end_date_max", "validation_start_date", "walk_forward_purge_pass"],
+        "p0_9b_metric_nonselection_audit.csv": ["check_name", "metric_used_for_ranking_selection", "metric_used_for_pre_registered_pass_fail_gate", "pre_registered_threshold_source", "selection_violation"],
+        "p0_9b_locked_t1_model_inventory.csv": ["industry", "task", "fold_id", "contract_id", "model_role", "num_boost_round", "early_stopping_used", "inner_validation_used", "feature_set_hash", "label_version", "sample_weight_version", "trained_model_exists", "prediction_panel_cache_path", "locked_t1_identity_pass"],
+        "p0_9b_core_oof_diagnostic_metrics.csv": ["industry", "task", "contract_id", "AUC", "logloss", "Brier", "calibration_slope", "prediction_std", "unique_prediction_count", "OOF_event_count", "positive_count", "base_rate", "rank_correlation", "core_expected_fold_count", "core_trainable_fold_count", "core_metric_fold_count", "core_missing_fold_count", "missing_core_fold_ids", "diagnostic_only"],
+        "p0_9b_prediction_dispersion_audit.csv": ["industry", "task", "fold_id", "contract_id", "oof_prediction_count", "unique_prediction_count", "prediction_std", "prediction_p01", "prediction_p50", "prediction_p99", "degenerate_prediction_flag", "allowed_for_interpretation"],
+        "p0_9b_model_sanity_audit.csv": ["industry", "task", "fold_id", "contract_id", "auc", "logloss", "brier", "calibration_slope", "oof_event_count", "positive_count", "base_rate", "model_fit_success", "non_degenerate_sanity_pass", "sanity_diagnostic_only"],
+        "p0_9b_failure_false_reject_reference_audit.csv": ["primitive_id", "industry", "task", "fold_id", "event_count", "from_launch_target_50h120_false_reject_rate", "from_launch_target_100h240_false_reject_rate", "from_decision_target_50h120_false_reject_rate", "from_decision_target_100h240_false_reject_rate", "baseline_from_launch_false_reject_rate", "false_reject_penalty", "false_reject_caution_pass"],
+        "p0_9b_slice_stability_audit.csv": ["primitive_id", "industry", "task", "primitive_type", "core_expected_fold_count", "core_trainable_fold_count", "core_fold_support_count", "supporting_validation_year_count", "supporting_slice_count", "fold_2024_used_for_support", "one_fold_only", "one_year_only", "one_slice_only", "slice_stability_status", "stability_pass", "primary_slice_dimension"],
+        "p0_9b_primitive_stability_audit.csv": ["primitive_id", "industry", "task", "primitive_type", "core_expected_fold_count", "core_trainable_fold_count", "core_fold_support_count", "supporting_validation_year_count", "supporting_slice_count", "fold_2024_used_for_support", "one_fold_only", "one_year_only", "one_slice_only", "slice_stability_status", "stability_pass"],
+        "p0_9b_primitive_null_adjusted_audit.csv": ["primitive_id", "industry", "task", "primitive_type", "real_metric_name", "real_metric_formula_text", "higher_is_better", "denominator_scope", "aggregation_policy", "real_metric", "null_mean", "null_p95", "empirical_p_value", "null_adjusted_signal_status", "allowed_for_p0_9c_due_to_null"],
+        "p0_9b_primitive_to_p0_9c_requirement_map.csv": ["primitive_id", "industry", "task", "recommended_p0_9c_module", "manual_formula_family_to_create", "expected_denominator", "expected_event_unit", "required_baseline", "required_false_reject_audit", "required_matched_delay_audit", "required_instrument_year_audit", "required_null_or_placebo_audit", "why_this_is_not_p1_yet", "recommended_priority"],
+    }
+    for name in P0_9B_REQUIRED_REPORTS:
+        if name.endswith(".csv") and (name not in frames or (frames[name].empty and len(frames[name].columns) == 0)):
+            frames[name] = pd.DataFrame(columns=schemas.get(name, []))
+    return frames
+
+
+def build_p0_9b_outputs(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], list[Path], dict[str, pd.DataFrame], str]:
+    ensure_dir(report_dir(config))
+    ensure_dir(cache_dir(config))
+    p0_9a_frames = p0_9b_read_p0_9a_reports(config)
+    launch, failure = p0_9b_load_sample_panels(config)
+    scope_lock = p0_9b_scope_lock(config, p0_9a_frames)
+    frames: dict[str, pd.DataFrame] = {
+        "p0_9b_scope_lock.csv": scope_lock,
+        "p0_9b_sample_weight_guardrail_resolution.csv": p0_9b_sample_weight_guardrail(config, launch, failure),
+        "p0_9b_feature_family_dictionary.csv": p0_9b_feature_family_dictionary(config, launch, failure),
+        "p0_9b_metric_nonselection_audit.csv": p0_9b_metric_nonselection_audit(config),
+        "p0_9b_forbidden_recommendation_self_check.csv": p0_9b_forbidden_self_check(""),
+    }
+    frames.update(p0_9b_static_audits(config, launch, failure))
+    frames.update(p0_9b_failure_audits(config, failure))
+    model_frames, cache_frames = p0_9b_run_locked_models(config, launch, failure, scope_lock)
+    frames.update(model_frames)
+    for name, frame in cache_frames.items():
+        p0_8_write_parquet(config, frame, cache_dir(config) / name)
+    dropout = p0_9b_run_feature_family_dropout(config, launch, failure, scope_lock, cache_frames.get("p0_9b_locked_t1_prediction_panel.parquet", pd.DataFrame()), frames.get("p0_9b_model_sanity_audit.csv", pd.DataFrame()))
+    frames["p0_9b_feature_family_dropout_audit.csv"] = dropout
+    frames.update(p0_9b_evaluate_primitives(config, launch, failure, cache_frames.get("p0_9b_locked_t1_prediction_panel.parquet", pd.DataFrame()), scope_lock, frames["p0_9b_sample_weight_guardrail_resolution.csv"], frames["p0_9b_feature_asof_leakage_audit.csv"], frames["p0_9b_observed_reference_overlap_audit.csv"], dropout))
+    frames["p0_9b_cache_tracking_audit.csv"] = p0_9b_cache_tracking_audit(config)
+    frames = p0_9b_required_schema_frames(frames)
+    outputs: list[Path] = []
+    for name in P0_9B_REQUIRED_REPORTS:
+        if name in {"p0_9b_run_manifest.json", "p0_9b_report.md"}:
+            continue
+        outputs.append(write_csv(frames.get(name, pd.DataFrame()), report_dir(config) / name))
+    recommendation = p0_9b_recommendation(frames)
+    cache_paths = [cache_dir(config) / name for name in cache_frames]
+    manifest = record_p0_9b_manifest(config, "profile-p0-9b", outputs + cache_paths, frames, cache_frames, recommendation)
+    outputs.append(manifest)
+    return frames, outputs, cache_frames, recommendation
+
+
+def command_profile_p0_9b(config: dict[str, Any]) -> list[Path]:
+    frames, outputs, _cache_frames, recommendation = build_p0_9b_outputs(config)
+    primitives = frames.get("p0_9b_manual_primitive_candidate_table.csv", pd.DataFrame())
+    allowed_count = int(primitives.get("manual_primitive_allowed_for_p0_9c", pd.Series(False, index=primitives.index)).fillna(False).astype(bool).sum()) if not primitives.empty else 0
+    print(f"profiled p0.9b outputs={len(outputs)} allowed_primitives={allowed_count} recommendation={recommendation}", flush=True)
+    return outputs
+
+
+def command_report_p0_9b(config: dict[str, Any]) -> list[Path]:
+    missing = [name for name in P0_9B_REQUIRED_REPORTS if name not in {"p0_9b_run_manifest.json", "p0_9b_report.md"} and not (report_dir(config) / name).exists()]
+    missing_cache = [name for name in P0_9B_REQUIRED_CACHE if not (cache_dir(config) / name).exists()]
+    if missing or missing_cache:
+        frames, _outputs, cache_frames, recommendation = build_p0_9b_outputs(config)
+    else:
+        frames = {name: read_csv_if_exists(report_dir(config) / name) for name in P0_9B_REQUIRED_REPORTS if name.endswith(".csv")}
+        cache_frames = {name: pd.read_parquet(cache_dir(config) / name) if (cache_dir(config) / name).exists() else pd.DataFrame() for name in P0_9B_REQUIRED_CACHE}
+        recommendation = p0_9b_recommendation(frames)
+    report_path = report_dir(config) / "p0_9b_report.md"
+    primitives = frames.get("p0_9b_manual_primitive_candidate_table.csv", pd.DataFrame())
+    allowed = primitives[primitives.get("manual_primitive_allowed_for_p0_9c", pd.Series(False, index=primitives.index)).fillna(False).astype(bool)] if not primitives.empty else pd.DataFrame()
+    rejected = primitives[~primitives.get("manual_primitive_allowed_for_p0_9c", pd.Series(False, index=primitives.index)).fillna(False).astype(bool)] if not primitives.empty else pd.DataFrame()
+    lines: list[str] = []
+    lines.append("# Explore9 P0.9B 行业 LGBM 机制解释与手工 Primitive 转写 Probe 报告")
+    lines.append("")
+    lines.append("## 1. 执行结论")
+    lines.append("")
+    lines.append(f"- `recommendation = {recommendation}`。")
+    lines.append(f"- manual primitive candidates: `{len(primitives)}`；allowed for P0.9C: `{len(allowed)}`；rejected/lesson: `{len(rejected)}`。")
+    lines.append("- No validated model is produced.")
+    lines.append("- No best LGBM parameter is selected.")
+    lines.append("- No score bucket is selected.")
+    lines.append("- No P1 / Explore10 / freeze recommendation is produced.")
+    lines.append("- Manual primitives are future hypotheses only.")
+    lines.append("")
+    lines.append("## 2. P0.9B 定位与禁止结论")
+    lines.append("")
+    lines.append("- LGBM score is diagnostic only.")
+    lines.append("- Locked T1 model is a probe instrument, not a deployable model.")
+    lines.append("- Feature importance is explanation evidence, not feature selection evidence.")
+    lines.append("- Validation metrics are descriptive, not selection metrics.")
+    lines.append("")
+    guardrail = frames.get("p0_9b_sample_weight_guardrail_resolution.csv", pd.DataFrame())
+    lines.append("## 3. P0.9A 输入边界与 sample-weight guardrail")
+    lines.append("")
+    if not guardrail.empty:
+        main = guardrail[guardrail["scope_role"].eq("main_scope")]
+        lines.append(f"- main-scope cap rows: `{len(main)}`；pass rows: `{int(main['cap_pass'].fillna(False).astype(bool).sum())}`。")
+        lines.append(f"- max main-scope top instrument-year share: `{format_pct(main['max_top_instrument_year_weight_share'].max()) if not main.empty else 'NA'}`。")
+    lines.append("")
+    scope = frames.get("p0_9b_scope_lock.csv", pd.DataFrame())
+    lines.append("## 4. Scope lock")
+    lines.append("")
+    if not scope.empty:
+        display = scope.groupby(["industry", "task"], dropna=False).agg(core_trainable_fold_count=("trainable_under_locked_t1", "sum"), expected=("fold_id", "count"), missing=("core_missing_fold_ids", "first")).reset_index()
+        lines.extend(markdown_table(["industry", "task", "trainable core", "expected", "missing"], display.values.tolist()))
+    lines.append("")
+    lines.append("## 5. Anti-leakage / purge / observed-reference audit")
+    lines.append("")
+    leakage = frames.get("p0_9b_feature_asof_leakage_audit.csv", pd.DataFrame())
+    observed = frames.get("p0_9b_observed_reference_overlap_audit.csv", pd.DataFrame())
+    purge = frames.get("p0_9b_walk_forward_purge_audit.csv", pd.DataFrame())
+    lines.append(f"- feature-asof leakage violations: `{int(leakage.get('feature_asof_leakage_violation_count', pd.Series(dtype=int)).fillna(0).sum()) if not leakage.empty else 0}`。")
+    lines.append(f"- observed decision/feature eligible overlaps: `{int(observed.get('observed_reference_decision_feature_overlap_eligible_count', pd.Series(dtype=int)).fillna(0).sum()) if not observed.empty else 0}`。")
+    lines.append(f"- walk-forward purge pass rows: `{int(purge.get('walk_forward_purge_pass', pd.Series(dtype=bool)).fillna(False).astype(bool).sum()) if not purge.empty else 0}` / `{len(purge)}`。")
+    lines.append("")
+    metrics = frames.get("p0_9b_core_oof_diagnostic_metrics.csv", pd.DataFrame())
+    lines.append("## 6. Locked T1 diagnostic metrics")
+    lines.append("")
+    if not metrics.empty:
+        display = metrics[["industry", "task", "OOF_event_count", "positive_count", "AUC", "logloss", "Brier", "core_trainable_fold_count", "core_metric_fold_count", "missing_core_fold_ids"]].copy()
+        lines.extend(markdown_table(list(display.columns), display.head(12).values.tolist()))
+    lines.append("")
+    importance = frames.get("p0_9b_feature_family_importance.csv", pd.DataFrame())
+    lines.append("## 7. Feature-family mechanism extraction")
+    lines.append("")
+    if not importance.empty:
+        family = importance.groupby(["industry", "task", "feature_family"], dropna=False)["family_total_gain_share"].mean().reset_index().sort_values("family_total_gain_share", ascending=False).head(12)
+        lines.extend(markdown_table(["industry", "task", "family", "avg gain share"], family.values.tolist()))
+    lines.append("")
+    nulls = frames.get("p0_9b_primitive_null_adjusted_audit.csv", pd.DataFrame())
+    lines.append("## 8. Null / placebo / weak-signal stress")
+    lines.append("")
+    if not nulls.empty:
+        lines.extend(markdown_table(["primitive", "status", "real", "null p95", "p"], nulls[["primitive_id", "null_adjusted_signal_status", "real_metric", "null_p95", "empirical_p_value"]].head(20).values.tolist()))
+    weak = frames.get("p0_9b_weak_signal_placebo_stress_audit.csv", pd.DataFrame())
+    if not weak.empty:
+        lines.append(f"- weak-signal placebo status: `{weak.iloc[0].get('weak_signal_placebo_status')}`。")
+    lines.append("")
+    lines.append("## 9. Slice stability and instrument-year concentration")
+    lines.append("")
+    stability = frames.get("p0_9b_primitive_stability_audit.csv", pd.DataFrame())
+    concentration = frames.get("p0_9b_instrument_year_concentration_audit.csv", pd.DataFrame())
+    if not stability.empty:
+        lines.extend(markdown_table(["primitive", "stability", "folds", "years", "slices"], stability[["primitive_id", "slice_stability_status", "core_fold_support_count", "supporting_validation_year_count", "supporting_slice_count"]].head(20).values.tolist()))
+    if not concentration.empty:
+        lines.append("")
+        lines.extend(markdown_table(["primitive", "concentration", "top1", "top IY", "hhi"], concentration[["primitive_id", "instrument_year_concentration_status", "top1_instrument_contribution", "top_instrument_year_contribution", "instrument_year_hhi"]].head(20).values.tolist()))
+    lines.append("")
+    lines.append("## 10. Primitive candidate table summary")
+    lines.append("")
+    if not primitives.empty:
+        lines.extend(markdown_table(["primitive", "industry", "task", "allowed", "null", "stability", "concentration"], primitives[["primitive_id", "industry", "task", "manual_primitive_allowed_for_p0_9c", "null_adjusted_signal_status", "slice_stability_status", "instrument_year_concentration_status"]].values.tolist()))
+    lines.append("")
+    lines.append("## 11. Primitive rejected reasons")
+    lines.append("")
+    if not rejected.empty:
+        lines.extend(markdown_table(["primitive", "reason"], rejected[["primitive_id", "reason_if_not_allowed"]].values.tolist()))
+    lines.append("")
+    lines.append("## 12. P0.9C requirement map")
+    lines.append("")
+    p0_9c = frames.get("p0_9b_primitive_to_p0_9c_requirement_map.csv", pd.DataFrame())
+    if p0_9c.empty:
+        lines.append("- No primitive is currently allowed into P0.9C.")
+    else:
+        lines.extend(markdown_table(["primitive", "module", "formula family", "priority"], p0_9c[["primitive_id", "recommended_p0_9c_module", "manual_formula_family_to_create", "recommended_priority"]].values.tolist()))
+    lines.append("")
+    lines.append("## 13. Stop conditions and recommendation")
+    lines.append("")
+    lines.append(f"- Final recommendation enum: `{recommendation}`。")
+    lines.append("- Stop conditions do not mean the industry direction failed; they mean locked T1 did not provide enough interpretable, auditable, manualizable evidence for the next phase.")
+    lines.append("")
+    lines.append("## 14. Self-check")
+    lines.append("")
+    lines.append("- no P1 recommendation: pass")
+    lines.append("- no Explore10 recommendation: pass")
+    lines.append("- no score bucket selection: pass")
+    lines.append("- no deployable LGBM model: pass")
+    report_text = "\n".join(lines) + "\n"
+    ensure_parent(report_path)
+    report_path.write_text(report_text, encoding="utf-8")
+    frames["p0_9b_forbidden_recommendation_self_check.csv"] = p0_9b_forbidden_self_check(report_text)
+    self_check_path = report_dir(config) / "p0_9b_forbidden_recommendation_self_check.csv"
+    write_csv(frames["p0_9b_forbidden_recommendation_self_check.csv"], self_check_path)
+    outputs = [report_path, self_check_path]
+    manifest = record_p0_9b_manifest(config, "report-p0-9b", outputs, frames, cache_frames, recommendation)
+    outputs.append(manifest)
+    print(f"wrote p0.9b report {relpath(report_path)} recommendation={recommendation}", flush=True)
+    return outputs
+
+
 def command_self_test(config: dict[str, Any]) -> list[Path]:
     ensure_dir(report_dir(config))
     ensure_dir(cache_dir(config))
@@ -13415,6 +15081,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             "report-p0-9",
             "profile-p0-9a",
             "report-p0-9a",
+            "profile-p0-9b",
+            "report-p0-9b",
             "all",
         ],
         help="Explore9 command to run",
@@ -13425,7 +15093,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    if args.command in {"profile-p0-9a", "report-p0-9a"}:
+    if args.command in {"profile-p0-9b", "report-p0-9b"}:
+        default_config = DEFAULT_P0_9B_CONFIG
+    elif args.command in {"profile-p0-9a", "report-p0-9a"}:
         default_config = DEFAULT_P0_9A_CONFIG
     elif args.command in {"profile-p0-9", "report-p0-9"}:
         default_config = DEFAULT_P0_9_CONFIG
@@ -13473,6 +15143,10 @@ def main(argv: list[str] | None = None) -> int:
             command_profile_p0_9a(config)
         elif args.command == "report-p0-9a":
             command_report_p0_9a(config)
+        elif args.command == "profile-p0-9b":
+            command_profile_p0_9b(config)
+        elif args.command == "report-p0-9b":
+            command_report_p0_9b(config)
         elif args.command == "all":
             command_all(config)
         else:

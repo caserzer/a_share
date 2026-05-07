@@ -1,0 +1,9 @@
+primitive_id,industry,task,primitive_type,core_expected_fold_count,core_trainable_fold_count,core_fold_support_count,supporting_validation_year_count,supporting_slice_count,fold_2024_used_for_support,one_fold_only,one_year_only,one_slice_only,slice_stability_status,stability_pass,primary_slice_dimension
+auto_industry_relative_strength_repair,汽车,industry_launch_winner_score_lgbm,three_way_context_primitive,4,3,0,0,0,False,True,True,True,one_fold_only,False,market_regime
+auto_volatility_expansion_not_destructive,汽车,industry_launch_winner_score_lgbm,three_way_context_primitive,4,3,0,0,0,False,True,True,True,one_fold_only,False,market_regime
+auto_industry_breadth_support,汽车,industry_launch_winner_score_lgbm,pairwise_interaction_primitive,4,3,0,0,0,False,True,True,True,one_fold_only,False,market_regime
+auto_destructive_high_vol_rank_evaporation,汽车,industry_failure_reject_score_lgbm,failure_warning_primitive,4,4,4,4,2,False,False,False,False,pass,True,market_regime
+auto_industry_breadth_failure,汽车,industry_failure_reject_score_lgbm,failure_warning_primitive,4,4,4,4,3,False,False,False,False,pass,True,market_regime
+electronics_breadth_rank_persistence,电子,industry_launch_winner_score_lgbm,pairwise_interaction_primitive,4,3,0,0,0,False,True,True,True,one_fold_only,False,market_regime
+electronics_non_late_acceleration_strength,电子,industry_launch_winner_score_lgbm,three_way_context_primitive,4,3,0,0,0,False,True,True,True,one_fold_only,False,market_regime
+electronics_failure_null_stress,电子,industry_failure_reject_score_lgbm,negative_control_lesson,4,4,4,4,3,False,False,False,False,pass,True,market_regime

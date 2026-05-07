@@ -1,0 +1,414 @@
+phase: P0.9B
+mode: industry_lgbm_to_primitive_translation_probe
+
+paths:
+  provider_uri: Explore7/data/qlib/cn_data_pit
+  fallback_provider_uri: Explore1/data/qlib/cn_data
+  fallback_provider_allowed_fields: [open, high, low, close, volume, money, factor]
+  fallback_provider_forbidden_roles:
+    - industry_membership
+    - universe_membership
+    - feature_asof_date
+    - label_source
+  universe_membership: Explore7/data/universe/pit_mcap500_mainboard_daily.csv
+  universe_qlib: Explore7/data/universe/qlib_pit_mcap500_mainboard.txt
+  industry_membership: Explore7/data/targets/pit_industry_membership.csv
+  market_targets: Explore7/data/targets/market_targets.csv
+  industry_targets: Explore7/data/targets/industry_targets.csv
+  target_history: Explore7/data/targets/target_history.csv
+  cache_dir: Explore9/outputs/p0_9b/cache
+  report_dir: Explore9/outputs/p0_9b/reports
+
+sources:
+  requirement: Explore9/requirement_p0_9b.md
+  p0_9a_reports_dir: Explore9/outputs/p0_9a/reports
+  p0_9a_cache_dir: Explore9/outputs/p0_9a/cache
+  background_reference:
+    - Explore9/outputs/p0_9a/reports/explore9_p0_9a_industry_trainability_probe_report.md
+    - Explore9/outputs/reports/explore9_p0_9_industry_lgbm_report.md
+    - Explore9/requirement_p0_9b.md
+  forbidden_result_path_patterns:
+    - Explore3/outputs/
+    - Explore4/outputs/
+    - Explore5/outputs/
+    - Explore6/outputs/
+    - Explore7/outputs/
+    - Explore8/outputs/
+
+dates:
+  data_start: "2017-01-01"
+  data_end: "2026-04-30"
+  research_start: "2017-01-01"
+  research_end: "2024-12-31"
+  observed_reference_start: "2025-01-01"
+  observed_reference_end: "2026-04-30"
+
+universe:
+  name: pit_mcap500_mainboard
+  point_in_time: true
+  membership_frequency: daily
+  qlib_instrument_file_role: data_availability_superset
+  tradable_universe_authority: daily_pit_membership
+
+industry:
+  point_in_time: true
+  missing_industry: UNKNOWN
+
+target_industries:
+  - 电子
+  - 汽车
+
+fixed_target_industries:
+  - 电子
+  - 汽车
+  - 电力设备
+
+qlib:
+  market: pit_mcap500_mainboard
+  benchmark: SH000300
+  broad_market_key: broad_market
+  freq: day
+  required_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  price_adjustment_mode: provider_ohlc_already_adjusted
+
+p0_7:
+  phase: P0.7AB
+  cache:
+    launch_episode_panel: Explore9/outputs/cache/p0_7_launch_episode_panel.parquet
+    launch_stratum_event_panel: Explore9/outputs/cache/p0_7_launch_stratum_event_panel.parquet
+    failure_filter_opportunity_panel: Explore9/outputs/cache/p0_7_failure_filter_opportunity_panel.parquet
+    failure_filter_event_panel: Explore9/outputs/cache/p0_7_failure_filter_event_panel.parquet
+
+p0_8:
+  phase: P0.8
+  cache:
+    launch_model_sample_panel: Explore9/outputs/cache/p0_8_launch_model_sample_panel.parquet
+    failure_model_sample_panel: Explore9/outputs/cache/p0_8_failure_model_sample_panel.parquet
+    failure_multi_window_event_level_dedup_panel: Explore9/outputs/cache/p0_8_failure_multi_window_event_level_dedup_panel.parquet
+
+p0_9:
+  phase: P0.9
+  feature_set_version: p0_9_industry_feature_set_v1
+  label_version: p0_9_industry_label_v1
+  sample_panel_version: p0_9_industry_sample_panel_v1
+  industry_mapping_version: pit_sw_l1_exact_name_v1
+  training_code_version: run_explore9_p0_9_v1
+
+p0_9a:
+  phase: P0.9A
+  feature_set_version: p0_9a_industry_feature_set_v1
+  label_version: p0_9a_industry_label_v1
+  sample_panel_version: p0_9a_industry_sample_panel_v1
+  training_code_version: run_explore9_p0_9a_v1
+  label_panel_reference: Explore9/outputs/cache/stock_day_label_panel.parquet
+  cache:
+    industry_launch_sample_panel: Explore9/outputs/p0_9a/cache/p0_9a_industry_launch_sample_panel.parquet
+    industry_failure_sample_panel: Explore9/outputs/p0_9a/cache/p0_9a_industry_failure_sample_panel.parquet
+    industry_trainability_probe_panel: Explore9/outputs/p0_9a/cache/p0_9a_industry_trainability_probe_panel.parquet
+    industry_model_prediction_panel: Explore9/outputs/p0_9a/cache/p0_9a_industry_model_prediction_panel.parquet
+
+p0_9b:
+  phase: P0.9B
+  feature_set_version: p0_9b_industry_feature_set_v1
+  label_version: p0_9b_industry_label_v1
+  sample_panel_version: p0_9a_sample_panel_reused_for_p0_9b
+  training_code_version: run_explore9_p0_9b_v1
+
+scope:
+  main_industry_tasks:
+    - industry: 汽车
+      task: industry_launch_winner_score_lgbm
+      role: primary_mechanism_extraction
+      contract_id: T1_fixed_rounds_no_inner_validation
+    - industry: 汽车
+      task: industry_failure_reject_score_lgbm
+      role: secondary_failure_extraction
+      contract_id: T1_fixed_rounds_no_inner_validation
+    - industry: 电子
+      task: industry_launch_winner_score_lgbm
+      role: weak_signal_diagnostic
+      contract_id: T1_fixed_rounds_no_inner_validation
+    - industry: 电子
+      task: industry_failure_reject_score_lgbm
+      role: null_placebo_stress
+      contract_id: T1_fixed_rounds_no_inner_validation
+  diagnostic_appendix_industries:
+    - 电力设备
+  appendix_allowed_for_primitive: false
+
+folds:
+  fold_2020: {train_start: "2017-01-01", train_end: "2019-12-31", validation_year: 2020, validation_start_date: "2020-01-01", validation_end_date: "2020-12-31", fold_role: core_trainability_probe}
+  fold_2021: {train_start: "2017-01-01", train_end: "2020-12-31", validation_year: 2021, validation_start_date: "2021-01-01", validation_end_date: "2021-12-31", fold_role: core_trainability_probe}
+  fold_2022: {train_start: "2017-01-01", train_end: "2021-12-31", validation_year: 2022, validation_start_date: "2022-01-01", validation_end_date: "2022-12-31", fold_role: core_trainability_probe}
+  fold_2023: {train_start: "2017-01-01", train_end: "2022-12-31", validation_year: 2023, validation_start_date: "2023-01-01", validation_end_date: "2023-12-31", fold_role: core_trainability_probe}
+  fold_2024: {train_start: "2017-01-01", train_end: "2023-12-31", validation_year: 2024, validation_start_date: "2024-01-01", validation_end_date: "2024-12-31", fold_role: robustness_trainability_audit_only}
+
+locked_t1:
+  contract_id: T1_fixed_rounds_no_inner_validation
+  inner_validation: false
+  early_stopping: false
+  outer_validation_used_for_iteration_selection: false
+  launch_num_boost_round: 64
+  failure_num_boost_round: 32
+
+contracts:
+  - contract_id: T1_fixed_rounds_no_inner_validation
+    inner_validation_mode: none
+    lgbm_training_mode: fixed_n_estimators
+    instrument_gate_profile: safe_relative
+    count_profile: safe_probe
+
+model_tasks:
+  launch:
+    enabled: true
+    model_name: industry_launch_winner_score_lgbm
+    primary_label: launch_winner_50h120
+  failure:
+    enabled: true
+    model_name: industry_failure_reject_score_lgbm
+    primary_label: failure_reject_positive_primary
+
+failure_decision_windows: [3, 5, 10]
+
+lgbm:
+  enabled: true
+  objective: binary
+  boosting_type: gbdt
+  metric: [binary_logloss, auc]
+  learning_rate: 0.05
+  num_leaves: 31
+  max_depth: 5
+  min_data_in_leaf: 50
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l1: 0.0
+  lambda_l2: 1.0
+  n_estimators: 160
+  early_stopping_rounds: 30
+  hyperparameter_search_enabled: false
+  validation_bucket_selection_allowed: false
+  n_jobs: 4
+  random_seed: 20260506
+  feature_columns:
+    - ret_rank_20d_market
+    - ret_rank_20d_industry
+    - relative_ret20_vs_benchmark
+    - relative_ret20_vs_industry
+    - money_ratio_20
+    - atr20_pct
+    - prelaunch_drawdown_120d
+    - launch_gain_from_recent_low_60d
+    - launch_gain_from_recent_low_120d
+    - close_location
+    - upper_shadow_pct
+    - lower_shadow_pct
+    - rolling_range_20d
+    - higher_low_count_20d
+    - industry_breadth_20d
+    - failure_decision_window
+  categorical_feature_columns:
+    - market_regime
+    - lifecycle_pool
+    - launch_family
+    - launch_variant
+  forbidden_feature_columns:
+    - industry
+    - industry_code
+    - target_industry_name
+
+fixed_n_estimators:
+  launch: 64
+  failure: 32
+
+sample_weight:
+  mode: episode_balanced_with_group_cap
+  group_key_date_field: event_effective_date
+  max_instrument_year_weight_share: 0.08
+  max_instrument_year_weight_hhi: 0.08
+  max_group_cap_iterations: 20
+  normalize_total_weight_per_split: true
+  output_base_sample_weight: true
+  output_final_sample_weight: true
+  sample_weight_alias: final_sample_weight
+
+feature_families:
+  ret_rank_20d_market: stock_within_industry_rank
+  ret_rank_20d_industry: stock_within_industry_rank
+  relative_ret20_vs_benchmark: industry_relative_strength
+  relative_ret20_vs_industry: industry_relative_strength
+  industry_breadth_20d: industry_breadth
+  money_ratio_20: turnover_liquidity_money
+  atr20_pct: volatility_expansion
+  prelaunch_drawdown_120d: repair_quality
+  launch_gain_from_recent_low_60d: repair_quality
+  launch_gain_from_recent_low_120d: repair_quality
+  close_location: price_location_gap
+  upper_shadow_pct: price_location_gap
+  lower_shadow_pct: price_location_gap
+  rolling_range_20d: volatility_expansion
+  higher_low_count_20d: repair_quality
+  failure_decision_window: failure_path
+  market_regime: market_regime
+  lifecycle_pool: launch_family_lifecycle
+  launch_family: launch_family_lifecycle
+  launch_variant: launch_family_lifecycle
+
+feature_family_dropouts:
+  launch:
+    - industry_relative_strength
+    - industry_breadth
+    - stock_within_industry_rank
+    - volatility_expansion
+    - repair_quality
+    - turnover_liquidity_money
+    - market_regime
+    - launch_family_lifecycle
+  failure:
+    - industry_relative_strength
+    - industry_breadth
+    - stock_within_industry_rank
+    - volatility_expansion
+    - repair_quality
+    - turnover_liquidity_money
+    - market_regime
+    - failure_path
+
+null_placebo:
+  enabled: true
+  n_repeats: 100
+  random_seed: 20260506
+  empirical_p_pass_threshold: 0.10
+  weak_empirical_p_max: 0.25
+  require_real_metric_gt_null_p95_for_stable: true
+  require_pre_registered_real_metric_name: true
+  require_real_metric_formula_text: true
+  families:
+    - label_permutation_within_industry_fold
+    - instrument_year_block_shuffle
+    - year_shuffle_within_industry
+    - feature_family_dropout_placebo
+    - weak_signal_task_placebo
+
+primitive_gate:
+  min_core_trainable_fold_count_for_p0_9c: 3
+  min_core_fold_support_count_primary: 2
+  min_supporting_validation_year_count: 2
+  min_supporting_slice_count: 2
+  min_slice_event_count: 20
+  max_top1_instrument_contribution: 0.20
+  max_top5_instrument_contribution: 0.60
+  max_top_instrument_year_contribution: 0.12
+  max_instrument_year_hhi: 0.08
+  max_weight_share_top_instrument_year: 0.08
+  require_null_not_collapsed: true
+  require_metric_nonselection_pass: true
+  require_manualizable_text: true
+  forbid_lgbm_score_or_leaf_rule: true
+
+primitive_seeds:
+  - primitive_id: auto_industry_relative_strength_repair
+    industry: 汽车
+    task: industry_launch_winner_score_lgbm
+    primitive_family: auto_industry_relative_strength_repair
+    primitive_type: three_way_context_primitive
+    expected_direction: higher_positive_rate
+    relation_type: conjunction
+    manual_hypothesis_text: 行业内相对强度改善 + 修复质量较高 + 行业宽度未恶化
+    required_future_test: P0.9C manual formula with same-industry fold baseline and null audit
+    tokens:
+      - {feature: relative_ret20_vs_industry, direction: high, quantile: 0.60}
+      - {feature: launch_gain_from_recent_low_60d, direction: high, quantile: 0.60}
+      - {feature: industry_breadth_20d, direction: high, quantile: 0.40}
+  - primitive_id: auto_volatility_expansion_not_destructive
+    industry: 汽车
+    task: industry_launch_winner_score_lgbm
+    primitive_family: auto_volatility_expansion_not_destructive
+    primitive_type: three_way_context_primitive
+    expected_direction: higher_positive_rate
+    relation_type: conjunction
+    manual_hypothesis_text: 波动扩张但非破坏性 + close location 保持 + 下影线质量不差
+    required_future_test: P0.9C volatility-quality formula with drawdown sensitivity
+    tokens:
+      - {feature: rolling_range_20d, direction: high, quantile: 0.60}
+      - {feature: close_location, direction: high, quantile: 0.50}
+      - {feature: lower_shadow_pct, direction: high, quantile: 0.40}
+  - primitive_id: auto_industry_breadth_support
+    industry: 汽车
+    task: industry_launch_winner_score_lgbm
+    primitive_family: auto_industry_breadth_support
+    primitive_type: pairwise_interaction_primitive
+    expected_direction: higher_positive_rate
+    relation_type: conjunction
+    manual_hypothesis_text: 行业宽度改善或未恶化 + 个股行业内 rank persistence
+    required_future_test: P0.9C breadth/rank formula with instrument-year audit
+    tokens:
+      - {feature: industry_breadth_20d, direction: high, quantile: 0.55}
+      - {feature: ret_rank_20d_industry, direction: high, quantile: 0.55}
+  - primitive_id: auto_destructive_high_vol_rank_evaporation
+    industry: 汽车
+    task: industry_failure_reject_score_lgbm
+    primitive_family: auto_destructive_high_vol_rank_evaporation
+    primitive_type: failure_warning_primitive
+    expected_direction: higher_failure_risk
+    relation_type: conjunction
+    manual_hypothesis_text: 高波破坏 + 行业内 rank 快速蒸发 + 修复质量转弱
+    required_future_test: P0.9C failure formula with from-launch false reject audit
+    tokens:
+      - {feature: atr20_pct, direction: high, quantile: 0.65}
+      - {feature: ret_rank_20d_industry, direction: low, quantile: 0.40}
+      - {feature: close_location, direction: low, quantile: 0.45}
+  - primitive_id: auto_industry_breadth_failure
+    industry: 汽车
+    task: industry_failure_reject_score_lgbm
+    primitive_family: auto_industry_breadth_failure
+    primitive_type: failure_warning_primitive
+    expected_direction: higher_failure_risk
+    relation_type: conjunction
+    manual_hypothesis_text: 行业宽度转弱 + 个股不能跟随 + 价格位置失守
+    required_future_test: P0.9C failure formula with matched-delay audit
+    tokens:
+      - {feature: industry_breadth_20d, direction: low, quantile: 0.45}
+      - {feature: relative_ret20_vs_industry, direction: low, quantile: 0.45}
+      - {feature: close_location, direction: low, quantile: 0.45}
+  - primitive_id: electronics_breadth_rank_persistence
+    industry: 电子
+    task: industry_launch_winner_score_lgbm
+    primitive_family: electronics_breadth_rank_persistence
+    primitive_type: pairwise_interaction_primitive
+    expected_direction: higher_positive_rate
+    relation_type: conjunction
+    manual_hypothesis_text: 行业宽度改善 + 个股 rank persistence
+    required_future_test: P0.9C electronics breadth/rank formula with weak-signal audit
+    tokens:
+      - {feature: industry_breadth_20d, direction: high, quantile: 0.55}
+      - {feature: ret_rank_20d_industry, direction: high, quantile: 0.55}
+  - primitive_id: electronics_non_late_acceleration_strength
+    industry: 电子
+    task: industry_launch_winner_score_lgbm
+    primitive_family: electronics_non_late_acceleration_strength
+    primitive_type: three_way_context_primitive
+    expected_direction: higher_positive_rate
+    relation_type: conjunction
+    manual_hypothesis_text: 强势但非 late acceleration / 非 post-target state
+    required_future_test: P0.9C electronics strength formula with lifecycle exclusion
+    tokens:
+      - {feature: relative_ret20_vs_industry, direction: high, quantile: 0.60}
+      - {feature: launch_gain_from_recent_low_120d, direction: high, quantile: 0.50}
+      - {feature: close_location, direction: high, quantile: 0.50}
+  - primitive_id: electronics_failure_null_stress
+    industry: 电子
+    task: industry_failure_reject_score_lgbm
+    primitive_family: electronics_failure_null_stress
+    primitive_type: negative_control_lesson
+    expected_direction: negative_control
+    relation_type: stress_test
+    manual_hypothesis_text: 电子 failure 只作为 weak-signal placebo stress，默认不进入 P0.9C
+    required_future_test: No P0.9C module unless null/placebo is extraordinarily stable
+    tokens:
+      - {feature: atr20_pct, direction: high, quantile: 0.65}
+      - {feature: relative_ret20_vs_industry, direction: low, quantile: 0.45}
+
+secondary_parameter_regime_appendix:
+  enabled: false
+  allowed_for_selection: false

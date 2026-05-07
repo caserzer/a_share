@@ -358,6 +358,9 @@ P0.9B 启动 main-scope signal interpretation 前必须二选一：
 ```text
 A. 修复 sample-weight group cap：
    主执行范围所有 industry-task-fold 的 main_scope_cap_pass = true；
+   resolution_method = cap_recomputed_pass；
+   allowed_for_signal_interpretation = true；
+   primitive_candidate_output_allowed = true；
 
 B. 未修复：
    phase_status = blocked_by_main_scope_weight_guardrail；
@@ -366,7 +369,18 @@ B. 未修复：
    禁止输出 manual_primitive_candidate_for_p0_9c。
 ```
 
-不得在 main-scope sample-weight cap 未处理时，把任何 main-scope feature importance、validation lift、slice stability、null-adjusted score 解释为支持 future primitive。
+`cap_threshold_formally_waived` 只能作为诊断豁免，不能作为 primitive eligibility 的解决方式：
+
+```text
+main_scope_cap_threshold_formally_waived:
+  allowed_for_signal_interpretation = false
+  primitive_candidate_output_allowed = false
+  sample_weight_guardrail_used_for_primitive = false
+  report_allowed = true
+  allowed_report_section = diagnostic_guardrail_exception_only
+```
+
+不得在 main-scope sample-weight cap 未处理或被正式豁免时，把任何 main-scope feature importance、validation lift、slice stability、null-adjusted score 解释为支持 future primitive。
 
 如果只有 appendix scope cap 失败，则报告必须写明：
 
@@ -398,7 +412,9 @@ main_scope_cap_pass
 appendix_scope_cap_pass
 resolution_method
 resolution_status
+formal_waiver_used
 allowed_for_signal_interpretation
+primitive_candidate_output_allowed
 blocked_reason
 ```
 
@@ -408,8 +424,9 @@ P0.9B manifest 必须写入：
 sample_weight_guardrail_resolved = true / false
 main_scope_sample_weight_guardrail_resolved = true / false
 appendix_scope_sample_weight_guardrail_resolved = true / false
-sample_weight_guardrail_resolution_method = cap_recomputed / cap_threshold_formally_waived / blocked
-sample_weight_guardrail_used_for_primitive = false if unresolved
+sample_weight_guardrail_resolution_method = cap_recomputed_pass / cap_threshold_formally_waived_diagnostic_only / blocked
+main_scope_weight_guardrail_formal_waiver_used = true / false
+sample_weight_guardrail_used_for_primitive = true only if main_scope_sample_weight_guardrail_resolved = true and main_scope_weight_guardrail_formal_waiver_used = false
 ```
 
 ---
@@ -503,6 +520,59 @@ fold_2020
 fold_2021
 fold_2022
 fold_2023
+```
+
+Core OOF artifact 必须显式保留四个 core fold 的 scope row。若某个行业任务在 locked T1 下某个 core fold 不可训练，例如 launch task 的早期 fold，则必须写成 no-fit audit row，而不是静默删除：
+
+```text
+core_expected_fold_count = 4
+core_trainable_fold_count = count(trainable_under_locked_t1 core folds)
+no_fit_core_fold:
+  trained_model_exists = false
+  allowed_for_core_oof_metric = false
+  allowed_for_support_count = false
+  allowed_for_manual_primitive_candidate = false
+  no_fit_reason = inherited P0.9A trainability rejection reason
+```
+
+P0.9B 的 metric table 必须同时报告：
+
+```text
+core_expected_fold_count
+core_trainable_fold_count
+core_metric_fold_count
+core_missing_fold_count
+missing_core_fold_ids
+```
+
+`core_fold_support_count` 只能统计 trainable core folds；报告不得把 3/4 trainable folds 写成 4-fold support。若 `core_trainable_fold_count < 3`，该 industry-task 只能保留 diagnostic narrative，不得输出 P0.9C primitive。
+
+Required artifact：
+
+```text
+p0_9b_scope_lock.csv
+```
+
+字段：
+
+```text
+industry
+task
+fold_id
+fold_role
+contract_id
+p0_9a_fold_trainability_status
+p0_9a_trainability_rejection_reason
+trainable_under_locked_t1
+trained_model_exists
+allowed_for_core_oof_metric
+allowed_for_support_count
+allowed_for_manual_primitive_candidate
+core_expected_fold_count
+core_trainable_fold_count
+core_missing_fold_ids
+no_fit_reason
+scope_lock_pass
 ```
 
 `fold_2024` 只能是：
@@ -844,6 +914,18 @@ p0_9b_feature_family_importance.csv
 
 ### 11.3 Feature-family dropout
 
+Feature-family dropout 是 diagnostic ablation，不是 locked T1 合同替代品。
+
+```text
+ablation_model_role = diagnostic_ablation_only
+allowed_to_replace_locked_t1 = false
+allowed_to_select_feature_family = false
+allowed_to_select_model = false
+allowed_to_select_primitive_by_metric_rank = false
+```
+
+Dropout 允许重训 ablation model 来观察机制是否完全塌缩，但 locked T1 model identity、feature set、rounds、sample-weight 规则不得被 dropout 结果反向修改。
+
 对每个主 task 至少测试：
 
 ```text
@@ -1012,11 +1094,53 @@ weak_signal_task_placebo using 电子 failure
 对于每个 primitive candidate 必须输出：
 
 ```text
+primitive_id
+primitive_type
+real_metric_name
+real_metric_formula_text
+higher_is_better
+denominator_scope
+aggregation_policy
 real_metric
 null_mean
 null_p95
 empirical_p_value
 null_adjusted_signal_status
+```
+
+`real_metric` 必须按 primitive type 预注册，禁止在看完 null 结果后切换指标：
+
+```text
+threshold_primitive / pairwise_interaction_primitive / three_way_context_primitive / sequence_context_primitive for launch:
+  real_metric_name = core_oof_weighted_positive_rate_lift_vs_industry_task_fold_baseline
+  denominator_scope = trainable core folds only, same industry + task + fold
+  aggregation_policy = equal-weight average across trainable core folds
+  higher_is_better = true
+
+failure_warning_primitive:
+  real_metric_name = core_oof_failure_lift_minus_from_launch_false_reject_penalty
+  denominator_scope = trainable core failure folds only, event-level dedup
+  aggregation_policy = equal-weight average across trainable core folds
+  formula = failure_positive_rate_lift - max(0, from_launch_false_reject_rate - baseline_from_launch_false_reject_rate)
+  higher_is_better = true
+
+negative_control_lesson:
+  real_metric_name = weak_signal_placebo_story_rate
+  manual_primitive_allowed_for_p0_9c = false
+  higher_is_better = false
+
+reject_due_to_artifact:
+  real_metric_name = not_applicable
+  null_adjusted_signal_status = uninterpretable
+  manual_primitive_allowed_for_p0_9c = false
+```
+
+若 primitive 只有 feature-family importance story，但不能形成可计算的 event denominator 与 `real_metric_formula_text`，则必须标记为：
+
+```text
+null_adjusted_signal_status = uninterpretable
+manual_primitive_allowed_for_p0_9c = false
+reason_if_not_allowed = missing_pre_registered_real_metric
 ```
 
 ### 12.1.1 Null / placebo 状态硬阈值
@@ -1516,6 +1640,145 @@ p0_9b_secondary_parameter_regime_appendix.csv
 p0_9b_diagnostic_electric_equipment_appendix.csv
 ```
 
+### 18.9 Required schema minimums
+
+以下 required artifacts 若前文没有单独字段定义，必须至少包含这些字段。
+
+`p0_9b_forbidden_recommendation_self_check.csv`：
+
+```text
+check_name
+forbidden_token_or_recommendation
+found_in_artifact
+found_count
+self_check_pass
+blocking_severity
+```
+
+`p0_9b_cache_tracking_audit.csv`：
+
+```text
+cache_path
+expected_ignored_by_git
+git_check_ignore_pass
+tracked_by_git
+row_level_panel
+file_size_bytes
+cache_tracking_pass
+```
+
+`p0_9b_locked_t1_model_inventory.csv`：
+
+```text
+industry
+task
+fold_id
+contract_id
+model_role
+num_boost_round
+early_stopping_used
+inner_validation_used
+feature_set_hash
+label_version
+sample_weight_version
+trained_model_exists
+prediction_panel_cache_path
+locked_t1_identity_pass
+```
+
+`p0_9b_prediction_dispersion_audit.csv`：
+
+```text
+industry
+task
+fold_id
+contract_id
+oof_prediction_count
+unique_prediction_count
+prediction_std
+prediction_p01
+prediction_p50
+prediction_p99
+degenerate_prediction_flag
+allowed_for_interpretation
+```
+
+`p0_9b_model_sanity_audit.csv`：
+
+```text
+industry
+task
+fold_id
+contract_id
+auc
+logloss
+brier
+calibration_slope
+oof_event_count
+positive_count
+base_rate
+model_fit_success
+non_degenerate_sanity_pass
+sanity_diagnostic_only
+```
+
+`p0_9b_failure_false_reject_reference_audit.csv`：
+
+```text
+primitive_id
+industry
+task
+fold_id
+event_count
+from_launch_target_50h120_false_reject_rate
+from_launch_target_100h240_false_reject_rate
+from_decision_target_50h120_false_reject_rate
+from_decision_target_100h240_false_reject_rate
+baseline_from_launch_false_reject_rate
+false_reject_penalty
+false_reject_caution_pass
+```
+
+`p0_9b_primitive_stability_audit.csv`：
+
+```text
+primitive_id
+industry
+task
+primitive_type
+core_expected_fold_count
+core_trainable_fold_count
+core_fold_support_count
+supporting_validation_year_count
+supporting_slice_count
+fold_2024_used_for_support
+one_fold_only
+one_year_only
+one_slice_only
+slice_stability_status
+stability_pass
+```
+
+`p0_9b_primitive_null_adjusted_audit.csv`：
+
+```text
+primitive_id
+industry
+task
+primitive_type
+real_metric_name
+real_metric_formula_text
+higher_is_better
+denominator_scope
+aggregation_policy
+real_metric
+null_mean
+null_p95
+empirical_p_value
+null_adjusted_signal_status
+allowed_for_p0_9c_due_to_null
+```
+
 Optional artifacts must be clearly marked optional in manifest. Required artifacts must exist even if empty, with schema and explanatory row count.
 
 Row-level or model-prediction panels must be parquet cache only:
@@ -1602,11 +1865,14 @@ proceed_to_p0_9c_manual_industry_gate_discovery
 
 ```text
 1. main_scope_sample_weight_guardrail_resolved = true
-2. anti-leakage audits pass
-3. at least one manual_primitive_allowed_for_p0_9c = true
-4. primitive_to_p0_9c_requirement_map has at least one valid row
-5. no metric selection violation
-6. no forbidden recommendation self-check violation
+2. main_scope_weight_guardrail_formal_waiver_used = false
+3. anti-leakage audits pass
+4. p0_9b_scope_lock.csv has all core fold rows and no eligible primitive uses no-fit fold support
+5. at least one manual_primitive_allowed_for_p0_9c = true
+6. every allowed primitive has pre-registered real_metric_name and real_metric_formula_text
+7. primitive_to_p0_9c_requirement_map has at least one valid row
+8. no metric selection violation
+9. no forbidden recommendation self-check violation
 ```
 
 注意：这不是 P1，也不是策略回测入口。
@@ -1658,12 +1924,17 @@ locked_t1:
 folds:
   core_oof_folds: [fold_2020, fold_2021, fold_2022, fold_2023]
   robustness_folds: [fold_2024]
+  require_scope_lock_for_all_core_folds: true
+  no_fit_core_fold_allowed_for_support: false
+  min_core_trainable_fold_count_for_p0_9c: 3
   fold_2024_allowed_for_primitive: false
 
 sample_weight_guardrail:
   require_resolution_before_interpretation: true
   block_main_probe_only_if_main_scope_fails: true
   appendix_failure_does_not_block_main_scope: true
+  formal_waiver_allows_primitive: false
+  formal_waiver_report_role: diagnostic_guardrail_exception_only
   max_top_instrument_year_weight_share: 0.08
   max_instrument_year_weight_hhi: 0.08
 
@@ -1695,12 +1966,20 @@ null_placebo:
   empirical_p_pass_threshold: 0.10
   weak_empirical_p_max: 0.25
   require_real_metric_gt_null_p95_for_stable: true
+  require_pre_registered_real_metric_name: true
+  require_real_metric_formula_text: true
   families:
     - label_permutation_within_industry_fold
     - instrument_year_block_shuffle
     - year_shuffle_within_industry
     - feature_family_dropout_placebo
     - weak_signal_task_placebo
+
+null_metric_dictionary:
+  launch_metric: core_oof_weighted_positive_rate_lift_vs_industry_task_fold_baseline
+  failure_metric: core_oof_failure_lift_minus_from_launch_false_reject_penalty
+  aggregation_policy: equal_weight_average_across_trainable_core_folds
+  metric_switch_after_null_forbidden: true
 
 primitive_gate:
   min_core_fold_support_count_primary: 2
@@ -1765,20 +2044,24 @@ P0.9B 完成前必须自检：
 1. 第 18 节所有 required artifacts 存在；
 2. manifest 记录每个 artifact 的 row count / column count / file size；
 3. sample-weight guardrail resolution 已输出；
-4. 如果 main-scope sample-weight 未解决，primitive candidate 输出为空；
-5. feature-asof leakage audit violation 为 0；
-6. observed-reference decision / feature overlap eligible count 为 0；
-7. fold_2024 没有支持任何 primitive candidate；
-8. metric_nonselection_audit 无 violation；
-9. 电子 failure 没有被强行解释成有效模型；
-10. report 没有使用 best / selected / final model 语言；
-11. report 没有把 feature importance 写成 feature selection；
-12. report 没有输出 P1 / Explore10 / freeze；
-13. 每个 allowed primitive 都有 P0.9C requirement map；
-14. 每个 rejected primitive 都有 reason_if_not_allowed；
-15. full row-level panels 只作为 parquet cache，不默认输出巨大 CSV；
-16. `git check-ignore Explore9/outputs/p0_9b/cache/*.parquet` 通过；
-17. `p0_9b_cache_tracking_audit.csv` 证明 cache parquet 未被 git 跟踪。
+4. 如果 main-scope sample-weight 未解决或被 formal waiver，primitive candidate 输出为空；
+5. `p0_9b_scope_lock.csv` 覆盖所有 main industry-task + core fold；
+6. no-fit core fold 没有进入 metric denominator、support count 或 primitive candidate；
+7. feature-asof leakage audit violation 为 0；
+8. observed-reference decision / feature overlap eligible count 为 0；
+9. fold_2024 没有支持任何 primitive candidate；
+10. 每个 allowed primitive 都有预注册 real_metric_name / real_metric_formula_text；
+11. metric_nonselection_audit 无 violation；
+12. 电子 failure 没有被强行解释成有效模型；
+13. report 没有使用 best / selected / final model 语言；
+14. report 没有把 feature importance 写成 feature selection；
+15. feature-family dropout 只写成 diagnostic ablation，不改 locked T1；
+16. report 没有输出 P1 / Explore10 / freeze；
+17. 每个 allowed primitive 都有 P0.9C requirement map；
+18. 每个 rejected primitive 都有 reason_if_not_allowed；
+19. full row-level panels 只作为 parquet cache，不默认输出巨大 CSV；
+20. `git check-ignore Explore9/outputs/p0_9b/cache/*.parquet` 通过；
+21. `p0_9b_cache_tracking_audit.csv` 证明 cache parquet 未被 git 跟踪。
 ```
 
 ---
@@ -1789,10 +2072,14 @@ P0.9B 完成前必须自检：
 
 ```text
 main-scope sample-weight cap unresolved
+main-scope sample-weight cap formally waived
+scope_lock missing expected core fold row
+no-fit core fold used as primitive support
 feature-asof leakage detected
 observed-reference decision/feature overlap entered eligible rows
 required artifact missing
 metric selection violation
+primitive missing pre-registered real_metric_name or real_metric_formula_text
 null/placebo collapse
 signal one-fold-only
 signal fold_2024-only

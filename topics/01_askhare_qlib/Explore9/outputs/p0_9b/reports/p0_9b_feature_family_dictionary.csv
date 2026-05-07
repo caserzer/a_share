@@ -1,0 +1,21 @@
+feature_name,feature_family,raw_or_derived,formula_text_resolved,feature_asof_rule,allowed_for_launch,allowed_for_failure,used_in_locked_t1_model,used_in_secondary_parameter_regime,leakage_risk_class
+ret_rank_20d_market,stock_within_industry_rank,derived,ret_rank_20d_market,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+ret_rank_20d_industry,stock_within_industry_rank,derived,ret_rank_20d_industry,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+relative_ret20_vs_benchmark,industry_relative_strength,derived,relative_ret20_vs_benchmark,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+relative_ret20_vs_industry,industry_relative_strength,derived,relative_ret20_vs_industry,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+money_ratio_20,turnover_liquidity_money,derived,money_ratio_20,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+atr20_pct,volatility_expansion,derived,atr20_pct,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+prelaunch_drawdown_120d,repair_quality,derived,prelaunch_drawdown_120d,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+launch_gain_from_recent_low_60d,repair_quality,derived,launch_gain_from_recent_low_60d,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+launch_gain_from_recent_low_120d,repair_quality,derived,launch_gain_from_recent_low_120d,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+close_location,price_location_gap,derived,close_location,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+upper_shadow_pct,price_location_gap,derived,upper_shadow_pct,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+lower_shadow_pct,price_location_gap,derived,lower_shadow_pct,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+rolling_range_20d,volatility_expansion,derived,rolling_range_20d,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+higher_low_count_20d,repair_quality,derived,higher_low_count_20d,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+industry_breadth_20d,industry_breadth,derived,industry_breadth_20d,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+failure_decision_window,failure_path,derived,failure_decision_window,feature_asof_date <= signal_date,False,True,True,False,t_day_observable
+market_regime,market_regime,derived,market_regime,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+lifecycle_pool,launch_family_lifecycle,derived,lifecycle_pool,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+launch_family,launch_family_lifecycle,derived,launch_family,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
+launch_variant,launch_family_lifecycle,derived,launch_variant,feature_asof_date <= signal_date,True,True,True,False,t_day_observable
