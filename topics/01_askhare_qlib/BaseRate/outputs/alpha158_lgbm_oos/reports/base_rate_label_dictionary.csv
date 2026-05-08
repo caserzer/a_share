@@ -1,0 +1,4 @@
+label_name,label_expression,training_role,decision_role,horizon_days,price_basis,hash,allowed_for_positive_decision
+LABEL_1D_Q,"Ref($close, -2) / Ref($close, -1) - 1",primary,primary_decision,1,close_to_close,1c45bea8695de480ba589475fce5f4101798290dfae224f831bbc7b5675e95d2,True
+LABEL_5D,"Ref($close, -6) / Ref($close, -1) - 1",secondary_reported_not_decision,reported_only,5,close_to_close,ae1b925c1f06ca71712958d35522e72a517c79e60e770a32d69d203b73fdd625,False
+LABEL_10D,"Ref($close, -11) / Ref($close, -1) - 1",sensitivity,reported_only,10,close_to_close,7d777a25060236202de320c62c165532d19ffd4f346a59c63ee6d30dd0b1047f,False

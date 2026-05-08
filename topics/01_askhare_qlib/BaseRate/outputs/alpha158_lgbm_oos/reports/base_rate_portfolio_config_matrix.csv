@@ -1,0 +1,11 @@
+portfolio_id,label_name,topk,n_drop,rebalance,weight_method,decision_primary,sensitivity_role,predeclared
+topk_50_dropout_5_daily,LABEL_1D_Q,50,5,daily,equal_weight,True,decision_primary,True
+topk_20_dropout_2,LABEL_1D_Q,20,2,daily,equal_weight,False,portfolio_sensitivity,True
+topk_50_dropout_5,LABEL_1D_Q,50,5,daily,equal_weight,False,portfolio_sensitivity,True
+topk_100_dropout_10,LABEL_1D_Q,100,10,daily,equal_weight,False,portfolio_sensitivity,True
+topk_50_full_rebalance,LABEL_1D_Q,50,50,daily_full,equal_weight,False,portfolio_sensitivity,True
+topk_100_full_rebalance,LABEL_1D_Q,100,100,daily_full,equal_weight,False,portfolio_sensitivity,True
+weekly_rebalance_topk_50,LABEL_1D_Q,50,5,weekly,equal_weight,False,portfolio_sensitivity,True
+monthly_rebalance_topk_50,LABEL_1D_Q,50,5,monthly,equal_weight,False,portfolio_sensitivity,True
+topk_50_dropout_5_daily_label_5d,LABEL_5D,50,5,daily,equal_weight,False,label_sensitivity,True
+topk_50_dropout_5_daily_label_10d,LABEL_10D,50,5,daily,equal_weight,False,label_sensitivity,True

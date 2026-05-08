@@ -1,0 +1,11 @@
+fold_id,portfolio_id,label_name,topk,n_drop,rebalance,net_annual_return,decision_primary,turnover_annualized,selection_allowed
+all_oos,monthly_rebalance_topk_50,LABEL_1D_Q,50,5,monthly,-0.0012833870375715817,False,2.4376539599327094,False
+all_oos,topk_100_dropout_10,LABEL_1D_Q,100,10,daily,0.06940598091648353,False,49.8928424562855,False
+all_oos,topk_100_full_rebalance,LABEL_1D_Q,100,100,daily_full,-0.04522081904483222,False,158.22058041064417,False
+all_oos,topk_20_dropout_2,LABEL_1D_Q,20,2,daily,0.04996977273301262,False,49.69596283578799,False
+all_oos,topk_50_dropout_5,LABEL_1D_Q,50,5,daily,0.09169162118114893,False,49.6886819783705,False
+all_oos,topk_50_dropout_5_daily,LABEL_1D_Q,50,5,daily,0.09169162118114893,True,49.6886819783705,False
+all_oos,topk_50_dropout_5_daily_label_10d,LABEL_10D,50,5,daily,0.06248813777316986,False,49.59710093075879,False
+all_oos,topk_50_dropout_5_daily_label_5d,LABEL_5D,50,5,daily,0.07787210742061634,False,49.718490726187184,False
+all_oos,topk_50_full_rebalance,LABEL_1D_Q,50,50,daily_full,-0.12603652651215247,False,237.17519780764758,False
+all_oos,weekly_rebalance_topk_50,LABEL_1D_Q,50,5,weekly,0.0021616541877238493,False,10.501973104405065,False

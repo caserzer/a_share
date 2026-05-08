@@ -1,0 +1,210 @@
+phase: base_rate_alpha158_lgbm_oos
+title: pit_broad_universe_alpha158_lgbm_after_cost_oos_baseline
+output_root: BaseRate/outputs/alpha158_lgbm_oos
+run_seed: 20260508
+
+universe:
+  pit_membership: data/universe/pit_mcap500_mainboard_daily.csv
+  qlib_instruments: data/universe/qlib_pit_mcap500_mainboard.txt
+  qlib_market: pit_mcap500_mainboard
+  allow_industry_filter: false
+  allow_result_based_filter: false
+
+provider:
+  provider_uri: data/qlib/cn_data_pit
+  fallback_provider_uri_for_schema_only: Explore1/data/qlib/cn_data
+  fallback_provider_eligible_row_count_required: 0
+
+dates:
+  canonical_data_start: "2017-07-04"
+  canonical_data_end: "2026-04-30"
+  research_start: "2017-07-04"
+  research_end: "2025-12-31"
+  future_robustness_start: "2026-01-01"
+
+features:
+  primary_feature_set: Alpha158
+  alpha158_default_workflow_allowed: true
+  custom_feature_extension_allowed_in_primary: false
+
+labels:
+  primary:
+    LABEL_1D_Q:
+      expression: "Ref($close, -2) / Ref($close, -1) - 1"
+      horizon_days: 1
+      price_basis: close_to_close
+      allowed_for_positive_decision: true
+  secondary_reported_not_decision:
+    LABEL_5D:
+      expression: "Ref($close, -6) / Ref($close, -1) - 1"
+      horizon_days: 5
+      price_basis: close_to_close
+      allowed_for_positive_decision: false
+  sensitivity:
+    LABEL_10D:
+      expression: "Ref($close, -11) / Ref($close, -1) - 1"
+      horizon_days: 10
+      price_basis: close_to_close
+      allowed_for_positive_decision: false
+  choose_best_label_by_oos: false
+
+folds:
+  - fold: fold_2021
+    train: ["2017-07-04", "2019-12-31"]
+    valid: ["2020-01-01", "2020-12-31"]
+    test: ["2021-01-01", "2021-12-31"]
+  - fold: fold_2022
+    train: ["2017-07-04", "2020-12-31"]
+    valid: ["2021-01-01", "2021-12-31"]
+    test: ["2022-01-01", "2022-12-31"]
+  - fold: fold_2023
+    train: ["2017-07-04", "2021-12-31"]
+    valid: ["2022-01-01", "2022-12-31"]
+    test: ["2023-01-01", "2023-12-31"]
+  - fold: fold_2024
+    train: ["2017-07-04", "2022-12-31"]
+    valid: ["2023-01-01", "2023-12-31"]
+    test: ["2024-01-01", "2024-12-31"]
+  - fold: fold_2025
+    train: ["2017-07-04", "2023-12-31"]
+    valid: ["2024-01-01", "2024-12-31"]
+    test: ["2025-01-01", "2025-12-31"]
+
+data_discipline:
+  signal_date_rule: close_after_market
+  execution_date_rule: next_trading_day_open
+  same_close_execution_allowed: false
+  feature_asof_date_rule: signal_date
+  execution_date_ohlcvm_as_feature_allowed: false
+  observed_reference_selection_allowed: false
+  max_missing_feature_rate: 0.30
+  max_missing_label_rate: 0.10
+
+model:
+  type: lightgbm
+  primary_model_id: LGBM_REGRESSION_ALPHA158_FIXED_V1
+  class: qlib.contrib.model.gbdt.LGBModel
+  loss: mse
+  params:
+    loss: mse
+    colsample_bytree: 0.8879
+    learning_rate: 0.0421
+    subsample: 0.8789
+    lambda_l1: 205.6999
+    lambda_l2: 580.9768
+    max_depth: 8
+    num_leaves: 210
+    num_threads: 20
+    early_stopping_rounds: 50
+    eval_metric: l2
+    seed: 20260508
+  hyperparameter_search_allowed: false
+  early_stopping_uses_valid_only: true
+  oos_used_for_model_selection: false
+
+portfolio:
+  primary:
+    name: topk_50_dropout_5_daily
+    topk: 50
+    n_drop: 5
+    rebalance: daily
+    weight: equal_weight
+    max_position_weight: 0.05
+    decision_primary: true
+  sensitivity:
+    - name: topk_20_dropout_2
+      topk: 20
+      n_drop: 2
+      rebalance: daily
+      weight: equal_weight
+    - name: topk_50_dropout_5
+      topk: 50
+      n_drop: 5
+      rebalance: daily
+      weight: equal_weight
+    - name: topk_100_dropout_10
+      topk: 100
+      n_drop: 10
+      rebalance: daily
+      weight: equal_weight
+    - name: topk_50_full_rebalance
+      topk: 50
+      n_drop: 50
+      rebalance: daily_full
+      weight: equal_weight
+    - name: topk_100_full_rebalance
+      topk: 100
+      n_drop: 100
+      rebalance: daily_full
+      weight: equal_weight
+    - name: weekly_rebalance_topk_50
+      topk: 50
+      n_drop: 5
+      rebalance: weekly
+      weight: equal_weight
+    - name: monthly_rebalance_topk_50
+      topk: 50
+      n_drop: 5
+      rebalance: monthly
+      weight: equal_weight
+
+cost_model:
+  low:
+    commission_buy: 0.0005
+    commission_sell: 0.0005
+    stamp_tax_sell: 0.0005
+    slippage_buy: 0.0002
+    slippage_sell: 0.0002
+    decision_primary: false
+  base:
+    commission_buy: 0.001
+    commission_sell: 0.001
+    stamp_tax_sell: 0.0005
+    slippage_buy: 0.0005
+    slippage_sell: 0.0005
+    decision_primary: true
+  high:
+    commission_buy: 0.001
+    commission_sell: 0.001
+    stamp_tax_sell: 0.001
+    slippage_buy: 0.001
+    slippage_sell: 0.001
+    decision_primary: false
+
+execution_constraints:
+  t_plus_1: true
+  deal_price: open
+  sell_first: true
+  sell_cash_reuse_same_execution_date: true
+  suspension_block: true
+  limit_up_buy_block: true
+  limit_down_sell_block: true
+  zero_volume_block: true
+  limit_threshold: 0.095
+  forced_liquidation_allowed: false
+  initial_account: 1000000.0
+
+benchmarks:
+  primary_gate_benchmark: pit_universe_equal_weight
+  include:
+    - SH000300
+    - pit_universe_equal_weight
+    - pit_universe_mcap_weight_if_available
+    - random_same_turnover
+
+random_baseline:
+  n_repeats: 200
+  same_universe: true
+  same_topk: true
+  same_turnover: true
+  same_execution_constraints: true
+  same_cost_model: true
+
+thresholds:
+  min_excess_return: 0.03
+  max_dd_worse_than_benchmark: 0.05
+  min_sharpe: 0.50
+  min_calmar: 0.30
+  max_random_baseline_p_value: 0.10
+  max_turnover_annualized: 60.0
+  max_execution_block_rate: 0.20
