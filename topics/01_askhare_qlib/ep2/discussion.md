@@ -777,8 +777,125 @@ episode_primary_probe_day:
 5. exposure timing 只跑赢 random，但跑不赢 `buy_all_on_launch_hold_to_H` 或 `buy_all_on_launch_with_same_fast_fail`；
 6. 需要反复改 label threshold 才能成立（违反 §14.2 label freeze）。
 
-## 15. 下一步
+## 15. 进入 requirement 前必须完成的工程基座
 
-第一版 requirement 仅承诺 EP2-0 / EP2-1 / EP2-2，不预先承诺 EP2-3 / EP2-4，由 gate 决定是否开启。
+§14 描述的是研究阶段，但在写 requirement 之前还有一层更基础的工作：把 EP2 的"工程基座"先搭出来。没有这层基座，requirement 写得再细也只是研究愿景，无法落成可执行合同。
+
+具体只需要 4 个基座，**不要急着写模型、hazard、EP2-3**。
+
+### 15.1 Frozen launch / observation pool builder
+
+最先做。没有它，后面所有 exposure timing 都不可比。
+
+需要产出一个可重复生成的 frozen pool：
+
+- 固定 universe：用现在 canonical `data/` 下的 PIT universe；
+- 固定 price / volume / money / industry as-of 口径；
+- 固定 launch detector 版本；
+- 固定 episode start / reset / end / merge 规则；
+- 输出 `launch_episode_id`；
+- dump 成唯一输入：
+  - `ep2_launch_observation_pool.parquet`
+  - `ep2_launch_episode_dictionary.csv`
+  - `ep2_pool_freeze_manifest.json`
+  - `ep2_pool_frequency_audit.csv`
+
+最关键的是：**先决定 launch detector 的机械定义**。否则 requirement 写得再细，实施时也会卡在"什么算 launch"。
+
+### 15.2 PIT data access layer / audit layer
+
+EP2 强依赖 PIT 正确性，需要一个小的数据读取与审计基座。
+
+至少要能稳定读：
+
+- PIT universe；
+- daily open / high / low / close / volume / money；
+- industry membership as-of；
+- trading calendar；
+- next-open executable date / price；
+- limit / zero-volume / missing-open block flags。
+
+同时输出 audit：
+
+- feature / signal / decision / execution date 是否单调；
+- universe 是否未来泄漏；
+- industry 是否未来泄漏；
+- price adjustment 是否一致；
+- episode 是否被未来路径重写；
+- missing / suspended / limit rows 占比。
+
+可以复用 BaseRate 的 `data/` 与 execution audit 思路，但 EP2 要加 episode-level as-of 检查。
+
+### 15.3 Label and path evaluator
+
+写 requirement 前需要确认 label sweep 能被机械计算。
+
+先实现一个不训练模型的 evaluator：
+
+- 输入 frozen launch pool；
+- 对每个 candidate / probe day 计算 future path；
+- 支持 horizon: 5d / 10d / 20d；
+- 支持 upside target: 8 / 10 / 12 / 15%；
+- 支持 drawdown barrier: 4 / 6 / 8%；
+- 支持 same-day high/low ambiguity policy:
+  - `conservative_fail`
+  - `drop_ambiguous`
+  - `target_first_optimistic`
+- 输出 positive rate、样本数、年份分布、行业分布、instrument-year concentration。
+
+这一步的目标不是选最优 label，而是确认：**这个研究有没有可学的短 horizon confirm label**。如果 base rate 全部极端，requirement 阶段就应该停止或重写。
+
+### 15.4 No-model baseline simulator
+
+模型之前，先把 EP2-2 baseline runner 做出来。
+
+至少支持：
+
+- `buy_all_on_launch_hold_to_H`
+- `buy_all_on_launch_with_same_fast_fail`
+- `fixed_delay_{1,3,5,10}d`
+- `random_probe_within_launch_window`
+- `staged_buy_all`
+- `probe_then_naive_add`
+- `probe_with_simple_stop`
+
+必须统一：
+
+- same frozen pool；
+- same next-open execution；
+- same cost model；
+- same H horizon；
+- same natural exit；
+- same fast-fail rule；
+- same blocked execution logic。
+
+输出：
+
+- after-cost return；
+- `natural_exit_rate / return / median_days`；
+- `fast_fail_rate`；
+- `big_winner_capture_rate`；
+- `missed_gain_to_exposure`；
+- turnover proxy；
+- concentration；
+- comparison vs random exposure；
+- comparison vs both buy-all baselines。
+
+这个 baseline simulator 是进入正式 requirement 的现实门槛。如果 no-model schedule 完全打不赢 buy-all / random，EP2 不应该进入模型阶段。
+
+### 15.5 建议实施顺序
+
+```text
+ep2/scripts/build_launch_pool.py        # §15.1
+ep2/scripts/audit_ep2_pit_inputs.py     # §15.2
+ep2/scripts/sweep_confirm_labels.py     # §15.3
+ep2/scripts/run_no_model_baselines.py   # §15.4
+```
+
+做到这一步后再写 requirement 才会扎实。否则 requirement 会继续停留在研究愿景，而不是可执行合同。
+
+## 16. 下一步
+
+工程基座（§15）完成后，再产出第一版 requirement，且仅承诺 EP2-0 / EP2-1 / EP2-2，不预先承诺 EP2-3 / EP2-4，由 gate 决定是否开启。
 
 requirement 文件名建议：`ep2/EP2_low_turnover_launch_exposure_timing.md`。`ep2/discussion.md` 保留为历史 context，不删。
