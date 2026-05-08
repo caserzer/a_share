@@ -1,0 +1,4 @@
+feature_name,source_field,feature_asof_rule,max_allowed_date_relation,uses_execution_date_intraday,violation_count
+launch_detector_close_money_volume,close;money;volume,signal_date close-derived,<= signal_date,False,0
+rolling_reference_windows,close;money,rolling windows end at signal_date - 1,<= signal_date,False,0
+execution_open_reference,open,"execution_date open is execution price only, not predictive feature",execution artifact only,False,0

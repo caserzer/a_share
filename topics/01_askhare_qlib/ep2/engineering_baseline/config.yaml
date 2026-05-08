@@ -1,0 +1,181 @@
+phase: ep2_engineering_baseline
+output_root: ep2/engineering_baseline/outputs
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+
+input_contract:
+  required_min_date: "2017-07-04"
+  required_max_date: "2025-12-31"
+  provider_load_end_date: "2026-04-30"
+  required_universe_name: pit_mcap500_mainboard
+
+launch_detector:
+  version: EP2_LAUNCH_DETECTOR_V0
+  detector_family: price_breakout_money_surge
+  detector_id: EP2_LAUNCH_DETECTOR_V0_PRICE60_MONEY20
+  price_breakout_lookback_days: 60
+  price_breakout_min_return: 0.12
+  money_ma_lookback_days: 20
+  money_multiple_min: 2.0
+  money_min_cny: 50000000
+  min_history_days: 80
+  episode_merge_gap_days: 20
+  episode_end_after_no_signal_days: 20
+
+execution:
+  signal_date_rule: close_derived_signal_date
+  decision_date_rule: same_as_signal_date_after_close
+  execution_date_rule: next_trading_day(signal_date)
+  blocked_execution_reasons:
+    - missing_open
+    - zero_volume
+    - zero_money
+    - limit_up_inferred
+    - limit_down_inferred
+    - not_universe_member
+    - missing_calendar_next_day
+    - missing_price_row
+  limit_inference_pct:
+    mainboard_default: 0.095
+
+cost_model:
+  cost_profile: base
+  commission_bps_buy: 10
+  commission_bps_sell: 10
+  stamp_tax_bps_sell: 50
+  slippage_bps_buy: 20
+  slippage_bps_sell: 20
+  min_commission_cny: null
+  derived_buy_cost_bps: 30
+  derived_sell_cost_bps: 80
+
+probe_grid:
+  max_probe_window: 10
+  max_missed_gain: 0.08
+  pre_probe_fast_fail_drawdown: 0.06
+
+label_sweep:
+  selection_scope_start: "2017-01-01"
+  selection_scope_end: "2023-12-31"
+  selection_scope: 2017_2023_core_research_years
+  horizons: [5, 10, 20]
+  upside_targets: [0.08, 0.10, 0.12, 0.15]
+  drawdown_barriers: [0.04, 0.06, 0.08]
+  same_day_policies:
+    - conservative_fail
+    - drop_ambiguous
+    - target_first_optimistic
+  candidate_positive_rate_min: 0.20
+  candidate_positive_rate_max: 0.55
+  episode_positive_rate_min: 0.20
+  episode_positive_rate_max: 0.55
+  max_same_day_ambiguity_rate: 0.20
+  max_top1_instrument_year_positive_share: 0.10
+
+schedule_defaults:
+  primary_H: 10
+  probe_weight: 0.30
+  full_weight: 1.00
+  canonical_fast_fail_drawdown: 0.06
+  natural_exit: next_open_after_H_trading_days
+  fixed_delay_exact_day_only: true
+  blocked_exit_retry:
+    retry_until_executed: true
+    max_retry_trading_days: 5
+    if_still_blocked: mark_terminal_blocked_exit
+    terminal_price_policy: last_available_close_for_audit_only
+
+big_winner:
+  primary:
+    label_id: launch_big_winner_50h120
+    horizon_days: 120
+    upside_target: 0.50
+  sensitivity:
+    label_id: launch_big_winner_100h240
+    horizon_days: 240
+    upside_target: 1.00
+
+baserate_reference:
+  daily_baserate_turnover_proxy: 49.6886819783705
+  turnover_proxy_unit: annualized
+  source: BaseRate topk_50_dropout_5_daily base turnover_annualized
+  source_path: BaseRate/outputs/alpha158_lgbm_oos/reports/base_rate_trade_summary_by_fold.csv
+  source_hash: 72195c709fe306759d4776449045de0181adb417fa5aa3482a09175fc1b75593
+  use: threshold_reference_only
+
+required_schedules:
+  buy_all_on_launch_hold_to_H:
+    action: direct_exposure
+    date_rule: launch_effective_date
+    target_weight: 1.00
+    fast_fail_enabled: false
+  buy_all_on_launch_with_same_fast_fail:
+    action: direct_exposure
+    date_rule: launch_effective_date
+    target_weight: 1.00
+    fast_fail_enabled: true
+  fixed_delay_1d:
+    action: probe_entry
+    date_rule: launch_effective_date + 1 trading day
+    delay_days: 1
+    target_weight: 1.00
+  fixed_delay_3d:
+    action: probe_entry
+    date_rule: launch_effective_date + 3 trading days
+    delay_days: 3
+    target_weight: 1.00
+  fixed_delay_5d:
+    action: probe_entry
+    date_rule: launch_effective_date + 5 trading days
+    delay_days: 5
+    target_weight: 1.00
+  fixed_delay_10d:
+    action: probe_entry
+    date_rule: launch_effective_date + 10 trading days
+    delay_days: 10
+    target_weight: 1.00
+  random_probe_within_launch_window:
+    action: probe_entry
+    date_rule: random_valid_probe_day
+    target_weight: 1.00
+  staged_buy_all:
+    probe_date_rule: launch_effective_date
+    probe_weight: 0.30
+    confirm_add_date_rule: launch_effective_date + 3 trading days
+    confirm_delay_days: 3
+    confirm_add_condition: none
+    full_weight: 1.00
+  probe_then_naive_add:
+    probe_date_rule: launch_effective_date
+    probe_weight: 0.30
+    confirm_add_date_rule: launch_effective_date + 10 trading days
+    confirm_delay_days: 10
+    confirm_add_condition: no_fast_fail
+    full_weight: 1.00
+  probe_with_simple_stop:
+    probe_date_rule: launch_effective_date
+    probe_weight: 0.30
+    confirm_add_enabled: false
+
+random_baseline:
+  random_seed: 20260508
+  n_repeats: 100
+  sample_unit: launch_episode
+  match_by:
+    - launch_episode
+    - allowed_probe_window
+    - executable_day_count
+
+timing_gate:
+  min_after_cost_lift_vs_random: 1.05
+  max_big_winner_coverage_loss_vs_buy_all: 0.20
+  max_median_missed_gain_to_exposure: 0.08
+  max_top1_instrument_year_exposure_share: 0.10
+  max_top5_instrument_exposure_share: 0.35
+  min_turnover_reduction_vs_daily_baserate: 0.50

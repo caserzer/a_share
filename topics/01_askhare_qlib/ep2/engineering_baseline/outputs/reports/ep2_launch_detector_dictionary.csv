@@ -1,0 +1,2 @@
+detector_family,detector_id,formula_text,required_fields,lookback_days,threshold_config_key,feature_asof_rule,lifecycle_role,enabled
+price_breakout_money_surge,EP2_LAUNCH_DETECTOR_V0_PRICE60_MONEY20,universe_ok and history_ok and price_breakout and money_surge using close-derived signal_date data,close;money;volume;universe;industry;calendar;open;high;low;factor,80,launch_detector,close/money/volume at signal_date; rolling references end at signal_date - 1; execution-date OHLC not predictive,start,True

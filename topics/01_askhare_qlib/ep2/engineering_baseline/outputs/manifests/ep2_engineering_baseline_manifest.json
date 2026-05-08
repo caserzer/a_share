@@ -1,0 +1,37 @@
+{
+  "phase": "ep2_engineering_baseline",
+  "config_path": "ep2/engineering_baseline/config.yaml",
+  "config_hash": "02c64d1c90fb2344247f732e7935738bae17542f67442db3758ddcc0f4c6f492",
+  "launch_detector_config_hash": "ecf4d97efb4239181765a50b1fd161af4b93d7f5e298cbce5bb276aeda4e10d0",
+  "output_root": "ep2/engineering_baseline/outputs",
+  "generated_at": "2026-05-08T16:18:04.126719+00:00",
+  "git_commit": "83aebf7848b94c22d465fb2f2739a64ce0961b7b",
+  "validation_status": "passed",
+  "required_artifact_count": 20,
+  "existing_required_artifact_count": 20,
+  "cost_model": {
+    "cost_profile": "base",
+    "commission_bps_buy": 10,
+    "commission_bps_sell": 10,
+    "stamp_tax_bps_sell": 50,
+    "slippage_bps_buy": 20,
+    "slippage_bps_sell": 20,
+    "min_commission_cny": null,
+    "derived_buy_cost_bps": 30,
+    "derived_sell_cost_bps": 80
+  },
+  "baserate_reference": {
+    "daily_baserate_turnover_proxy": 49.6886819783705,
+    "turnover_proxy_unit": "annualized",
+    "source": "BaseRate topk_50_dropout_5_daily base turnover_annualized",
+    "source_path": "BaseRate/outputs/alpha158_lgbm_oos/reports/base_rate_trade_summary_by_fold.csv",
+    "source_hash": "72195c709fe306759d4776449045de0181adb417fa5aa3482a09175fc1b75593",
+    "use": "threshold_reference_only"
+  },
+  "forbidden_inputs": {
+    "explore9_cache_read": false,
+    "explore10_cache_read": false,
+    "baserate_cache_read": false,
+    "baserate_reference_use": "threshold_reference_only"
+  }
+}

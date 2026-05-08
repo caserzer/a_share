@@ -1,0 +1,8 @@
+config_key,config_value,used_by_artifacts,expected_value,is_consistent,violation_reason
+launch_detector.price_breakout_min_return,0.12,ep2_launch_observation_pool.parquet;ep2_candidate_probe_grid.parquet;ep2_no_model_baseline_results.csv,0.12,True,
+launch_detector.money_multiple_min,2.0,ep2_launch_observation_pool.parquet;ep2_candidate_probe_grid.parquet;ep2_no_model_baseline_results.csv,2.0,True,
+probe_grid.max_probe_window,10.0,ep2_launch_observation_pool.parquet;ep2_candidate_probe_grid.parquet;ep2_no_model_baseline_results.csv,10.0,True,
+probe_grid.max_missed_gain,0.08,ep2_launch_observation_pool.parquet;ep2_candidate_probe_grid.parquet;ep2_no_model_baseline_results.csv,0.08,True,
+schedule_defaults.canonical_fast_fail_drawdown,0.06,ep2_launch_observation_pool.parquet;ep2_candidate_probe_grid.parquet;ep2_no_model_baseline_results.csv,0.06,True,
+random_baseline.n_repeats,100.0,ep2_launch_observation_pool.parquet;ep2_candidate_probe_grid.parquet;ep2_no_model_baseline_results.csv,100.0,True,
+baserate_reference.daily_baserate_turnover_proxy,49.6886819783705,ep2_launch_observation_pool.parquet;ep2_candidate_probe_grid.parquet;ep2_no_model_baseline_results.csv,49.6886819783705,True,

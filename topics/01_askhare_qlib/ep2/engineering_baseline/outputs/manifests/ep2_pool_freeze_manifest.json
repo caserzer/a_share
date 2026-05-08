@@ -1,0 +1,37 @@
+{
+  "launch_detector_version": "EP2_LAUNCH_DETECTOR_V0",
+  "launch_detector_config_hash": "ecf4d97efb4239181765a50b1fd161af4b93d7f5e298cbce5bb276aeda4e10d0",
+  "universe_source": "data/universe/pit_mcap500_mainboard_daily.csv",
+  "industry_source": "data/targets/pit_industry_membership.csv",
+  "provider_uri": "data/qlib/cn_data_pit",
+  "config_path": "ep2/engineering_baseline/config.yaml",
+  "output_root": "ep2/engineering_baseline/outputs",
+  "price_adjustment_mode": "qlib_pit_adjusted_ohlc_with_factor_audit",
+  "episode_reset_rule": "merge_same_instrument_signals_within_20_trading_days",
+  "episode_merge_gap_days": 20,
+  "cost_profile": "base",
+  "cost_components": {
+    "commission_bps_buy": 10,
+    "commission_bps_sell": 10,
+    "stamp_tax_bps_sell": 50,
+    "slippage_bps_buy": 20,
+    "slippage_bps_sell": 20,
+    "min_commission_cny": null
+  },
+  "derived_buy_cost_bps": 30,
+  "derived_sell_cost_bps": 80,
+  "baserate_reference": {
+    "daily_baserate_turnover_proxy": 49.6886819783705,
+    "turnover_proxy_unit": "annualized",
+    "source": "BaseRate topk_50_dropout_5_daily base turnover_annualized",
+    "source_path": "BaseRate/outputs/alpha158_lgbm_oos/reports/base_rate_trade_summary_by_fold.csv",
+    "source_hash": "72195c709fe306759d4776449045de0181adb417fa5aa3482a09175fc1b75593",
+    "use": "threshold_reference_only"
+  },
+  "signal_date_rule": "close_derived_signal_date",
+  "decision_date_rule": "same_as_signal_date_after_close",
+  "execution_date_rule": "next_trading_day(signal_date)",
+  "generated_at": "2026-05-08T15:27:38.507195+00:00",
+  "row_count": 5605,
+  "episode_count": 2464
+}
