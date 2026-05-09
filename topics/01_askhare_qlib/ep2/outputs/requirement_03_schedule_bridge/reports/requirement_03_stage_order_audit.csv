@@ -1,0 +1,10 @@
+stage_name,stage_order,started_at,completed_at,input_artifact_name,input_artifact_hash,output_artifact_name,output_artifact_hash,base_rate_rows_available
+load_requirement_02_selected_contract,1,2026-05-09T03:09:56.802024+00:00,2026-05-09T03:09:56.802024+00:00,requirement_02_hazard_manifest.json,ac673f277db819d57ee2c02b060ab2a683c3e152a6065c8c91c2b01da728f775,,,False
+build_fixed_schedule_bridge_rule,2,2026-05-09T03:09:56.802049+00:00,2026-05-09T03:09:56.802049+00:00,requirement_03_schedule_bridge.yaml,ae588c6d8e03b1688f82658daec47232ee4901a30112f71a233bbf0ffca1c437,,,False
+generate_ep2_schedule_action_panel,3,2026-05-09T03:10:09.755426+00:00,2026-05-09T03:10:09.755426+00:00,,,requirement_03_schedule_action_panel.parquet,8a1cf85a03da2c483656fe764a7895edbbe2e499fc15c940ad88bcad2c00a726,False
+generate_ep2_exposure_daily_panel,4,2026-05-09T03:10:09.766640+00:00,2026-05-09T03:10:09.766640+00:00,,,requirement_03_exposure_daily_panel.parquet,5ed2af10405ab1590a0593e93cd8ca15d00eb871c0de7e68ade6d1bd5f3401b2,False
+load_filtered_baserate_prediction_panel,5,2026-05-09T03:10:10.168506+00:00,2026-05-09T03:10:10.168506+00:00,prediction_panel.parquet,ef7b8cb1db0d3d66c6bb90dd3bffc76dc2a879b62520aa4949bca92552c96661,,,True
+load_filtered_baserate_order_panel,6,2026-05-09T03:10:10.170333+00:00,2026-05-09T03:10:10.170333+00:00,order_panel.parquet,e004ec86e7de3dde231287632c0e6e0e99aa19dda1190f8044740164aeef941a,,,True
+load_filtered_baserate_trade_panel,7,2026-05-09T03:10:10.176331+00:00,2026-05-09T03:10:10.176331+00:00,trade_panel.parquet,68e40ce4db7f65f45e881de77440c4b4ef669254520ff80be39d01cfd0d24865,,,True
+generate_baserate_overlap_reports,8,2026-05-09T03:10:14.216093+00:00,2026-05-09T03:10:14.216093+00:00,,,requirement_03_baserate_launch_overlap.csv,33f22fc89ff801db4306162b3f953f5afc6593b1daa43feff273ab473b3530cc,True
+evaluate_requirement_03_gates,9,2026-05-09T03:10:14.218672+00:00,2026-05-09T03:10:14.218672+00:00,,,requirement_03_gate_audit.csv,0845cc9be7198227a081234055b2e75e5e9e4ee98c528fb07213a2f1e93775ad,True

@@ -1,0 +1,73 @@
+phase: requirement_03_schedule_bridge
+output_root: ep2/outputs/requirement_03_schedule_bridge
+
+baseline:
+  config_path: ep2/engineering_baseline/config.yaml
+  output_root: ep2/engineering_baseline/outputs
+
+frozen_contract:
+  requirement_02_manifest: ep2/outputs/requirement_02_hazard_timing_model/manifests/requirement_02_hazard_manifest.json
+  expected_requirement_02_status: passed
+  primary_label_id: confirm_h10_u10_d06_conservative_fail
+  frozen_baseline_id: probe_with_simple_stop
+  hazard_schedule_id: hazard_probe_with_simple_stop
+  selected_threshold: 0.3205667777673395
+  selected_stop_risk_ceiling: 0.27410397287415667
+  requirement_02_gate_audit: ep2/outputs/requirement_02_hazard_timing_model/reports/requirement_02_gate_audit.csv
+  requirement_02_expected_gate_count: 27
+  requirement_02_expected_passed_gate_count: 27
+  requirement_02_expected_failed_gate_count: 0
+
+inputs:
+  requirement_02_output_root: ep2/outputs/requirement_02_hazard_timing_model
+  requirement_01_output_root: ep2/outputs/requirement_01_label_and_baseline_freeze
+  engineering_baseline_output_root: ep2/engineering_baseline/outputs
+
+schedule_bridge:
+  schedule_id: hazard_probe_confirm_add_fast_fail
+  probe_weight: 0.30
+  confirm_add_weight: 0.70
+  full_weight_after_confirm: 1.00
+  confirm_add_enabled: true
+  confirm_add_rule: first_valid_confirm_candidate_in_window_after_probe
+  confirm_add_search_start_offset_trading_days: 1
+  confirm_add_search_end_offset_trading_days: 3
+  max_confirm_add_days_from_launch_execution: 10
+  max_missed_gain_to_confirm: 0.08
+  fast_fail_drawdown: 0.06
+  natural_exit: next_open_after_H_trading_days
+  primary_H: 10
+  blocked_exit_retry: same_as_engineering_baseline
+  cost_model: same_as_engineering_baseline
+  counterfactual_schedules:
+    - hazard_probe_with_simple_stop_replay
+    - hazard_probe_confirm_add_no_fast_fail
+
+baserate_bridge:
+  base_rate_root: BaseRate/outputs/alpha158_lgbm_oos
+  primary_portfolio_id: topk_50_dropout_5_daily
+  primary_label_name: LABEL_1D_Q
+  primary_cost_scenario: base
+  topk_hit_k: 50
+  high_score_quantile: 0.80
+  same_day_match_policy: signal_date_to_base_rate_signal_date
+  next_open_match_policy: ep2_execution_date_to_base_rate_trade_date
+  order_filter:
+    side: buy
+    blocked: false
+  trade_filter:
+    side: buy
+    filled: true
+
+proceed_gate:
+  min_validation_mean_after_cost_return_diff_vs_requirement_02: 0.0
+  min_robustness_mean_after_cost_return_diff_vs_requirement_02: -0.001
+  max_big_winner_coverage_loss_vs_requirement_02: 0.10
+  max_missed_gain_to_exposure_median: 0.08
+  min_turnover_reduction_vs_daily_baserate: 0.50
+  max_top1_instrument_year_exposure_share: 0.10
+  max_top5_instrument_exposure_share: 0.35
+  min_baserate_overlap_report_coverage: 0.95
+  min_uncovered_ep2_exposure_share: 0.20
+  baserate_overlap_coverage_scope: validation_and_robustness_only
+  baserate_overlap_coverage_unit: action_level_ep2_exposure_event
