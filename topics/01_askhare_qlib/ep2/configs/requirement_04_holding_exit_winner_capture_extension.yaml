@@ -1,0 +1,137 @@
+phase: requirement_04_holding_exit_winner_capture_extension
+output_root: ep2/outputs/requirement_04_holding_exit_winner_capture_extension
+
+baseline:
+  config_path: ep2/engineering_baseline/config.yaml
+  output_root: ep2/engineering_baseline/outputs
+
+frozen_contract:
+  requirement_03_manifest: ep2/outputs/requirement_03_schedule_bridge/manifests/requirement_03_schedule_bridge_manifest.json
+  requirement_03_gate_audit: ep2/outputs/requirement_03_schedule_bridge/reports/requirement_03_gate_audit.csv
+  expected_requirement_03_status: passed
+  expected_requirement_03_next_phase_status: passed
+  requirement_03_expected_gate_count: 17
+  requirement_03_expected_passed_gate_count: 17
+  requirement_03_expected_failed_gate_count: 0
+  primary_label_id: confirm_h10_u10_d06_conservative_fail
+  frozen_baseline_id: probe_with_simple_stop
+  hazard_schedule_id: hazard_probe_with_simple_stop
+  schedule_bridge_id: hazard_probe_confirm_add_fast_fail
+  selected_threshold: 0.3205667777673395
+  selected_stop_risk_ceiling: 0.27410397287415667
+  probe_weight: 0.30
+  full_weight_after_confirm: 1.00
+  confirm_add_window: probe_plus_1_to_probe_plus_3_trading_days
+  max_confirm_add_days_from_launch_execution: 10
+  base_fast_fail_drawdown: 0.06
+  r03_primary_H: 10
+
+inputs:
+  requirement_03_output_root: ep2/outputs/requirement_03_schedule_bridge
+  requirement_02_output_root: ep2/outputs/requirement_02_hazard_timing_model
+  requirement_01_output_root: ep2/outputs/requirement_01_label_and_baseline_freeze
+  engineering_baseline_output_root: ep2/engineering_baseline/outputs
+
+pit_price_authority:
+  root: data/qlib/cn_data_pit
+  required_fields: [open, high, low, close]
+  optional_fields: [volume, money]
+  hash_scope: r03_instruments_and_dates_through_launch_plus_240_trading_days
+  calendar_source: same_as_ep2_common
+  price_field_schema_version: pit_qlib_ohlc_v1
+
+schedule_matrix:
+  selection_scope: validation_only
+  robustness_role: holdout_gate_only
+  baseline_schedule_id: R03_original_H10
+  baseline_required_for_replay_and_comparison: true
+  baseline_promotion_eligible: false
+  promotion_eligible_primary_schedule_ids:
+    - R03_confirmed_H20
+    - R03_confirmed_H60
+    - R03_confirmed_H120
+    - R03_winner_state_hold_H120
+  diagnostic_schedule_ids:
+    - R03_all_H20
+    - R03_all_H40
+    - R03_confirmed_H40
+    - R03_no_fast_fail
+    - R03_relaxed_fast_fail
+    - winner_state_gain_threshold_sensitivity
+    - winner_state_trailing_sensitivity
+
+holding_rules:
+  unconfirmed_probe_H: 10
+  confirmed_H_values: [20, 60, 120]
+  winner_state_normal_hold_H: 20
+  winner_state_hold_H: 120
+  natural_exit: next_open_after_H_trading_days_from_clock_start
+  unconfirmed_probe_clock_start: selected_probe_execution_date
+  confirmed_position_clock_start: confirm_add_execution_date
+  winner_state_max_hold_clock_start: confirm_add_execution_date
+  blocked_exit_retry: same_as_requirement_03
+  cost_model: same_as_requirement_03
+
+winner_state:
+  schedule_id: R03_winner_state_hold_H120
+  signal_source: close_derived
+  signal_start: confirm_add_execution_date_close
+  signal_end: before_normal_hold_natural_exit
+  effective_date_rule: next_trading_day_after_signal_date
+  transition_price: open_on_effective_date
+  min_close_return_from_first_exposure: 0.12
+  max_drawdown_since_first_exposure: 0.08
+  require_close_above_confirm_add_price: true
+  require_no_fast_fail_state: true
+  trailing_drawdown_from_post_winner_high_close: 0.15
+  profit_floor_from_first_exposure_price: 1.03
+  confirm_add_price_floor: true
+  max_hold_H_from_confirm_add: 120
+
+diagnostic_sensitivity:
+  winner_state_gain_thresholds: [0.10, 0.15, 0.20]
+  winner_state_trailing_drawdowns: [0.10, 0.20]
+  relaxed_fast_fail_drawdown: 0.10
+  fast_fail_saved_loss_threshold: 0.03
+
+selection_objective:
+  primary_metric: strict_big_winner_capture_rate_50h120_diff_vs_R03
+  require_validation_primary_metric_improvement: true
+  materiality_guard:
+    strict_capture_count_margin: 1
+    exposure_weighted_capture_margin: 0.01
+    rule: prefer_simpler_shorter_schedule_unless_longer_schedule_exceeds_both_margins
+  tie_breakers:
+    - exposure_weighted_big_winner_capture_rate_50h120_diff_vs_R03
+    - p05_after_cost_return_diff_vs_R03
+    - mean_after_cost_return_diff_vs_R03
+    - lower_exposure_day_multiple_vs_R03
+    - shorter_max_hold_H
+
+proceed_gate:
+  min_validation_strict_big_winner_capture_diff_vs_R03: 0.0
+  min_validation_captured_big_winner_count_delta_vs_R03: 1
+  min_validation_exposure_weighted_capture_diff_vs_R03: 0.0
+  min_robustness_strict_big_winner_capture_diff_vs_R03: 0.0
+  min_robustness_exposure_weighted_capture_diff_vs_R03: 0.0
+  min_validation_mean_after_cost_return_diff_vs_R03: -0.001
+  min_robustness_mean_after_cost_return_diff_vs_R03: -0.002
+  max_validation_p05_after_cost_return_deterioration_vs_R03: 0.005
+  max_robustness_p05_after_cost_return_deterioration_vs_R03: 0.005
+  max_validation_max_adverse_excursion_deterioration_vs_R03: 0.020
+  max_robustness_max_adverse_excursion_deterioration_vs_R03: 0.020
+  max_blocked_exit_retry_rate: 0.05
+  max_top1_instrument_year_exposure_share: 0.10
+  max_top5_instrument_exposure_share: 0.35
+  max_turnover_proxy_multiple_vs_R03: 1.25
+  max_exposure_day_multiple_vs_R03: 3.0
+  min_winner_state_entry_count_validation: 5
+  min_winner_state_entry_count_robustness: 3
+
+recommendations:
+  passed: proceed_to_R05_baserate_integration
+  failed_schedule_extension: keep_EP2_as_short_horizon_event_sleeve
+  failed_winner_capture: stop_big_winner_holding_extension
+  failed_tail_risk: reframe_EP2_as_risk_filter_overlay
+  failed_robustness_holdout: keep_EP2_as_short_horizon_event_sleeve
+  failed_contract_or_leakage: keep_EP2_as_short_horizon_event_sleeve
