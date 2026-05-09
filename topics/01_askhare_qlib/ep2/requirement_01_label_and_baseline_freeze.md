@@ -218,3 +218,38 @@ Requirement 02 may start only if all statements below remain true:
 6. no launch detector, pool, label threshold, or baseline rule is modified to improve downstream results.
 
 If any item fails, stop and update this requirement before continuing.
+
+## 9. Implementation
+
+The Requirement 01 freeze contract is implemented by:
+
+```text
+ep2/scripts/validate_requirement_01_label_and_baseline_freeze.py
+```
+
+Validation command:
+
+```bash
+uv run python ep2/scripts/validate_requirement_01_label_and_baseline_freeze.py
+```
+
+Required outputs:
+
+```text
+ep2/outputs/requirement_01_label_and_baseline_freeze/manifests/requirement_01_freeze_manifest.json
+ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_freeze_summary.csv
+ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_gate_audit.csv
+ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_artifact_authority_check.csv
+ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_primary_label_audit.csv
+ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_baseline_freeze_audit.csv
+```
+
+The validator must fail closed if:
+
+- the engineering baseline manifest is no longer `passed`;
+- any required artifact is missing;
+- the frozen pool row count, episode count, config hash, or detector hash changes;
+- the primary-label tie-breaker no longer selects `confirm_h10_u10_d06_conservative_fail`;
+- `confirm_h10_u12_d06_conservative_fail` becomes freeze-eligible without an explicit requirement update;
+- any schedule other than `probe_with_simple_stop` passes all no-model gates;
+- `probe_with_simple_stop` no longer passes all eight frozen baseline gates.
