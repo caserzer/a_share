@@ -1,0 +1,16 @@
+split,policy_id,gate_name,gate_value,gate_threshold,passed,is_hard_stop,failure_category,failure_reason
+validation,profit_lock_rule_simple,track_A_pass,False,True,False,True,winner_capture,gate_failed
+validation,profit_lock_rule_simple,track_B_pass,False,True,False,True,profit_protection,gate_failed
+validation,profit_lock_rule_simple,matched_random_p50_pass,0.001023005048016775,> 0,True,True,matched_random,
+validation,profit_lock_rule_simple,matched_random_p95_pass,-0.0026170410131177036,-0.001,False,True,matched_random,gate_failed
+validation,trailing_stop_rule_simple,track_A_pass,False,True,False,True,winner_capture,gate_failed
+validation,trailing_stop_rule_simple,track_B_pass,False,True,False,True,profit_protection,gate_failed
+validation,trailing_stop_rule_simple,matched_random_p50_pass,0.0009238954244294925,> 0,True,True,matched_random,
+validation,trailing_stop_rule_simple,matched_random_p95_pass,-0.0015008191554789583,-0.001,False,True,matched_random,gate_failed
+validation,partial_exit_after_profit_rule,track_A_pass,False,True,False,True,winner_capture,gate_failed
+validation,partial_exit_after_profit_rule,track_B_pass,False,True,False,True,profit_protection,gate_failed
+validation,partial_exit_after_profit_rule,matched_random_p50_pass,0.0014510230765587637,> 0,True,True,matched_random,
+validation,partial_exit_after_profit_rule,matched_random_p95_pass,-0.0015043280182660268,-0.001,False,True,matched_random,gate_failed
+all,model_training,model_training_not_executed,False,False,True,True,contract_or_leakage,
+all,model_selection,model_policy_candidate_count_zero,0,0,True,True,contract_or_leakage,
+all,deterministic_count,deterministic_candidate_count_equals_three,3,3,True,True,contract_or_leakage,

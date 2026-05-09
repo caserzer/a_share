@@ -1,0 +1,153 @@
+phase: requirement_05_daily_continuation_profit_protection_policy
+implementation_mode: deterministic_prephase_only
+output_root: ep2/outputs/requirement_05_daily_continuation_profit_protection_policy
+
+baseline:
+  config_path: ep2/engineering_baseline/config.yaml
+  output_root: ep2/engineering_baseline/outputs
+
+inputs:
+  requirement_01_output_root: ep2/outputs/requirement_01_label_and_baseline_freeze
+  requirement_02_output_root: ep2/outputs/requirement_02_hazard_timing_model
+  requirement_03_output_root: ep2/outputs/requirement_03_schedule_bridge
+  requirement_04_output_root: ep2/outputs/requirement_04_holding_exit_winner_capture_extension
+  engineering_baseline_output_root: ep2/engineering_baseline/outputs
+
+frozen_contract:
+  requirement_01_manifest: ep2/outputs/requirement_01_label_and_baseline_freeze/manifests/requirement_01_freeze_manifest.json
+  requirement_02_manifest: ep2/outputs/requirement_02_hazard_timing_model/manifests/requirement_02_hazard_manifest.json
+  requirement_03_manifest: ep2/outputs/requirement_03_schedule_bridge/manifests/requirement_03_schedule_bridge_manifest.json
+  requirement_03_gate_audit: ep2/outputs/requirement_03_schedule_bridge/reports/requirement_03_gate_audit.csv
+  requirement_04_manifest: ep2/outputs/requirement_04_holding_exit_winner_capture_extension/manifests/requirement_04_holding_exit_manifest.json
+  requirement_04_gate_audit: ep2/outputs/requirement_04_holding_exit_winner_capture_extension/reports/requirement_04_gate_audit.csv
+  expected_requirement_01_status: passed
+  expected_requirement_02_status: passed
+  expected_requirement_03_status: passed
+  expected_requirement_03_next_phase_status: passed
+  expected_requirement_04_status: failed_tail_risk
+  expected_requirement_04_next_phase_status: failed_tail_risk
+  expected_requirement_04_selected_schedule_id: ""
+  requirement_03_expected_gate_count: 17
+  requirement_03_expected_passed_gate_count: 17
+  requirement_03_expected_failed_gate_count: 0
+  primary_label_id: confirm_h10_u10_d06_conservative_fail
+  frozen_baseline_id: probe_with_simple_stop
+  hazard_schedule_id: hazard_probe_with_simple_stop
+  schedule_bridge_id: hazard_probe_confirm_add_fast_fail
+  selected_threshold: 0.3205667777673395
+  selected_stop_risk_ceiling: 0.27410397287415667
+  probe_weight: 0.30
+  full_weight_after_confirm: 1.00
+  base_fast_fail_drawdown: 0.06
+  r03_primary_H: 10
+
+stage_control:
+  implementation_mode: deterministic_prephase_only
+  run_deterministic_prephase_first: true
+  run_R04_regime_audit_before_full_model: true
+  full_model_stage_default_enabled: false
+  full_model_stage_executed_default: false
+  full_model_requires_sample_power_pass: true
+  full_model_requires_deterministic_prephase_pass: true
+  full_model_requires_regime_mismatch_status_not_blocking: true
+
+policies:
+  deterministic_policy_ids:
+    - profit_lock_rule_simple
+    - trailing_stop_rule_simple
+    - partial_exit_after_profit_rule
+  baseline_policy_id: R03_original_H10_replay
+  diagnostic_policy_ids:
+    - R04_R03_confirmed_H20_replay_diagnostic
+    - R04_R03_winner_state_hold_H120_replay_diagnostic
+  read_only_r04_comparison_schedule_ids:
+    - R03_confirmed_H60
+    - R03_confirmed_H120
+  max_holding_days_safety_cap: 120
+  blocked_exit_retry:
+    same_as_engineering_baseline: true
+    retry_until_executed: true
+    max_retry_trading_days: 5
+  profit_lock_rule_simple:
+    activate_return_from_first_exposure: 0.10
+    partial_exit_to_weight: 0.30
+    giveback_from_peak_profit_exit: -0.06
+    partial_exit_once_per_episode: true
+  trailing_stop_rule_simple:
+    activate_return_from_first_exposure: 0.10
+    trailing_giveback: 0.08
+  partial_exit_after_profit_rule:
+    activate_return_from_first_exposure: 0.12
+    partial_exit_fraction: 0.50
+    remaining_position_uses_trailing_stop_rule_simple: true
+    partial_exit_once_per_episode: true
+
+sample_power:
+  deterministic_stage_min_validation_exposed_episodes: 80
+  deterministic_stage_min_validation_big_winner_50h120: 30
+  deterministic_stage_min_validation_actionable_big_winner_50h120: 10
+  full_model_min_validation_exposed_episodes: 180
+  full_model_min_validation_big_winner_50h120: 80
+  full_model_min_validation_actionable_big_winner_50h120: 40
+  full_model_min_events_per_free_parameter: 10
+  max_full_model_policy_candidates: 32
+  max_deterministic_policy_candidates: 3
+
+r05_gates:
+  track_A_min_strict_capture_count_diff_floor: 2
+  track_A_min_strict_capture_count_diff_rate: 0.05
+  max_mean_drop_vs_R03_negative_bound: -0.0010
+  max_p05_drop_vs_R03_negative_bound: -0.0030
+  max_mae_worsening_vs_R03: 0.0050
+  max_exposure_day_multiple_vs_R03: 3.0
+  track_B_max_strict_capture_count_loss: 0
+  max_strict_capture_rate_loss_vs_R03: 0.10
+  max_exposure_weighted_capture_loss_vs_R03: 0.10
+  min_mean_improvement_vs_R03_for_profit_protection: 0.0010
+  min_p05_improvement_vs_R03_for_profit_protection: 0.0020
+  min_mae_improvement_vs_R03_for_profit_protection: 0.0020
+  track_B_one_capture_loss_min_p05_improvement: 0.0100
+  track_B_one_capture_loss_min_mean_improvement: 0.0030
+  track_B_one_capture_loss_max_exposure_weighted_loss: 0.0200
+  max_random_p95_shortfall: 0.0010
+  max_blocked_exit_retry_rate: 0.05
+  max_terminal_blocked_exit_rate: 0.01
+  max_top1_instrument_year_exposure_share: 0.10
+  max_top5_instrument_exposure_share: 0.35
+  model_over_deterministic_materiality_margin: 0.0010
+
+matched_random_exit:
+  n_repeats: 100
+  random_seed: 20260509
+  sample_unit: launch_episode_id
+  candidate_specific: true
+  generated_after_candidate_action_schedule_frozen: true
+  generated_before_validation_ranking: true
+  match_by:
+    - split
+    - confirm_add_executed
+    - exposure_day_bucket
+    - executable_exit_count_bucket
+
+regime_audit:
+  allowed_dimensions:
+    - calendar_year
+  min_bucket_exposed_episodes: 25
+  min_bucket_big_winner_50h120: 8
+  min_reversing_r04_schedule_count_to_block: 2
+  status_enum:
+    - none
+    - weak_diagnostic
+    - blocking
+  blocking_requires_condition_A_and_B: true
+
+recommendations:
+  run_full_model: run_R05_full_model_stage
+  regime_conditional: proceed_to_regime_conditional_requirement
+  event_sleeve: proceed_to_R06_baserate_integration_as_event_sleeve
+  risk_filter_overlay: proceed_to_R06_baserate_integration_as_risk_filter_overlay
+  short_horizon: keep_EP2_as_short_horizon_event_sleeve
+  profit_protection_overlay: reframe_EP2_as_profit_protection_overlay
+  stop_big_winner: stop_big_winner_holding_research
+  no_edge: stop_due_to_no_continuation_policy_edge
+  insufficient_power: stop_due_to_insufficient_selection_power

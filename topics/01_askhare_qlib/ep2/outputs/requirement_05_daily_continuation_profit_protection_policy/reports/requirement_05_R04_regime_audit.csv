@@ -1,0 +1,9 @@
+split,regime_bucket,schedule_id,episode_count,exposed_episode_count,big_winner_episode_count_50h120,mean_after_cost_return_diff_vs_R03,p05_after_cost_return_diff_vs_R03,strict_capture_diff_vs_R03,exposure_day_multiple_vs_R03,validation_to_robustness_direction_match,condition_A_triggered,condition_B_triggered,regime_mismatch_flag,regime_mismatch_status,regime_mismatch_confidence,audit_interpretation
+validation,all,R03_confirmed_H20,,,,-0.001529032428648,-0.0067361370745232,0.0232558139534883,1.96869541851404,False,True,False,True,weak_diagnostic,medium,diagnostic_only
+robustness,all,R03_confirmed_H20,,,,0.0091802838005566,0.0121408594466652,0.0629921259842519,1.971313053523296,False,True,False,True,weak_diagnostic,medium,diagnostic_only
+validation,all,R03_winner_state_hold_H120,,,,-0.0012509596731373,-0.0059105344804401,0.0232558139534883,1.9337632674996643,False,True,False,True,weak_diagnostic,medium,diagnostic_only
+robustness,all,R03_winner_state_hold_H120,,,,0.0086593144195281,0.0121408594466652,0.0629921259842519,1.8240277242972656,False,True,False,True,weak_diagnostic,medium,diagnostic_only
+validation,all,R03_confirmed_H60,,,,-0.0015748538151079,-0.0269849117376176,0.1162790697674418,4.735053069998656,False,True,False,True,weak_diagnostic,medium,diagnostic_only
+robustness,all,R03_confirmed_H60,,,,0.0118586678386336,-0.0052283826734976,0.1732283464566929,5.057566422795532,False,True,False,True,weak_diagnostic,medium,diagnostic_only
+validation,all,R03_confirmed_H120,,,,-0.0015204362785553,-0.0509976481131946,0.2093023255813953,8.193336020421873,False,True,False,True,weak_diagnostic,medium,diagnostic_only
+robustness,all,R03_confirmed_H120,,,,0.0147661914310158,-0.03076356020519,0.2283464566929133,9.052560646900266,False,True,False,True,weak_diagnostic,medium,diagnostic_only
