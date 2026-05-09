@@ -1,0 +1,80 @@
+phase: requirement_02_hazard_timing_model
+output_root: ep2/outputs/requirement_02_hazard_timing_model
+
+baseline:
+  config_path: ep2/engineering_baseline/config.yaml
+  output_root: ep2/engineering_baseline/outputs
+
+frozen_contract:
+  requirement_01_summary: ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_freeze_summary.csv
+  requirement_01_manifest: ep2/outputs/requirement_01_label_and_baseline_freeze/manifests/requirement_01_freeze_manifest.json
+  primary_label_id: confirm_h10_u10_d06_conservative_fail
+  frozen_baseline_id: probe_with_simple_stop
+  expected_requirement_01_status: passed
+
+model_scope:
+  max_probe_window: 10
+  primary_horizon: 10
+  primary_upside: 0.10
+  primary_drawdown: 0.06
+  same_day_policy: conservative_fail
+  probe_weight: 0.30
+  natural_exit: next_open_after_H_trading_days
+  fast_fail_drawdown: 0.06
+
+hazard_score:
+  lambda_stop: 1.0
+  mu_missed_upside: 1.0
+  missed_upside_field: missed_gain_to_probe
+
+split:
+  train_start: 2017-07-04
+  train_end: 2021-12-31
+  validation_start: 2022-01-01
+  validation_end: 2023-12-31
+  robustness_start: 2024-01-01
+  robustness_end: 2025-12-31
+  split_date_field: launch_effective_date
+  embargo_trading_days: 10
+  split_unit: launch_episode_id
+
+threshold_selection:
+  selection_split: validation
+  threshold_grid_source: validation_score_quantiles
+  threshold_quantiles: [0.00, 0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90]
+  primary_objective: mean_after_cost_return_diff_vs_probe_with_simple_stop
+  tie_breakers:
+    - lower_turnover_proxy
+    - lower_missed_gain_to_exposure_median
+    - lower_top1_instrument_year_exposure_share
+
+model:
+  model_type: lightgbm_multiclass_softmax
+  objective: multiclass
+  num_class: 3
+  random_state: 20260509
+  n_estimators: 120
+  learning_rate: 0.05
+  num_leaves: 15
+  min_child_samples: 40
+  subsample: 0.90
+  colsample_bytree: 0.90
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+
+episode_primary_probe_day:
+  max_missed_gain_to_probe: 0.08
+  selected_stop_risk_ceiling: validation_median_P_stop_first_among_target_first_positive_rows
+
+proceed_gate:
+  min_mean_after_cost_return_diff_vs_probe_with_simple_stop: 0.0
+  max_big_winner_coverage_loss_vs_probe_with_simple_stop: 0.20
+  max_missed_gain_to_exposure_median: 0.08
+  min_turnover_reduction_vs_daily_baserate: 0.50
+  max_top1_instrument_year_exposure_share: 0.10
+  max_top5_instrument_exposure_share: 0.35
+  min_positive_pnl_year_count: 2
+  max_two_year_positive_pnl_share: 0.65
+  max_three_or_more_year_positive_pnl_share: 0.35
+  year_positive_pnl_hard_gate_splits: [validation, robustness]
+  max_top1_instrument_year_positive_pnl_share: 0.10
