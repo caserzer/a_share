@@ -1,0 +1,160 @@
+{
+  "phase": "ep3_engineering_baseline",
+  "config_path": "ep3/engineering_baseline/config.yaml",
+  "config_hash": "2628adca1c433dc2e5123152fc3355ff9fdc24ae65e04bf1ffb4e2a5b9192d4b",
+  "output_root": "ep3/engineering_baseline/outputs",
+  "generated_at": "2026-05-10T02:21:45.584128+00:00",
+  "git_commit": "752b1c48b6befae71a4dcdeb2a75e7a78a089577",
+  "validation_status": "passed",
+  "validation_failures": [],
+  "required_artifact_count": 22,
+  "existing_required_artifact_count": 22,
+  "artifact_authority": [
+    {
+      "artifact_name": "ep3_winner_label_panel.parquet",
+      "path": "ep3/engineering_baseline/outputs/cache/ep3_winner_label_panel.parquet",
+      "exists": true,
+      "content_hash": "ba81492bc3aaf00355917fab1d57b556d2004a8998685f51847ca3506d09bd82"
+    },
+    {
+      "artifact_name": "ep3_candidate_anchor_panel.parquet",
+      "path": "ep3/engineering_baseline/outputs/cache/ep3_candidate_anchor_panel.parquet",
+      "exists": true,
+      "content_hash": "b4744212fc7b64103f461dcc4b748c63381c9a54488a2cbd033597958f575f19"
+    },
+    {
+      "artifact_name": "ep3_matched_baseline_panel.parquet",
+      "path": "ep3/engineering_baseline/outputs/cache/ep3_matched_baseline_panel.parquet",
+      "exists": true,
+      "content_hash": "7123b7dc338e1ffe6c5277ee4777340e6cfd7fe05ff36634ba8f9dc4c9d15ba4"
+    },
+    {
+      "artifact_name": "ep3_input_authority.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_input_authority.csv",
+      "exists": true,
+      "content_hash": "4d760ab84e4cadc0d484bdca71ee6a61bc0026da35743742c49cd65d19915438"
+    },
+    {
+      "artifact_name": "ep3_pit_coverage_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_pit_coverage_audit.csv",
+      "exists": true,
+      "content_hash": "69ed1063b551da25471746d186d10042a7b90852fe4421e474bd1c03d5e09770"
+    },
+    {
+      "artifact_name": "ep3_winner_lifecycle_profile.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_winner_lifecycle_profile.csv",
+      "exists": true,
+      "content_hash": "c659e99d6cfb7ad3ac184c7086fc8bdc5e164362c7c865246ced7650758e3d87"
+    },
+    {
+      "artifact_name": "ep3_winner_cross_year_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_winner_cross_year_audit.csv",
+      "exists": true,
+      "content_hash": "2970928095637b9337a3d2e8067c8406f8842be83c2585e246cddd525d76841f"
+    },
+    {
+      "artifact_name": "ep3_anchor_window_freeze.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_anchor_window_freeze.csv",
+      "exists": true,
+      "content_hash": "c69cd886387cf6cbcf20f4959ef514633f4ac3422873dafa0450cd851b999a08"
+    },
+    {
+      "artifact_name": "ep3_observable_anchor_dictionary.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_observable_anchor_dictionary.csv",
+      "exists": true,
+      "content_hash": "4fb503db74b86fc060149be1d28af6b4465fe27e235aa3d55e3e84c7577a9256"
+    },
+    {
+      "artifact_name": "ep3_matched_control_bucket_freeze.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_matched_control_bucket_freeze.csv",
+      "exists": true,
+      "content_hash": "30e5c1a1ac9d30d78c3cc1f2226cd10db446d8f03e3e42bc8a950f3b833fc5f1"
+    },
+    {
+      "artifact_name": "ep3_anchor_trigger_budget_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_anchor_trigger_budget_audit.csv",
+      "exists": true,
+      "content_hash": "78f791af454307fb23cd58692dcb822369ba7be447822fccae04e456aedb3563"
+    },
+    {
+      "artifact_name": "ep3_anchor_vs_matched_baseline.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_anchor_vs_matched_baseline.csv",
+      "exists": true,
+      "content_hash": "8b1d508f517ac255a46c6a67abc8af319023d6f2326d8ac481fd1bdb679225d7"
+    },
+    {
+      "artifact_name": "ep3_failure_lookalike_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_failure_lookalike_audit.csv",
+      "exists": true,
+      "content_hash": "2a832ec145b2c2e4197904adee54e7ffe031464910ed4287bb7148751562fbd0"
+    },
+    {
+      "artifact_name": "ep3_instrument_year_lift_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_instrument_year_lift_audit.csv",
+      "exists": true,
+      "content_hash": "b58dd956939b2703c8e7d2b8e1a6956df5f5401731038b1e9ca19ff34f81a883"
+    },
+    {
+      "artifact_name": "ep3_regime_stability_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_regime_stability_audit.csv",
+      "exists": true,
+      "content_hash": "4f97c5b372df9d07e8c7138ff64942477cfa7310ea44a18e18ee5874f40ed3a8"
+    },
+    {
+      "artifact_name": "ep3_sensitivity_horizon_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_sensitivity_horizon_audit.csv",
+      "exists": true,
+      "content_hash": "9d4d4afefb2ac89393346f977b3ea03e262ac90dc8cebd71c9a00e72877d5182"
+    },
+    {
+      "artifact_name": "ep3_preliminary_anchor_leads.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_preliminary_anchor_leads.csv",
+      "exists": true,
+      "content_hash": "bf3ff7c3a8a82fd98f8c414a4961d0948b72a8090b94f103a744be08c257ef3e"
+    },
+    {
+      "artifact_name": "ep3_gate_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_gate_audit.csv",
+      "exists": true,
+      "content_hash": "7cb132c6881792521db007bc7f5f7b203ee8de010bdbaa7db4c3c17b56568aee"
+    },
+    {
+      "artifact_name": "ep3_discussion_report.md",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_discussion_report.md",
+      "exists": true,
+      "content_hash": "0a311bbe1befe099ca0ad38e77cb4643b93469823b73fcdd4c3bbf4cc1470800"
+    },
+    {
+      "artifact_name": "ep3_stage_order_audit.csv",
+      "path": "ep3/engineering_baseline/outputs/reports/ep3_stage_order_audit.csv",
+      "exists": true,
+      "content_hash": "ad059b300304670527e96309f285b1ae5c7ea7023ee426f2bf849d983593764d"
+    },
+    {
+      "artifact_name": "config.yaml",
+      "path": "ep3/engineering_baseline/config.yaml",
+      "exists": true,
+      "content_hash": "2628adca1c433dc2e5123152fc3355ff9fdc24ae65e04bf1ffb4e2a5b9192d4b"
+    }
+  ],
+  "forbidden_inputs": {
+    "r02_threshold_search": "not_used",
+    "r03_confirmed_pool": "not_used",
+    "r05_holding_policy": "not_used",
+    "baserate_row_level_cache": "not_used"
+  },
+  "frozen_ep2_inputs": {
+    "ep2_engineering_manifest": {
+      "path": "ep2/engineering_baseline/outputs/manifests/ep2_engineering_baseline_manifest.json",
+      "content_hash": "f10d04cbd28addad275f07c771a41eb4c7aa835dfc0cc25bc3361d13563e8996"
+    },
+    "ep2_launch_pool": {
+      "path": "ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet",
+      "content_hash": "ff302924138261ecf89d63c12551414abbd0254c9e64baeddac3fc9dbb3e80ed"
+    },
+    "ep2_candidate_probe_grid": {
+      "path": "ep2/engineering_baseline/outputs/cache/ep2_candidate_probe_grid.parquet",
+      "content_hash": "1263f834328611ad71906d05d52543d9f851aa2ba23834cda918c9e82954f259"
+    }
+  }
+}

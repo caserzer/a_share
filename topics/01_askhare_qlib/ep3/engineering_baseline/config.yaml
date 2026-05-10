@@ -1,0 +1,146 @@
+phase: ep3_engineering_baseline
+output_root: ep3/engineering_baseline/outputs
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+
+frozen_ep2_inputs:
+  ep2_engineering_manifest: ep2/engineering_baseline/outputs/manifests/ep2_engineering_baseline_manifest.json
+  ep2_launch_pool: ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet
+  ep2_candidate_probe_grid: ep2/engineering_baseline/outputs/cache/ep2_candidate_probe_grid.parquet
+
+input_contract:
+  provider_load_start_date: "2017-01-01"
+  provider_load_end_date: "2026-04-30"
+  required_universe_name: pit_mcap500_mainboard
+  label_price_adjustment_mode: qlib_pit_adjusted_ohlc_with_factor_audit
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+  split_date_field: signal_date
+  horizon_contained_within_split_for_primary_gates: true
+  max_label_horizon_trading_days: 240
+
+winner_episode:
+  merge_gap_trading_days: 20
+
+winner_labels:
+  primary:
+    label_id: winner_50h120
+    horizon_trading_days: 120
+    upside_target: 0.50
+    target_price_reference: intraday_high
+  sensitivity:
+    label_id: winner_100h240
+    horizon_trading_days: 240
+    upside_target: 1.00
+    target_price_reference: intraday_high
+
+anchor_scope:
+  lifecycle_profiling_universe: all_pit_50h120_and_100h240_winners
+  forward_audit_universe: ep2_launch_pool_plus_winner_start_matched_controls
+  anchor_window_source: train_lifecycle_profile_only
+  anchor_window_status: derived_then_frozen_before_validation
+  anchor_window_quantile_low: 0.10
+  anchor_window_quantile_high: 0.90
+  anchor_window_min_trading_days: 1
+  anchor_window_max_trading_days: 60
+
+observable_reference_rules:
+  atr_lookback_days: 20
+  acceleration_lookback_days: 60
+  acceleration_min_return: 0.12
+  money_ma_lookback_days: 20
+  money_multiple_min: 2.0
+  money_min_cny: 50000000
+  restrengthen_high_lookback_days: 5
+  pullback_min_drawdown_from_acceleration_close: 0.04
+  pullback_max_drawdown_from_acceleration_close: 0.18
+  pullback_hold_atr_multiple: 2.0
+  second_breakout_min_gap_days: 3
+  second_breakout_max_gap_days: 60
+  second_breakout_min_return_from_first_close: 0.06
+  consolidation_max_drawdown_from_first_close: 0.15
+
+primary_anchor_families:
+  - pullback_hold_restrengthen
+  - second_breakout
+
+deferred_anchor_families:
+  - post_breakout_contraction
+  - industry_sync_expansion
+  - market_regime_reacceleration
+  - turnover_volatility_contraction
+  - failed_lookalike_avoidance
+
+primary_horizon:
+  horizon_id: H20
+  holding_trading_days: 20
+  natural_exit: next_open_after_H_trading_days
+
+sensitivity_horizons:
+  - H10
+  - H60
+
+execution:
+  signal_date_rule: close_derived_signal_date
+  decision_date_rule: same_as_signal_date_after_close
+  execution_date_rule: next_trading_day(signal_date)
+  entry_price_reference: open[execution_date]
+  blocked_execution_reasons:
+    - missing_open
+    - zero_volume
+    - zero_money
+    - limit_up_inferred
+    - limit_down_inferred
+    - not_universe_member
+    - missing_calendar_next_day
+    - missing_price_row
+  limit_inference_pct:
+    mainboard_default: 0.095
+
+cost_model:
+  same_as_ep2_engineering_baseline: true
+  cost_profile: base
+  commission_bps_buy: 10
+  commission_bps_sell: 10
+  stamp_tax_bps_sell: 50
+  slippage_bps_buy: 20
+  slippage_bps_sell: 20
+  min_commission_cny: null
+  derived_buy_cost_bps: 30
+  derived_sell_cost_bps: 80
+
+trigger_budget:
+  min_anchor_trigger_rate_per_launch_episode: 0.20
+  max_anchor_trigger_rate_per_launch_episode: 1.50
+
+matched_controls:
+  random_seed: 20260509
+  controls_per_anchor: 5
+  sample_with_replacement_if_insufficient: false
+  bucket_quantile_source: train_split_only
+  money_bucket_quantiles: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+  realized_volatility_bucket_quantiles: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+  return_60d_bucket_quantiles: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+  max_calendar_day_distance: 20
+  max_controls_per_instrument_month: 3
+
+gates:
+  min_lifecycle_anchor_recall: 0.30
+  min_validation_unique_instrument_year_count: 25
+  min_validation_h20_mean_diff_vs_matched_delay: 0.0
+  min_validation_h20_p05_diff_vs_matched_delay: -0.003
+  max_validation_h20_mae_worsening_vs_matched_delay: 0.005
+  min_validation_instrument_year_positive_rate_diff: 0.0
+  max_top1_instrument_year_pnl_share: 0.20
+  max_top5_instrument_exposure_share: 0.50
