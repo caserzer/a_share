@@ -1,0 +1,11 @@
+state_variant_id,state_family_id,state_direction,formula,threshold_source,state_formula_version,state_formula_hash
+trend_hold_ema20_3d,trend_hold_state,continuation,close >= ema20 and close_1d_ago >= ema20_1d_ago and close_2d_ago >= ema20_2d_ago and ema20_slope_5d > 0,config-static,v1,3a81170e6a890a80c127535960ccb110b7a443126fb8255916063ad6ff1c44bf
+volume_support_money20_floor,volume_support_state,continuation,money_ma3 >= 0.80 * money_ma20 and close >= ema20,config-static,v1,0c800297a5cfdc5dae078fc3ef0c0181d415639a9e91563a633eb39c43ab5078
+range_compression_above_support,range_compression_hold_state,continuation,rolling_range_5d / atr20 <= train_q50_range_atr and close >= ema20,train-only q50,v1,b6e571c81e1c2c002f26492980efece6f33994c8e94c72df5cbaa906ac40b229
+relative_strength_hold_20d,relative_strength_hold_state,continuation,relative_ret20_vs_market >= 0 and relative_ret20_vs_industry >= 0,config-static,v1,0b759271b200f689b527d516b14316f124d85a993c48f744b95e6c6961abe3da
+profit_buffer_6pct,profit_buffer_state,continuation,current_return_from_entry >= 0.06 and drawdown_from_profit_peak_asof_state <= 0.04,config-static,v1,f99cb13cfb4d9846fa9c9f7f15ee1875f6251911ec3a56c11dc6932227e7e955
+support_break_ema20_2d,support_break_state,risk,close < ema20 and close_1d_ago < ema20_1d_ago and ret3 < 0,config-static,v1,4be3bdb2219e11987b47d7bd6853627ae404fc7011b7f91877047cce65510715
+volume_failure_money20_break,volume_failure_state,risk,money_ma3 < 0.60 * money_ma20 and close < ema20,config-static,v1,0debb84837f91c74fa5c44060a6842ee7b5cf5da774152da1c81c3ee793d7987
+range_expansion_downside,range_expansion_down_state,risk,true_range / atr20 >= 1.50 and close_location_in_day <= 0.30 and ret1 < 0,config-static,v1,f68460066eb773b3610c49f6c3bd7c37aada1c0a854613d58fb2c347867930f1
+relative_strength_failure_20d,relative_strength_failure_state,risk,relative_ret20_vs_market <= train_q30_market_rel20 and relative_ret20_vs_industry <= train_q30_industry_rel20,train-only q30,v1,13756d7a289a4d0355b78bf714245b6ca2dc550c2e2602d1c6e16c88c20e15f3
+profit_giveback_10_6,profit_giveback_state,risk,open_profit_peak_asof_state >= 0.10 and drawdown_from_profit_peak_asof_state >= 0.06,config-static,v1,ff4b7485754b778c5ad55b7ce74afe39c24ea4d45ac1b2b44f8d76db69d39eb3

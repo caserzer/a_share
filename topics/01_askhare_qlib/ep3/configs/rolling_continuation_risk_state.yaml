@@ -1,0 +1,83 @@
+phase: ep3_rolling_continuation_risk_state_audit
+output_root: ep3/outputs/rolling_continuation_risk_state_audit
+
+inputs:
+  ep2_launch_pool: ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet
+  ep2_r04_manifest: ep2/outputs/requirement_04_holding_exit_winner_capture_extension/manifests/requirement_04_holding_exit_manifest.json
+  ep2_r04_exposure_daily_panel: ep2/outputs/requirement_04_holding_exit_winner_capture_extension/cache/requirement_04_exposure_daily_panel.parquet
+  ep2_r04_big_winner_audit: ep2/outputs/requirement_04_holding_exit_winner_capture_extension/reports/requirement_04_big_winner_capture_audit.csv
+  ep2_r05_manifest: ep2/outputs/requirement_05_daily_continuation_profit_protection_policy/manifests/requirement_05_continuation_policy_manifest.json
+  ep2_r05_post_exposure_state_panel: ep2/outputs/requirement_05_daily_continuation_profit_protection_policy/cache/requirement_05_post_exposure_state_panel.parquet
+  ep2_r05_continuation_training_panel: ep2/outputs/requirement_05_daily_continuation_profit_protection_policy/cache/requirement_05_continuation_training_panel.parquet
+  ep2_r05_policy_exposure_daily_panel: ep2/outputs/requirement_05_daily_continuation_profit_protection_policy/cache/requirement_05_policy_exposure_daily_panel.parquet
+  ep2_r05_matched_random_exit_panel: ep2/outputs/requirement_05_daily_continuation_profit_protection_policy/cache/requirement_05_matched_random_exit_panel.parquet
+  ep2_r05_report: ep2/outputs/requirement_05_daily_continuation_profit_protection_policy/reports/requirement_05_report.md
+  explore9_p0_6_report: Explore9/outputs/reports/explore9_p0_6_entry_trigger_report.md
+  ep3_joint_report: ep3/p0_5_deferred_family_joint_report.md
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  pit_industry_path: data/targets/pit_industry_membership.csv
+
+input_contract:
+  provider_load_start_date: "2017-01-01"
+  provider_load_end_date: "2026-04-30"
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+primary_exposure:
+  process_id: R03_original_H10_replay
+  policy_id: R03_original_H10_replay
+  schedule_id: R03_original_H10_replay
+
+state_variants:
+  - {state_variant_id: trend_hold_ema20_3d, state_family_id: trend_hold_state, state_direction: continuation, threshold_source: config-static}
+  - {state_variant_id: volume_support_money20_floor, state_family_id: volume_support_state, state_direction: continuation, threshold_source: config-static}
+  - {state_variant_id: range_compression_above_support, state_family_id: range_compression_hold_state, state_direction: continuation, threshold_source: train-only q50}
+  - {state_variant_id: relative_strength_hold_20d, state_family_id: relative_strength_hold_state, state_direction: continuation, threshold_source: config-static}
+  - {state_variant_id: profit_buffer_6pct, state_family_id: profit_buffer_state, state_direction: continuation, threshold_source: config-static}
+  - {state_variant_id: support_break_ema20_2d, state_family_id: support_break_state, state_direction: risk, threshold_source: config-static}
+  - {state_variant_id: volume_failure_money20_break, state_family_id: volume_failure_state, state_direction: risk, threshold_source: config-static}
+  - {state_variant_id: range_expansion_downside, state_family_id: range_expansion_down_state, state_direction: risk, threshold_source: config-static}
+  - {state_variant_id: relative_strength_failure_20d, state_family_id: relative_strength_failure_state, state_direction: risk, threshold_source: train-only q30}
+  - {state_variant_id: profit_giveback_10_6, state_family_id: profit_giveback_state, state_direction: risk, threshold_source: config-static}
+
+actions:
+  reduce_to_weight: [0.50, 0.30]
+
+horizons:
+  primary_gate_horizon: H20
+  action_horizons: [5, 10, 20, 60]
+  retention_horizon: 120
+  retention_target: 0.50
+
+matched_baseline:
+  random_seed: 20260510
+  replacement_allowed: false
+  matched_delay_days: null
+
+gates:
+  min_event_count: 50
+  min_unique_launch_episode_count: 30
+  min_unique_instrument_year_count: 25
+  max_top1_instrument_year_pnl_share: 0.20
+  max_top5_instrument_exposure_share: 0.50
+  risk_p05_improvement_validation: 0.005
+  risk_mae_improvement_validation: 0.005
+  risk_false_reject_max: 0.20
+  risk_partial_haircut_max: 0.35
+  risk_future_winner_retention_min: 0.70
+  continuation_future_winner_retention_min: 0.80
+  continuation_capital_occupancy_max: 1.50
+  matched_random_p95_min: -0.001
+  matched_delay_mean_validation_min: -0.001
+  matched_delay_p05_validation_min: -0.001

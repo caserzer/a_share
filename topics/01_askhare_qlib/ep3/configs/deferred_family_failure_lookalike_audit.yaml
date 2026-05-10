@@ -1,0 +1,123 @@
+phase: ep3_deferred_family_failure_lookalike_audit
+output_root: ep3/outputs/deferred_family_failure_lookalike_audit
+
+upstream_ep3_p0:
+  manifest: ep3/engineering_baseline/outputs/manifests/ep3_engineering_baseline_manifest.json
+  winner_label_panel: ep3/engineering_baseline/outputs/cache/ep3_winner_label_panel.parquet
+  candidate_anchor_panel: ep3/engineering_baseline/outputs/cache/ep3_candidate_anchor_panel.parquet
+  matched_baseline_panel: ep3/engineering_baseline/outputs/cache/ep3_matched_baseline_panel.parquet
+  lifecycle_profile: ep3/engineering_baseline/outputs/reports/ep3_winner_lifecycle_profile.csv
+  gate_audit: ep3/engineering_baseline/outputs/reports/ep3_gate_audit.csv
+  anchor_vs_matched_baseline: ep3/engineering_baseline/outputs/reports/ep3_anchor_vs_matched_baseline.csv
+  anchor_window_freeze: ep3/engineering_baseline/outputs/reports/ep3_anchor_window_freeze.csv
+  matched_control_bucket_freeze: ep3/engineering_baseline/outputs/reports/ep3_matched_control_bucket_freeze.csv
+
+upstream_ep3_p0_5:
+  manifest: ep3/outputs/p0_5_anchor_failure_diagnostic/manifests/p0_5_anchor_failure_diagnostic_manifest.json
+  anchor_event_diagnostic_panel: ep3/outputs/p0_5_anchor_failure_diagnostic/cache/p0_5_anchor_event_diagnostic_panel.parquet
+  baseline_event_diagnostic_panel: ep3/outputs/p0_5_anchor_failure_diagnostic/cache/p0_5_baseline_event_diagnostic_panel.parquet
+  hypothesis_audit: ep3/outputs/p0_5_anchor_failure_diagnostic/reports/p0_5_hypothesis_audit.csv
+  stop_continue_decision: ep3/outputs/p0_5_anchor_failure_diagnostic/reports/p0_5_stop_continue_decision.csv
+
+denominator_inputs:
+  ep2_launch_pool: ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  pit_industry_path: data/targets/pit_industry_membership.csv
+
+input_contract:
+  provider_load_start_date: "2017-01-01"
+  provider_load_end_date: "2025-12-31"
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+  split_date_field: signal_date
+
+deferred_family_scope:
+  primary_deferred_family: failed_lookalike_avoidance
+  primary_event_type: recovery_after_failed_lookalike
+  stopped_primary_families:
+    - pullback_hold_restrengthen
+    - second_breakout
+  decision_source_required: write_deferred_family_requirement
+  primary_horizon: H20
+  sensitivity_horizons:
+    - H10
+    - H60
+  derive_bins_from_split: train
+  selection_from_validation_or_robustness_allowed: false
+
+observable_failure_lookalike_rules:
+  post_reference_observation_days: [1, 60]
+  max_recovery_after_failure_days: 20
+  max_ac_attribution_lookback_days: 20
+  min_recovery_return_from_reference_close: 0.00
+  require_next_open_executable: true
+
+observable_reference_rules:
+  atr_lookback_days: 20
+  acceleration_lookback_days: 60
+  acceleration_min_return: 0.12
+  money_ma_lookback_days: 20
+  money_multiple_min: 2.0
+  money_min_cny: 50000000
+  restrengthen_high_lookback_days: 5
+  pullback_min_drawdown_from_acceleration_close: 0.04
+  pullback_max_drawdown_from_acceleration_close: 0.18
+  pullback_hold_atr_multiple: 2.0
+  second_breakout_min_gap_days: 3
+  second_breakout_max_gap_days: 60
+  second_breakout_min_return_from_first_close: 0.06
+  consolidation_max_drawdown_from_first_close: 0.15
+
+diagnostic_bins:
+  event_count_min_for_interpretation: 20
+  instrument_year_count_min_for_interpretation: 10
+  validation_min_unique_instrument_year_count_for_gate: 25
+  min_train_recovery_rows_for_delay_freeze: 20
+  trigger_rate_reference_bands: [0.0, 0.05, 0.10, 0.15, 0.20, 1.50]
+  failure_margin_quantiles: [0.0, 0.25, 0.5, 0.75, 1.0]
+  reference_age_days: [0, 5, 10, 20, 40, 60]
+
+baseline_matching:
+  donor_stock_day_source: ep3_winner_label_panel
+  max_same_instrument_distance_days: 20
+  max_industry_distance_days: 20
+  control_replacement_allowed: false
+  exclude_dates_within_primary_deferred_event_days: 5
+
+execution:
+  limit_inference_pct:
+    mainboard_default: 0.095
+
+cost_model:
+  same_as_ep2_engineering_baseline: true
+  cost_profile: base
+  commission_bps_buy: 10
+  commission_bps_sell: 10
+  stamp_tax_bps_sell: 50
+  slippage_bps_buy: 20
+  slippage_bps_sell: 20
+  min_commission_cny: null
+  derived_buy_cost_bps: 30
+  derived_sell_cost_bps: 80
+
+gates:
+  min_validation_trigger_rate_per_launch_episode: 0.10
+  min_validation_h20_mean_diff_vs_matched_delay: 0.0
+  min_validation_h20_p05_diff_vs_matched_delay: -0.003
+  max_validation_h20_mae_worsening_vs_matched_delay: 0.005
+  min_validation_instrument_year_positive_rate_diff: 0.0
+  max_validation_top1_instrument_year_pnl_share: 0.20
+  max_validation_top5_instrument_exposure_share: 0.50
+  min_robustness_h20_mean_diff_vs_matched_delay: -0.001
+  min_robustness_h20_p05_diff_vs_matched_delay: -0.005

@@ -1,0 +1,95 @@
+phase: ep3_p0_5_anchor_failure_diagnostic
+output_root: ep3/outputs/p0_5_anchor_failure_diagnostic
+
+upstream_ep3_p0:
+  manifest: ep3/engineering_baseline/outputs/manifests/ep3_engineering_baseline_manifest.json
+  winner_label_panel: ep3/engineering_baseline/outputs/cache/ep3_winner_label_panel.parquet
+  candidate_anchor_panel: ep3/engineering_baseline/outputs/cache/ep3_candidate_anchor_panel.parquet
+  matched_baseline_panel: ep3/engineering_baseline/outputs/cache/ep3_matched_baseline_panel.parquet
+  lifecycle_profile: ep3/engineering_baseline/outputs/reports/ep3_winner_lifecycle_profile.csv
+  gate_audit: ep3/engineering_baseline/outputs/reports/ep3_gate_audit.csv
+  anchor_vs_matched_baseline: ep3/engineering_baseline/outputs/reports/ep3_anchor_vs_matched_baseline.csv
+  sensitivity_horizon_audit: ep3/engineering_baseline/outputs/reports/ep3_sensitivity_horizon_audit.csv
+  anchor_window_freeze: ep3/engineering_baseline/outputs/reports/ep3_anchor_window_freeze.csv
+  matched_control_bucket_freeze: ep3/engineering_baseline/outputs/reports/ep3_matched_control_bucket_freeze.csv
+  trigger_budget_audit: ep3/engineering_baseline/outputs/reports/ep3_anchor_trigger_budget_audit.csv
+
+denominator_inputs:
+  ep2_launch_pool: ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  pit_industry_path: data/targets/pit_industry_membership.csv
+
+input_contract:
+  provider_load_start_date: "2017-01-01"
+  provider_load_end_date: "2025-12-31"
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+  split_date_field: signal_date
+
+diagnostic_scope:
+  anchor_families:
+    - pullback_hold_restrengthen
+    - second_breakout
+  primary_horizon: H20
+  sensitivity_horizons:
+    - H10
+    - H60
+  derive_bins_from_split: train
+  apply_bins_to_splits:
+    - train
+    - validation
+    - robustness
+  primary_report_splits:
+    - train
+    - validation
+    - robustness
+  cache_passthrough_splits:
+    - out_of_scope
+  selection_from_validation_or_robustness_allowed: false
+
+diagnostic_bins:
+  reference_age_days: [0, 5, 10, 20, 40, 60]
+  anchor_window_position_quantiles: [0.0, 0.25, 0.5, 0.75, 1.0]
+  formula_margin_quantiles: [0.0, 0.25, 0.5, 0.75, 1.0]
+  second_breakout_gap_days: [3, 10, 20, 40, 60]
+  trigger_rate_reference_bands: [0.0, 0.05, 0.10, 0.15, 0.20, 1.50]
+  event_count_min_for_interpretation: 20
+  instrument_year_count_min_for_interpretation: 10
+
+observable_reference_rules:
+  atr_lookback_days: 20
+  acceleration_lookback_days: 60
+  acceleration_min_return: 0.12
+  money_ma_lookback_days: 20
+  money_multiple_min: 2.0
+  money_min_cny: 50000000
+  restrengthen_high_lookback_days: 5
+  pullback_min_drawdown_from_acceleration_close: 0.04
+  pullback_max_drawdown_from_acceleration_close: 0.18
+  pullback_hold_atr_multiple: 2.0
+  second_breakout_min_gap_days: 3
+  second_breakout_max_gap_days: 60
+  second_breakout_min_return_from_first_close: 0.06
+  consolidation_max_drawdown_from_first_close: 0.15
+
+hypotheses:
+  h1_formula_too_narrow:
+    diagnostic_only: true
+  h2_window_position_problem:
+    diagnostic_only: true
+  h3_ep2_reference_pollution:
+    diagnostic_only: true
+  h4_matched_baseline_too_strong_or_anchor_no_lift:
+    diagnostic_only: true
+  h5_tail_risk_not_trigger_rate_is_core_failure:
+    diagnostic_only: true

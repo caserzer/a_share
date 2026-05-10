@@ -1,0 +1,12 @@
+gate_name,gate_value,threshold,comparison,gate_passed,failure_status_if_failed,gate_source_report
+validation_trigger_rate,0.18470149253731344,0.1,>=,True,,deferred_family_trigger_decomposition.csv
+validation_unique_instrument_year_count,86.0,25.0,>=,True,,deferred_family_trigger_decomposition.csv
+validation_h20_mean_diff_vs_matched_delay,-0.02062598902515686,0.0,>,False,failed_gate,deferred_family_matched_lift.csv
+validation_h20_p05_diff_vs_matched_delay,-0.002001663778138818,-0.003,>=,True,,deferred_family_matched_lift.csv
+validation_h20_mae_worsening_vs_matched_delay,-0.006814594990836642,0.005,<=,True,,deferred_family_matched_lift.csv
+validation_instrument_year_positive_rate_diff,-0.05813953488372092,0.0,>=,False,failed_gate,deferred_family_matched_lift.csv
+robustness_h20_mean_diff_vs_matched_delay,-0.011304210440095431,-0.001,>=,False,failed_gate,deferred_family_matched_lift.csv
+robustness_h20_p05_diff_vs_matched_delay,-0.02463073405878169,-0.005,>=,False,failed_gate,deferred_family_matched_lift.csv
+robustness_trigger_not_collapsed,0.19870967741935483,0.09235074626865672,>=,True,,deferred_family_trigger_decomposition.csv
+persistent_failure_validation_tail_share,0.027777777777777776,0.5,>=,False,failed_formula_refinement_gate,deferred_family_ac_failure_attribution.csv
+persistent_failure_robustness_tail_share,0.024390243902439025,0.3,>=,False,failed_formula_refinement_gate,deferred_family_ac_failure_attribution.csv
