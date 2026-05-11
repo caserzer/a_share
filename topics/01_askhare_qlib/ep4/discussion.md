@@ -386,6 +386,22 @@ vertical barrier = 10 / 20 trading days
 
 这个 label 用于评价 seed 的短期可交易性，不用于判断它是否会成为 big winner。
 
+它和 EP2 R01 的关系必须单独说明。EP2 已经冻结过一个固定百分比版本的 confirm-validity label：
+
+```text
+confirm_h10_u10_d06_conservative_fail
+```
+
+EP4 的 Label A 不应该在 R01 中直接无解释地替换这个口径。更合理的讨论定位是：
+
+```text
+EP2 fixed-percent label = 既有 reference / bridge anchor；
+EP4 ATR-normalized triple-barrier = 后续 normalization candidate；
+R01 至少要能同时报告二者的 bridge audit，不能因为 label 口径变化而失去和 EP2 baseline 的可比性。
+```
+
+也就是说，Label A 可以是 EP4 长期更自然的 seed quality label，但 R01 不应把 label 切换本身也变成新的自由度。
+
 ### 7.2 Label B：Early Failure Label
 
 目的：
@@ -597,103 +613,241 @@ EP4 不应把 entry AUC 作为主指标。主指标应该是 episode / payoff / 
 5. payoff distribution 是否右偏。
 ```
 
+EP3 P0.5 的核心教训是：trigger rate、recall、event count 本身都不够，必须放到 baseline 对照下解释。因此，EP4 的 validation 不应只报告 absolute metric，而应默认报告：
+
+```text
+metric level
+metric diff vs matched-delay baseline
+metric diff vs matched-random baseline
+robustness split consistency
+p05 / tail no-harm
+```
+
+尤其是 R01，不能只看 `big winner seed recall 没被明显杀掉` 和 `failed seed average loss 略有下降`。这两个条件组合起来太弱，容易让一个几乎没有经济意义的宽 seed 通过。更合理的方向是看 recall-cost trade-off：
+
+```text
+每保留 / 新增一个 big winner seed，
+需要付出多少 failed-seed loss 和 exposure-days？
+```
+
+R01 的问题应该被表述为：
+
+```text
+宽 seed 买观察权这件事，
+是否在 matched baseline 下足够便宜，
+并且保留了足够多右尾种子？
+```
+
 ---
 
-## 11. 下一轮建议：EP4 R01 Probe-Observe-Scale 实验
+## 11. EP4 整体实验规划
 
-EP4 第一轮不应继续做复杂 entry model。建议做：
+本节只讨论实验方向，不是 requirement，也不细化到具体 contract。
 
-```text
-EP4 R01: Probe-Observe-Scale Experiment
-```
+EP4 不应该把 `seed`、`probe`、`fail-fast`、`add`、`dynamic stop`、`position sizing` 一次性放进 R01。那会重复 EP3 的主要问题：同时引入太多自由度，最后无法判断到底是哪一层有效，哪一层只是过拟合或噪音。
 
-目标问题：
+更合理的原则是：
 
 ```text
-在高召回 seed entry 下，
-是否可以通过 fail-fast + dynamic stop + staged sizing，
-把大量失败 seed 控制成小亏，
-同时保留足够多 big winner 的右尾收益？
+每一阶段只新增一个主自由度；
+前一阶段没有证明的东西，后一阶段不能假设已经成立。
 ```
 
-### 11.1 固定一个宽松 seed
+因此，EP4 应拆成四个逐层推进的研究阶段：
 
-先不要优化 entry。
+| 阶段 | 新增研究对象 | 暂不研究什么 | 阶段意义 |
+|:--|:--|:--|:--|
+| R01 | High-Recall Seed + Probe + Fail-Fast | 不加仓、不做复杂动态止损、不做组合优化 | 证明高召回 seed 的试错成本是否可控 |
+| R02 | Continuation / Add Eligibility | 不重新改 seed、不改 fail-fast 主规则 | 证明存活 episode 是否能分出值得加仓的子集 |
+| R03 | ATR / Dynamic Stop | 不重新选 entry、不重新定义 add eligibility | 证明退出层是否改善 payoff skew 和 drawdown |
+| R04 | State Stop / Position Sizing System | 不再单看 episode alpha | 证明能否升级为组合层右尾管理系统 |
 
-候选 seed 可以类似：
+这个拆法的重点不是把 EP4 变慢，而是让每一步都能回答一个清楚的问题。R01 只证明“买观察权是否可行”；R02 才证明“证据增强后是否值得加仓”；R03 才证明“动态退出是否真的保护右尾”；R04 才讨论“组合层风险预算是否承受得住”。
+
+---
+
+## 12. EP4 R01：High-Recall Seed + Probe + Fail-Fast
+
+R01 是 EP4 的地基。它不要急着赚钱，也不要急着证明完整策略。
+
+R01 只问：
 
 ```text
-60 日新高 / 平台突破
-+ 成交额放大
-+ 相对强度进入市场前 30%
-+ 基础流动性过滤
+如果 entry 保持宽召回，
+用小 probe 仓位 + 快速失败退出，
+能不能让失败 seed 的成本足够小，
+同时不明显杀掉 big winner seed recall？
 ```
 
-目标不是准，而是覆盖历史 big winner。
-
-### 11.2 初始只给探针仓
+R01 的正确定位是：
 
 ```text
-initial_risk = 0.2R 或 0.3R
+验证“买观察权”这件事是否成立。
 ```
 
-不要一开始重仓。
+因此，R01 里的“高召回”必须是可证伪的，而不是口号。进入正式 requirement 前，至少要先冻结三个讨论边界：
 
-### 11.3 设置 early failure exit
+```text
+big winner reference set 的分母；
+recall 掉多少算明显杀掉；
+seed-day / episode-count / universe coverage 的上限。
+```
 
-入场后 5-10 日内：
+如果没有 seed density 或 universe coverage 的对偶约束，`seed 越宽 recall 越高` 会成为平凡解。EP3 P0.5 已经说明 trigger rate 不等于 payoff edge；EP4 R01 同样不能让 high recall 变成 unlimited trigger rate。
+
+R01 与 EP2 `EP2_LAUNCH_DETECTOR_V0` 的关系也要先定性清楚。比较稳妥的讨论定位是：
+
+```text
+EP2 detector = baseline / control；
+EP4 wide seed = 可以更宽，但必须解释新增 coverage 的代价；
+R01 不应默认用 wide seed replace EP2 detector 后直接比较收益。
+```
+
+也就是说，R01 应回答：
+
+```text
+相对 EP2 detector，
+是否增加 big-winner early coverage；
+新增 coverage 是否没有被 failed-seed cost 吞掉；
+新增 seed density 是否仍然可交易。
+```
+
+它应该包含：
+
+```text
+wide seed
+small probe
+early fail-fast
+simple / fixed exit baseline
+```
+
+它不应该包含：
+
+```text
+staged add
+ATR dynamic stop
+state stop
+portfolio-level position sizing
+复杂 continuation model
+```
+
+原因很简单：一旦 R01 引入加仓和动态退出，失败成本、收益来源、右尾捕获和资金占用都会混在一起。那样即使结果变好，也无法知道是 seed 有效、fail-fast 有效、加仓有效，还是 exit 偶然有效。
+
+同理，R01 的 fail-fast 也不应该是训练出来的模型。R01 只能使用 deterministic fail-fast，例如：
 
 ```text
 跌回突破区
-或跌破启动日低点
-或 RS 快速恶化
-则退出
+跌破启动日低点 / pivot low
+跌破结构 reference
+固定 H10 / H20 vertical barrier
 ```
 
-### 11.4 只有 continuation 后才加仓
+Label B 可以在 R01 里作为 audit label 出现，但不应在 R01 里训练 Early Failure Detector。训练式 fail-fast 应该放到 R01.5 或 R02 之后，否则 R01 会同时引入 seed 宽度和 fail-fast 模型两个主自由度。
 
-入场后 10 / 20 / 40 日：
+R01 如果失败，说明高召回 seed + 小 probe 的路径本身不值得继续。如果 R01 成立，才说明后面有资格讨论“哪些存活 episode 值得加风险”。
+
+R01 的方向性验收不应是 AUC，而应看：
 
 ```text
-若趋势维持 + RS 提升 + 行业共振增强，
-则加仓。
+big winner seed recall 是否没有被明显杀掉；
+failed seed average loss 是否在 matched baseline 下可控；
+failed seed holding days 是否在 matched baseline 下缩短；
+payoff distribution 是否至少没有明显左偏；
+wide seed + small probe + deterministic fail-fast 是否优于同 seed 的无 fail-fast baseline；
+recall-cost trade-off 是否足够便宜，而不是只靠 seed 变宽刷 recall。
 ```
 
-### 11.5 退出使用动态 stop
+这里需要注意：`Scale` 不是 R01 的任务。R01 不应再叫 `Probe-Observe-Scale`，更准确的名字是：
 
 ```text
-结构止损
-+ ATR trailing stop
-+ 状态止损
+High-Recall Probe Cost-Control
 ```
 
 ---
 
-## 12. EP4 R01 最关键验收指标
+## 13. EP4 R02：Continuation / Add Eligibility
 
-| 验收项 | 目标 |
-|:--|:--|
-| big winner seed recall | 不能被明显杀掉 |
-| failed seed average loss | 显著低于 baseline |
-| failed seed holding days | 明显缩短 |
-| winner capture ratio | 提高或至少不下降 |
-| payoff skew | 右偏增强 |
-| max drawdown | 下降 |
-| Calmar ratio | 提升 |
-| exposure-days | 下降或收益效率提升 |
+R02 只在 R01 存活 episode 里做。
 
-这里的 baseline 不应只是固定 H10 / H20，而至少应包括：
+它的问题不是：
 
 ```text
-same seed equal-risk fixed-hold baseline
-same seed simple-stop baseline
-matched-delay seed baseline
-random seed timing baseline
+怎么找到新的 entry？
 ```
+
+而是：
+
+```text
+哪些已经通过早期失败检验的 episode，
+值得从 probe 升级到正式风险？
+```
+
+R02 的关键是 attribution。Seed、probe、fail-fast 在 R01 已经固定；R02 只新增一个判断：
+
+```text
+add or not add
+```
+
+R02 如果成立，说明右尾管理系统开始有“证据累积加仓”的基础。R02 如果不成立，EP4 仍然可能是一个小仓位 event sleeve，但不能升级成 scale system。
+
+R02 不应该重新调宽 seed，也不应该改变 R01 的 fail-fast 主规则。否则它会重新变成 entry search，而不是 continuation eligibility。
 
 ---
 
-## 13. EP4 的输出形态
+## 14. EP4 R03：ATR / Dynamic Stop
+
+R03 的位置应该在 add eligibility 之后，而不是之前。
+
+原因是：退出规则的价值取决于前面的持仓结构。如果还不知道哪些 episode 值得加仓，就先做复杂动态止损，结果会很难解释。
+
+R03 只问：
+
+```text
+在已有 probe / add 结构下，
+ATR trailing 或其他相对机械的 dynamic stop，
+是否改善 payoff skew、winner capture 和 drawdown？
+```
+
+R03 应优先研究机械、可解释、低自由度的退出规则，例如：
+
+```text
+structure stop
+ATR trailing stop
+simple profit giveback
+time stop
+```
+
+R03 不应一开始就上复杂 state stop。复杂 state stop 很容易变成 EP3 anchor formula 的翻版：变量看起来都合理，但很难证明它们在 matched baseline 和 tail risk 下仍然有真实增量。
+
+---
+
+## 15. EP4 R04：State Stop / Position Sizing System
+
+R04 才是完整系统层。
+
+它研究的是：
+
+```text
+组合层 risk budget
+行业 / 主题集中度
+多 episode 同时存活时的风险分配
+state stop
+capital efficiency
+```
+
+R04 不能提前放到 R01。A 股右尾经常按行业、主题、市场风格聚集；单个 episode 看起来都应该加仓时，组合层风险可能反而最高。如果没有组合层 risk budget，系统会在“证据最强”的时候承担最集中的风险。
+
+所以 R04 的目标不是再证明某个 episode 规则有效，而是证明：
+
+```text
+这个右尾 episode 管理系统能不能在组合层承受真实风险。
+```
+
+R04 通过之后，EP4 才能从 episode research 进入 portfolio system research。
+
+---
+
+## 16. EP4 的输出形态
 
 最终系统可以定义为：
 
@@ -738,9 +892,9 @@ episode_state_t
 
 ---
 
-## 14. 三条原则
+## 17. 三条原则
 
-### 14.1 不要把不确定性消灭掉，要给不确定性定价
+### 17.1 不要把不确定性消灭掉，要给不确定性定价
 
 早期结构本来就不确定。
 
@@ -753,7 +907,7 @@ episode_state_t
 不确定性被证伪 -> 退出
 ```
 
-### 14.2 Entry 保持高召回，退出负责高精度
+### 17.2 Entry 保持高召回，退出负责高精度
 
 ```text
 entry 负责不漏掉右尾；
@@ -765,7 +919,7 @@ position sizing 负责控制损失。
 如果 exit 太宽，会被失败样本拖死。
 如果仓位太大，会在不确定阶段亏太多。
 
-### 14.3 优化对象不是单笔交易，而是 episode payoff distribution
+### 17.3 优化对象不是单笔交易，而是 episode payoff distribution
 
 不应把胜率、AUC、单次收益率作为主优化对象。
 
@@ -781,7 +935,7 @@ position sizing 负责控制损失。
 
 ---
 
-## 15. 阶段性判断
+## 18. 阶段性判断
 
 EP4 的一句话定义：
 
@@ -795,17 +949,14 @@ EP4 的一句话定义：
 最终让少数 big winner 覆盖大量小失败。
 ```
 
-EP4 下一步应该先写正式 requirement，但 requirement 不应从模型开始，而应从以下 contract 开始：
+EP4 下一步应该先写 R01 requirement，但 R01 requirement 不应从完整系统开始，而应从最小可证伪问题开始：
 
 ```text
-episode state machine
-seed recall audit
-probe risk budget rule
+High-Recall Seed
+Small Probe
 early failure definition
-continuation/add rule
-dynamic stop rule
-payoff distribution validation
-capital efficiency validation
+simple / fixed exit baseline
+seed recall and failed-seed cost validation
 ```
 
-只有当这些边界明确后，才应该实现 R01。
+只有当 R01 证明“高召回 seed + 小 probe + fail-fast”这件事本身成立后，才应该进入 R02 加仓资格、R03 动态退出和 R04 组合层 risk budget。
