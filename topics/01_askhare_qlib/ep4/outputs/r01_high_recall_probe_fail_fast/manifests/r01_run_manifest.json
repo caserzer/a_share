@@ -1,0 +1,64 @@
+{
+  "phase": "ep4_r01_high_recall_probe_fail_fast",
+  "schema_version": "ep4_r01_high_recall_probe_fail_fast_v1",
+  "config_path": "ep4/configs/r01_high_recall_probe_fail_fast.yaml",
+  "config_hash": "0eae44325ecf2116bce2678830d7729b4f1d2299cb186da38b36eafe621cf792",
+  "output_root": "ep4/outputs/r01_high_recall_probe_fail_fast",
+  "generated_at": "2026-05-11T09:34:03.040906+00:00",
+  "final_decision": "stop_ep4_r01_path",
+  "configured_train_window": [
+    "2017-07-04",
+    "2021-12-31"
+  ],
+  "configured_validation_window": [
+    "2022-01-01",
+    "2023-12-31"
+  ],
+  "configured_robustness_window": [
+    "2024-01-01",
+    "2025-12-31"
+  ],
+  "effective_train_reference_window": [
+    "2017-07-04",
+    "2021-12-31"
+  ],
+  "effective_validation_reference_window": [
+    "2022-01-01",
+    "2023-12-31"
+  ],
+  "effective_robustness_reference_window": [
+    "2024-01-01",
+    "2025-10-31"
+  ],
+  "data_max_date": "2026-04-30",
+  "data_max_date_minus_forward_horizon": "2025-10-31",
+  "primary_big_winner_reference_count": 845,
+  "candidate_seed_episode_count": 4783,
+  "ep2_seed_episode_count": 2389,
+  "gate_count": 28,
+  "failed_gate_count": 4,
+  "artifact_hashes": {
+    "r01_big_winner_reference_panel.parquet": "7b1e1be89b24dbd4c73305097c5095e1c97adceaac2c34a64debc2efa9308132",
+    "r01_seed_event_panel.parquet": "317a98fbcf7ca38bba5c46b8727216f9f663767c669bb2f5c3825312a064b522",
+    "r01_seed_episode_panel.parquet": "7d67e02c822ad07de60704254a29a9db62586ec4906c81b0b99e733484d7cd52",
+    "r01_probe_simulation_panel.parquet": "d7e23fcf3c486541f8e81ab14d964dec74c43e7b74175c1e7328ea37c20fda72",
+    "r01_baseline_simulation_panel.parquet": "2072ebb99427129d1caad21c9d7409e507a1de15c2ef91e11808765b3d24a375",
+    "r01_upstream_authority.csv": "f32305ac0521b94df2d6925d10f8d983040a4e64bc9efb2677c521a5243d6a23",
+    "r01_big_winner_reference_audit.csv": "f544bfb7b2fe311d8cdb05623cddf70feef2f5832a60c5a6e454d7aef0bb3803",
+    "r01_seed_density_audit.csv": "c1447e2db5e7d115e7f4a80bc70d6b162055da6565858d849c9cdbfaf3dadf8d",
+    "r01_density_cap_tightness_audit.csv": "fc1613a3ffff525689b9c4f3831e59d3629e4e10f9d88bda25b20a4c289b059e",
+    "r01_seed_recall_audit.csv": "fd1a178f19dc18f1ad3b1f444b9b7e45d259f3be90493015e7e232bea84bf69b",
+    "r01_label_bridge_audit.csv": "4d45bbea9b64d85f2e5df3edd19387a7e292b9feb04f7ea1eae51a6c7a8103a2",
+    "r01_fail_fast_path_audit.csv": "9477e0010c17d631bee97990f29e17f98c73af694c254404e292cf64131ae976",
+    "r01_fail_fast_error_audit.csv": "42afcde06cf4229bc13bce9da4b78798e4af1a4a5742f9538ac22f433cdba15d",
+    "r01_matched_control_bucket_freeze.csv": "8b82bb813ed573400e4de015920cd3905d84a44f88ca8924f899ffe55e108796",
+    "r01_random_baseline_health_audit.csv": "b815cc5bd701b42c8f1e2496e10d04a293994007ffc4ff78543fd525d7d57705",
+    "r01_r_unit_distribution_audit.csv": "f750d487eae0341cbcd3143d068d7276f62374ab15908b7649e84145d65de0ec",
+    "r01_baseline_diff_audit.csv": "c321b437a5710bce50e9a3f5155245684dff472872bf8407ef5ad7d4d96fe645",
+    "r01_matched_delay_ineligible_audit.csv": "962638e3da4b89690e5dbae105a2da92535a1c7decc4e06ce93e9ce359491acb",
+    "r01_recall_cost_tradeoff.csv": "2efa57bfb0e0ff99c81e89f31d1e64ff40ee364cc4b15c93b3b10b92b28d6338",
+    "r01_counterfactual_failure_inheritance.csv": "5957062b3e38303d86d3657fceebab428d9e1bc61205d9bd801c58fc7df60be3",
+    "r01_gate_audit.csv": "b59ddc9b75c4f36658fd4c4befcd2a641cb08e1c4f5bf0a7ba71337c36aed4fd",
+    "r01_final_report.md": "915a53452eb30e25d3b75299e5e9803c1329cbfc4c5faccca80617cbf28ce6b7"
+  }
+}
