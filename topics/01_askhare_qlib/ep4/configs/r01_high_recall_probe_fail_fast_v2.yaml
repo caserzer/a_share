@@ -1,0 +1,225 @@
+phase: ep4_r01_high_recall_probe_fail_fast_v2_money_rps5_boll20_high10_seed
+requirement_path: ep4/requirement_01_high_recall_probe_fail_fast_v2.md
+output_root: ep4/outputs/r01_high_recall_probe_fail_fast_v2_money_rps5_boll20_high10_seed
+
+upstream_ep2:
+  manifest: ep2/engineering_baseline/outputs/manifests/ep2_engineering_baseline_manifest.json
+  config: ep2/engineering_baseline/config.yaml
+  launch_pool: ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet
+  episode_dictionary: ep2/engineering_baseline/outputs/reports/ep2_launch_episode_dictionary.csv
+  label_freeze_candidate: ep2/engineering_baseline/outputs/reports/ep2_label_freeze_candidate.csv
+  baseline_freeze_audit: ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_baseline_freeze_audit.csv
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+  split_date_field: signal_date
+  effective_reference_window_policy: min(split_end, data_max_date_minus_forward_horizon)
+  manifest_must_record_effective_reference_windows: true
+
+big_winner_reference:
+  primary_id: big_winner_50h120_close_confirmed
+  forward_horizon_trading_days: 120
+  return_threshold: 0.50
+  entry_price_reference: next_open
+  peak_price_reference: max_close
+  dedupe_gap_trading_days: 120
+  eligible_requires_full_forward_window: true
+  secondary_bridge_ids:
+    - ep2_launch_pool_big_winner_50h120
+
+density_denominator:
+  seed_day_denominator: pit_executable_stock_days
+  seed_episode_denominator: eligible_instrument_years
+  eligible_stock_day_requires:
+    - pit_universe_member
+    - next_open_buy_executable
+    - has_required_history_for_seed_formula
+    - not_suspended_or_dirty_bar
+  eligible_instrument_year_requires_min_stock_days: 120
+
+seed_recall:
+  primary_recall_lookback_days: 60
+  primary_recall_forward_days: 0
+  primary_recall_window_id: primary_-60_0
+
+seed_rules:
+  baseline_seed_id: ep2_launch_detector_v0_bridge
+  candidate_seed_id: ep4_money_rps5_boll20_high10_seed_v0
+  candidate_seed_formula_id: money_ratio20_gt_1_0_and_money_ratio5_gt_2_0_and_rps5_gt_50_and_boll20_pct_b_gt_1_0_and_close_near_high10_gt_0
+  candidate_seed_components_v2:
+    money_activity:
+      money_ratio20:
+        denominator: prior_20_trading_day_mean_money
+        threshold: 1.0
+        comparison: ">"
+      money_ratio5:
+        denominator: prior_5_trading_day_mean_money
+        threshold: 2.0
+        comparison: ">"
+    relative_strength:
+      lookback_trading_days: 5
+      cross_section_percentile_threshold: 0.50
+      comparison: ">"
+    price_structure:
+      bollinger_pct_b:
+        window: 20
+        threshold: 1.0
+        comparison: ">"
+      close_near_high10:
+        rolling_high_window: 10
+        threshold: 0.0
+        operational_rule: close_T >= max(close, T-10..T-1)
+    hard_filter_allowed: true
+    structural_reference_fields:
+      seed_day_low_rule: low_on_signal_date
+      pivot_low_10d_rule: min_low_over_signal_date_minus_10_to_minus_1
+      breakout_reference_rule: prior_10_trading_day_close_high
+  candidate_seed_components:
+    price_structure:
+      any_of:
+        - id: close_near_60d_high
+          rolling_high_window: 60
+          reference_field: high
+          trigger_field: close
+          min_close_to_high_ratio: 0.97
+          breakout_reference_rule: rolling_high_window_max * min_close_to_high_ratio
+        - id: close_breaks_40d_high
+          rolling_high_window: 40
+          reference_field: high
+          trigger_field: close
+          min_breakout_ratio: 1.00
+          breakout_reference_rule: rolling_high_window_max
+    structural_reference_fields:
+      rolling_windows_end: signal_date_minus_1
+      seed_day_low_rule: low_on_signal_date
+      pivot_low_10d_rule: min_low_over_signal_date_minus_10_to_minus_1
+      breakout_reference_asof_rule: component_specific_breakout_reference_rule
+      invalid_if_reference_not_below_entry: true
+    money_activity:
+      money_window: 20
+      min_money_ratio_vs_window_median: 1.05
+    relative_strength_audit:
+      lookback_days: 60
+      report_percentile_cutoffs: [0.30, 0.50]
+      hard_filter_allowed: false
+  hard_tradability_filters:
+    require_pit_universe_member: true
+    require_next_open_buy_executable: true
+    exclude_st_or_delist_risk: true
+    exclude_suspended_or_dirty_bar: true
+    exclude_limit_up_unbuyable_next_open: true
+
+seed_density_caps:
+  max_candidate_seed_day_rate: 0.045
+  max_candidate_seed_day_rate_vs_ep2_multiple: 2.7
+  max_candidate_episode_rate_vs_ep2_multiple: 3.0
+  min_unique_instrument_years_validation: 80
+
+probe:
+  entry_rule: next_open_after_signal
+  initial_probe_risk_budget_r: 0.25
+  no_add_allowed: true
+  no_portfolio_sizing_allowed: true
+
+risk_normalization:
+  unit: episode_normalized_full_R
+  initial_structural_stop_candidates:
+    - seed_day_low
+    - breakout_reference
+    - pivot_low_10d
+  initial_structural_stop_rule: closest_valid_stop_below_entry
+  min_initial_risk_pct: 0.02
+  max_initial_risk_pct: 0.12
+  if_no_valid_initial_stop: reject_seed_episode
+  return_r_formula: initial_probe_risk_budget_r * after_cost_return_pct / initial_risk_pct
+
+execution:
+  entry_price: next_open_after_signal
+  exit_price: next_open_after_exit_signal
+  buy_block_action: reject_seed_episode
+  sell_block_action: retry_next_executable_open_until_terminal
+  max_exit_retry_trading_days: 20
+  terminal_exit_policy: mark_terminal_blocked_and_exit_at_first_executable_open
+  cost_model_source: ep2/engineering_baseline/config.yaml
+  required_cost_fields:
+    - commission_bps
+    - stamp_tax_bps
+    - slippage_bps
+    - buy_block_reason
+    - sell_block_reason
+
+fail_fast:
+  family_id: deterministic_structure_fail_fast_v0
+  max_fail_fast_window_trading_days: 10
+  natural_exit_horizon_trading_days: 20
+  triggers:
+    - close_below_seed_day_low
+    - close_below_breakout_reference
+    - close_below_pivot_low_10d
+    - t10_close_below_entry_price
+  exit_rule: next_open_after_trigger
+  same_day_trigger_policy: conservative_fail
+
+baselines:
+  - same_seed_no_fail_fast_hold_h20
+  - same_seed_matched_delay_1d_same_fail_fast_h20
+  - same_seed_matched_delay_3d_same_fail_fast_h20
+  - same_seed_matched_delay_1d_no_fail_fast_h20
+  - same_seed_matched_delay_3d_no_fail_fast_h20
+  - matched_random_same_density_same_fail_fast_h20
+  - matched_random_same_density_no_fail_fast_h20
+  - ep2_detector_probe_with_simple_stop_bridge
+
+matched_controls:
+  random_seed: 20260511
+  bucket_freeze_split: train
+  bucket_freeze_output: ep4/outputs/r01_high_recall_probe_fail_fast/reports/r01_matched_control_bucket_freeze.csv
+  liquidity_field: money_20d_median_asof
+  volatility_field: atr20_pct_asof
+  bucket_quantiles: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+  missing_bucket_policy: explicit_missing_bucket
+  min_train_rows_per_bucket: 30
+  random_replicates_per_split: 100
+  random_min_split_eligible_rate: 0.80
+  random_min_bucket_eligible_rate: 0.60
+  random_bucket_min_sampled_events_for_audit: 30
+  random_exclude_candidate_seed_stock_days: true
+  random_sampling_replacement_policy: without_replacement_within_replicate
+  random_capacity_shortfall_policy: report_random_baseline_reliability_only
+  matched_delay_gate_variants:
+    - same_fail_fast
+  matched_delay_audit_variants:
+    - no_fail_fast
+
+label_a_atr:
+  atr_window: 20
+  rolling_windows_end: signal_date_minus_1
+  true_range_formula: max(high_low, high_prev_close_abs, low_prev_close_abs)
+  entry_price_reference: next_open
+  same_day_policy: conservative_fail
+
+selection_policy:
+  seed_threshold_policy: literal_frozen_constants_from_config
+  train_derived_values_allowed:
+    - matched_control_bucket_edges
+  validation_threshold_selection_allowed: false
+  robustness_threshold_selection_allowed: false
+
+recall_cost_gate:
+  max_incremental_loss_r_per_added_big_winner_vs_ep2: 5.0
+  max_incremental_exposure_days_per_added_big_winner_vs_ep2: 250
+  robustness_max_incremental_loss_r_per_added_big_winner_vs_ep2: 7.5
+  robustness_max_incremental_exposure_days_per_added_big_winner_vs_ep2: 375

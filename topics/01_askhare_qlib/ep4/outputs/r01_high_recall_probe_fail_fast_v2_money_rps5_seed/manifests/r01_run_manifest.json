@@ -1,0 +1,68 @@
+{
+  "phase": "ep4_r01_high_recall_probe_fail_fast_v2_money_rps5_seed",
+  "schema_version": "ep4_r01_high_recall_probe_fail_fast_v1",
+  "config_path": "ep4/configs/r01_high_recall_probe_fail_fast_v2.yaml",
+  "config_hash": "4b4b0153ab86e7293bc81c84017f802678f11fd9334f0a89f17b3349b344e935",
+  "output_root": "ep4/outputs/r01_high_recall_probe_fail_fast_v2_money_rps5_seed",
+  "generated_at": "2026-05-11T12:36:18.893235+00:00",
+  "final_decision": "stop_ep4_r01_path",
+  "candidate_seed_id": "ep4_money_ratio20_1_money_ratio5_2_rps5_50_seed_v0",
+  "candidate_seed_formula_id": "money_ratio20_gt_1_0_and_money_ratio5_gt_2_0_and_rps5_gt_50",
+  "primary_recall_window_id": "primary_-60_0",
+  "primary_recall_lookback_days": 60,
+  "configured_train_window": [
+    "2017-07-04",
+    "2021-12-31"
+  ],
+  "configured_validation_window": [
+    "2022-01-01",
+    "2023-12-31"
+  ],
+  "configured_robustness_window": [
+    "2024-01-01",
+    "2025-12-31"
+  ],
+  "effective_train_reference_window": [
+    "2017-07-04",
+    "2021-12-31"
+  ],
+  "effective_validation_reference_window": [
+    "2022-01-01",
+    "2023-12-31"
+  ],
+  "effective_robustness_reference_window": [
+    "2024-01-01",
+    "2025-10-31"
+  ],
+  "data_max_date": "2026-04-30",
+  "data_max_date_minus_forward_horizon": "2025-10-31",
+  "primary_big_winner_reference_count": 845,
+  "candidate_seed_episode_count": 6800,
+  "ep2_seed_episode_count": 2389,
+  "gate_count": 28,
+  "failed_gate_count": 6,
+  "artifact_hashes": {
+    "r01_big_winner_reference_panel.parquet": "7b1e1be89b24dbd4c73305097c5095e1c97adceaac2c34a64debc2efa9308132",
+    "r01_seed_event_panel.parquet": "68b93e2b7bbe10c9e4de7b4f8148392ce9632a34f50aa66c82de6b3acbcb7cc8",
+    "r01_seed_episode_panel.parquet": "eb3c0af01a7f5b9f8ed41b6a777b1e3b13b9ff1c56be2141229844f0e5a69add",
+    "r01_probe_simulation_panel.parquet": "616dae0fdcdcb922cf95d22b6319e1e60d8718f4d6611b41034f61cee0f08ade",
+    "r01_baseline_simulation_panel.parquet": "c348e06dae23965f7dac0e5fb3b63207f7aea21f07272f76600e5baedaf4311f",
+    "r01_upstream_authority.csv": "8c489320834e6b16b87d7c2bc64680ea7808578f847846aba7c722d5264f877c",
+    "r01_big_winner_reference_audit.csv": "f544bfb7b2fe311d8cdb05623cddf70feef2f5832a60c5a6e454d7aef0bb3803",
+    "r01_seed_density_audit.csv": "bf70d1a2d7822eb451236ecb2583f3dbb926950549b1f5488e03c55c07f85b3b",
+    "r01_density_cap_tightness_audit.csv": "ade9b13ec83671d461f2116e620d9787e7c1b276ca80774216c08cb54fdd9b1f",
+    "r01_seed_recall_audit.csv": "319609b8044bd2173ffb3bee84586777cab64777e4f325f0e763669ddacbacc5",
+    "r01_label_bridge_audit.csv": "67558cd27e19b338c35e3ba9900789bdd9d4dd8227da86380f3cb9212afdaea9",
+    "r01_fail_fast_path_audit.csv": "1c444a0c47f421c5f99c384c21f670cc37849fe4a201d2e66a37e5190521f429",
+    "r01_fail_fast_error_audit.csv": "43ae0e217333cb1bb5f8c362471ac7d0a73f9307a41c1b8df56f6b39cda9d7cf",
+    "r01_matched_control_bucket_freeze.csv": "8b82bb813ed573400e4de015920cd3905d84a44f88ca8924f899ffe55e108796",
+    "r01_random_baseline_health_audit.csv": "91fb5ba8fa2f87cf585e243150315a99aa326fd35f1411f1e291a0b27d6ed91e",
+    "r01_r_unit_distribution_audit.csv": "e4cc56ebce380ba23112c87594bcda46ddf4eb6b71fe7389011d1f70b6461422",
+    "r01_baseline_diff_audit.csv": "826cabe4132e463f8799736cc0155666b71e1bf581ea03a6fb419ce284e05bf8",
+    "r01_matched_delay_ineligible_audit.csv": "9dc59c45c4c92f28bedfe795e3cbc586e6cfc4c88b4d5d5c4471dd1b899e696d",
+    "r01_recall_cost_tradeoff.csv": "f0523711aa95e7186c46809a98ce5ad8f03b3e5c55f306731093df2d20feffa6",
+    "r01_counterfactual_failure_inheritance.csv": "5dbc0031eaa0f3d2d596b0bf21f38ae7c502dc5afe511bfb4bee640959f59052",
+    "r01_gate_audit.csv": "b39265be3dab6dcdc81fe0c2918145277c4623c3af9b1656e99e6c81a606de9a",
+    "r01_final_report.md": "77b7785a72d89515637fdbee0fd77c1a1310704df3242e18fc6d0cfad8deaeaa"
+  }
+}
