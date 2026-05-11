@@ -1,0 +1,19 @@
+{
+  "trial_id": "ep4_trend_ma60_high20_vol15_rps90_seed_v0",
+  "output_root": "ep4/outputs/r01_seed_trial_trend_ma60_high20_vol15_rps90",
+  "generated_at": "2026-05-11T10:26:16.190321+00:00",
+  "primary_reference_count": 845,
+  "trial_seed_episode_count": 1132,
+  "trial_executable_episode_count": 795,
+  "trial_captured_big_winner_count": 55,
+  "trial_big_winner_recall": 0.0650887573964497,
+  "phase": "ep4_r01_seed_trial",
+  "canonical_config_path": "ep4/configs/r01_high_recall_probe_fail_fast.yaml",
+  "reference_policy": "canonical R01 reference built before trial denominator override",
+  "formula": {
+    "trend": "close > MA60 including signal close and MA60_today > MA60_prev",
+    "structure": "close >= previous 20 trading-day close high",
+    "volume": "volume > 1.5 * previous 20 trading-day average volume",
+    "strength": "RPS120 cross-sectional percentile > 0.90"
+  }
+}

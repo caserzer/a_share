@@ -1,0 +1,12 @@
+{
+  "phase": "ep4_big_winner_first30_profile",
+  "generated_at": "2026-05-11T10:39:18.462753+00:00",
+  "reference_source": "ep4/outputs/r01_high_recall_probe_fail_fast/cache/r01_big_winner_reference_panel.parquet",
+  "output_root": "ep4/outputs/r01_big_winner_first30_profile",
+  "event_count": 845,
+  "panel_rows": 25350,
+  "observation_window": "T+1 through T+30 trading days after reference_date",
+  "rsi_definition": "RSI14 Wilder-style EWM",
+  "strength_definition": "RPS120 cross-sectional percentile from close return",
+  "bollinger_definition": "20-day close mean +/- 2 population std"
+}
