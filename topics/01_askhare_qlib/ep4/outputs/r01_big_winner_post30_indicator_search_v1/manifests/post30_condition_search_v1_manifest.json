@@ -1,0 +1,20 @@
+{
+  "phase": "ep4_big_winner_post30_condition_search_v1",
+  "generated_at": "2026-05-12T02:05:35.495712+00:00",
+  "reference_source": "canonical R01 primary big winner reconstructed from PIT provider",
+  "config_path": "ep4/configs/r01_high_recall_probe_fail_fast_v2.yaml",
+  "config_hash": "289603ddbbdf8ad30b25b42095dbf90aa86c18a30519ad746b2c885fed86b04c",
+  "output_root": "ep4/outputs/r01_big_winner_post30_indicator_search_v1",
+  "event_count": 845,
+  "atom_count": 368,
+  "condition_count": 65273,
+  "workers": 8,
+  "chunk_size": 800,
+  "coverage_target": 0.85,
+  "coverage_window": "T+0 through T+30 trading days after reference_date",
+  "ge85_condition_count": 65103,
+  "best_low_density_condition": "close_near_high5_gt_0pct AND vol_ratio10_gt_1_2 AND vol_ratio3_gt_1_2 AND rps5_gt_60",
+  "best_low_density_kind": "and4",
+  "best_low_density_coverage_t0_t30": 0.9431952662721893,
+  "best_low_density": 0.07909738837490453
+}
