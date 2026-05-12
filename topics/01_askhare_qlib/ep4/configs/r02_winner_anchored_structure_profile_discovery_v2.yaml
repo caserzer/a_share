@@ -1,0 +1,194 @@
+phase: ep4_r02_winner_anchored_structure_profile_discovery_v2
+requirement_path: ep4/requirement_02_winner_anchored_structure_profile_discovery_v2.md
+output_root: ep4/outputs/r02_winner_anchored_structure_profile_discovery_v2
+
+upstream_ep2:
+  manifest: ep2/engineering_baseline/outputs/manifests/ep2_engineering_baseline_manifest.json
+  config: ep2/engineering_baseline/config.yaml
+  launch_pool: ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet
+  episode_dictionary: ep2/engineering_baseline/outputs/reports/ep2_launch_episode_dictionary.csv
+  label_freeze_candidate: ep2/engineering_baseline/outputs/reports/ep2_label_freeze_candidate.csv
+  baseline_freeze_audit: ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_baseline_freeze_audit.csv
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+labels:
+  primary_selection_label_id: big_winner_forward
+  horizons:
+    continuation_h20: 20
+    continuation_h60: 60
+    big_winner_forward: 120
+    failed_seed_forward: 10
+    executable_entry_available: 1
+
+execution:
+  cost_model_source: ep2/engineering_baseline/config.yaml
+  min_initial_risk_pct: 0.02
+  max_initial_risk_pct: 0.12
+  terminal_horizon_trading_days: 20
+  fail_fast_window_trading_days: 10
+  fail_fast_drawdown_pct: 0.06
+
+runtime:
+  default_n_jobs: 12
+  max_n_jobs: 12
+  parallel_backend: process_pool
+  random_seed: 20260512
+  deterministic_sort_required: true
+
+reference_events:
+  reference_date_policy: first_positive_big_winner_forward_episode
+  forward_horizon_days: 120
+  return_threshold: 0.50
+  episode_dedup_gap_days: 20
+  profile_window_days: 30
+  r01_v3_reference_artifact: ep4/outputs/r01_high_recall_probe_fail_fast_v3_post30_profile_seed/cache/r01_big_winner_reference_panel.parquet
+  overlap_warning_threshold: 0.80
+
+profile_windows:
+  early_window: [0, 5]
+  build_window: [6, 15]
+  continuation_window: [16, 30]
+  full_window: [0, 30]
+
+candidate_generation:
+  version: r02_v2_candidate_grid_v1
+  max_total_candidates_per_group: 200
+  max_total_candidates: 2000
+  id_template: r02v2_{group}_{pattern_type}_{feature_atom_hash}_{threshold_hash}_{window_hash}_{lag_hash}_{dedup_hash}
+  default_dedup_gap_days: 20
+  structure_candidate_dictionary:
+    declared_in_config: true
+  feature_atoms:
+    - {id: mom_ret5, group: momentum_persistence, feature: ret5_asof, operator: ">=", thresholds: [0.03, 0.05, 0.08], shared_feature_family: momentum}
+    - {id: mom_ret20, group: momentum_persistence, feature: ret20_asof, operator: ">=", thresholds: [0.10, 0.15, 0.20], shared_feature_family: momentum}
+    - {id: near_high5, group: near_high_persistence, feature: close_near_high5_pct, operator: ">=", thresholds: [0.0, -0.02], shared_feature_family: near_high}
+    - {id: near_high20, group: near_high_persistence, feature: close_near_high20_pct, operator: ">=", thresholds: [0.0, -0.03, -0.05], shared_feature_family: near_high}
+    - {id: volume10, group: volume_money_confirmation, feature: vol_ratio10, operator: ">", thresholds: [1.1, 1.2, 1.5], shared_feature_family: volume_money}
+    - {id: money20, group: volume_money_confirmation, feature: money_ratio20_mean_asof, operator: ">", thresholds: [1.0, 1.2, 1.5], shared_feature_family: volume_money}
+    - {id: rps5, group: relative_strength_confirmation, feature: rps5, operator: ">", thresholds: [0.60, 0.70, 0.80], shared_feature_family: relative_strength}
+    - {id: rps20, group: relative_strength_confirmation, feature: rps20, operator: ">", thresholds: [0.60, 0.70, 0.80], shared_feature_family: relative_strength}
+    - {id: pullback_ema20_hold, group: pullback_hold_and_recovery, feature: ema20_hold_depth, operator: "<=", thresholds: [0.03, 0.05, 0.08], shared_feature_family: pullback}
+    - {id: pullback_prior20, group: pullback_hold_and_recovery, feature: prior20_pullback_depth, operator: "<=", thresholds: [0.05, 0.08, 0.12], shared_feature_family: pullback}
+    - {id: atr20_low, group: volatility_contraction_expansion, feature: atr20_pct, operator: "<=", thresholds: [0.03, 0.05, 0.08], shared_feature_family: volatility}
+    - {id: atr20_contract, group: volatility_contraction_expansion, feature: atr20_contraction_ratio, operator: "<=", thresholds: [0.80, 1.00], shared_feature_family: volatility}
+    - {id: no_high_volume_down20, group: distribution_absence, feature: past_h20_no_high_volume_down_day, operator: "==", thresholds: [1], shared_feature_family: distribution_absence}
+    - {id: no_failed_breakout10, group: distribution_absence, feature: past_h10_no_failed_breakout, operator: "==", thresholds: [1], shared_feature_family: distribution_absence}
+    - {id: industry_breadth20, group: industry_market_support, feature: industry_breadth20, operator: ">=", thresholds: [0.55, 0.65, 0.75], shared_feature_family: industry_market}
+    - {id: market_breadth20, group: industry_market_support, feature: market_breadth20, operator: ">=", thresholds: [0.50, 0.60, 0.70], shared_feature_family: industry_market}
+    - {id: acceleration_ret1d, group: acceleration_and_gap, feature: return1d, operator: ">=", thresholds: [0.03, 0.05, 0.07], shared_feature_family: acceleration}
+    - {id: acceleration_gap, group: acceleration_and_gap, feature: gap_open_pct, operator: ">=", thresholds: [0.01, 0.03], shared_feature_family: acceleration}
+    - {id: no_close_below_prior10, group: failure_absorption, feature: past_h10_no_close_below_prior10_low, operator: "==", thresholds: [1], shared_feature_family: failure_absorption}
+    - {id: no_close_below_prior20, group: failure_absorption, feature: past_h20_no_close_below_prior20_low, operator: "==", thresholds: [1], shared_feature_family: failure_absorption}
+  pattern_template_grid:
+    - {pattern_type: point_in_window_existence, required_days: 1}
+    - {pattern_type: persistence, required_days: 3}
+  threshold_grid: config_feature_atom_thresholds
+  lookback_grid: [1, 3, 5]
+  profile_window_grid: [early_window, build_window, continuation_window, full_window]
+  sequence_lag_grid: [0]
+  dedup_policy_grid: [20]
+  structure_candidate_id_generation: deterministic_hash_template
+
+stage_a_gates:
+  min_winner_coverage: 0.30
+  min_winner_coverage_ci90_lower: 0.20
+  min_years_present: 3
+  max_trigger_days_per_event_p90: 12
+  default_background_control_policy: both
+  min_winner_vs_background_coverage_lift: 1.20
+  min_winner_vs_background_coverage_lift_ci90_lower: 1.00
+  max_action_time_background_signal_rate: 0.12
+  max_stage_a_candidates_to_calibrate: 60
+
+stage_b_gates:
+  min_train_signal_n: 200
+  min_train_buyable_signal_n: 100
+  max_train_signal_rate: 0.08
+  min_train_primary_LR: 1.10
+  min_train_primary_LR_ci90_lower: 0.95
+  min_train_precision_lift: 1.10
+  min_train_EV_R: -0.10
+  max_train_failed_seed_rate_given_signal: 0.60
+  min_prior_decomposition_bucket_count: 3
+  max_single_year_signal_share: 0.45
+  max_single_industry_signal_share: 0.35
+
+stage_c:
+  same_day_jaccard_merge: 0.70
+  within_5d_jaccard_merge: 0.80
+  signal_correlation_merge: 0.85
+  conditional_winner_overlap_merge: 0.80
+  conditional_non_winner_overlap_merge: 0.80
+  shared_raw_feature_penalty: 0.10
+  incremental_primary_LR_min: 0.03
+  incremental_EV_R_min: 0.03
+  min_representatives_to_validate: 3
+  max_representatives_to_freeze: 8
+  min_distinct_groups_for_go: 2
+  max_per_group: 2
+
+background:
+  matched_controls_per_winner_event: 5
+  background_control_policy: both
+  non_default_background_policy_reason: ""
+
+buckets:
+  market_breadth_boundaries: [-inf, 0.20, 0.40, 0.60, 0.80, inf]
+  quantiles: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+  max_missing_mcap_share: 0.20
+
+baselines:
+  r01_v3_seed_baseline_id: r01_v3_post30_profile_seed_baseline
+  r01_v3_seed_formula_id: close_near_high5_gt_0pct_and_vol_ratio10_gt_1_2_and_vol_ratio3_gt_1_2_and_rps5_gt_60
+  r02_v1_primitive_summary: ep4/outputs/r02_evidence_family_discovery_v1/reports/r02_primitive_search_summary.csv
+
+decision_gates:
+  allowed_decisions:
+    - go_to_r03_evidence_accumulation
+    - revise_profile_search_space
+    - archive_profile_discovery_no_r03
+
+primitive_search:
+  bootstrap_replicates: 100
+  bootstrap_random_seed: 20260512
+  primitive_grid:
+    - {group: r02v2_feature, feature: ret5_asof}
+    - {group: r02v2_feature, feature: ret20_asof}
+    - {group: r02v2_feature, feature: close_near_high5_pct}
+    - {group: r02v2_feature, feature: close_near_high20_pct}
+    - {group: r02v2_feature, feature: close_near_high60_pct}
+    - {group: r02v2_feature, feature: vol_ratio3}
+    - {group: r02v2_feature, feature: vol_ratio10}
+    - {group: r02v2_feature, feature: money_20d_median_asof}
+    - {group: r02v2_feature, feature: money_ratio20_mean_asof}
+    - {group: r02v2_feature, feature: rps5}
+    - {group: r02v2_feature, feature: rps20}
+    - {group: r02v2_feature, feature: rps60}
+    - {group: r02v2_feature, feature: ema20_hold_depth}
+    - {group: r02v2_feature, feature: prior20_pullback_depth}
+    - {group: r02v2_feature, feature: atr20_pct}
+    - {group: r02v2_feature, feature: atr20_contraction_ratio}
+    - {group: r02v2_feature, feature: past_h10_no_close_below_prior10_low}
+    - {group: r02v2_feature, feature: past_h20_no_close_below_prior20_low}
+    - {group: r02v2_feature, feature: past_h20_no_high_volume_down_day}
+    - {group: r02v2_feature, feature: past_h10_no_failed_breakout}
+    - {group: r02v2_feature, feature: market_breadth20}
+    - {group: r02v2_feature, feature: industry_breadth20}
+    - {group: r02v2_feature, feature: return1d}
+    - {group: r02v2_feature, feature: gap_open_pct}
+    - {group: r02v2_feature, feature: market_cap_asof_T}

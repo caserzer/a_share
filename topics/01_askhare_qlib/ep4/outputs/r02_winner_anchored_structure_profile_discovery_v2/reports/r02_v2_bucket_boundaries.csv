@@ -1,0 +1,8 @@
+bucket_type,boundaries,source_split,missing_mcap_share,missing_mcap_status,split
+market_breadth_bucket,"[-Infinity, 0.2, 0.4, 0.6, 0.8, Infinity]",fixed_config,,,
+liquidity_bucket,"[-Infinity, 208142382.4, 388472153.6, 666716377.5999999, 1295027712.0000002, Infinity]",train,,,train
+liquidity_bucket,"[-Infinity, 208142382.4, 388472153.6, 666716377.5999999, 1295027712.0000002, Infinity]",train,,,validation
+liquidity_bucket,"[-Infinity, 208142382.4, 388472153.6, 666716377.5999999, 1295027712.0000002, Infinity]",train,,,robustness
+market_cap_bucket,"[-Infinity, Infinity]",train,1.0,invalid_missing_mcap_share,train
+market_cap_bucket,"[-Infinity, Infinity]",train,1.0,invalid_missing_mcap_share,validation
+market_cap_bucket,"[-Infinity, Infinity]",train,1.0,invalid_missing_mcap_share,robustness

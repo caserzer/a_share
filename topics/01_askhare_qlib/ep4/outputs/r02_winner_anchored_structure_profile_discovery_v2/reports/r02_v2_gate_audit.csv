@@ -1,0 +1,9 @@
+gate_id,actual,expected,status,failure_class
+min_3_non_baseline_frozen_representatives,3,3,passed,research_gate
+min_2_distinct_structure_groups,2,2,passed,research_gate
+r01_v3_reference_overlap_rate,0.9881422924901185,>=0.80,passed,research_gate
+validation_at_least_2_lr_ci_lower_ge_1,0,2,failed,research_gate
+robustness_at_least_2_lr_ge_1,0,2,failed,research_gate
+validation_at_least_2_ev_ge_minus_005,0,2,failed,research_gate
+robustness_at_least_2_ev_ge_minus_005,2,2,passed,research_gate
+no_major_validator_leakage_finding,True,True,passed,contract_gate
