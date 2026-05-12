@@ -1,0 +1,88 @@
+phase: ep4_r02_big_winner_coverage_ratio_search_v1
+requirement_path: ep4/requirement_02_big_winner_coverage_ratio_search_v1.md
+output_root: ep4/outputs/r02_big_winner_coverage_ratio_search_v1
+
+upstream_r01:
+  config: ep4/configs/r01_high_recall_probe_fail_fast_v2.yaml
+
+parallel_search:
+  enabled: true
+  backend: process_pool
+  max_workers: 12
+  chunk_unit: condition_group_id
+  chunk_size: 500
+  deterministic_merge: true
+  allow_worker_downgrade: false
+  single_pass_audit: true
+
+coverage:
+  canonical_big_winner_count: 845
+  profile_window_days: 30
+  min_coverage_t0_t30: 0.85
+
+search:
+  allowed_windows: [5, 10, 30, 60]
+  allowed_n_terms: [3, 4]
+  allow_cross_family: false
+  allow_market_context_filter: false
+  deterministic_candidate_atom_cap_per_family: 24
+
+thresholds:
+  price_ratio: [0.0, 0.03, 0.05]
+  slope: [0.0, 0.02]
+  ret: [0.0, 0.05, 0.10, 0.20]
+  rps: [0.50, 0.60, 0.70, 0.80]
+  volatility: [0.03, 0.05, 0.08]
+  atr_ratio: [1.0, 1.2, 1.5]
+  boll_pct_b: [0.5, 0.8, 1.0, 1.2]
+  boll_width: [0.8, 1.0, 1.2]
+  activity_ratio: [1.0, 1.2, 1.5, 2.0]
+  money_price_coherence: [0.0]
+  near_high: [-0.05, -0.03, 0.0]
+  range_position: [0.70, 0.80, 0.90]
+  drawdown: [-0.20, -0.15, -0.10, -0.05]
+  rebound: [0.05, 0.10, 0.20]
+  days_since_high: [5, 10, 20]
+  oscillator_high: [55, 60, 65, 70]
+  oscillator_low: [30, 35, 40, 45]
+
+feature_templates:
+  price_trend:
+    - close_over_ma_N
+    - close_over_ema_N
+    - ma_slope_N
+    - ema_slope_N
+  momentum_rps:
+    - ret_N
+    - roc_N
+    - rps_N
+    - market_relative_ret_N
+  volatility_band:
+    - realized_vol_N
+    - atr_ratio_N
+    - boll_pct_b_N
+    - boll_width_N
+    - price_channel_position_N
+  volume_money:
+    - volume_ratio_N
+    - amount_ratio_N
+    - turnover_ratio_N
+    - money_zscore_N
+    - money_price_coherence_N
+  range_breakout:
+    - close_near_high_N
+    - close_breaks_high_N
+    - close_near_low_N
+    - range_position_N
+    - new_high_flag_N
+  pullback_drawdown:
+    - drawdown_from_high_N
+    - pullback_depth_N
+    - rebound_from_low_N
+    - days_since_high_N
+    - pullback_recovery_N
+  oscillator:
+    - rsi_N
+    - kdj_k_N
+    - cci_N
+    - macd_hist_state_N
