@@ -134,15 +134,15 @@ Split 覆盖：
 
 这里先要求 `coverage >= 85%`，再按 density 从低到高排序。它回答的是“这个 family 是否存在一个不太泛滥但仍能覆盖大多数 winner 的状态”。
 
-| family | condition | coverage | density | split stability |
-|:--|:--|--:|--:|:--|
-| momentum_rps | roc5 >= 5%, rps5 >= 80%, rps10 >= 50% | 85.09% | 11.16% | robustness 83.82% below 85% |
-| oscillator | kdj_k5 >= 60, cci5 >= 100, kdj_k10 >= 55, cci10 >= 150 | 85.09% | 5.85% | validation 82.91% below 85% |
-| price_trend | close_over_ma5 >= 3%, ema_slope5 >= 0, close_over_ma10 >= 3% | 86.15% | 8.75% | validation 82.28% below 85% |
-| pullback_drawdown | pullback_depth5 >= -5%, rebound_from_low5 >= 5%, days_since_high10 <= 5 | 90.30% | 14.28% | all splits above 88% |
-| range_breakout | range_position5 >= 0.9, 10d new high, range_position10 >= 0.7 | 96.80% | 17.37% | all splits above 95% |
-| volatility_band | boll_pct_b5 >= 0.8, boll_width5 >= 1.0, boll_width10 >= 1.0, channel position10 >= 0.8 | 85.21% | 7.14% | train 83.41% below 85% |
-| volume_money | volume_ratio5 >= 1.5, money_zscore5 >= 2.0, 5d/10d money-price coherence | 88.17% | 5.77% | all splits above 86% |
+| family | condition | coverage | density | mean first hit | median first hit | split stability |
+|:--|:--|--:|--:|--:|--:|:--|
+| momentum_rps | roc5 >= 5%, rps5 >= 80%, rps10 >= 50% | 85.09% | 11.16% | T+9.2 | T+8 | robustness 83.82% below 85% |
+| oscillator | kdj_k5 >= 60, cci5 >= 100, kdj_k10 >= 55, cci10 >= 150 | 85.09% | 5.85% | T+11.3 | T+11 | validation 82.91% below 85% |
+| price_trend | close_over_ma5 >= 3%, ema_slope5 >= 0, close_over_ma10 >= 3% | 86.15% | 8.75% | T+9.3 | T+7 | validation 82.28% below 85% |
+| pullback_drawdown | pullback_depth5 >= -5%, rebound_from_low5 >= 5%, days_since_high10 <= 5 | 90.30% | 14.28% | T+8.8 | T+7 | all splits above 88% |
+| range_breakout | range_position5 >= 0.9, 10d new high, range_position10 >= 0.7 | 96.80% | 17.37% | T+8.0 | T+7 | all splits above 95% |
+| volatility_band | boll_pct_b5 >= 0.8, boll_width5 >= 1.0, boll_width10 >= 1.0, channel position10 >= 0.8 | 85.21% | 7.14% | T+10.1 | T+8 | train 83.41% below 85% |
+| volume_money | volume_ratio5 >= 1.5, money_zscore5 >= 2.0, 5d/10d money-price coherence | 88.17% | 5.77% | T+11.8 | T+11 | all splits above 86% |
 
 发现：最低密度达标条件比最高覆盖条件更接近“有信息量的画像”。其中 `volume_money` 的全局最低 density 与 split 稳定性最好，`range_breakout` 的 coverage 最强但 density 也较高。
 
