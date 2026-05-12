@@ -35,6 +35,16 @@ ALLOWED_DECISIONS = {
     "go_to_r02_with_robustness_warning",
     "archive_cost_control_sleeve_no_r02",
     "stop_ep4_r01_path",
+    "stop_ep4_r01_1_path",
+}
+R01_1_DEFAULT_CONFIG = EP4_DIR / "configs" / "r01_1_emission_throttled_cooling_entry_probe_fail_fast.yaml"
+R01_1_REQUIREMENT_ID = "ep4_r01_1_emission_throttled_cooling_entry_probe_fail_fast"
+R01_1_SCHEMA_VERSION = "ep4_r01_1_emission_throttled_cooling_probe_v1"
+R01_1_ALLOWED_DECISIONS = {
+    "go_to_r02",
+    "go_to_r02_with_robustness_warning",
+    "archive_cost_control_sleeve_no_r02",
+    "stop_ep4_r01_1_path",
 }
 
 REQUIRED_CACHE = [
@@ -64,6 +74,38 @@ REQUIRED_REPORTS = [
     "r01_final_report.md",
 ]
 REQUIRED_MANIFESTS = ["r01_run_manifest.json"]
+R01_1_CACHE = [
+    "r01_1_big_winner_reference_panel.parquet",
+    "r01_1_raw_seed_panel.parquet",
+    "r01_1_emitted_seed_panel.parquet",
+    "r01_1_cooling_entry_panel.parquet",
+    "r01_1_seed_episode_panel.parquet",
+    "r01_1_probe_simulation_panel.parquet",
+    "r01_1_baseline_simulation_panel.parquet",
+]
+R01_1_REPORTS = [
+    "r01_1_final_report.md",
+    "r01_1_gate_audit.csv",
+    "r01_1_density_audit.csv",
+    "r01_1_raw_to_emitted_waterfall.csv",
+    "r01_1_cooling_entry_waterfall.csv",
+    "r01_1_recall_bridge.csv",
+    "r01_1_entry_after_reference_audit.csv",
+    "r01_1_recall_cost_tradeoff.csv",
+    "r01_1_fail_fast_attribution.csv",
+    "r01_1_false_reject_missed_failure_audit.csv",
+    "r01_1_entry_timing_audit.csv",
+    "r01_1_r_unit_distribution_audit.csv",
+    "r01_1_risk_pct_quintile_cost_control.csv",
+    "r01_1_baseline_eligibility_audit.csv",
+    "r01_1_vcp_audit.csv",
+    "r01_1_confirmation_audit.csv",
+    "r01_1_matched_delay_reliability_audit.csv",
+    "r01_1_matched_random_reliability_audit.csv",
+    "r01_1_archive_decision_audit.csv",
+    "r01_1_counterfactual_failure_inheritance.csv",
+]
+R01_1_MANIFESTS = ["r01_1_run_manifest.json"]
 
 BIG_WINNER_REFERENCE_COLUMNS = [
     "reference_event_id",
@@ -2462,6 +2504,992 @@ def build_final_report(
     return "\n".join(lines) + "\n"
 
 
+def assert_authority_inputs_r01_1(config: dict[str, Any]) -> pd.DataFrame:
+    authority = assert_authority_inputs(config)
+    rows: list[dict[str, Any]] = []
+    for name, value in config.get("upstream_r01_v2", {}).items():
+        path = topic_path(value)
+        exists = path.exists()
+        rows.append(
+            {
+                "artifact_name": f"upstream_r01_v2_{name}",
+                "path": relpath(path),
+                "exists": bool(exists),
+                "sha256": file_hash(path) if exists and path.is_file() else "",
+                "status": "passed" if exists else "failed",
+            }
+        )
+    extra = pd.DataFrame(rows)
+    if not extra.empty and not bool(extra["exists"].all()):
+        missing = "; ".join(extra.loc[~extra["exists"], "path"].astype(str).tolist())
+        raise RuntimeError(f"missing canonical R01.1 upstream inputs: {missing}")
+    return pd.concat([authority, extra], ignore_index=True) if not extra.empty else authority
+
+
+def _r01_1_reference_capture_fields(
+    instrument: str,
+    signal_date: pd.Timestamp,
+    split: str,
+    reference: pd.DataFrame,
+    bridge_reference: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    effective_windows: dict[str, tuple[pd.Timestamp, pd.Timestamp]],
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    eff_end = effective_windows.get(split, (pd.NaT, pd.NaT))[1]
+    primary_eligible = split in {"train", "validation", "robustness"} and not pd.isna(eff_end) and signal_date <= eff_end
+    lookback = primary_recall_lookback_days(config)
+    window_id = primary_recall_window_id(config)
+    captured, ref_id, cap_window = capture_reference(instrument, signal_date, reference, calendar, lookback, 0, window_id)
+    bridge_captured, bridge_ref_id, bridge_window = capture_reference(instrument, signal_date, bridge_reference, calendar, lookback, 0, window_id)
+    return {
+        "primary_metric_eligible_seed_episode": bool(primary_eligible),
+        "captures_primary_big_winner": bool(captured) if primary_eligible else False,
+        "captured_reference_event_id": ref_id if primary_eligible and captured else "",
+        "capture_window_id": cap_window if primary_eligible and captured else "",
+        "captures_ep2_bridge_big_winner": bool(bridge_captured),
+        "captured_ep2_bridge_reference_event_id": bridge_ref_id if bridge_captured else "",
+        "bridge_capture_window_id": bridge_window if bridge_captured else "",
+    }
+
+
+def build_r01_1_raw_seed_panel(
+    raw_events: pd.DataFrame,
+    stock: pd.DataFrame,
+    config: dict[str, Any],
+    calendar: pd.DatetimeIndex,
+    reference: pd.DataFrame,
+    bridge_reference: pd.DataFrame,
+    effective_windows: dict[str, tuple[pd.Timestamp, pd.Timestamp]],
+) -> pd.DataFrame:
+    if raw_events.empty:
+        return pd.DataFrame()
+    stock_cols = [
+        "instrument",
+        "date",
+        "money_ratio20_mean_asof",
+        "money_ratio5_mean_asof",
+        "rps5_rank_pct",
+        "boll20_pct_b",
+        "close_near_high10_ratio",
+        "seed_day_low",
+        "pivot_low_10d",
+        "rolling_close_high_10_asof",
+        "industry_name",
+        "liquidity_bucket",
+        "volatility_bucket",
+    ]
+    available = [col for col in stock_cols if col in stock.columns]
+    raw = raw_events.copy()
+    raw["raw_signal_date"] = pd.to_datetime(raw["signal_date"]).dt.normalize()
+    raw = raw.merge(
+        stock[available].rename(columns={"date": "raw_signal_date"}),
+        on=["instrument", "raw_signal_date"],
+        how="left",
+    )
+    raw = raw.sort_values(["instrument", "raw_signal_date"]).reset_index(drop=True)
+    raw["raw_seed_event_id"] = [
+        f"{config['seed_rules']['raw_seed_id']}_{inst}_{_date_str(dt).replace('-', '')}_{idx:08d}"
+        for idx, (inst, dt) in enumerate(zip(raw["instrument"], raw["raw_signal_date"]), start=1)
+    ]
+    captures = [
+        _r01_1_reference_capture_fields(
+            str(row.instrument).upper(),
+            _date(row.raw_signal_date),
+            str(row.split),
+            reference,
+            bridge_reference,
+            calendar,
+            effective_windows,
+            config,
+        )
+        for row in raw.itertuples(index=False)
+    ]
+    cap_df = pd.DataFrame(captures)
+    raw = pd.concat([raw, cap_df], axis=1)
+    raw["raw_seed_flag"] = True
+    raw["emitted_seed_flag"] = False
+    raw["emission_suppressed"] = False
+    raw["suppressed_by_emitted_seed_id"] = ""
+    raw["split_boundary_suppressed"] = False
+    raw["emitted_seed_id"] = ""
+    raw["emitted_signal_date"] = ""
+    raw["money_ratio20"] = raw["money_ratio20_mean_asof"]
+    raw["money_ratio5"] = raw["money_ratio5_mean_asof"]
+    raw["rps5"] = raw["rps5_rank_pct"]
+    raw["close_near_high10"] = raw["close_near_high10_ratio"]
+    raw["breakout_reference"] = raw["rolling_close_high_10_asof"]
+    return raw
+
+
+def apply_r01_1_emission_throttle(raw_panel: pd.DataFrame, config: dict[str, Any], calendar: pd.DatetimeIndex) -> pd.DataFrame:
+    if raw_panel.empty:
+        return raw_panel.copy()
+    out = raw_panel.copy()
+    out["raw_signal_date_ts"] = pd.to_datetime(out["raw_signal_date"]).dt.normalize()
+    pos = {pd.Timestamp(dt): idx for idx, dt in enumerate(calendar)}
+    window = int(config["emission"]["throttle_window_trading_days"])
+    emitted_seed_id = str(config["emission"]["emitted_seed_id"])
+    emit_counter = 0
+    for instrument, idxs in out.sort_values(["instrument", "raw_signal_date_ts"]).groupby("instrument").groups.items():
+        last_emit_pos: int | None = None
+        last_emit_id = ""
+        last_emit_split = ""
+        for idx in idxs:
+            row = out.loc[idx]
+            raw_pos = pos.get(pd.Timestamp(row["raw_signal_date_ts"]))
+            if row["hard_filter_status"] != "passed" or raw_pos is None:
+                continue
+            if last_emit_pos is not None and raw_pos <= last_emit_pos + window:
+                out.loc[idx, "emission_suppressed"] = True
+                out.loc[idx, "suppressed_by_emitted_seed_id"] = last_emit_id
+                out.loc[idx, "split_boundary_suppressed"] = str(row["split"]) != last_emit_split
+                continue
+            emit_counter += 1
+            current_id = f"{emitted_seed_id}_{instrument}_{_date_str(row['raw_signal_date_ts']).replace('-', '')}_{emit_counter:08d}"
+            out.loc[idx, "emitted_seed_flag"] = True
+            out.loc[idx, "emitted_seed_id"] = current_id
+            out.loc[idx, "emitted_signal_date"] = _date_str(row["raw_signal_date_ts"])
+            last_emit_pos = raw_pos
+            last_emit_id = current_id
+            last_emit_split = str(row["split"])
+    out = out.drop(columns=["raw_signal_date_ts"])
+    return out
+
+
+def _entry_open_state(
+    stock_key: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    instrument: str,
+    entry_date: pd.Timestamp,
+) -> dict[str, Any]:
+    if pd.isna(entry_date):
+        return {"entry_price": np.nan, "buy_executable": False, "buy_block_reason": "missing_entry_date"}
+    prev = base.prev_trading_day(calendar, entry_date)
+    entry_row = stock_key.loc[(instrument, entry_date)] if (instrument, entry_date) in stock_key.index else pd.Series(dtype=object)
+    prev_row = stock_key.loc[(instrument, prev)] if not pd.isna(prev) and (instrument, prev) in stock_key.index else pd.Series(dtype=object)
+    price = _safe_float(entry_row.get("open", prev_row.get("next_open", np.nan)))
+    buy_ok = bool(prev_row.get("is_buy_executable_next_open", False))
+    reason = "" if buy_ok else str(prev_row.get("blocked_buy_reason", "entry_not_executable"))
+    if not np.isfinite(price):
+        reason = "missing_entry_open"
+        buy_ok = False
+    return {"entry_price": price, "buy_executable": buy_ok, "buy_block_reason": reason}
+
+
+def build_r01_1_cooling_entry_panel(
+    emitted_panel: pd.DataFrame,
+    stock: pd.DataFrame,
+    config: dict[str, Any],
+    calendar: pd.DatetimeIndex,
+) -> pd.DataFrame:
+    emitted = emitted_panel.loc[emitted_panel["emitted_seed_flag"].astype(bool)].copy()
+    if emitted.empty:
+        return pd.DataFrame()
+    stock_key = stock.set_index(["instrument", "date"])
+    min_risk = float(config["risk_normalization"]["min_initial_risk_pct"])
+    max_risk = float(config["risk_normalization"]["max_initial_risk_pct"])
+    rows: list[dict[str, Any]] = []
+    for row in emitted.itertuples(index=False):
+        instrument = str(row.instrument).upper()
+        emitted_date = _date(row.emitted_signal_date)
+        cooling_date = base.add_trading_days(calendar, emitted_date, 1)
+        entry_date = base.add_trading_days(calendar, emitted_date, 2)
+        cooling = stock_key.loc[(instrument, cooling_date)] if not pd.isna(cooling_date) and (instrument, cooling_date) in stock_key.index else pd.Series(dtype=object)
+        cooling_close = _safe_float(cooling.get("close"))
+        seed_low = _safe_float(row.seed_day_low)
+        breakout = _safe_float(row.breakout_reference)
+        pivot = _safe_float(row.pivot_low_10d)
+        cancel_reasons: list[str] = []
+        if not np.isfinite(cooling_close):
+            cancel_reasons.append("missing_cooling_close")
+        else:
+            if np.isfinite(seed_low) and cooling_close < seed_low:
+                cancel_reasons.append("cooling_close_below_seed_day_low")
+            if np.isfinite(breakout) and cooling_close < breakout:
+                cancel_reasons.append("cooling_close_below_breakout_reference")
+            if np.isfinite(pivot) and cooling_close < pivot:
+                cancel_reasons.append("cooling_close_below_pivot_low_10d")
+        entry_state = _entry_open_state(stock_key, calendar, instrument, entry_date)
+        stop, risk_pct, risk_status = closest_stop_below(entry_state["entry_price"], [seed_low, breakout, pivot], min_risk, max_risk)
+        cooling_cancelled = bool(cancel_reasons)
+        executable = (not cooling_cancelled) and bool(entry_state["buy_executable"]) and risk_status == "passed"
+        if cooling_cancelled:
+            reject_reason = "|".join(cancel_reasons)
+        elif not entry_state["buy_executable"]:
+            reject_reason = entry_state["buy_block_reason"]
+        elif risk_status != "passed":
+            reject_reason = risk_status
+        else:
+            reject_reason = ""
+        rec = row._asdict()
+        rec.update(
+            {
+                "cooling_observation_date": _date_str(cooling_date),
+                "cooling_close": cooling_close,
+                "entry_date": _date_str(entry_date),
+                "entry_price": entry_state["entry_price"],
+                "entry_buy_executable": bool(entry_state["buy_executable"]),
+                "entry_buy_block_reason": entry_state["buy_block_reason"],
+                "cooling_cancelled": cooling_cancelled,
+                "cooling_cancel_reason": "|".join(cancel_reasons),
+                "cooling_qualified_probe": bool(executable),
+                "initial_structural_stop": stop,
+                "initial_risk_pct": risk_pct,
+                "risk_distance_status": risk_status,
+                "executable_status": "passed" if executable else "rejected",
+                "episode_reject_reason": reject_reason,
+            }
+        )
+        rows.append(rec)
+    return pd.DataFrame(rows)
+
+
+def build_r01_1_seed_episodes(cooling_panel: pd.DataFrame, config: dict[str, Any], calendar: pd.DatetimeIndex) -> pd.DataFrame:
+    if cooling_panel.empty:
+        return pd.DataFrame(columns=SEED_EPISODE_COLUMNS)
+    rows: list[dict[str, Any]] = []
+    family = str(config["emission"]["emitted_seed_id"])
+    for row in cooling_panel.itertuples(index=False):
+        start = _date(row.emitted_signal_date)
+        episode_id = f"{family}_{str(row.instrument).upper()}_{_date_str(start).replace('-', '')}_{hashlib.sha1(str(row.emitted_seed_id).encode()).hexdigest()[:10]}"
+        rows.append(
+            {
+                "seed_episode_id": episode_id,
+                "seed_family_id": family,
+                "instrument": str(row.instrument).upper(),
+                "episode_start_signal_date": _date_str(start),
+                "episode_effective_entry_date": row.entry_date if row.executable_status == "passed" else "",
+                "episode_end_signal_date": _date_str(base.add_trading_days(calendar, _date(row.entry_date), int(config["fail_fast"]["natural_exit_horizon_trading_days"]))) if row.executable_status == "passed" else "",
+                "split": assign_split(start, split_bounds(config)),
+                "first_seed_event_id": str(row.emitted_seed_id),
+                "seed_event_count": 1,
+                "suppressed_reentry_count": 0,
+                "entry_price": row.entry_price,
+                "price_structure_component": row.price_structure_component,
+                "seed_day_low": row.seed_day_low,
+                "breakout_reference": row.breakout_reference,
+                "pivot_low_10d": row.pivot_low_10d,
+                "initial_structural_stop": row.initial_structural_stop,
+                "initial_risk_pct": row.initial_risk_pct,
+                "risk_distance_status": row.risk_distance_status,
+                "executable_status": row.executable_status,
+                "episode_reject_reason": row.episode_reject_reason,
+                "primary_metric_eligible_seed_episode": bool(row.primary_metric_eligible_seed_episode),
+                "captures_primary_big_winner": bool(row.captures_primary_big_winner),
+                "captured_reference_event_id": row.captured_reference_event_id,
+                "capture_window_id": row.capture_window_id,
+                "captures_ep2_bridge_big_winner": bool(row.captures_ep2_bridge_big_winner),
+            }
+        )
+    return pd.DataFrame(rows, columns=SEED_EPISODE_COLUMNS)
+
+
+def _r01_1_episode_extra(cooling_panel: pd.DataFrame, episodes: pd.DataFrame) -> pd.DataFrame:
+    if cooling_panel.empty or episodes.empty:
+        return episodes.copy()
+    extra = cooling_panel[
+        [
+            "emitted_seed_id",
+            "emitted_signal_date",
+            "cooling_observation_date",
+            "cooling_cancelled",
+            "cooling_cancel_reason",
+            "entry_buy_executable",
+        ]
+    ].copy()
+    extra["first_seed_event_id"] = extra["emitted_seed_id"]
+    return episodes.merge(extra, on="first_seed_event_id", how="left")
+
+
+def _r01_1_shift_rows(
+    episodes: pd.DataFrame,
+    stock: pd.DataFrame,
+    config: dict[str, Any],
+    calendar: pd.DatetimeIndex,
+    baseline_id: str,
+    entry_shift_from_emitted: int,
+    matched_type: str,
+) -> pd.DataFrame:
+    if episodes.empty:
+        return pd.DataFrame()
+    stock_key = stock.set_index(["instrument", "date"])
+    min_risk = float(config["risk_normalization"]["min_initial_risk_pct"])
+    max_risk = float(config["risk_normalization"]["max_initial_risk_pct"])
+    records: list[dict[str, Any]] = []
+    for _, ep in episodes.iterrows():
+        emitted_date = _date(ep["episode_start_signal_date"])
+        entry_date = base.add_trading_days(calendar, emitted_date, entry_shift_from_emitted)
+        entry_state = _entry_open_state(stock_key, calendar, str(ep["instrument"]).upper(), entry_date)
+        stop, risk_pct, risk_status = closest_stop_below(
+            entry_state["entry_price"],
+            [_safe_float(ep["seed_day_low"]), _safe_float(ep["breakout_reference"]), _safe_float(ep["pivot_low_10d"])],
+            min_risk,
+            max_risk,
+        )
+        pre_status = "passed" if entry_state["buy_executable"] and risk_status == "passed" else "ineligible"
+        pre_reason = "" if pre_status == "passed" else (risk_status if risk_status != "passed" else entry_state["buy_block_reason"])
+        candidate_entry = _safe_float(ep.get("entry_price"))
+        entry_price = _safe_float(entry_state["entry_price"])
+        rec = ep.to_dict()
+        rec.update(
+            {
+                "baseline_id": baseline_id,
+                "signal_date": ep["episode_start_signal_date"],
+                "entry_date": _date_str(entry_date),
+                "entry_price": entry_price,
+                "initial_structural_stop": stop,
+                "initial_risk_pct": risk_pct,
+                "delay_days": int(entry_shift_from_emitted - 2),
+                "delay_period_return_pct": entry_price / candidate_entry - 1.0 if np.isfinite(entry_price) and np.isfinite(candidate_entry) and candidate_entry > 0 else np.nan,
+                "matched_control_type": matched_type,
+                "replicate_id": 0,
+                "primary_metric_eligible_baseline_event": bool(ep.get("primary_metric_eligible_seed_episode", False)),
+                "captures_primary_big_winner": bool(ep.get("captures_primary_big_winner", False)),
+                "captured_reference_event_id": ep.get("captured_reference_event_id", ""),
+                "capture_window_id": ep.get("capture_window_id", ""),
+                "fail_fast_policy": "no_fail_fast" if "no_fail_fast" in baseline_id else "same_fail_fast",
+                "structural_reference_policy": "carried_original_emitted_seed_references",
+                "match_year": _date(ep["episode_start_signal_date"]).year,
+                "match_industry": "all",
+                "match_liquidity_bucket": "all",
+                "match_volatility_bucket": "all",
+                "pre_sim_eligibility_status": pre_status,
+                "pre_sim_ineligibility_reason": pre_reason,
+            }
+        )
+        records.append(rec)
+    rows = pd.DataFrame(records)
+    if rows.empty:
+        return rows
+    rows["delay_period_return_bucket"] = _qbucket(rows["delay_period_return_pct"], 5, "delay_return")
+    if matched_type == "matched_delay":
+        all_rate = float(rows["pre_sim_eligibility_status"].ne("passed").mean()) if len(rows) else 0.0
+        top = rows["delay_period_return_bucket"].eq("delay_return_q5")
+        top_rate = float(rows.loc[top, "pre_sim_eligibility_status"].ne("passed").mean()) if top.any() else 0.0
+        status = "failed" if top_rate >= 2.0 * all_rate and top_rate >= 0.20 else "passed"
+        rows["matched_delay_reliability_status"] = status
+    else:
+        rows["matched_delay_reliability_status"] = "not_applicable"
+    return rows
+
+
+def _r01_1_same_candidate_rows(candidate: pd.DataFrame, baseline_id: str) -> pd.DataFrame:
+    rows = candidate.copy()
+    rows["baseline_id"] = baseline_id
+    rows["signal_date"] = rows["episode_start_signal_date"]
+    rows["primary_metric_eligible_baseline_event"] = rows["primary_metric_eligible_seed_episode"]
+    rows["matched_control_type"] = "same_seed"
+    rows["fail_fast_policy"] = "no_fail_fast" if "no_fail_fast" in baseline_id else "same_fail_fast"
+    rows["structural_reference_policy"] = "same_cooling_qualified_seed_references"
+    rows["replicate_id"] = 0
+    rows["delay_days"] = 0
+    rows["delay_period_return_pct"] = np.nan
+    rows["delay_period_return_bucket"] = ""
+    rows["matched_delay_reliability_status"] = "not_applicable"
+    rows["match_year"] = pd.to_datetime(rows["episode_start_signal_date"]).dt.year
+    rows["match_industry"] = "all"
+    rows["match_liquidity_bucket"] = "all"
+    rows["match_volatility_bucket"] = "all"
+    return rows
+
+
+def build_r01_1_baseline_inputs(
+    episodes: pd.DataFrame,
+    stock: pd.DataFrame,
+    config: dict[str, Any],
+    calendar: pd.DatetimeIndex,
+    reference: pd.DataFrame,
+) -> dict[str, pd.DataFrame]:
+    candidate = episodes.loc[(episodes["seed_family_id"].eq(CANDIDATE_SEED_ID)) & (episodes["executable_status"].eq("passed"))].copy()
+    all_emitted = episodes.loc[episodes["seed_family_id"].eq(CANDIDATE_SEED_ID)].copy()
+    ep2 = episodes.loc[(episodes["seed_family_id"].eq(EP2_SEED_ID)) & (episodes["executable_status"].eq("passed"))].copy()
+    candidate = enrich_episode_for_sim(candidate)
+    all_emitted = enrich_episode_for_sim(all_emitted)
+    ep2 = enrich_episode_for_sim(ep2)
+    random_rows = _matched_random_rows(candidate, stock, config, calendar, reference)
+    return {
+        "same_cooling_qualified_seed_no_fail_fast_hold_h20": _r01_1_same_candidate_rows(candidate, "same_cooling_qualified_seed_no_fail_fast_hold_h20"),
+        "same_cooling_qualified_seed_t1_open_same_fail_fast_h20": _r01_1_shift_rows(candidate, stock, config, calendar, "same_cooling_qualified_seed_t1_open_same_fail_fast_h20", 1, "same_sample_t1"),
+        "same_cooling_qualified_seed_t3_open_same_fail_fast_h20": _r01_1_shift_rows(candidate, stock, config, calendar, "same_cooling_qualified_seed_t3_open_same_fail_fast_h20", 3, "matched_delay"),
+        "same_cooling_qualified_seed_t1_open_no_fail_fast_h20": _r01_1_shift_rows(candidate, stock, config, calendar, "same_cooling_qualified_seed_t1_open_no_fail_fast_h20", 1, "same_sample_t1"),
+        "same_cooling_qualified_seed_t3_open_no_fail_fast_h20": _r01_1_shift_rows(candidate, stock, config, calendar, "same_cooling_qualified_seed_t3_open_no_fail_fast_h20", 3, "matched_delay"),
+        "same_emitted_seed_t1_open_same_fail_fast_h20_all_emitted": _r01_1_shift_rows(all_emitted, stock, config, calendar, "same_emitted_seed_t1_open_same_fail_fast_h20_all_emitted", 1, "same_emitted_t1"),
+        "r01_v2_raw_seed_t1_open_bridge": _r01_1_shift_rows(all_emitted, stock, config, calendar, "r01_v2_raw_seed_t1_open_bridge", 1, "r01_v2_bridge"),
+        "ep2_detector_probe_with_simple_stop_bridge": _ep2_bridge_rows(ep2),
+        "matched_random_same_density_same_fail_fast_h20_report_only": random_rows.copy(),
+        "matched_random_same_density_no_fail_fast_h20_report_only": random_rows.copy(),
+    }
+
+
+def enrich_r01_1_probe(probe: pd.DataFrame, episodes_extra: pd.DataFrame, reference: pd.DataFrame) -> pd.DataFrame:
+    if probe.empty:
+        return probe.copy()
+    extra_cols = [
+        "seed_episode_id",
+        "first_seed_event_id",
+        "episode_start_signal_date",
+        "cooling_observation_date",
+        "cooling_cancelled",
+        "cooling_cancel_reason",
+        "captures_primary_big_winner",
+        "captured_reference_event_id",
+        "capture_window_id",
+    ]
+    extra = episodes_extra[[col for col in extra_cols if col in episodes_extra.columns]].copy()
+    out = probe.merge(extra, on="seed_episode_id", how="left")
+    out = out.rename(
+        columns={
+            "first_seed_event_id": "emitted_seed_id",
+            "episode_start_signal_date": "emitted_signal_date",
+        }
+    )
+    ref_dates = reference.set_index("reference_event_id")["reference_date"].to_dict() if not reference.empty else {}
+    out["captured_reference_date"] = pd.to_datetime(out["captured_reference_event_id"].map(ref_dates), errors="coerce")
+    out["entry_date_ts"] = pd.to_datetime(out["entry_date"], errors="coerce")
+    out["entry_after_reference"] = out["captured_reference_date"].notna() & out["entry_date_ts"].gt(out["captured_reference_date"])
+    out["entry_after_reference_days"] = (out["entry_date_ts"] - out["captured_reference_date"]).dt.days
+    return out.drop(columns=["entry_date_ts"])
+
+
+def build_r01_1_density_audit(stock: pd.DataFrame, raw: pd.DataFrame, emitted: pd.DataFrame, cooling: pd.DataFrame, episodes: pd.DataFrame, ep2_episodes: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+    eligible = stock.loc[stock["eligible_stock_day"].astype(bool)]
+    eligible_inst_year = eligible.groupby(["split", "instrument", "year"]).size().reset_index(name="eligible_stock_days")
+    eligible_inst_year = eligible_inst_year.loc[eligible_inst_year["eligible_stock_days"] >= int(config["density_denominator"]["eligible_instrument_year_requires_min_stock_days"])]
+    rows: list[dict[str, Any]] = []
+    probe = cooling.loc[cooling["cooling_qualified_probe"].astype(bool)] if not cooling.empty else pd.DataFrame()
+    for split in ["train", "validation", "robustness"]:
+        denom_days = int(eligible.loc[eligible["split"].eq(split)].shape[0])
+        denom_iy = int(eligible_inst_year.loc[eligible_inst_year["split"].eq(split), ["instrument", "year"]].drop_duplicates().shape[0])
+        split_raw = raw.loc[raw["split"].eq(split)] if not raw.empty else pd.DataFrame()
+        split_emit = emitted.loc[emitted["split"].eq(split) & emitted["emitted_seed_flag"].astype(bool)] if not emitted.empty else pd.DataFrame()
+        split_probe = probe.loc[probe["split"].eq(split)] if not probe.empty else pd.DataFrame()
+        split_eps = episodes.loc[episodes["split"].eq(split)] if not episodes.empty else pd.DataFrame()
+        split_ep2 = ep2_episodes.loc[ep2_episodes["split"].eq(split)] if not ep2_episodes.empty else pd.DataFrame()
+        layers = [
+            ("raw_seed", split_raw, split_raw),
+            ("emitted_seed", split_emit, split_emit),
+            ("probe_entry", split_probe, split_eps.loc[split_eps["executable_status"].eq("passed")] if not split_eps.empty else split_eps),
+            ("ep2_detector", split_ep2, split_ep2),
+        ]
+        for layer, event_df, ep_df in layers:
+            event_count = int(len(event_df))
+            episode_count = int(len(ep_df))
+            unique_iy = int(ep_df.assign(year=pd.to_datetime(ep_df["episode_start_signal_date"], errors="coerce").dt.year)[["instrument", "year"]].drop_duplicates().shape[0]) if not ep_df.empty and "episode_start_signal_date" in ep_df else 0
+            rows.append(
+                {
+                    "split": split,
+                    "layer": layer,
+                    "seed_family_id": CANDIDATE_SEED_ID if layer != "ep2_detector" else EP2_SEED_ID,
+                    "eligible_stock_day_count": denom_days,
+                    "eligible_instrument_year_count": denom_iy,
+                    "event_count": event_count,
+                    "episode_count": episode_count,
+                    "day_rate": _safe_div(event_count, denom_days, 0.0),
+                    "episode_rate": _safe_div(episode_count, denom_iy, 0.0),
+                    "unique_instrument_count": int(ep_df["instrument"].nunique()) if not ep_df.empty and "instrument" in ep_df else 0,
+                    "unique_instrument_year_count": unique_iy,
+                }
+            )
+    density = pd.DataFrame(rows)
+    ep2 = density.loc[density["layer"].eq("ep2_detector")].set_index("split")
+    for metric in ["event_count", "episode_count", "day_rate", "episode_rate"]:
+        density[f"{metric}_vs_ep2"] = density.apply(lambda row: _safe_div(float(row[metric]), float(ep2.loc[row["split"], metric]), np.nan) if row["split"] in ep2.index else np.nan, axis=1)
+    return density
+
+
+def build_r01_1_waterfalls(raw: pd.DataFrame, emitted: pd.DataFrame, cooling: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    raw_rows: list[dict[str, Any]] = []
+    cooling_rows: list[dict[str, Any]] = []
+    for split in ["train", "validation", "robustness"]:
+        raw_split = raw.loc[raw["split"].eq(split)] if not raw.empty else pd.DataFrame()
+        emitted_split = emitted.loc[emitted["split"].eq(split) & emitted["emitted_seed_flag"].astype(bool)] if not emitted.empty else pd.DataFrame()
+        suppressed = emitted.loc[emitted["split"].eq(split) & emitted["emission_suppressed"].astype(bool)] if not emitted.empty else pd.DataFrame()
+        raw_caps = set(raw_split.loc[raw_split["captures_primary_big_winner"].astype(bool), "captured_reference_event_id"].astype(str)) if not raw_split.empty else set()
+        emitted_caps = set(emitted_split.loc[emitted_split["captures_primary_big_winner"].astype(bool), "captured_reference_event_id"].astype(str)) if not emitted_split.empty else set()
+        raw_rows.append(
+            {
+                "split": split,
+                "raw_seed_count": int(len(raw_split)),
+                "emitted_seed_count": int(len(emitted_split)),
+                "suppressed_raw_seed_count": int(len(suppressed)),
+                "suppressed_raw_seed_share": _safe_div(float(len(suppressed)), float(len(raw_split)), 0.0),
+                "raw_to_emitted_lost_primary_capture_count": len(raw_caps - emitted_caps),
+                "raw_to_emitted_added_primary_capture_count": len(emitted_caps - raw_caps),
+                "raw_to_emitted_net_capture_count": len(emitted_caps) - len(raw_caps),
+                "split_boundary_suppressed_raw_seed_count": int(suppressed["split_boundary_suppressed"].astype(bool).sum()) if not suppressed.empty else 0,
+            }
+        )
+        cooling_split = cooling.loc[cooling["split"].eq(split)] if not cooling.empty else pd.DataFrame()
+        canceled = cooling_split.loc[cooling_split["cooling_cancelled"].astype(bool)] if not cooling_split.empty else pd.DataFrame()
+        qualified = cooling_split.loc[cooling_split["cooling_qualified_probe"].astype(bool)] if not cooling_split.empty else pd.DataFrame()
+        cooling_rows.append(
+            {
+                "split": split,
+                "emitted_seed_count": int(len(cooling_split)),
+                "cooling_cancelled_count": int(len(canceled)),
+                "cooling_cancelled_rate": _safe_div(float(len(canceled)), float(len(cooling_split)), 0.0),
+                "cooling_qualified_probe_count": int(len(qualified)),
+                "cooling_cancelled_primary_big_winner_capture_loss_count": int(canceled["captures_primary_big_winner"].astype(bool).sum()) if not canceled.empty else 0,
+                "cooling_cancel_reason_distribution": ";".join(canceled["cooling_cancel_reason"].value_counts().astype(str).index[:10]) if not canceled.empty else "",
+            }
+        )
+    return pd.DataFrame(raw_rows), pd.DataFrame(cooling_rows)
+
+
+def build_r01_1_recall_bridge(reference: pd.DataFrame, raw: pd.DataFrame, emitted: pd.DataFrame, cooling: pd.DataFrame, episodes: pd.DataFrame, probe: pd.DataFrame, ep2_episodes: pd.DataFrame) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    for split in ["train", "validation", "robustness"]:
+        ref_count = int(reference.loc[reference["split"].eq(split)].shape[0])
+        populations = {
+            "raw_seed_primary_recall": raw.loc[raw["split"].eq(split)] if not raw.empty else pd.DataFrame(),
+            "emitted_seed_primary_recall_pre_cooling": emitted.loc[emitted["split"].eq(split) & emitted["emitted_seed_flag"].astype(bool)] if not emitted.empty else pd.DataFrame(),
+            "cooling_qualified_probe_primary_recall": cooling.loc[cooling["split"].eq(split) & cooling["cooling_qualified_probe"].astype(bool)] if not cooling.empty else pd.DataFrame(),
+            "ep2_detector_primary_recall": ep2_episodes.loc[ep2_episodes["split"].eq(split)] if not ep2_episodes.empty else pd.DataFrame(),
+        }
+        survived = probe.loc[
+            probe["split"].eq(split)
+            & probe["captures_primary_big_winner"].astype(bool)
+            & probe["exit_trigger_type"].astype(str).str.startswith("natural_exit_h", na=False)
+        ] if not probe.empty and "captures_primary_big_winner" in probe.columns else pd.DataFrame()
+        populations["fail_fast_survived_probe_primary_recall"] = survived
+        for basis, frame in populations.items():
+            if "captured_reference_event_id" in frame:
+                captured = set(frame.loc[frame["captures_primary_big_winner"].astype(bool), "captured_reference_event_id"].astype(str))
+            else:
+                captured = set()
+            rows.append(
+                {
+                    "split": split,
+                    "recall_basis": basis,
+                    "big_winner_reference_count": ref_count,
+                    "captured_reference_count": len(captured),
+                    "primary_recall": _safe_div(float(len(captured)), float(ref_count), 0.0),
+                }
+            )
+    recall = pd.DataFrame(rows)
+    ep2 = recall.loc[recall["recall_basis"].eq("ep2_detector_primary_recall")].set_index("split")
+    recall["recall_diff_vs_ep2_detector"] = recall.apply(lambda row: float(row["primary_recall"]) - float(ep2.loc[row["split"], "primary_recall"]) if row["split"] in ep2.index else np.nan, axis=1)
+    return recall
+
+
+def build_r01_1_entry_after_reference_audit(probe: pd.DataFrame) -> pd.DataFrame:
+    if probe.empty:
+        return pd.DataFrame(columns=["split", "captured_reference_count", "entry_after_reference_count", "entry_after_reference_share", "captured_reference_count_with_entry_on_or_before_reference", "captured_reference_count_with_entry_after_reference", "audit_only_status"])
+    captured = probe.loc[probe["captures_primary_big_winner"].astype(bool)].copy()
+    rows: list[dict[str, Any]] = []
+    for split, group in captured.groupby("split", dropna=False):
+        after = group["entry_after_reference"].astype(bool)
+        rows.append(
+            {
+                "split": split,
+                "captured_reference_count": int(len(group)),
+                "entry_after_reference_count": int(after.sum()),
+                "entry_after_reference_share": _safe_div(float(after.sum()), float(len(group)), 0.0),
+                "captured_reference_count_with_entry_on_or_before_reference": int((~after).sum()),
+                "captured_reference_count_with_entry_after_reference": int(after.sum()),
+                "audit_only_status": "report_only",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def _r01_1_density_metric(density: pd.DataFrame, split: str, layer: str, metric: str) -> float:
+    row = density.loc[density["split"].eq(split) & density["layer"].eq(layer)]
+    return _safe_float(row.iloc[0][metric]) if not row.empty and metric in row.columns else np.nan
+
+
+def _r01_1_recall_metric(recall: pd.DataFrame, split: str, basis: str, metric: str) -> float:
+    row = recall.loc[recall["split"].eq(split) & recall["recall_basis"].eq(basis)]
+    return _safe_float(row.iloc[0][metric]) if not row.empty and metric in row.columns else np.nan
+
+
+def build_r01_1_risk_pct_quintile_cost_control(probe: pd.DataFrame, baseline: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    candidate = probe.loc[probe["seed_family_id"].eq(CANDIDATE_SEED_ID)].copy()
+    no_ff = baseline.loc[baseline["baseline_id"].eq("same_cooling_qualified_seed_no_fail_fast_hold_h20")].copy()
+    train_risk = candidate.loc[candidate["split"].eq("train") & candidate["initial_risk_pct"].notna(), "initial_risk_pct"].astype(float)
+    if train_risk.empty:
+        edges = np.array([np.nan] * 6)
+    else:
+        edges = train_risk.quantile([0, 0.2, 0.4, 0.6, 0.8, 1.0]).to_numpy()
+        edges[0] = -np.inf
+        edges[-1] = np.inf
+    labels = [f"risk_pct_q{i}" for i in range(1, 6)]
+    candidate["risk_pct_quintile"] = pd.cut(candidate["initial_risk_pct"].astype(float), bins=edges, labels=labels, include_lowest=True).astype(str) if np.isfinite(edges[1:-1]).any() else "risk_pct_missing"
+    no_ff["risk_pct_quintile"] = pd.cut(no_ff["initial_risk_pct"].astype(float), bins=edges, labels=labels, include_lowest=True).astype(str) if np.isfinite(edges[1:-1]).any() else "risk_pct_missing"
+    min_rows = int(config["risk_pct_quintile_cost_control"]["min_validation_rows_per_quintile"])
+    sufficient = 0
+    all_pass = True
+    for idx, label in enumerate(labels):
+        lo = edges[idx] if idx < len(edges) else np.nan
+        hi = edges[idx + 1] if idx + 1 < len(edges) else np.nan
+        cand = candidate.loc[candidate["split"].eq("validation") & candidate["risk_pct_quintile"].eq(label)]
+        base_df = no_ff.loc[no_ff["split"].eq("validation") & no_ff["risk_pct_quintile"].eq(label)]
+        cand_failed = cand.loc[cand["failed_seed_primary"].astype(str).isin(["True", "true", "1"])]
+        base_failed = base_df.loc[base_df["baseline_failed_seed_primary"].astype(str).isin(["True", "true", "1"])]
+        cand_loss = float(cand_failed["loss_r"].mean()) if len(cand_failed) else 0.0
+        base_loss = float(base_failed["loss_r"].mean()) if len(base_failed) else 0.0
+        cand_p05 = float(cand["return_r"].dropna().astype(float).quantile(0.05)) if len(cand["return_r"].dropna()) else np.nan
+        base_p05 = float(base_df["return_r"].dropna().astype(float).quantile(0.05)) if len(base_df["return_r"].dropna()) else np.nan
+        sample_status = "sufficient" if len(cand) >= min_rows else "insufficient"
+        pass_status = bool(sample_status == "sufficient" and cand_loss - base_loss <= 0 and (np.isfinite(cand_p05 - base_p05) and cand_p05 - base_p05 >= -0.03))
+        if sample_status == "sufficient":
+            sufficient += 1
+            all_pass = all_pass and pass_status
+        rows.append(
+            {
+                "risk_pct_quintile": label,
+                "risk_pct_quintile_edge_low": lo,
+                "risk_pct_quintile_edge_high": hi,
+                "eligible_probe_count": int(len(cand)),
+                "failed_seed_average_loss_r_diff_vs_no_fail_fast": cand_loss - base_loss,
+                "p05_return_r_diff_vs_no_fail_fast": cand_p05 - base_p05 if np.isfinite(cand_p05) and np.isfinite(base_p05) else np.nan,
+                "risk_pct_quintile_sample_status": sample_status,
+                "risk_pct_quintile_pass_status": "passed" if pass_status else ("insufficient" if sample_status == "insufficient" else "failed"),
+            }
+        )
+    status = "passed" if all_pass and sufficient >= int(config["risk_pct_quintile_cost_control"]["min_sufficient_validation_quintiles"]) else "failed"
+    out = pd.DataFrame(rows)
+    out["risk_pct_quintile_cost_control_status"] = status
+    return out
+
+
+def build_r01_1_gate_audit(
+    authority: pd.DataFrame,
+    density: pd.DataFrame,
+    recall: pd.DataFrame,
+    baseline_diff: pd.DataFrame,
+    delay_audit: pd.DataFrame,
+    recall_cost: pd.DataFrame,
+    risk_pct: pd.DataFrame,
+    config: dict[str, Any],
+) -> tuple[pd.DataFrame, str]:
+    rows: list[dict[str, Any]] = []
+
+    def add(gate_id: str, split: str, metric_name: str, value: Any, threshold: Any, comparison: str, status: bool, hard: bool = True, reason: str = "") -> None:
+        rows.append(
+            {
+                "gate_id": gate_id,
+                "split": split,
+                "metric_name": metric_name,
+                "metric_value": value,
+                "threshold": threshold,
+                "comparison": comparison,
+                "status": "passed" if status else "failed",
+                "is_hard_gate": bool(hard),
+                "failure_reason": "" if status else (reason or "gate_failed"),
+            }
+        )
+
+    formula = config["seed_rules"]["candidate_seed_formula_id"]
+    exact_formula = "money_ratio20_gt_1_0_and_money_ratio5_gt_2_0_and_rps5_gt_50_and_boll20_pct_b_gt_1_0_and_close_near_high10_gt_0"
+    add("authority_inputs_status", "all", "authority_inputs_status", "passed" if authority["status"].eq("passed").all() else "failed", "passed", "==", bool(authority["status"].eq("passed").all()))
+    add("raw_seed_formula_status", "all", "raw_seed_formula_id", formula, exact_formula, "==", formula == exact_formula)
+    add("emission_rule_status", "all", "throttle_window_trading_days", config["emission"]["throttle_window_trading_days"], 20, "==", int(config["emission"]["throttle_window_trading_days"]) == 20)
+    add("cooling_entry_rule_status", "all", "entry_family_id", config["cooling_entry"]["entry_family_id"], "cooling_observation_day_then_t2_open_entry", "==", config["cooling_entry"]["entry_family_id"] == "cooling_observation_day_then_t2_open_entry")
+    add("validation_threshold_selection_status", "validation", "validation_threshold_selection_status", "no_selection_from_validation", "no_selection_from_validation", "==", True)
+
+    for split in ["train", "validation"]:
+        ep2_day = _r01_1_density_metric(density, split, "ep2_detector", "day_rate")
+        ep2_ep = _r01_1_density_metric(density, split, "ep2_detector", "episode_rate")
+        day_cap = min(float(config["seed_density_caps"]["max_candidate_emitted_seed_day_rate"]), float(config["seed_density_caps"]["max_candidate_emitted_seed_day_rate_vs_ep2_multiple"]) * ep2_day)
+        probe_day_cap = min(float(config["seed_density_caps"]["max_candidate_probe_entry_day_rate"]), float(config["seed_density_caps"]["max_candidate_probe_entry_day_rate_vs_ep2_multiple"]) * ep2_day)
+        ep_cap = float(config["seed_density_caps"]["max_candidate_episode_rate_vs_ep2_multiple"]) * ep2_ep
+        emitted_day = _r01_1_density_metric(density, split, "emitted_seed", "day_rate")
+        emitted_ep = _r01_1_density_metric(density, split, "emitted_seed", "episode_rate")
+        probe_day = _r01_1_density_metric(density, split, "probe_entry", "day_rate")
+        probe_ep = _r01_1_density_metric(density, split, "probe_entry", "episode_rate")
+        add("candidate_emitted_seed_day_rate", split, "candidate_emitted_seed_day_rate", emitted_day, day_cap, "<=", bool(np.isfinite(emitted_day) and emitted_day <= day_cap))
+        add("candidate_probe_entry_day_rate", split, "candidate_probe_entry_day_rate", probe_day, probe_day_cap, "<=", bool(np.isfinite(probe_day) and probe_day <= probe_day_cap))
+        add("candidate_emitted_seed_episode_rate", split, "candidate_emitted_seed_episode_rate", emitted_ep, ep_cap, "<=", bool(np.isfinite(emitted_ep) and emitted_ep <= ep_cap))
+        add("candidate_probe_entry_episode_rate", split, "candidate_probe_entry_episode_rate", probe_ep, ep_cap, "<=", bool(np.isfinite(probe_ep) and probe_ep <= ep_cap))
+    val_unique = _r01_1_density_metric(density, "validation", "probe_entry", "unique_instrument_year_count")
+    add("validation_unique_instrument_years", "validation", "unique_instrument_year_count", val_unique, config["seed_density_caps"]["min_unique_instrument_years_validation"], ">=", bool(val_unique >= int(config["seed_density_caps"]["min_unique_instrument_years_validation"])))
+    day_ratio = _r01_1_density_metric(density, "validation", "probe_entry", "event_count_vs_ep2")
+    ep_ratio = _r01_1_density_metric(density, "validation", "probe_entry", "episode_count_vs_ep2")
+    add("validation_probe_entry_day_count_vs_ep2", "validation", "candidate_probe_entry_day_count_vs_ep2_ratio", day_ratio, 1.0, ">=", bool(day_ratio >= 1.0))
+    add("validation_probe_entry_episode_count_vs_ep2", "validation", "candidate_probe_entry_episode_count_vs_ep2_ratio", ep_ratio, 1.0, ">=", bool(ep_ratio >= 1.0))
+
+    val_recall_diff = _r01_1_recall_metric(recall, "validation", "cooling_qualified_probe_primary_recall", "recall_diff_vs_ep2_detector")
+    robust_recall_diff = _r01_1_recall_metric(recall, "robustness", "cooling_qualified_probe_primary_recall", "recall_diff_vs_ep2_detector")
+    add("cooling_qualified_probe_primary_recall_no_harm", "validation", "recall_diff_vs_ep2_detector", val_recall_diff, -0.05, ">=", bool(val_recall_diff >= -0.05))
+    add("robustness_cooling_qualified_probe_primary_recall_no_harm", "robustness", "recall_diff_vs_ep2_detector", robust_recall_diff, -0.10, ">=", bool(robust_recall_diff >= -0.10))
+    emitted_count = _r01_1_recall_metric(recall, "validation", "emitted_seed_primary_recall_pre_cooling", "captured_reference_count")
+    cooling_count = _r01_1_recall_metric(recall, "validation", "cooling_qualified_probe_primary_recall", "captured_reference_count")
+    cooling_loss = 1.0 - _safe_div(cooling_count, max(1.0, emitted_count), 0.0)
+    add("emitted_to_cooling_recall_loss_rate", "validation", "emitted_to_cooling_recall_loss_rate", cooling_loss, 0.15, "<=", bool(cooling_loss <= 0.15))
+    survived = _r01_1_recall_metric(recall, "validation", "fail_fast_survived_probe_primary_recall", "captured_reference_count")
+    ff_loss = 1.0 - _safe_div(survived, max(1.0, cooling_count), 0.0)
+    add("fail_fast_survived_big_winner_recall_loss", "validation", "fail_fast_survived_loss_rate", ff_loss, 0.15, "<=", bool(ff_loss <= 0.15))
+
+    add("validation_cost_vs_no_fail_fast", "validation", "failed_seed_average_loss_r_diff_vs_no_fail_fast", _diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_no_fail_fast_hold_h20", "failed_seed_average_loss_r"), 0, "<", bool(_diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_no_fail_fast_hold_h20", "failed_seed_average_loss_r") < 0))
+    add("validation_p05_vs_no_fail_fast", "validation", "p05_return_r_diff_vs_no_fail_fast", _diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_no_fail_fast_hold_h20", "p05_return_r"), -0.02, ">=", bool(_diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_no_fail_fast_hold_h20", "p05_return_r") >= -0.02))
+    risk_status = str(risk_pct["risk_pct_quintile_cost_control_status"].iloc[0]) if not risk_pct.empty else "failed"
+    add("risk_pct_quintile_cost_control_status", "validation", "risk_pct_quintile_cost_control_status", risk_status, "passed", "==", risk_status == "passed")
+    delay3 = delay_audit.loc[delay_audit["delay_days"].eq(1)] if not delay_audit.empty else pd.DataFrame()
+    delay3_status = "passed" if delay3.empty or delay3["matched_delay_reliability_status"].eq("passed").all() else "failed"
+    add("matched_delay_t3_reliability_status", "validation", "matched_delay_t3_reliability_status", delay3_status, "passed", "==", delay3_status == "passed")
+    add("total_effect_failed_seed_loss_vs_t1_all_emitted", "validation", "failed_seed_average_loss_r_diff_vs_t1_all_emitted", _diff_metric(baseline_diff, "validation", "same_emitted_seed_t1_open_same_fail_fast_h20_all_emitted", "failed_seed_average_loss_r"), 0, "<=", bool(_diff_metric(baseline_diff, "validation", "same_emitted_seed_t1_open_same_fail_fast_h20_all_emitted", "failed_seed_average_loss_r") <= 0))
+    add("entry_timing_t3_mean_no_harm", "validation", "mean_return_r_diff_vs_t3_same_fail_fast", _diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_t3_open_same_fail_fast_h20", "mean_return_r"), -0.0055, ">=", bool(_diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_t3_open_same_fail_fast_h20", "mean_return_r") >= -0.0055))
+    add("entry_timing_t3_p05_no_harm", "validation", "p05_return_r_diff_vs_t3_same_fail_fast", _diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_t3_open_same_fail_fast_h20", "p05_return_r"), -0.02, ">=", bool(_diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_t3_open_same_fail_fast_h20", "p05_return_r") >= -0.02))
+
+    for split in ["validation", "robustness"]:
+        tr = recall_cost.loc[recall_cost["split"].eq(split)]
+        if tr.empty:
+            add(f"{split}_recall_cost_tradeoff", split, "recall_cost_status", "missing", "passed", "==", False)
+            continue
+        row = tr.iloc[0]
+        add(f"{split}_net_added_capture_vs_ep2", split, "net_added_capture_vs_ep2_count", row["net_added_capture_vs_ep2_count"], 0, ">", bool(row["net_added_capture_vs_ep2_count"] > 0))
+        add(f"{split}_incremental_loss_bound", split, "incremental_loss_r_per_added_big_winner_vs_ep2", row["incremental_loss_r_per_added_big_winner_vs_ep2"], row["max_allowed_incremental_loss_r_per_added_big_winner_vs_ep2"], "<=", bool(row["incremental_loss_r_per_added_big_winner_vs_ep2"] <= row["max_allowed_incremental_loss_r_per_added_big_winner_vs_ep2"]))
+        add(f"{split}_incremental_exposure_bound", split, "incremental_exposure_days_per_added_big_winner_vs_ep2", row["incremental_exposure_days_per_added_big_winner_vs_ep2"], row["max_allowed_incremental_exposure_days_per_added_big_winner_vs_ep2"], "<=", bool(row["incremental_exposure_days_per_added_big_winner_vs_ep2"] <= row["max_allowed_incremental_exposure_days_per_added_big_winner_vs_ep2"]))
+
+    gate = pd.DataFrame(rows)
+    hard_pass = bool(gate.loc[gate["is_hard_gate"].astype(bool), "status"].eq("passed").all())
+    validation_trade = recall_cost.loc[recall_cost["split"].eq("validation")]
+    robustness_trade = recall_cost.loc[recall_cost["split"].eq("robustness")]
+    validation_high_recall = bool(hard_pass and day_ratio >= 1.0 and ep_ratio >= 1.0 and not validation_trade.empty and validation_trade.iloc[0]["net_added_capture_vs_ep2_count"] > 0)
+    robustness_ok = bool(robust_recall_diff >= -0.10 and not robustness_trade.empty and robustness_trade.iloc[0]["net_added_capture_vs_ep2_count"] > 0)
+    archive = bool(
+        not validation_high_recall
+        and val_recall_diff >= -0.15
+        and _diff_metric(baseline_diff, "validation", "same_cooling_qualified_seed_no_fail_fast_hold_h20", "failed_seed_average_loss_r") < 0
+        and _diff_metric(baseline_diff, "validation", "same_emitted_seed_t1_open_same_fail_fast_h20_all_emitted", "failed_seed_average_loss_r") <= 0
+    )
+    if validation_high_recall and robustness_ok:
+        decision = "go_to_r02"
+    elif validation_high_recall:
+        decision = "go_to_r02_with_robustness_warning"
+    elif archive:
+        decision = "archive_cost_control_sleeve_no_r02"
+    else:
+        decision = "stop_ep4_r01_1_path"
+    return gate, decision
+
+
+def build_r01_1_final_report(
+    decision: str,
+    reference_audit: pd.DataFrame,
+    density: pd.DataFrame,
+    raw_waterfall: pd.DataFrame,
+    cooling_waterfall: pd.DataFrame,
+    recall: pd.DataFrame,
+    entry_after_reference: pd.DataFrame,
+    baseline_diff: pd.DataFrame,
+    recall_cost: pd.DataFrame,
+    gate: pd.DataFrame,
+) -> str:
+    failed = gate.loc[gate["status"].eq("failed")]
+    sections = [
+        "# EP4 R01.1 Emission-Throttled Cooling Probe Report",
+        "",
+        f"- Final decision: `{decision}`",
+        f"- Generated at: `{datetime.now(timezone.utc).isoformat()}`",
+        "- Phase boundary: raw R01 V2 seed only; deterministic 20D emission throttle; T+1 cooling observation; T+2 0.25R probe; no model training, add, sizing, or dynamic exit.",
+        "",
+        "## R01 V2 Failure Inheritance",
+        "R01 V2 stopped because seed-day density and validation matched-delay timing failed; R01.1 only tests deterministic emission throttling and cooling entry as the repair.",
+        "",
+        "## Raw Seed Formula",
+        "`money_ratio20 > 1.0 AND money_ratio5 > 2.0 AND rps5 > 0.50 AND boll20_pct_b > 1.0 AND close_near_high10 >= 1.0`.",
+        "",
+        "## Emission Throttle Definition",
+        "Same instrument emits the first raw seed, suppresses T+1 through T+20 raw seeds, and can emit again only from T+21. The state is evaluated over full history and does not reset at split boundaries.",
+        raw_waterfall.to_markdown(index=False),
+        "",
+        "## Cooling Entry Definition",
+        "After emitted seed T, observe T+1 close. Cancel if T+1 close breaks seed-day low, breakout reference, or pivot low. Otherwise attempt T+2 open.",
+        cooling_waterfall.to_markdown(index=False),
+        "",
+        "## Reference Windows",
+        reference_audit.to_markdown(index=False),
+        "",
+        "## Recall Bridge",
+        recall.to_markdown(index=False),
+        "",
+        "## Entry-After-Reference Audit",
+        "Primary recall is seed-start recall. Rows whose T+2 entry occurs after the reference date are reported here and must not be described as pre-reference executable capture.",
+        entry_after_reference.to_markdown(index=False),
+        "",
+        "## Density and EP2 Comparison",
+        density.to_markdown(index=False),
+        "",
+        "## Entry Timing Repair Evidence",
+        baseline_diff.loc[baseline_diff["baseline_id"].astype(str).str.contains("t1_open|t3_open|same_emitted", regex=True, na=False)].to_markdown(index=False),
+        "",
+        "## Recall-Cost Tradeoff",
+        recall_cost.to_markdown(index=False),
+        "",
+        "## Matched-Delay and Matched-Random Evidence",
+        "Matched-delay T+3 is a hard timing reliability check. Matched-random remains report-only and cannot create pass or fail.",
+        "",
+        "## VCP and Continuous Confirmation Audit",
+        "VCP and continuous confirmation are report-only diagnostics in this run; they do not alter the main seed, entry, gates, or decision.",
+        "",
+        "## Gate Evidence",
+        gate.to_markdown(index=False),
+        "",
+        "## Failed Gates",
+        failed.to_markdown(index=False) if not failed.empty else "No failed gates.",
+        "",
+        "## R02 Handoff",
+        "R02 may only use survived cooling-qualified probe episodes if the decision is `go_to_r02` or `go_to_r02_with_robustness_warning`. Otherwise R02 must not start without a new requirement.",
+        "",
+        "## R02 Non-Assumptions",
+        "This report does not prove standalone profitability, optimal fail-fast, VCP hard-gate value, confirmation hard-gate value, add eligibility, ATR/state stops, or portfolio risk budgeting.",
+    ]
+    return "\n".join(sections) + "\n"
+
+
+def run_r01_1(config_path: str | Path = R01_1_DEFAULT_CONFIG) -> dict[str, Any]:
+    config, paths, ep2_config = load_config(config_path)
+    authority = assert_authority_inputs_r01_1(config)
+    panel, calendar = load_provider_spine(config, ep2_config)
+    stock = prepare_stock_day_panel(config, ep2_config, panel, calendar)
+    bucket_freeze, stock = build_bucket_freeze(stock, config)
+    data_max = pd.to_datetime(stock["date"]).max()
+    effective_windows, data_max_minus = split_effective_windows(config, calendar, data_max)
+    reference = build_big_winner_reference(stock, config, calendar, effective_windows)
+    bridge_reference = build_ep2_bridge_reference(stock, config, calendar)
+
+    raw_events = build_candidate_seed_events(stock, config)
+    raw_panel = build_r01_1_raw_seed_panel(raw_events, stock, config, calendar, reference, bridge_reference, effective_windows)
+    emitted_panel = apply_r01_1_emission_throttle(raw_panel, config, calendar)
+    cooling_panel = build_r01_1_cooling_entry_panel(emitted_panel, stock, config, calendar)
+    candidate_episodes = build_r01_1_seed_episodes(cooling_panel, config, calendar)
+
+    ep2_events = build_ep2_seed_events(stock, config)
+    ep2_episodes = build_seed_episodes(ep2_events, stock, config, calendar, reference, bridge_reference, effective_windows)
+    episodes = pd.concat([candidate_episodes, ep2_episodes], ignore_index=True)
+    episodes_extra = _r01_1_episode_extra(cooling_panel, episodes)
+
+    label_a = label_a_audit(episodes_extra, stock, calendar)
+    episodes_for_sim = apply_label_flags(enrich_episode_for_sim(episodes_extra), label_a)
+    candidate_sim_input = episodes_for_sim.loc[(episodes_for_sim["seed_family_id"].eq(CANDIDATE_SEED_ID)) & (episodes_for_sim["executable_status"].eq("passed"))].copy()
+    probe = simulate_episode_rows(candidate_sim_input, config, ep2_config, stock, calendar, fail_fast=True, id_prefix="r01_1_candidate")
+    probe = enrich_r01_1_probe(probe, episodes_extra, reference)
+
+    baseline_inputs = build_r01_1_baseline_inputs(episodes_for_sim, stock, config, calendar, reference)
+    baseline_frames: list[pd.DataFrame] = []
+    for baseline_id, rows in baseline_inputs.items():
+        if baseline_id.startswith("matched_random"):
+            baseline_frames.append(simulate_random_baseline_fast(rows, config, ep2_config, stock, calendar, baseline_id))
+        elif baseline_id == "ep2_detector_probe_with_simple_stop_bridge":
+            baseline_frames.append(
+                simulate_episode_rows(
+                    rows,
+                    config,
+                    ep2_config,
+                    stock,
+                    calendar,
+                    fail_fast=True,
+                    id_prefix=baseline_id,
+                    baseline_id=baseline_id,
+                    simple_stop_pct=float(ep2_config["schedule_defaults"]["canonical_fast_fail_drawdown"]),
+                    natural_h_override=int(ep2_config["schedule_defaults"]["primary_H"]),
+                )
+            )
+        else:
+            baseline_frames.append(simulate_episode_rows(rows, config, ep2_config, stock, calendar, fail_fast="no_fail_fast" not in baseline_id, id_prefix=baseline_id, baseline_id=baseline_id))
+    baseline = pd.concat(baseline_frames, ignore_index=True) if baseline_frames else pd.DataFrame(columns=BASELINE_SIM_COLUMNS)
+
+    density = build_r01_1_density_audit(stock, raw_panel, emitted_panel, cooling_panel, candidate_episodes, ep2_episodes, config)
+    raw_waterfall, cooling_waterfall = build_r01_1_waterfalls(raw_panel, emitted_panel, cooling_panel)
+    recall = build_r01_1_recall_bridge(reference, raw_panel, emitted_panel, cooling_panel, candidate_episodes, probe, ep2_episodes)
+    recall_cost = build_recall_cost_tradeoff(episodes, probe, baseline, config)
+    baseline_diff = build_baseline_diff_audit(probe, baseline)
+    random_health = build_random_health_audit(baseline, config)
+    delay_audit = build_delay_ineligible_audit(baseline)
+    r_unit = build_r_unit_distribution_audit(probe, baseline)
+    no_ff = baseline.loc[baseline["baseline_id"].eq("same_cooling_qualified_seed_no_fail_fast_hold_h20")]
+    ff_path, ff_error = build_fail_fast_audits(probe, no_ff)
+    risk_pct = build_r01_1_risk_pct_quintile_cost_control(probe, baseline, config)
+    gate, decision = build_r01_1_gate_audit(authority, density, recall, baseline_diff, delay_audit, recall_cost, risk_pct, config)
+    counterfactual = build_counterfactual(decision, probe, pd.DataFrame(columns=["split", "cap_violation_flag"]))
+    reference_audit = build_big_winner_audit(reference, effective_windows, data_max, data_max_minus)
+    entry_after_reference = build_r01_1_entry_after_reference_audit(probe)
+    report = build_r01_1_final_report(decision, reference_audit, density, raw_waterfall, cooling_waterfall, recall, entry_after_reference, baseline_diff, recall_cost, gate)
+
+    for col in ["failed_seed_primary", "primary_metric_eligible_seed_episode", "failed_seed_label_a_h10_u1_5", "failed_seed_label_a_h20_u2_0", "failed_seed_h20_negative", "failed_seed_fail_fast_triggered", "terminal_blocked_exit", "captures_primary_big_winner", "entry_after_reference"]:
+        if col in probe.columns:
+            probe[col] = probe[col].map(lambda value: pd.NA if pd.isna(value) else bool(value)).astype("boolean")
+    for col in ["baseline_failed_seed_primary", "primary_metric_eligible_baseline_event", "captures_primary_big_winner", "random_excluded_candidate_seed_day", "random_capacity_shortfall"]:
+        if col in baseline.columns:
+            baseline[col] = baseline[col].map(lambda value: pd.NA if pd.isna(value) else bool(value)).astype("boolean")
+
+    write_parquet(reference, paths.cache_dir / "r01_1_big_winner_reference_panel.parquet")
+    write_parquet(raw_panel, paths.cache_dir / "r01_1_raw_seed_panel.parquet")
+    write_parquet(emitted_panel, paths.cache_dir / "r01_1_emitted_seed_panel.parquet")
+    write_parquet(cooling_panel, paths.cache_dir / "r01_1_cooling_entry_panel.parquet")
+    write_parquet(candidate_episodes, paths.cache_dir / "r01_1_seed_episode_panel.parquet")
+    write_parquet(probe, paths.cache_dir / "r01_1_probe_simulation_panel.parquet")
+    write_parquet(baseline, paths.cache_dir / "r01_1_baseline_simulation_panel.parquet")
+
+    write_csv(gate, paths.reports_dir / "r01_1_gate_audit.csv")
+    write_csv(density, paths.reports_dir / "r01_1_density_audit.csv")
+    write_csv(raw_waterfall, paths.reports_dir / "r01_1_raw_to_emitted_waterfall.csv")
+    write_csv(cooling_waterfall, paths.reports_dir / "r01_1_cooling_entry_waterfall.csv")
+    write_csv(recall, paths.reports_dir / "r01_1_recall_bridge.csv")
+    write_csv(entry_after_reference, paths.reports_dir / "r01_1_entry_after_reference_audit.csv")
+    write_csv(recall_cost, paths.reports_dir / "r01_1_recall_cost_tradeoff.csv")
+    write_csv(ff_path, paths.reports_dir / "r01_1_fail_fast_attribution.csv")
+    write_csv(ff_error, paths.reports_dir / "r01_1_false_reject_missed_failure_audit.csv")
+    write_csv(baseline_diff.loc[baseline_diff["baseline_id"].astype(str).str.contains("t1_open|t3_open|same_emitted", regex=True, na=False)], paths.reports_dir / "r01_1_entry_timing_audit.csv")
+    write_csv(r_unit, paths.reports_dir / "r01_1_r_unit_distribution_audit.csv")
+    write_csv(risk_pct, paths.reports_dir / "r01_1_risk_pct_quintile_cost_control.csv")
+    write_csv(baseline.groupby(["split", "baseline_id", "eligibility_status"], dropna=False).size().reset_index(name="row_count"), paths.reports_dir / "r01_1_baseline_eligibility_audit.csv")
+    write_csv(pd.DataFrame({"audit_name": ["vcp"], "audit_only_status": ["report_only_not_decision_changing"]}), paths.reports_dir / "r01_1_vcp_audit.csv")
+    write_csv(pd.DataFrame({"audit_name": ["continuous_confirmation"], "audit_only_status": ["report_only_not_decision_changing"]}), paths.reports_dir / "r01_1_confirmation_audit.csv")
+    write_csv(delay_audit, paths.reports_dir / "r01_1_matched_delay_reliability_audit.csv")
+    write_csv(random_health, paths.reports_dir / "r01_1_matched_random_reliability_audit.csv")
+    write_csv(pd.DataFrame({"final_decision": [decision], "archive_allowed": [decision == "archive_cost_control_sleeve_no_r02"]}), paths.reports_dir / "r01_1_archive_decision_audit.csv")
+    write_csv(counterfactual, paths.reports_dir / "r01_1_counterfactual_failure_inheritance.csv")
+    write_csv(bucket_freeze, paths.reports_dir / "r01_1_matched_control_bucket_freeze.csv")
+    write_csv(authority, paths.reports_dir / "r01_1_upstream_authority.csv")
+    (paths.reports_dir / "r01_1_final_report.md").write_text(report, encoding="utf-8")
+
+    artifact_hashes = {name: file_hash(paths.cache_dir / name) for name in R01_1_CACHE}
+    artifact_hashes |= {name: file_hash(paths.reports_dir / name) for name in R01_1_REPORTS}
+    manifest = {
+        "phase": config["phase"],
+        "requirement_id": config.get("requirement_id", R01_1_REQUIREMENT_ID),
+        "schema_version": R01_1_SCHEMA_VERSION,
+        "config_path": relpath(paths.config_path),
+        "config_hash": file_hash(paths.config_path),
+        "output_root": relpath(paths.output_root),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "final_decision": decision,
+        "raw_seed_formula_id": config["seed_rules"]["candidate_seed_formula_id"],
+        "emission_rule_id": config["emission"]["throttle_policy"],
+        "cooling_entry_rule_id": config["cooling_entry"]["entry_family_id"],
+        "fail_fast_family_id": config["fail_fast"]["family_id"],
+        "cost_model_source": config["execution"]["cost_model_source"],
+        "selection_policy_status": "no_validation_or_robustness_threshold_selection",
+        "configured_split_windows": {split: [_date_str(start), _date_str(end)] for split, (start, end) in split_bounds(config).items()},
+        "effective_reference_windows": {split: [_date_str(start), _date_str(end)] for split, (start, end) in effective_windows.items()},
+        "data_max_date": _date_str(data_max),
+        "data_max_date_minus_forward_horizon": _date_str(data_max_minus),
+        "primary_big_winner_reference_count": int(reference.shape[0]),
+        "raw_seed_count": int(raw_panel.shape[0]),
+        "emitted_seed_count": int(emitted_panel["emitted_seed_flag"].astype(bool).sum()) if not emitted_panel.empty else 0,
+        "cooling_qualified_probe_count": int(cooling_panel["cooling_qualified_probe"].astype(bool).sum()) if not cooling_panel.empty else 0,
+        "gate_count": int(gate.shape[0]),
+        "failed_gate_count": int(gate["status"].eq("failed").sum()),
+        "artifact_hashes": artifact_hashes,
+    }
+    write_json(manifest, paths.manifests_dir / "r01_1_run_manifest.json")
+    return {
+        "output_root": relpath(paths.output_root),
+        "final_decision": decision,
+        "gate_count": int(gate.shape[0]),
+        "failed_gate_count": int(gate["status"].eq("failed").sum()),
+        "primary_big_winner_reference_count": int(reference.shape[0]),
+        "raw_seed_count": int(raw_panel.shape[0]),
+        "emitted_seed_count": int(manifest["emitted_seed_count"]),
+        "cooling_qualified_probe_count": int(manifest["cooling_qualified_probe_count"]),
+    }
+
+
 def run_r01(config_path: str | Path = DEFAULT_CONFIG) -> dict[str, Any]:
     config, paths, ep2_config = load_config(config_path)
     authority = assert_authority_inputs(config)
@@ -2679,6 +3707,106 @@ def validate_r01(config_path: str | Path = DEFAULT_CONFIG, fail_on_hard_gates: b
     report = (paths.reports_dir / "r01_final_report.md").read_text(encoding="utf-8")
     required_report_tokens = ["Final decision", "Recall-Cost Tradeoff", "Matched-Random Reliability", "R02 Handoff"]
     for token in required_report_tokens:
+        if token not in report:
+            failures.append(f"final report missing section token: {token}")
+
+    if failures:
+        raise RuntimeError("; ".join(failures))
+    return {
+        "validation_status": "passed",
+        "output_root": relpath(paths.output_root),
+        "final_decision": manifest.get("final_decision"),
+        "gate_count": int(len(gate)),
+        "failed_gate_count": int(gate["status"].eq("failed").sum()),
+    }
+
+
+def validate_r01_1(config_path: str | Path = R01_1_DEFAULT_CONFIG, fail_on_hard_gates: bool = True) -> dict[str, Any]:
+    config, paths, _ = load_config(config_path)
+    failures: list[str] = []
+    required_paths = [paths.cache_dir / name for name in R01_1_CACHE]
+    required_paths += [paths.reports_dir / name for name in R01_1_REPORTS]
+    required_paths += [paths.manifests_dir / name for name in R01_1_MANIFESTS]
+    missing = [relpath(path) for path in required_paths if not path.exists()]
+    if missing:
+        failures.append("missing required R01.1 artifacts: " + "; ".join(missing))
+    if failures:
+        raise RuntimeError("; ".join(failures))
+
+    manifest = read_json(paths.manifests_dir / "r01_1_run_manifest.json")
+    if manifest.get("phase") != config["phase"]:
+        failures.append("manifest phase mismatch")
+    if manifest.get("requirement_id") != config.get("requirement_id", R01_1_REQUIREMENT_ID):
+        failures.append("manifest requirement_id mismatch")
+    if manifest.get("final_decision") not in R01_1_ALLOWED_DECISIONS:
+        failures.append("manifest final decision is not an allowed R01.1 decision")
+    exact_formula = "money_ratio20_gt_1_0_and_money_ratio5_gt_2_0_and_rps5_gt_50_and_boll20_pct_b_gt_1_0_and_close_near_high10_gt_0"
+    if manifest.get("raw_seed_formula_id") != exact_formula:
+        failures.append("raw seed formula differs from exact R01 V2 five-condition formula")
+    if int(config["emission"]["throttle_window_trading_days"]) != 20:
+        failures.append("emission throttle is not exactly 20 trading days")
+    if config["cooling_entry"]["entry_family_id"] != "cooling_observation_day_then_t2_open_entry":
+        failures.append("cooling entry is not T+1 observe / T+2 open")
+
+    raw = pd.read_parquet(paths.cache_dir / "r01_1_raw_seed_panel.parquet")
+    emitted = pd.read_parquet(paths.cache_dir / "r01_1_emitted_seed_panel.parquet")
+    cooling = pd.read_parquet(paths.cache_dir / "r01_1_cooling_entry_panel.parquet")
+    episodes = pd.read_parquet(paths.cache_dir / "r01_1_seed_episode_panel.parquet")
+    probe = pd.read_parquet(paths.cache_dir / "r01_1_probe_simulation_panel.parquet")
+    baseline = pd.read_parquet(paths.cache_dir / "r01_1_baseline_simulation_panel.parquet")
+    required_raw_cols = ["instrument", "raw_signal_date", "raw_seed_flag", "money_ratio20", "money_ratio5", "rps5", "boll20_pct_b", "close_near_high10", "split"]
+    required_emitted_cols = ["instrument", "raw_signal_date", "emitted_signal_date", "emitted_seed_flag", "emission_suppressed", "suppressed_by_emitted_seed_id", "split_boundary_suppressed"]
+    required_cooling_cols = ["instrument", "emitted_signal_date", "cooling_observation_date", "entry_date", "cooling_cancelled", "cooling_cancel_reason", "entry_buy_executable", "seed_day_low", "breakout_reference", "pivot_low_10d", "split"]
+    required_probe_cols = ["simulation_id", "seed_episode_id", "emitted_seed_id", "emitted_signal_date", "cooling_observation_date", "entry_date", "entry_price", "return_r", "loss_r", "primary_metric_eligible_seed_episode", "captures_primary_big_winner", "captured_reference_event_id", "entry_after_reference", "entry_after_reference_days"]
+    for name, df, cols in [
+        ("r01_1_raw_seed_panel.parquet", raw, required_raw_cols),
+        ("r01_1_emitted_seed_panel.parquet", emitted, required_emitted_cols),
+        ("r01_1_cooling_entry_panel.parquet", cooling, required_cooling_cols),
+        ("r01_1_probe_simulation_panel.parquet", probe, required_probe_cols),
+    ]:
+        miss = [col for col in cols if col not in df.columns]
+        if miss:
+            failures.append(f"{name} missing columns: {miss}")
+
+    emitted_rows = emitted.loc[emitted["emitted_seed_flag"].astype(bool)].copy()
+    if not emitted_rows.empty:
+        calendar_path = topic_path(config["data_sources"]["trading_calendar_path"])
+        calendar = pd.to_datetime(pd.read_csv(calendar_path, header=None)[0]).dt.normalize()
+        pos = {pd.Timestamp(dt): idx for idx, dt in enumerate(calendar)}
+        for instrument, group in emitted_rows.sort_values(["instrument", "emitted_signal_date"]).groupby("instrument"):
+            positions = [pos.get(pd.Timestamp(dt)) for dt in pd.to_datetime(group["emitted_signal_date"])]
+            positions = [p for p in positions if p is not None]
+            if any((b - a) <= 20 for a, b in zip(positions, positions[1:])):
+                failures.append(f"emission throttle violated for {instrument}")
+                break
+    if not episodes.empty and not episodes["seed_event_count"].eq(1).all():
+        failures.append("R01.1 candidate episodes merged multiple emitted seeds")
+    if int(episodes.shape[0]) != int(emitted_rows.shape[0]):
+        failures.append("candidate episode count does not equal emitted seed count")
+    if "cooling_cancelled" not in cooling.columns:
+        failures.append("cooling cancelled rows/field are missing")
+
+    observed_baselines = set(baseline["baseline_id"].dropna().astype(str))
+    missing_baselines = sorted(set(config["baselines"]) - observed_baselines)
+    if missing_baselines:
+        failures.append(f"missing required R01.1 baseline ids: {missing_baselines}")
+    if "same_emitted_seed_t1_open_same_fail_fast_h20_all_emitted" not in observed_baselines:
+        failures.append("missing total-effect emitted-sleeve T+1 bridge baseline")
+    random_rows = baseline.loc[baseline["matched_control_type"].eq("matched_random")]
+    if not random_rows.empty:
+        if not random_rows["random_sampling_replacement_policy"].eq("without_replacement_within_replicate").all():
+            failures.append("matched-random replacement policy is not no-replacement")
+        for col in ["random_signal_date", "random_capacity_shortfall", "random_baseline_reliability_status", "primary_metric_eligible_baseline_event", "baseline_failed_seed_primary"]:
+            if col not in random_rows.columns:
+                failures.append(f"matched-random missing {col}")
+
+    gate = pd.read_csv(paths.reports_dir / "r01_1_gate_audit.csv")
+    if fail_on_hard_gates:
+        failed_hard = gate.loc[gate["is_hard_gate"].astype(bool) & gate["status"].eq("failed")]
+        if not failed_hard.empty:
+            failures.append("hard gates failed: " + "; ".join(failed_hard["gate_id"].astype(str).head(20).tolist()))
+    report = (paths.reports_dir / "r01_1_final_report.md").read_text(encoding="utf-8")
+    for token in ["Final decision", "Recall-Cost Tradeoff", "Entry-After-Reference Audit", "R02 Handoff"]:
         if token not in report:
             failures.append(f"final report missing section token: {token}")
 

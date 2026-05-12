@@ -1,0 +1,81 @@
+{
+  "phase": "ep4_r01_1_emission_throttled_cooling_entry_probe_fail_fast",
+  "requirement_id": "ep4_r01_1_emission_throttled_cooling_entry_probe_fail_fast",
+  "schema_version": "ep4_r01_1_emission_throttled_cooling_probe_v1",
+  "config_path": "ep4/configs/r01_1_emission_throttled_cooling_entry_probe_fail_fast.yaml",
+  "config_hash": "3e29fdbca3d8152512312a777b93a7eed69a8504d97fc6a27616de38c844ef39",
+  "output_root": "ep4/outputs/r01_1_emission_throttled_cooling_entry_probe_fail_fast",
+  "generated_at": "2026-05-12T01:37:39.566164+00:00",
+  "final_decision": "archive_cost_control_sleeve_no_r02",
+  "raw_seed_formula_id": "money_ratio20_gt_1_0_and_money_ratio5_gt_2_0_and_rps5_gt_50_and_boll20_pct_b_gt_1_0_and_close_near_high10_gt_0",
+  "emission_rule_id": "first_raw_seed_then_suppress_same_instrument_for_20_trading_days",
+  "cooling_entry_rule_id": "cooling_observation_day_then_t2_open_entry",
+  "fail_fast_family_id": "deterministic_structure_fail_fast_v0_entry_relative",
+  "cost_model_source": "ep2/engineering_baseline/config.yaml",
+  "selection_policy_status": "no_validation_or_robustness_threshold_selection",
+  "configured_split_windows": {
+    "train": [
+      "2017-07-04",
+      "2021-12-31"
+    ],
+    "validation": [
+      "2022-01-01",
+      "2023-12-31"
+    ],
+    "robustness": [
+      "2024-01-01",
+      "2025-12-31"
+    ]
+  },
+  "effective_reference_windows": {
+    "train": [
+      "2017-07-04",
+      "2021-12-31"
+    ],
+    "validation": [
+      "2022-01-01",
+      "2023-12-31"
+    ],
+    "robustness": [
+      "2024-01-01",
+      "2025-10-31"
+    ]
+  },
+  "data_max_date": "2026-04-30",
+  "data_max_date_minus_forward_horizon": "2025-10-31",
+  "primary_big_winner_reference_count": 845,
+  "raw_seed_count": 19266,
+  "emitted_seed_count": 4423,
+  "cooling_qualified_probe_count": 2865,
+  "gate_count": 33,
+  "failed_gate_count": 5,
+  "artifact_hashes": {
+    "r01_1_big_winner_reference_panel.parquet": "7b1e1be89b24dbd4c73305097c5095e1c97adceaac2c34a64debc2efa9308132",
+    "r01_1_raw_seed_panel.parquet": "c4b924b0d1df52e720efa8aa15e0befff1977e6b497bc577369791770692fe97",
+    "r01_1_emitted_seed_panel.parquet": "a4c32a1ca28d238f582e146b01cd25c93710af2845a78d6ae7a670ad19143bc9",
+    "r01_1_cooling_entry_panel.parquet": "30725a2662d1706c29b0f9718a90b134a498c983eb2c2da8cbc16d0942fa2516",
+    "r01_1_seed_episode_panel.parquet": "6ce692b5e2743c03de2066b9aa641e2a1c89666d9033818217f42d75b9a6a0d3",
+    "r01_1_probe_simulation_panel.parquet": "f0b3a9de616757b67ea717ecaee603402a05807f1aac561f7d9c5dc059e8d2c1",
+    "r01_1_baseline_simulation_panel.parquet": "ee53d4a1eb2a14888195da3272b893d56d7daf5db27316a822699352c160bc40",
+    "r01_1_final_report.md": "d02f41317718cfc41df4f79c70a4cd97e35aadc111defc960bd8c5f6ee22ad6e",
+    "r01_1_gate_audit.csv": "4cc8306aed12b654787f1683c823a09af725affe1d904f72903bc22d2bef36d0",
+    "r01_1_density_audit.csv": "200468a67ee6074a8a33456d42fdfc68139944f6de5650044890e1be8fbfa527",
+    "r01_1_raw_to_emitted_waterfall.csv": "d500fb3d0ab4cedd5b9a37d84998b87bf6ec595db44405f8c20b2ba64b3b3317",
+    "r01_1_cooling_entry_waterfall.csv": "1f66fe0efc21def64b31cb272c1631d2861403789ad1b0693992a3b28e72bb28",
+    "r01_1_recall_bridge.csv": "a582fd8a4e2b3225940d0b58d674aba2a829a6bc995d67c9ec43118068f40442",
+    "r01_1_entry_after_reference_audit.csv": "c09513369c692adca7e5f9d93f865ae58ee4a17857dfb6e68ef0975df80d1924",
+    "r01_1_recall_cost_tradeoff.csv": "ed39fff95403bf19b604bcf2ee3e9a3c4324cf1fdbcbf5adec5f68a71be84829",
+    "r01_1_fail_fast_attribution.csv": "c4fc095b832ccac686df18bfa6feed643f943dfe8054971a19697f4425772965",
+    "r01_1_false_reject_missed_failure_audit.csv": "c862b96aafe8665a2433137f5d453f0dc4361c6df3fbd46fc0353a4187203f9f",
+    "r01_1_entry_timing_audit.csv": "87823479b114d29321013094f30a45313025937abb3588121fc92405d7b77056",
+    "r01_1_r_unit_distribution_audit.csv": "9998b652a75c27bb4b977ff40d8545cd82e785a7879f62046270505e568c0816",
+    "r01_1_risk_pct_quintile_cost_control.csv": "e95d325b5f0954189cf4d60c5c253474b333e6ed0575c643835878183201d8d8",
+    "r01_1_baseline_eligibility_audit.csv": "ff7190cb260778473396b11eccdb175c99b2376b8d5b6617439f09364de71205",
+    "r01_1_vcp_audit.csv": "3e539e56a7974e4bd63076837e04c08f8cef9f603b4a827d80e9b0273eb2367f",
+    "r01_1_confirmation_audit.csv": "e86102efa6d59a0a9a0e698f22989e1adc5bfa06af176bf2ac8143be0b1d7105",
+    "r01_1_matched_delay_reliability_audit.csv": "88ae0b1108930d1b9c8a713267f81c53fbfb8cc6ea6fa5938b7ff8deda27bd69",
+    "r01_1_matched_random_reliability_audit.csv": "1c452da19f54cf058df9ba1cb7afa36fe776648fbebfc534a3478291c0b78a85",
+    "r01_1_archive_decision_audit.csv": "a633815b4da23ce4776a678cf21c0033e0ca2b186b9280a63c3b8e71778ba2f2",
+    "r01_1_counterfactual_failure_inheritance.csv": "d35e85a9967f144966bc47bd5738ec7b2936fdad01a58cbc3cafe3695bb5965c"
+  }
+}
