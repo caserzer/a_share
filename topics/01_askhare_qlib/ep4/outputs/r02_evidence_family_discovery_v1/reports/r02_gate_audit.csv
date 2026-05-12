@@ -1,0 +1,8 @@
+gate_id,actual,expected,operator,status,failure_class
+min_3_non_baseline_families,0,3,>=,failed,research_gate
+validation_primary_lr_gt_1,False,True,==,failed,research_gate
+validation_at_least_2_ev_non_negative,0,2,>=,failed,research_gate
+robustness_lr_ge_1,False,True,==,failed,research_gate
+robustness_ev_ge_minus_005,False,True,==,failed,research_gate
+no_h20_positive_h60_reverse,True,True,==,passed,research_gate
+validation_execution_feasible,False,True,==,failed,research_gate

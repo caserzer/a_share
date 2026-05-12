@@ -1,0 +1,181 @@
+phase: ep4_r02_evidence_family_discovery_v1
+requirement_path: ep4/requirement_02_evidence_family_discovery_v1.md
+output_root: ep4/outputs/r02_evidence_family_discovery_v1
+
+upstream_ep2:
+  manifest: ep2/engineering_baseline/outputs/manifests/ep2_engineering_baseline_manifest.json
+  config: ep2/engineering_baseline/config.yaml
+  launch_pool: ep2/engineering_baseline/outputs/cache/ep2_launch_observation_pool.parquet
+  episode_dictionary: ep2/engineering_baseline/outputs/reports/ep2_launch_episode_dictionary.csv
+  label_freeze_candidate: ep2/engineering_baseline/outputs/reports/ep2_label_freeze_candidate.csv
+  baseline_freeze_audit: ep2/outputs/requirement_01_label_and_baseline_freeze/reports/requirement_01_baseline_freeze_audit.csv
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+labels:
+  primary_selection_label_id: big_winner_forward
+  horizons:
+    continuation_h20: 20
+    continuation_h60: 60
+    big_winner_forward: 120
+    failed_seed_forward: 10
+    executable_entry_available: 1
+
+execution:
+  cost_model_source: ep2/engineering_baseline/config.yaml
+  min_initial_risk_pct: 0.02
+  max_initial_risk_pct: 0.12
+  terminal_horizon_trading_days: 20
+  fail_fast_window_trading_days: 10
+  fail_fast_drawdown_pct: 0.06
+
+runtime:
+  default_n_jobs: 12
+  max_n_jobs: 12
+  parallel_backend: process_pool
+  random_seed: 20260512
+  deterministic_sort_required: true
+
+primitive_search:
+  bootstrap_replicates: 200
+  bootstrap_random_seed: 20260512
+  bootstrap_confidence: 0.90
+  group_pair_top_n: 20
+  max_total_approved_combos: 600
+  mandatory_composite_baseline_id: v3_post30_profile_high5_volume_rps_seed
+  mandatory_composite_formula_id: close_near_high5_gt_0pct_and_vol_ratio10_gt_1_2_and_vol_ratio3_gt_1_2_and_rps5_gt_60
+  primitive_grid:
+    - group: price_momentum
+      feature: close_near_high5_pct
+      operator: ">="
+      thresholds: [0.0, -0.02, -0.05]
+    - group: price_momentum
+      feature: close_near_high20_pct
+      operator: ">="
+      thresholds: [0.0, -0.02, -0.05]
+    - group: price_momentum
+      feature: close_near_high60_pct
+      operator: ">="
+      thresholds: [0.0, -0.03, -0.05]
+    - group: volume_money
+      feature: vol_ratio3
+      operator: ">"
+      thresholds: [1.1, 1.2, 1.5, 2.0]
+    - group: volume_money
+      feature: vol_ratio10
+      operator: ">"
+      thresholds: [1.1, 1.2, 1.5, 2.0]
+    - group: volume_money
+      feature: money_ratio20_mean_asof
+      operator: ">"
+      thresholds: [1.0, 1.2, 1.5, 2.0]
+    - group: relative_strength
+      feature: rps5
+      operator: ">"
+      thresholds: [0.50, 0.60, 0.70, 0.80]
+    - group: relative_strength
+      feature: rps20
+      operator: ">"
+      thresholds: [0.50, 0.60, 0.70, 0.80]
+    - group: relative_strength
+      feature: rps60
+      operator: ">"
+      thresholds: [0.50, 0.60, 0.70, 0.80]
+    - group: pullback_structure
+      feature: ema20_hold_depth
+      operator: "<="
+      thresholds: [0.03, 0.05, 0.08, 0.12]
+    - group: pullback_structure
+      feature: prior20_pullback_depth
+      operator: "<="
+      thresholds: [0.03, 0.05, 0.08, 0.12]
+    - group: survival_no_failure
+      feature: past_h10_no_close_below_prior10_low
+      operator: "=="
+      thresholds: [1]
+    - group: survival_no_failure
+      feature: past_h20_no_close_below_prior20_low
+      operator: "=="
+      thresholds: [1]
+    - group: volatility_state
+      feature: atr20_pct
+      operator: "<="
+      thresholds: [0.03, 0.05, 0.08]
+    - group: volatility_state
+      feature: atr20_contraction_ratio
+      operator: "<="
+      thresholds: [0.80, 1.00]
+    - group: industry_market
+      feature: industry_breadth20
+      operator: ">="
+      thresholds: [0.50, 0.60, 0.70]
+    - group: industry_market
+      feature: market_breadth20
+      operator: ">="
+      thresholds: [0.45, 0.55, 0.65]
+    - group: acceleration
+      feature: return1d
+      operator: ">="
+      thresholds: [0.03, 0.05, 0.07]
+    - group: acceleration
+      feature: gap_open_pct
+      operator: ">="
+      thresholds: [0.01, 0.03]
+    - group: distribution_absence
+      feature: past_h20_no_high_volume_down_day
+      operator: "=="
+      thresholds: [1]
+    - group: distribution_absence
+      feature: past_h10_no_failed_breakout
+      operator: "=="
+      thresholds: [1]
+
+early_rejection:
+  min_train_trigger_count_single: 200
+  min_train_trigger_count_combo: 120
+  min_train_primary_positive_count_single: 20
+  min_train_primary_positive_count_combo: 15
+  max_train_stock_day_density_single: 0.10
+  max_train_stock_day_density_combo: 0.06
+  min_train_primary_LR: 1.00
+  min_train_primary_LR_ci90_lower: 1.00
+  min_train_EV_R: -0.05
+  min_train_entry_buyability_rate: 0.30
+  max_train_risk_distance_ineligible_rate: 0.70
+
+stability:
+  positive_LR_year_share_min: 0.50
+  non_negative_EV_R_year_share_min: 0.40
+  min_train_years_with_trigger_count_30: 3
+
+clustering:
+  same_day_jaccard_merge: 0.70
+  within_5d_overlap_merge: 0.85
+  shared_raw_incremental_lr_min: 1.05
+  shared_raw_incremental_ev_r_min: 0.02
+  combo_incremental_lr_vs_best_component_min: 1.05
+  combo_incremental_ev_r_vs_best_component_min: 0.00
+  target_family_count_min: 3
+  target_family_count_max: 5
+
+decision_gates:
+  allowed_decisions:
+    - go_to_r03_evidence_accumulation
+    - revise_family_search_space
+    - archive_family_discovery_no_r03
+  h20_positive_h60_reverse_h20_lr_min: 1.10
+  h20_positive_h60_reverse_h60_lr_max: 0.95
