@@ -33,6 +33,8 @@ EP2_SEED_ID = "ep2_launch_detector_v0_bridge"
 ALLOWED_DECISIONS = {
     "go_to_r02",
     "go_to_r02_with_robustness_warning",
+    "go_to_oos_retest_required",
+    "archive_hypothesis_no_r02",
     "archive_cost_control_sleeve_no_r02",
     "stop_ep4_r01_path",
     "stop_ep4_r01_1_path",
@@ -130,12 +132,17 @@ SEED_EVENT_COLUMNS = [
     "close",
     "money",
     "price_structure_component",
+    "close_near_high5_gt_0pct_triggered",
+    "rolling_close_high5_asof",
     "close_near_60d_high_triggered",
     "close_breaks_40d_high_triggered",
     "rolling_high_60_asof",
     "rolling_high_40_asof",
     "component_trigger_threshold",
     "breakout_reference",
+    "vol_ratio10",
+    "vol_ratio3",
+    "rps5",
     "money_activity_ratio",
     "money_20d_median_asof",
     "atr20_asof",
@@ -153,8 +160,11 @@ SEED_EPISODE_COLUMNS = [
     "instrument",
     "episode_start_signal_date",
     "episode_effective_entry_date",
+    "entry_execution_date",
     "episode_end_signal_date",
     "split",
+    "terminal_exit_date",
+    "split_boundary_status",
     "first_seed_event_id",
     "seed_event_count",
     "suppressed_reentry_count",
@@ -169,10 +179,15 @@ SEED_EPISODE_COLUMNS = [
     "executable_status",
     "episode_reject_reason",
     "primary_metric_eligible_seed_episode",
+    "boundary_status",
     "captures_primary_big_winner",
     "captured_reference_event_id",
     "capture_window_id",
+    "capture_time_basis",
+    "entry_capture_window_status",
     "captures_ep2_bridge_big_winner",
+    "captured_ep2_bridge_reference_event_id",
+    "ep2_bridge_capture_window_id",
 ]
 PROBE_SIM_COLUMNS = [
     "simulation_id",
@@ -180,6 +195,7 @@ PROBE_SIM_COLUMNS = [
     "seed_family_id",
     "instrument",
     "entry_date",
+    "entry_execution_date",
     "entry_price",
     "initial_probe_risk_budget_r",
     "initial_structural_stop",
@@ -187,9 +203,11 @@ PROBE_SIM_COLUMNS = [
     "exit_trigger_type",
     "exit_signal_date",
     "exit_execution_date",
+    "terminal_exit_date",
     "exit_price",
     "sell_blocked_day_count",
     "terminal_blocked_exit",
+    "split_boundary_status",
     "gross_return_pct",
     "after_cost_return_pct",
     "return_r",
@@ -219,6 +237,11 @@ BASELINE_SIM_COLUMNS = [
     "signal_date",
     "random_signal_date",
     "entry_date",
+    "entry_execution_date",
+    "candidate_entry_execution_date",
+    "baseline_entry_execution_date",
+    "ep2_bridge_entry_execution_date",
+    "capture_timestamp_used",
     "entry_price",
     "seed_day_low",
     "breakout_reference",
@@ -234,12 +257,18 @@ BASELINE_SIM_COLUMNS = [
     "random_sampling_replacement_policy",
     "random_baseline_reliability_status",
     "primary_metric_eligible_baseline_event",
+    "boundary_status",
     "captures_primary_big_winner",
     "captured_reference_event_id",
     "capture_window_id",
+    "capture_time_basis",
+    "entry_capture_window_status",
     "baseline_failed_seed_primary",
     "exit_date",
+    "exit_execution_date",
+    "terminal_exit_date",
     "exit_price",
+    "split_boundary_status",
     "eligibility_status",
     "ineligibility_reason",
     "gross_return_pct",
@@ -385,21 +414,76 @@ def assign_split(date: Any, bounds: dict[str, tuple[pd.Timestamp, pd.Timestamp]]
     return "out_of_scope"
 
 
+def is_v3_config(config: dict[str, Any]) -> bool:
+    formula = str(config.get("seed_rules", {}).get("candidate_seed_formula_id", ""))
+    phase = str(config.get("phase", ""))
+    return "v3" in phase or formula == "close_near_high5_gt_0pct_and_vol_ratio10_gt_1_2_and_vol_ratio3_gt_1_2_and_rps5_gt_60"
+
+
+def max_probe_observation_horizon(config: dict[str, Any]) -> int:
+    return int(config.get("fail_fast", {}).get("natural_exit_horizon_trading_days", 20)) + int(config.get("execution", {}).get("max_exit_retry_trading_days", 20))
+
+
+def primary_entry_capture_forward_days(config: dict[str, Any]) -> int:
+    return int(config.get("capture_time_basis", {}).get("primary_entry_capture_window", {}).get("end_offset_from_reference_trading_days", config.get("seed_recall", {}).get("primary_recall_forward_days", 0)))
+
+
 def split_effective_windows(
     config: dict[str, Any], calendar: pd.DatetimeIndex, data_max_date: pd.Timestamp
 ) -> tuple[dict[str, tuple[pd.Timestamp, pd.Timestamp]], pd.Timestamp]:
     horizon = int(config["big_winner_reference"]["forward_horizon_trading_days"])
+    extra_tail = primary_entry_capture_forward_days(config) + max_probe_observation_horizon(config) if is_v3_config(config) else 0
+    label_horizon = max(horizon, extra_tail)
     data_max_pos = int(calendar.searchsorted(data_max_date, side="right") - 1)
-    effective_pos = data_max_pos - horizon
+    effective_pos = data_max_pos - label_horizon
     if effective_pos < 0:
         data_max_minus = pd.NaT
     else:
         data_max_minus = pd.Timestamp(calendar[effective_pos])
     windows: dict[str, tuple[pd.Timestamp, pd.Timestamp]] = {}
     for split, (start, end) in split_bounds(config).items():
-        effective_end = min(end, data_max_minus) if not pd.isna(data_max_minus) else pd.NaT
+        split_end = end
+        if is_v3_config(config):
+            split_end_pos = int(calendar.searchsorted(end, side="right") - 1)
+            split_limited_pos = split_end_pos - extra_tail
+            split_end = pd.Timestamp(calendar[split_limited_pos]) if split_limited_pos >= 0 else pd.NaT
+        effective_end = min(split_end, data_max_minus) if not pd.isna(data_max_minus) and not pd.isna(split_end) else pd.NaT
         windows[split] = (start, effective_end)
     return windows, data_max_minus
+
+
+def split_effective_boundaries(
+    config: dict[str, Any], calendar: pd.DatetimeIndex, data_max_date: pd.Timestamp
+) -> tuple[dict[str, dict[str, pd.Timestamp]], pd.Timestamp]:
+    windows, data_max_minus = split_effective_windows(config, calendar, data_max_date)
+    bounds = split_bounds(config)
+    entry_forward = primary_entry_capture_forward_days(config)
+    probe_tail = max_probe_observation_horizon(config)
+    boundaries: dict[str, dict[str, pd.Timestamp]] = {}
+    for split, (start, ref_end) in windows.items():
+        seed_end = base.add_trading_days(calendar, ref_end, entry_forward) if not pd.isna(ref_end) else pd.NaT
+        split_end = bounds[split][1]
+        split_gate_pos = int(calendar.searchsorted(split_end, side="right") - 1) - probe_tail
+        split_gate_end = pd.Timestamp(calendar[split_gate_pos]) if split_gate_pos >= 0 else pd.NaT
+        gate_end = min(seed_end, split_gate_end) if not pd.isna(seed_end) and not pd.isna(split_gate_end) else pd.NaT
+        boundaries[split] = {
+            "configured_start": start,
+            "configured_end": bounds[split][1],
+            "effective_reference_end": ref_end,
+            "effective_primary_seed_end": seed_end,
+            "effective_gate_entry_end": gate_end,
+        }
+    return boundaries, data_max_minus
+
+
+def effective_gate_entry_end_for_split(config: dict[str, Any], calendar: pd.DatetimeIndex, split: str, effective_reference_end: pd.Timestamp) -> pd.Timestamp:
+    if pd.isna(effective_reference_end):
+        return pd.NaT
+    seed_end = base.add_trading_days(calendar, effective_reference_end, primary_entry_capture_forward_days(config))
+    split_end = split_bounds(config)[split][1]
+    split_gate_pos = int(calendar.searchsorted(split_end, side="right") - 1) - max_probe_observation_horizon(config)
+    split_gate_end = pd.Timestamp(calendar[split_gate_pos]) if split_gate_pos >= 0 else pd.NaT
+    return min(seed_end, split_gate_end) if not pd.isna(seed_end) and not pd.isna(split_gate_end) else pd.NaT
 
 
 def primary_recall_lookback_days(config: dict[str, Any]) -> int:
@@ -506,11 +590,14 @@ def prepare_stock_day_panel(
     group = df.groupby("instrument", group_keys=False)
     df["rolling_high_60_asof"] = group["high"].transform(lambda s: s.shift(1).rolling(60, min_periods=60).max())
     df["rolling_high_40_asof"] = group["high"].transform(lambda s: s.shift(1).rolling(40, min_periods=40).max())
+    df["rolling_close_high5_asof"] = group["close"].transform(lambda s: s.shift(1).rolling(5, min_periods=5).max())
     df["rolling_close_high_10_asof"] = group["close"].transform(lambda s: s.shift(1).rolling(10, min_periods=10).max())
     df["pivot_low_10d"] = group["low"].transform(lambda s: s.shift(1).rolling(10, min_periods=10).min())
     df["money_20d_median_asof"] = group["money"].transform(lambda s: s.shift(1).rolling(20, min_periods=20).median())
     df["money_20d_mean_asof"] = group["money"].transform(lambda s: s.shift(1).rolling(20, min_periods=20).mean())
     df["money_5d_mean_asof"] = group["money"].transform(lambda s: s.shift(1).rolling(5, min_periods=5).mean())
+    df["volume_10d_mean_asof"] = group["volume"].transform(lambda s: s.shift(1).rolling(10, min_periods=10).mean())
+    df["volume_3d_mean_asof"] = group["volume"].transform(lambda s: s.shift(1).rolling(3, min_periods=3).mean())
     prev_close = group["close"].shift(1)
     tr = pd.concat(
         [
@@ -530,11 +617,14 @@ def prepare_stock_day_panel(
     df["money_activity_ratio"] = df["money"] / df["money_20d_median_asof"]
     df["money_ratio20_mean_asof"] = df["money"] / df["money_20d_mean_asof"]
     df["money_ratio5_mean_asof"] = df["money"] / df["money_5d_mean_asof"]
+    df["vol_ratio10"] = df["volume"] / df["volume_10d_mean_asof"]
+    df["vol_ratio3"] = df["volume"] / df["volume_3d_mean_asof"]
     boll20_mid = group["close"].transform(lambda s: s.rolling(20, min_periods=20).mean())
     boll20_std = group["close"].transform(lambda s: s.rolling(20, min_periods=20).std(ddof=0))
     boll20_upper = boll20_mid + 2.0 * boll20_std
     boll20_lower = boll20_mid - 2.0 * boll20_std
     df["boll20_pct_b"] = (df["close"] - boll20_lower) / (boll20_upper - boll20_lower)
+    df["close_near_high5_gt_0pct_triggered"] = df["close"] >= df["rolling_close_high5_asof"]
     df["close_near_high10_ratio"] = df["close"] / df["rolling_close_high_10_asof"]
     df["close_near_60d_high_triggered"] = df["close"] >= 0.97 * df["rolling_high_60_asof"]
     df["close_breaks_40d_high_triggered"] = df["close"] >= df["rolling_high_40_asof"]
@@ -543,14 +633,26 @@ def prepare_stock_day_panel(
     df["breakout_reference_near60"] = df["component_trigger_threshold_near60"]
     df["breakout_reference_break40"] = df["rolling_high_40_asof"]
     df["seed_day_low"] = df["low"]
-    df["has_required_history_for_seed_formula"] = df[
-        ["rolling_high_60_asof", "rolling_high_40_asof", "pivot_low_10d", "money_20d_median_asof", "atr20_asof"]
-    ].notna().all(axis=1)
+    if is_v3_config(config):
+        history_fields = ["rolling_close_high5_asof", "pivot_low_10d", "volume_10d_mean_asof", "volume_3d_mean_asof", "ret5_asof", "atr20_asof"]
+    else:
+        history_fields = ["rolling_high_60_asof", "rolling_high_40_asof", "pivot_low_10d", "money_20d_median_asof", "atr20_asof"]
+    df["has_required_history_for_seed_formula"] = df[history_fields].notna().all(axis=1)
     price_ok = df[["open", "high", "low", "close"]].apply(np.isfinite).all(axis=1) & (df[["open", "high", "low", "close"]] > 0).all(axis=1)
     volume_ok = np.isfinite(df["volume"]) & (df["volume"] > 0)
     money_ok = np.isfinite(df["money"]) & (df["money"] > 0)
     df["not_suspended_or_dirty_bar"] = price_ok & volume_ok & money_ok
     df["st_or_delist_risk"] = df["name"].astype(str).str.upper().str.contains("ST", na=False)
+    rps_rank_mask = (
+        df["split"].isin(["train", "validation", "robustness"])
+        & df["pit_universe_member"].astype(bool)
+        & df["not_suspended_or_dirty_bar"].astype(bool)
+        & df["ret5_asof"].notna()
+        & np.isfinite(df["close"])
+    )
+    df["rps5"] = np.nan
+    df.loc[rps_rank_mask, "rps5"] = df.loc[rps_rank_mask].groupby("date")["ret5_asof"].rank(pct=True)
+    df["rps5_rank_pct"] = df["rps5"]
 
     df["next_open"] = group["open"].shift(-1)
     df["next_volume"] = group["volume"].shift(-1)
@@ -635,6 +737,15 @@ def build_candidate_seed_events(stock: pd.DataFrame, config: dict[str, Any]) -> 
             & (stock["close_near_high10_ratio"] >= 1.0)
         )
         seed_kind = "money_rps5_boll20_high10"
+    elif formula_id == "close_near_high5_gt_0pct_and_vol_ratio10_gt_1_2_and_vol_ratio3_gt_1_2_and_rps5_gt_60":
+        triggered = (
+            stock["split"].isin(["train", "validation", "robustness"])
+            & stock["close_near_high5_gt_0pct_triggered"].fillna(False)
+            & (stock["vol_ratio10"] > 1.2)
+            & (stock["vol_ratio3"] > 1.2)
+            & (stock["rps5"] > 0.60)
+        )
+        seed_kind = "post30_high5_volume_rps5"
     elif formula_id == "boll20_pct_b_gt_1_0_and_close_near_high10_gt_0":
         triggered = (
             stock["split"].isin(["train", "validation", "robustness"])
@@ -661,6 +772,10 @@ def build_candidate_seed_events(stock: pd.DataFrame, config: dict[str, Any]) -> 
         raw["price_structure_component"] = "money_ratio20_1_money_ratio5_2_rps5_50_boll20_pct_b_1_close_near_high10_0"
         raw["component_trigger_threshold"] = raw["rolling_close_high_10_asof"]
         raw["breakout_reference"] = raw["rolling_close_high_10_asof"]
+    elif seed_kind == "post30_high5_volume_rps5":
+        raw["price_structure_component"] = "close_near_high5_gt_0pct"
+        raw["component_trigger_threshold"] = raw["rolling_close_high5_asof"]
+        raw["breakout_reference"] = raw["rolling_close_high5_asof"]
     elif seed_kind == "boll20_high10":
         raw["price_structure_component"] = "boll20_pct_b_1_close_near_high10_0"
         raw["component_trigger_threshold"] = raw["rolling_close_high_10_asof"]
@@ -693,6 +808,9 @@ def build_candidate_seed_events(stock: pd.DataFrame, config: dict[str, Any]) -> 
     if seed_kind in {"money_rps5_pre60", "money_rps5_boll20_high10"}:
         money_activity_ratio = raw["money_ratio20_mean_asof"]
         rs_rank_pct_audit = raw["rps5_rank_pct"]
+    elif seed_kind == "post30_high5_volume_rps5":
+        money_activity_ratio = raw["vol_ratio10"]
+        rs_rank_pct_audit = raw["rps5"]
     elif seed_kind == "boll20_high10":
         money_activity_ratio = raw["boll20_pct_b"]
         rs_rank_pct_audit = raw["rs_rank_pct_audit"]
@@ -709,12 +827,17 @@ def build_candidate_seed_events(stock: pd.DataFrame, config: dict[str, Any]) -> 
             "close": raw["close"],
             "money": raw["money"],
             "price_structure_component": raw["price_structure_component"],
+            "close_near_high5_gt_0pct_triggered": raw["close_near_high5_gt_0pct_triggered"].astype(bool),
+            "rolling_close_high5_asof": raw["rolling_close_high5_asof"],
             "close_near_60d_high_triggered": raw["close_near_60d_high_triggered"].astype(bool),
             "close_breaks_40d_high_triggered": raw["close_breaks_40d_high_triggered"].astype(bool),
             "rolling_high_60_asof": raw["rolling_high_60_asof"],
             "rolling_high_40_asof": raw["rolling_high_40_asof"],
             "component_trigger_threshold": raw["component_trigger_threshold"],
             "breakout_reference": raw["breakout_reference"],
+            "vol_ratio10": raw["vol_ratio10"],
+            "vol_ratio3": raw["vol_ratio3"],
+            "rps5": raw["rps5"],
             "money_activity_ratio": money_activity_ratio,
             "money_20d_median_asof": raw["money_20d_median_asof"],
             "atr20_asof": raw["atr20_asof"],
@@ -754,12 +877,17 @@ def build_ep2_seed_events(stock: pd.DataFrame, config: dict[str, Any]) -> pd.Dat
                 "close": s.get("close", np.nan),
                 "money": s.get("money", np.nan),
                 "price_structure_component": component,
+                "close_near_high5_gt_0pct_triggered": bool(s.get("close_near_high5_gt_0pct_triggered", False)),
+                "rolling_close_high5_asof": s.get("rolling_close_high5_asof", np.nan),
                 "close_near_60d_high_triggered": bool(s.get("close_near_60d_high_triggered", False)),
                 "close_breaks_40d_high_triggered": bool(s.get("close_breaks_40d_high_triggered", False)),
                 "rolling_high_60_asof": s.get("rolling_high_60_asof", np.nan),
                 "rolling_high_40_asof": s.get("rolling_high_40_asof", np.nan),
                 "component_trigger_threshold": threshold,
                 "breakout_reference": breakout,
+                "vol_ratio10": s.get("vol_ratio10", np.nan),
+                "vol_ratio3": s.get("vol_ratio3", np.nan),
+                "rps5": s.get("rps5", np.nan),
                 "money_activity_ratio": s.get("money_activity_ratio", np.nan),
                 "money_20d_median_asof": s.get("money_20d_median_asof", np.nan),
                 "atr20_asof": s.get("atr20_asof", np.nan),
@@ -863,19 +991,50 @@ def _episode_from_events(
     reject_reason = "" if executable == "passed" else (risk_status if risk_status != "passed" else str(s.get("blocked_buy_reason", "entry_not_executable")))
     split = assign_split(start, split_bounds(config))
     eff_end = effective_windows.get(split, (pd.NaT, pd.NaT))[1]
-    primary_eligible = split in {"train", "validation", "robustness"} and not pd.isna(eff_end) and start <= eff_end
     primary_lookback = primary_recall_lookback_days(config)
     primary_window_id = primary_recall_window_id(config)
-    captured, captured_id, window_id = capture_reference(instrument, start, reference, calendar, primary_lookback, 0, primary_window_id)
-    bridge_captured, _, _ = capture_reference(instrument, start, bridge_reference, calendar, primary_lookback, 0, primary_window_id)
+    if is_v3_config(config):
+        gate_end = effective_gate_entry_end_for_split(config, calendar, split, eff_end) if split in {"train", "validation", "robustness"} else pd.NaT
+        primary_eligible = split in {"train", "validation", "robustness"} and not pd.isna(gate_end) and pd.notna(entry_date) and _date(entry_date) <= gate_end
+        captured, captured_id, window_id = capture_entry_reference(
+            instrument,
+            _date(entry_date),
+            reference,
+            calendar,
+            int(config["capture_time_basis"]["primary_entry_capture_window"]["start_offset_from_reference_trading_days"]),
+            int(config["capture_time_basis"]["primary_entry_capture_window"]["end_offset_from_reference_trading_days"]),
+            str(config.get("entry_capture", {}).get("primary_entry_capture_window_id", "primary_entry_1_30")),
+        )
+        bridge_captured, bridge_ref_id, bridge_window_id = capture_entry_reference(
+            instrument,
+            _date(entry_date),
+            bridge_reference,
+            calendar,
+            int(config["capture_time_basis"]["primary_entry_capture_window"]["start_offset_from_reference_trading_days"]),
+            int(config["capture_time_basis"]["primary_entry_capture_window"]["end_offset_from_reference_trading_days"]),
+            str(config.get("entry_capture", {}).get("primary_entry_capture_window_id", "primary_entry_1_30")),
+        )
+        boundary_status = "primary_metric_eligible" if primary_eligible else "cross_split_execution_report_only"
+        capture_basis = "entry_execution_date"
+        entry_capture_status = "captured" if primary_eligible and captured else ("not_captured" if primary_eligible else "not_primary_metric_eligible")
+    else:
+        primary_eligible = split in {"train", "validation", "robustness"} and not pd.isna(eff_end) and start <= eff_end
+        captured, captured_id, window_id = capture_reference(instrument, start, reference, calendar, primary_lookback, 0, primary_window_id)
+        bridge_captured, bridge_ref_id, bridge_window_id = capture_reference(instrument, start, bridge_reference, calendar, primary_lookback, 0, primary_window_id)
+        boundary_status = "primary_metric_eligible" if primary_eligible else "not_primary_metric_eligible"
+        capture_basis = "signal_date"
+        entry_capture_status = "legacy_signal_capture" if captured else "not_captured"
     return {
         "seed_episode_id": episode_id,
         "seed_family_id": family,
         "instrument": instrument,
         "episode_start_signal_date": _date_str(start),
         "episode_effective_entry_date": _date_str(entry_date),
+        "entry_execution_date": _date_str(entry_date),
         "episode_end_signal_date": _date_str(base.add_trading_days(calendar, end, 20)),
         "split": split,
+        "terminal_exit_date": "",
+        "split_boundary_status": boundary_status,
         "first_seed_event_id": str(first["seed_event_id"]),
         "seed_event_count": len(events),
         "suppressed_reentry_count": max(0, len(events) - 1),
@@ -890,10 +1049,15 @@ def _episode_from_events(
         "executable_status": executable,
         "episode_reject_reason": reject_reason,
         "primary_metric_eligible_seed_episode": bool(primary_eligible),
+        "boundary_status": boundary_status,
         "captures_primary_big_winner": bool(captured) if primary_eligible else False,
         "captured_reference_event_id": captured_id if primary_eligible else "",
         "capture_window_id": window_id if primary_eligible and captured else "",
+        "capture_time_basis": capture_basis,
+        "entry_capture_window_status": entry_capture_status,
         "captures_ep2_bridge_big_winner": bool(bridge_captured),
+        "captured_ep2_bridge_reference_event_id": bridge_ref_id if bridge_captured else "",
+        "ep2_bridge_capture_window_id": bridge_window_id if bridge_captured else "",
     }
 
 
@@ -920,6 +1084,54 @@ def capture_reference(
         return False, "", ""
     first = hits.sort_values("reference_date").iloc[0]
     return True, str(first["reference_event_id"]), window_id or f"primary_-{int(lookback_days)}_0"
+
+
+def capture_entry_reference(
+    instrument: str,
+    entry_execution_date: pd.Timestamp,
+    reference: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+    start_offset: int,
+    end_offset: int,
+    window_id: str,
+) -> tuple[bool, str, str]:
+    if reference.empty or pd.isna(entry_execution_date):
+        return False, "", ""
+    refs = reference.loc[reference["instrument"].astype(str).eq(str(instrument).upper())].copy()
+    if refs.empty:
+        return False, "", ""
+    hits: list[tuple[pd.Timestamp, str]] = []
+    entry_dt = _date(entry_execution_date)
+    for row in refs.itertuples(index=False):
+        ref_date = _date(row.reference_date)
+        start = base.add_trading_days(calendar, ref_date, start_offset)
+        end = base.add_trading_days(calendar, ref_date, end_offset)
+        if pd.isna(start) or pd.isna(end):
+            continue
+        if start <= entry_dt <= end:
+            hits.append((ref_date, str(row.reference_event_id)))
+    if not hits:
+        return False, "", ""
+    hits.sort()
+    return True, hits[0][1], window_id
+
+
+def capture_signal_reference_v3(
+    instrument: str,
+    signal_date: pd.Timestamp,
+    reference: pd.DataFrame,
+    calendar: pd.DatetimeIndex,
+) -> tuple[bool, str]:
+    captured, ref_id, _ = capture_entry_reference(
+        instrument,
+        signal_date,
+        reference,
+        calendar,
+        0,
+        29,
+        "signal_0_29",
+    )
+    return captured, ref_id
 
 
 def reference_index(reference: pd.DataFrame) -> dict[str, list[tuple[pd.Timestamp, str]]]:
@@ -990,6 +1202,11 @@ def build_big_winner_reference(
             fwd_ret = peak_close / float(next_open[i]) - 1.0 if np.isfinite(peak_close) and next_open[i] > 0 else np.nan
             if np.isfinite(fwd_ret) and fwd_ret >= threshold:
                 split = assign_split(date, bounds)
+                if split not in effective_windows:
+                    continue
+                eff_start, eff_end = effective_windows[split]
+                if pd.isna(eff_start) or pd.isna(eff_end) or date < eff_start or date > eff_end:
+                    continue
                 rows.append(
                     {
                         "reference_event_id": f"{config['big_winner_reference']['primary_id']}_{instrument}_{_date_str(date).replace('-', '')}_{len(rows)+1:06d}",
@@ -1185,6 +1402,11 @@ def simulate_random_baseline_fast(
             "signal_date": work["signal_date"],
             "random_signal_date": work["random_signal_date"],
             "entry_date": work["entry_date"],
+            "entry_execution_date": work["entry_date"],
+            "candidate_entry_execution_date": work.get("episode_effective_entry_date", pd.Series("", index=work.index)),
+            "baseline_entry_execution_date": work["entry_date"],
+            "ep2_bridge_entry_execution_date": "",
+            "capture_timestamp_used": work["entry_date"],
             "entry_price": work["entry_price"],
             "seed_day_low": work["seed_day_low"],
             "breakout_reference": work["breakout_reference"],
@@ -1200,12 +1422,18 @@ def simulate_random_baseline_fast(
             "random_sampling_replacement_policy": work["random_sampling_replacement_policy"],
             "random_baseline_reliability_status": work["random_baseline_reliability_status"],
             "primary_metric_eligible_baseline_event": work["primary_metric_eligible_baseline_event"].astype(bool),
+            "boundary_status": np.where(work["primary_metric_eligible_baseline_event"].astype(bool), "primary_metric_eligible", "not_primary_metric_eligible"),
             "captures_primary_big_winner": work["captures_primary_big_winner"].astype(bool),
             "captured_reference_event_id": work["captured_reference_event_id"],
             "capture_window_id": work["capture_window_id"],
+            "capture_time_basis": "entry_execution_date" if is_v3_config(config) else "signal_date",
+            "entry_capture_window_status": np.where(work["captures_primary_big_winner"].astype(bool), "captured", "not_captured"),
             "baseline_failed_seed_primary": np.where(work["primary_metric_eligible_baseline_event"].astype(bool) & ok, ~work["captures_primary_big_winner"].astype(bool), np.nan),
             "exit_date": pd.to_datetime(work["exit_date_calc"]).dt.strftime("%Y-%m-%d"),
+            "exit_execution_date": pd.to_datetime(work["exit_date_calc"]).dt.strftime("%Y-%m-%d"),
+            "terminal_exit_date": pd.to_datetime(work["exit_date_calc"]).dt.strftime("%Y-%m-%d"),
             "exit_price": np.where(ok, exit_price, np.nan),
+            "split_boundary_status": np.where(work["primary_metric_eligible_baseline_event"].astype(bool), "primary_metric_eligible", "cross_split_execution_report_only"),
             "eligibility_status": np.where(ok, "passed", "ineligible"),
             "ineligibility_reason": np.where(ok, "", np.where(work["pre_sim_ineligibility_reason"].astype(str).ne(""), work["pre_sim_ineligibility_reason"].astype(str), "missing_exit_or_risk")),
             "gross_return_pct": np.where(ok, gross, np.nan),
@@ -1364,6 +1592,7 @@ def _probe_record(row: pd.Series, sim: dict[str, Any], idx: int, id_prefix: str)
         "seed_family_id": row["seed_family_id"],
         "instrument": row["instrument"],
         "entry_date": _date_str(row["entry_date"]),
+        "entry_execution_date": _date_str(row["entry_date"]),
         "entry_price": row["entry_price"],
         "initial_probe_risk_budget_r": 0.25,
         "initial_structural_stop": row["initial_structural_stop"],
@@ -1371,9 +1600,11 @@ def _probe_record(row: pd.Series, sim: dict[str, Any], idx: int, id_prefix: str)
         "exit_trigger_type": sim["exit_trigger_type"],
         "exit_signal_date": sim["exit_signal_date"],
         "exit_execution_date": sim["exit_execution_date"],
+        "terminal_exit_date": sim["exit_execution_date"],
         "exit_price": sim["exit_price"],
         "sell_blocked_day_count": sim["sell_blocked_day_count"],
         "terminal_blocked_exit": sim["terminal_blocked_exit"],
+        "split_boundary_status": row.get("split_boundary_status", ""),
         "gross_return_pct": sim["gross_return_pct"],
         "after_cost_return_pct": sim["after_cost_return_pct"],
         "return_r": sim["return_r"],
@@ -1396,6 +1627,10 @@ def _baseline_record(row: pd.Series, sim: dict[str, Any], idx: int, id_prefix: s
         if bool(row.get("primary_metric_eligible_baseline_event", False)) and sim["eligibility_status"] == "passed"
         else np.nan
     )
+    entry_date = _date_str(row.get("entry_date", ""))
+    candidate_entry = _date_str(row.get("episode_effective_entry_date", row.get("candidate_entry_execution_date", "")))
+    baseline_entry = entry_date
+    ep2_entry = entry_date if baseline_id == "ep2_detector_probe_with_simple_stop_bridge" else ""
     return {
         "baseline_simulation_id": f"{id_prefix}_{idx + 1:08d}",
         "baseline_id": baseline_id,
@@ -1410,7 +1645,12 @@ def _baseline_record(row: pd.Series, sim: dict[str, Any], idx: int, id_prefix: s
         "instrument": row.get("instrument", ""),
         "signal_date": _date_str(row.get("signal_date", row.get("episode_start_signal_date", ""))),
         "random_signal_date": _date_str(row.get("random_signal_date", "")),
-        "entry_date": _date_str(row.get("entry_date", "")),
+        "entry_date": entry_date,
+        "entry_execution_date": entry_date,
+        "candidate_entry_execution_date": candidate_entry,
+        "baseline_entry_execution_date": baseline_entry,
+        "ep2_bridge_entry_execution_date": ep2_entry,
+        "capture_timestamp_used": baseline_entry,
         "entry_price": row.get("entry_price", np.nan),
         "seed_day_low": row.get("seed_day_low", np.nan),
         "breakout_reference": row.get("breakout_reference", np.nan),
@@ -1426,12 +1666,18 @@ def _baseline_record(row: pd.Series, sim: dict[str, Any], idx: int, id_prefix: s
         "random_sampling_replacement_policy": row.get("random_sampling_replacement_policy", "not_random"),
         "random_baseline_reliability_status": row.get("random_baseline_reliability_status", "not_applicable"),
         "primary_metric_eligible_baseline_event": bool(row.get("primary_metric_eligible_baseline_event", row.get("primary_metric_eligible_seed_episode", False))),
+        "boundary_status": row.get("boundary_status", "primary_metric_eligible" if bool(row.get("primary_metric_eligible_baseline_event", row.get("primary_metric_eligible_seed_episode", False))) else "not_primary_metric_eligible"),
         "captures_primary_big_winner": bool(row.get("captures_primary_big_winner", False)),
         "captured_reference_event_id": row.get("captured_reference_event_id", ""),
         "capture_window_id": row.get("capture_window_id", ""),
+        "capture_time_basis": row.get("capture_time_basis", "signal_date"),
+        "entry_capture_window_status": row.get("entry_capture_window_status", "captured" if bool(row.get("captures_primary_big_winner", False)) else "not_captured"),
         "baseline_failed_seed_primary": failed_primary,
         "exit_date": sim["exit_execution_date"],
+        "exit_execution_date": sim["exit_execution_date"],
+        "terminal_exit_date": sim["exit_execution_date"],
         "exit_price": sim["exit_price"],
+        "split_boundary_status": row.get("split_boundary_status", row.get("boundary_status", "")),
         "eligibility_status": sim["eligibility_status"] if row.get("pre_sim_eligibility_status", "passed") == "passed" else row.get("pre_sim_eligibility_status"),
         "ineligibility_reason": sim["ineligibility_reason"] if row.get("pre_sim_ineligibility_reason", "") == "" else row.get("pre_sim_ineligibility_reason"),
         "gross_return_pct": sim["gross_return_pct"],
@@ -1656,6 +1902,8 @@ def _matched_delay_rows(
         rec = ep.to_dict()
         rec["signal_date"] = ep["episode_start_signal_date"]
         rec["entry_date"] = _date_str(delayed_entry_date)
+        rec["candidate_entry_execution_date"] = ep.get("episode_effective_entry_date", "")
+        rec["baseline_entry_execution_date"] = _date_str(delayed_entry_date)
         rec["delay_days"] = delay
         rec["matched_control_type"] = "matched_delay"
         rec["replicate_id"] = 0
@@ -1691,6 +1939,21 @@ def _matched_delay_rows(
             if risk_status != "passed":
                 rec["pre_sim_eligibility_status"] = "ineligible"
                 rec["pre_sim_ineligibility_reason"] = risk_status
+        if is_v3_config(config) and pd.notna(delayed_entry_date):
+            captured, ref_id, window_id = capture_entry_reference(
+                str(ep["instrument"]),
+                _date(delayed_entry_date),
+                reference,
+                calendar,
+                int(config["capture_time_basis"]["primary_entry_capture_window"]["start_offset_from_reference_trading_days"]),
+                int(config["capture_time_basis"]["primary_entry_capture_window"]["end_offset_from_reference_trading_days"]),
+                str(config.get("entry_capture", {}).get("primary_entry_capture_window_id", "primary_entry_1_30")),
+            )
+            rec["captures_primary_big_winner"] = bool(captured)
+            rec["captured_reference_event_id"] = ref_id
+            rec["capture_window_id"] = window_id if captured else ""
+            rec["capture_time_basis"] = "entry_execution_date"
+            rec["entry_capture_window_status"] = "captured" if captured else "not_captured"
         rec["delay_period_return_bucket"] = ""
         records.append(rec)
     rows = pd.DataFrame(records)
@@ -1718,26 +1981,35 @@ def _matched_random_rows(
     reps = int(config["matched_controls"]["random_replicates_per_split"])
     min_risk = float(config["risk_normalization"]["min_initial_risk_pct"])
     max_risk = float(config["risk_normalization"]["max_initial_risk_pct"])
-    seed_stock_days = set(zip(candidate["instrument"].astype(str), pd.to_datetime(candidate["episode_start_signal_date"]).dt.normalize()))
     stock_pool = stock.loc[stock["split"].isin(["train", "validation", "robustness"]) & stock["eligible_stock_day"].astype(bool)].copy()
-    stock_pool["is_candidate_seed_stock_day"] = [item in seed_stock_days for item in zip(stock_pool["instrument"].astype(str), stock_pool["date"])]
+    if "candidate_seed_stock_day" in stock_pool.columns:
+        stock_pool["is_candidate_seed_stock_day"] = stock_pool["candidate_seed_stock_day"].fillna(False).astype(bool)
+    else:
+        seed_stock_days = set(zip(candidate["instrument"].astype(str), pd.to_datetime(candidate["episode_start_signal_date"]).dt.normalize()))
+        stock_pool["is_candidate_seed_stock_day"] = [item in seed_stock_days for item in zip(stock_pool["instrument"].astype(str), stock_pool["date"])]
     stock_pool = stock_pool.loc[~stock_pool["is_candidate_seed_stock_day"]].copy()
 
     stock_key = stock.set_index(["instrument", "date"])
     capture_map: dict[int, tuple[str, str]] = {}
     stock_pool_by_inst = {inst: group for inst, group in stock_pool.groupby("instrument", sort=False)}
-    primary_lookback = primary_recall_lookback_days(config)
     primary_window_id = primary_recall_window_id(config)
     for ref in reference.itertuples(index=False):
         inst = str(ref.instrument).upper()
         if inst not in stock_pool_by_inst:
             continue
         ref_date = _date(ref.reference_date)
-        start = base.add_trading_days(calendar, ref_date, -primary_lookback)
-        if pd.isna(start):
-            start = ref_date
         group = stock_pool_by_inst[inst]
-        hit_idx = group.loc[(group["date"] >= start) & (group["date"] <= ref_date)].index
+        if is_v3_config(config):
+            start = base.add_trading_days(calendar, ref_date, int(config["capture_time_basis"]["primary_entry_capture_window"]["start_offset_from_reference_trading_days"]))
+            end = base.add_trading_days(calendar, ref_date, int(config["capture_time_basis"]["primary_entry_capture_window"]["end_offset_from_reference_trading_days"]))
+            hit_idx = group.loc[(pd.to_datetime(group["next_date"]) >= start) & (pd.to_datetime(group["next_date"]) <= end)].index
+            primary_window_id = str(config.get("entry_capture", {}).get("primary_entry_capture_window_id", "primary_entry_1_30"))
+        else:
+            primary_lookback = primary_recall_lookback_days(config)
+            start = base.add_trading_days(calendar, ref_date, -primary_lookback)
+            if pd.isna(start):
+                start = ref_date
+            hit_idx = group.loc[(group["date"] >= start) & (group["date"] <= ref_date)].index
         for idx in hit_idx:
             capture_map.setdefault(int(idx), (str(ref.reference_event_id), primary_window_id))
 
@@ -1756,7 +2028,12 @@ def _matched_random_rows(
             candidate.loc[idx, "match_volatility_bucket"] = s.get("volatility_bucket", "missing")
 
     records: list[pd.DataFrame] = []
-    effective_end = {split: _effective_end_for_split(config, split, calendar, stock) for split in ["train", "validation", "robustness"]}
+    if is_v3_config(config):
+        data_max = pd.to_datetime(stock["date"]).max()
+        boundaries, _ = split_effective_boundaries(config, calendar, data_max)
+        effective_end = {split: boundaries[split]["effective_gate_entry_end"] for split in ["train", "validation", "robustness"]}
+    else:
+        effective_end = {split: _effective_end_for_split(config, split, calendar, stock) for split in ["train", "validation", "robustness"]}
     key_cols = ["split", "match_year", "match_industry", "match_liquidity_bucket", "match_volatility_bucket"]
     pool_key_cols = ["split", "year", "industry_name", "liquidity_bucket", "volatility_bucket"]
     pool_by_key = {key: group for key, group in stock_pool.groupby(pool_key_cols, dropna=False, sort=False)}
@@ -1802,6 +2079,7 @@ def _matched_random_rows(
                 ],
             )
             breakout = np.where(uses_high10_ref, sampled["rolling_close_high_10_asof"].astype(float).to_numpy(), breakout)
+            breakout = np.where(component == "close_near_high5_gt_0pct", sampled["rolling_close_high5_asof"].astype(float).to_numpy(), breakout)
             entry_price = sampled["next_open"].astype(float).to_numpy()
             stop_candidates = np.vstack(
                 [
@@ -1846,7 +2124,8 @@ def _matched_random_rows(
         frame["initial_structural_stop"] = initial_stop
         frame["initial_risk_pct"] = risk_pct
         captured_info = [capture_map.get(int(idx), ("", "")) for idx in sampled_indices]
-        frame["primary_metric_eligible_baseline_event"] = random_dates.le(effective_end[split]).fillna(False).to_numpy()
+        capture_dates_for_gate = pd.to_datetime(sampled["next_date"] if is_v3_config(config) else sampled["date"]).dt.normalize()
+        frame["primary_metric_eligible_baseline_event"] = capture_dates_for_gate.le(effective_end[split]).fillna(False).to_numpy()
         frame["captures_primary_big_winner"] = [bool(item[0]) for item in captured_info]
         frame["captured_reference_event_id"] = [item[0] for item in captured_info]
         frame["capture_window_id"] = [item[1] for item in captured_info]
@@ -1914,6 +2193,13 @@ def build_density_audits(stock: pd.DataFrame, episodes: pd.DataFrame, seed_event
             ep = episodes.loc[(episodes["seed_family_id"].eq(family)) & (episodes["split"].eq(split))]
             episode_count = int(ep.shape[0])
             unique_iy = int(ep.assign(year=pd.to_datetime(ep["episode_start_signal_date"]).dt.year)[["instrument", "year"]].drop_duplicates().shape[0]) if not ep.empty else 0
+            if not ep.empty:
+                ep_iy = ep.assign(year=pd.to_datetime(ep["episode_start_signal_date"]).dt.year)
+                top1_share = _safe_div(float(ep_iy.groupby(["instrument", "year"]).size().max()), float(len(ep_iy)), 0.0)
+                top5_share = _safe_div(float(ep_iy.groupby("instrument").size().sort_values(ascending=False).head(5).sum()), float(len(ep_iy)), 0.0)
+            else:
+                top1_share = 0.0
+                top5_share = 0.0
             rows.append(
                 {
                     "split": split,
@@ -1926,6 +2212,8 @@ def build_density_audits(stock: pd.DataFrame, episodes: pd.DataFrame, seed_event
                     "seed_episode_rate": _safe_div(episode_count, denom_iy, 0.0),
                     "unique_instrument_count": int(ep["instrument"].nunique()) if not ep.empty else 0,
                     "unique_instrument_year_count": unique_iy,
+                    "top1_instrument_year_seed_share": top1_share,
+                    "top5_instrument_seed_share": top5_share,
                     "suppressed_reentry_count": int(ep["suppressed_reentry_count"].sum()) if not ep.empty else 0,
                     "next_open_buy_executable_rate": float(seed_events.loc[(seed_events["seed_family_id"].eq(family)) & (seed_events["split"].eq(split)), "next_open_buy_executable"].mean()) if not seed_events.loc[(seed_events["seed_family_id"].eq(family)) & (seed_events["split"].eq(split))].empty else np.nan,
                     "limit_up_unbuyable_reject_count": int(seed_events.loc[(seed_events["seed_family_id"].eq(family)) & (seed_events["split"].eq(split)) & (seed_events["buy_block_reason"].eq("limit_up_inferred"))].shape[0]),
@@ -1966,15 +2254,28 @@ def build_density_audits(stock: pd.DataFrame, episodes: pd.DataFrame, seed_event
     return density, pd.DataFrame(tight_rows)
 
 
-def build_recall_audit(reference: pd.DataFrame, episodes: pd.DataFrame) -> pd.DataFrame:
+def build_recall_audit(reference: pd.DataFrame, bridge_reference: pd.DataFrame, episodes: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     executable = episodes.loc[episodes["executable_status"].eq("passed") & episodes["primary_metric_eligible_seed_episode"].astype(bool)].copy()
     for split in ["train", "validation", "robustness"]:
         ref_split = reference.loc[reference["split"].eq(split)]
         ref_count = int(ref_split.shape[0])
+        bridge_split = bridge_reference.loc[bridge_reference["split"].eq(split)] if "split" in bridge_reference.columns else bridge_reference.iloc[0:0]
+        bridge_ref_count = int(bridge_split.shape[0])
         for family in [CANDIDATE_SEED_ID, EP2_SEED_ID]:
             fam = executable.loc[(executable["seed_family_id"].eq(family)) & (executable["split"].eq(split))]
             captured = set(fam.loc[fam["captures_primary_big_winner"].astype(bool), "captured_reference_event_id"].astype(str))
+            bridge_captured = set()
+            if "captured_ep2_bridge_reference_event_id" in fam.columns:
+                bridge_captured = set(
+                    fam.loc[
+                        fam["captures_ep2_bridge_big_winner"].astype(bool),
+                        "captured_ep2_bridge_reference_event_id",
+                    ]
+                    .dropna()
+                    .astype(str)
+                )
+                bridge_captured.discard("")
             rows.append(
                 {
                     "split": split,
@@ -1984,7 +2285,9 @@ def build_recall_audit(reference: pd.DataFrame, episodes: pd.DataFrame) -> pd.Da
                     "captured_big_winner_count": len(captured),
                     "missed_big_winner_count": max(0, ref_count - len(captured)),
                     "primary_big_winner_seed_recall": _safe_div(len(captured), ref_count, 0.0),
-                    "bridge_ep2_big_winner_seed_recall": np.nan,
+                    "bridge_ep2_big_winner_reference_count": bridge_ref_count,
+                    "captured_ep2_bridge_big_winner_count": len(bridge_captured),
+                    "bridge_ep2_big_winner_seed_recall": _safe_div(len(bridge_captured), bridge_ref_count, 0.0),
                     "late_capture_0_to_10_count": 0,
                 }
             )
@@ -1992,6 +2295,10 @@ def build_recall_audit(reference: pd.DataFrame, episodes: pd.DataFrame) -> pd.Da
     ep2 = recall.loc[recall["seed_family_id"].eq(EP2_SEED_ID)].set_index("split")
     recall["seed_recall_diff_vs_ep2_detector"] = recall.apply(
         lambda row: float(row["primary_big_winner_seed_recall"]) - float(ep2.loc[row["split"], "primary_big_winner_seed_recall"]) if row["split"] in ep2.index else np.nan,
+        axis=1,
+    )
+    recall["bridge_ep2_big_winner_seed_recall_diff_vs_ep2_detector"] = recall.apply(
+        lambda row: float(row["bridge_ep2_big_winner_seed_recall"]) - float(ep2.loc[row["split"], "bridge_ep2_big_winner_seed_recall"]) if row["split"] in ep2.index else np.nan,
         axis=1,
     )
     return recall
@@ -2017,7 +2324,14 @@ def summarize_population(df: pd.DataFrame, failed_col: str, prefix: str = "") ->
     }
 
 
-def build_recall_cost_tradeoff(episodes: pd.DataFrame, probe: pd.DataFrame, baseline: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+def build_recall_cost_tradeoff(
+    episodes: pd.DataFrame,
+    probe: pd.DataFrame,
+    baseline: pd.DataFrame,
+    config: dict[str, Any],
+    reference: pd.DataFrame | None = None,
+    calendar: pd.DatetimeIndex | None = None,
+) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     candidate_probe = probe.loc[probe["seed_family_id"].eq(CANDIDATE_SEED_ID)]
     ep2_bridge = baseline.loc[baseline["baseline_id"].eq("ep2_detector_probe_with_simple_stop_bridge")]
@@ -2035,9 +2349,33 @@ def build_recall_cost_tradeoff(episodes: pd.DataFrame, probe: pd.DataFrame, base
         added = cand_refs - ep2_refs
         lost = ep2_refs - cand_refs
         net = len(added) - len(lost)
+        post_0_10_refs: set[str] = set()
+        signal_refs: set[str] = set()
+        if is_v3_config(config) and reference is not None and calendar is not None and not reference.empty:
+            ref_by_id = reference.set_index("reference_event_id")
+            cand_eps = episodes.loc[
+                (episodes["seed_family_id"].eq(CANDIDATE_SEED_ID))
+                & (episodes["split"].eq(split))
+                & episodes["executable_status"].eq("passed")
+            ]
+            for ep in cand_eps.itertuples(index=False):
+                sig_captured, sig_ref = capture_signal_reference_v3(str(ep.instrument), _date(ep.episode_start_signal_date), reference, calendar)
+                if sig_captured:
+                    signal_refs.add(sig_ref)
+                ref_id = str(getattr(ep, "captured_reference_event_id", ""))
+                if ref_id and ref_id in ref_by_id.index:
+                    ref_date = _date(ref_by_id.loc[ref_id, "reference_date"])
+                    entry_dt = _date(getattr(ep, "entry_execution_date", getattr(ep, "episode_effective_entry_date", "")))
+                    end_10 = base.add_trading_days(calendar, ref_date, 10)
+                    if pd.notna(entry_dt) and pd.notna(end_10) and entry_dt <= end_10:
+                        post_0_10_refs.add(ref_id)
         cand_exposure = float(cand_failed["exposure_days"].fillna(0).sum())
         ep2_exposure = float(ep2_failed["exposure_days"].fillna(0).sum())
         inc_exposure = max(0.0, cand_exposure - ep2_exposure)
+        cand_loss_per_capture = _safe_div(cand_loss, max(1, len(cand_refs)), np.inf)
+        ep2_loss_per_capture = _safe_div(ep2_loss, max(1, len(ep2_refs)), np.inf)
+        cand_exposure_per_capture = _safe_div(cand_exposure, max(1, len(cand_refs)), np.inf)
+        ep2_exposure_per_capture = _safe_div(ep2_exposure, max(1, len(ep2_refs)), np.inf)
         max_loss = float(config["recall_cost_gate"]["max_incremental_loss_r_per_added_big_winner_vs_ep2"]) if split != "robustness" else float(config["recall_cost_gate"]["robustness_max_incremental_loss_r_per_added_big_winner_vs_ep2"])
         max_exposure = float(config["recall_cost_gate"]["max_incremental_exposure_days_per_added_big_winner_vs_ep2"]) if split != "robustness" else float(config["recall_cost_gate"]["robustness_max_incremental_exposure_days_per_added_big_winner_vs_ep2"])
         rows.append(
@@ -2052,8 +2390,21 @@ def build_recall_cost_tradeoff(episodes: pd.DataFrame, probe: pd.DataFrame, base
                 "added_capture_vs_ep2_count": len(added),
                 "lost_capture_vs_ep2_count": len(lost),
                 "net_added_capture_vs_ep2_count": net,
-                "late_capture_0_to_10_count": 0,
+                "post_reference_capture_0_to_10_count": len(post_0_10_refs),
+                "late_capture_0_to_10_count": len(post_0_10_refs),
+                "signal_capture_count": len(signal_refs) if is_v3_config(config) else len(cand_refs),
+                "entry_capture_count": len(cand_refs),
+                "signal_only_not_entry_within_window_count": max(0, len(signal_refs - cand_refs)) if is_v3_config(config) else 0,
+                "capture_time_basis": "entry_execution_date" if is_v3_config(config) else "signal_date",
+                "seed_discovery_scope": config.get("seed_provenance_gate", {}).get("discovery_scope", "not_applicable"),
+                "validation_oos_clean": bool(config.get("seed_provenance_gate", {}).get("validation_oos_clean", True)),
                 "recall_cost_score": _safe_div(net, max(1.0, inc_loss), 0.0),
+                "candidate_loss_r_per_captured_big_winner_seed": cand_loss_per_capture,
+                "ep2_loss_r_per_captured_big_winner_seed": ep2_loss_per_capture,
+                "loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector": cand_loss_per_capture - ep2_loss_per_capture if np.isfinite(cand_loss_per_capture) and np.isfinite(ep2_loss_per_capture) else np.nan,
+                "candidate_exposure_days_per_captured_big_winner_seed": cand_exposure_per_capture,
+                "ep2_exposure_days_per_captured_big_winner_seed": ep2_exposure_per_capture,
+                "exposure_days_per_captured_big_winner_seed_diff_vs_ep2_detector": cand_exposure_per_capture - ep2_exposure_per_capture if np.isfinite(cand_exposure_per_capture) and np.isfinite(ep2_exposure_per_capture) else np.nan,
                 "incremental_loss_r_per_added_big_winner_vs_ep2": _safe_div(inc_loss, max(1, net), np.inf),
                 "incremental_exposure_days_per_added_big_winner_vs_ep2": _safe_div(inc_exposure, max(1, net), np.inf),
                 "max_allowed_incremental_loss_r_per_added_big_winner_vs_ep2": max_loss,
@@ -2072,11 +2423,23 @@ def build_baseline_diff_audit(probe: pd.DataFrame, baseline: pd.DataFrame) -> pd
         cand_summary = summarize_population(cand, "failed_seed_primary")
         for baseline_id, base_df in baseline.loc[baseline["split"].eq(split)].groupby("baseline_id"):
             if baseline_id.startswith("matched_random"):
-                base_groups = [("p50", base_df)]
+                replicate_summaries = []
+                for _, rep_df in base_df.groupby("replicate_id", dropna=False):
+                    replicate_summaries.append(summarize_population(rep_df, "baseline_failed_seed_primary"))
+                rep_summary_df = pd.DataFrame(replicate_summaries)
+                base_groups = []
+                for stat in ["mean", "p05", "p50", "p95"]:
+                    if rep_summary_df.empty:
+                        summary = summarize_population(base_df.iloc[0:0], "baseline_failed_seed_primary")
+                    elif stat == "mean":
+                        summary = rep_summary_df.mean(numeric_only=True).to_dict()
+                    else:
+                        q = {"p05": 0.05, "p50": 0.50, "p95": 0.95}[stat]
+                        summary = rep_summary_df.quantile(q, numeric_only=True).to_dict()
+                    base_groups.append((stat, summary))
             else:
-                base_groups = [("not_random", base_df)]
-            for stat, bdf in base_groups:
-                base_summary = summarize_population(bdf, "baseline_failed_seed_primary")
+                base_groups = [("not_random", summarize_population(base_df, "baseline_failed_seed_primary"))]
+            for stat, base_summary in base_groups:
                 for metric in ["mean_return_r", "p05_return_r", "failed_seed_average_loss_r", "failed_seed_median_holding_days"]:
                     cand_value = cand_summary.get(metric, np.nan)
                     base_value = base_summary.get(metric, np.nan)
@@ -2100,40 +2463,78 @@ def build_baseline_diff_audit(probe: pd.DataFrame, baseline: pd.DataFrame) -> pd
 
 def build_random_health_audit(baseline: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
-    random_df = baseline.loc[baseline["matched_control_type"].eq("matched_random")]
-    for keys, group in random_df.groupby(["split", "baseline_id", "match_industry", "match_liquidity_bucket", "match_volatility_bucket"], dropna=False):
+    random_df = baseline.loc[baseline["matched_control_type"].eq("matched_random")].copy()
+    if random_df.empty:
+        return pd.DataFrame(columns=["split", "baseline_id", "replicate_stat", "industry", "liquidity_bucket", "volatility_bucket", "sampled_random_event_count", "eligible_random_event_count", "bucket_random_eligible_rate", "random_replicate_count", "random_excluded_candidate_seed_day_count", "random_capacity_shortfall", "random_sampling_replacement_policy", "random_baseline_reliability_status", "failed_seed_average_loss_r", "p05_return_r", "p50_return_r", "p95_return_r", "audit_only_status"])
+    random_df["eligible_flag"] = random_df["eligibility_status"].eq("passed").astype(int)
+    random_df["eligible_return_r"] = np.where(random_df["eligibility_status"].eq("passed"), random_df["return_r"].astype(float), np.nan)
+    random_df["failed_loss_r"] = np.where(random_df["baseline_failed_seed_primary"].astype(str).isin(["True", "true", "1"]), random_df["loss_r"].astype(float), np.nan)
+    # Keep replicate reliability executable and bounded in runtime. Row-level matched-random
+    # bucket fields remain in the baseline panel; this audit summarizes the distribution
+    # across replicates at the split/baseline level.
+    random_df["match_industry"] = "all"
+    random_df["match_liquidity_bucket"] = "all"
+    random_df["match_volatility_bucket"] = "all"
+    group_keys = ["split", "baseline_id", "match_industry", "match_liquidity_bucket", "match_volatility_bucket", "replicate_id"]
+    per_rep = (
+        random_df.groupby(group_keys, dropna=False)
+        .agg(
+            sampled_random_event_count=("baseline_id", "size"),
+            eligible_random_event_count=("eligible_flag", "sum"),
+            failed_seed_average_loss_r=("failed_loss_r", "mean"),
+            p05_return_r=("eligible_return_r", lambda s: s.quantile(0.05)),
+            p50_return_r=("eligible_return_r", lambda s: s.quantile(0.50)),
+            p95_return_r=("eligible_return_r", lambda s: s.quantile(0.95)),
+            random_capacity_shortfall=("random_capacity_shortfall", "max"),
+        )
+        .reset_index()
+    )
+    per_rep["bucket_random_eligible_rate"] = per_rep["eligible_random_event_count"] / per_rep["sampled_random_event_count"].replace(0, np.nan)
+    for keys, group in per_rep.groupby(["split", "baseline_id", "match_industry", "match_liquidity_bucket", "match_volatility_bucket"], dropna=False):
         split, baseline_id, industry, liq, vol = keys
-        sampled = len(group)
-        eligible = int(group["eligibility_status"].eq("passed").sum())
-        rate = _safe_div(eligible, sampled, 0.0)
         rep_count = int(group["replicate_id"].nunique())
         shortfall = bool(group["random_capacity_shortfall"].astype(bool).any())
-        status = "passed" if rate >= float(config["matched_controls"]["random_min_bucket_eligible_rate"]) and rep_count >= int(config["matched_controls"]["random_replicates_per_split"]) and not shortfall else "failed"
-        returns = group.loc[group["eligibility_status"].eq("passed"), "return_r"].dropna().astype(float)
-        losses = group.loc[group["baseline_failed_seed_primary"].astype(str).isin(["True", "true", "1"]), "loss_r"].dropna().astype(float)
-        rows.append(
-            {
-                "split": split,
-                "baseline_id": baseline_id,
-                "replicate_stat": "p50",
-                "industry": industry,
-                "liquidity_bucket": liq,
-                "volatility_bucket": vol,
-                "sampled_random_event_count": sampled,
-                "eligible_random_event_count": eligible,
-                "bucket_random_eligible_rate": rate,
-                "random_replicate_count": rep_count,
-                "random_excluded_candidate_seed_day_count": 0,
-                "random_capacity_shortfall": shortfall,
-                "random_sampling_replacement_policy": "without_replacement_within_replicate",
-                "random_baseline_reliability_status": status,
-                "failed_seed_average_loss_r": float(losses.mean()) if len(losses) else 0.0,
-                "p05_return_r": float(returns.quantile(0.05)) if len(returns) else np.nan,
-                "p50_return_r": float(returns.quantile(0.50)) if len(returns) else np.nan,
-                "p95_return_r": float(returns.quantile(0.95)) if len(returns) else np.nan,
-                "audit_only_status": "report_only",
-            }
-        )
+        for stat in ["mean", "p05", "p50", "p95"]:
+            metric_cols = [
+                "sampled_random_event_count",
+                "eligible_random_event_count",
+                "failed_seed_average_loss_r",
+                "p05_return_r",
+                "p50_return_r",
+                "p95_return_r",
+                "bucket_random_eligible_rate",
+            ]
+            if group.empty:
+                values = {}
+            elif stat == "mean":
+                values = group[metric_cols].mean(numeric_only=True).to_dict()
+            else:
+                values = group[metric_cols].quantile({"p05": 0.05, "p50": 0.50, "p95": 0.95}[stat], numeric_only=True).to_dict()
+            rate = _safe_float(values.get("bucket_random_eligible_rate"))
+            status = "passed" if rate >= float(config["matched_controls"]["random_min_bucket_eligible_rate"]) and rep_count >= int(config["matched_controls"]["random_replicates_per_split"]) and not shortfall else "failed"
+            rows.append(
+                {
+                    "split": split,
+                    "baseline_id": baseline_id,
+                    "replicate_stat": stat,
+                    "industry": industry,
+                    "liquidity_bucket": liq,
+                    "volatility_bucket": vol,
+                    "sampled_random_event_count": values.get("sampled_random_event_count", np.nan),
+                    "eligible_random_event_count": values.get("eligible_random_event_count", np.nan),
+                    "bucket_random_eligible_rate": rate,
+                    "random_replicate_count": rep_count,
+                    "random_excluded_candidate_seed_day_count": 0,
+                    "random_capacity_shortfall": shortfall,
+                    "random_sampling_replacement_policy": "without_replacement_within_replicate",
+                    "random_baseline_reliability_status": status,
+                    "failed_seed_average_loss_r": values.get("failed_seed_average_loss_r", np.nan),
+                    "p05_return_r": values.get("p05_return_r", np.nan),
+                    "p50_return_r": values.get("p50_return_r", np.nan),
+                    "p95_return_r": values.get("p95_return_r", np.nan),
+                    "audit_only_status": "report_only",
+                }
+            )
     if not rows:
         return pd.DataFrame(columns=["split", "baseline_id", "replicate_stat", "industry", "liquidity_bucket", "volatility_bucket", "sampled_random_event_count", "eligible_random_event_count", "bucket_random_eligible_rate", "random_replicate_count", "random_excluded_candidate_seed_day_count", "random_capacity_shortfall", "random_sampling_replacement_policy", "random_baseline_reliability_status", "failed_seed_average_loss_r", "p05_return_r", "p50_return_r", "p95_return_r", "audit_only_status"])
     return pd.DataFrame(rows)
@@ -2208,6 +2609,53 @@ def build_r_unit_distribution_audit(probe: pd.DataFrame, baseline: pd.DataFrame)
                     "audit_only_status": "report_only",
                 }
                 rows.append(row)
+    val_candidate = probe.loc[
+        probe["seed_family_id"].eq(CANDIDATE_SEED_ID)
+        & probe["split"].eq("validation")
+        & probe["primary_metric_eligible_seed_episode"].astype(bool)
+    ].copy()
+    val_no_ff = baseline.loc[
+        baseline["baseline_id"].eq("same_seed_no_fail_fast_hold_h20")
+        & baseline["split"].eq("validation")
+        & baseline["primary_metric_eligible_baseline_event"].astype(bool)
+    ].copy()
+    if not val_candidate.empty and not val_no_ff.empty:
+        val_candidate["initial_risk_pct_quintile"] = _qbucket(val_candidate["initial_risk_pct"], 5, "risk")
+        val_no_ff["initial_risk_pct_quintile"] = _qbucket(val_no_ff["initial_risk_pct"], 5, "risk")
+        for quintile, qdf in val_candidate.groupby("initial_risk_pct_quintile", dropna=False):
+            bdf = val_no_ff.loc[val_no_ff["initial_risk_pct_quintile"].eq(quintile)]
+            cand_failed = qdf.loc[qdf["failed_seed_primary"].astype(str).isin(["True", "true", "1"])]
+            base_failed = bdf.loc[bdf["baseline_failed_seed_primary"].astype(str).isin(["True", "true", "1"])]
+            cand_loss = float(cand_failed["loss_r"].mean()) if len(cand_failed) else 0.0
+            base_loss = float(base_failed["loss_r"].mean()) if len(base_failed) else 0.0
+            diff = cand_loss - base_loss
+            rows.append(
+                {
+                    "split": "validation",
+                    "population": "candidate_vs_same_seed_no_fail_fast",
+                    "probe_r_budget": 0.25,
+                    "initial_risk_pct_p01": float(qdf["initial_risk_pct"].quantile(0.01)) if len(qdf) else np.nan,
+                    "initial_risk_pct_p05": float(qdf["initial_risk_pct"].quantile(0.05)) if len(qdf) else np.nan,
+                    "initial_risk_pct_p25": float(qdf["initial_risk_pct"].quantile(0.25)) if len(qdf) else np.nan,
+                    "initial_risk_pct_median": float(qdf["initial_risk_pct"].median()) if len(qdf) else np.nan,
+                    "initial_risk_pct_p75": float(qdf["initial_risk_pct"].quantile(0.75)) if len(qdf) else np.nan,
+                    "initial_risk_pct_p95": float(qdf["initial_risk_pct"].quantile(0.95)) if len(qdf) else np.nan,
+                    "initial_risk_pct_p99": float(qdf["initial_risk_pct"].quantile(0.99)) if len(qdf) else np.nan,
+                    "return_r_p01": float(qdf["return_r"].quantile(0.01)) if len(qdf) else np.nan,
+                    "return_r_p99": float(qdf["return_r"].quantile(0.99)) if len(qdf) else np.nan,
+                    "loss_r_top1_share": _safe_div(float(cand_failed["loss_r"].nlargest(1).sum()), float(cand_failed["loss_r"].sum()), 0.0) if len(cand_failed) else 0.0,
+                    "loss_r_top5_share": _safe_div(float(cand_failed["loss_r"].nlargest(5).sum()), float(cand_failed["loss_r"].sum()), 0.0) if len(cand_failed) else 0.0,
+                    "near_risk_floor_extreme_loss_share": np.nan,
+                    "risk_distance_ineligible_count": 0,
+                    "initial_risk_pct_quintile": str(quintile),
+                    "quintile_failed_seed_count": int(len(cand_failed)),
+                    "quintile_failed_seed_average_loss_r": cand_loss,
+                    "quintile_baseline_failed_seed_average_loss_r": base_loss,
+                    "quintile_loss_r_diff_vs_same_seed_no_fail_fast": diff,
+                    "risk_pct_quintile_cost_control_status": "passed" if diff <= 0 else "failed",
+                    "audit_only_status": "report_only",
+                }
+            )
     return pd.DataFrame(rows)
 
 
@@ -2215,6 +2663,9 @@ def build_fail_fast_audits(probe: pd.DataFrame, no_ff: pd.DataFrame) -> tuple[pd
     path_rows: list[dict[str, Any]] = []
     err_rows: list[dict[str, Any]] = []
     no_ff_by_id = no_ff.set_index("seed_episode_id") if not no_ff.empty else pd.DataFrame()
+    def truthy(value: Any) -> bool:
+        return False if pd.isna(value) else bool(value)
+
     for _, row in probe.iterrows():
         if row["seed_family_id"] != CANDIDATE_SEED_ID:
             continue
@@ -2235,9 +2686,9 @@ def build_fail_fast_audits(probe: pd.DataFrame, no_ff: pd.DataFrame) -> tuple[pd
         noff_ret = np.nan
         if not no_ff_by_id.empty and row["seed_episode_id"] in no_ff_by_id.index:
             noff_ret = no_ff_by_id.loc[row["seed_episode_id"], "after_cost_return_pct"]
-        if bool(row["failed_seed_fail_fast_triggered"]) and not bool(row["failed_seed_primary"]) and bool(row["primary_metric_eligible_seed_episode"]):
+        if truthy(row["failed_seed_fail_fast_triggered"]) and not truthy(row["failed_seed_primary"]) and truthy(row["primary_metric_eligible_seed_episode"]):
             err_type = "false_reject_winner"
-        elif (not bool(row["failed_seed_fail_fast_triggered"])) and bool(row["failed_seed_primary"]) and np.isfinite(noff_ret) and noff_ret < 0:
+        elif (not truthy(row["failed_seed_fail_fast_triggered"])) and truthy(row["failed_seed_primary"]) and np.isfinite(noff_ret) and noff_ret < 0:
             err_type = "missed_failure"
         else:
             continue
@@ -2266,7 +2717,13 @@ def build_fail_fast_audits(probe: pd.DataFrame, no_ff: pd.DataFrame) -> tuple[pd
     return path, error
 
 
-def build_counterfactual(decision: str, probe: pd.DataFrame, density_tightness: pd.DataFrame) -> pd.DataFrame:
+def build_counterfactual(
+    decision: str,
+    probe: pd.DataFrame,
+    density_tightness: pd.DataFrame,
+    baseline_diff: pd.DataFrame | None = None,
+    label_a: pd.DataFrame | None = None,
+) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     for split in ["train", "validation", "robustness"]:
         split_probe = probe.loc[probe["split"].eq(split)]
@@ -2287,6 +2744,35 @@ def build_counterfactual(decision: str, probe: pd.DataFrame, density_tightness: 
                 "dominant_industry": "none",
                 "dominant_bucket": "none",
                 "inheritance_note": "report-only timing sensitivity; frozen R01 rule unchanged",
+                "audit_only_status": "report_only_not_decision_changing",
+            }
+        )
+        ambiguous_count = 0
+        if label_a is not None and not label_a.empty and "same_day_ambiguous" in label_a.columns:
+            labeled_probe_ids = set(split_probe["seed_episode_id"].astype(str)) if "seed_episode_id" in split_probe.columns else set()
+            ambiguous_count = int(
+                label_a.loc[
+                    label_a["seed_episode_id"].astype(str).isin(labeled_probe_ids)
+                    & label_a["same_day_ambiguous"].astype(bool)
+                ].shape[0]
+            )
+        rows.append(
+            {
+                "split": split,
+                "counterfactual_family": "conservative_fail",
+                "counterfactual_variant": "ambiguous_same_day_open_low_forced_fail_descriptive",
+                "primary_decision": decision,
+                "decision_change_allowed": False,
+                "metric_name": "same_day_ambiguous_episode_count",
+                "primary_value": ambiguous_count,
+                "counterfactual_value": np.nan,
+                "diff_value": np.nan,
+                "affected_episode_count": ambiguous_count,
+                "affected_reference_count": 0,
+                "dominant_year": "none",
+                "dominant_industry": "none",
+                "dominant_bucket": "none",
+                "inheritance_note": "report-only conservative failure-label sensitivity; frozen R01 rule unchanged",
                 "audit_only_status": "report_only_not_decision_changing",
             }
         )
@@ -2311,7 +2797,103 @@ def build_counterfactual(decision: str, probe: pd.DataFrame, density_tightness: 
                 "audit_only_status": "report_only_not_decision_changing",
             }
         )
+        p05_diff = np.nan
+        if baseline_diff is not None and not baseline_diff.empty:
+            rows_diff = baseline_diff.loc[
+                baseline_diff["split"].eq(split)
+                & baseline_diff["baseline_id"].astype(str).str.contains("same_fail_fast", regex=False)
+                & baseline_diff["metric_name"].astype(str).str.contains("p05_return_r", regex=False)
+            ]
+            if not rows_diff.empty:
+                p05_diff = float(rows_diff["diff_value"].min())
+        rows.append(
+            {
+                "split": split,
+                "counterfactual_family": "p05_no_harm",
+                "counterfactual_variant": "worst_matched_delay_p05_return_diff_descriptive",
+                "primary_decision": decision,
+                "decision_change_allowed": False,
+                "metric_name": "min_p05_return_r_diff_vs_same_fail_fast_baselines",
+                "primary_value": p05_diff,
+                "counterfactual_value": np.nan,
+                "diff_value": np.nan,
+                "affected_episode_count": int(split_probe.shape[0]),
+                "affected_reference_count": 0,
+                "dominant_year": "none",
+                "dominant_industry": "none",
+                "dominant_bucket": "none",
+                "inheritance_note": "report-only lower-tail no-harm diagnostic; no post-hoc threshold tuning",
+                "audit_only_status": "report_only_not_decision_changing",
+            }
+        )
     return pd.DataFrame(rows)
+
+
+def apply_v3_terminal_boundaries(
+    episodes: pd.DataFrame,
+    probe: pd.DataFrame,
+    baseline: pd.DataFrame,
+    config: dict[str, Any],
+    calendar: pd.DatetimeIndex,
+    data_max: pd.Timestamp,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    if not is_v3_config(config):
+        return episodes, probe, baseline
+    boundaries, _ = split_effective_boundaries(config, calendar, data_max)
+    bounds = split_bounds(config)
+
+    def eligible_mask(frame: pd.DataFrame, entry_col: str, terminal_col: str) -> pd.Series:
+        eligible = pd.Series(False, index=frame.index)
+        entry_dt = pd.to_datetime(frame[entry_col], errors="coerce")
+        terminal_dt = pd.to_datetime(frame[terminal_col], errors="coerce")
+        for split, split_bounds_value in boundaries.items():
+            gate_end = split_bounds_value["effective_gate_entry_end"]
+            split_end = bounds[split][1]
+            mask = frame["split"].astype(str).eq(split)
+            eligible.loc[mask] = (
+                entry_dt.loc[mask].notna()
+                & terminal_dt.loc[mask].notna()
+                & pd.notna(gate_end)
+                & (entry_dt.loc[mask] <= gate_end)
+                & (terminal_dt.loc[mask] <= split_end)
+                & (terminal_dt.loc[mask] <= data_max)
+            )
+        return eligible
+
+    probe = probe.copy()
+    if not probe.empty:
+        probe["terminal_exit_date"] = probe["exit_execution_date"]
+        entry_col = "entry_execution_date" if "entry_execution_date" in probe.columns else "entry_date"
+        eligible = eligible_mask(probe, entry_col, "terminal_exit_date")
+        probe["primary_metric_eligible_seed_episode"] = eligible
+        probe["failed_seed_primary"] = np.where(probe["primary_metric_eligible_seed_episode"].astype(bool), probe["failed_seed_primary"], np.nan)
+        probe["split_boundary_status"] = np.where(probe["primary_metric_eligible_seed_episode"].astype(bool), "primary_metric_eligible", "cross_split_execution_report_only")
+
+    episodes = episodes.copy()
+    if not probe.empty:
+        term_map = probe.set_index("seed_episode_id")["terminal_exit_date"].to_dict()
+        status_map = probe.set_index("seed_episode_id")["split_boundary_status"].to_dict()
+        eligible_map = probe.set_index("seed_episode_id")["primary_metric_eligible_seed_episode"].to_dict()
+        episodes["terminal_exit_date"] = episodes["seed_episode_id"].map(term_map).fillna(episodes.get("terminal_exit_date", ""))
+        episodes["split_boundary_status"] = episodes["seed_episode_id"].map(status_map).fillna(episodes.get("split_boundary_status", ""))
+        episodes["boundary_status"] = episodes["split_boundary_status"]
+        episodes["primary_metric_eligible_seed_episode"] = episodes["seed_episode_id"].map(eligible_map).fillna(episodes["primary_metric_eligible_seed_episode"]).astype(bool)
+        episodes.loc[~episodes["primary_metric_eligible_seed_episode"].astype(bool), ["captures_primary_big_winner", "captured_reference_event_id", "capture_window_id"]] = [False, "", ""]
+        bridge_clear_cols = ["captures_ep2_bridge_big_winner", "captured_ep2_bridge_reference_event_id", "ep2_bridge_capture_window_id"]
+        present_bridge_cols = [col for col in bridge_clear_cols if col in episodes.columns]
+        if present_bridge_cols:
+            episodes.loc[~episodes["primary_metric_eligible_seed_episode"].astype(bool), present_bridge_cols] = [False, "", ""][: len(present_bridge_cols)]
+
+    baseline = baseline.copy()
+    if not baseline.empty:
+        baseline["terminal_exit_date"] = baseline["exit_execution_date"]
+        entry_field = "capture_timestamp_used" if "capture_timestamp_used" in baseline.columns else "entry_date"
+        eligible = eligible_mask(baseline, entry_field, "terminal_exit_date")
+        baseline["primary_metric_eligible_baseline_event"] = baseline["primary_metric_eligible_baseline_event"].astype(bool) & pd.Series(eligible, index=baseline.index)
+        baseline["baseline_failed_seed_primary"] = np.where(baseline["primary_metric_eligible_baseline_event"].astype(bool), baseline["baseline_failed_seed_primary"], np.nan)
+        baseline["boundary_status"] = np.where(baseline["primary_metric_eligible_baseline_event"].astype(bool), "primary_metric_eligible", "cross_split_execution_report_only")
+        baseline["split_boundary_status"] = baseline["boundary_status"]
+    return episodes, probe, baseline
 
 
 def _metric_from_density(density: pd.DataFrame, split: str, family: str, metric: str) -> float:
@@ -2322,6 +2904,11 @@ def _metric_from_density(density: pd.DataFrame, split: str, family: str, metric:
 def _recall_diff(recall: pd.DataFrame, split: str) -> float:
     row = recall.loc[(recall["split"].eq(split)) & (recall["seed_family_id"].eq(CANDIDATE_SEED_ID))]
     return _safe_float(row.iloc[0]["seed_recall_diff_vs_ep2_detector"]) if not row.empty else np.nan
+
+
+def _bridge_recall_diff(recall: pd.DataFrame, split: str) -> float:
+    row = recall.loc[(recall["split"].eq(split)) & (recall["seed_family_id"].eq(CANDIDATE_SEED_ID))]
+    return _safe_float(row.iloc[0]["bridge_ep2_big_winner_seed_recall_diff_vs_ep2_detector"]) if not row.empty and "bridge_ep2_big_winner_seed_recall_diff_vs_ep2_detector" in row.columns else np.nan
 
 
 def _diff_metric(diff: pd.DataFrame, split: str, baseline_id: str, metric_contains: str) -> float:
@@ -2342,6 +2929,7 @@ def build_gate_audit(
     random_health: pd.DataFrame,
     recall_cost: pd.DataFrame,
     probe: pd.DataFrame,
+    baseline: pd.DataFrame,
     config: dict[str, Any],
 ) -> tuple[pd.DataFrame, str]:
     rows: list[dict[str, Any]] = []
@@ -2363,6 +2951,31 @@ def build_gate_audit(
 
     add("authority_inputs_status", "all", "authority_inputs_status", "passed" if authority["status"].eq("passed").all() else "failed", "passed", "==", bool(authority["status"].eq("passed").all()))
     add("validation_threshold_selection_status", "validation", "validation_threshold_selection_status", "no_selection_from_validation", "no_selection_from_validation", "==", True)
+    if is_v3_config(config):
+        discovery_scope = str(config.get("seed_provenance_gate", {}).get("discovery_scope", ""))
+        validation_oos_clean = bool(config.get("seed_provenance_gate", {}).get("validation_oos_clean", False))
+        add(
+            "seed_provenance_oos_status",
+            "all",
+            "seed_discovery_scope",
+            discovery_scope,
+            "present",
+            "!=",
+            bool(discovery_scope),
+            hard=True,
+            reason="missing_seed_discovery_scope",
+        )
+        add(
+            "seed_provenance_r02_cap",
+            "all",
+            "validation_oos_clean",
+            validation_oos_clean,
+            "train_only_required_for_r02",
+            "report",
+            True,
+            hard=False,
+            reason="all_split_discovery_blocks_r02",
+        )
 
     for split in ["train", "validation", "robustness"]:
         cand_day = _metric_from_density(density, split, CANDIDATE_SEED_ID, "seed_day_rate")
@@ -2381,15 +2994,88 @@ def build_gate_audit(
 
     val_unique_iy = _metric_from_density(density, "validation", CANDIDATE_SEED_ID, "unique_instrument_year_count")
     add("validation_unique_instrument_years", "validation", "unique_instrument_year_count", val_unique_iy, config["seed_density_caps"]["min_unique_instrument_years_validation"], ">=", bool(val_unique_iy >= int(config["seed_density_caps"]["min_unique_instrument_years_validation"])))
+    top1_share = _metric_from_density(density, "validation", CANDIDATE_SEED_ID, "top1_instrument_year_seed_share")
+    add("validation_top1_instrument_year_seed_share", "validation", "top1_instrument_year_seed_share", top1_share, 0.05, "<=", bool(np.isfinite(top1_share) and top1_share <= 0.05))
 
     for split in ["validation", "robustness"]:
         threshold = -0.05 if split == "validation" else -0.10
         diff = _recall_diff(recall, split)
         add("primary_recall_no_harm", split, "primary_big_winner_seed_recall_diff_vs_ep2_detector", diff, threshold, ">=", bool(np.isfinite(diff) and diff >= threshold))
+        bridge_diff = _bridge_recall_diff(recall, split)
+        add(
+            "bridge_ep2_big_winner_seed_recall_diff_vs_ep2_detector",
+            split,
+            "bridge_ep2_big_winner_seed_recall_diff_vs_ep2_detector",
+            bridge_diff,
+            threshold,
+            ">=",
+            bool(np.isfinite(bridge_diff) and bridge_diff >= threshold),
+        )
 
     add("validation_cost_vs_no_fail_fast", "validation", "failed_seed_average_loss_r_diff_vs_same_seed_no_fail_fast", _diff_metric(baseline_diff, "validation", "same_seed_no_fail_fast_hold_h20", "failed_seed_average_loss_r"), 0, "<", bool(_diff_metric(baseline_diff, "validation", "same_seed_no_fail_fast_hold_h20", "failed_seed_average_loss_r") < 0))
     add("validation_holding_days_vs_no_fail_fast", "validation", "failed_seed_median_holding_days_diff_vs_same_seed_no_fail_fast", _diff_metric(baseline_diff, "validation", "same_seed_no_fail_fast_hold_h20", "failed_seed_median_holding_days"), 0, "<", bool(_diff_metric(baseline_diff, "validation", "same_seed_no_fail_fast_hold_h20", "failed_seed_median_holding_days") < 0))
     add("validation_p05_vs_no_fail_fast", "validation", "p05_return_r_diff_vs_same_seed_no_fail_fast", _diff_metric(baseline_diff, "validation", "same_seed_no_fail_fast_hold_h20", "p05_return_r"), -0.02, ">=", bool(_diff_metric(baseline_diff, "validation", "same_seed_no_fail_fast_hold_h20", "p05_return_r") >= -0.02))
+    validation_survived_refs = set(
+        baseline.loc[
+            baseline["split"].eq("validation")
+            & baseline["baseline_id"].eq("same_seed_no_fail_fast_hold_h20")
+            & baseline["captures_primary_big_winner"].astype(bool),
+            "captured_reference_event_id",
+        ]
+        .dropna()
+        .astype(str)
+    )
+    validation_probe_refs = set(
+        probe.loc[
+            probe["split"].eq("validation")
+            & probe["seed_family_id"].eq(CANDIDATE_SEED_ID)
+            & probe["primary_metric_eligible_seed_episode"].astype(bool),
+            "seed_episode_id",
+        ]
+        .dropna()
+        .astype(str)
+    )
+    validation_episode_ref_map = {}
+    if "seed_episode_id" in baseline.columns:
+        validation_episode_ref_map = (
+            baseline.loc[
+                baseline["split"].eq("validation")
+                & baseline["baseline_id"].eq("same_seed_no_fail_fast_hold_h20")
+                & baseline["seed_episode_id"].astype(str).isin(validation_probe_refs)
+                & baseline["captures_primary_big_winner"].astype(bool),
+                ["seed_episode_id", "captured_reference_event_id"],
+            ]
+            .dropna()
+            .astype(str)
+            .set_index("seed_episode_id")["captured_reference_event_id"]
+            .to_dict()
+        )
+    validation_probe_captured_refs = set(validation_episode_ref_map.values())
+    add(
+        "fail_fast_survived_big_winner_recall_loss_vs_same_seed_no_fail_fast",
+        "validation",
+        "captured_reference_loss_vs_same_seed_no_fail_fast_count",
+        len(validation_survived_refs - validation_probe_captured_refs),
+        0,
+        "==",
+        len(validation_survived_refs - validation_probe_captured_refs) == 0,
+    )
+    if not probe.empty:
+        val_probe = probe.loc[probe["split"].eq("validation") & probe["failed_seed_primary"].astype(str).isin(["True", "true", "1"])].copy()
+        val_noff = baseline.loc[baseline["split"].eq("validation") & baseline["baseline_id"].eq("same_seed_no_fail_fast_hold_h20") & baseline["baseline_failed_seed_primary"].astype(str).isin(["True", "true", "1"])].copy()
+        risk_quintile_status = True
+        if len(val_probe) >= 30 and not val_noff.empty:
+            val_probe["risk_q"] = _qbucket(val_probe["initial_risk_pct"], 5, "risk")
+            val_noff["risk_q"] = _qbucket(val_noff["initial_risk_pct"], 5, "risk")
+            for qid, qdf in val_probe.groupby("risk_q"):
+                if len(qdf) < 30:
+                    continue
+                cand_loss = float(qdf["loss_r"].mean()) if len(qdf) else 0.0
+                base_loss = float(val_noff.loc[val_noff["risk_q"].eq(qid), "loss_r"].mean()) if val_noff["risk_q"].eq(qid).any() else np.nan
+                if np.isfinite(base_loss) and cand_loss > base_loss:
+                    risk_quintile_status = False
+                    break
+        add("risk_pct_quintile_cost_control_status", "validation", "risk_pct_quintile_cost_control_status", "passed" if risk_quintile_status else "failed", "passed", "==", risk_quintile_status)
 
     delay_status = "passed" if delay_audit.empty or delay_audit["matched_delay_reliability_status"].eq("passed").all() else "failed"
     add("matched_delay_reliability_status", "validation", "matched_delay_reliability_status", delay_status, "passed", "==", delay_status == "passed")
@@ -2398,6 +3084,8 @@ def build_gate_audit(
     add("random_baseline_reliability_status", "validation", "random_baseline_reliability_status", random_status, "passed", "==", random_status == "passed", hard=False, reason="report_only_diagnostic")
     add("matched_delay_1d_mean_no_harm", "validation", "mean_return_r_diff_vs_matched_delay_same_fail_fast_1d", _diff_metric(baseline_diff, "validation", "same_seed_matched_delay_1d_same_fail_fast_h20", "mean_return_r"), -0.0055, ">=", bool(_diff_metric(baseline_diff, "validation", "same_seed_matched_delay_1d_same_fail_fast_h20", "mean_return_r") >= -0.0055))
     add("matched_delay_3d_mean_no_harm", "validation", "mean_return_r_diff_vs_matched_delay_same_fail_fast_3d", _diff_metric(baseline_diff, "validation", "same_seed_matched_delay_3d_same_fail_fast_h20", "mean_return_r"), -0.005, ">=", bool(_diff_metric(baseline_diff, "validation", "same_seed_matched_delay_3d_same_fail_fast_h20", "mean_return_r") >= -0.005))
+    add("matched_delay_1d_p05_no_harm", "validation", "p05_return_r_diff_vs_matched_delay_same_fail_fast_1d", _diff_metric(baseline_diff, "validation", "same_seed_matched_delay_1d_same_fail_fast_h20", "p05_return_r"), -0.03, ">=", bool(_diff_metric(baseline_diff, "validation", "same_seed_matched_delay_1d_same_fail_fast_h20", "p05_return_r") >= -0.03))
+    add("matched_delay_3d_p05_no_harm", "validation", "p05_return_r_diff_vs_matched_delay_same_fail_fast_3d", _diff_metric(baseline_diff, "validation", "same_seed_matched_delay_3d_same_fail_fast_h20", "p05_return_r"), -0.03, ">=", bool(_diff_metric(baseline_diff, "validation", "same_seed_matched_delay_3d_same_fail_fast_h20", "p05_return_r") >= -0.03))
 
     val_trade = recall_cost.loc[recall_cost["split"].eq("validation")]
     if not val_trade.empty:
@@ -2407,11 +3095,25 @@ def build_gate_audit(
         add("validation_recall_cost_score", "validation", "recall_cost_score", tr["recall_cost_score"], 0, ">", bool(tr["recall_cost_score"] > 0))
         add("validation_incremental_loss_bound", "validation", "incremental_loss_r_per_added_big_winner_vs_ep2", tr["incremental_loss_r_per_added_big_winner_vs_ep2"], tr["max_allowed_incremental_loss_r_per_added_big_winner_vs_ep2"], "<=", bool(tr["incremental_loss_r_per_added_big_winner_vs_ep2"] <= tr["max_allowed_incremental_loss_r_per_added_big_winner_vs_ep2"]))
         add("validation_incremental_exposure_bound", "validation", "incremental_exposure_days_per_added_big_winner_vs_ep2", tr["incremental_exposure_days_per_added_big_winner_vs_ep2"], tr["max_allowed_incremental_exposure_days_per_added_big_winner_vs_ep2"], "<=", bool(tr["incremental_exposure_days_per_added_big_winner_vs_ep2"] <= tr["max_allowed_incremental_exposure_days_per_added_big_winner_vs_ep2"]))
+        add("loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector", "validation", "loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector", tr["loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector"], 0, "<=", bool(tr["loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector"] <= 0))
+
+    robust_noff_loss = _diff_metric(baseline_diff, "robustness", "same_seed_no_fail_fast_hold_h20", "failed_seed_average_loss_r")
+    add("robustness_failed_seed_average_loss_r_diff_vs_same_seed_no_fail_fast", "robustness", "failed_seed_average_loss_r_diff_vs_same_seed_no_fail_fast", robust_noff_loss, 0, "<=", bool(robust_noff_loss <= 0))
+    robust_p05_1d = _diff_metric(baseline_diff, "robustness", "same_seed_matched_delay_1d_same_fail_fast_h20", "p05_return_r")
+    robust_p05_3d = _diff_metric(baseline_diff, "robustness", "same_seed_matched_delay_3d_same_fail_fast_h20", "p05_return_r")
+    robust_min_p05 = np.nanmin([robust_p05_1d, robust_p05_3d]) if any(np.isfinite([robust_p05_1d, robust_p05_3d])) else np.nan
+    add("robustness_p05_return_r_diff_vs_matched_delay_same_fail_fast_min", "robustness", "min_p05_return_r_diff_vs_matched_delay_same_fail_fast", robust_min_p05, -0.03, ">=", bool(np.isfinite(robust_min_p05) and robust_min_p05 >= -0.03))
+    robust_trade = recall_cost.loc[recall_cost["split"].eq("robustness")]
+    if not robust_trade.empty:
+        rr = robust_trade.iloc[0]
+        add("robustness_recall_cost_score_positive", "robustness", "recall_cost_score", rr["recall_cost_score"], 0, ">", bool(rr["recall_cost_score"] > 0))
+        add("robustness_incremental_loss_bound", "robustness", "incremental_loss_r_per_added_big_winner_vs_ep2", rr["incremental_loss_r_per_added_big_winner_vs_ep2"], rr["max_allowed_incremental_loss_r_per_added_big_winner_vs_ep2"], "<=", bool(rr["incremental_loss_r_per_added_big_winner_vs_ep2"] <= rr["max_allowed_incremental_loss_r_per_added_big_winner_vs_ep2"]))
+        add("robustness_incremental_exposure_bound", "robustness", "incremental_exposure_days_per_added_big_winner_vs_ep2", rr["incremental_exposure_days_per_added_big_winner_vs_ep2"], rr["max_allowed_incremental_exposure_days_per_added_big_winner_vs_ep2"], "<=", bool(rr["incremental_exposure_days_per_added_big_winner_vs_ep2"] <= rr["max_allowed_incremental_exposure_days_per_added_big_winner_vs_ep2"]))
 
     cand_day_ratio = _metric_from_density(density, "validation", CANDIDATE_SEED_ID, "executable_seed_stock_day_count_vs_ep2")
     cand_ep_ratio = _metric_from_density(density, "validation", CANDIDATE_SEED_ID, "seed_episode_count_vs_ep2")
-    add("validation_seed_day_count_vs_ep2", "validation", "candidate_seed_day_count_vs_ep2_ratio", cand_day_ratio, 1.0, ">=", bool(cand_day_ratio >= 1.0))
-    add("validation_seed_episode_count_vs_ep2", "validation", "candidate_seed_episode_count_vs_ep2_ratio", cand_ep_ratio, 1.0, ">=", bool(cand_ep_ratio >= 1.0))
+    add("validation_seed_day_count_vs_ep2", "validation", "candidate_seed_day_count_vs_ep2_ratio", cand_day_ratio, 1.0, ">=", bool(cand_day_ratio >= 1.0), hard=not is_v3_config(config), reason="report_only_v3_post_reference_density_diagnostic")
+    add("validation_seed_episode_count_vs_ep2", "validation", "candidate_seed_episode_count_vs_ep2_ratio", cand_ep_ratio, 1.0, ">=", bool(cand_ep_ratio >= 1.0), hard=not is_v3_config(config), reason="report_only_v3_post_reference_density_diagnostic")
 
     gate_df = pd.DataFrame(rows)
     hard_pass = bool(gate_df.loc[gate_df["is_hard_gate"].astype(bool), "status"].eq("passed").all())
@@ -2420,8 +3122,7 @@ def build_gate_audit(
         and not val_trade.empty
         and val_trade.iloc[0]["added_capture_vs_ep2_count"] > 0
         and val_trade.iloc[0]["added_capture_vs_ep2_count"] > val_trade.iloc[0]["lost_capture_vs_ep2_count"]
-        and cand_day_ratio >= 1.0
-        and cand_ep_ratio >= 1.0
+        and (is_v3_config(config) or (cand_day_ratio >= 1.0 and cand_ep_ratio >= 1.0))
     )
     robustness_core = bool(_recall_diff(recall, "robustness") >= -0.10)
     archive = bool(
@@ -2429,18 +3130,26 @@ def build_gate_audit(
         and _recall_diff(recall, "validation") >= -0.02
         and _diff_metric(baseline_diff, "validation", "same_seed_no_fail_fast_hold_h20", "failed_seed_average_loss_r") < 0
     )
+    discovery_scope = str(config.get("seed_provenance_gate", {}).get("discovery_scope", "train_only"))
+    oos_clean = bool(config.get("seed_provenance_gate", {}).get("validation_oos_clean", True))
     if validation_high_recall and robustness_core:
-        decision = "go_to_r02"
+        decision = "go_to_r02" if (not is_v3_config(config) or discovery_scope == "train_only" or oos_clean) else "go_to_oos_retest_required"
     elif validation_high_recall:
-        decision = "go_to_r02_with_robustness_warning"
+        decision = "go_to_r02_with_robustness_warning" if (not is_v3_config(config) or discovery_scope == "train_only" or oos_clean) else "go_to_oos_retest_required"
     elif archive:
-        decision = "archive_cost_control_sleeve_no_r02"
+        decision = "archive_hypothesis_no_r02" if is_v3_config(config) and discovery_scope != "train_only" else "archive_cost_control_sleeve_no_r02"
     else:
         decision = "stop_ep4_r01_path"
     return gate_df, decision
 
 
-def build_big_winner_audit(reference: pd.DataFrame, effective_windows: dict[str, tuple[pd.Timestamp, pd.Timestamp]], data_max: pd.Timestamp, data_max_minus: pd.Timestamp) -> pd.DataFrame:
+def build_big_winner_audit(
+    reference: pd.DataFrame,
+    effective_windows: dict[str, tuple[pd.Timestamp, pd.Timestamp]],
+    data_max: pd.Timestamp,
+    data_max_minus: pd.Timestamp,
+    boundaries: dict[str, dict[str, pd.Timestamp]] | None = None,
+) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     for split, (start, eff_end) in effective_windows.items():
         ref = reference.loc[reference["split"].eq(split)]
@@ -2449,6 +3158,8 @@ def build_big_winner_audit(reference: pd.DataFrame, effective_windows: dict[str,
                 "split": split,
                 "configured_start": _date_str(start),
                 "effective_reference_end": _date_str(eff_end),
+                "effective_primary_seed_end": _date_str(boundaries.get(split, {}).get("effective_primary_seed_end", "")) if boundaries else "",
+                "effective_gate_entry_end": _date_str(boundaries.get(split, {}).get("effective_gate_entry_end", "")) if boundaries else "",
                 "data_max_date": _date_str(data_max),
                 "data_max_date_minus_forward_horizon": _date_str(data_max_minus),
                 "big_winner_reference_count": int(ref.shape[0]),
@@ -2462,20 +3173,48 @@ def build_big_winner_audit(reference: pd.DataFrame, effective_windows: dict[str,
 
 def build_final_report(
     decision: str,
+    authority: pd.DataFrame,
     reference_audit: pd.DataFrame,
     density: pd.DataFrame,
+    density_tightness: pd.DataFrame,
     recall: pd.DataFrame,
     recall_cost: pd.DataFrame,
+    baseline_diff: pd.DataFrame,
+    delay_audit: pd.DataFrame,
+    r_unit: pd.DataFrame,
+    ff_path: pd.DataFrame,
+    ff_error: pd.DataFrame,
+    counterfactual: pd.DataFrame,
     gate: pd.DataFrame,
     random_health: pd.DataFrame,
+    config: dict[str, Any],
 ) -> str:
     failed = gate.loc[gate["status"].eq("failed")]
+    provenance = config.get("seed_provenance_gate", {})
+    density_provenance = config.get("density_provenance", {})
+    v3_note = []
+    if is_v3_config(config):
+        v3_note = [
+            "",
+            "## V3 Post30 Provenance And OOS Status",
+            f"- Frozen seed: `{config['seed_rules']['candidate_seed_formula_id']}`.",
+            f"- Seed discovery artifact: `{provenance.get('discovery_artifact', '')}`.",
+            f"- Discovery scope: `{provenance.get('discovery_scope', '')}`; validation_oos_clean: `{provenance.get('validation_oos_clean', False)}`.",
+            "- OOS status: not clean OOS for R02 because the frozen seed was discovered from all splits; a passing structural run can at most request an OOS retest.",
+            "- The canonical `reference_date` is a retrospective evaluation anchor, not an observable trading state; executable evidence below uses the seed's `entry_execution_date`.",
+            f"- Post30 search eligible-day density: `{density_provenance.get('post30_search_eligible_day_density', '')}`; R01 full-universe density is reported separately in the density summary and manifest.",
+        ]
     lines = [
         "# EP4 R01 High-Recall Probe Cost-Control Report",
         "",
         f"- Final decision: `{decision}`",
         f"- Generated at: `{datetime.now(timezone.utc).isoformat()}`",
         "- Phase boundary: no model training, no add, no portfolio sizing, no dynamic exit optimization.",
+        "",
+        *v3_note,
+        "",
+        "## Upstream Authority",
+        authority.to_markdown(index=False),
         "",
         "## Reference Windows",
         reference_audit.to_markdown(index=False),
@@ -2489,8 +3228,35 @@ def build_final_report(
         "## Recall-Cost Tradeoff",
         recall_cost.to_markdown(index=False),
         "",
+        "## Captured Post-Reference Entry Cost",
+        recall_cost[[c for c in ["split", "candidate_loss_r_per_captured_big_winner_seed", "ep2_loss_r_per_captured_big_winner_seed", "loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector", "candidate_exposure_days_per_captured_big_winner_seed", "ep2_exposure_days_per_captured_big_winner_seed", "exposure_days_per_captured_big_winner_seed_diff_vs_ep2_detector"] if c in recall_cost.columns]].to_markdown(index=False),
+        "",
+        "## Signal-Date Vs Entry-Date Capture Audit",
+        recall_cost[[c for c in ["split", "signal_capture_count", "entry_capture_count", "signal_only_not_entry_within_window_count", "capture_time_basis", "seed_discovery_scope", "validation_oos_clean"] if c in recall_cost.columns]].to_markdown(index=False),
+        "",
+        "## Density Cap Tightness",
+        density_tightness.to_markdown(index=False) if not density_tightness.empty else "No density cap rows.",
+        "",
         "## Matched-Random Reliability",
         random_health.groupby(["split", "baseline_id"], dropna=False).agg(bucket_random_eligible_rate=("bucket_random_eligible_rate", "min"), random_replicate_count=("random_replicate_count", "min"), random_capacity_shortfall=("random_capacity_shortfall", "max"), random_baseline_reliability_status=("random_baseline_reliability_status", lambda s: "passed" if (s == "passed").all() else "failed")).reset_index().to_markdown(index=False) if not random_health.empty else "No random baseline rows.",
+        "",
+        "## Matched-Delay Ineligible Bias",
+        delay_audit.to_markdown(index=False) if not delay_audit.empty else "No matched-delay ineligible rows.",
+        "",
+        "## R-Unit Distribution And Risk Quintile Cost Control",
+        r_unit.loc[(r_unit["split"].eq("validation")) | (r_unit["initial_risk_pct_quintile"].astype(str).ne("all"))].to_markdown(index=False) if not r_unit.empty else "No R-unit rows.",
+        "",
+        "## Baseline Difference Audit",
+        baseline_diff.to_markdown(index=False) if not baseline_diff.empty else "No baseline difference rows.",
+        "",
+        "## Fail-Fast Attribution",
+        ff_path.groupby(["split", "exit_trigger_type"], dropna=False).size().reset_index(name="episode_count").to_markdown(index=False) if not ff_path.empty else "No fail-fast path rows.",
+        "",
+        "## Fail-Fast Error Audit",
+        ff_error.to_markdown(index=False) if not ff_error.empty else "No fail-fast error rows.",
+        "",
+        "## Counterfactual Failure Inheritance",
+        counterfactual.to_markdown(index=False) if not counterfactual.empty else "No counterfactual rows.",
         "",
         "## Gate Evidence",
         gate.to_markdown(index=False),
@@ -2499,7 +3265,7 @@ def build_final_report(
         failed.to_markdown(index=False) if not failed.empty else "No failed gates.",
         "",
         "## R02 Handoff",
-        "R02 may only use surviving R01 episodes if the decision is `go_to_r02` or `go_to_r02_with_robustness_warning`; otherwise R02 must not start without a new requirement.",
+        "R02 may only use surviving R01 episodes if the decision is `go_to_r02` or `go_to_r02_with_robustness_warning`; `go_to_oos_retest_required`, archive decisions, and stops do not authorize R02.",
     ]
     return "\n".join(lines) + "\n"
 
@@ -3349,6 +4115,7 @@ def run_r01_1(config_path: str | Path = R01_1_DEFAULT_CONFIG) -> dict[str, Any]:
     bucket_freeze, stock = build_bucket_freeze(stock, config)
     data_max = pd.to_datetime(stock["date"]).max()
     effective_windows, data_max_minus = split_effective_windows(config, calendar, data_max)
+    effective_boundaries, _ = split_effective_boundaries(config, calendar, data_max)
     reference = build_big_winner_reference(stock, config, calendar, effective_windows)
     bridge_reference = build_ep2_bridge_reference(stock, config, calendar)
 
@@ -3406,7 +4173,7 @@ def run_r01_1(config_path: str | Path = R01_1_DEFAULT_CONFIG) -> dict[str, Any]:
     risk_pct = build_r01_1_risk_pct_quintile_cost_control(probe, baseline, config)
     gate, decision = build_r01_1_gate_audit(authority, density, recall, baseline_diff, delay_audit, recall_cost, risk_pct, config)
     counterfactual = build_counterfactual(decision, probe, pd.DataFrame(columns=["split", "cap_violation_flag"]))
-    reference_audit = build_big_winner_audit(reference, effective_windows, data_max, data_max_minus)
+    reference_audit = build_big_winner_audit(reference, effective_windows, data_max, data_max_minus, effective_boundaries if is_v3_config(config) else None)
     entry_after_reference = build_r01_1_entry_after_reference_audit(probe)
     report = build_r01_1_final_report(decision, reference_audit, density, raw_waterfall, cooling_waterfall, recall, entry_after_reference, baseline_diff, recall_cost, gate)
 
@@ -3498,9 +4265,15 @@ def run_r01(config_path: str | Path = DEFAULT_CONFIG) -> dict[str, Any]:
     bucket_freeze, stock = build_bucket_freeze(stock, config)
     data_max = pd.to_datetime(stock["date"]).max()
     effective_windows, data_max_minus = split_effective_windows(config, calendar, data_max)
+    effective_boundaries, _ = split_effective_boundaries(config, calendar, data_max)
     reference = build_big_winner_reference(stock, config, calendar, effective_windows)
     bridge_reference = build_ep2_bridge_reference(stock, config, calendar)
     candidate_events = build_candidate_seed_events(stock, config)
+    if not candidate_events.empty:
+        candidate_seed_stock_days = set(zip(candidate_events["instrument"].astype(str), pd.to_datetime(candidate_events["signal_date"]).dt.normalize()))
+        stock["candidate_seed_stock_day"] = [item in candidate_seed_stock_days for item in zip(stock["instrument"].astype(str), stock["date"])]
+    else:
+        stock["candidate_seed_stock_day"] = False
     ep2_events = build_ep2_seed_events(stock, config)
     seed_events = pd.concat([candidate_events, ep2_events], ignore_index=True)
     episodes = build_seed_episodes(seed_events, stock, config, calendar, reference, bridge_reference, effective_windows)
@@ -3532,20 +4305,39 @@ def run_r01(config_path: str | Path = DEFAULT_CONFIG) -> dict[str, Any]:
             fail_fast = "no_fail_fast" not in baseline_id
             baseline_frames.append(simulate_episode_rows(rows, config, ep2_config, stock, calendar, fail_fast=fail_fast, id_prefix=baseline_id, baseline_id=baseline_id))
     baseline = pd.concat(baseline_frames, ignore_index=True) if baseline_frames else pd.DataFrame(columns=BASELINE_SIM_COLUMNS)
+    episodes_for_sim, probe, baseline = apply_v3_terminal_boundaries(episodes_for_sim, probe, baseline, config, calendar, data_max)
+    episodes = episodes_for_sim[SEED_EPISODE_COLUMNS].copy()
 
     density, density_tightness = build_density_audits(stock, episodes, seed_events, config)
-    recall = build_recall_audit(reference, episodes)
-    recall_cost = build_recall_cost_tradeoff(episodes, probe, baseline, config)
+    recall = build_recall_audit(reference, bridge_reference, episodes)
+    recall_cost = build_recall_cost_tradeoff(episodes, probe, baseline, config, reference, calendar)
     baseline_diff = build_baseline_diff_audit(probe, baseline)
     random_health = build_random_health_audit(baseline, config)
     delay_audit = build_delay_ineligible_audit(baseline)
     r_unit = build_r_unit_distribution_audit(probe, baseline)
     no_ff = baseline.loc[baseline["baseline_id"].eq("same_seed_no_fail_fast_hold_h20")]
     ff_path, ff_error = build_fail_fast_audits(probe, no_ff)
-    gate, decision = build_gate_audit(authority, density, recall, baseline_diff, delay_audit, random_health, recall_cost, probe, config)
-    counterfactual = build_counterfactual(decision, probe, density_tightness)
-    reference_audit = build_big_winner_audit(reference, effective_windows, data_max, data_max_minus)
-    report = build_final_report(decision, reference_audit, density, recall, recall_cost, gate, random_health)
+    gate, decision = build_gate_audit(authority, density, recall, baseline_diff, delay_audit, random_health, recall_cost, probe, baseline, config)
+    counterfactual = build_counterfactual(decision, probe, density_tightness, baseline_diff, label_a)
+    reference_audit = build_big_winner_audit(reference, effective_windows, data_max, data_max_minus, effective_boundaries if is_v3_config(config) else None)
+    report = build_final_report(
+        decision,
+        authority,
+        reference_audit,
+        density,
+        density_tightness,
+        recall,
+        recall_cost,
+        baseline_diff,
+        delay_audit,
+        r_unit,
+        ff_path,
+        ff_error,
+        counterfactual,
+        gate,
+        random_health,
+        config,
+    )
 
     for col in ["failed_seed_primary", "primary_metric_eligible_seed_episode", "failed_seed_label_a_h10_u1_5", "failed_seed_label_a_h20_u2_0", "failed_seed_h20_negative", "failed_seed_fail_fast_triggered", "terminal_blocked_exit"]:
         if col in probe.columns:
@@ -3599,6 +4391,21 @@ def run_r01(config_path: str | Path = DEFAULT_CONFIG) -> dict[str, Any]:
         "effective_train_reference_window": [_date_str(effective_windows["train"][0]), _date_str(effective_windows["train"][1])],
         "effective_validation_reference_window": [_date_str(effective_windows["validation"][0]), _date_str(effective_windows["validation"][1])],
         "effective_robustness_reference_window": [_date_str(effective_windows["robustness"][0]), _date_str(effective_windows["robustness"][1])],
+        "effective_train_primary_seed_end": _date_str(effective_boundaries["train"]["effective_primary_seed_end"]),
+        "effective_validation_primary_seed_end": _date_str(effective_boundaries["validation"]["effective_primary_seed_end"]),
+        "effective_robustness_primary_seed_end": _date_str(effective_boundaries["robustness"]["effective_primary_seed_end"]),
+        "effective_train_gate_entry_end": _date_str(effective_boundaries["train"]["effective_gate_entry_end"]),
+        "effective_validation_gate_entry_end": _date_str(effective_boundaries["validation"]["effective_gate_entry_end"]),
+        "effective_robustness_gate_entry_end": _date_str(effective_boundaries["robustness"]["effective_gate_entry_end"]),
+        "max_probe_observation_horizon_trading_days": max_probe_observation_horizon(config),
+        "split_boundary_policy": config.get("split", {}).get("split_boundary_policy", {}),
+        "primary_capture_basis": config.get("capture_time_basis", {}).get("primary_capture_basis", "signal_date"),
+        "signal_capture_basis": config.get("capture_time_basis", {}).get("signal_capture_basis", "primary"),
+        "seed_discovery_artifact": config.get("seed_provenance_gate", {}).get("discovery_artifact", ""),
+        "seed_discovery_scope": config.get("seed_provenance_gate", {}).get("discovery_scope", "train_only"),
+        "validation_oos_clean": bool(config.get("seed_provenance_gate", {}).get("validation_oos_clean", True)),
+        "post30_search_eligible_day_density": config.get("density_provenance", {}).get("post30_search_eligible_day_density", np.nan),
+        "r01_full_universe_seed_day_density_by_split": density.loc[density["seed_family_id"].eq(CANDIDATE_SEED_ID)].set_index("split")["seed_day_rate"].to_dict() if not density.empty else {},
         "data_max_date": _date_str(data_max),
         "data_max_date_minus_forward_horizon": _date_str(data_max_minus),
         "primary_big_winner_reference_count": int(reference.shape[0]),
@@ -3645,6 +4452,31 @@ def validate_r01(config_path: str | Path = DEFAULT_CONFIG, fail_on_hard_gates: b
     for key in ["effective_train_reference_window", "effective_validation_reference_window", "effective_robustness_reference_window", "data_max_date", "data_max_date_minus_forward_horizon"]:
         if key not in manifest or manifest.get(key) in ("", None, []):
             failures.append(f"manifest missing {key}")
+    if is_v3_config(config):
+        expected_formula = "close_near_high5_gt_0pct_and_vol_ratio10_gt_1_2_and_vol_ratio3_gt_1_2_and_rps5_gt_60"
+        if config.get("seed_rules", {}).get("candidate_seed_formula_id") != expected_formula:
+            failures.append("V3 candidate seed formula is not the frozen post30 formula")
+        for key in [
+            "effective_train_primary_seed_end",
+            "effective_validation_primary_seed_end",
+            "effective_robustness_primary_seed_end",
+            "effective_train_gate_entry_end",
+            "effective_validation_gate_entry_end",
+            "effective_robustness_gate_entry_end",
+            "max_probe_observation_horizon_trading_days",
+            "primary_capture_basis",
+            "seed_discovery_artifact",
+            "seed_discovery_scope",
+            "validation_oos_clean",
+            "post30_search_eligible_day_density",
+            "r01_full_universe_seed_day_density_by_split",
+        ]:
+            if key not in manifest or manifest.get(key) in ("", None, []):
+                failures.append(f"V3 manifest missing {key}")
+        if manifest.get("primary_capture_basis") != "entry_execution_date":
+            failures.append("V3 primary capture basis must be entry_execution_date")
+        if manifest.get("seed_discovery_scope") != "train_only" and manifest.get("final_decision") in {"go_to_r02", "go_to_r02_with_robustness_warning"}:
+            failures.append("V3 all-split discovery cannot authorize R02 decisions")
 
     required_columns = {
         "r01_big_winner_reference_panel.parquet": BIG_WINNER_REFERENCE_COLUMNS,
@@ -3662,7 +4494,31 @@ def validate_r01(config_path: str | Path = DEFAULT_CONFIG, fail_on_hard_gates: b
     reference = pd.read_parquet(paths.cache_dir / "r01_big_winner_reference_panel.parquet")
     if reference.empty:
         failures.append("primary big-winner reference set is empty")
+    if is_v3_config(config) and not reference.empty:
+        for split in ["train", "validation", "robustness"]:
+            window_key = f"effective_{split}_reference_window"
+            if window_key not in manifest or not manifest.get(window_key):
+                continue
+            start, end = [pd.Timestamp(value) for value in manifest[window_key]]
+            ref_dates = pd.to_datetime(reference.loc[reference["split"].eq(split), "reference_date"], errors="coerce")
+            if bool(((ref_dates < start) | (ref_dates > end)).any()):
+                failures.append(f"V3 reference panel contains {split} rows outside effective reference window")
     seed_events = pd.read_parquet(paths.cache_dir / "r01_seed_event_panel.parquet")
+    if is_v3_config(config):
+        v3_required_event_cols = ["close_near_high5_gt_0pct_triggered", "rolling_close_high5_asof", "vol_ratio10", "vol_ratio3", "rps5"]
+        missing_v3_event_cols = [col for col in v3_required_event_cols if col not in seed_events.columns]
+        if missing_v3_event_cols:
+            failures.append(f"V3 seed event panel missing columns: {missing_v3_event_cols}")
+        candidate_rows = seed_events.loc[seed_events["seed_family_id"].eq(CANDIDATE_SEED_ID) & seed_events["hard_filter_status"].eq("passed")]
+        if not candidate_rows.empty:
+            formula_ok = (
+                candidate_rows["close_near_high5_gt_0pct_triggered"].astype(bool)
+                & (candidate_rows["vol_ratio10"].astype(float) > 1.2)
+                & (candidate_rows["vol_ratio3"].astype(float) > 1.2)
+                & (candidate_rows["rps5"].astype(float) > 0.60)
+            )
+            if not bool(formula_ok.all()):
+                failures.append("V3 candidate seed rows do not reproduce the frozen high5/volume/rps formula")
     if seed_events.loc[seed_events["seed_family_id"].eq(CANDIDATE_SEED_ID), "rs_rank_pct_audit"].notna().any():
         hard_rejects = seed_events.loc[
             seed_events["seed_family_id"].eq(CANDIDATE_SEED_ID)
@@ -3672,13 +4528,26 @@ def validate_r01(config_path: str | Path = DEFAULT_CONFIG, fail_on_hard_gates: b
             failures.append("candidate seed appears to use relative strength as a hard filter")
 
     episodes = pd.read_parquet(paths.cache_dir / "r01_seed_episode_panel.parquet")
-    robustness_end = pd.Timestamp(manifest["effective_robustness_reference_window"][1])
-    invalid_primary = episodes.loc[
-        episodes["primary_metric_eligible_seed_episode"].astype(bool)
-        & (pd.to_datetime(episodes["episode_start_signal_date"]) > robustness_end)
-    ]
+    if is_v3_config(config):
+        invalid_masks = []
+        for split in ["train", "validation", "robustness"]:
+            gate_key = f"effective_{split}_gate_entry_end"
+            gate_end = pd.Timestamp(manifest[gate_key]) if gate_key in manifest and manifest.get(gate_key) else pd.NaT
+            split_mask = (
+                episodes["split"].eq(split)
+                & episodes["primary_metric_eligible_seed_episode"].astype(bool)
+                & (pd.to_datetime(episodes["entry_execution_date"]) > gate_end)
+            )
+            invalid_masks.append(split_mask)
+        invalid_primary = episodes.loc[pd.concat(invalid_masks, axis=1).any(axis=1)] if invalid_masks else episodes.iloc[0:0]
+    else:
+        robustness_end = pd.Timestamp(manifest["effective_robustness_reference_window"][1])
+        invalid_primary = episodes.loc[
+            episodes["primary_metric_eligible_seed_episode"].astype(bool)
+            & (pd.to_datetime(episodes["episode_start_signal_date"]) > robustness_end)
+        ]
     if not invalid_primary.empty:
-        failures.append("primary metric eligible seed episodes extend beyond effective reference end")
+        failures.append("primary metric eligible seed episodes extend beyond effective gate entry end" if is_v3_config(config) else "primary metric eligible seed episodes extend beyond effective reference end")
     if episodes.loc[episodes["seed_family_id"].eq(CANDIDATE_SEED_ID) & episodes["executable_status"].eq("passed") & episodes["initial_risk_pct"].isna()].shape[0] > 0:
         failures.append("candidate executable episodes have missing initial_risk_pct")
 
@@ -3694,6 +4563,17 @@ def validate_r01(config_path: str | Path = DEFAULT_CONFIG, fail_on_hard_gates: b
             failures.append("matched-random replacement policy is not frozen no-replacement")
         if random_rows["random_excluded_candidate_seed_day"].astype(bool).any():
             failures.append("matched-random contains candidate seed stock-day contamination")
+    if is_v3_config(config):
+        for baseline_id in ["same_seed_matched_delay_1d_same_fail_fast_h20", "same_seed_matched_delay_3d_same_fail_fast_h20", "ep2_detector_probe_with_simple_stop_bridge"]:
+            bdf = baseline.loc[baseline["baseline_id"].eq(baseline_id)]
+            if bdf.empty:
+                continue
+            timestamp_cols = ["candidate_entry_execution_date", "baseline_entry_execution_date", "capture_timestamp_used"]
+            if baseline_id == "ep2_detector_probe_with_simple_stop_bridge":
+                timestamp_cols.append("ep2_bridge_entry_execution_date")
+            missing_ts = [col for col in timestamp_cols if col not in bdf.columns or bdf[col].isna().all()]
+            if missing_ts:
+                failures.append(f"V3 baseline {baseline_id} missing executable timestamp fields: {missing_ts}")
 
     gate = pd.read_csv(paths.reports_dir / "r01_gate_audit.csv")
     gate_missing = [col for col in ["gate_id", "split", "metric_name", "metric_value", "threshold", "comparison", "status", "is_hard_gate", "failure_reason"] if col not in gate.columns]
@@ -3703,9 +4583,75 @@ def validate_r01(config_path: str | Path = DEFAULT_CONFIG, fail_on_hard_gates: b
         failed_hard = gate.loc[gate["is_hard_gate"].astype(bool) & gate["status"].eq("failed")]
         if not failed_hard.empty:
             failures.append("hard gates failed: " + "; ".join(failed_hard["gate_id"].astype(str).head(20).tolist()))
+    if is_v3_config(config):
+        required_v3_gate_ids = {
+            "seed_provenance_r02_cap",
+            "bridge_ep2_big_winner_seed_recall_diff_vs_ep2_detector",
+            "fail_fast_survived_big_winner_recall_loss_vs_same_seed_no_fail_fast",
+            "loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector",
+            "matched_delay_1d_p05_no_harm",
+            "matched_delay_3d_p05_no_harm",
+            "robustness_failed_seed_average_loss_r_diff_vs_same_seed_no_fail_fast",
+            "robustness_p05_return_r_diff_vs_matched_delay_same_fail_fast_min",
+            "robustness_recall_cost_score_positive",
+            "robustness_incremental_loss_bound",
+            "robustness_incremental_exposure_bound",
+        }
+        observed_gate_ids = set(gate["gate_id"].astype(str))
+        missing_gate_ids = sorted(required_v3_gate_ids - observed_gate_ids)
+        if missing_gate_ids:
+            failures.append(f"V3 gate audit missing required gate ids: {missing_gate_ids}")
+        trade = pd.read_csv(paths.reports_dir / "r01_recall_cost_tradeoff.csv")
+        required_trade_cols = [
+            "signal_capture_count",
+            "entry_capture_count",
+            "signal_only_not_entry_within_window_count",
+            "capture_time_basis",
+            "seed_discovery_scope",
+            "validation_oos_clean",
+            "loss_r_per_captured_big_winner_seed_diff_vs_ep2_detector",
+            "exposure_days_per_captured_big_winner_seed_diff_vs_ep2_detector",
+        ]
+        missing_trade_cols = [col for col in required_trade_cols if col not in trade.columns]
+        if missing_trade_cols:
+            failures.append(f"V3 recall-cost tradeoff missing columns: {missing_trade_cols}")
+        elif not trade["capture_time_basis"].eq("entry_execution_date").all():
+            failures.append("V3 recall-cost tradeoff must use entry_execution_date capture basis")
+        recall_audit = pd.read_csv(paths.reports_dir / "r01_seed_recall_audit.csv")
+        for col in ["bridge_ep2_big_winner_reference_count", "captured_ep2_bridge_big_winner_count", "bridge_ep2_big_winner_seed_recall_diff_vs_ep2_detector"]:
+            if col not in recall_audit.columns:
+                failures.append(f"V3 seed recall audit missing column: {col}")
+        random_health = pd.read_csv(paths.reports_dir / "r01_random_baseline_health_audit.csv")
+        random_stats = set(random_health["replicate_stat"].astype(str)) if not random_health.empty and "replicate_stat" in random_health.columns else set()
+        if not {"mean", "p05", "p50", "p95"}.issubset(random_stats):
+            failures.append("V3 random health audit missing mean/p05/p50/p95 replicate stats")
+        counterfactual = pd.read_csv(paths.reports_dir / "r01_counterfactual_failure_inheritance.csv")
+        cf_families = set(counterfactual["counterfactual_family"].astype(str)) if not counterfactual.empty and "counterfactual_family" in counterfactual.columns else set()
+        if not {"conservative_fail", "p05_no_harm", "density_cap", "fail_fast_window"}.issubset(cf_families):
+            failures.append("V3 counterfactual audit missing required families")
+        r_unit = pd.read_csv(paths.reports_dir / "r01_r_unit_distribution_audit.csv")
+        quintile_rows = r_unit.loc[
+            r_unit["split"].astype(str).eq("validation")
+            & r_unit["initial_risk_pct_quintile"].astype(str).ne("all")
+        ] if "initial_risk_pct_quintile" in r_unit.columns else pd.DataFrame()
+        if quintile_rows.empty:
+            failures.append("V3 R-unit audit missing validation risk-quintile rows")
 
     report = (paths.reports_dir / "r01_final_report.md").read_text(encoding="utf-8")
     required_report_tokens = ["Final decision", "Recall-Cost Tradeoff", "Matched-Random Reliability", "R02 Handoff"]
+    if is_v3_config(config):
+        required_report_tokens += [
+            "OOS status",
+            "Post30 Provenance",
+            "retrospective evaluation anchor",
+            "Captured Post-Reference Entry Cost",
+            "Density Cap Tightness",
+            "Matched-Delay Ineligible Bias",
+            "R-Unit Distribution And Risk Quintile Cost Control",
+            "Fail-Fast Attribution",
+            "Fail-Fast Error Audit",
+            "Counterfactual Failure Inheritance",
+        ]
     for token in required_report_tokens:
         if token not in report:
             failures.append(f"final report missing section token: {token}")

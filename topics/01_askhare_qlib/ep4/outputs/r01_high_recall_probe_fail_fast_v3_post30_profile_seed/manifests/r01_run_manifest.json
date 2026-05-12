@@ -1,0 +1,93 @@
+{
+  "phase": "ep4_r01_high_recall_probe_fail_fast_v3_post30_profile_seed",
+  "schema_version": "ep4_r01_high_recall_probe_fail_fast_v1",
+  "config_path": "ep4/configs/r01_high_recall_probe_fail_fast_v3.yaml",
+  "config_hash": "cd4605e365846d75b353b84e6c379f832e44e6ddd16fea45c924a74c25f78285",
+  "output_root": "ep4/outputs/r01_high_recall_probe_fail_fast_v3_post30_profile_seed",
+  "generated_at": "2026-05-12T04:46:50.220152+00:00",
+  "final_decision": "stop_ep4_r01_path",
+  "candidate_seed_id": "ep4_post30_profile_high5_volume_rps_seed_v0",
+  "candidate_seed_formula_id": "close_near_high5_gt_0pct_and_vol_ratio10_gt_1_2_and_vol_ratio3_gt_1_2_and_rps5_gt_60",
+  "primary_recall_window_id": "primary_0_30",
+  "primary_recall_lookback_days": 0,
+  "configured_train_window": [
+    "2017-07-04",
+    "2021-12-31"
+  ],
+  "configured_validation_window": [
+    "2022-01-01",
+    "2023-12-31"
+  ],
+  "configured_robustness_window": [
+    "2024-01-01",
+    "2025-12-31"
+  ],
+  "effective_train_reference_window": [
+    "2017-07-04",
+    "2021-09-15"
+  ],
+  "effective_validation_reference_window": [
+    "2022-01-01",
+    "2023-09-14"
+  ],
+  "effective_robustness_reference_window": [
+    "2024-01-01",
+    "2025-09-16"
+  ],
+  "effective_train_primary_seed_end": "2021-11-05",
+  "effective_validation_primary_seed_end": "2023-11-03",
+  "effective_robustness_primary_seed_end": "2025-11-05",
+  "effective_train_gate_entry_end": "2021-11-05",
+  "effective_validation_gate_entry_end": "2023-11-03",
+  "effective_robustness_gate_entry_end": "2025-11-05",
+  "max_probe_observation_horizon_trading_days": 40,
+  "split_boundary_policy": {
+    "seed_formula_split_field": "signal_date",
+    "headline_gate_split_field": "entry_execution_date",
+    "require_terminal_exit_within_configured_split_for_headline_gates": true,
+    "cross_split_execution_rows": "report_only",
+    "max_probe_observation_horizon_trading_days": "natural_exit_horizon_plus_max_exit_retry"
+  },
+  "primary_capture_basis": "entry_execution_date",
+  "signal_capture_basis": "report_only",
+  "seed_discovery_artifact": "ep4/outputs/r01_big_winner_post30_indicator_search_v1/reports/post30_condition_search_v1_report.md",
+  "seed_discovery_scope": "all_splits",
+  "validation_oos_clean": false,
+  "post30_search_eligible_day_density": 0.0791,
+  "r01_full_universe_seed_day_density_by_split": {
+    "train": 0.0799768136905585,
+    "validation": 0.07717213833055062,
+    "robustness": 0.07938342967244702
+  },
+  "data_max_date": "2026-04-30",
+  "data_max_date_minus_forward_horizon": "2025-10-31",
+  "primary_big_winner_reference_count": 838,
+  "candidate_seed_episode_count": 7859,
+  "ep2_seed_episode_count": 2389,
+  "gate_count": 43,
+  "failed_gate_count": 12,
+  "artifact_hashes": {
+    "r01_big_winner_reference_panel.parquet": "a6512e9aa481d23ba9e44cce2f9465ad45526a57338da75e450ba1a723fa9ef1",
+    "r01_seed_event_panel.parquet": "61c639b8fede73d0a0cbdcd42ccbcc806026fdbd1ab8cd7ebe901e119224771d",
+    "r01_seed_episode_panel.parquet": "3d6b8de92d5b8029d3d9bf65f75e513d573e1b5d042f44ee9b3e7a4d784bcc79",
+    "r01_probe_simulation_panel.parquet": "5db246d7ccf99cc7e5b9572420ca3a5d0fbc5502b478c31f955b10dc83dd5978",
+    "r01_baseline_simulation_panel.parquet": "9e4b7dbce1a83b9fb787e93252c4069ea7df96780b8a26c81e82c1afa58c0a73",
+    "r01_upstream_authority.csv": "86a1206ffa1b36e138e70f06e0ef695a596275c37d54a740ed2aff4de05770eb",
+    "r01_big_winner_reference_audit.csv": "469f3856dc0ecd267f3360cbe01216f8bc0184487d82e4a3cce3f1a40e61632a",
+    "r01_seed_density_audit.csv": "905d52ceac6c288ac4d42c90ca4f1c2af1fa8fbf9ad478a13e538321ff258dcf",
+    "r01_density_cap_tightness_audit.csv": "c8317ecfa7b52cd02753ba5cc441ee0dbeffb1bc043589fcc64d6eae8839ede7",
+    "r01_seed_recall_audit.csv": "13919030d8d584c0a09d108b1cb247c7850cd82fb72e8338db1edfc3e89292e7",
+    "r01_label_bridge_audit.csv": "6349cd2bed0828ea8d08ff8731ab75f9081ee2583161fddfad01a440cdf2a965",
+    "r01_fail_fast_path_audit.csv": "81672b8754ab54478c1b05852421aacf19cce1490fdfd14482caf6bd5744dbd9",
+    "r01_fail_fast_error_audit.csv": "9a1dba1e0e8ed9c976efc37edfc6d3ce90faf25b92e9d74a52b092281945b56e",
+    "r01_matched_control_bucket_freeze.csv": "9eb8b36012715c9d9319ce9690caae290a4b4d02eb2d81cfa398c3daa7f5057e",
+    "r01_random_baseline_health_audit.csv": "bde24bb6087ec548c3a6da4ee028a9f9dac217742132f20fa56183076919a39d",
+    "r01_r_unit_distribution_audit.csv": "37f33df4ccaa78bb4cdfdd1f2d09b63a638ba3dc0ad77e0ade9987ac164d1473",
+    "r01_baseline_diff_audit.csv": "39e1e6190c4453c3cfe58836625699f9394386212593ab2fbe69d172b5e4b8b0",
+    "r01_matched_delay_ineligible_audit.csv": "bc093b231ebdbb419c7caebf43be47fdbca88fca63b8d1ef1a0d272e640746b9",
+    "r01_recall_cost_tradeoff.csv": "adb18ffe2525a61bde46ffd28d25c6dd9b39c1efd470679b0df5dc8249cc6227",
+    "r01_counterfactual_failure_inheritance.csv": "073623c48ebbf629d666c9e38e91cb9b97ef87e31575e87cd2264c54df820650",
+    "r01_gate_audit.csv": "599a7b9094ed88d1bc7d456af020ba260af17b10bbb3cb86592983abfdce2b05",
+    "r01_final_report.md": "ef44e3df2fe79381e1646b774ad39820393c6c87602b49c29d8ae32561c11064"
+  }
+}
