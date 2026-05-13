@@ -1,0 +1,15 @@
+condition_group_id,family_id,split,decision_grain,signal_count,complete_h120_count,positive_h120_count,precision_lift_feature_matched_h120_close_anchor,bootstrap_precision_lift_ci90_lower,endpoint_return_median_t20,signal_count_gate_pass,complete_h120_gate_pass,positive_h120_gate_pass,lift_gate_pass,bootstrap_gate_pass,t20_median_gate_pass,split_gate_pass
+momentum_rps__and3__68b32373ce93,momentum_rps,robustness,stock_day,10929,6864,730,1.1001611245381557,0.9613601589840461,-0.005316834358010669,True,True,True,False,False,False,False
+momentum_rps__and3__68b32373ce93,momentum_rps,validation,stock_day,10919,9175,578,1.232234003502369,1.0722981151179467,-0.02831013124680598,True,True,True,False,True,False,False
+oscillator__and4__95dbd99ae828,oscillator,robustness,stock_day,7042,4852,395,0.8421452680825902,0.7639076852605156,0.0015735251006554485,True,True,True,False,False,True,False
+oscillator__and4__95dbd99ae828,oscillator,validation,stock_day,5409,4326,219,0.9902139110133934,0.8685017191996017,-0.01689903996175718,True,True,True,False,False,False,False
+price_trend__and3__6030760ed19f,price_trend,robustness,stock_day,8370,5409,533,1.0193443895021077,0.8975448916052986,-0.0056005074235861985,True,True,True,False,False,False,False
+price_trend__and3__6030760ed19f,price_trend,validation,stock_day,7628,6528,451,1.3513499179850599,1.1406757362676314,-0.028470502406912512,True,True,True,False,True,False,False
+pullback_drawdown__and3__11795aa42e45,pullback_drawdown,robustness,stock_day,13646,8968,858,0.9896973275872899,0.8930002709540953,-0.0043266874502317365,True,True,True,False,False,False,False
+pullback_drawdown__and3__11795aa42e45,pullback_drawdown,validation,stock_day,13044,11027,708,1.2558775775206434,1.1154453033314364,-0.025879149619430664,True,True,True,False,True,False,False
+range_breakout__and3__00e51295d9c3,range_breakout,robustness,stock_day,19795,13851,1155,0.8625703128318235,0.813317632450693,0.001935500669311474,True,True,True,False,False,True,False
+range_breakout__and3__00e51295d9c3,range_breakout,validation,stock_day,16810,13081,731,1.0928343471558826,0.9932587311996277,-0.011831863581488467,True,True,True,False,False,False,False
+volatility_band__and4__ef9c875dde10,volatility_band,robustness,stock_day,8668,5806,451,0.8035134713258485,0.7292101618391591,0.002915449057909525,True,True,True,False,False,True,False
+volatility_band__and4__ef9c875dde10,volatility_band,validation,stock_day,6385,5113,295,1.1280542595856105,0.9491128983208649,-0.019748664391284754,True,True,True,False,False,False,False
+volume_money__and4__4eb7a99e922f,volume_money,robustness,stock_day,6311,4288,446,1.0759467828786726,0.9970913905453076,-0.0018838136647963966,True,True,True,False,False,False,False
+volume_money__and4__4eb7a99e922f,volume_money,validation,stock_day,5692,4433,252,1.1119217692947074,0.9762063710098781,-0.015485210430700058,True,True,True,False,False,False,False
