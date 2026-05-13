@@ -1,0 +1,149 @@
+phase: ep4_r02_family_signal_120d_path_query_v1
+requirement_path: ep4/requirement_02_family_signal_120d_path_query_v1.md
+output_root: ep4/outputs/r02_family_signal_120d_path_query_v1
+
+upstream_r01:
+  config: ep4/configs/r01_high_recall_probe_fail_fast_v2.yaml
+
+upstream_r02_coverage:
+  output_root: ep4/outputs/r02_big_winner_coverage_ratio_search_v1
+  manifest: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/manifests/r02_big_winner_coverage_manifest.json
+  all_results: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/reports/r02_big_winner_coverage_all.csv
+  candidate_dictionary: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/reports/r02_big_winner_coverage_candidate_dictionary.csv
+  atomic_dictionary: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/reports/r02_big_winner_coverage_atomic_condition_dictionary.csv
+
+single_signals:
+  - signal_id: single_momentum_rps
+    family_id: momentum_rps
+    condition_group_id: momentum_rps__and3__68b32373ce93
+    condition_text: "roc5_r02 >= 0.05 AND rps5_r02 >= 0.8 AND rps10_r02 >= 0.5"
+    source_descriptors:
+      coverage_pct: 85.09
+      density_pct: 11.16
+      mean_first_hit: 9.2
+      median_first_hit: 8
+      split_stability: "robustness 83.82% below 85%"
+    terms:
+      - {feature: roc5_r02, operator: ">=", threshold: 0.05}
+      - {feature: rps5_r02, operator: ">=", threshold: 0.8}
+      - {feature: rps10_r02, operator: ">=", threshold: 0.5}
+  - signal_id: single_oscillator
+    family_id: oscillator
+    condition_group_id: oscillator__and4__95dbd99ae828
+    condition_text: "kdj_k5_r02 >= 60 AND cci5_r02 >= 100 AND kdj_k10_r02 >= 55 AND cci10_r02 >= 150"
+    source_descriptors:
+      coverage_pct: 85.09
+      density_pct: 5.85
+      mean_first_hit: 11.3
+      median_first_hit: 11
+      split_stability: "validation 82.91% below 85%"
+    terms:
+      - {feature: kdj_k5_r02, operator: ">=", threshold: 60}
+      - {feature: cci5_r02, operator: ">=", threshold: 100}
+      - {feature: kdj_k10_r02, operator: ">=", threshold: 55}
+      - {feature: cci10_r02, operator: ">=", threshold: 150}
+  - signal_id: single_price_trend
+    family_id: price_trend
+    condition_group_id: price_trend__and3__6030760ed19f
+    condition_text: "close_over_ma5_r02 >= 0.03 AND ema_slope5_r02 >= 0.0 AND close_over_ma10_r02 >= 0.03"
+    source_descriptors:
+      coverage_pct: 86.15
+      density_pct: 8.75
+      mean_first_hit: 9.3
+      median_first_hit: 7
+      split_stability: "validation 82.28% below 85%"
+    terms:
+      - {feature: close_over_ma5_r02, operator: ">=", threshold: 0.03}
+      - {feature: ema_slope5_r02, operator: ">=", threshold: 0.0}
+      - {feature: close_over_ma10_r02, operator: ">=", threshold: 0.03}
+  - signal_id: single_pullback_drawdown
+    family_id: pullback_drawdown
+    condition_group_id: pullback_drawdown__and3__11795aa42e45
+    condition_text: "pullback_depth5_r02 >= -0.05 AND rebound_from_low5_r02 >= 0.05 AND days_since_high10_r02 <= 5"
+    source_descriptors:
+      coverage_pct: 90.30
+      density_pct: 14.28
+      mean_first_hit: 8.8
+      median_first_hit: 7
+      split_stability: "all splits above 88%"
+    terms:
+      - {feature: pullback_depth5_r02, operator: ">=", threshold: -0.05}
+      - {feature: rebound_from_low5_r02, operator: ">=", threshold: 0.05}
+      - {feature: days_since_high10_r02, operator: "<=", threshold: 5}
+  - signal_id: single_range_breakout
+    family_id: range_breakout
+    condition_group_id: range_breakout__and3__00e51295d9c3
+    condition_text: "range_position5_r02 >= 0.9 AND new_high_flag10_r02 == 1.0 AND range_position10_r02 >= 0.7"
+    source_descriptors:
+      coverage_pct: 96.80
+      density_pct: 17.37
+      mean_first_hit: 8.0
+      median_first_hit: 7
+      split_stability: "all splits above 95%"
+    terms:
+      - {feature: range_position5_r02, operator: ">=", threshold: 0.9}
+      - {feature: new_high_flag10_r02, operator: "==", threshold: 1.0}
+      - {feature: range_position10_r02, operator: ">=", threshold: 0.7}
+  - signal_id: single_volatility_band
+    family_id: volatility_band
+    condition_group_id: volatility_band__and4__ef9c875dde10
+    condition_text: "boll_pct_b5_r02 >= 0.8 AND boll_width5_r02 >= 1.0 AND boll_width10_r02 >= 1.0 AND price_channel_position10_r02 >= 0.8"
+    source_descriptors:
+      coverage_pct: 85.21
+      density_pct: 7.14
+      mean_first_hit: 10.1
+      median_first_hit: 8
+      split_stability: "train 83.41% below 85%"
+    terms:
+      - {feature: boll_pct_b5_r02, operator: ">=", threshold: 0.8}
+      - {feature: boll_width5_r02, operator: ">=", threshold: 1.0}
+      - {feature: boll_width10_r02, operator: ">=", threshold: 1.0}
+      - {feature: price_channel_position10_r02, operator: ">=", threshold: 0.8}
+  - signal_id: single_volume_money
+    family_id: volume_money
+    condition_group_id: volume_money__and4__4eb7a99e922f
+    condition_text: "volume_ratio5_r02 >= 1.5 AND money_zscore5_r02 >= 2.0 AND money_price_coherence5_r02 == 1.0 AND money_price_coherence10_r02 == 1.0"
+    source_descriptors:
+      coverage_pct: 88.17
+      density_pct: 5.77
+      mean_first_hit: 11.8
+      median_first_hit: 11
+      split_stability: "all splits above 86%"
+    terms:
+      - {feature: volume_ratio5_r02, operator: ">=", threshold: 1.5}
+      - {feature: money_zscore5_r02, operator: ">=", threshold: 2.0}
+      - {feature: money_price_coherence5_r02, operator: "==", threshold: 1.0}
+      - {feature: money_price_coherence10_r02, operator: "==", threshold: 1.0}
+
+review_composite_signals:
+  - signal_id: review_momentum_oscillator_pullback_volume
+    required_family_set: [momentum_rps, oscillator, pullback_drawdown, volume_money]
+  - signal_id: review_oscillator_pullback_volatility_volume
+    required_family_set: [oscillator, pullback_drawdown, volatility_band, volume_money]
+  - signal_id: review_momentum_oscillator_range_volume
+    required_family_set: [momentum_rps, oscillator, range_breakout, volume_money]
+  - signal_id: review_momentum_pullback_volatility_volume
+    required_family_set: [momentum_rps, pullback_drawdown, volatility_band, volume_money]
+
+allowed_windows: [5, 10, 30, 60]
+path_horizon_trading_days: 120
+path_offsets: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+atr:
+  method: wilder
+  period: 14
+  offsets: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+
+primary_grain: raw_signal_stock_day
+episode_collapse_enabled: false
+entry_anchor: first_executable_next_open_after_signal_date
+entry_executable_filter_policy:
+  require_previous_row_buy_executable_next_open: true
+  require_entry_open_finite_positive: true
+  require_entry_not_suspended_or_dirty: true
+  require_entry_eligible_stock_day: true
+  use_local_limit_flags_when_available: true
+
+output_policy:
+  per_signal_csv_only: true
+  forbid_merged_all_signal_csv: true
+  forbid_markdown_report: true
