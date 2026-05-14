@@ -1,0 +1,6 @@
+field_name,required_for_ev_r,source_table_or_file,source_column,availability_status,missing_reason,affected_row_count,usable_row_count
+signal_day_low,True,,,missing,not_materialized_in_r02_path_csv,277986,0
+prior_10d_low,True,,,missing,not_materialized_in_r02_path_csv,277986,0
+prior_20d_low,True,,,missing,not_materialized_in_r02_path_csv,277986,0
+entry_price,True,r02_path_csv,entry_price,available,,277986,277448
+close_return_t20,True,r02_path_csv,close_return_t20,available,,277986,267095

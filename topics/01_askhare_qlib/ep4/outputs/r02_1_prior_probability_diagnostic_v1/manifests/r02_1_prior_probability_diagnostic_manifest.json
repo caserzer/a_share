@@ -1,0 +1,59 @@
+{
+  "phase": "ep4_r02_1_prior_probability_diagnostic_v1",
+  "generated_at": "2026-05-14T11:35:30.981483+00:00",
+  "requirement_path": "ep4/requirement_02_1_prior_probability_diagnostic_v1.md",
+  "config_path": "ep4/configs/r02_1_prior_probability_diagnostic_v1.yaml",
+  "config_hash": "6ce7564a754c1e6124f11e075eba93386369af8c46888dca9aafb38d2554c393",
+  "output_root": "ep4/outputs/r02_1_prior_probability_diagnostic_v1",
+  "upstream_path_query_manifest_path": "ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_manifest.json",
+  "upstream_path_query_manifest_hash": "58a258c7cf77cca5175e01b78aae243b7f18ca5032be4b3723f382a3fcebe36d",
+  "upstream_precision_manifest_path": "ep4/outputs/r02_family_precision_forward_return_stats_v1/manifests/r02_family_precision_forward_return_stats_manifest.json",
+  "upstream_precision_manifest_hash": "34cd9e742b593a7c4dd6b243442a9cb8e93482656527d26b66f3ac42f99cdc74",
+  "frozen_family_ids": [
+    "momentum_rps",
+    "oscillator",
+    "price_trend",
+    "pullback_drawdown",
+    "range_breakout",
+    "volatility_band",
+    "volume_money"
+  ],
+  "label_definition_version": "r02_1_good_bad_neutral_v1",
+  "label_priority_order": [
+    "censored_or_invalid",
+    "bad_path",
+    "good_path",
+    "neutral_path"
+  ],
+  "entry_anchor": "first_executable_next_open_after_signal_date",
+  "path_metric_source": "r02_family_signal_120d_path_query_v1_per_signal_csv",
+  "sample_sufficiency_thresholds": {
+    "n_min_bucket": 200,
+    "n_min_split_bucket": 80,
+    "n_min_ev_r": 80
+  },
+  "global_action_time_prior_status": "unavailable_background_path_not_materialized",
+  "ev_r_status": "unavailable_missing_inputs",
+  "ev_r_input_audit_path": "ep4/outputs/r02_1_prior_probability_diagnostic_v1/reports/r02_1_ev_r_input_audit.csv",
+  "context_bucket_status": "available_with_entry_risk_pct_na",
+  "survival_checkpoint_status": "available",
+  "fresh_evidence_prior_status": "available",
+  "r03_input_readiness_path": "ep4/outputs/r02_1_prior_probability_diagnostic_v1/reports/r02_1_r03_input_readiness.csv",
+  "row_counts_by_table": {
+    "global_action_time_prior": 6,
+    "single_family_prior": 63,
+    "same_day_bundle_prior": 907,
+    "same_day_family_count_prior": 63,
+    "bucket_fallback_audit": 907,
+    "context_bucket_prior": 907,
+    "survival_checkpoint_prior": 2721,
+    "fresh_evidence_prior": 3882,
+    "fresh_evidence_offset_distribution": 11003,
+    "split_stability_diagnostics": 1777,
+    "r03_input_readiness": 1,
+    "ev_r_input_audit": 5
+  },
+  "validation_status": "passed",
+  "artifact_hash": "62f92e82d525ed4918859bd74dc74dcd",
+  "upstream_precision_phase": "ep4_r02_family_precision_forward_return_stats_v1"
+}

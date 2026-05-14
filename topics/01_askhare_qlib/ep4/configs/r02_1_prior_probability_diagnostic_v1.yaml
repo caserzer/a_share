@@ -1,0 +1,79 @@
+phase: ep4_r02_1_prior_probability_diagnostic_v1
+requirement_path: ep4/requirement_02_1_prior_probability_diagnostic_v1.md
+output_root: ep4/outputs/r02_1_prior_probability_diagnostic_v1
+
+upstream_path_query:
+  config: ep4/configs/r02_family_signal_120d_path_query_v1.yaml
+  output_root: ep4/outputs/r02_family_signal_120d_path_query_v1
+  manifest: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_manifest.json
+  validation: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_validation.json
+
+upstream_precision:
+  output_root: ep4/outputs/r02_family_precision_forward_return_stats_v1
+  manifest: ep4/outputs/r02_family_precision_forward_return_stats_v1/manifests/r02_family_precision_forward_return_stats_manifest.json
+  background_prior_panel: ep4/outputs/r02_family_precision_forward_return_stats_v1/cache/r02_family_background_prior_panel.parquet
+
+upstream_eligible_day_density:
+  panel: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/cache/r02_eligible_day_density_panel.parquet
+
+frozen_families:
+  - family_id: momentum_rps
+    signal_id: single_momentum_rps
+    condition_group_id: momentum_rps__and3__68b32373ce93
+    condition_text: "roc5_r02 >= 0.05 AND rps5_r02 >= 0.8 AND rps10_r02 >= 0.5"
+  - family_id: oscillator
+    signal_id: single_oscillator
+    condition_group_id: oscillator__and4__95dbd99ae828
+    condition_text: "kdj_k5_r02 >= 60 AND cci5_r02 >= 100 AND kdj_k10_r02 >= 55 AND cci10_r02 >= 150"
+  - family_id: price_trend
+    signal_id: single_price_trend
+    condition_group_id: price_trend__and3__6030760ed19f
+    condition_text: "close_over_ma5_r02 >= 0.03 AND ema_slope5_r02 >= 0.0 AND close_over_ma10_r02 >= 0.03"
+  - family_id: pullback_drawdown
+    signal_id: single_pullback_drawdown
+    condition_group_id: pullback_drawdown__and3__11795aa42e45
+    condition_text: "pullback_depth5_r02 >= -0.05 AND rebound_from_low5_r02 >= 0.05 AND days_since_high10_r02 <= 5"
+  - family_id: range_breakout
+    signal_id: single_range_breakout
+    condition_group_id: range_breakout__and3__00e51295d9c3
+    condition_text: "range_position5_r02 >= 0.9 AND new_high_flag10_r02 == 1.0 AND range_position10_r02 >= 0.7"
+  - family_id: volatility_band
+    signal_id: single_volatility_band
+    condition_group_id: volatility_band__and4__ef9c875dde10
+    condition_text: "boll_pct_b5_r02 >= 0.8 AND boll_width5_r02 >= 1.0 AND boll_width10_r02 >= 1.0 AND price_channel_position10_r02 >= 0.8"
+  - family_id: volume_money
+    signal_id: single_volume_money
+    condition_group_id: volume_money__and4__4eb7a99e922f
+    condition_text: "volume_ratio5_r02 >= 1.5 AND money_zscore5_r02 >= 2.0 AND money_price_coherence5_r02 == 1.0 AND money_price_coherence10_r02 == 1.0"
+
+sample_sufficiency:
+  n_min_bucket: 200
+  n_min_split_bucket: 80
+  n_min_ev_r: 80
+
+fresh_evidence:
+  min_offset: 3
+  max_offset: 30
+  offset_buckets:
+    T3_T5: [3, 5]
+    T6_T10: [6, 10]
+    T11_T20: [11, 20]
+    T21_T30: [21, 30]
+  failure_offset_buckets:
+    T0_T2: [0, 2]
+    T3_T5: [3, 5]
+    T6_T10: [6, 10]
+    T11_T20: [11, 20]
+    T21_T30: [21, 30]
+    after_T30: [31, 9999]
+
+survival_checkpoints: [3, 5, 10]
+
+labels:
+  bad_max_loss_before_first_plus10_threshold: -0.06
+  bad_first_minus5_max_offset: 10
+  good_path_quality_flags: [clean_continuation, tradable_continuation]
+
+context:
+  include_entry_risk_pct_bucket: true
+  optional_context_fields: []
