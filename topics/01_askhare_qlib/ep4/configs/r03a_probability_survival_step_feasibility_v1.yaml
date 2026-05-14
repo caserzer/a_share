@@ -1,0 +1,101 @@
+phase: ep4_r03a_probability_survival_step_feasibility_v1
+requirement_id: ep4_r03a_probability_survival_step_feasibility_v1
+short_name: r03a_probability_survival_step_feasibility_v1
+requirement_path: ep4/requirement_03a_probability_survival_step_feasibility_v1.md
+output_root: ep4/outputs/r03a_probability_survival_step_feasibility_v1
+
+upstream_r02_1:
+  output_root: ep4/outputs/r02_1_prior_probability_diagnostic_v1
+  manifest: ep4/outputs/r02_1_prior_probability_diagnostic_v1/manifests/r02_1_prior_probability_diagnostic_manifest.json
+  validation: ep4/outputs/r02_1_prior_probability_diagnostic_v1/manifests/r02_1_prior_probability_diagnostic_validation.json
+
+upstream_path_query:
+  config: ep4/configs/r02_family_signal_120d_path_query_v1.yaml
+  output_root: ep4/outputs/r02_family_signal_120d_path_query_v1
+  manifest: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_manifest.json
+  validation: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_validation.json
+
+upstream_eligible_day_density:
+  panel: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/cache/r02_eligible_day_density_panel.parquet
+
+frozen_families:
+  - family_id: momentum_rps
+    signal_id: single_momentum_rps
+    condition_group_id: momentum_rps__and3__68b32373ce93
+    condition_text: "roc5_r02 >= 0.05 AND rps5_r02 >= 0.8 AND rps10_r02 >= 0.5"
+  - family_id: oscillator
+    signal_id: single_oscillator
+    condition_group_id: oscillator__and4__95dbd99ae828
+    condition_text: "kdj_k5_r02 >= 60 AND cci5_r02 >= 100 AND kdj_k10_r02 >= 55 AND cci10_r02 >= 150"
+  - family_id: price_trend
+    signal_id: single_price_trend
+    condition_group_id: price_trend__and3__6030760ed19f
+    condition_text: "close_over_ma5_r02 >= 0.03 AND ema_slope5_r02 >= 0.0 AND close_over_ma10_r02 >= 0.03"
+  - family_id: pullback_drawdown
+    signal_id: single_pullback_drawdown
+    condition_group_id: pullback_drawdown__and3__11795aa42e45
+    condition_text: "pullback_depth5_r02 >= -0.05 AND rebound_from_low5_r02 >= 0.05 AND days_since_high10_r02 <= 5"
+  - family_id: range_breakout
+    signal_id: single_range_breakout
+    condition_group_id: range_breakout__and3__00e51295d9c3
+    condition_text: "range_position5_r02 >= 0.9 AND new_high_flag10_r02 == 1.0 AND range_position10_r02 >= 0.7"
+  - family_id: volatility_band
+    signal_id: single_volatility_band
+    condition_group_id: volatility_band__and4__ef9c875dde10
+    condition_text: "boll_pct_b5_r02 >= 0.8 AND boll_width5_r02 >= 1.0 AND boll_width10_r02 >= 1.0 AND price_channel_position10_r02 >= 0.8"
+  - family_id: volume_money
+    signal_id: single_volume_money
+    condition_group_id: volume_money__and4__4eb7a99e922f
+    condition_text: "volume_ratio5_r02 >= 1.5 AND money_zscore5_r02 >= 2.0 AND money_price_coherence5_r02 == 1.0 AND money_price_coherence10_r02 == 1.0"
+
+survival_checkpoints: [3, 5, 10]
+probability_gate_threshold_grid:
+  [-0.50, -0.45, -0.40, -0.35, -0.30, -0.25, -0.20, -0.15, -0.10, -0.05, 0.00, 0.05, 0.10, 0.15, 0.20]
+fallback_grain_grid:
+  - same_day_family_count
+  - seed_primary_family_id
+  - seed_type
+  - same_day_bundle_key
+  - context_bucket_id
+fallback_grain_order:
+  - same_day_family_count
+  - seed_primary_family_id
+  - seed_type
+  - same_day_bundle_key
+  - context_bucket_id
+
+sample_denominator_thresholds:
+  N_min_train: 300
+  N_min_validation: 100
+  N_min_robustness: 100
+
+train_selection:
+  train_scoring_mode: train_inner_cv_out_of_fold
+  train_inner_cv_fold_count: 5
+  train_only_selection_seed: r03a_train_only_selection_seed_v1
+  selection_metric: train_oof_prob_edge_vs_baseline_3
+  max_train_grid_total_candidate_count: 50000
+  max_train_eligible_candidate_count_after_gate: 200
+
+posterior:
+  alpha_source: Jeffreys_prior
+  alpha_good: 0.5
+  alpha_bad: 0.5
+  alpha_neutral: 0.5
+  credible_interval_level: 0.90
+  credible_interval_method: scipy_beta_marginal_quantile
+  credible_interval_tolerance: 1.0e-12
+
+pass_fail_thresholds:
+  min_abs_bad_upper_improvement_vs_baseline3: 0.02
+  max_abs_good_lower_loss_vs_baseline3: 0.03
+  min_upside_capture_ratio_vs_baseline3: 0.90
+  max_abs_drawdown_severity_worsening_vs_baseline3: 0.005
+
+exposure_labels:
+  allowed_probe_labels: ["0.15R", "0.20R", "0.25R"]
+  allowed_survival_step_labels: ["0.40R", "0.50R"]
+  selected_probe_label: "0.25R"
+  selected_survival_step_label: "0.50R"
+  confirmation_label: not_used_in_r03a
+  final_1r_label: not_used_in_r03a

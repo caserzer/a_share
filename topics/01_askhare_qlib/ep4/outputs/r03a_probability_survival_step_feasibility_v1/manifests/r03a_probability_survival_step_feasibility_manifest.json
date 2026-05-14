@@ -1,0 +1,220 @@
+{
+  "requirement_id": "ep4_r03a_probability_survival_step_feasibility_v1",
+  "short_name": "r03a_probability_survival_step_feasibility_v1",
+  "generated_at": "2026-05-14T14:56:09.361118+00:00",
+  "input_artifact_hashes": {
+    "r02_1_manifest": "b64d5df80f4bc8cdaccbebb2e53baf8e77ffd8b017b2b488cbccb09563ec4043",
+    "r02_1_validation": "38da3134885212c0b8f7da0c8304b91d6b49dae91572350974ac256c2b9d306f",
+    "path_query_config": "5ec87f9c090f1b7619ff01d416431ba10ea130a520059f13671ed7f17cc146b1",
+    "path_query_manifest": "58a258c7cf77cca5175e01b78aae243b7f18ca5032be4b3723f382a3fcebe36d",
+    "path_query_validation": "56c44f61117ee7b9248a4357ff16137f8b9e63d370d85bed816efaa3a611cdb7",
+    "eligible_day_density_panel": "827eb684d808877049fbc378f904e1e84be888dc1bd1be4ad6870f8cc0db53fb",
+    "r02_1_r02_1_r03_input_readiness": "807acfc3906f223980ba1881eea8e3d26ff11c35bbefed36d6ece214b34f564c",
+    "r02_1_r02_1_single_family_prior": "ce58e4bfc212068f74b50b00ff3f7896bbf2a0de27cd541bcdbc4ccd8a032c4d",
+    "r02_1_r02_1_same_day_family_count_prior": "a5863315418a97619a3a13e3c49c59d20ef17b9ac822358e808a179a4540233f",
+    "r02_1_r02_1_same_day_bundle_prior": "f6d6e6258b693f7da0115dd2e3e62798a3bb0c0a9753f8d06451a8597dd33cd8",
+    "r02_1_r02_1_context_bucket_prior": "1a5d84d19c27ec4d38a215f6c98d425348dd18f6b909fe09ec17d8b3c43ffbaa",
+    "r02_1_r02_1_survival_checkpoint_prior": "44b834c5f11eec093759cb2b8c3c2103e3a240ebc34b2d6f0fa52d5079c6452f",
+    "r02_1_r02_1_fresh_evidence_prior": "387937528cbcd743b40dbefd0050f56852739356291908080e6a5e630b3628a3",
+    "r02_1_r02_1_fresh_evidence_offset_distribution": "e16f2c80e01ba3f7726f58341232040d060022b1998a1b33a75ebc396bd31fb7",
+    "r02_1_r02_1_split_stability_diagnostics": "28c8e6f69e0ba99cfe5489fd407843b22ea00b1ed23b2cad661f888f8e5747e9",
+    "r02_1_r02_1_ev_r_input_audit": "08f331b8357f73f0d84d04184cd96b2ad8462c1293c61bbe6d2422ab3cb3393d"
+  },
+  "upstream_validation_status": {
+    "r02_1": "passed",
+    "path_query": "passed"
+  },
+  "frozen_family_universe": [
+    {
+      "family_id": "momentum_rps",
+      "signal_id": "single_momentum_rps",
+      "condition_group_id": "momentum_rps__and3__68b32373ce93",
+      "condition_text": "roc5_r02 >= 0.05 AND rps5_r02 >= 0.8 AND rps10_r02 >= 0.5"
+    },
+    {
+      "family_id": "oscillator",
+      "signal_id": "single_oscillator",
+      "condition_group_id": "oscillator__and4__95dbd99ae828",
+      "condition_text": "kdj_k5_r02 >= 60 AND cci5_r02 >= 100 AND kdj_k10_r02 >= 55 AND cci10_r02 >= 150"
+    },
+    {
+      "family_id": "price_trend",
+      "signal_id": "single_price_trend",
+      "condition_group_id": "price_trend__and3__6030760ed19f",
+      "condition_text": "close_over_ma5_r02 >= 0.03 AND ema_slope5_r02 >= 0.0 AND close_over_ma10_r02 >= 0.03"
+    },
+    {
+      "family_id": "pullback_drawdown",
+      "signal_id": "single_pullback_drawdown",
+      "condition_group_id": "pullback_drawdown__and3__11795aa42e45",
+      "condition_text": "pullback_depth5_r02 >= -0.05 AND rebound_from_low5_r02 >= 0.05 AND days_since_high10_r02 <= 5"
+    },
+    {
+      "family_id": "range_breakout",
+      "signal_id": "single_range_breakout",
+      "condition_group_id": "range_breakout__and3__00e51295d9c3",
+      "condition_text": "range_position5_r02 >= 0.9 AND new_high_flag10_r02 == 1.0 AND range_position10_r02 >= 0.7"
+    },
+    {
+      "family_id": "volatility_band",
+      "signal_id": "single_volatility_band",
+      "condition_group_id": "volatility_band__and4__ef9c875dde10",
+      "condition_text": "boll_pct_b5_r02 >= 0.8 AND boll_width5_r02 >= 1.0 AND boll_width10_r02 >= 1.0 AND price_channel_position10_r02 >= 0.8"
+    },
+    {
+      "family_id": "volume_money",
+      "signal_id": "single_volume_money",
+      "condition_group_id": "volume_money__and4__4eb7a99e922f",
+      "condition_text": "volume_ratio5_r02 >= 1.5 AND money_zscore5_r02 >= 2.0 AND money_price_coherence5_r02 == 1.0 AND money_price_coherence10_r02 == 1.0"
+    }
+  ],
+  "episode_grain": "episode_first_trigger",
+  "label_priority_order": [
+    "censored_or_invalid",
+    "bad_path",
+    "good_path",
+    "neutral_path"
+  ],
+  "survival_checkpoints": [
+    "T+3",
+    "T+5",
+    "T+10"
+  ],
+  "alpha_source": "Jeffreys_prior",
+  "credible_interval_level": 0.9,
+  "credible_interval_method": "scipy_beta_marginal_quantile",
+  "credible_interval_tolerance": 1e-12,
+  "probability_score_formula": "P_good_lower - P_bad_upper",
+  "episode_probability_score_source_policy": "train_inner_cv_out_of_fold for train; full_train_frozen posterior for validation/robustness",
+  "split_probability_evaluation_source_policy": "actual labels in evaluated split after frozen inclusion mask",
+  "train_scoring_mode": "train_inner_cv_out_of_fold",
+  "train_inner_cv_fold_count": 5,
+  "train_inner_cv_assignment_hash": "ebe048bfa4ff0468af4af7770b5188b3",
+  "fallback_grain_order": [
+    "same_day_family_count",
+    "seed_primary_family_id",
+    "seed_type",
+    "same_day_bundle_key",
+    "context_bucket_id"
+  ],
+  "allowed_seed_scope_ids": [
+    "all",
+    "seed_same_day_family_count=1",
+    "seed_type=single_family_seed"
+  ],
+  "probability_gate_threshold_grid": [
+    -0.5,
+    -0.45,
+    -0.4,
+    -0.35,
+    -0.3,
+    -0.25,
+    -0.2,
+    -0.15,
+    -0.1,
+    -0.05,
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2
+  ],
+  "selected_probe_label": "0.25R",
+  "selected_survival_step_label": "0.50R",
+  "fixed_sample_denominator_thresholds": {
+    "N_min_train": 300,
+    "N_min_validation": 100,
+    "N_min_robustness": 100
+  },
+  "train_grid_total_candidate_count": 180,
+  "train_eligible_candidate_count_after_gate": 0,
+  "max_train_grid_total_candidate_count": 50000,
+  "max_train_eligible_candidate_count_after_gate": 200,
+  "grid_multiplicity_status": "within_cap",
+  "degenerate_probability_gate_exclusion_status": "excluded_before_ranking",
+  "fallback_grain_evaluation_status": {
+    "configured": [
+      "same_day_family_count",
+      "seed_primary_family_id",
+      "seed_type",
+      "same_day_bundle_key",
+      "context_bucket_id"
+    ],
+    "materialized": [
+      "seed_primary_family_id",
+      "seed_type"
+    ],
+    "same_day_bundle_key_and_context_bucket_require_bucket_level_sufficient_and_stable": true
+  },
+  "train_selection_metric": "train_oof_prob_edge_vs_baseline_3",
+  "train_selection_tie_breaker": [
+    "higher train_oof_prob_edge_vs_baseline_3",
+    "lower train_oof_P_bad_upper",
+    "higher train_oof_P_good_lower",
+    "lower train_drawdown_severity_120d_p90",
+    "higher train_upside_capture_ratio_vs_baseline3",
+    "higher train_label_denominator",
+    "T+10 then T+5 then T+3",
+    "seed_scope_id lexicographic ascending",
+    "fallback_grain configured order",
+    "lower probability_gate_threshold"
+  ],
+  "candidate_episode_inclusion_formula": "episode_in_selected_seed_scope AND episode_survived_selected_checkpoint AND episode_probability_score >= probability_gate_threshold",
+  "status_normalization_mapping": "r02_1 sample_sufficiency_status + stability_status normalized to r03a_gate_status",
+  "train_only_selection_fields": [
+    "seed_scope_id",
+    "survival_checkpoint",
+    "fallback_grain",
+    "probability_gate_threshold",
+    "train_oof_*"
+  ],
+  "upstream_r02_1_episode_construction_rule_hash": "",
+  "episode_construction_hash_mode": "upstream_manifest_and_episode_audit_fallback",
+  "upstream_path_query_manifest_hash": "58a258c7cf77cca5175e01b78aae243b7f18ca5032be4b3723f382a3fcebe36d",
+  "upstream_path_query_validation_hash": "56c44f61117ee7b9248a4357ff16137f8b9e63d370d85bed816efaa3a611cdb7",
+  "upstream_episode_audit_file_hashes": {
+    "single_momentum_rps": "2c7700ac43c67bc8429316934be31035303f775e1c27eae295a3ab29fa92ea14",
+    "single_oscillator": "e73ea44a99d2816633acee77206aa786294b5d5fba57182d43055695cff13469",
+    "single_price_trend": "d86d64f04b9308e72208d496e1fb701851983d312d5dc59b2db57e97c440a08e",
+    "single_pullback_drawdown": "8f2124258cd3fa95c74c668d1d88b78fc4d4f789e3516e8bb48ac6f2abfa422d",
+    "single_range_breakout": "10e8036e39d887da13d43bbbba1dce5600e37ac56de8717b41f055dad4305285",
+    "single_volatility_band": "9191fa44da54b0530e0bebd467f274abdc695815c85f2ef0251ca8263edeaf67",
+    "single_volume_money": "e0b8be34b26b8763dca88f94223a36df8150c7579ef23cbe190860bcf47e15b3"
+  },
+  "r03a_episode_construction_rule_hash": "bd6387a11c2310a6d5035eea83626561",
+  "path_metric_denominator_policy_enum": [
+    "episode_first_trigger_label_denominator",
+    "episode_first_trigger_survivor_label_denominator",
+    "episode_first_trigger_candidate_included_label_denominator"
+  ],
+  "selected_candidate_id": "",
+  "selected_candidate_scope_id": "",
+  "r03a_pass_fail_thresholds": {
+    "min_abs_bad_upper_improvement_vs_baseline3": 0.02,
+    "max_abs_good_lower_loss_vs_baseline3": 0.03,
+    "min_upside_capture_ratio_vs_baseline3": 0.9,
+    "max_abs_drawdown_severity_worsening_vs_baseline3": 0.005
+  },
+  "risk_budget_status": "probability_only_ev_r_blocked",
+  "background_denominator_status": "blocked_missing_denominator",
+  "split_stability_status": "partial_only",
+  "ev_r_status": "blocked_missing_ev_r",
+  "fresh_evidence_gate_allowed": false,
+  "bundle_context_primary_gate_allowed": false,
+  "validation_readonly_status": "readonly_evaluation_no_validation_tuning",
+  "baseline_1_2_path_metric_equivalence_status": "passed",
+  "baseline_3_same_scope_comparison_status": "baseline_3_used_as_mandatory_control",
+  "final_decision": "blocked_no_stable_candidate_bucket",
+  "row_counts_by_table": {
+    "episode_first_trigger_panel": 11003,
+    "t0_prior": 28,
+    "survival_same_grain_lift": 27,
+    "candidate_grid_train_selection": 180,
+    "baseline_comparison": 12,
+    "validation_robustness_readonly": 1,
+    "descriptive_bundle_context_prior": 1814,
+    "fresh_evidence_descriptive_audit": 18,
+    "null_result_audit": 19
+  },
+  "validation_status": "passed"
+}
