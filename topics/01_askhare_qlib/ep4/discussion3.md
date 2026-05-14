@@ -549,7 +549,20 @@ stage_cap_grid:
 posterior_gate_grid:
   P_good_lower threshold candidates
   P_bad_upper threshold candidates
-  EV_R_lower threshold candidates
+```
+
+在 EV_R 输入 materialize 之前，R03a 的 grid 不得包含 `EV_R_lower` 或任何 EV_R 排序阈值。EV_R 相关 gate 只能属于 R03b：
+
+```text
+R03a:
+  probability-only feasibility gate
+  no EV_R threshold
+  no 1R sizing conclusion
+
+R03b:
+  EV_R inputs materialized
+  EV_R_lower threshold candidates allowed
+  risk-budget sizing validation allowed
 ```
 
 validation 只回答：
@@ -575,7 +588,27 @@ fresh_evidence_after_seed =
 
 第一版不把同 family 连续触发计作 fresh evidence。这样可以避免把同一状态的连续噪声重复计为新信息。
 
-如果后续数据说明同 family second trigger 有稳定增量，再在 v2 单独评估。
+但这个 v1 定义只记录 `first different family fresh trigger`。它不能证明 T+11..T+30 后段 fresh evidence 没有信息，因为 first-fresh offset 分布天然会向较早 offset 偏斜：
+
+```text
+P(first fresh at T+k)
+  = P(no fresh in T+3..T+k-1)
+    * P(fresh at T+k)
+```
+
+因此，R03 v1 可以保留 T+3..T+30 的观察窗口，但不能仅凭 first-fresh 分布决定后段窗口是否有效。若 R03 想使用“按时间序列逐个触发”的 fresh evidence，需要先补做 sequence / hazard diagnostic：
+
+```text
+fresh_count_in_window
+fresh_offset_first
+fresh_offset_last
+fresh_density
+fresh_family_sequence
+kth_fresh_offset
+per_offset_fresh_hazard
+```
+
+如果后续数据说明同 family second trigger 或多次 different-family trigger 有稳定增量，再在 v2 单独评估。
 
 ### 13.6 Leave-One-Out Delta 限制
 
@@ -668,3 +701,1014 @@ if train-only candidate ranking is not split-stable:
 ```
 
 因此，进入 R03 requirement 前，先验比例计算是必要的。它应作为 R03 requirement 的 input evidence，而不是在 R03 validation 阶段才临时补算。
+
+---
+
+## 15. R02.1 Prior Diagnostic 实际结果
+
+`requirement_02_1_prior_probability_diagnostic_v1.md` 已完成实现并重跑。产物位置：
+
+```text
+ep4/outputs/r02_1_prior_probability_diagnostic_v1/
+```
+
+验证状态：
+
+```text
+validation_status = passed
+failed_checks = []
+```
+
+主要产物行数：
+
+| table | rows |
+|:--|--:|
+| `r02_1_global_action_time_prior.csv` | 6 |
+| `r02_1_single_family_prior.csv` | 63 |
+| `r02_1_same_day_bundle_prior.csv` | 907 |
+| `r02_1_same_day_family_count_prior.csv` | 63 |
+| `r02_1_context_bucket_prior.csv` | 907 |
+| `r02_1_survival_checkpoint_prior.csv` | 2,721 |
+| `r02_1_fresh_evidence_prior.csv` | 3,882 |
+| `r02_1_fresh_evidence_offset_distribution.csv` | 11,003 |
+| `r02_1_split_stability_diagnostics.csv` | 1,777 |
+| `r02_1_r03_input_readiness.csv` | 1 |
+
+### 15.1 可用性与 blocker
+
+R02.1 最重要的结论不是“可以直接进入 risk-budget 实验”，而是：
+
+```text
+single / family-count / survival / fresh evidence 的先验诊断已经可用；
+但 EV_R 和 global action-time denominator 仍不可用。
+```
+
+当前 readiness：
+
+| field | value |
+|:--|:--|
+| `global_prior_ready` | `blocked_missing_denominator` |
+| `single_family_prior_ready` | `ready` |
+| `same_day_bundle_prior_ready` | `ready` |
+| `context_bucket_prior_ready` | `ready` |
+| `survival_checkpoint_prior_ready` | `ready` |
+| `fresh_evidence_prior_ready` | `ready` |
+| `ev_r_ready` | `blocked_missing_ev_r` |
+| `split_stability_ready` | `blocked_unstable_split` |
+| `primary_blocker` | `blocked_missing_ev_r` |
+| `secondary_blocker` | `blocked_missing_denominator\|blocked_unstable_split` |
+
+这意味着 R03 可以开始起草 requirement，但第一版不能声称已经具备完整 risk-budget EV 依据。R03 如果涉及 1R 预算映射，必须先补齐 EV_R 输入，或者把 EV_R 明确降级为后续 requirement 的 blocker。
+
+### 15.2 Single Family 先验比例
+
+按互斥 `good_path / bad_path / neutral_path` 重算后，7 个 single family 的先验如下：
+
+| family | row_count | row_label_denominator | P_good | P_bad | P_neutral |
+|:--|--:|--:|--:|--:|--:|
+| `range_breakout` | 68,679 | 54,069 | 35.42% | 61.57% | 3.02% |
+| `volume_money` | 22,806 | 17,900 | 35.72% | 61.62% | 2.66% |
+| `oscillator` | 23,132 | 18,293 | 35.45% | 61.72% | 2.83% |
+| `volatility_band` | 28,211 | 22,023 | 34.81% | 62.85% | 2.34% |
+| `pullback_drawdown` | 56,446 | 44,307 | 32.62% | 66.24% | 1.14% |
+| `momentum_rps` | 44,120 | 33,909 | 32.39% | 66.52% | 1.09% |
+| `price_trend` | 34,592 | 26,899 | 32.35% | 66.62% | 1.03% |
+
+解释：
+
+```text
+range_breakout / volume_money / oscillator 仍然是相对更稳的 single family，
+但它们的 P_bad 也都超过 61%。
+```
+
+所以它们不能被解释为 full-entry signal，只能作为：
+
+```text
+seed candidate
+probe context
+后续 staged build 的初始 evidence
+```
+
+`momentum_rps / price_trend / pullback_drawdown` 的 bad prior 更高，更适合作为 survival 后的 continuation / winner-capture evidence，而不是 T0 裸 entry 依据。
+
+### 15.3 Same-Day Family Count 结果
+
+R02.1 用同一套互斥标签重新确认了前面 path diagnostic 的反直觉结论：
+
+| same_day_family_count | row_count | episode_label_denominator | P_good | P_bad | P_neutral |
+|--:|--:|--:|--:|--:|--:|
+| 1 | 29,908 | 23,692 | 35.78% | 60.72% | 3.50% |
+| 2 | 23,677 | 18,525 | 35.50% | 61.57% | 2.93% |
+| 3 | 14,587 | 11,507 | 34.84% | 62.91% | 2.25% |
+| 4 | 10,248 | 7,985 | 34.10% | 64.15% | 1.75% |
+| 5 | 8,624 | 6,746 | 32.80% | 66.11% | 1.08% |
+| 6 | 7,187 | 5,616 | 31.25% | 67.24% | 1.51% |
+| 7 | 4,247 | 3,253 | 33.75% | 65.51% | 0.74% |
+
+关键信息：
+
+```text
+same-day family count 从 1 到 6 增加时，
+P_bad 从 60.72% 上升到 67.24%。
+```
+
+这进一步否定了：
+
+```text
+同日共振越多 = entry 质量越高
+```
+
+更合理的解释是：
+
+```text
+同日多 family 触发更多是在识别短期拥挤 / 已经发热 / next-open 位置偏差的状态。
+```
+
+因此 R03 不应把同日多个 family 视为可相加的多份 risk budget。T0 same-day bundle 最多只能决定初始 probe cap。
+
+同时，`same_day_family_count` 虽然 split-stable，但判别力有限：
+
+```text
+P_good from count=1 to count=6:
+  35.78% -> 31.25%
+
+P_bad from count=1 to count=6:
+  60.72% -> 67.24%
+```
+
+它适合作为 audit / weak stratification，不适合作为 R03a 的主要 stage-cap gate。真正的主分层应优先来自 survival checkpoint。
+
+### 15.4 Context Bucket 与 Bundle 稀疏性
+
+R02.1 共生成 907 个 context bucket。样本充足性：
+
+| sample_sufficiency_status | buckets |
+|:--|--:|
+| `sufficient` | 105 |
+| `thin_bucket_report_only` | 157 |
+| `too_sparse_use_fallback` | 628 |
+| `unusable` | 17 |
+
+fallback 分布：
+
+| fallback_level | buckets |
+|:--|--:|
+| `same_day_bundle_key` | 105 |
+| `same_day_family_count` | 802 |
+
+解释：
+
+```text
+same-day bundle / context bucket 可以作为描述性 posterior 表，
+但绝大多数 bucket 不适合在 R03 v1 中直接冻结为细粒度 gate。
+```
+
+R03 v1 如果使用 direct posterior table，应默认：
+
+```text
+primary fallback grain = same_day_family_count
+only use same_day_bundle_key when sample_count >= N_min and split-stable
+```
+
+这也意味着 R03 v1 不应追求复杂 bundle-specific sizing。更稳妥的第一版应把细 bundle 作为解释字段，把 survival checkpoint 作为主分层，把 family-count 作为弱分层 / audit 字段，把 fresh-evidence 状态保留为描述性字段。
+
+### 15.5 Survival Checkpoint 结果
+
+survival checkpoint 是 R02.1 最有价值的结果之一。
+
+| checkpoint | pre_rows | survivor_count | survivor_rate | survivor_episode_denominator | survivor_P_good | survivor_P_bad | survivor_P_neutral |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| T+3 | 98,478 | 75,269 | 76.43% | 59,491 | 45.13% | 51.58% | 3.28% |
+| T+5 | 98,478 | 66,907 | 67.94% | 52,872 | 50.78% | 45.52% | 3.70% |
+| T+10 | 98,478 | 54,064 | 54.90% | 42,751 | 62.81% | 32.62% | 4.57% |
+
+这说明：
+
+```text
+仅仅要求 seed 在 T+3 / T+5 / T+10 没有 observable failure，
+就会显著改善 good / bad path 分布。
+```
+
+尤其 T+10：
+
+```text
+P_good = 62.81%
+P_bad = 32.62%
+```
+
+方向上已经明显好于 T0 的 single-family / same-day-count prior，但严格的改善幅度不能直接用这两组表相减。§15.2 是 row-level signal trigger prior，§15.5 是 survivor episode posterior，分母粒度不同。
+
+R03 requirement 必须把 survival 改善幅度重算到同一粒度。推荐口径：
+
+```text
+grain = episode-first-trigger
+
+compare:
+  T0 episode prior
+  vs
+  T+3 / T+5 / T+10 survivor posterior
+```
+
+在该同粒度结果生成前，`survival improves P_good / P_bad` 可以作为强方向性证据，但不能作为精确 lift 数字引用。
+
+对 R03 的含义：
+
+```text
+baseline_3: T0 fixed probe + survival step-up
+必须成为强 control。
+```
+
+如果未来 staged posterior build 不能显著优于这个 survival-only baseline，则 evidence accumulation 的边际价值不足。也就是说，R03 不能只证明“分阶段比满仓进场好”，还必须证明：
+
+```text
+posterior / fresh evidence 比单纯 survival gate 有额外贡献。
+```
+
+### 15.6 Fresh Evidence Offset 分布
+
+seed episode 总数：
+
+```text
+11,003
+```
+
+fresh evidence 状态分布：
+
+| fresh_evidence_status | rows |
+|:--|--:|
+| `found_within_t3_t30` | 6,343 |
+| `seed_failed_before_fresh` | 2,725 |
+| `seed_failed_before_t3` | 1,533 |
+| `none_within_t3_t30` | 305 |
+| `ambiguous_same_offset` | 65 |
+| `censored_before_t30` | 32 |
+
+fresh offset bucket：
+
+| fresh_offset_bucket | rows |
+|:--|--:|
+| `T3_T5` | 4,294 |
+| `T6_T10` | 1,244 |
+| `T11_T20` | 715 |
+| `T21_T30` | 155 |
+| `none` | 4,563 |
+| `censored` | 32 |
+
+numeric fresh offset median：
+
+```text
+T+3
+```
+
+解释边界：
+
+```text
+这张表是 first-fresh offset distribution，
+不是 T+3..T+30 内所有 fresh evidence 的活跃度分布。
+```
+
+first-fresh 统计天然会把质量压到较早 offset。即使后续 T+11..T+30 仍有连续 fresh trigger，只要第一次 fresh 已经出现在 T+3..T+10，该 episode 也不会在 first-fresh 表里再次计数。因此，不能仅凭 median = T+3 推断后段 fresh 是噪声。
+
+当前数据支持 R03 v1 继续保留观察窗口：
+
+```text
+fresh evidence window = T+3..T+30
+```
+
+但 R03 v1 不能把 `T+11..T+30` 直接用于 stage cap 释放，除非先补做 sequence / hazard diagnostic。当前可写入 R03a 的判断是：
+
+```text
+first fresh evidence is descriptive only;
+fresh sequence evidence requires a separate diagnostic;
+stage cap release must not depend on unvalidated late fresh sequence.
+```
+
+真正能回答后段 fresh 是否有信息的统计应包括：
+
+```text
+per-offset hazard among survived-and-no-prior-fresh episodes
+cumulative fresh_count by horizon
+second / third fresh family offset distribution
+posterior by kth fresh event, aligned on survival checkpoint
+```
+
+### 15.7 Fresh Evidence Posterior
+
+按 fresh evidence 状态聚合后的 posterior：
+
+| fresh_evidence_status | fresh_label_denominator | P_good | P_bad | P_neutral |
+|:--|--:|--:|--:|--:|
+| `found_within_t3_t30` | 5,032 | 57.47% | 38.24% | 4.29% |
+| `none_within_t3_t30` | 216 | 62.04% | 32.87% | 5.09% |
+| `seed_failed_before_fresh` | 2,115 | 1.99% | 96.26% | 1.75% |
+| `seed_failed_before_t3` | 1,195 | 0.00% | 100.00% | 0.00% |
+| `ambiguous_same_offset` | 0 | NA | NA | NA |
+| `censored_before_t30` | 0 | NA | NA | NA |
+
+`found_within_t3_t30` 的 row-level observable failure 关系：
+
+```text
+fresh_before_observable_failure_rate = 66.53%
+fresh_without_prior_observable_failure_rate = 100.00%
+```
+
+解释：
+
+```text
+fresh evidence 出现的 episode 明显优于 T0 prior，
+但这里仍然存在 survival selection。
+```
+
+`none_within_t3_t30` 看起来更好：
+
+```text
+P_good = 62.04%
+P_bad = 32.87%
+```
+
+但 denominator 只有 216，不能直接推论“没有 fresh 更好”。它更可能表示：
+
+```text
+能活过 T+30 且没有 fresh 的样本，本身已经通过了很强的 survival filter。
+```
+
+因此 R03 需要区分：
+
+```text
+fresh evidence 的增量贡献
+survival 本身带来的 selection effect
+```
+
+这也是 baseline_3 必须存在的原因。
+
+更严格地说，任何 fresh evidence posterior 比较都必须 condition on 同一个 survival horizon，否则 `found` 与 `none` 不可比。推荐比较口径：
+
+```text
+survived_t10 + fresh_found_before_t10
+vs
+survived_t10 + no_fresh_before_t10
+
+or
+
+survived_t30 + fresh_found_before_t30
+vs
+survived_t30 + no_fresh_before_t30
+```
+
+不能比较：
+
+```text
+found_within_t3_t30
+vs
+none_within_t3_t30
+```
+
+因为 `none_within_t3_t30` 已经隐含更长 survival requirement。
+
+### 15.8 Split Stability
+
+split stability 总体结果：
+
+| stability_status | rows |
+|:--|--:|
+| `stable_enough_for_requirement_input` | 129 |
+| `unstable_do_not_freeze` | 22 |
+| `insufficient_sample` | 974 |
+| `missing_split` | 652 |
+
+按 grouping type：
+
+| grouping_type | status | rows |
+|:--|:--|--:|
+| `single_family_prior` | stable | 7 |
+| `same_day_family_count_prior` | stable | 7 |
+| `same_day_bundle_prior` | stable | 28 |
+| `same_day_bundle_prior` | unstable | 5 |
+| `same_day_bundle_prior` | insufficient | 74 |
+| `same_day_bundle_prior` | missing_split | 6 |
+| `context_bucket_prior` | stable | 28 |
+| `context_bucket_prior` | unstable | 5 |
+| `context_bucket_prior` | insufficient | 74 |
+| `context_bucket_prior` | missing_split | 6 |
+| `survival_checkpoint_prior` | stable | 59 |
+| `survival_checkpoint_prior` | unstable | 12 |
+| `survival_checkpoint_prior` | insufficient | 237 |
+| `survival_checkpoint_prior` | missing_split | 31 |
+| `fresh_evidence_prior` | insufficient | 589 |
+| `fresh_evidence_prior` | missing_split | 609 |
+
+可用结论：
+
+```text
+single family prior 和 same-day family count prior 是 split-stable 的；
+survival checkpoint 有部分可用 stable bucket；
+bundle / context 只有少量 stable bucket；
+fresh_evidence_prior 没有 stable bucket，全部是 insufficient_sample 或 missing_split。
+```
+
+所以 R03 v1 的设计应避免：
+
+```text
+在很细的 bundle/context/fresh bucket 上冻结具体 sizing 阈值。
+```
+
+更稳妥的方式是：
+
+```text
+用 seed single family / survival checkpoint 做主分层；
+same_day_family_count 只做弱分层或 audit；
+bundle/context/fresh bucket 做解释和 coarser fallback；
+只有 stable + sufficient 的 bucket 才允许进入 train-only candidate grid。
+```
+
+由于 `fresh_evidence_prior` 在 split stability 中没有 stable row，R03a 不得把 fresh evidence 写成 train-frozen gate。fresh evidence 在 R03a 中只能作为 descriptive / hypothesis-generation 字段，除非后续 sequence / hazard diagnostic 产生 split-stable 的 fresh bucket。
+
+### 15.9 对 R03 Requirement 的直接约束
+
+基于 R02.1 结果，R03 requirement 应写成一个受限的 staged evidence audit，而不是直接 risk-budget optimization。
+
+R03 v1 必须包含以下约束：
+
+```text
+1. T0 same-day bundle 只允许一次 probe，不按 family 数量拆多份 risk。
+
+2. baseline_3 必须存在：
+   T0 fixed probe + survival step-up。
+   因为 survival checkpoint 已经单独显著改善 P_good / P_bad。
+
+3. R03a candidate 的主分层应优先使用：
+   seed single_family / seed_type
+   survival_checkpoint_state
+   fixed probe / survival-step baseline state
+
+   same_day_family_count 只能作为 weak stratification / audit；
+   fresh_evidence_status 只能 descriptive，不得作为 gate。
+
+4. same_day_bundle_key / context_bucket 只能在 sample sufficient 且 split-stable 时使用；
+   否则回退到 family_count 或 single_family。
+
+5. EV_R 当前不可用；
+   如果 R03 要做 1R risk-budget 映射，必须先补齐 signal_day_low / prior low / entry risk inputs。
+
+6. global action-time prior 当前不可用；
+   R03 如果需要 no-signal background baseline，必须先 materialize count-0 action-time denominator。
+
+7. fresh evidence 不能直接解释为因果增量；
+   必须和 survival-only baseline 比较；
+   且所有 found / none posterior 比较必须 condition on 同一个 survival checkpoint。
+
+8. T0 vs survival improvement 必须在同一 grain 重算；
+   推荐使用 episode-first-trigger grain。
+
+9. T+3..T+30 fresh observation window 暂时保留；
+   但 first-fresh offset distribution 不能证明后段 fresh 无效；
+   如果要使用序列 fresh evidence，必须先补做 sequence / hazard diagnostic。
+
+10. R03a 不包含 EV_R_lower threshold；
+    EV_R threshold 和 1R sizing 只能属于 R03b。
+```
+
+### 15.10 当前最强实证判断
+
+R02.1 后，discussion3 的判断应从：
+
+```text
+同日多信号不能直接满仓 entry
+```
+
+推进到：
+
+```text
+R03a 的核心不是“选更强的 T0 信号”，
+而是验证 T0 probe + survival checkpoint step-up 是否足以解释大部分改善；
+fresh / bundle / context posterior 暂时只能解释，不应主导 sizing gate。
+```
+
+目前数据最支持的设计方向是：
+
+```text
+T0:
+  small probe only
+
+T+3 / T+5:
+  first survival check
+  block early failed episodes
+
+T+5 / T+10:
+  test fixed survival step-up
+  compare against T0 full entry and probe-only
+
+T+10:
+  survival checkpoint is already a strong signal;
+  must not confuse it with staged posterior edge
+
+T+20 / T+30:
+  descriptive continuation / fresh-sequence audit only,
+  not stage cap release in R03a
+```
+
+如果 R03 不能在 train-frozen rules 下证明 staged posterior 的增量价值，则应回退为：
+
+```text
+probe + survival step-up + strict fail-fast
+```
+
+而不是继续增加 posterior table 复杂度。
+
+### 15.11 EV_R 缺失下的概率可行性测算
+
+在 EV_R 输入尚未 materialize 的情况下，可以使用近似成功概率做前置可行性测算，但它的边界必须非常清楚。
+
+可以回答的问题：
+
+```text
+这个 staged evidence idea 是否值得进入 R03 requirement？
+某个 survival / fresh evidence 状态是否显著改善 good / bad path odds？
+某个 bucket 是否因为样本稀疏或 split drift 不适合冻结？
+```
+
+不能回答的问题：
+
+```text
+应该释放多少 R？
+是否能把 risk cap 从 0.25R 提到 0.60R？
+同 1R 预算下的真实期望收益是否为正？
+是否可以作为交易策略上线？
+```
+
+原因是 EV_R 至少需要：
+
+```text
+win probability
+average win size
+average loss size
+entry price
+stop / initial risk distance
+execution rule
+exit / holding rule
+```
+
+而 R02.1 当前主要有：
+
+```text
+P_good
+P_bad
+P_neutral
+survival posterior
+fresh evidence posterior
+split stability
+bucket denominator
+```
+
+这些足以判断路径质量是否改善，但不足以决定 1R 的资金释放比例。
+
+#### 15.11.1 Probability-Only Feasibility Score
+
+在 R03 requirement 前，可以定义一个只用于筛选的 probability-only feasibility score：
+
+```text
+prob_feasibility_score =
+  P_good_lower - P_bad_upper
+```
+
+更稳健的版本应和 baseline 比较：
+
+```text
+prob_edge_vs_baseline =
+  (P_good_lower - baseline_P_good)
+  - (P_bad_upper - baseline_P_bad)
+```
+
+其中：
+
+```text
+P_good_lower = train posterior 的下置信界 / credible lower bound
+P_bad_upper = train posterior 的上置信界 / credible upper bound
+baseline = same split、same grain 或 fallback grain 下的 baseline prior
+```
+
+使用方式：
+
+```text
+if prob_edge_vs_baseline <= 0:
+  do not promote to R03 candidate
+
+if P_bad_upper remains high:
+  allow probe-only or survival-only baseline only
+
+if survival improves P_good and reduces P_bad:
+  allow as R03 hypothesis
+  but keep EV_R sizing blocked
+
+if fresh evidence appears useful:
+  keep as descriptive hypothesis only
+  require survival-aligned and split-stable sequence diagnostic before gate use
+```
+
+这类 score 只能决定：
+
+```text
+是否值得测试
+在哪个 grain 测试
+是否需要 fallback
+```
+
+不能决定：
+
+```text
+stage cap
+position size
+expected R
+final trading action
+```
+
+#### 15.11.2 推荐的贝叶斯形式
+
+如果使用贝叶斯先验，R03 前置诊断应使用 Dirichlet-Multinomial，而不是 naive Bayes。
+
+标签空间：
+
+```text
+label in {good_path, bad_path, neutral_path}
+```
+
+先验：
+
+```text
+(P_good, P_bad, P_neutral)
+  ~ Dirichlet(alpha_good, alpha_bad, alpha_neutral)
+```
+
+观测计数：
+
+```text
+n_good
+n_bad
+n_neutral
+```
+
+后验：
+
+```text
+posterior =
+  Dirichlet(
+    alpha_good + n_good,
+    alpha_bad + n_bad,
+    alpha_neutral + n_neutral
+  )
+```
+
+输出：
+
+```text
+posterior_mean_P_good
+posterior_mean_P_bad
+posterior_mean_P_neutral
+P_good_lower
+P_bad_upper
+credible_interval_width
+sample_sufficiency_status
+```
+
+稀疏 bucket 的 prior 来源应按 fallback grain 逐级收缩：
+
+```text
+same_day_bundle_key
+  -> same_day_family_count
+  -> single_family
+  -> global_action_time_prior, if materialized
+```
+
+如果 global action-time prior 仍不可用，则不能伪造 global prior。可以临时使用更粗的 observed-signal prior，但必须标记：
+
+```text
+prior_source = observed_signal_only
+background_denominator_status = blocked_missing_denominator
+```
+
+R03 requirement 必须固定 `alpha` 来源，否则 `P_good_lower` / `P_bad_upper` 会随主观先验漂移。推荐 v1 采用以下二选一，并在 train 前冻结：
+
+```text
+option_a_uninformative:
+  alpha_good = 0.5
+  alpha_bad = 0.5
+  alpha_neutral = 0.5
+  source = Jeffreys prior
+
+option_b_empirical_shrinkage:
+  alpha vector = fallback grain empirical distribution * fixed_prior_strength
+  fixed_prior_strength chosen in train only
+  validation / robustness read-only
+```
+
+在 global action-time prior materialize 前，不得把 observed-signal prior 伪装成 market-wide background prior。
+
+#### 15.11.3 当前数据下的可行性判断
+
+R02.1 中最适合做 probability-only feasibility 的表是：
+
+```text
+same_day_family_count_prior
+survival_checkpoint_prior
+split_stability_diagnostics
+```
+
+`fresh_evidence_prior` 当前只能作为描述性参考，因为它在 split stability 中没有 stable row：
+
+```text
+fresh_evidence_prior:
+  insufficient_sample = 589
+  missing_split = 609
+  stable = 0
+```
+
+当前最强的概率证据是 survival checkpoint：
+
+```text
+T+10 survivor:
+  P_good = 62.81%
+  P_bad = 32.62%
+```
+
+这足以支持：
+
+```text
+R03 必须测试 survival step-up baseline。
+```
+
+但它仍不足以支持：
+
+```text
+T+10 后应该加到 0.60R 或 1.00R。
+```
+
+fresh evidence 的概率结果有研究价值，但不能进入 R03a gate：
+
+```text
+found_within_t3_t30:
+  P_good = 57.47%
+  P_bad = 38.24%
+```
+
+这个状态混有 survival selection，并且 fresh prior split-stability 未通过。因此 R03 只能把它写成后续诊断假设：
+
+```text
+fresh evidence + same survival checkpoint
+vs
+no fresh evidence + same survival checkpoint
+```
+
+否则会把 survival 本身的改善误认为 fresh evidence 的增量贡献。
+
+#### 15.11.4 写入 R03 Requirement 的边界语言
+
+R03 requirement 如果在 EV_R 缺失时启动，应显式写成：
+
+```text
+probability-only feasibility diagnostic,
+not EV_R sizing,
+not final 1R risk-budget allocation.
+```
+
+并增加硬门槛：
+
+```text
+1. probability-only score 只能用于 candidate / bucket 筛选；
+2. stage cap 只能使用固定 probe / survival baseline cap，不得由 probability score 直接映射；
+3. 所有 sizing / EV / 1R allocation 结论必须等待 EV_R inputs materialized；
+4. validation / robustness 只能评估 train-frozen probability gates，不得调阈值；
+5. report 必须把 EV_R status 标为 blocked_missing_ev_r；
+6. fresh evidence 在 R03a 中只能 descriptive，不能用于 gate；
+7. survival 改善必须在 episode-first-trigger grain 重算。
+```
+
+因此，当前可接受的推进方式是：
+
+```text
+R03a:
+  probability-only survival-step feasibility audit
+  fixed probe + fixed survival-step cap
+  fresh / bundle / context descriptive only
+
+R03b:
+  EV_R-materialized risk-budget experiment
+```
+
+如果不拆成两个阶段，也必须在同一个 R03 requirement 中把 probability-only 部分和 EV_R sizing 部分分成两个 lifecycle gate：
+
+```text
+Gate 1:
+  probability feasibility passed
+
+Gate 2:
+  EV_R inputs available and EV_R sizing validated
+```
+
+---
+
+## 16. R03a Contract Draft And Null Result Contingency
+
+基于 §15 的数据，R03a 的合同范围应比最初设想更窄。当前证据并不支持一个复杂的 posterior-driven staged sizing system。更合理的 R03a 是：
+
+```text
+probability-only survival-step feasibility audit
+```
+
+而不是：
+
+```text
+full staged posterior risk-budget experiment
+```
+
+### 16.1 R03a 最小可执行合同
+
+R03a 应只测试以下核心结构：
+
+```text
+seed:
+  T0 same-day bundle / single family trigger
+
+initial action:
+  fixed small probe
+
+step-up authority:
+  survival_checkpoint_state
+  especially T+5 / T+10 survivor
+
+comparison baselines:
+  baseline_1 = T0 full 1R entry
+  baseline_2 = T0 fixed probe only
+  baseline_3 = T0 fixed probe + survival step-up
+
+candidate:
+  T0 fixed probe + train-frozen survival step-up rule
+```
+
+R03a 不应把以下字段作为 primary gate：
+
+```text
+fresh_evidence_status
+same_day_bundle_key
+context_bucket_id
+EV_R_diagnostic
+```
+
+原因：
+
+```text
+fresh_evidence_prior:
+  no stable split bucket
+
+same_day_bundle / context:
+  mostly sparse or fallback-only
+
+EV_R:
+  blocked_missing_ev_r
+```
+
+这些字段可以进入 report 解释：
+
+```text
+descriptive posterior
+bucket sparsity audit
+hypothesis generation
+future diagnostic backlog
+```
+
+但不能决定：
+
+```text
+stage cap
+risk release
+candidate promotion
+validation pass/fail
+```
+
+### 16.2 必须先补齐的同粒度诊断
+
+R03a requirement 起草前或 requirement 内部第一步，必须重算 survival lift 的同粒度版本：
+
+```text
+grain = episode-first-trigger
+
+tables:
+  T0_episode_prior
+  T+3_survivor_episode_prior
+  T+5_survivor_episode_prior
+  T+10_survivor_episode_prior
+```
+
+输出：
+
+```text
+P_good
+P_bad
+P_neutral
+label_denominator
+credible interval
+split stability
+```
+
+这样才能回答：
+
+```text
+survival checkpoint 的改善幅度到底有多大？
+baseline_3 是否已经解释大部分改善？
+```
+
+在该表生成前，§15.5 的 T+10 survivor 数字只能作为强方向性证据，不能作为最终 lift 数字。
+
+### 16.3 Fresh Evidence 后续诊断 backlog
+
+如果仍然希望研究“信号按时间序列逐个触发”的假设，需要追加 fresh-sequence diagnostic。建议输出：
+
+```text
+r02_1_fresh_evidence_sequence.csv
+```
+
+最小字段：
+
+```text
+seed_episode_id
+instrument_id
+seed_trade_date
+seed_same_day_bundle_key
+survival_checkpoint_state
+fresh_count_t3_t10
+fresh_count_t11_t30
+fresh_count_t3_t30
+fresh_offset_first
+fresh_offset_last
+fresh_family_sequence
+fresh_offset_sequence
+per_offset_hazard_denominator
+per_offset_hazard_rate
+label
+split
+year
+```
+
+这张表要回答：
+
+```text
+1. 是否存在持续的 fresh sequence，而不仅是 first fresh？
+2. 第二、第三个 fresh family 是否有边际信息？
+3. T+11..T+30 的 fresh 是否在控制 survival 后仍有增量？
+4. fresh sequence bucket 是否 split-stable？
+```
+
+只有当这些问题有稳定正证据时，fresh evidence 才能从 descriptive 字段升级为 R03b 或后续 R03a' 的 gate。
+
+### 16.4 Null Result Contingency
+
+R03a 必须预设 null result 的处理方式，避免在 validation 上反复调参。
+
+R03a 的核心 null hypothesis：
+
+```text
+H0:
+  staged posterior / extra evidence logic
+  does not improve over baseline_3
+  after using the same total probe and survival-step framework.
+```
+
+如果 R03a 结果满足以下任一情况：
+
+```text
+candidate <= baseline_3 on P_bad / drawdown reduction
+candidate loses too much upside capture vs baseline_3
+candidate only wins in train but not validation / robustness
+candidate improvement depends on sparse bundle / fresh bucket
+```
+
+则结论应写为：
+
+```text
+no incremental staged-posterior edge over survival step-up
+```
+
+并停止继续调参。允许的下一步只有：
+
+```text
+1. adopt simple probe + survival step-up + strict fail-fast as the current best simple structure;
+2. materialize EV_R inputs and run R03b if sizing is still the central question;
+3. run fresh-sequence / hazard diagnostic if sequential evidence remains a hypothesis;
+4. return to family / label design only if survival-step baseline itself is insufficient.
+```
+
+不允许的下一步：
+
+```text
+post-hoc merge sparse buckets
+tune probability thresholds on validation
+promote fresh evidence gate without split-stable diagnostic
+convert descriptive posterior tables into sizing rules
+```
+
+这意味着 R02.1 已经把 R03a 的实验空间压缩到一个很小但可验证的问题：
+
+```text
+T0 probe + T+10 survival step-up 是否已经足够？
+```
+
+如果答案是 yes，则复杂 posterior table 暂时不应进入 sizing 合同。
