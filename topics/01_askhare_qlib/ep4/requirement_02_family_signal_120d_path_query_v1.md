@@ -1,10 +1,10 @@
-# EP4 Requirement 02 Follow-up: Family Signal 120D Path Query V1
+# EP4 Requirement 02 Follow-up: Family Signal 120D Path Analysis For R03 Support V1
 
 ## 1. Requirement Metadata
 
 - Requirement id: `ep4_r02_family_signal_120d_path_query_v1`
 - Short name: `r02_family_signal_120d_path_query_v1`
-- Status: implementation-ready query requirement
+- Status: implementation-ready path-analysis requirement
 - Owner workflow: EP4
 - Upstream requirement: `ep4/requirement_02_big_winner_coverage_ratio_search_v1.md`
 - Upstream statistics requirement: `ep4/requirement_02_family_precision_forward_return_stats_v1.md`
@@ -12,11 +12,18 @@
 - Required config path: `ep4/configs/r02_family_signal_120d_path_query_v1.yaml`
 - Required runner path: `ep4/scripts/run_r02_family_signal_120d_path_query.py`
 - Required validator path: `ep4/scripts/validate_r02_family_signal_120d_path_query.py`
-- Date: 2026-05-13
+- Date: 2026-05-14
 
 ## 2. Purpose
 
-本需求只做固定信号触发后的 120 个交易日路径查询。
+本需求做固定信号触发后的 120 个交易日路径分析，用于支持 R03 设计前的证据整理。
+
+它不是 R03 promotion gate，也不直接产出交易策略；它必须把每个冻结信号触发后的真实可执行路径拆成：
+
+- 早期不利波动是否过大；
+- 上涨是否发生在止损式下跌之前；
+- 最大涨幅是否只是窗口内不可持续的瞬时高点；
+- 如果 R03 要继续，应该优先研究 entry delay、stop、take-profit、hold-window 还是信号本身。
 
 它回答：
 
@@ -24,10 +31,12 @@
 给定 R02 已冻结的单 family 高覆盖条件，以及若干指定的 4-family 复核组合，
 当信号在 action-time stock-day 触发后，
 若下一交易日开盘建仓，
-未来 120 个交易日内第一次触及 -5%、最大涨幅、最大跌幅、最大回撤路径和每 10 日 ATR 是什么？
+未来 120 个交易日内的固定截面收益、早期 MAE/MFE、先涨先跌 race、
+水下时间、收益保持、最大回撤路径和每 10 日 ATR 是什么？
 ```
 
-本需求不重新搜索条件，不估计 precision，不生成 markdown report，不做交易策略、不做仓位分配，也不把结果解释为 R03 promotion。
+本需求不重新搜索条件，不估计 big-winner precision，不做交易策略、不做仓位分配，也不把结果解释为 R03 promotion。
+它必须输出 R03 handoff diagnostics，明确哪些信号/组合值得进入 R03 设计假设，哪些应停止或仅保留为背景证据。
 
 ## 3. Hard Scope
 
@@ -38,14 +47,16 @@
 - 在 R01 / R02 PIT-executable eligible stock-day 分母上重放信号；
 - 对每个触发事件输出 120 个交易日路径指标；
 - 每个信号输出一个独立 CSV；
+- 输出 raw trigger 口径和 episode 审计口径；
+- 输出非逐笔的跨信号聚合摘要、R03 handoff diagnostics 和 markdown 分析报告；
 - 输出 manifest、validation audit 和必要的 signal dictionary。
 
 禁止：
 
 - 重新搜索阈值、窗口、family 或组合；
 - 用本需求结果反向修改 Section 4 / Section 5 的信号定义；
-- 输出 markdown final report；
-- 生成合并所有信号的主结果 CSV；每个信号必须是一个独立 CSV；
+- 生成合并所有信号的 row-level 主结果 CSV；每个信号的 raw trigger row-level 输出必须仍是独立 CSV；
+- 在聚合摘要中隐藏 raw trigger 和 episode 口径的差异；
 - 用 known big winner window 作为触发分母；
 - 引入新的在线数据抓取；
 - 把任一输出标记为 production entry、R03-ready、validated strategy 或可交易信号。
@@ -142,16 +153,32 @@ all 120d path metrics null
 
 ## 8. Signal Deduplication
 
-Default output grain is raw trigger stock-day. Do not collapse consecutive signal days unless config explicitly enables an audit-only episode mode.
+Default output grain is raw trigger stock-day. Consecutive signal days must not be collapsed in the primary per-signal CSV.
 
 For this V1 requirement:
 
 ```yaml
 primary_grain: raw_signal_stock_day
-episode_collapse_enabled: false
+episode_collapse_enabled: true
+episode_collapse_scope: audit_only
 ```
 
 If the same signal triggers on the same instrument for consecutive days, every trigger gets its own CSV row and its own next-open entry anchor. This preserves the user's requested query semantics.
+
+For interpretation and R03 support, the implementation must also produce an audit-only episode view:
+
+```text
+episode_id = deterministic hash(signal_id, instrument_id, split, episode_start_signal_date, episode_end_signal_date)
+episode_start_signal_date = first consecutive signal_date in the episode
+episode_end_signal_date = last consecutive signal_date in the episode
+episode_trigger_count = number of raw trigger rows in the episode
+episode_entry_date = entry_date of the first valid raw trigger in the episode
+episode_entry_price = entry_price of the first valid raw trigger in the episode
+```
+
+Episode construction is per `signal_id, instrument_id, split`. A new episode starts when at least one instrument trading day exists between two trigger dates without the same signal firing, or when the split changes. Episode outputs are diagnostic only and must not replace the raw trigger stock-day CSVs.
+
+Raw trigger CSVs must not expose post-hoc episode fields such as `episode_id`, `episode_end_signal_date`, or `episode_trigger_count`. These fields are future-derived because they depend on knowing when a run of consecutive triggers ends. They are allowed only in `reports/episode_signals/` and in aggregate summaries. R03 implementations must not use episode-audit fields as candidate inputs unless a later R03 requirement explicitly defines an online-safe episode state.
 
 ## 9. 120D Path Window
 
@@ -289,6 +316,297 @@ atr14_pct_t{offset} = atr14_t{offset} / close_t{offset}
 
 If ATR cannot be computed at an offset because lookback is incomplete or the forward date is missing, the corresponding fields must be null and `atr_missing_offsets` must list the missing offsets.
 
+### 10.5 Fixed-Horizon Close Returns
+
+The implementation must output close-to-entry returns at fixed horizons:
+
+```yaml
+fixed_return_offsets: [1, 3, 5, 10, 20, 40, 60, 120]
+```
+
+For each offset `N`:
+
+```text
+close_return_t{N} = close(entry_date + N trading days) / entry_price - 1
+```
+
+Required fields:
+
+- `close_return_t1`
+- `close_return_t3`
+- `close_return_t5`
+- `close_return_t10`
+- `close_return_t20`
+- `close_return_t40`
+- `close_return_t60`
+- `close_return_t120`
+
+If the offset is unavailable, the field must be null and the row must remain present.
+
+### 10.6 Staged MAE / MFE
+
+The implementation must measure adverse and favorable excursion at multiple windows, not only at T+120:
+
+```yaml
+excursion_offsets: [5, 10, 20, 40, 60, 120]
+```
+
+For each offset `N`:
+
+```text
+mae_low_t{N} = min(low(d) / entry_price - 1 for d in path_offsets 0..N)
+mfe_high_t{N} = max(high(d) / entry_price - 1 for d in path_offsets 0..N)
+```
+
+Required fields:
+
+- `mae_low_t5`, `mae_low_t10`, `mae_low_t20`, `mae_low_t40`, `mae_low_t60`, `mae_low_t120`
+- `mfe_high_t5`, `mfe_high_t10`, `mfe_high_t20`, `mfe_high_t40`, `mfe_high_t60`, `mfe_high_t120`
+
+ATR-normalized audit fields must also be produced when `atr14_pct_t0` is available:
+
+```text
+mae_atr_t{N} = mae_low_t{N} / atr14_pct_t0
+mfe_atr_t{N} = mfe_high_t{N} / atr14_pct_t0
+```
+
+Required fields:
+
+- `mae_atr_t5`, `mae_atr_t10`, `mae_atr_t20`, `mae_atr_t40`, `mae_atr_t60`, `mae_atr_t120`
+- `mfe_atr_t5`, `mfe_atr_t10`, `mfe_atr_t20`, `mfe_atr_t40`, `mfe_atr_t60`, `mfe_atr_t120`
+
+If `atr14_pct_t0` is null, zero, or invalid, ATR-normalized excursion fields must be null and `atr_missing_offsets` / validation audit must make the missingness visible.
+
+All aggregate summaries using ATR-normalized fields must include explicit denominators:
+
+```text
+atr_t0_usable_count = count(rows where atr14_pct_t0 is finite and > 0)
+atr_t0_usable_rate = atr_t0_usable_count / entry_valid_count when entry_valid_count > 0
+```
+
+If `entry_valid_count = 0`, `atr_t0_usable_rate` must be null and `atr_evidence_status` must be `low_coverage_audit_only`.
+
+If `atr_t0_usable_rate < 0.80` for any `signal_id, grain`, the markdown report and R03 handoff diagnostics must mark ATR-derived evidence as `low_coverage_audit_only` for that row. ATR-derived metrics must not drive `recommended_r03_status` when `atr_t0_usable_rate < 0.80`.
+
+### 10.7 Upside Thresholds And Race Metrics
+
+The implementation must measure whether upside occurs before adverse drawdown. Upside threshold hits use intraday high:
+
+```yaml
+upside_thresholds: [0.05, 0.10, 0.20]
+downside_race_thresholds: [-0.05, -0.10]
+```
+
+Required fields:
+
+- `first_plus5_date`, `first_plus5_offset`, `first_plus5_high_return`, `first_plus5_hit_flag`
+- `first_plus10_date`, `first_plus10_offset`, `first_plus10_high_return`, `first_plus10_hit_flag`
+- `first_plus20_date`, `first_plus20_offset`, `first_plus20_high_return`, `first_plus20_hit_flag`
+- `first_minus10_date`, `first_minus10_offset`, `first_minus10_low_return`, `first_minus10_hit_flag`
+- `hit_plus5_before_minus5`
+- `hit_plus10_before_minus5`
+- `hit_plus20_before_minus10`
+- `minus5_before_plus10`
+- `race_plus5_minus5_status`
+- `race_plus10_minus5_status`
+- `race_plus20_minus10_status`
+
+Race boolean fields must be paired with status fields so censoring is not confused with failure. Allowed race status values:
+
+- `upside_first`: upside threshold was hit before the paired downside threshold;
+- `downside_first`: downside threshold was hit before the paired upside threshold;
+- `same_offset`: both thresholds were hit on the same trading-day offset and daily OHLC cannot determine intraday ordering;
+- `upside_only_complete`: upside threshold was hit, downside threshold was not hit, and path is complete for the comparison horizon;
+- `downside_only_complete`: downside threshold was hit, upside threshold was not hit, and path is complete for the comparison horizon;
+- `neither_hit_complete`: neither threshold was hit and path is complete for the comparison horizon;
+- `censored_incomplete`: ordering is unresolved because the available path is incomplete.
+
+The default comparison horizon for every race pair is T+120. If both sides are hit inside the available path, status must be decided by offsets even when `path_complete_120d = false`. If one or both sides are not hit and `path_complete_120d = false`, status must be `censored_incomplete`. If neither side is hit and `path_complete_120d = true`, status must be `neither_hit_complete`.
+
+The boolean race fields are interpreted as:
+
+```text
+true  when status in {upside_first, upside_only_complete}
+false when status in {downside_first, downside_only_complete, neither_hit_complete}
+null  when status in {same_offset, censored_incomplete}
+```
+
+`minus5_before_plus10` must be mechanically derived from `race_plus10_minus5_status` and must not be independently computed:
+
+```text
+true  when race_plus10_minus5_status in {downside_first, downside_only_complete}
+false when race_plus10_minus5_status in {upside_first, upside_only_complete, neither_hit_complete}
+null  when race_plus10_minus5_status in {same_offset, censored_incomplete}
+```
+
+This prevents incomplete paths and same-day OHLC ambiguity from being counted as clean failures or successes.
+
+### 10.8 Pain Before Profit
+
+For R03 entry/stop design, the implementation must show how much adverse movement occurs before the first meaningful upside event:
+
+```text
+max_loss_before_first_plus10 =
+  min(low(d) / entry_price - 1 for d in path_start through first_plus10_date)
+
+max_loss_before_first_plus10_offset =
+  earliest trading-day offset achieving max_loss_before_first_plus10
+```
+
+If `first_plus10_hit_flag = false`, compute the field through the available path window and set `max_loss_before_first_plus10_censored = true`.
+
+The drawdown-before-profit field must use the same prior-peak drawdown convention as Section 10.3:
+
+```text
+max_drawdown_before_first_plus20_end_date =
+  first_plus20_date if first_plus20_hit_flag = true
+  else last available path date
+
+max_drawdown_before_first_plus20_eval_end_offset =
+  trading-day offset of max_drawdown_before_first_plus20_end_date from entry_date
+
+max_drawdown_before_first_plus20 =
+  min(drawdown_at_d for d in path_start through max_drawdown_before_first_plus20_end_date)
+
+max_drawdown_before_first_plus20_end_offset =
+  earliest trading-day offset of the trough date achieving max_drawdown_before_first_plus20
+```
+
+If `first_plus20_hit_flag = false`, compute `max_drawdown_before_first_plus20` through the available path window and set `max_drawdown_before_first_plus20_censored = true`. If `first_plus20_hit_flag = true`, set `max_drawdown_before_first_plus20_censored = false`. If no valid path date is available, all drawdown-before-first-plus20 fields must be null and the censored flag must be true.
+
+Required fields:
+
+- `max_loss_before_first_plus10`
+- `max_loss_before_first_plus10_offset`
+- `max_loss_before_first_plus10_censored`
+- `max_drawdown_before_first_plus20`
+- `max_drawdown_before_first_plus20_end_offset`
+- `max_drawdown_before_first_plus20_eval_end_offset`
+- `max_drawdown_before_first_plus20_censored`
+
+These fields must use the same entry-price and prior-peak drawdown conventions as Sections 10.2 and 10.3.
+
+### 10.9 Underwater Time And Gain Retention
+
+The implementation must distinguish sustained paths from paths that only make a transient high:
+
+Required fields:
+
+- `days_close_below_entry_120d`
+- `share_days_close_below_entry_120d`
+- `max_consecutive_days_close_below_entry_120d`
+- `first_recover_entry_date`
+- `first_recover_entry_offset`
+- `close_t120_above_entry_flag`
+- `peak_to_t120_giveback`
+- `close_return_20d_after_max_gain`
+
+Definitions:
+
+```text
+days_close_below_entry_120d =
+  count(path_dates where close(d) < entry_price)
+
+share_days_close_below_entry_120d =
+  days_close_below_entry_120d / number of available path dates
+
+first_recover_entry_date =
+  first date after the first close below entry_price where close(d) >= entry_price
+
+peak_to_t120_giveback =
+  close_t120 / max_high_price_120d - 1
+
+close_return_20d_after_max_gain =
+  close(max_gain_date + 20 trading days) / close(max_gain_date) - 1
+```
+
+If T+120 or T+20 after max gain is unavailable, the corresponding field must be null and completeness audit must record it.
+
+### 10.10 Path Quality Classification
+
+Each row must receive deterministic descriptive flags. These are not promotion labels and must not be used to refit Section 4 / Section 5 signals inside this requirement.
+
+Required fields:
+
+- `path_quality_flag`
+- `early_failure_flag`
+- `tradable_continuation_flag`
+- `transient_spike_flag`
+- `severe_drawdown_flag`
+- `whipsaw_after_profit_flag`
+- `clean_continuation_flag`
+- `late_drawdown_flag`
+- `incomplete_flag`
+
+Default definitions:
+
+```text
+early_failure_flag =
+  first_minus5_hit_flag == true AND first_minus5_offset <= 10
+
+incomplete_flag =
+  path_complete_120d == false
+  OR any required input for path_quality_flag is null
+
+tradable_continuation_flag =
+  hit_plus10_before_minus5 == true AND close_return_t20 >= 0
+
+transient_spike_flag =
+  max_gain_120d >= 0.20 AND close_return_t120 < 0
+
+severe_drawdown_flag =
+  max_drawdown_120d <= -0.20
+
+whipsaw_after_profit_flag =
+  first_plus10_hit_flag == true
+  AND first_minus5_hit_flag == true
+  AND first_plus10_offset < first_minus5_offset
+  AND first_minus5_offset <= first_plus10_offset + 20
+
+clean_continuation_flag =
+  hit_plus10_before_minus5 == true
+  AND close_return_t20 >= 0
+  AND max_drawdown_before_first_plus20 > -0.10
+
+late_drawdown_flag =
+  first_plus10_hit_flag == true
+  AND max_drawdown_120d <= -0.20
+  AND max_drawdown_end_offset > first_plus10_offset
+```
+
+For `incomplete_flag`, the required input set is exactly:
+
+- `path_complete_120d`
+- `first_minus5_hit_flag`
+- `first_minus5_offset` when `first_minus5_hit_flag = true`
+- `hit_plus10_before_minus5`
+- `close_return_t20`
+- `max_gain_120d`
+- `close_return_t120`
+- `max_drawdown_120d`
+- `first_plus10_hit_flag`
+- `first_plus10_offset` when `first_plus10_hit_flag = true`
+- `max_drawdown_before_first_plus20`
+- `max_drawdown_end_offset`
+
+`path_quality_flag` must be one of:
+
+- `early_failure`
+- `clean_continuation`
+- `whipsaw_after_profit`
+- `tradable_continuation`
+- `transient_spike`
+- `late_drawdown`
+- `severe_drawdown`
+- `mixed`
+- `incomplete`
+
+Tie-break order:
+
+```text
+incomplete > early_failure > clean_continuation > whipsaw_after_profit > tradable_continuation > transient_spike > late_drawdown > severe_drawdown > mixed
+```
+
 ## 11. Required Per-Signal CSV Schema
 
 Each signal must produce exactly one path CSV under:
@@ -363,8 +681,110 @@ Required row fields:
 - `atr14_pct_t110`
 - `atr14_t120`
 - `atr14_pct_t120`
+- `close_return_t1`
+- `close_return_t3`
+- `close_return_t5`
+- `close_return_t10`
+- `close_return_t20`
+- `close_return_t40`
+- `close_return_t60`
+- `close_return_t120`
+- `mae_low_t5`
+- `mae_low_t10`
+- `mae_low_t20`
+- `mae_low_t40`
+- `mae_low_t60`
+- `mae_low_t120`
+- `mfe_high_t5`
+- `mfe_high_t10`
+- `mfe_high_t20`
+- `mfe_high_t40`
+- `mfe_high_t60`
+- `mfe_high_t120`
+- `mae_atr_t5`
+- `mae_atr_t10`
+- `mae_atr_t20`
+- `mae_atr_t40`
+- `mae_atr_t60`
+- `mae_atr_t120`
+- `mfe_atr_t5`
+- `mfe_atr_t10`
+- `mfe_atr_t20`
+- `mfe_atr_t40`
+- `mfe_atr_t60`
+- `mfe_atr_t120`
+- `first_plus5_date`
+- `first_plus5_offset`
+- `first_plus5_high_return`
+- `first_plus5_hit_flag`
+- `first_plus10_date`
+- `first_plus10_offset`
+- `first_plus10_high_return`
+- `first_plus10_hit_flag`
+- `first_plus20_date`
+- `first_plus20_offset`
+- `first_plus20_high_return`
+- `first_plus20_hit_flag`
+- `first_minus10_date`
+- `first_minus10_offset`
+- `first_minus10_low_return`
+- `first_minus10_hit_flag`
+- `hit_plus5_before_minus5`
+- `hit_plus10_before_minus5`
+- `hit_plus20_before_minus10`
+- `minus5_before_plus10`
+- `race_plus5_minus5_status`
+- `race_plus10_minus5_status`
+- `race_plus20_minus10_status`
+- `max_loss_before_first_plus10`
+- `max_loss_before_first_plus10_offset`
+- `max_loss_before_first_plus10_censored`
+- `max_drawdown_before_first_plus20`
+- `max_drawdown_before_first_plus20_end_offset`
+- `max_drawdown_before_first_plus20_eval_end_offset`
+- `max_drawdown_before_first_plus20_censored`
+- `days_close_below_entry_120d`
+- `share_days_close_below_entry_120d`
+- `max_consecutive_days_close_below_entry_120d`
+- `first_recover_entry_date`
+- `first_recover_entry_offset`
+- `close_t120_above_entry_flag`
+- `peak_to_t120_giveback`
+- `close_return_20d_after_max_gain`
+- `path_quality_flag`
+- `early_failure_flag`
+- `tradable_continuation_flag`
+- `transient_spike_flag`
+- `severe_drawdown_flag`
+- `whipsaw_after_profit_flag`
+- `clean_continuation_flag`
+- `late_drawdown_flag`
+- `incomplete_flag`
 
-Rows must be sorted by:
+Required episode-audit CSV row fields under `reports/episode_signals/{signal_id}_120d_episode_audit.csv`:
+
+- `signal_id`
+- `signal_type`
+- `family_id`
+- `required_family_set`
+- `instrument_id`
+- `split`
+- `episode_id`
+- `episode_start_signal_date`
+- `episode_end_signal_date`
+- `episode_trigger_count`
+- `first_raw_signal_date`
+- `last_raw_signal_date`
+- `episode_entry_date`
+- `episode_entry_price`
+- `episode_entry_valid`
+- `episode_entry_invalid_reason`
+- all path metric fields from the first valid raw trigger row in the episode, using the same field names as the per-signal CSV
+- `episode_path_quality_flag`
+
+If an episode has no valid raw trigger entry, `episode_entry_valid = false`, `episode_entry_invalid_reason` must be populated, and path metric fields must be null.
+
+Raw trigger rows must be sorted by:
 
 ```text
 instrument_id asc,
@@ -372,7 +792,15 @@ signal_date asc,
 signal_id asc
 ```
 
-No merged all-signal result CSV is allowed. The per-signal CSV is the only row-level path output format for this requirement.
+Episode audit rows must be sorted by:
+
+```text
+instrument_id asc,
+episode_start_signal_date asc,
+signal_id asc
+```
+
+No merged all-signal row-level result CSV is allowed. The per-signal CSV is the only raw trigger row-level path output format for this requirement. Non-row-level aggregate summary CSVs required in Section 12 are allowed and required.
 
 ## 12. Required Artifacts
 
@@ -386,6 +814,10 @@ ep4/outputs/r02_family_signal_120d_path_query_v1/
   reports/
     r02_family_signal_120d_signal_dictionary.csv
     r02_family_signal_120d_validation_audit.csv
+    r02_family_signal_120d_path_quality_summary.csv
+    r02_family_signal_120d_episode_summary.csv
+    r02_family_signal_120d_r03_handoff_diagnostics.csv
+    r02_family_signal_120d_path_analysis_report.md
     signals/
       single_momentum_rps_120d_path.csv
       single_oscillator_120d_path.csv
@@ -398,9 +830,205 @@ ep4/outputs/r02_family_signal_120d_path_query_v1/
       review_oscillator_pullback_volatility_volume_120d_path.csv
       review_momentum_oscillator_range_volume_120d_path.csv
       review_momentum_pullback_volatility_volume_120d_path.csv
+    episode_signals/
+      single_momentum_rps_120d_episode_audit.csv
+      single_oscillator_120d_episode_audit.csv
+      single_price_trend_120d_episode_audit.csv
+      single_pullback_drawdown_120d_episode_audit.csv
+      single_range_breakout_120d_episode_audit.csv
+      single_volatility_band_120d_episode_audit.csv
+      single_volume_money_120d_episode_audit.csv
+      review_momentum_oscillator_pullback_volume_120d_episode_audit.csv
+      review_oscillator_pullback_volatility_volume_120d_episode_audit.csv
+      review_momentum_oscillator_range_volume_120d_episode_audit.csv
+      review_momentum_pullback_volatility_volume_120d_episode_audit.csv
 ```
 
-No markdown report is allowed for this requirement.
+The markdown report is required, but it must be descriptive and data-backed. It must include:
+
+- raw trigger vs episode口径差异；
+- 每个信号的 early failure、tradable continuation、transient spike、severe drawdown 比例；
+- 固定截面收益分布；
+- MAE/MFE 分布；
+- race metric 分布和 censored / same-offset 比例；
+- ATR 缺失率、usable rate 和 low-coverage audit-only 标记；
+- R03 handoff conclusion: `continue_to_r03_design`, `needs_entry_delay_or_stop_design`, `background_only`, or `stop_candidate`.
+- R03 handoff status basis metrics and blocker / opportunity explanation.
+
+The report must not call any signal `production-ready`, `R03-ready`, `validated strategy`, `buy signal`, `可交易信号`, or `已验证策略`.
+
+### 12.1 Aggregate Summary Schemas
+
+`r02_family_signal_120d_path_quality_summary.csv` must contain one row per `signal_id, signal_type, grain`, where `grain` is `raw_trigger` or `episode_first_trigger`.
+
+Required fields:
+
+- `signal_id`
+- `signal_type`
+- `grain`
+- `row_count`
+- `episode_count`
+- `entry_valid_count`
+- `path_complete_120d_count`
+- `entry_invalid_rate`
+- `path_incomplete_rate`
+- `atr_t0_missing_rate`
+- `atr_t0_usable_count`
+- `atr_t0_usable_rate`
+- `atr_evidence_status`
+- `first_minus5_hit_rate`
+- `first_minus5_t10_rate`
+- `first_plus10_hit_rate`
+- `hit_plus10_before_minus5_rate`
+- `hit_plus20_before_minus10_rate`
+- `race_plus10_minus5_censored_rate`
+- `race_plus20_minus10_censored_rate`
+- `early_failure_rate`
+- `clean_continuation_rate`
+- `whipsaw_after_profit_rate`
+- `tradable_continuation_rate`
+- `transient_spike_rate`
+- `late_drawdown_rate`
+- `severe_drawdown_rate`
+- `close_return_t20_p25`, `close_return_t20_p50`, `close_return_t20_p75`
+- `close_return_t60_p25`, `close_return_t60_p50`, `close_return_t60_p75`
+- `close_return_t120_p25`, `close_return_t120_p50`, `close_return_t120_p75`
+- `mae_low_t10_p50`, `mae_low_t20_p50`, `mae_low_t120_p50`
+- `mfe_high_t10_p50`, `mfe_high_t20_p50`, `mfe_high_t120_p50`
+- `max_drawdown_120d_p50`
+- `peak_to_t120_giveback_p50`
+
+`r02_family_signal_120d_episode_summary.csv` must contain one row per `signal_id` and include:
+
+- `signal_id`
+- `signal_type`
+- `raw_trigger_row_count`
+- `episode_count`
+- `episode_compression_ratio = episode_count / raw_trigger_row_count`
+- `episode_trigger_count_p50`
+- `episode_trigger_count_p90`
+- `episode_entry_valid_count`
+- `episode_path_complete_120d_count`
+- `episode_atr_t0_usable_count`
+- `episode_atr_t0_usable_rate`
+- `episode_early_failure_rate`
+- `episode_clean_continuation_rate`
+- `episode_whipsaw_after_profit_rate`
+- `episode_tradable_continuation_rate`
+- `episode_transient_spike_rate`
+- `episode_late_drawdown_rate`
+- `episode_severe_drawdown_rate`
+- `episode_hit_plus10_before_minus5_rate`
+- `episode_close_return_t20_p50`
+- `episode_close_return_t60_p50`
+- `episode_close_return_t120_p50`
+- `episode_mae_low_t20_p50`
+- `episode_mfe_high_t20_p50`
+- `episode_max_drawdown_120d_p50`
+
+`r02_family_signal_120d_r03_handoff_diagnostics.csv` must contain one row per `signal_id` and include:
+
+- `signal_id`
+- `raw_trigger_row_count`
+- `episode_count`
+- `episode_compression_ratio`
+- `recommended_r03_status`
+- `primary_blocker`
+- `primary_opportunity`
+- `status_basis_metrics`
+- `atr_evidence_status`
+- `needs_entry_delay_test`
+- `needs_stop_loss_test`
+- `needs_take_profit_test`
+- `needs_hold_window_test`
+- `notes`
+
+Allowed `recommended_r03_status` values:
+
+- `continue_to_r03_design`
+- `needs_entry_delay_or_stop_design`
+- `background_only`
+- `stop_candidate`
+
+These statuses are analysis handoff labels only. They must not be interpreted as final promotion decisions.
+
+`primary_blocker` and `primary_opportunity` are mandatory string fields. When a branch does not set one of them, the unset field must be the literal value `none`.
+
+### 12.2 R03 Handoff Policy
+
+`recommended_r03_status` must be computed deterministically from the `episode_first_trigger` grain in `r02_family_signal_120d_path_quality_summary.csv`, not from raw trigger rows. Raw trigger metrics may be shown as supporting evidence only. In `path_quality_summary.csv`, `episode_count` must equal `row_count` when `grain = episode_first_trigger`; for `grain = raw_trigger`, `episode_count` must be null.
+
+Default handoff thresholds:
+
+```yaml
+min_episode_count_for_handoff: 200
+min_path_complete_rate: 0.70
+min_atr_usable_rate_for_atr_evidence: 0.80
+continue_min_hit_plus10_before_minus5_rate: 0.45
+continue_max_early_failure_rate: 0.35
+continue_max_severe_drawdown_rate: 0.55
+continue_min_close_return_t20_p50: 0.00
+stop_min_early_failure_rate: 0.55
+stop_max_hit_plus10_before_minus5_rate: 0.30
+background_max_episode_count: 199
+```
+
+Status assignment order:
+
+```text
+if episode_count <= background_max_episode_count:
+  recommended_r03_status = background_only
+  primary_blocker = insufficient_episode_sample
+
+else if entry_valid_count == 0:
+  recommended_r03_status = background_only
+  primary_blocker = no_valid_executable_entries
+
+else if path_complete_120d_count / entry_valid_count < min_path_complete_rate:
+  recommended_r03_status = background_only
+  primary_blocker = insufficient_complete_path_sample
+
+else if early_failure_rate >= stop_min_early_failure_rate
+        AND hit_plus10_before_minus5_rate <= stop_max_hit_plus10_before_minus5_rate:
+  recommended_r03_status = stop_candidate
+  primary_blocker = early_failure_without_enough_prior_upside
+
+else if hit_plus10_before_minus5_rate >= continue_min_hit_plus10_before_minus5_rate
+        AND early_failure_rate <= continue_max_early_failure_rate
+        AND severe_drawdown_rate <= continue_max_severe_drawdown_rate
+        AND close_return_t20_p50 >= continue_min_close_return_t20_p50:
+  recommended_r03_status = continue_to_r03_design
+  primary_opportunity = clean_continuation_candidate
+
+else if first_plus10_hit_rate >= 0.40
+        OR mfe_high_t20_p50 >= 0.10
+        OR transient_spike_rate >= 0.25:
+  recommended_r03_status = needs_entry_delay_or_stop_design
+  primary_opportunity = upside_exists_but_path_needs_risk_design
+
+else:
+  recommended_r03_status = background_only
+  primary_blocker = no_clear_path_edge
+```
+
+When any metric in a comparison is null, that comparison must evaluate to `false`, except for the explicit `entry_valid_count == 0` branch. This makes the handoff policy deterministic for sparse or incomplete outputs.
+
+`needs_entry_delay_test`, `needs_stop_loss_test`, `needs_take_profit_test`, and `needs_hold_window_test` must also be deterministic:
+
+```text
+needs_entry_delay_test = early_failure_rate >= 0.35 OR first_minus5_t10_rate >= 0.35
+needs_stop_loss_test = severe_drawdown_rate >= 0.45 OR max_drawdown_120d_p50 <= -0.15
+needs_take_profit_test = transient_spike_rate >= 0.25 OR peak_to_t120_giveback_p50 <= -0.20
+needs_hold_window_test = close_return_t20_p50 >= 0 AND close_return_t120_p50 < close_return_t20_p50
+```
+
+`status_basis_metrics` must list the exact metric values and thresholds that determined the status in a deterministic semicolon-delimited form, for example:
+
+```text
+episode_count=421>=200; hit_plus10_before_minus5_rate=0.48>=0.45; early_failure_rate=0.31<=0.35
+```
+
+If `atr_t0_usable_rate < min_atr_usable_rate_for_atr_evidence`, set `atr_evidence_status = low_coverage_audit_only`; otherwise set `atr_evidence_status = usable`. ATR-derived metrics must not appear in `status_basis_metrics` when `atr_evidence_status = low_coverage_audit_only`.
 
 ## 13. Manifest Requirements
 
@@ -427,9 +1055,25 @@ Manifest must include:
 - `atr_period = 14`
 - `atr_offsets`
 - `per_signal_csv_paths`
+- `per_signal_episode_audit_paths`
 - `per_signal_row_counts`
+- `per_signal_episode_counts`
 - `per_signal_entry_invalid_counts`
 - `per_signal_incomplete_120d_counts`
+- `path_quality_summary_path`
+- `episode_summary_path`
+- `r03_handoff_diagnostics_path`
+- `path_analysis_report_path`
+- `fixed_return_offsets`
+- `excursion_offsets`
+- `upside_thresholds`
+- `downside_race_thresholds`
+- `path_quality_classification_policy`
+- `race_status_policy`
+- `atr_evidence_policy`
+- `r03_handoff_policy`
+- `r03_handoff_thresholds`
+- `r03_handoff_boundary = descriptive_analysis_only`
 - `validation_status`
 
 ## 14. Validation Gates
@@ -442,8 +1086,15 @@ Validator must fail closed if:
 - any composite signal uses OR, lagged family confirmation, non-same-day matching, or a family outside Section 5;
 - any per-signal CSV is missing;
 - any per-signal CSV lacks required columns;
-- any merged row-level all-signal CSV is generated, including files matching `reports/*all*signal*.csv`, `reports/*merged*.csv`, or any CSV outside `reports/signals/` that contains `instrument_id`, `signal_date`, and path metric columns;
-- a markdown report is generated under the output root;
+- any per-signal raw trigger CSV contains post-hoc episode fields such as `episode_id`, `episode_end_signal_date`, or `episode_trigger_count`;
+- any required episode-audit CSV is missing;
+- any required episode-audit CSV lacks required columns;
+- any episode is constructed across split boundaries;
+- any required aggregate summary CSV is missing;
+- any required aggregate summary CSV lacks required columns;
+- any merged row-level all-signal CSV is generated, including files matching `reports/*all*signal*.csv`, `reports/*merged*.csv`, or any CSV outside `reports/signals/` / `reports/episode_signals/` that contains `instrument_id`, `signal_date`, and row-level path metric columns;
+- the markdown analysis report is missing;
+- the markdown analysis report uses forbidden promotion language;
 - `entry_valid = true` but `entry_date` is not strictly after `signal_date`;
 - `entry_date` does not pass the required executable next-open filters when those local filter fields are available;
 - `entry_valid = false` but path metric fields are populated;
@@ -452,10 +1103,40 @@ Validator must fail closed if:
 - max gain uses close rather than high;
 - max loss uses close rather than low;
 - max drawdown omits `entry_price` as the initial peak candidate or assumes same-day high-before-low ordering for the primary field;
+- fixed-horizon returns use high/low instead of close;
+- MAE uses close instead of low, or MFE uses close instead of high;
+- race metrics use close for primary plus/minus threshold hits;
+- race boolean fields are not consistent with their paired race status fields;
+- `minus5_before_plus10` is not mechanically derived from `race_plus10_minus5_status`;
+- race status fields contain values outside Section 10.7;
+- race status fields do not use T+120 as the comparison horizon or fail to mark unresolved incomplete-path comparisons as `censored_incomplete`;
+- `max_drawdown_before_first_plus20` does not use the Section 10.3 prior-peak drawdown convention, or its censored fields are inconsistent with Section 10.8;
+- `max_loss_before_first_plus10_offset` is not the earliest offset achieving `max_loss_before_first_plus10`;
+- `max_drawdown_before_first_plus20_end_offset` is not the earliest trough offset achieving `max_drawdown_before_first_plus20`, or `max_drawdown_before_first_plus20_eval_end_offset` is not the evaluation window end offset;
+- path quality flags are computed with a different policy than Section 10.10 without manifest disclosure;
+- `incomplete_flag` is inconsistent with Section 10.10 or `path_quality_flag = incomplete` is missing when `incomplete_flag = true`;
+- episode audit rows replace or filter the required raw trigger rows;
+- aggregate summary files mix raw trigger and episode grains without an explicit `grain` field;
+- `path_quality_summary.csv` has `grain = episode_first_trigger` rows where `episode_count != row_count`, or raw-trigger rows where `episode_count` is non-null;
+- ATR-derived aggregate metrics omit usable denominators or drive handoff status when `atr_evidence_status = low_coverage_audit_only`;
+- `entry_valid_count = 0` but `atr_t0_usable_rate` is non-null or `atr_evidence_status` is not `low_coverage_audit_only`;
+- `recommended_r03_status`, `needs_*_test`, `primary_blocker`, or `primary_opportunity` violate the deterministic Section 12.2 handoff policy;
+- `primary_blocker` or `primary_opportunity` is empty instead of a policy value or `none`;
+- `status_basis_metrics` is missing for any handoff row or includes ATR-derived metrics when ATR evidence is low coverage;
 - ATR uses a non-Wilder method or non-14 period without explicit config and manifest disclosure;
 - rows are filtered by future 120d path availability instead of retained with completeness flags;
 - outputs depend on known big winner membership, reference-date windows, or future labels.
 
 ## 15. Interpretation Boundary
 
-This query is descriptive path evidence only. It may be used to inspect whether the existing high-coverage family states tend to incur early adverse excursion, delayed continuation, or excessive post-entry drawdown. It must not be used as a standalone strategy validation or as a promotion gate without a separate requirement that defines executable entry, exit, risk budget, and out-of-sample decision rules.
+This analysis is descriptive path evidence only. It may be used to inspect whether the existing high-coverage family states tend to incur early adverse excursion, delayed continuation, transient spikes, recoverable pullbacks, or excessive post-entry drawdown.
+
+It may support R03 by producing explicit handoff hypotheses such as:
+
+- the signal is too failure-prone and should stop;
+- the signal may require delayed entry;
+- the signal may require early stop / risk-budget design;
+- the signal may require take-profit or trailing-stop design because upside is transient;
+- the signal has enough path quality to justify a formal R03 executable strategy requirement.
+
+It must not be used as a standalone strategy validation or as a promotion gate without a separate R03 requirement that defines executable entry, exit, risk budget, portfolio construction, out-of-sample decision rules, and final go/no-go metrics.

@@ -1,9 +1,9 @@
 {
   "phase": "ep4_r02_family_signal_120d_path_query_v1",
-  "generated_at": "2026-05-13T08:53:59.133274+00:00",
+  "generated_at": "2026-05-14T08:58:16.221718+00:00",
   "requirement_path": "ep4/requirement_02_family_signal_120d_path_query_v1.md",
   "config_path": "ep4/configs/r02_family_signal_120d_path_query_v1.yaml",
-  "config_hash": "f5c93952b732e2528a69beb4082f23b82ae19684e0f46796c62d4ebc5df87c91",
+  "config_hash": "5ec87f9c090f1b7619ff01d416431ba10ea130a520059f13671ed7f17cc146b1",
   "output_root": "ep4/outputs/r02_family_signal_120d_path_query_v1",
   "upstream_r02_output_root": "ep4/outputs/r02_big_winner_coverage_ratio_search_v1",
   "upstream_r02_manifest_path": "ep4/outputs/r02_big_winner_coverage_ratio_search_v1/manifests/r02_big_winner_coverage_manifest.json",
@@ -61,6 +61,19 @@
     "single_volatility_band": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/signals/single_volatility_band_120d_path.csv",
     "single_volume_money": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/signals/single_volume_money_120d_path.csv"
   },
+  "per_signal_episode_audit_paths": {
+    "review_momentum_oscillator_pullback_volume": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/review_momentum_oscillator_pullback_volume_120d_episode_audit.csv",
+    "review_momentum_oscillator_range_volume": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/review_momentum_oscillator_range_volume_120d_episode_audit.csv",
+    "review_momentum_pullback_volatility_volume": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/review_momentum_pullback_volatility_volume_120d_episode_audit.csv",
+    "review_oscillator_pullback_volatility_volume": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/review_oscillator_pullback_volatility_volume_120d_episode_audit.csv",
+    "single_momentum_rps": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_momentum_rps_120d_episode_audit.csv",
+    "single_oscillator": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_oscillator_120d_episode_audit.csv",
+    "single_price_trend": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_price_trend_120d_episode_audit.csv",
+    "single_pullback_drawdown": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_pullback_drawdown_120d_episode_audit.csv",
+    "single_range_breakout": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_range_breakout_120d_episode_audit.csv",
+    "single_volatility_band": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_volatility_band_120d_episode_audit.csv",
+    "single_volume_money": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_volume_money_120d_episode_audit.csv"
+  },
   "per_signal_row_counts": {
     "review_momentum_oscillator_pullback_volume": 5229,
     "review_momentum_oscillator_range_volume": 5929,
@@ -73,6 +86,19 @@
     "single_range_breakout": 68679,
     "single_volatility_band": 28211,
     "single_volume_money": 22806
+  },
+  "per_signal_episode_counts": {
+    "review_momentum_oscillator_pullback_volume": 4613,
+    "review_momentum_oscillator_range_volume": 5257,
+    "review_momentum_pullback_volatility_volume": 4617,
+    "review_oscillator_pullback_volatility_volume": 4801,
+    "single_momentum_rps": 16582,
+    "single_oscillator": 15698,
+    "single_price_trend": 17518,
+    "single_pullback_drawdown": 19235,
+    "single_range_breakout": 36142,
+    "single_volatility_band": 18699,
+    "single_volume_money": 19178
   },
   "per_signal_entry_invalid_counts": {
     "review_momentum_oscillator_pullback_volume": 13,
@@ -100,6 +126,64 @@
     "single_volatility_band": 6188,
     "single_volume_money": 4906
   },
+  "path_quality_summary_path": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/r02_family_signal_120d_path_quality_summary.csv",
+  "episode_summary_path": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/r02_family_signal_120d_episode_summary.csv",
+  "r03_handoff_diagnostics_path": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/r02_family_signal_120d_r03_handoff_diagnostics.csv",
+  "path_analysis_report_path": "ep4/outputs/r02_family_signal_120d_path_query_v1/reports/r02_family_signal_120d_path_analysis_report.md",
+  "fixed_return_offsets": [
+    1,
+    3,
+    5,
+    10,
+    20,
+    40,
+    60,
+    120
+  ],
+  "excursion_offsets": [
+    5,
+    10,
+    20,
+    40,
+    60,
+    120
+  ],
+  "upside_thresholds": [
+    0.05,
+    0.1,
+    0.2
+  ],
+  "downside_race_thresholds": [
+    -0.05,
+    -0.1
+  ],
+  "path_quality_classification_policy": "incomplete_early_clean_whipsaw_tradable_transient_late_severe_mixed",
+  "race_status_policy": [
+    "censored_incomplete",
+    "downside_first",
+    "downside_only_complete",
+    "neither_hit_complete",
+    "same_offset",
+    "upside_first",
+    "upside_only_complete"
+  ],
+  "atr_evidence_policy": {
+    "min_atr_usable_rate_for_atr_evidence": 0.8
+  },
+  "r03_handoff_policy": "deterministic_episode_first_trigger",
+  "r03_handoff_thresholds": {
+    "min_episode_count_for_handoff": 200,
+    "min_path_complete_rate": 0.7,
+    "min_atr_usable_rate_for_atr_evidence": 0.8,
+    "continue_min_hit_plus10_before_minus5_rate": 0.45,
+    "continue_max_early_failure_rate": 0.35,
+    "continue_max_severe_drawdown_rate": 0.55,
+    "continue_min_close_return_t20_p50": 0.0,
+    "stop_min_early_failure_rate": 0.55,
+    "stop_max_hit_plus10_before_minus5_rate": 0.3,
+    "background_max_episode_count": 199
+  },
+  "r03_handoff_boundary": "descriptive_analysis_only",
   "signal_trigger_counts_before_path": {
     "single_momentum_rps": 44120,
     "single_oscillator": 23132,
@@ -113,7 +197,7 @@
     "review_momentum_oscillator_range_volume": 5929,
     "review_momentum_pullback_volatility_volume": 5228
   },
-  "row_level_output_policy": "per_signal_csv_only_no_merged_all_signal_csv",
+  "row_level_output_policy": "per_signal_raw_csv_only_no_merged_all_signal_csv",
   "validation_status": "passed",
-  "artifact_hash": "6b67c3a64c09e889"
+  "artifact_hash": "96e63b81b23fcb6a"
 }

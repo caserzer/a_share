@@ -128,13 +128,18 @@ review_composite_signals:
 allowed_windows: [5, 10, 30, 60]
 path_horizon_trading_days: 120
 path_offsets: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+fixed_return_offsets: [1, 3, 5, 10, 20, 40, 60, 120]
+excursion_offsets: [5, 10, 20, 40, 60, 120]
+upside_thresholds: [0.05, 0.10, 0.20]
+downside_race_thresholds: [-0.05, -0.10]
 atr:
   method: wilder
   period: 14
   offsets: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
 
 primary_grain: raw_signal_stock_day
-episode_collapse_enabled: false
+episode_collapse_enabled: true
+episode_collapse_scope: audit_only
 entry_anchor: first_executable_next_open_after_signal_date
 entry_executable_filter_policy:
   require_previous_row_buy_executable_next_open: true
@@ -144,6 +149,20 @@ entry_executable_filter_policy:
   use_local_limit_flags_when_available: true
 
 output_policy:
-  per_signal_csv_only: true
+  per_signal_raw_csv_only: true
   forbid_merged_all_signal_csv: true
-  forbid_markdown_report: true
+  require_markdown_report: true
+  require_episode_audit: true
+  require_r03_handoff_diagnostics: true
+
+r03_handoff_thresholds:
+  min_episode_count_for_handoff: 200
+  min_path_complete_rate: 0.70
+  min_atr_usable_rate_for_atr_evidence: 0.80
+  continue_min_hit_plus10_before_minus5_rate: 0.45
+  continue_max_early_failure_rate: 0.35
+  continue_max_severe_drawdown_rate: 0.55
+  continue_min_close_return_t20_p50: 0.00
+  stop_min_early_failure_rate: 0.55
+  stop_max_hit_plus10_before_minus5_rate: 0.30
+  background_max_episode_count: 199
