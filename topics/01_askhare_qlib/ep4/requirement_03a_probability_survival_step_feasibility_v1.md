@@ -57,7 +57,7 @@ no incremental staged-posterior edge over survival step-up
 - 复用 R02.1 已生成的 prior / posterior / survival checkpoint / split stability artifacts；
 - 复用 R02 family signal 120D path query 的 next-open entry 和 path label 口径；
 - 在 episode-first-trigger grain 上重算 T0 prior 与 T+3 / T+5 / T+10 survivor posterior；
-- 只在 train split 上选择 survival checkpoint、probability gate、fallback grain 和 fixed exposure schedule label；
+- 只在 train split 上选择 survival checkpoint、probability gate 和 fallback grain；exposure schedule label 必须是 train 前固定的 report-only scenario label；
 - 在 validation / robustness 上只读评估 train-frozen candidate；
 - 比较 `baseline_1`、`baseline_2`、`baseline_3` 与 R03a candidate 的概率路径质量；
 - 输出 bundle / context / fresh evidence 的描述性解释表；
@@ -69,7 +69,7 @@ no incremental staged-posterior edge over survival step-up
 - 根据 validation / robustness 调整 survival checkpoint、threshold、bucket fallback 或 candidate；
 - 使用 naive Bayes、shrinked log-odds 相加或 family LR 相乘；
 - 将 same-day 多个 family 触发拆成多份 risk budget；
-- 将 `same_day_bundle_key`、`context_bucket_id` 或 `fresh_evidence_status` 作为 primary gate，除非本需求明示允许且通过 sample / split gate；
+- 将 `same_day_bundle_key`、`context_bucket_id` 或 `fresh_evidence_status` 作为 primary gate；bundle/context 只允许作为 fallback-grain；
 - 使用 `EV_R_diagnostic`、`EV_R_lower`、terminal EV 或 expected R 作为 selection / promotion gate；
 - 输出 buy / sell / add / reduce action；
 - 输出 final 1R sizing、position size、portfolio simulation 或 production strategy；
@@ -209,6 +209,20 @@ episode build window = seed_trade_date + 0 .. seed_trade_date + 30 trading days
 new seed for the same instrument is allowed only after the previous build window ends
 ```
 
+R03a must verify the upstream construction authority using the strongest available hash:
+
+```text
+preferred:
+  upstream_r02_1_episode_construction_rule_hash
+
+allowed fallback if preferred field is absent:
+  upstream_path_query_manifest_hash
+  upstream_path_query_validation_hash
+  upstream_episode_audit_file_hashes
+```
+
+If the preferred hash is absent, validator must record `episode_construction_hash_mode = upstream_manifest_and_episode_audit_fallback` instead of failing solely because the older upstream manifest lacks an explicit construction-rule hash. It must still fail if the fallback hashes are missing or do not match the files read by R03a.
+
 R03a 必须重算同粒度 T0 与 survival prior，不能直接把 R02.1 的 signal-event prior 和 survivor-episode posterior 相减。
 
 `seed_primary_family_id` 的定义必须是确定性的：
@@ -345,7 +359,24 @@ prior_source
 fallback_level
 ```
 
-Every probability-bearing output table must include this full probability schema. It is not valid to report only `P_good_lower` and `P_bad_upper` in downstream comparison tables.
+Every posterior bucket table must include this full bucket schema.
+
+Downstream comparison / audit tables that materialize split-level candidate or baseline probabilities are not required to repeat bucket-only lineage fields such as `prior_source` or `fallback_level` unless those fields are explicitly listed in Section 18. They must still include the minimum probability-estimate schema:
+
+```text
+label_denominator_count, or the split-prefixed equivalent
+P_good
+P_bad
+P_neutral
+P_good_lower
+P_good_upper
+P_bad_lower
+P_bad_upper
+credible_interval_width_good
+credible_interval_width_bad
+```
+
+It is not valid to report only `P_good_lower` and `P_bad_upper` in downstream comparison tables.
 
 ### 10.1 Dirichlet-Multinomial Posterior
 
@@ -405,7 +436,20 @@ train_inner_cv_assignment = deterministic_hash(seed_episode_id, train_only_selec
 
 For every train episode, `episode_probability_score` must be assigned from a posterior table fitted on train folds that do not contain that episode. Leave-one-episode-out is allowed only as the deterministic special case `train_inner_cv_fold_count = train_episode_count`.
 
-After train selection, the runner may materialize a full-train frozen posterior table for validation / robustness scoring. Validation / robustness episode inclusion must use that frozen train table and must not use validation / robustness labels to choose a bucket, threshold, fallback grain, or candidate.
+After train selection, the runner may materialize a full-train frozen posterior table for validation / robustness episode-inclusion scoring. Validation / robustness episode inclusion must use that frozen train table and must not use validation / robustness labels to choose a bucket, threshold, fallback grain, or candidate.
+
+R03a must keep two probability sources separate:
+
+```text
+episode_probability_score_source =
+  train_inner_cv_out_of_fold posterior for train episode inclusion
+  full_train_frozen posterior for validation / robustness episode inclusion
+
+split_probability_evaluation_source =
+  actual labels in the same split after the frozen inclusion mask is applied
+```
+
+The `episode_probability_score_source` may decide whether an episode enters the candidate set. It must not be reused as the measured `P_good`, `P_bad`, or `P_neutral` for train / validation / robustness performance. Those measured probabilities must be recomputed from the actual labels of the included episodes in the evaluated split.
 
 ### 10.2 Probability-Only Score
 
@@ -459,13 +503,11 @@ seed_type=multi_family_bundle_seed
 seed_primary_family_id=<one of frozen 7 family ids>
 seed_primary_family_id=multi_family_bundle
 seed_same_day_family_count=<1..7>
-same_day_bundle_key=<stable sufficient bundle key>
-context_bucket_id=<stable sufficient context bucket id>
 ```
 
-`same_day_bundle_key` and `context_bucket_id` scopes are allowed only as secondary fallback scopes after Section 14 gates pass. They must not create multiple same-day risk units.
+`same_day_bundle_key` and `context_bucket_id` must not appear as `seed_scope_id`. They may only appear as fallback-grain buckets after Section 14 gates pass. They must not create multiple same-day risk units.
 
-No other family-group search is allowed. In particular, train may not create arbitrary subsets such as `range_breakout|volume_money` unless that exact set is already represented by an allowed stable `same_day_bundle_key` scope.
+No other family-group search is allowed. In particular, train may not create arbitrary subsets such as `range_breakout|volume_money`. A stable `same_day_bundle_key` may refine fallback selection only; it must not define the primary candidate scope.
 
 For every episode and candidate, define:
 
@@ -484,7 +526,8 @@ episode_probability_bucket_key =
 
 episode_probability_score =
   P_good_lower - P_bad_upper assigned to episode_probability_bucket_key
-  from train-frozen posterior table or fallback table
+  from train-out-of-fold posterior table for train rows
+  from full-train frozen posterior table for validation / robustness rows
 
 candidate_episode_included =
   episode_in_selected_seed_scope
@@ -495,6 +538,8 @@ candidate_episode_included =
 The `probability_gate_threshold` is selected in train only. Validation / robustness must apply the same threshold and fallback-grain mapping without recomputing bucket selection from validation outcomes.
 
 For train rows, `episode_probability_score` must be the out-of-fold value from Section 10.1. For validation / robustness rows, it must be the value from the train-frozen posterior table.
+
+For all splits, candidate-level posterior fields such as `P_good`, `P_bad`, `P_neutral`, and their credible intervals must be recomputed from actual labels after `candidate_episode_included` is materialized. They must not be copied or averaged from the score-source posterior table.
 
 `baseline_3_same_scope_episode_included` must use:
 
@@ -550,7 +595,7 @@ probability_gate_threshold_grid = {
 }
 ```
 
-`same_day_bundle_key` and `context_bucket_id` may appear in `seed_scope_id_grid` or `fallback_grain_grid` only when Section 14 marks the bucket `sufficient_and_stable`. `fresh_evidence_status` must not appear in any train-selection grid.
+`same_day_bundle_key` and `context_bucket_id` must not appear in `seed_scope_id_grid`. They may appear in `fallback_grain_grid` only when Section 14 marks the bucket `sufficient_and_stable`. `fresh_evidence_status` must not appear in any train-selection grid.
 
 Degenerate probability gates are forbidden. A candidate row must be excluded before ranking if, within the selected seed scope and selected survival checkpoint on train, the selected `fallback_grain` produces fewer than two distinct `episode_probability_bucket_key` values before thresholding.
 
@@ -567,8 +612,10 @@ Default train selection metric:
 
 ```text
 selection_metric =
-  train_prob_edge_vs_baseline_3
+  train_oof_prob_edge_vs_baseline_3
 ```
+
+Train selection, eligibility, and tie-breakers must use only `train_oof_*` probability fields. These fields must be measured from actual labels of train episodes included by the out-of-fold episode score. They must not be averages of out-of-fold bucket posterior values. `train_full_frozen_*` probability fields may be reported for lineage and for validation / robustness episode-inclusion scoring, but must not determine `selected_in_train`.
 
 Candidate rows are eligible for train selection only if:
 
@@ -581,9 +628,9 @@ r03a_gate_status = sufficient_and_stable
 Tie-breaker order is fixed:
 
 ```text
-1. higher train_prob_edge_vs_baseline_3
-2. lower train_P_bad_upper
-3. higher train_P_good_lower
+1. higher train_oof_prob_edge_vs_baseline_3
+2. lower train_oof_P_bad_upper
+3. higher train_oof_P_good_lower
 4. lower train_drawdown_severity_120d_p90
 5. higher train_upside_capture_ratio_vs_baseline3
 6. higher train_label_denominator
@@ -610,6 +657,28 @@ max_abs_drawdown_severity_worsening_vs_baseline3 = 0.005
 ```
 
 All thresholds must be fixed in train config before validation / robustness readout.
+
+CI halfwidth audit for eligibility thresholds:
+
+```text
+bad_edge_ci_halfwidth_proxy =
+  0.5 * (
+    candidate_credible_interval_width_bad
+    + baseline_3_same_scope_credible_interval_width_bad
+  )
+
+good_edge_ci_halfwidth_proxy =
+  0.5 * (
+    candidate_credible_interval_width_good
+    + baseline_3_same_scope_credible_interval_width_good
+  )
+
+candidate_eligibility_threshold_smaller_than_ci_halfwidth =
+  min_abs_bad_upper_improvement_vs_baseline3 < bad_edge_ci_halfwidth_proxy
+  OR max_abs_good_lower_loss_vs_baseline3 < good_edge_ci_halfwidth_proxy
+```
+
+This audit is a null-result diagnostic, not a train tuning rule. It must be computed per candidate row from the same measured split posterior field family used for pass/fail: `train_oof_*` actual-label posterior for train, and evaluation-split actual-label posterior after frozen inclusion for validation / robustness.
 
 Define:
 
@@ -656,11 +725,35 @@ candidate_drawdown_severity_120d_p90
      + max_abs_drawdown_severity_worsening_vs_baseline3
 ```
 
+Required denominator aliases for this generic split-pass formula:
+
+```text
+train candidate_label_denominator_count =
+  train_oof_label_denominator
+
+train baseline_3_same_scope_label_denominator_count =
+  train_baseline_3_same_scope_label_denominator
+
+validation candidate_label_denominator_count =
+  validation_label_denominator
+
+validation baseline_3_same_scope_label_denominator_count =
+  validation_baseline_3_same_scope_label_denominator
+
+robustness candidate_label_denominator_count =
+  robustness_label_denominator
+
+robustness baseline_3_same_scope_label_denominator_count =
+  robustness_baseline_3_same_scope_label_denominator
+```
+
+For train split, all probability fields in this pass/fail formula must be sourced from `train_oof_*` actual-label posterior fields after out-of-fold inclusion. For validation / robustness, they must be sourced from actual labels in the evaluation split after applying the train-frozen inclusion mask. Full-train frozen posterior fields are allowed only for row-level inclusion scoring and lineage, not for measured split performance.
+
 Final candidate pass requires both:
 
 ```text
-validation_split_pass = true
-robustness_split_pass = true
+validation_candidate_pass = true
+robustness_candidate_pass = true
 ```
 
 If train passes but either validation or robustness fails, final decision must be:
@@ -795,6 +888,7 @@ step_up_authority = train_frozen_survival_checkpoint + probability_only_gate
 allowed_checkpoint_grid = {T+3, T+5, T+10}
 allowed_primary_gates = {
   seed_primary_family_id,
+  seed_same_day_family_count,
   seed_type,
   survival_checkpoint_state,
   probability_only_score
@@ -805,8 +899,8 @@ Forbidden candidate gates:
 
 ```text
 fresh_evidence_status
-same_day_bundle_key, unless r03a_gate_status = sufficient_and_stable and used only as secondary fallback
-context_bucket_id, unless r03a_gate_status = sufficient_and_stable and used only as secondary fallback
+same_day_bundle_key as seed_scope_id or primary gate
+context_bucket_id as seed_scope_id or primary gate
 EV_R_diagnostic
 EV_R_lower
 winner_h120 alone
@@ -825,7 +919,6 @@ Train split may choose:
 survival_checkpoint
 probability gate threshold from the fixed grid in Section 10.4
 fallback grain
-fixed exposure schedule label from allowed grid
 seed_scope_id from allowed enum in Section 10.3
 ```
 
@@ -936,6 +1029,15 @@ confirmation_label = not_used_in_r03a
 final_1r_label = not_used_in_r03a
 ```
 
+Train must not select exposure labels. Main candidate / baseline comparison must use fixed report-only scenario labels loaded before train grid construction:
+
+```text
+selected_probe_label = 0.25R
+selected_survival_step_label = 0.50R
+```
+
+The other labels in the allowed grid may appear only in optional descriptive sensitivity rows. They must not change path metrics, candidate selection, pass/fail status, or final decision.
+
 R03a must not select a true optimal size. It may only report which fixed label was used for scenario comparison.
 
 Every output table containing an exposure label must include:
@@ -979,23 +1081,24 @@ fresh evidence is descriptive in R03a and requires separate sequence / hazard di
 
 Same-day bundle and context bucket are descriptive by default.
 
-They may enter candidate evaluation only if all are true:
+They may enter fallback-grain evaluation only if all are true:
 
 ```text
 train sample >= N_min_train
 validation sample >= N_min_validation
 robustness sample >= N_min_robustness
 r03a_gate_status = sufficient_and_stable
-bucket was selected in train before validation readout
+bucket was selected as fallback_grain in train before validation readout
 ```
 
-Even then, they may only refine fallback selection; they may not create multiple same-day risk units.
+Even then, they may only refine fallback selection; they must not become `seed_scope_id`, primary candidate gate, or multiple same-day risk units.
 
 Every bundle/context output must include:
 
 ```text
 primary_gate_allowed
 fallback_level
+fallback_grain_allowed
 sample_sufficiency_status
 split_stability_status
 r03a_gate_status
@@ -1092,7 +1195,7 @@ seed_primary_family_id
 seed_same_day_family_count
 ```
 
-Each grouping row must include the full Section 10 probability schema:
+Each grouping row must include the full Section 10 bucket schema:
 
 ```text
 label_denominator_count
@@ -1172,26 +1275,40 @@ r03a_gate_status
 train_label_denominator
 train_baseline_3_same_scope_label_denominator
 train_denominator_gate_pass
-train_P_good
-train_P_bad
-train_P_neutral
-train_P_good_lower
-train_P_good_upper
-train_P_bad_lower
-train_P_bad_upper
-train_credible_interval_width_good
-train_credible_interval_width_bad
-train_prob_feasibility_score
-train_prob_edge_vs_baseline_3
-train_baseline_3_same_scope_P_good
-train_baseline_3_same_scope_P_bad
-train_baseline_3_same_scope_P_neutral
-train_baseline_3_same_scope_P_good_lower
-train_baseline_3_same_scope_P_good_upper
-train_baseline_3_same_scope_P_bad_lower
-train_baseline_3_same_scope_P_bad_upper
-train_baseline_3_same_scope_credible_interval_width_good
-train_baseline_3_same_scope_credible_interval_width_bad
+train_oof_label_denominator
+train_oof_P_good
+train_oof_P_bad
+train_oof_P_neutral
+train_oof_P_good_lower
+train_oof_P_good_upper
+train_oof_P_bad_lower
+train_oof_P_bad_upper
+train_oof_credible_interval_width_good
+train_oof_credible_interval_width_bad
+train_oof_prob_feasibility_score
+train_oof_prob_edge_vs_baseline_3
+train_oof_bad_edge_ci_halfwidth_proxy
+train_oof_good_edge_ci_halfwidth_proxy
+train_oof_candidate_eligibility_threshold_smaller_than_ci_halfwidth
+train_oof_baseline_3_same_scope_P_good
+train_oof_baseline_3_same_scope_P_bad
+train_oof_baseline_3_same_scope_P_neutral
+train_oof_baseline_3_same_scope_P_good_lower
+train_oof_baseline_3_same_scope_P_good_upper
+train_oof_baseline_3_same_scope_P_bad_lower
+train_oof_baseline_3_same_scope_P_bad_upper
+train_oof_baseline_3_same_scope_credible_interval_width_good
+train_oof_baseline_3_same_scope_credible_interval_width_bad
+train_full_frozen_P_good
+train_full_frozen_P_bad
+train_full_frozen_P_neutral
+train_full_frozen_P_good_lower
+train_full_frozen_P_good_upper
+train_full_frozen_P_bad_lower
+train_full_frozen_P_bad_upper
+train_full_frozen_credible_interval_width_good
+train_full_frozen_credible_interval_width_bad
+train_full_frozen_prob_feasibility_score
 train_upside_capture_ratio_vs_baseline3
 train_drawdown_severity_120d_p90
 train_baseline_3_same_scope_drawdown_severity_120d_p90
@@ -1302,12 +1419,14 @@ Required fields:
 ```text
 candidate_id
 frozen_from_train
-evaluation_split
+evaluation_scope
 candidate_scope_id
 baseline_3_scope_id
 threshold_changed_after_train
 checkpoint_changed_after_train
 bucket_changed_after_train
+validation_episode_probability_score_source
+validation_probability_evaluation_source
 validation_seed_episode_count
 validation_censored_or_invalid_count
 validation_censored_or_invalid_rate
@@ -1333,10 +1452,15 @@ validation_baseline_3_same_scope_P_bad_upper
 validation_baseline_3_same_scope_credible_interval_width_good
 validation_baseline_3_same_scope_credible_interval_width_bad
 validation_prob_edge_vs_baseline_3
+validation_bad_edge_ci_halfwidth_proxy
+validation_good_edge_ci_halfwidth_proxy
+validation_candidate_eligibility_threshold_smaller_than_ci_halfwidth
 validation_upside_capture_ratio_vs_baseline3
 validation_drawdown_severity_120d_p90
 validation_baseline_3_same_scope_drawdown_severity_120d_p90
 validation_candidate_pass
+robustness_episode_probability_score_source
+robustness_probability_evaluation_source
 robustness_seed_episode_count
 robustness_censored_or_invalid_count
 robustness_censored_or_invalid_rate
@@ -1362,11 +1486,24 @@ robustness_baseline_3_same_scope_P_bad_upper
 robustness_baseline_3_same_scope_credible_interval_width_good
 robustness_baseline_3_same_scope_credible_interval_width_bad
 robustness_prob_edge_vs_baseline_3
+robustness_bad_edge_ci_halfwidth_proxy
+robustness_good_edge_ci_halfwidth_proxy
+robustness_candidate_eligibility_threshold_smaller_than_ci_halfwidth
 robustness_upside_capture_ratio_vs_baseline3
 robustness_drawdown_severity_120d_p90
 robustness_baseline_3_same_scope_drawdown_severity_120d_p90
 robustness_candidate_pass
 readonly_status
+```
+
+Required source-field literal values:
+
+```text
+evaluation_scope = validation_and_robustness
+validation_episode_probability_score_source = full_train_frozen_posterior
+validation_probability_evaluation_source = actual_validation_labels_after_frozen_inclusion
+robustness_episode_probability_score_source = full_train_frozen_posterior
+robustness_probability_evaluation_source = actual_robustness_labels_after_frozen_inclusion
 ```
 
 All change flags must be false.
@@ -1385,6 +1522,7 @@ This table may reuse R02.1 rows but must add R03a-specific gate flags:
 primary_gate_allowed
 reason_if_not_allowed
 fallback_level
+fallback_grain_allowed
 upstream_sample_sufficiency_status
 upstream_stability_status
 r03a_stability_status
@@ -1392,7 +1530,7 @@ r03a_gate_status
 used_by_candidate
 ```
 
-If reused upstream rows contain probability estimates, those estimates must be normalized to the full Section 10 probability schema before this table is written.
+If reused upstream rows contain probability estimates, those estimates must be normalized to the minimum probability-estimate schema from Section 10 before this table is written.
 
 For R03a v1, default `used_by_candidate` is false.
 
@@ -1545,12 +1683,16 @@ survival_checkpoints
 alpha_source
 credible_interval_level
 probability_score_formula
+episode_probability_score_source_policy
+split_probability_evaluation_source_policy
 train_scoring_mode
 train_inner_cv_fold_count
 train_inner_cv_assignment_hash
 fallback_grain_order
 allowed_seed_scope_ids
 probability_gate_threshold_grid
+selected_probe_label
+selected_survival_step_label
 fixed_sample_denominator_thresholds
 train_grid_total_candidate_count
 train_eligible_candidate_count_after_gate
@@ -1564,6 +1706,10 @@ candidate_episode_inclusion_formula
 status_normalization_mapping
 train_only_selection_fields
 upstream_r02_1_episode_construction_rule_hash
+episode_construction_hash_mode
+upstream_path_query_manifest_hash
+upstream_path_query_validation_hash
+upstream_episode_audit_file_hashes
 r03a_episode_construction_rule_hash
 path_metric_denominator_policy_enum
 selected_candidate_id
@@ -1588,19 +1734,30 @@ Validator must fail if:
 - upstream R02.1 validation did not pass;
 - frozen 7-family universe differs from R02.1 / R02 path-analysis;
 - analysis grain is not episode-first-trigger for headline comparisons;
-- `upstream_r02_1_episode_construction_rule_hash` differs from `r03a_episode_construction_rule_hash`;
+- `episode_construction_hash_mode` is neither `preferred_rule_hash` nor `upstream_manifest_and_episode_audit_fallback`;
+- `episode_construction_hash_mode = preferred_rule_hash` and `upstream_r02_1_episode_construction_rule_hash` differs from `r03a_episode_construction_rule_hash`;
+- `episode_construction_hash_mode = upstream_manifest_and_episode_audit_fallback` and any required upstream path-query manifest / validation / episode-audit hash is missing or mismatched;
 - T0 prior and survival posterior are compared across different grains;
 - label priority is not bad before good;
 - `alpha_source` is not exactly `Jeffreys_prior` or the forbidden `train_empirical_fallback_prior` appears in config / manifest;
 - `P_good + P_bad + P_neutral` differs from 1 beyond tolerance;
 - credible interval level is not exactly `0.90`, or `P_good_lower` / `P_bad_upper` are not the q05 / q95 posterior marginal quantiles;
 - `credible_interval_width_good` or `credible_interval_width_bad` is missing or inconsistent with q95 minus q05;
-- any probability-bearing output table omits `P_good`, `P_bad`, `P_neutral`, `P_good_lower`, `P_good_upper`, `P_bad_lower`, `P_bad_upper`, `credible_interval_width_good`, or `credible_interval_width_bad`;
+- any posterior bucket table omits the full Section 10 bucket schema;
+- any downstream probability-bearing comparison / audit table omits the minimum probability-estimate schema from Section 10;
 - `episode_probability_score` is not exactly `P_good_lower - P_bad_upper`;
+- `episode_probability_score_source_policy` or `split_probability_evaluation_source_policy` is missing from the manifest;
+- validation / robustness source fields do not use the required literal values from Section 18.7;
+- measured train / validation / robustness `P_good`, `P_bad`, `P_neutral`, or credible intervals are copied or averaged from score-source posterior tables instead of recomputed from actual labels after the candidate inclusion mask;
 - selected `probability_gate_threshold` is not in the fixed Section 10.4 grid;
 - sample sufficiency thresholds are selected, tuned, or changed after initial config load instead of using fixed `N_min_train`, `N_min_validation`, and `N_min_robustness`;
+- selected fixed exposure labels are missing from the manifest;
+- exposure schedule labels are selected, tuned, or allowed to affect path metrics, candidate selection, pass/fail status, or final decision;
 - train candidate scoring uses an in-sample posterior table instead of `train_inner_cv_out_of_fold`;
 - `train_inner_cv_fold_count`, fold assignment hash, or train scoring mode is missing from the manifest;
+- train selection metric, eligibility, or tie-breaker uses non-`train_oof_*` probability fields;
+- `train_oof_*` measured probability fields are computed by averaging out-of-fold score-source bucket posterior values instead of recomputing posterior from actual labels of out-of-fold-included train episodes;
+- `candidate_eligibility_threshold_smaller_than_ci_halfwidth` or its CI halfwidth proxy fields are missing or inconsistent with Section 10.4;
 - train grid total candidate count or eligible candidate count is missing from outputs / manifest;
 - `train_grid_total_candidate_count > max_train_grid_total_candidate_count`;
 - `train_eligible_candidate_count_after_gate > max_train_eligible_candidate_count_after_gate` but a candidate is selected;
@@ -1608,18 +1765,19 @@ Validator must fail if:
 - selected train candidate does not match the Section 10.4 selection metric and tie-breaker order;
 - selection metric calculation does not match the Section 10.4 formula;
 - train creates a family-group scope outside the allowed `seed_scope_id` enum;
+- `same_day_bundle_key` or `context_bucket_id` appears as `seed_scope_id` or primary candidate gate;
 - validation / robustness changes train-frozen threshold, checkpoint, fallback grain, or candidate;
 - candidate uses fresh evidence as primary gate;
 - candidate uses EV_R / expected R / final 1R sizing;
 - candidate episode inclusion omits any required component of `candidate_episode_included`;
 - `baseline_3_same_scope_episode_included` applies the candidate probability gate;
 - candidate pass/fail uses a global baseline_3 when candidate scope is not global;
-- candidate pass/fail omits any threshold from Section 10.3;
+- candidate pass/fail omits any threshold from Section 10.4;
 - candidate pass/fail uses raw `max_drawdown_120d_p90` instead of `drawdown_severity_120d_p90`;
 - candidate or baseline_3 same-scope denominator is below the configured split-specific `N_min` but the split pass flag is true;
 - `path_metric_denominator_policy` is outside the allowed enum;
 - seed episode, censored / invalid, and label denominator counts are missing from baseline comparison or validation / robustness outputs;
-- candidate passes without both validation and robustness passing Section 10.3 conditions;
+- candidate passes without both `validation_candidate_pass` and `robustness_candidate_pass` passing Section 10.4 split-pass conditions;
 - same-day multiple family triggers create multiple same-day risk units;
 - a multi-family same-day seed assigns one component family as `seed_primary_family_id` instead of `multi_family_bundle`;
 - upstream R02.1 sample / stability statuses are not normalized into `r03a_gate_status`;
@@ -1643,16 +1801,21 @@ Validator must fail if:
 - [ ] Candidate pass/fail thresholds are fixed before validation / robustness readout.
 - [ ] Probability gate threshold grid, train selection metric, and tie-breaker are fixed and recorded.
 - [ ] Episode probability score is fixed to `P_good_lower - P_bad_upper`.
+- [ ] Episode inclusion score source and split probability evaluation source are separated.
 - [ ] Train candidate scoring uses inner-CV out-of-fold posterior tables, not in-sample posterior scoring.
+- [ ] Train selection uses only `train_oof_*` measured actual-label probability fields; full-train frozen posterior fields are audit / validation inclusion lineage only.
 - [ ] `train_empirical_fallback_prior` is forbidden in v1.
 - [ ] Grid multiplicity counts and caps are recorded, and excessive eligible grids block selection.
 - [ ] Degenerate probability gates with fewer than two train buckets are excluded before ranking.
+- [ ] `same_day_bundle_key` and `context_bucket_id` are fallback-grain only, never `seed_scope_id` or primary gate.
+- [ ] Exposure labels are fixed report-only scenario labels and are not train-selected.
+- [ ] CI halfwidth null-condition proxy is defined and materialized.
 - [ ] Credible interval level is fixed to 90% and recorded in the manifest.
-- [ ] All probability-bearing output tables include the full Section 10 probability schema.
+- [ ] Posterior bucket tables include the full Section 10 bucket schema; downstream comparison / audit tables include the minimum probability-estimate schema.
 - [ ] Drawdown severity uses row-level drawdown loss p90, not raw max-drawdown p90.
 - [ ] Train / validation / robustness denominator gates are applied to both candidate and baseline_3 same-scope rows.
 - [ ] Sample sufficiency thresholds are fixed before train selection and recorded in the manifest.
-- [ ] Episode construction rule hash is matched against the upstream R02.1 manifest.
+- [ ] Episode construction rule hash is matched against the upstream R02.1 manifest, or the documented upstream manifest / validation / episode-audit fallback hash mode is used.
 - [ ] Seed episode count, censored / invalid count, and label denominator count are all reported.
 - [ ] Multi-family same-day seeds use `seed_primary_family_id = multi_family_bundle`.
 - [ ] R02.1 sample / stability statuses are normalized into `r03a_gate_status`.
