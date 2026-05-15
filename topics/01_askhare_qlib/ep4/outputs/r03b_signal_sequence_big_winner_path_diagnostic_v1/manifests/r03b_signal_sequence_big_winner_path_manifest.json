@@ -1,0 +1,68 @@
+{
+  "requirement_id": "ep4_r03b_signal_sequence_big_winner_path_diagnostic_v1",
+  "short_name": "r03b_signal_sequence_big_winner_path_diagnostic_v1",
+  "final_decision": "descriptive_sequence_diagnostic_complete",
+  "generated_at": "2026-05-15T12:05:03.067514+00:00",
+  "episode_grain": "deterministic_episode_first_trigger",
+  "frozen_families": [
+    {
+      "family_id": "momentum_rps",
+      "signal_id": "single_momentum_rps"
+    },
+    {
+      "family_id": "oscillator",
+      "signal_id": "single_oscillator"
+    },
+    {
+      "family_id": "price_trend",
+      "signal_id": "single_price_trend"
+    },
+    {
+      "family_id": "pullback_drawdown",
+      "signal_id": "single_pullback_drawdown"
+    },
+    {
+      "family_id": "range_breakout",
+      "signal_id": "single_range_breakout"
+    },
+    {
+      "family_id": "volatility_band",
+      "signal_id": "single_volatility_band"
+    },
+    {
+      "family_id": "volume_money",
+      "signal_id": "single_volume_money"
+    }
+  ],
+  "condition_group_dictionary": {
+    "momentum_rps": "momentum_rps__and3__68b32373ce93",
+    "oscillator": "oscillator__and4__95dbd99ae828",
+    "price_trend": "price_trend__and3__6030760ed19f",
+    "pullback_drawdown": "pullback_drawdown__and3__11795aa42e45",
+    "range_breakout": "range_breakout__and3__00e51295d9c3",
+    "volatility_band": "volatility_band__and4__ef9c875dde10",
+    "volume_money": "volume_money__and4__4eb7a99e922f"
+  },
+  "splits": [
+    "train",
+    "validation",
+    "robustness",
+    "all"
+  ],
+  "checkpoints": [
+    3,
+    5,
+    10,
+    20,
+    30
+  ],
+  "alpha_source": "Jeffreys_prior",
+  "credible_interval_level": 0.9,
+  "seed_episode_count": 11003,
+  "clean_primary_fresh_step_count": 12302,
+  "input_hashes": {
+    "config": "4c4e9ead8661819e943bc5c151f3da4684875e68e667b83843ffc65fa8a12941",
+    "path_query_manifest": "58a258c7cf77cca5175e01b78aae243b7f18ca5032be4b3723f382a3fcebe36d",
+    "precision_manifest": "34cd9e742b593a7c4dd6b243442a9cb8e93482656527d26b66f3ac42f99cdc74"
+  }
+}

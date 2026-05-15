@@ -1,0 +1,62 @@
+check_id,status,detail
+required_report_exists_r03b_input_readiness_audit.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_input_readiness_audit.csv
+required_report_exists_r03b_input_reconciliation_audit.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_input_reconciliation_audit.csv
+required_report_exists_r03b_seed_episode_label_summary.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_seed_episode_label_summary.csv
+required_report_exists_r03b_checkpoint_fresh_count_summary.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_checkpoint_fresh_count_summary.csv
+required_report_exists_r03b_kth_fresh_summary.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_kth_fresh_summary.csv
+required_report_exists_r03b_sequence_pattern_summary.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_sequence_pattern_summary.csv
+required_report_exists_r03b_offset_hazard_summary.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_offset_hazard_summary.csv
+required_report_exists_r03b_survival_bias_audit.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_survival_bias_audit.csv
+required_report_exists_r03b_same_offset_multi_family_audit.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_same_offset_multi_family_audit.csv
+required_report_exists_r03b_same_family_repeat_audit.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_same_family_repeat_audit.csv
+required_report_exists_r03b_big_winner_label_audit.csv,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_big_winner_label_audit.csv
+required_report_exists_r03b_sequence_big_winner_path_final_report.md,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/reports/r03b_sequence_big_winner_path_final_report.md
+required_cache_exists_r03b_seed_episode_panel.parquet,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_seed_episode_panel.parquet
+required_cache_exists_r03b_signal_timeline_panel.parquet,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_signal_timeline_panel.parquet
+required_cache_exists_r03b_sequence_step_panel.parquet,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_sequence_step_panel.parquet
+required_cache_exists_r03b_checkpoint_state_panel.parquet,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_checkpoint_state_panel.parquet
+required_cache_exists_r03b_offset_hazard_panel.parquet,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_offset_hazard_panel.parquet
+manifest_exists,passed,ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/manifests/r03b_signal_sequence_big_winner_path_manifest.json
+final_decision_complete,passed,descriptive_sequence_diagnostic_complete
+episode_grain_recorded,passed,deterministic_episode_first_trigger
+condition_dictionary_size_7,passed,"{'momentum_rps': 'momentum_rps__and3__68b32373ce93', 'oscillator': 'oscillator__and4__95dbd99ae828', 'price_trend': 'price_trend__and3__6030760ed19f', 'pullback_drawdown': 'pullback_drawdown__and3__11795aa42e45', 'range_breakout': 'range_breakout__and3__00e51295d9c3', 'volatility_band': 'volatility_band__and4__ef9c875dde10', 'volume_money': 'volume_money__and4__4eb7a99e922f'}"
+credible_interval_90,passed,0.9
+readiness_schema,passed,[]
+all_required_inputs_exist,passed,[]
+all_required_inputs_ready,passed,[]
+reconciliation_schema,passed,[]
+input_reconciliation_passed,passed,"[{'family_id': 'momentum_rps', 'condition_group_id': 'momentum_rps__and3__68b32373ce93', 'path_signal_count': 44120, 'precision_signal_occurs_count': 44120, 'matched_signal_count': 44120, 'path_only_count': 0, 'precision_only_count': 0, 'reconciliation_status': 'passed'}, {'family_id': 'oscillator', 'condition_group_id': 'oscillator__and4__95dbd99ae828', 'path_signal_count': 23132, 'precision_signal_occurs_count': 23132, 'matched_signal_count': 23132, 'path_only_count': 0, 'precision_only_count': 0, 'reconciliation_status': 'passed'}, {'family_id': 'price_trend', 'condition_group_id': 'price_trend__and3__6030760ed19f', 'path_signal_count': 34592, 'precision_signal_occurs_count': 34592, 'matched_signal_count': 34592, 'path_only_count': 0, 'precision_only_count': 0, 'reconciliation_status': 'passed'}, {'family_id': 'pullback_drawdown', 'condition_group_id': 'pullback_drawdown__and3__11795aa42e45', 'path_signal_count': 56446, 'precision_signal_occurs_count': 56446, 'matched_signal_count': 56446, 'path_only_count': 0, 'precision_only_count': 0, 'reconciliation_status': 'passed'}, {'family_id': 'range_breakout', 'condition_group_id': 'range_breakout__and3__00e51295d9c3', 'path_signal_count': 68679, 'precision_signal_occurs_count': 68679, 'matched_signal_count': 68679, 'path_only_count': 0, 'precision_only_count': 0, 'reconciliation_status': 'passed'}, {'family_id': 'volatility_band', 'condition_group_id': 'volatility_band__and4__ef9c875dde10', 'path_signal_count': 28211, 'precision_signal_occurs_count': 28211, 'matched_signal_count': 28211, 'path_only_count': 0, 'precision_only_count': 0, 'reconciliation_status': 'passed'}, {'family_id': 'volume_money', 'condition_group_id': 'volume_money__and4__4eb7a99e922f', 'path_signal_count': 22806, 'precision_signal_occurs_count': 22806, 'matched_signal_count': 22806, 'path_only_count': 0, 'precision_only_count': 0, 'reconciliation_status': 'passed'}]"
+no_path_only_occurrences,passed,
+no_precision_only_occurrences,passed,
+seed_schema,passed,[]
+seed_episode_id_unique,passed,0
+path_labels_allowed,passed,"{'bad_path': 5277, 'good_path': 3068, 'censored_or_invalid': 2394, 'neutral_path': 264}"
+seed_splits_allowed,passed,"['robustness', 'train', 'validation']"
+t1_t2_not_primary_fresh,passed,0
+ambiguous_not_primary_fresh,passed,
+after_failure_not_primary_fresh,passed,
+checkpoint_schema,passed,[]
+fresh_count_buckets_allowed,passed,"{'0': 29589, '3plus': 12640, '1': 7179, '2': 5607}"
+r03b_seed_episode_label_summary.csv_posterior_schema,passed,[]
+r03b_seed_episode_label_summary.csv_path_probabilities_sum_to_one,passed,
+r03b_seed_episode_label_summary.csv_sample_status_allowed,passed,{'sufficient': 4}
+r03b_checkpoint_fresh_count_summary.csv_posterior_schema,passed,[]
+r03b_checkpoint_fresh_count_summary.csv_path_probabilities_sum_to_one,passed,
+r03b_checkpoint_fresh_count_summary.csv_sample_status_allowed,passed,"{'sufficient': 62, 'thin_report_only': 17, 'too_sparse_report_only': 1}"
+r03b_kth_fresh_summary.csv_posterior_schema,passed,[]
+r03b_kth_fresh_summary.csv_path_probabilities_sum_to_one,passed,
+r03b_kth_fresh_summary.csv_sample_status_allowed,passed,"{'unusable': 1941, 'too_sparse_report_only': 335, 'thin_report_only': 69, 'sufficient': 33}"
+r03b_sequence_pattern_summary.csv_posterior_schema,passed,[]
+r03b_sequence_pattern_summary.csv_path_probabilities_sum_to_one,passed,
+r03b_sequence_pattern_summary.csv_sample_status_allowed,passed,"{'unusable': 502, 'too_sparse_report_only': 404, 'thin_report_only': 93, 'sufficient': 59}"
+kth_not_reached_retained,passed,
+pattern_summary_readable,passed,1058
+hazard_schema,passed,[]
+report_final_decision_present,passed,
+report_path_bigwinner_warning_present,passed,
+forbidden_report_token_absent_passed_signal,passed,passed signal
+forbidden_report_token_absent_validated_entry,passed,validated entry
+forbidden_report_token_absent_production_gate,passed,production gate
+forbidden_report_token_absent_add_position,passed,add position
+forbidden_report_token_absent_buy_signal,passed,buy signal
+forbidden_report_token_absent_1R_sizing,passed,1R sizing

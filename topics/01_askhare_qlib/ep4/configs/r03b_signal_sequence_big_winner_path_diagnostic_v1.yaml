@@ -1,0 +1,59 @@
+phase: ep4_r03b_signal_sequence_big_winner_path_diagnostic_v1
+requirement_id: ep4_r03b_signal_sequence_big_winner_path_diagnostic_v1
+short_name: r03b_signal_sequence_big_winner_path_diagnostic_v1
+requirement_path: ep4/requirement_03b_signal_sequence_big_winner_path_diagnostic_v1.md
+output_root: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1
+
+upstream_path_query:
+  output_root: ep4/outputs/r02_family_signal_120d_path_query_v1
+  manifest: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_manifest.json
+  validation: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_validation.json
+  signal_dir: ep4/outputs/r02_family_signal_120d_path_query_v1/reports/signals
+
+upstream_precision:
+  output_root: ep4/outputs/r02_family_precision_forward_return_stats_v1
+  manifest: ep4/outputs/r02_family_precision_forward_return_stats_v1/manifests/r02_family_precision_forward_return_stats_manifest.json
+  validation: ep4/outputs/r02_family_precision_forward_return_stats_v1/manifests/r02_family_precision_forward_return_stats_validation.json
+  action_time_panel: ep4/outputs/r02_family_precision_forward_return_stats_v1/cache/r02_family_action_time_panel.parquet
+
+upstream_big_winner:
+  manifest: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/manifests/r02_big_winner_coverage_manifest.json
+  reference_events: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/cache/r02_big_winner_reference_events.parquet
+  eligible_day_density_panel: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/cache/r02_eligible_day_density_panel.parquet
+
+frozen_families:
+  - family_id: momentum_rps
+    signal_id: single_momentum_rps
+  - family_id: oscillator
+    signal_id: single_oscillator
+  - family_id: price_trend
+    signal_id: single_price_trend
+  - family_id: pullback_drawdown
+    signal_id: single_pullback_drawdown
+  - family_id: range_breakout
+    signal_id: single_range_breakout
+  - family_id: volatility_band
+    signal_id: single_volatility_band
+  - family_id: volume_money
+    signal_id: single_volume_money
+
+sequence:
+  active_build_window_trading_days: 30
+  sequence_window_start_offset: 1
+  sequence_window_end_offset: 30
+  primary_fresh_start_offset: 3
+  primary_fresh_end_offset: 30
+  checkpoints: [3, 5, 10, 20, 30]
+  top_k_patterns_by_denominator: 50
+
+posterior:
+  alpha_source: Jeffreys_prior
+  alpha_positive: 0.5
+  alpha_negative: 0.5
+  credible_interval_level: 0.90
+  credible_interval_method: scipy_beta_marginal_quantile
+
+sample_sufficiency:
+  N_min_sufficient: 200
+  N_min_thin: 50
+  N_min_too_sparse: 10
