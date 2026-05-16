@@ -1,0 +1,74 @@
+{
+  "requirement_id": "ep4_r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1",
+  "short_name": "r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1",
+  "final_decision": "descriptive_price_aware_pooling_diagnostic_complete",
+  "generated_at": "2026-05-16T03:18:44.098000+00:00",
+  "diagnostic_status": "descriptive_only",
+  "frozen_families": [
+    {
+      "family_id": "momentum_rps",
+      "signal_id": "single_momentum_rps"
+    },
+    {
+      "family_id": "oscillator",
+      "signal_id": "single_oscillator"
+    },
+    {
+      "family_id": "price_trend",
+      "signal_id": "single_price_trend"
+    },
+    {
+      "family_id": "pullback_drawdown",
+      "signal_id": "single_pullback_drawdown"
+    },
+    {
+      "family_id": "range_breakout",
+      "signal_id": "single_range_breakout"
+    },
+    {
+      "family_id": "volatility_band",
+      "signal_id": "single_volatility_band"
+    },
+    {
+      "family_id": "volume_money",
+      "signal_id": "single_volume_money"
+    }
+  ],
+  "splits": [
+    "train",
+    "validation",
+    "robustness",
+    "all"
+  ],
+  "checkpoints": [
+    3,
+    5,
+    10,
+    20,
+    30
+  ],
+  "alpha_source": "Jeffreys_prior",
+  "credible_interval_level": 0.9,
+  "seed_episode_count": 11003,
+  "clean_primary_fresh_step_count": 12302,
+  "fresh_anchor_big_winner_denominator": 9567,
+  "fresh_path_denominator": 9771,
+  "row_grain_notes": {
+    "fresh_step_price_panel": "one row per clean primary fresh step",
+    "checkpoint_price_state_panel": "one row per seed_episode_id x checkpoint",
+    "family_set_pooling_panel": "one row per fresh step x pooling level"
+  },
+  "input_hashes": {
+    "config": "ce925a6e3ba1e0f70a12810a82459ac831021f1fd0781662bebe467ac98fc514",
+    "r03b_manifest": "a53db13f6c35fd8dd59a82c063e5e78197df7799df4acec68e44242bf1c66f75",
+    "path_query_manifest": "58a258c7cf77cca5175e01b78aae243b7f18ca5032be4b3723f382a3fcebe36d",
+    "precision_manifest": "34cd9e742b593a7c4dd6b243442a9cb8e93482656527d26b66f3ac42f99cdc74"
+  },
+  "output_files": {
+    "fresh_step_price_panel": "ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/cache/r03c_fresh_step_price_panel.parquet",
+    "checkpoint_price_state_panel": "ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/cache/r03c_checkpoint_price_state_panel.parquet",
+    "family_set_pooling_panel": "ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/cache/r03c_family_set_pooling_panel.parquet",
+    "final_report": "ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/reports/r03c_price_aware_pooling_final_report.md",
+    "validation_audit": "ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/reports/r03c_price_aware_pooling_validation_audit.csv"
+  }
+}

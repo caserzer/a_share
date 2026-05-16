@@ -1,0 +1,41 @@
+{
+  "phase": "ep4_r03d_family_order_stage_role_diagnostic_v1",
+  "requirement_id": "ep4_r03d_family_order_stage_role_diagnostic_v1",
+  "created_at_utc": "2026-05-16T10:30:59.128472+00:00",
+  "output_root": "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1",
+  "upstream": {
+    "r03b_manifest": "ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/manifests/r03b_signal_sequence_big_winner_path_manifest.json",
+    "r03b_validation": "ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/manifests/r03b_signal_sequence_big_winner_path_validation.json",
+    "r03c_manifest": "ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/manifests/r03c_price_aware_kth_fresh_family_set_pooling_manifest.json",
+    "r03c_validation": "ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/manifests/r03c_price_aware_kth_fresh_family_set_pooling_validation.json"
+  },
+  "row_counts": {
+    "seed_episode_count": 11003,
+    "fresh_step_count": 12302,
+    "stage_role_rows": 77021,
+    "transition_candidate_rows": 74305,
+    "pair_order_rows": 113908
+  },
+  "final_decision": "stage_role_only_no_order_increment",
+  "decision_components": {
+    "prefix_order_incremental": "insufficient_denominator",
+    "pair_order_incremental": "no_increment",
+    "last_added_family_incremental": "insufficient_denominator"
+  },
+  "artifact_hashes": {
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/cache/r03d_family_order_step_panel.parquet": "09814132777b20a3fadf47f8bc6f86040b6ee32aadc0d6d29127811a69d85c3a",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/cache/r03d_order_transition_candidate_panel.parquet": "7bab878eb44c793e3ce67606792264402d831fdcee95ebff6d2ef4f3a4bd2a5a",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/cache/r03d_pair_order_panel.parquet": "9c4562e2af75c6f4e23d46234aa76838bc1aba4a7e7b9a57e4fb32e29cab6333",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/cache/r03d_stage_role_panel.parquet": "42399d2946ffb271b34a066b7e4d41471973b0c25f975b69282dfc39cea0a53b",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_input_readiness_audit.csv": "8ba6977fe03c82cb8595dff45a790cbc6b9669c75e49b44c0963c166385d75a1",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_family_position_summary.csv": "0b94fcbe2af0d8e1c75cb47f4be0cdc7b396e1a831065761bf1b59782ce4cbc9",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_stage_role_summary.csv": "8c51e3a716836144996dff913774c30f5260502d4b247fe6a138e1fd3da9ea9d",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_next_family_given_prefix_summary.csv": "208b00eb11baaa4e937911d8fb93f702c280cebf4602f645c67c83c9ea6609e9",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_pair_order_asymmetry_summary.csv": "343dc5d12ddb7fa13c5b010f4bcd2659f9c52f1cc94390c021d71317d906f478",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_last_added_family_price_conditioned_summary.csv": "21db34a80b8fc9f55b61b5808e34ca5010f8e98c3484ed27d67e97e76f07712c",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_order_explanatory_power_comparison.csv": "8c8b8f971ee591e3d7383fc6ab5e82072ee015dae08cb03d4b97c2e78b9a3ad0",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_order_split_stability_audit.csv": "5412088dfa8695337542a5d7cb07b23f646958a79ce854f2bfcc99f118bf8c0a",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_denominator_and_survival_audit.csv": "81c6266125e9e6eda916096bb06fcbc8934462afc8d79511fd55ec0ea31b137d",
+    "ep4/outputs/r03d_family_order_stage_role_diagnostic_v1/reports/r03d_family_order_stage_role_final_report.md": "1f4a42a1bee420c5a15b900ec5ca7b56a88c8fa7f400b5f3c86c0190efd5be9a"
+  }
+}

@@ -1,0 +1,45 @@
+phase: ep4_r03d_family_order_stage_role_diagnostic_v1
+requirement_id: ep4_r03d_family_order_stage_role_diagnostic_v1
+short_name: r03d_family_order_stage_role_diagnostic_v1
+requirement_path: ep4/requirement_03d_family_order_stage_role_diagnostic_v1.md
+output_root: ep4/outputs/r03d_family_order_stage_role_diagnostic_v1
+
+upstream_r03b:
+  output_root: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1
+  manifest: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/manifests/r03b_signal_sequence_big_winner_path_manifest.json
+  validation: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/manifests/r03b_signal_sequence_big_winner_path_validation.json
+  seed_episode_panel: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_seed_episode_panel.parquet
+  sequence_step_panel: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_sequence_step_panel.parquet
+  signal_timeline_panel: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_signal_timeline_panel.parquet
+
+upstream_r03c:
+  output_root: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1
+  manifest: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/manifests/r03c_price_aware_kth_fresh_family_set_pooling_manifest.json
+  validation: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/manifests/r03c_price_aware_kth_fresh_family_set_pooling_validation.json
+  fresh_step_price_panel: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/cache/r03c_fresh_step_price_panel.parquet
+  checkpoint_price_state_panel: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/cache/r03c_checkpoint_price_state_panel.parquet
+  grouping_explanatory_power_comparison: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/reports/r03c_grouping_explanatory_power_comparison.csv
+  survival_price_bias_audit: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/reports/r03c_survival_price_bias_audit.csv
+
+family_universe:
+  - range_breakout
+  - volume_money
+  - oscillator
+  - volatility_band
+  - pullback_drawdown
+  - momentum_rps
+  - price_trend
+
+sample_sufficiency:
+  min_seed_episode_count: 80
+  min_fresh_step_count: 80
+  min_pair_episode_count: 60
+  min_split_denominator: 30
+  min_unique_instrument_count: 20
+  min_unique_signal_date_count: 20
+  min_exact_prefix_denominator: 120
+  min_sufficient_bucket_ratio: 0.20
+  min_material_rate_lift_pp: 0.02
+  min_material_pgood_minus_pbad_lift_pp: 0.05
+  max_child_to_parent_bucket_multiplier: 3.0
+  stage_role_dominant_price_bucket_share: 0.50
