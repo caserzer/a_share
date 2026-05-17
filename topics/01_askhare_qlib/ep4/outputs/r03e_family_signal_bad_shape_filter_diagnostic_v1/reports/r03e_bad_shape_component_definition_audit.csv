@@ -1,0 +1,11 @@
+component_id,definition,primary_window,t0_included_in_shape_count,null_handling
+volume_stall_flag,20日均量大于60日均量且核心20日净涨幅不高,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+failed_breakout_flag,核心窗口内突破前20日或52周高点后3日内跌回突破位,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+dense_upper_shadow_flag,核心20日上影线/振幅大于50%的天数不少于3天,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+down_volume_dominance_flag,下跌日均量大于上涨日均量且上下跌日样本均不少于3天,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+ma20_break_no_reclaim_flag,跌破MA20后3至5日内无法收回且MA20斜率不强,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+large_bearish_engulf_flag,大阴线放量且收盘接近日低，吞没前期涨幅,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+volatility_up_no_price_flag,ATR20百分位上升但20日收益不高,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+low_upside_efficiency_flag,波动和成交抬升但上涨效率低,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+lower_low_lower_high_flag,最近5日低点低于前15日低点且高点未突破,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator
+gap_up_fade_flag,多次跳空高开冲高后收在开盘价下方,T-10..T-1 + T+1..T+10,False,component policy excludes null rows from its own denominator

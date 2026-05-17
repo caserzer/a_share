@@ -1,0 +1,85 @@
+phase: ep4_r03e_family_signal_bad_shape_filter_diagnostic_v1
+requirement_id: ep4_r03e_family_signal_bad_shape_filter_diagnostic_v1
+short_name: r03e_family_signal_bad_shape_filter_diagnostic_v1
+requirement_path: ep4/requirement_03e_family_signal_bad_shape_filter_diagnostic_v1.md
+output_root: ep4/outputs/r03e_family_signal_bad_shape_filter_diagnostic_v1
+
+upstream_r01:
+  config: ep4/configs/r01_high_recall_probe_fail_fast_v2.yaml
+
+upstream_precision:
+  output_root: ep4/outputs/r02_family_precision_forward_return_stats_v1
+  config: ep4/configs/r02_family_precision_forward_return_stats_v1.yaml
+  manifest: ep4/outputs/r02_family_precision_forward_return_stats_v1/manifests/r02_family_precision_forward_return_stats_manifest.json
+  validation: ep4/outputs/r02_family_precision_forward_return_stats_v1/manifests/r02_family_precision_forward_return_stats_validation.json
+  action_time_panel: ep4/outputs/r02_family_precision_forward_return_stats_v1/cache/r02_family_action_time_panel.parquet
+
+upstream_path_query:
+  output_root: ep4/outputs/r02_family_signal_120d_path_query_v1
+  manifest: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_manifest.json
+  validation: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_validation.json
+  signal_dir: ep4/outputs/r02_family_signal_120d_path_query_v1/reports/signals
+
+upstream_r03b:
+  output_root: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1
+  manifest: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/manifests/r03b_signal_sequence_big_winner_path_manifest.json
+  validation: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/manifests/r03b_signal_sequence_big_winner_path_validation.json
+  seed_episode_panel: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1/cache/r03b_seed_episode_panel.parquet
+
+upstream_r03c:
+  output_root: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1
+  manifest: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/manifests/r03c_price_aware_kth_fresh_family_set_pooling_manifest.json
+  validation: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/manifests/r03c_price_aware_kth_fresh_family_set_pooling_validation.json
+  fresh_step_price_panel: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1/cache/r03c_fresh_step_price_panel.parquet
+
+family_universe:
+  - range_breakout
+  - volume_money
+  - oscillator
+  - volatility_band
+  - pullback_drawdown
+  - momentum_rps
+  - price_trend
+
+shape:
+  observation_horizon_td: 10
+  core_pre_entry_td: 10
+  core_post_entry_td: 10
+  exclude_t0: true
+  materialized_event_window_start_offset: -252
+  ordinary_filter_path_end_offset: 131
+  asof_history_policy: provider_full_history_until_shape_eval
+  volume_long_window_td: 60
+  atr20_warmup_min_tr_rows: 20
+  atr_percentile_window_td: 252
+  atr_rank252_min_values: 252
+  atr_rank252_min_ohlcv_rows_ending_at_target: 281
+  write_window_offsets:
+    start: -252
+    end: 131
+
+badscore:
+  primary_drop_bad_score_gte: 5
+  threshold_policies: [3, 5, 7]
+
+outcome:
+  horizon_td: 120
+  big_winner_threshold: 0.50
+
+sample_sufficiency:
+  min_event_count: 80
+  min_split_denominator: 30
+  min_unique_instrument_count: 20
+  min_unique_signal_date_count: 20
+  min_signal_anchor_big_winner_retention_rate: 0.70
+  min_material_pbad_reduction_pp: 0.05
+  min_material_pgood_minus_pbad_lift_pp: 0.05
+  max_allowed_pgood_drop_pp: 0.02
+
+primary_decision:
+  event_scope: r02_signal_episode_start
+  event_stage: r02_episode_start
+  family_group: all_families_dedup_weighted
+  outcome_anchor: filter_decision_next_open_anchor
+  filter_policy: drop_score_ge5
+  parent_policy: no_badshape_filter_t10_survivor
