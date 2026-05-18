@@ -4,7 +4,7 @@
 
 - 需求 id: `ep4_r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1`
 - 简称: `r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1`
-- 状态: 首版可实现的诊断型需求
+- 状态: 可实现的诊断型需求（replay / price / policy contract 已冻结）
 - 所属 workflow: EP4
 - 上游讨论: `ep4/discussion4.md`
 - 上游 R04 需求: `ep4/requirement_04_dynamic_momentum_exposure_eligibility_audit_v1.md`
@@ -59,6 +59,23 @@ policy_id = hold_rule_id x exit_rule_id x sizing_rule_id
 - `hold_rule` 定义最长持有窗口或自然到期窗口；
 - `exit_rule` 定义提前退出逻辑，CTA / trailing 是其中一类；
 - `sizing_rule` 定义入场后的风险预算或头寸缩放逻辑。
+
+为避免 train / validation 选择粒度漂移，R04b v1 进一步固定：
+
+```text
+exit_rule_family_id = exit rule class before parameterization
+policy_family_id = hold_rule_id x exit_rule_family_id x sizing_rule_id
+```
+
+也就是说：
+
+```text
+hold_120d + ATR_trailing + fixed_size
+hold_60d + ATR_trailing + fixed_size
+hold_120d + ATR_trailing + volatility_scaled
+```
+
+是三个不同的 `policy_family_id`。Train 只能在同一个 `policy_family_id` 内选择参数；validation 只能在 train-selected `policy_family_id` representatives 之间选择。
 
 本需求的核心目标不是让胜率更漂亮，而是验证：
 
@@ -200,6 +217,19 @@ reports/r04b_gate0_metric_replay_spec_frozen.csv
 
 Gate 0 必须冻结以下口径。
 
+`r04b_gate0_metric_replay_spec_frozen.csv` 字段至少包含：
+
+```text
+spec_section
+spec_item
+frozen_value_json
+formula_text
+source_config_key
+formula_hash
+```
+
+其中必须逐项写出 return、cost、sizing、execution offset、price adjustment、censored status、bad-path、max_gain50 retention、indicator lookback 与 baseline delta 公式。Validator 必须校验这些 formula hash 与 manifest 一致。
+
 ### 4.1 Return 口径
 
 默认主口径：
@@ -214,16 +244,44 @@ net_return = gross_return - entry_cost - exit_cost - slippage_cost
 
 `log_return` 只能作为 secondary audit，不得驱动 policy selection。
 
-成本项必须在 config 中冻结：
+成本项必须在 config 中冻结，且 R04b v1 的默认诊断口径固定如下：
 
 ```yaml
 cost_model:
-  entry_slippage_bps: <frozen>
-  exit_slippage_bps: <frozen>
-  commission_bps: <frozen>
-  stamp_tax_bps: <frozen>
-  min_fee_policy: <frozen_or_none>
+  cost_model_id: a_share_daily_replay_default_v1
+  entry_slippage_bps: 5.0
+  exit_slippage_bps: 5.0
+  commission_bps_per_side: 3.0
+  stamp_tax_bps_on_exit: 5.0
+  min_fee_policy: none
 ```
+
+这些数值是 R04b diagnostic 的 frozen cost assumption，不代表生产费率承诺。runner 不得在 policy replay 后改成本参数；如果 config 缺少上述任一数值，或者 manifest 中没有逐项写出 cost hash，必须 fail closed：
+
+```text
+blocked_gate0_metric_replay_spec_failed
+```
+
+成本换算固定为：
+
+```text
+entry_cost = (entry_slippage_bps + commission_bps_per_side) / 10000
+exit_cost = (exit_slippage_bps + commission_bps_per_side + stamp_tax_bps_on_exit) / 10000
+slippage_cost = 0
+total_cost_bps = entry_slippage_bps + exit_slippage_bps
+                 + 2 * commission_bps_per_side + stamp_tax_bps_on_exit
+```
+
+不得再额外叠加未在 config 中列出的 spread、impact、minimum fee 或 tax assumption。
+
+Sizing 应用口径固定为：
+
+```text
+unweighted_net_return = gross_return - entry_cost - exit_cost - slippage_cost
+headline net_return_* = position_weight * unweighted_net_return
+```
+
+`position_weight` 只能来自预注册 sizing_rule。runner 必须在 replay panel 中同时保留 `unweighted_net_return`、`position_weight`、`weighted_net_return`。报告和 hard gate 中的 `net_return_*` 默认指 `weighted_net_return` 聚合值；max_gain50 retention 仍然只使用 unweighted gross adjusted close path。
 
 ### 4.2 Exit execution 口径
 
@@ -234,12 +292,56 @@ exit_signal_date = first date whose close-based policy condition is true
 exit_execution_date = first executable next-open after exit_signal_date
 ```
 
+所有 close-based policy 条件中的 return 固定为：
+
+```text
+close_return_from_entry_t = adjusted_close_t / adjusted_entry_open - 1
+```
+
+其中 `adjusted_entry_open` 是 R04b price provider 在 `entry_execution_date` 的 `adjusted_open`，不是未经 reconciliation 的 R04 source `entry_price`。
+
 禁止在 primary replay 中用当日 low / high 触发后假设同日成交，因为日线 OHLC 无法确定真实盘中顺序。
+
+Trading-day offset 必须固定为：
+
+```text
+entry_execution_date open = offset 0 entry execution
+entry_execution_date close = offset 0 close observation
+day N close = trading-day offset N close after entry execution
+hold_Nd no_exit signal = day N close
+hold_Nd no_exit execution = first executable open after day N close, normally offset N+1 open
+```
+
+因此：
+
+```text
+hold_20d 需要 day 20 close 与其后的 executable open
+hold_60d 需要 day 60 close 与其后的 executable open
+hold_120d 需要 day 120 close 与其后的 executable open
+```
+
+`first executable next-open` 定义为：
+
+```text
+bar exists
+adjusted_open > 0
+volume > 0
+money > 0
+suspended_or_dirty_bar == false
+```
+
+如果 exit_signal_date 后的下一交易日 open 不可执行，runner 可以向后查找最多：
+
+```yaml
+max_exit_execution_lag_trading_days: 5
+```
+
+若仍找不到可执行 open，则该 replay 必须标记为 `censored_by_no_exit_execution`。R04b v1 不得从 OHLC 自行推断涨跌停卖出封单；如果本地数据源已有显式 `sell_blocked_at_open` 字段，必须在 Gate 0 中声明并并入 `suspended_or_dirty_bar`，否则不得使用。
 
 允许输出 secondary intraday_stop_sensitivity：
 
 ```text
-if low <= stop_threshold then exit at stop price
+if adjusted_low <= stop_threshold then exit at stop price
 ```
 
 但该 sensitivity 不得用于 policy selection 或 final decision。
@@ -253,6 +355,7 @@ replay_status in {
   replay_complete,
   censored_by_split_boundary,
   censored_by_missing_price,
+  censored_by_missing_required_indicator,
   censored_by_suspension_or_dirty_bar,
   censored_by_no_exit_execution,
   invalid_entry
@@ -309,15 +412,24 @@ hold120_max_gain50_flag =
 
 `hold120_max_gain50_flag` 是潜在右尾 winner 标识，必须使用 gross adjusted close path return，不扣成本、不乘 sizing weight。
 
+其中 day120 窗口固定为：
+
+```text
+gross adjusted close return from offset 0 close through offset 120 close,
+measured against adjusted entry open price.
+```
+
 对每个 policy 定义：
 
 ```text
 policy_retained_max_gain50_flag =
   hold120_max_gain50_flag == true
-  AND policy_exit_execution_date >= hold120_first_plus50_hit_date
+  AND policy_exit_execution_date > hold120_first_plus50_hit_date
 ```
 
-其中 `hold120_first_plus50_hit_date` 也必须由同一条 gross adjusted close path 计算。policy retention 只判断是否在首次 +50% gross path hit 之前提前离场；不得用 net return、position weight 或成本修正该 retention 判定。
+其中 `hold120_first_plus50_hit_date` 也必须由同一条 gross adjusted close path 计算。policy retention 只判断是否持仓穿过首次 +50% close hit；不得用 net return、position weight 或成本修正该 retention 判定。
+
+注意：这里必须使用 `>` 而不是 `>=`。如果 `policy_exit_execution_date == hold120_first_plus50_hit_date`，则代表该 policy 在当天 open 已离场，不能视为保留了当天 close 才出现的 +50% winner。
 
 如果 policy 从未提前退出，且 hold120 达到 +50%，则视为保留。
 
@@ -406,6 +518,34 @@ entry_price > 0
 
 不得从 raw repeated-trigger panel 重构主分母。
 
+Entry price reconciliation 必须在任何 replay 前完成：
+
+```text
+r04_source_entry_price = entry_price from r04_rps_candidate_action_panel.parquet
+r04b_replay_entry_price = adjusted_open from R04b price provider at entry_execution_date
+entry_price_rel_diff =
+  abs(r04b_replay_entry_price / r04_source_entry_price - 1)
+```
+
+默认容忍度冻结为：
+
+```yaml
+max_entry_price_rel_diff: 0.0001
+```
+
+如果某 candidate 的 `entry_price_rel_diff > max_entry_price_rel_diff`，该 candidate 必须标记为：
+
+```text
+invalid_entry
+entry_price_reconciliation_status = failed_price_mismatch
+```
+
+主 replay 使用 `r04b_replay_entry_price`，但必须在 audit 中同时保留 R04 source entry price 与 reconciliation diff。若任一 split 的 failed price mismatch share 超过 1%，R04b 必须 fail closed：
+
+```text
+blocked_gate0_metric_replay_spec_failed
+```
+
 必须输出 input reconciliation：
 
 ```text
@@ -421,8 +561,14 @@ included_rows
 valid_entry_rows
 policy_replay_eligible_rows
 excluded_invalid_entry
+excluded_entry_price_mismatch
 excluded_missing_price_path
+excluded_missing_required_indicator
 excluded_split_boundary
+other_unrecognized_market_regime_rows
+entry_price_rel_diff_p50
+entry_price_rel_diff_p95
+entry_price_rel_diff_max
 source_manifest_hash
 source_candidate_panel_hash
 ```
@@ -451,24 +597,50 @@ stock_rps_minus_industry_rps_60d
 
 R04b 必须使用本地 PIT price data，不得在线抓取。
 
+默认 price provider 固定为：
+
+```yaml
+price_provider:
+  provider_type: qlib_pit_local
+  price_source_path: data/qlib/cn_data_pit
+  calendar_source_path: data/qlib/cn_data_pit/calendars/day.txt
+  instrument_source_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  required_qlib_fields: [$open, $high, $low, $close, $volume, $money, $factor]
+  adjustment_policy: qlib_adjusted_ohlc_fields
+```
+
+`qlib_adjusted_ohlc_fields` 的含义是：
+
+```text
+$open / $high / $low / $close are interpreted as adjusted executable prices from the local PIT Qlib provider.
+$factor is retained for audit only and must not be mixed with already adjusted OHLC fields.
+```
+
+如果 implementation 使用其他本地 PIT price source，必须先 materialize 成完全相同的字段语义，并在 manifest 中记录替代 source path / hash / adjustment policy。不能在 runner 中静默切换 price provider。
+
 price path 必须至少覆盖：
 
 ```text
-entry_execution_date through entry_execution_date + 120 trading days
+entry_execution_date - 60 trading days through entry_execution_date - 1 trading day for pre-entry indicators,
+offset 0 entry open through day 120 close,
+plus the first executable open search window after day 120 close through max_exit_execution_lag_trading_days
 ```
+
+前 60 个交易日是 v1 的 frozen lookback buffer，用于 `volatility_scaled` 的 20 日 realized vol、ATR_14、EMA_20 等 as-of 指标。缺少 pre-entry lookback 不得影响 fixed_size / no-indicator policy；但依赖该指标的 policy 必须按 §5.5 进入 `censored_by_missing_required_indicator`。
 
 必需字段：
 
 ```text
 instrument_id
 trade_date
-open
-close
-high
-low
+adjusted_open
+adjusted_close
+adjusted_high
+adjusted_low
 volume
 money
-factor_or_adjusted_price_flag
+factor
+adjustment_policy
 suspended_or_dirty_bar
 ```
 
@@ -482,6 +654,12 @@ calendar_source_hash
 adjustment_policy
 ```
 
+如果 `data/qlib/cn_data_pit` 或 calendar 文件缺失，或者字段无法被 materialize 为上述 adjusted schema，R04b 必须 fail closed：
+
+```text
+blocked_missing_required_input
+```
+
 ### 5.5 Optional volatility / ATR fields
 
 ATR / volatility 只能用于 exit distance 或 sizing，不得用于 entry allow/block。
@@ -490,14 +668,32 @@ ATR 必须使用 entry 后每个 exit_signal_date 当天可知的数据：
 
 ```text
 TR_t = max(
-  high_t - low_t,
-  abs(high_t - close_{t-1}),
-  abs(low_t - close_{t-1})
+  adjusted_high_t - adjusted_low_t,
+  abs(adjusted_high_t - adjusted_close_{t-1}),
+  abs(adjusted_low_t - adjusted_close_{t-1})
 )
 ATR_14_asof_t = mean(TR_{t-13}, ..., TR_t)
 ```
 
-不得使用 future high / low 计算当日以前的 ATR。
+不得使用 future high / low 计算当日以前的 ATR。若 `t-13` 之前历史不足或 adjusted OHLC 缺失，依赖 ATR 的 policy replay 必须标记为 `censored_by_missing_required_indicator`，不得静默降级成 shorter-window ATR。
+
+`stock_realized_vol_20d_asof_entry` 必须固定为：
+
+```text
+daily_simple_return_t = adjusted_close_t / adjusted_close_{t-1} - 1
+stock_realized_vol_20d_asof_entry =
+  std(daily_simple_return_{entry_offset-20}, ..., daily_simple_return_{entry_offset-1})
+```
+
+即只使用 entry 前 20 个完整交易日的 adjusted close return，不得包含 entry 当日或 entry 之后数据。若不足 20 个有效 return，`volatility_scaled` replay 必须标记为 `censored_by_missing_required_indicator`。
+
+EMA trailing 使用：
+
+```text
+EMA_N_t = ewm(adjusted_close through t, span=N, adjust=false, min_periods=N)
+```
+
+若 `EMA_N_t` 在 exit evaluation date 缺失，依赖 EMA 的 policy replay 必须标记为 `censored_by_missing_required_indicator`。
 
 ## 6. Split 与选择纪律
 
@@ -544,6 +740,8 @@ select policy family among train-selected family representatives
 fixed_stop vs time_stop vs ATR_trailing vs EMA_trailing
 ```
 
+实际 selection grain 不是裸 `exit_rule_family_id`，而是完整 `policy_family_id = hold_rule_id x exit_rule_family_id x sizing_rule_id`。报告可以按 exit_rule_family_id 汇总解释，但 selected policy 必须落到唯一的 `policy_family_id` 与 `policy_id`。
+
 Validation 不得用于调 family 内参数。
 
 ### 6.3 Robustness read-only
@@ -573,8 +771,10 @@ reports/r04b_policy_selection_trace.csv
 selection_stage
 split_used
 policy_family_id
+exit_rule_family_id
 candidate_policy_id
 parameter_set_id
+parameter_values_json
 selection_metric_name
 selection_metric_value
 selection_rank
@@ -608,15 +808,18 @@ reports/r04b_policy_matrix_frozen.csv
 policy_id
 hold_rule_id
 exit_rule_id
+exit_rule_family_id
 sizing_rule_id
 policy_family_id
 parameter_set_id
+parameter_values_json
 is_baseline_policy
 is_train_selectable
 is_validation_selectable
 is_sensitivity_policy
 parameter_reference_group_id
 validation_family_reference_set_id
+selection_family_key
 invalid_policy_reason
 entry_rule_text
 hold_rule_formula
@@ -625,6 +828,29 @@ sizing_rule_formula
 cost_model_id
 formula_hash
 ```
+
+字段语义固定为：
+
+```text
+exit_rule_family_id = no_exit | fixed_stop | time_stop | break_even_after_gain |
+                      profit_lock_after_gain | ATR_trailing | EMA_trailing
+policy_family_id = hold_rule_id + "|" + exit_rule_family_id + "|" + sizing_rule_id
+selection_family_key = policy_family_id
+parameter_reference_group_id = policy_family_id
+validation_family_reference_set_id = "primary_all_policy_families_v1"
+parameter_values_json = canonical JSON object with sorted keys for every tunable parameter
+```
+
+例如：
+
+```text
+policy_id = hold_120d|ATR_trailing|fixed_size|k_atr=3.0|min_activation=0.00
+exit_rule_family_id = ATR_trailing
+policy_family_id = hold_120d|ATR_trailing|fixed_size
+parameter_values_json = {"k_atr":3.0,"min_activation_gain_pct":0.0}
+```
+
+Validator 不得通过解析 `exit_rule_formula` 来还原参数；所有 invalid combination、sensitivity-only、train reference set 检查必须优先基于 `parameter_values_json` 与上述 reference id 字段。
 
 ### 7.1 Hold rule candidates
 
@@ -656,7 +882,8 @@ R04b v1 允许以下 exit families。
 #### no_exit
 
 ```text
-exit_signal_date = entry_execution_date + max_holding_days
+exit_signal_date = close at trading-day offset max_holding_days
+exit_execution_date = first executable open after exit_signal_date
 ```
 
 #### fixed_stop
@@ -680,10 +907,31 @@ stop_loss_pct: [-0.05, -0.08, -0.10]
 exit at fixed holding day N
 ```
 
+这里的 fixed holding day N 使用 §4.2 的 offset 语义：
+
+```text
+time_stop signal = close at offset N
+time_stop execution = first executable open after offset N close
+```
+
 候选参数：
 
 ```yaml
 time_stop_days: [10, 20, 40, 60]
+```
+
+Invalid combination:
+
+```text
+time_stop_days >= max_holding_days
+```
+
+原因是它与 `no_exit` 的 max-hold 行为重复或越界。该组合不得作为 selectable policy，只能作为 audit row：
+
+```text
+invalid_policy_reason = time_stop_days_ge_max_holding_days
+is_train_selectable = false
+is_validation_selectable = false
 ```
 
 #### break_even_after_gain
@@ -805,12 +1053,12 @@ Market state 只能缩放，不得 block：
 position_weight =
   1.00 if market_regime_bucket in {downtrend_low_breadth, normal_range}
   0.75 if market_regime_bucket == normal_uptrend
-  0.50 if market_regime_bucket == missing_market_regime
+  0.50 if market_regime_bucket in {missing_market_regime, post_drawdown_rebound, other_unrecognized_market_regime}
 ```
 
 该规则是 pre-registered descriptive sizing candidate。它不得被解释为 market entry gate。
 
-If market regime is missing due to upstream data gap, weight must follow the frozen missing policy; runner must not infer a better state after outcome inspection.
+If market regime is missing due to upstream data gap or contains a bucket not listed in the frozen mapping, weight must follow the frozen 0.50 fallback policy; runner must not infer a better state after outcome inspection. Runner must count `other_unrecognized_market_regime` rows in the input reconciliation audit.
 
 ## 8. Required Metrics
 
@@ -830,7 +1078,55 @@ calendar_year
 instrument_id
 ```
 
+所有 `*_vs_hold120` 字段的 baseline 固定为：
+
+```text
+hold120_baseline_policy_id = baseline_hold120_no_exit_fixed_size
+```
+
+Split-level delta 必须在同一 split 内比较：
+
+```text
+net_return_mean_delta_vs_hold120 =
+  policy_weighted_net_return_mean_same_split
+  - hold120_baseline_weighted_net_return_mean_same_split
+
+left_tail_net_return_p10_delta_vs_hold120 =
+  policy_weighted_net_return_p10_same_split
+  - hold120_baseline_weighted_net_return_p10_same_split
+```
+
+Subgroup delta 必须在同一 split / same subgroup bucket 内比较；如果 baseline 在该 subgroup 的 denominator 不足，该 subgroup delta 必须标记为 insufficient，不得用全 split baseline 代替。
+
+Realized loss rate 默认使用 weighted net return：
+
+```text
+realized_loss_le_minus5_rate = mean(weighted_net_return <= -0.05)
+realized_loss_le_minus10_rate = mean(weighted_net_return <= -0.10)
+```
+
+Max adverse excursion 默认使用 unweighted gross adjusted close path through policy exit signal date：
+
+```text
+max_adverse_excursion = min(gross_adjusted_close_return_path_before_exit)
+```
+
+因此 sizing_rule 可以改善 realized payoff left-tail，但不得伪造 raw path quality。若报告展示 weighted MAE，必须另列为 secondary field，不得替代 primary MAE。
+
+其他派生字段固定为：
+
+```text
+weighted_event_count = sum(position_weight over replay_complete rows)
+avg_holding_days = trading-day distance from entry_execution_date offset 0 to exit_execution_date
+turnover_proxy = 252 / max(avg_holding_days, 1)
+cost_bps_mean = mean(total_cost_bps)
+avg_holding_days_increase_penalty =
+  max(policy_avg_holding_days - hold120_baseline_avg_holding_days_same_split, 0)
+```
+
 ### 8.1 Primary policy metrics
+
+除非字段名显式写成 `unweighted_*`，本节中的 `net_return_*` 都指 §4.1 定义的 `weighted_net_return` 聚合值。
 
 主表必须包含：
 
@@ -839,6 +1135,8 @@ event_count
 replay_complete_count
 replay_complete_rate
 weighted_event_count
+position_weight_mean
+unweighted_net_return_mean
 net_return_mean
 net_return_median
 net_return_p10
@@ -1084,6 +1382,7 @@ ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/
     r04b_cost_turnover_audit.csv
     r04b_legacy_metric_audit.csv
     r04b_final_decision.csv
+    r04b_fixed_entry_hold_exit_risk_budget_cta_validation_audit.csv
     r04b_fixed_entry_hold_exit_risk_budget_cta_final_report.md
   manifests/
     r04b_fixed_entry_hold_exit_risk_budget_cta_manifest.json
@@ -1101,13 +1400,18 @@ policy_id
 policy_family_id
 hold_rule_id
 exit_rule_id
+exit_rule_family_id
 sizing_rule_id
+parameter_set_id
+parameter_values_json
 split
 event_count
 replay_complete_count
 censored_count
 replay_complete_rate
 weighted_event_count
+position_weight_mean
+unweighted_net_return_mean
 net_return_mean
 net_return_median
 net_return_p10
@@ -1203,6 +1507,8 @@ subgroup_denominator_status == sufficient
 final_decision
 selected_policy_id
 selected_policy_family_id
+selected_exit_rule_family_id
+selected_parameter_values_json
 validation_gate_pass
 robustness_gate_pass
 validation_max_gain50_retention_vs_hold120
@@ -1229,29 +1535,41 @@ manifests/r04b_fixed_entry_hold_exit_risk_budget_cta_validation.json
 2. R04 candidate source hash 与 manifest 一致；
 3. primary candidate pool 只来自 baseline_A included RPS episode-first-trigger rows；
 4. mask_B / mask_C 没有进入主 pool；
-5. Gate 0 spec 存在且 formula_hash 完整；
-6. return / cost / censored / bad-path / retention 口径冻结；
-7. `min_max_gain50_retention_vs_hold120 == 0.60`；
-8. policy matrix 中每个 policy 有 formula_hash；
-9. policy matrix 只包含 config 预注册 rule family；
-10. CTA / trailing policy 被标为 exit_rule，不是独立 strategy track；
-11. profit-lock invalid combination 不得作为 selectable policy；
-12. activated ATR trailing (`min_activation_gain_pct > 0`) 只能是 sensitivity policy；
-13. train z-score reference set 只在同一 `policy_family_id` / `parameter_reference_group_id` 内计算；
-14. validation z-score reference set 只包含 train-selected family representatives；
-15. max_gain50 flag / first hit / retention 使用 gross adjusted close path，不使用 net return；
-16. train 只用于 family 内参数选择；
-17. validation 只用于 family 选择；
-18. robustness 未参与任何选择；
-19. final selected policy 在 validation 和 robustness 均满足 retention gate；
-20. final selected policy 在 validation 和 robustness 均满足 bad-path compression gate；
-21. `+10 before -5` 未作为 primary metric 或 selection_metric；
-22. market / industry fields 只出现在 interaction audit 或 sizing formula，不出现在 entry filter；
-23. interaction research lead 必须满足 replay denominator 与 year concentration 门槛；
-24. censored share 未超过 threshold；
-25. winner denominator 足够；
-26. output manifest 包含所有 required outputs 和 sha256；
-27. final report 包含 mandatory boundary strings。
+5. default price source / calendar / adjustment policy 已冻结并写入 manifest；
+6. price path materialized schema 使用 adjusted OHLC，不混用 raw / adjusted；
+7. replay eligible rows 的 entry price reconciliation diff 未超过 frozen tolerance，且任一 split 的 failed price mismatch share <= 1%；
+8. pre-entry lookback buffer 与 post-entry 120d path coverage 按 policy 需求检查；
+9. Gate 0 spec 存在且 formula_hash 完整；
+10. return / cost / sizing / censored / bad-path / retention 口径冻结；
+11. cost model 数值等于 frozen default，且 cost hash 写入 manifest；
+12. trading-day offset 语义与 hold_Nd next-open execution 一致；
+13. `min_max_gain50_retention_vs_hold120 == 0.60`；
+14. policy matrix 中每个 policy 有 formula_hash；
+15. policy matrix 只包含 config 预注册 rule family；
+16. policy matrix 必须包含 `exit_rule_family_id`、`policy_family_id`、`parameter_values_json` 与 reference set 字段；
+17. `policy_family_id == hold_rule_id + "|" + exit_rule_family_id + "|" + sizing_rule_id`；
+18. CTA / trailing policy 被标为 exit_rule，不是独立 strategy track；
+19. profit-lock invalid combination 不得作为 selectable policy；
+20. time-stop invalid combination 不得作为 selectable policy；
+21. activated ATR trailing (`min_activation_gain_pct > 0`) 只能是 sensitivity policy；
+22. required indicator 缺失必须进入 `censored_by_missing_required_indicator`；
+23. market_state_scaled 对缺失或未知 market bucket 使用 frozen 0.50 fallback；
+24. train z-score reference set 只在同一 `policy_family_id` / `parameter_reference_group_id` 内计算；
+25. validation z-score reference set 只包含 train-selected family representatives；
+26. max_gain50 flag / first hit / retention 使用 gross adjusted close path，不使用 net return；
+27. retention 判定必须使用 `policy_exit_execution_date > hold120_first_plus50_hit_date`；
+28. train 只用于 family 内参数选择；
+29. validation 只用于 family 选择；
+30. robustness 未参与任何选择；
+31. final selected policy 在 validation 和 robustness 均满足 retention gate；
+32. final selected policy 在 validation 和 robustness 均满足 bad-path compression gate；
+33. `+10 before -5` 未作为 primary metric 或 selection_metric；
+34. market / industry fields 只出现在 interaction audit 或 sizing formula，不出现在 entry filter；
+35. interaction research lead 必须满足 replay denominator 与 year concentration 门槛；
+36. censored share 未超过 threshold；
+37. winner denominator 足够；
+38. output manifest 包含所有 required outputs 和 sha256；
+39. final report 包含 mandatory boundary strings。
 
 Mandatory boundary strings：
 
@@ -1306,10 +1624,15 @@ CTA strategy passed
 - [ ] R04b uses baseline_A full RPS included pool as primary candidate pool.
 - [ ] No mask_B / mask_C selected pool is used for primary replay.
 - [ ] Gate 0 metric and replay semantics are frozen before policy replay.
+- [ ] Default local PIT price source, calendar, adjusted OHLC schema, and adjustment policy are frozen.
+- [ ] R04 source entry price and R04b adjusted entry open are reconciled before replay.
+- [ ] Cost model numeric bps are frozen and written to manifest.
+- [ ] Trading-day offset semantics are frozen for hold_Nd, time_stop, and max_gain50 windows.
+- [ ] Required indicator formulas and missing-indicator censored behavior are frozen.
 - [ ] `+10 before -5` is legacy diagnostic only.
 - [ ] `max_gain50_retention_vs_hold120 >= 0.60` is the v1 pass/fail threshold candidate.
 - [ ] CTA / trailing is modeled as `exit_rule`, not as a separate strategy track.
-- [ ] Policy matrix is finite and pre-registered.
+- [ ] Policy matrix is finite, pre-registered, and includes `policy_family_id`, `exit_rule_family_id`, `parameter_values_json`, and frozen reference-set ids.
 - [ ] Train selects parameters only.
 - [ ] Validation selects policy family only.
 - [ ] Robustness is read-only.

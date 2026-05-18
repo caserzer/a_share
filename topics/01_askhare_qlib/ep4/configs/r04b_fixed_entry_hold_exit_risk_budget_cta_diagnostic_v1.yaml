@@ -1,0 +1,118 @@
+phase: ep4_r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1
+requirement_id: ep4_r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1
+short_name: r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1
+requirement_path: ep4/requirement_04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1.md
+output_root: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1
+
+upstream_r04:
+  output_root: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1
+  validation: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/manifests/r04_dynamic_momentum_exposure_eligibility_validation.json
+  manifest: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/manifests/r04_dynamic_momentum_exposure_eligibility_manifest.json
+  candidate_panel: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/cache/r04_rps_candidate_action_panel.parquet
+  regime_join_panel: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/cache/r04_candidate_regime_join_panel.parquet
+
+price_provider:
+  provider_type: qlib_pit_local
+  price_source_path: data/qlib/cn_data_pit
+  calendar_source_path: data/qlib/cn_data_pit/calendars/day.txt
+  instrument_source_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  required_qlib_fields: ["$open", "$high", "$low", "$close", "$volume", "$money", "$factor"]
+  adjustment_policy: qlib_adjusted_ohlc_fields
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+candidate:
+  signal_id: single_momentum_rps
+  family_id: momentum_rps
+  required_inclusion_status: included
+  max_entry_price_rel_diff: 0.0001
+  max_split_entry_price_mismatch_share: 0.01
+
+cost_model:
+  cost_model_id: a_share_daily_replay_default_v1
+  entry_slippage_bps: 5.0
+  exit_slippage_bps: 5.0
+  commission_bps_per_side: 3.0
+  stamp_tax_bps_on_exit: 5.0
+  min_fee_policy: none
+
+execution:
+  max_holding_days: 120
+  pre_entry_lookback_trading_days: 60
+  max_exit_execution_lag_trading_days: 5
+  return_type: simple_return
+  execution_policy: close_signal_next_open
+
+thresholds:
+  minimum_train_replay_complete_count: 500
+  minimum_validation_replay_complete_count: 300
+  minimum_robustness_replay_complete_count: 300
+  minimum_validation_hold120_max_gain50_count: 30
+  minimum_robustness_hold120_max_gain50_count: 30
+  max_censored_share: 0.25
+  min_max_gain50_retention_vs_hold120: 0.60
+  max_gain50_threshold: 0.50
+  retention_threshold_sensitivity: [0.50, 0.60, 0.70]
+  interaction_min_replay_complete_count: 100
+  interaction_max_top1_calendar_year_share: 0.50
+
+policy_grid:
+  holds:
+    - hold_rule_id: hold_20d
+      max_holding_days: 20
+    - hold_rule_id: hold_60d
+      max_holding_days: 60
+    - hold_rule_id: hold_120d
+      max_holding_days: 120
+  sizing:
+    fixed_size:
+      position_weight: 1.0
+    volatility_scaled:
+      target_vol: 0.02
+      min_weight: 0.25
+      max_weight: 1.0
+    market_state_scaled:
+      downtrend_low_breadth: 1.0
+      normal_range: 1.0
+      normal_uptrend: 0.75
+      missing_market_regime: 0.50
+      post_drawdown_rebound: 0.50
+      other_unrecognized_market_regime: 0.50
+  exits:
+    no_exit:
+      enabled: true
+    fixed_stop:
+      stop_loss_pct: [-0.05, -0.08, -0.10]
+    time_stop:
+      time_stop_days: [10, 20, 40, 60]
+    break_even_after_gain:
+      activation_gain_pct: [0.10, 0.15, 0.20]
+    profit_lock_after_gain:
+      activation_gain_pct: [0.15, 0.20, 0.30]
+      locked_gain_pct: [0.05, 0.10]
+    ATR_trailing:
+      k_atr: [2.5, 3.0, 3.5]
+      min_activation_gain_pct_for_selection: [0.00]
+      min_activation_gain_pct_sensitivity_only: [0.10]
+    EMA_trailing:
+      ema_window: [10, 20]
+      confirm_days: [1, 2, 3]
+
+baseline:
+  hold120_baseline_policy_id: baseline_hold120_no_exit_fixed_size
+  validation_family_reference_set_id: primary_all_policy_families_v1
+
+validation:
+  required_boundary_strings:
+    - "R04b is fixed-entry policy replay, not entry eligibility."
+    - "CTA/trailing is an exit_rule family, not a separate strategy track."
+    - "Market and industry states are interaction diagnostics only, not selection gates."
+    - "+10 before -5 is legacy diagnostic only for R04b."
+    - "max_gain50_retention_vs_hold120 gate threshold = 0.60."
+    - "No production entry gate, sizing rule, or CTA strategy is emitted by this diagnostic."
