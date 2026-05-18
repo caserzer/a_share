@@ -1,0 +1,121 @@
+phase: ep4_r04d_volume_money_relative_improvement_risk_budget_replay_v1
+requirement_id: ep4_r04d_volume_money_relative_improvement_risk_budget_replay_v1
+short_name: r04d_volume_money_relative_improvement_risk_budget_replay_v1
+requirement_path: ep4/requirement_04d_volume_money_relative_improvement_risk_budget_replay_v1.md
+output_root: ep4/outputs/r04d_volume_money_relative_improvement_risk_budget_replay_v1
+
+upstream_r04c:
+  output_root: ep4/outputs/r04c_candidate_pool_scanner_v1
+  validation: ep4/outputs/r04c_candidate_pool_scanner_v1/manifests/r04c_candidate_pool_scanner_validation.json
+  manifest: ep4/outputs/r04c_candidate_pool_scanner_v1/manifests/r04c_candidate_pool_scanner_manifest.json
+  final_decision: ep4/outputs/r04c_candidate_pool_scanner_v1/reports/r04c_final_decision.csv
+  validation_gate_audit: ep4/outputs/r04c_candidate_pool_scanner_v1/reports/r04c_validation_gate_audit.csv
+  hold120_pool_profile: ep4/outputs/r04c_candidate_pool_scanner_v1/reports/r04c_hold120_pool_profile.csv
+  matched_baseline_delta_summary: ep4/outputs/r04c_candidate_pool_scanner_v1/reports/r04c_matched_baseline_delta_summary.csv
+  overlap_uniqueness_audit: ep4/outputs/r04c_candidate_pool_scanner_v1/reports/r04c_overlap_uniqueness_audit.csv
+  pool_registry_frozen: ep4/outputs/r04c_candidate_pool_scanner_v1/reports/r04c_pool_registry_frozen.csv
+  pool_event_panel: ep4/outputs/r04c_candidate_pool_scanner_v1/cache/r04c_pool_event_panel.parquet
+  matched_baseline_panel: ep4/outputs/r04c_candidate_pool_scanner_v1/cache/r04c_matched_baseline_panel.parquet
+
+upstream_r04b:
+  output_root: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1
+  validation: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/manifests/r04b_fixed_entry_hold_exit_risk_budget_cta_validation.json
+  manifest: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/manifests/r04b_fixed_entry_hold_exit_risk_budget_cta_manifest.json
+
+upstream_r02_family_precision:
+  action_time_panel: ep4/outputs/r02_family_precision_forward_return_stats_v1/cache/r02_family_action_time_panel.parquet
+
+price_provider:
+  provider_type: qlib_pit_local
+  price_source_path: data/qlib/cn_data_pit
+  calendar_source_path: data/qlib/cn_data_pit/calendars/day.txt
+  instrument_source_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  required_qlib_fields: ["$open", "$high", "$low", "$close", "$volume", "$money", "$factor"]
+  adjustment_policy: qlib_adjusted_ohlc_fields
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+pool:
+  pool_id: r02_precision_volume_money
+  family_id: volume_money
+  adapter_id: r02_family_precision_frozen_family_occurrence
+  baseline_pool_id: baseline_A_r04_included_rps_episode_first_trigger
+  episode_gap_trading_days: 20
+  max_entry_price_rel_diff: 0.0001
+
+execution:
+  max_holding_days: 120
+  pre_entry_lookback_trading_days: 60
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+  return_type: simple_return
+  execution_policy: close_signal_next_open
+
+cost_model:
+  cost_model_id: a_share_daily_replay_default_v1
+  entry_slippage_bps: 5.0
+  exit_slippage_bps: 5.0
+  commission_bps_per_side: 3.0
+  stamp_tax_bps_on_exit: 5.0
+  min_fee_policy: none
+
+thresholds:
+  minimum_train_replay_complete_count: 1000
+  minimum_validation_replay_complete_count: 1000
+  minimum_robustness_replay_complete_count: 1000
+  max_validation_censored_share: 0.25
+  max_robustness_censored_share: 0.25
+  minimum_validation_max_gain50_count: 50
+  minimum_robustness_max_gain50_count: 50
+  max_gain50_threshold: 0.50
+  min_max_gain50_retention_vs_volume_money_hold120: 0.50
+  validation_min_net_return_mean: 0.0
+  validation_min_net_return_mean_delta_vs_volume_money_hold120: 0.02
+  robustness_min_net_return_mean_delta_vs_volume_money_hold120: -0.01
+  baseline_A_robustness_net_return_mean: 0.061177
+
+policy_grid:
+  holds:
+    - hold_rule_id: hold_20d
+      max_holding_days: 20
+    - hold_rule_id: hold_40d
+      max_holding_days: 40
+    - hold_rule_id: hold_60d
+      max_holding_days: 60
+    - hold_rule_id: hold_120d
+      max_holding_days: 120
+  sizing:
+    fixed_size:
+      position_weight: 1.0
+    volatility_scaled:
+      target_vol: 0.02
+      min_weight: 0.25
+      max_weight: 1.0
+  exits:
+    no_exit:
+      enabled: true
+    time_stop:
+      time_stop_days: [10, 20, 40, 60]
+    break_even_after_gain:
+      activation_gain_pct: [0.08, 0.10, 0.15]
+    fixed_stop:
+      stop_loss_pct: [-0.05, -0.08, -0.10]
+
+baseline:
+  volume_money_hold120_baseline_policy_id: volume_money_hold120_no_exit_fixed_size
+
+validation:
+  required_boundary_strings:
+    - "R04d does not reinterpret R04c v1 as passed."
+    - "volume_money is a descriptive relative-improvement lead, not an R04c selected pool."
+    - "R04d uses a fixed r02_precision_volume_money pool."
+    - "R04d primary policies are shorter hold, time_stop, break_even, fixed_stop, and sizing only."
+    - "Robustness is final readout only."
+    - "Headline net_return metrics use weighted_net_return; unweighted returns are audit only."
+    - "No production entry rule is emitted by this diagnostic."

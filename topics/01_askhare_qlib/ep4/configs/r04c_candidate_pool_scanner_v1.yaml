@@ -1,0 +1,159 @@
+phase: ep4_r04c_candidate_pool_scanner_v1
+requirement_id: ep4_r04c_candidate_pool_scanner_v1
+short_name: r04c_candidate_pool_scanner_v1
+requirement_path: ep4/requirement_04c_candidate_pool_scanner_v1.md
+output_root: ep4/outputs/r04c_candidate_pool_scanner_v1
+
+upstream_r04:
+  output_root: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1
+  validation: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/manifests/r04_dynamic_momentum_exposure_eligibility_validation.json
+  manifest: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/manifests/r04_dynamic_momentum_exposure_eligibility_manifest.json
+  candidate_panel: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/cache/r04_rps_candidate_action_panel.parquet
+  regime_join_panel: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/cache/r04_candidate_regime_join_panel.parquet
+  background_action_time_panel: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1/cache/r04_background_action_time_panel.parquet
+
+upstream_r04b:
+  output_root: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1
+  validation: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/manifests/r04b_fixed_entry_hold_exit_risk_budget_cta_validation.json
+  manifest: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/manifests/r04b_fixed_entry_hold_exit_risk_budget_cta_manifest.json
+  daily_policy_path_panel: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/cache/r04b_daily_policy_path_panel.parquet
+  candidate_replay_base_panel: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/cache/r04b_candidate_replay_base_panel.parquet
+  policy_replay_summary: ep4/outputs/r04b_fixed_entry_hold_exit_risk_budget_cta_diagnostic_v1/reports/r04b_policy_replay_summary.csv
+
+price_provider:
+  provider_type: qlib_pit_local
+  price_source_path: data/qlib/cn_data_pit
+  calendar_source_path: data/qlib/cn_data_pit/calendars/day.txt
+  instrument_source_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  required_qlib_fields: ["$open", "$high", "$low", "$close", "$volume", "$money", "$factor"]
+  adjustment_policy: qlib_adjusted_ohlc_fields
+  r04b_reconciliation_abs_tolerance: 1.0e-10
+
+local_inputs:
+  pit_industry_membership: data/targets/pit_industry_membership.csv
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+execution:
+  max_holding_days: 120
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+  episode_gap_trading_days: 20
+  return_type: simple_return
+  execution_policy: close_signal_next_open
+
+cost_model:
+  cost_model_id: a_share_daily_replay_default_v1
+  entry_slippage_bps: 5.0
+  exit_slippage_bps: 5.0
+  commission_bps_per_side: 3.0
+  stamp_tax_bps_on_exit: 5.0
+  min_fee_policy: none
+
+thresholds:
+  minimum_train_replay_complete_count: 500
+  minimum_validation_replay_complete_count: 300
+  minimum_robustness_replay_complete_count: 500
+  minimum_validation_max_gain50_count: 30
+  minimum_robustness_max_gain50_count: 50
+  max_censored_share: 0.25
+  minimum_matched_comparator_effective_sample_size: 300
+  validation_min_net_return_mean: 0.0
+  robustness_min_net_return_mean: 0.08
+  robustness_min_net_return_mean_delta_vs_matched_baseline_A: 0.02
+  robustness_max_loss_le_minus5_rate: 0.30
+  max_gain50_threshold: 0.50
+  concentration_top1_year_floor: 0.50
+  concentration_top1_year_relative_buffer: 0.10
+  concentration_top1_instrument_floor: 0.05
+  concentration_top1_instrument_relative_buffer: 0.02
+
+source_registry:
+  r02_family_precision:
+    source_root: ep4/outputs/r02_family_precision_forward_return_stats_v1
+    required_artifacts:
+      - cache/r02_family_action_time_panel.parquet
+      - reports/r02_family_precision_by_split.csv
+      - reports/r02_family_forward_return_stats_by_split.csv
+    adapter_id: r02_family_precision_frozen_family_occurrence
+    source_promotability_default: promotable_if_definition_train_frozen
+  r02_evidence_family:
+    source_root: ep4/outputs/r02_evidence_family_discovery_v1
+    required_artifacts:
+      - cache/r02_action_time_panel.parquet
+      - reports/r02_combo_search_summary.csv
+      - reports/r02_family_selection_summary.csv
+    adapter_id: r02_evidence_family
+    source_promotability_default: descriptive_lead_only_adapter_not_implemented_v1
+  r03b_signal_sequence:
+    source_root: ep4/outputs/r03b_signal_sequence_big_winner_path_diagnostic_v1
+    required_artifacts:
+      - cache/r03b_seed_episode_panel.parquet
+      - cache/r03b_sequence_step_panel.parquet
+      - reports/r03b_sequence_pattern_summary.csv
+    adapter_id: r03b_signal_sequence
+    source_promotability_default: descriptive_lead_only_adapter_not_implemented_v1
+  r03c_family_set_pooling:
+    source_root: ep4/outputs/r03c_price_aware_kth_fresh_family_set_pooling_diagnostic_v1
+    required_artifacts:
+      - cache/r03c_family_set_pooling_panel.parquet
+      - reports/r03c_family_set_pooling_summary.csv
+    adapter_id: r03c_config_frozen_family_set_pool
+    source_promotability_default: conditional_promotable_if_config_frozen
+  r02_winner_anchored_v2:
+    source_root: ep4/outputs/r02_winner_anchored_structure_profile_discovery_v2
+    required_artifacts:
+      - cache/r02_v2_action_time_eventized_signals.parquet
+      - reports/r02_v2_representative_selection.csv
+      - reports/r02_v2_winner_profile_search_summary.csv
+    adapter_id: r02_winner_anchored_v2
+    source_promotability_default: descriptive_lead_only_winner_anchored
+  r01_pre60_indicator_search_v2:
+    source_root: ep4/outputs/r01_big_winner_pre60_indicator_search_v2
+    required_artifacts:
+      - reports/pre60_condition_search_v2_top_*.csv
+    adapter_id: r01_pre60_indicator_search_v2
+    source_promotability_default: descriptive_lead_only_winner_anchored
+  r01_post30_indicator_search_v1:
+    source_root: ep4/outputs/r01_big_winner_post30_indicator_search_v1
+    required_artifacts:
+      - reports/post30_condition_search_v1_top_*.csv
+    adapter_id: r01_post30_indicator_search_v1
+    source_promotability_default: descriptive_lead_only_winner_anchored
+
+r04_derived_field_source_map:
+  stock_rps_60d:
+    source_type: source_column_from_r04_artifact
+    source_artifact: r04_candidate_regime_join_panel.parquet
+    source_column: stock_rps_60d
+  stock_rps_minus_industry_rps_60d:
+    source_type: source_column_from_r04_artifact
+    source_artifact: r04_candidate_regime_join_panel.parquet
+    source_column: stock_rps_minus_industry_rps_60d
+  money_rank_20d:
+    source_type: derived_from_local_pit_provider_with_frozen_formula
+    formula_id: money_rank_20d_v1
+  industry_rps_60d:
+    source_type: derived_from_local_pit_provider_with_frozen_formula
+    formula_id: industry_rps_60d_v1
+
+r03c_adapter:
+  r03c_promotable_pooling_keys: []
+  r03c_pooling_key_column: pooling_key
+  r03c_anchor_signal_date_column: step_signal_date
+  r03c_instrument_column: instrument_id
+
+validation:
+  required_boundary_strings:
+    - "R04c is candidate-pool scanner, not hold/exit policy replay."
+    - "R04c uses hold120 no-exit baseline only."
+    - "Matched baseline_A is mandatory for pool promotion."
+    - "Validation and robustness cannot define pool membership."
+    - "Robustness is final readout only."
+    - "No production entry rule is emitted by this scanner."
