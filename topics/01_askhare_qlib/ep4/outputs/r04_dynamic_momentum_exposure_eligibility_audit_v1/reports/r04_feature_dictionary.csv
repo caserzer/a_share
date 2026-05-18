@@ -1,0 +1,16 @@
+feature_name,feature_group,asof_rule,status
+market_ret_20d,market,trade_date <= anchor_signal_date,r04_v1_primary_feature
+market_ret_60d,market,trade_date <= anchor_signal_date,r04_v1_primary_feature
+market_ret_120d,market,trade_date <= anchor_signal_date,r04_v1_primary_feature
+market_ret_252d,market,trade_date <= anchor_signal_date,r04_v1_primary_feature
+market_drawdown_252d,market,trade_date <= anchor_signal_date,r04_v1_primary_feature
+market_realized_vol_60d,market,trade_date <= anchor_signal_date,r04_v1_primary_feature
+market_breadth_ma60,market,trade_date <= anchor_signal_date,r04_v1_primary_feature
+industry_ret_20d,industry,trade_date <= anchor_signal_date and membership.date <= anchor_signal_date,r04_v1_primary_feature
+industry_ret_60d,industry,trade_date <= anchor_signal_date and membership.date <= anchor_signal_date,r04_v1_primary_feature
+industry_rps_60d,industry,trade_date <= anchor_signal_date and membership.date <= anchor_signal_date,r04_v1_primary_feature
+industry_breadth_ma60,industry,trade_date <= anchor_signal_date and membership.date <= anchor_signal_date,r04_v1_primary_feature
+stock_ret_60d,industry,trade_date <= anchor_signal_date and membership.date <= anchor_signal_date,r04_v1_primary_feature
+stock_rps_60d,industry,trade_date <= anchor_signal_date and membership.date <= anchor_signal_date,r04_v1_primary_feature
+stock_rps_minus_industry_rps_60d,industry,trade_date <= anchor_signal_date and membership.date <= anchor_signal_date,r04_v1_primary_feature
+EV_R,risk,not_used,out_of_scope_for_r04_v1

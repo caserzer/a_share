@@ -1,0 +1,58 @@
+phase: ep4_r04_dynamic_momentum_exposure_eligibility_audit_v1
+requirement_id: ep4_r04_dynamic_momentum_exposure_eligibility_audit_v1
+short_name: r04_dynamic_momentum_exposure_eligibility_audit_v1
+requirement_path: ep4/requirement_04_dynamic_momentum_exposure_eligibility_audit_v1.md
+output_root: ep4/outputs/r04_dynamic_momentum_exposure_eligibility_audit_v1
+
+upstream_path_query:
+  output_root: ep4/outputs/r02_family_signal_120d_path_query_v1
+  manifest: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_manifest.json
+  validation: ep4/outputs/r02_family_signal_120d_path_query_v1/manifests/r02_family_signal_120d_path_query_validation.json
+  single_momentum_episode_audit: ep4/outputs/r02_family_signal_120d_path_query_v1/reports/episode_signals/single_momentum_rps_120d_episode_audit.csv
+  single_momentum_signal_path: ep4/outputs/r02_family_signal_120d_path_query_v1/reports/signals/single_momentum_rps_120d_path.csv
+
+upstream_coverage:
+  output_root: ep4/outputs/r02_big_winner_coverage_ratio_search_v1
+  manifest: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/manifests/r02_big_winner_coverage_manifest.json
+  eligible_day_density_panel: ep4/outputs/r02_big_winner_coverage_ratio_search_v1/cache/r02_eligible_day_density_panel.parquet
+
+local_inputs:
+  calendar: data/qlib/cn_data_pit/calendars/day.txt
+  pit_industry_membership: data/targets/pit_industry_membership.csv
+
+candidate:
+  signal_id: single_momentum_rps
+  family_id: momentum_rps
+  horizon_trading_days: 120
+
+market:
+  min_eligible_count: 100
+  min_return_valid_count: 80
+  realized_vol_quantile: 0.67
+
+industry:
+  min_member_count: 10
+  min_return_valid_count: 8
+
+thresholds:
+  minimum_oos_primary_lift: 0.02
+  max_allowed_p_bad_increase: 0.00
+  min_max_gain50_proxy_retention: 0.70
+  max_denominator_shrink_vs_parent: 0.70
+  minimum_train_denominator: 200
+  minimum_validation_denominator: 100
+  minimum_robustness_denominator: 100
+  minimum_background_denominator: 500
+  max_race_ambiguous_rate: 0.02
+  max_top1_year_share_of_lift: 0.50
+  max_top1_industry_share_of_lift: 0.35
+  max_top1_instrument_share: 0.05
+  max_top5_instrument_share: 0.15
+
+validation:
+  path_reconciliation_sample_size_per_split: 500
+  float_tolerance: 1.0e-10
+
+r04b:
+  min_mask_A_oos_max_gain50_proxy_rate: 0.05
+  min_mask_A_oos_max_gain_120d_p90: 0.30
