@@ -1,0 +1,53 @@
+phase: ep4_r05_preflight_alpha_pool_quick_feasibility_v1
+requirement_id: ep4_r05_preflight_alpha_pool_quick_feasibility_v1
+short_name: r05_preflight_alpha_pool_quick_feasibility_v1
+requirement_path: ep4/requirement_05_preflight_alpha_pool_quick_feasibility_v1.md
+output_root: ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1
+
+upstream_r04e:
+  validation: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/manifests/r04e_union_pool_portfolio_level_validation.json
+  final_decision: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/reports/r04e_final_decision.csv
+
+price_provider:
+  provider_type: qlib_pit_local
+  price_source_path: data/qlib/cn_data_pit
+  calendar_source_path: data/qlib/cn_data_pit/calendars/day.txt
+  instrument_source_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  required_qlib_fields: ["$open", "$high", "$low", "$close", "$volume", "$money", "$factor"]
+  adjustment_policy: qlib_adjusted_ohlc_fields
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+execution:
+  hold_days: 20
+  round_trip_cost_bp: 50
+  return_type: simple_return
+  event_collapse_window_trading_days: 20
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+
+candidates:
+  - candidate_id: low_vol_uptrend_preflight
+    candidate_family: low_vol_uptrend
+  - candidate_id: base_breakout_vcp_preflight
+    candidate_family: base_breakout_vcp
+  - candidate_id: cross_sectional_low_beta_low_vol_preflight
+    candidate_family: cross_sectional_low_beta_low_vol
+
+thresholds:
+  validation_event_count_min: 300
+  validation_complete_event_share_min: 0.95
+  validation_hold20_net_mean_min: 0.0
+  validation_hold20_net_median_min: -0.005
+  validation_hold20_net_p10_min: -0.08
+
+validation:
+  forbidden_report_strings:
+    - "alpha pass"
+    - "production entry rule"

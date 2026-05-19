@@ -1,0 +1,120 @@
+phase: ep4_r05b_sleeve_allocator_exposure_composition_diagnostic_v1
+requirement_id: ep4_r05b_sleeve_allocator_exposure_composition_diagnostic_v1
+short_name: r05b_sleeve_allocator_exposure_composition_diagnostic_v1
+requirement_path: ep4/requirement_05b_sleeve_allocator_exposure_composition_diagnostic_v1.md
+output_root: ep4/outputs/r05b_sleeve_allocator_exposure_composition_diagnostic_v1
+
+upstream_r04e:
+  validation: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/manifests/r04e_union_pool_portfolio_level_validation.json
+  final_decision: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/reports/r04e_final_decision.csv
+  union_event_panel: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/cache/r04e_union_event_panel.parquet
+  portfolio_daily_return_panel: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/cache/r04e_portfolio_daily_return_panel.parquet
+  portfolio_policy_summary: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/reports/r04e_portfolio_policy_summary.csv
+  baseline_A_portfolio_daily_return_panel: ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/cache/r04e_baseline_A_portfolio_daily_return_panel.parquet
+  primary_portfolio_id: active_equal_weight_uncapped
+  primary_policy_id: hold_120d__no_exit__none
+
+upstream_r05_preflight:
+  validation: ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1/manifests/r05_preflight_alpha_pool_quick_feasibility_validation.json
+  final_decision: ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1/reports/r05_preflight_final_decision.csv
+  candidate_event_panel: ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1/cache/r05_preflight_candidate_event_panel.parquet
+  forward_return_panel: ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1/cache/r05_preflight_forward_return_panel.parquet
+  candidate_formula_frozen: ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1/reports/r05_preflight_candidate_formula_frozen.csv
+  gate_audit: ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1/reports/r05_preflight_gate_audit.csv
+
+upstream_r05a:
+  requirement: ep4/requirement_05a_alpha_pool_discovery_protocol_v1.md
+  status: ep4/outputs/r05a_alpha_pool_discovery_protocol_v1/manifests/r05a_status.json
+
+price_provider:
+  provider_type: qlib_pit_local
+  price_source_path: data/qlib/cn_data_pit
+  calendar_source_path: data/qlib/cn_data_pit/calendars/day.txt
+  instrument_source_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  index_instrument: SH000300
+  index_feature_path: data/qlib/cn_data_pit/features/sh000300
+  required_qlib_fields: ["$close"]
+  adjustment_policy: qlib_adjusted_close
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+market_state:
+  classifier_id: sh000300_train_frozen_vol70_drawdown10_v1
+  vol20_high_quantile: 0.70
+  drawdown60_hard_threshold: -0.10
+  max_state_count: 3
+
+sleeves:
+  primary:
+    sleeve_id: r04e_union_primary_sleeve
+    sleeve_role: primary
+    allocation_status: allocation eligible
+    source_portfolio_id: active_equal_weight_uncapped
+    source_policy_id: hold_120d__no_exit__none
+    max_weight: 1.0
+  secondary:
+    sleeve_id: base_breakout_vcp_secondary_sleeve
+    sleeve_role: conditional secondary
+    allocation_status: capped secondary only
+    source_candidate_id: base_breakout_vcp_preflight
+    max_weight: 0.20
+  diagnostics:
+    - sleeve_id: low_vol_uptrend_diagnostic_sleeve
+      sleeve_role: diagnostic
+      allocation_status: no allocation
+      source_candidate_id: low_vol_uptrend_preflight
+      max_weight: 0.0
+    - sleeve_id: low_beta_low_vol_diagnostic_sleeve
+      sleeve_role: diagnostic
+      allocation_status: no allocation
+      source_candidate_id: cross_sectional_low_beta_low_vol_preflight
+      max_weight: 0.0
+  cash:
+    sleeve_id: cash_sleeve
+    sleeve_role: cash
+    allocation_status: allocation eligible
+    max_weight: 1.0
+  benchmark:
+    sleeve_id: benchmark_reporting_sleeve
+    sleeve_role: benchmark
+    allocation_status: no allocation
+    max_weight: 0.0
+
+allocator_policies:
+  - allocator_policy_id: full_exposure_primary_baseline
+    policy_role: baseline_reference
+    is_selectable: false
+  - allocator_policy_id: market_state_cash_allocator_v1
+    policy_role: allocator_candidate
+    is_selectable: true
+  - allocator_policy_id: market_state_cash_plus_basebreakout_secondary_v1
+    policy_role: allocator_candidate_with_secondary
+    is_selectable: true
+
+thresholds:
+  preflight_replay_complete_share_min: 0.95
+  secondary_activation_min_validation_active_days: 20
+  secondary_activation_min_validation_active_share: 0.02
+  secondary_activation_min_robustness_active_days: 20
+  secondary_activation_min_robustness_active_share: 0.02
+  average_gross_exposure_min: 0.35
+  cash_only_day_share_max: 0.65
+  robustness_period_return_min: -0.05
+  right_tail_retention_min_validation: 0.60
+  right_tail_retention_min_robustness: 0.50
+  absolute_p90_floor_min_validation: 0.02
+  absolute_p90_floor_min_robustness: 0.01
+
+validation:
+  forbidden_report_strings:
+    - "alpha pool passed"
+    - "new entry alpha discovered"
+    - "production allocation rule approved"
+    - "R04e union pool rescued as alpha"
+    - "R05 preflight failed primitive rescued as alpha"

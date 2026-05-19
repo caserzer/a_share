@@ -1,8 +1,8 @@
-# EP4 Discussion 5: Alpha Pool Discovery, Relative-Improvement Pools, and Market-State Exposure Limits
+# EP4 Discussion 5: Alpha Pool Discovery, Relative-Improvement Pools, and Sleeve Allocation
 
 > 状态：研究讨论记录，不是 requirement，不是策略冻结，不是 validation。
 >
-> 背景：基于 `discussion4.md`、R04/R04b/R04c/R04d/R04e 的结论，以及后续关于 `Market-State Cash / Exposure Sleeve` 和 alpha pool discovery 的讨论，重新界定 EP4 后续研究方向。核心问题是：如果现有 RPS / family pools 只能做到 relative improvement，下一步应如何寻找真正有 alpha 的新事件 universe。
+> 背景：基于 `discussion4.md`、R04/R04b/R04c/R04d/R04e 的结论，以及 R05 Preflight 对 standalone alpha discovery 的前置否决，重新界定 EP4 后续研究方向。当前核心问题已经从“继续寻找真正有 alpha 的新事件 universe”转为“现有 relative-improvement pools 是否只能作为 sleeve 被有限配置”。
 
 ---
 
@@ -31,6 +31,24 @@ AND validation net < 0
 ```
 
 这是 R04c/R04d 最重要的术语纪律。一个 pool 相对很差的 matched baseline_A 少亏，不等于它已经可以承担主仓。
+
+R05 Preflight 已经把这个判断推进了一步：换成新的 fixed primitive 后，validation floor 仍然没有成立。
+
+```text
+R05 Preflight final_decision = r05_preflight_stop_no_absolute_floor
+candidate_pass_count = 0
+allowed_next_requirement = sleeve_allocator_direction_requirement
+```
+
+三个 preflight candidate 的 validation 结果是：
+
+| candidate | validation events | complete share | hold20 net mean | median | p10 | gate |
+|---|---:|---:|---:|---:|---:|---|
+| low_vol_uptrend | 574 | 96.86% | -0.72% | -1.36% | -9.46% | no absolute floor |
+| base_breakout_vcp | 73 | 95.89% | +1.00% | -1.47% | -7.61% | insufficient sample |
+| cross_sectional_low_beta_low_vol | 810 | 96.05% | -1.52% | -1.83% | -9.24% | no absolute floor |
+
+因此 `requirement_05a_alpha_pool_discovery_protocol_v1.md` 不再是 active next step。它应标记为 abandoned / preflight-blocked，作为一份被前置实验否决的完整协议草案保留，不再默认执行。
 
 ---
 
@@ -139,6 +157,23 @@ for each state:
 ```
 
 只有发现某些 market state 下 full-exposure pool 本身为正，且 bad states 贡献主要左尾，才值得进入 exposure overlay。
+
+### 2.3 Market State Classifier 冻结要求
+
+`risk_on / risk_neutral / risk_off` 不能在 validation 上调参。任何 sleeve allocator requirement 启动前，market state classifier 必须先满足：
+
+```text
+state classifier fit source = train split only
+state thresholds frozen before validation
+state count <= 3
+state data source = index-level as-of data only
+candidate pool outcome must not define market state
+state signal date = D close
+exposure adjustment date = D+1 open
+validation cannot adjust thresholds, labels, or transition rules
+```
+
+这条约束是为了避免 cash sleeve 变成新的 free-parameter search。只要 market state 可以在 validation 上微调，sleeve allocator 就会退化成另一种 validation mining。
 
 ---
 
@@ -363,7 +398,7 @@ H0:
   不存在可复用的 low-left-tail positive-expectancy alpha pool。
 ```
 
-如果 R05a/R05b 不能拒绝这个 null，不应继续扩大 primitive search，而应把现有信号降级为：
+R05 Preflight 已经没有拒绝这个 null，因此不应继续扩大 primitive search，而应把现有信号降级为：
 
 ```text
 lifecycle tags
@@ -433,6 +468,20 @@ top1 year / industry / instrument not dominant
 ---
 
 ## 6. Alpha Pool Discovery 的推荐方法
+
+### 6.0 当前状态说明
+
+§6 到 §10 以及 §12 描述的是一套严谨 alpha pool discovery protocol 的参考框架。根据 §11.3，当前 R05 Preflight 没有通过，R05a 已被 abandoned / preflight-blocked，因此这些章节不是 active next requirement。
+
+这些内容只作为 future reference 保留：
+
+```text
+only if a future preflight genuinely passes,
+then reuse §§6-10 and §12 as protocol reference;
+current next requirement = sleeve allocator / exposure composition diagnostic
+```
+
+任何后续 requirement 不能引用本节作为重新启动 primitive search 的理由。
 
 ### 6.1 先做 Return Decomposition，不先做 Gate Search
 
@@ -702,6 +751,18 @@ capacity-adjusted after-cost result
 
 ## 10. 候选 Alpha Universe 方向
 
+### 10.0 当前状态说明
+
+本节最初列出的是 R05 alpha discovery 的候选 universe 目录。R05 Preflight 后，其中三类已经有实证结论：
+
+```text
+low_vol_uptrend: validation mean = -0.72%, median = -1.36%, p10 = -9.46%
+base_breakout_vcp: validation mean = +1.00%, event_count = 73, median = -1.47%
+cross_sectional_low_beta_low_vol: validation mean = -1.52%, median = -1.83%, p10 = -9.24%
+```
+
+因此本节只作为 historical research record 保留，不是 active R05b candidate list。剩余未跑方向也不会因为 R05 Preflight 失败而自动升级；若未来有人重启 alpha discovery，必须先重新论证 state-type vs sparse-event 区分，并通过新的 preflight，而不是直接从本目录挑选下一个 primitive。
+
 在当前 EP4 语境下，不建议继续优先研究 momentum 强化版。更值得测试的是低 overlap、低左尾的新 universe。
 
 ### 10.1 Low-Vol Uptrend Pool
@@ -830,44 +891,88 @@ ensemble member with capped allocation
 
 但不应继续占据主策略 alpha pool 的位置。
 
-### 11.3 下一步更合理的文档
+### 11.3 R05 Preflight 后的更新结论
 
-如果 R04e 跑完后仍未形成 portfolio-level positive lead，建议新开：
-
-```text
-R05a Alpha Pool Discovery Protocol / Matched Comparator Spec
-```
-
-先冻结：
+R05 Preflight 已经按低成本前置门跑完，结果没有允许 R05a full protocol 继续：
 
 ```text
-matched comparator
-capacity
-cost
-bootstrap
-as-of
-kill criteria
-promotion language
+validation_status = passed
+final_decision = r05_preflight_stop_no_absolute_floor
+candidate_pass_count = 0
 ```
 
-再进入：
+这改变了本讨论早期对下一份 requirement 的排序。`R05a Alpha Pool Discovery Protocol / Matched Comparator Spec` 已经不应继续作为 active execution plan；它只能作为 abandoned protocol draft 保留。
+
+原因很直接：
+
+1. `low_vol_uptrend` validation 样本足够，但 hold20 net mean = -0.72%，median = -1.36%。
+2. `cross_sectional_low_beta_low_vol` validation 样本足够，但 hold20 net mean = -1.52%，median = -1.83%。
+3. `base_breakout_vcp` validation mean = +1.00%，但只有 73 个事件，且 median = -1.47%，不能支撑 full protocol。
+4. 三个 candidate 的 execution complete share 都超过 95%，所以失败不是执行不可得，而是 validation floor 不成立。
+
+这里 73 个 `base_breakout_vcp` 事件不应被解释成“等样本攒够或放宽阈值再试”。在 A 股 mcap500 mainboard 的两年 validation 中，这更像该 primitive 的真实稀疏事件率。若为了凑样本放宽阈值，VCP 容易退化成 `low_vol_uptrend` 类状态信号，失去 sparse-event 特征。
+
+因此 `base_breakout_vcp` 不应作为下一轮 alpha discovery 主线。它最多可以在 sleeve allocator 中作为 conditional secondary sleeve 被受限评估，且不能承担 standalone alpha gate。
+
+因此下一步不应再写 R05b/R05c 继续换 primitive，而应把研究对象从 standalone alpha pool 改为 sleeve allocation。
+
+### 11.4 Sleeve Allocator 应该问什么
+
+Sleeve allocator 的对象不是单个 entry primitive，而是组合里的子组合权重。它承认现有 pool 不是 standalone alpha，但仍可能在某些 market state 下有相对可用的风险收益形状。
+
+推荐把下一份 requirement 命名为：
 
 ```text
-R05b Low-Overlap Alpha Pool Discovery V1
+R05b Sleeve Allocator / Exposure Composition Diagnostic V1
 ```
 
-第一版只测 1 到 2 个候选 universe：
+它应把已有对象拆成 sleeves：
+
+| role | sleeve | source artifact / rule | allocation status |
+|---|---|---|---|
+| primary sleeve | R04e union pool | `ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/cache/r04e_union_event_panel.parquet` and `r04e_portfolio_daily_return_panel.parquet` | eligible for allocation |
+| conditional secondary sleeve | base_breakout_vcp | `ep4/outputs/r05_preflight_alpha_pool_quick_feasibility_v1/cache/r05_preflight_candidate_event_panel.parquet`, filtered to `base_breakout_vcp_preflight` | capped, secondary only |
+| diagnostic sleeve | low_vol_uptrend | R05 preflight event/return panels | decomposition only, no direct allocation |
+| diagnostic sleeve | cross_sectional_low_beta_low_vol | R05 preflight event/return panels | decomposition only, no direct allocation |
+| cash sleeve | cash / zero exposure | fixed gross exposure set `{0.0, 0.5, 1.0}` driven by frozen market state | eligible for allocation |
+| benchmark sleeve | benchmark / defensive baseline | reporting baseline only unless a separate data contract permits actual holding | no allocation in v1 |
+
+allocator 要回答的问题是：
 
 ```text
-low-vol uptrend
-base breakout / VCP
+在不把任何 sleeve 重新解释为 alpha source 的前提下，
+能否通过 market-state / exposure / inventory 分配，
+把 validation portfolio-level return 和 tail risk 改善到可解释水平？
 ```
 
-不要一次性展开多个主题，否则会重新进入 specification search。
+它必须避免两个误区：
+
+```text
+1. mostly-cash illusion:
+   大部分时间空仓导致回撤降低，但没有真实风险资产收益能力。
+
+2. alpha relabeling:
+   exposure overlay 改善组合路径后，把底层 failed pool 改写成 alpha pool。
+```
+
+更合理的 hard gate 应该是：
+
+```text
+risk_on full-exposure sleeve return must be reported separately
+overall allocator validation period return must be positive
+monthly p10 and max drawdown must improve vs full-exposure baseline
+average gross exposure must not be trivially low
+positive result cannot come solely from being mostly cash
+robustness must not destroy right-tail participation
+```
+
+这条线的目标不是证明“新的 entry alpha 存在”，而是判断现有 relative-improvement pools 是否还有组合层使用价值。
 
 ---
 
 ## 12. 推荐的 Mechanical Kill Criteria
+
+本节是 alpha discovery 的 archived protocol reference，不是当前 active R05b sleeve allocator gate。R05b 应继承这里的术语纪律和 no-validation-mining 原则，但它的主 gate 应围绕 exposure allocation、mostly-cash illusion、risk-on full-exposure return 和 sleeve role freeze 重新定义。
 
 每个 candidate pool 在 train 阶段冻结后，validation 只能跑一次。
 
@@ -924,8 +1029,6 @@ archive_no_alpha
 oos_retest_required, if discovery used all splits
 ```
 
----
-
 ## 13. 阶段性结论
 
 EP4 的下一阶段不应继续问：
@@ -937,26 +1040,68 @@ EP4 的下一阶段不应继续问：
 而应问：
 
 ```text
-是否存在一个低 overlap 的新 action-time event universe，
-其原始 after-cost return distribution 本身足够干净，
-可以在 validation 上形成 absolute positive expectancy？
+在 standalone alpha pool discovery 被 R05 Preflight 否决后，
+现有 relative-improvement pools 是否还能作为 sleeves，
+通过 market-state / exposure / inventory allocation
+形成可解释的组合层改善？
 ```
 
-如果答案是否定的，那么后续的 cash sleeve、exit insurance、risk budget 都只能降低损失，不能创造主策略利润。
+R05 Preflight 已经给出当前 alpha-discovery 方向的前置答案：
+
+```text
+low_vol_uptrend: validation net mean < 0
+cross_sectional_low_beta_low_vol: validation net mean < 0
+base_breakout_vcp: validation sample insufficient
+```
+
+这意味着 R05a full protocol 不应继续执行。后续的 cash sleeve、exit insurance、risk budget 仍然不能创造底层 alpha，但可以作为组合层 allocator 诊断，判断现有 pool 是否还有 limited sleeve value。
 
 因此当前建议：
 
 ```text
-1. R04e 跑完，作为 existing route closure。
-2. 将 R02 family relative-improvement pools 从 alpha promotion 候选中移除。
-3. 新建 R05a，冻结 alpha discovery protocol 和 matched comparator spec。
-4. 新建 R05b，只测试 low-vol uptrend 和 base breakout / VCP 这类低 overlap universe。
-5. 所有通过语言必须保留 alpha pool 与 relative improvement pool 的区别。
+1. R04e 保持 existing route closure。
+2. R05 Preflight 作为 alpha-discovery 前置门，结论为 stop_no_absolute_floor。
+3. 将 R05a 标记为 abandoned / preflight-blocked，不再执行 full protocol。
+4. 将 R02/R04/R04e 相关 pools 降级为 relative-improvement sleeves / diagnostics。
+5. 下一份 active requirement 转向 `ep4/requirement_05b_sleeve_allocator_exposure_composition_diagnostic_v1.md`。
+6. 所有通过语言必须保留 alpha pool、relative-improvement pool、risk-control sleeve 三者的区别。
 ```
+
+### 13.1 Terminal Stop / EP5 Escape Hatch
+
+如果下一份 sleeve allocator requirement 也失败，EP4 应终止，而不是继续派生 `sleeve v2 / sleeve v3 / sleeve + exit insurance / sleeve + regime overlay`。
+
+建议 terminal rule 写成：
+
+```text
+if R05b sleeve allocator fails validation under:
+  non-trivial average gross exposure
+  risk_on full-exposure positive return requirement
+  positive overall allocator validation return
+  monthly p10 and max drawdown improvement
+  no mostly-cash illusion
+  no alpha relabeling
+then:
+  terminate EP4
+  do not create R05c/R05d sleeve variants
+```
+
+如果还要继续研究，应新开 EP5，并改变问题维度：
+
+```text
+new universe
+new horizon
+hedged or market-neutral leg
+different execution model
+different portfolio objective
+different problem framing
+```
+
+这比在 EP4 内继续叠加 overlay 更诚实。当前证据已经连续显示：在 long-only mcap500 mainboard、2022-2023 validation、next-open execution、after-cost 约束下，standalone candidate pool 很可能不存在稳定正期望。
 
 一句话：
 
 ```text
-不要再用更复杂的风控去修一个本身不赚钱的 pool；
-先找到 action-time 后原始分布更干净、扣成本后仍为正的新事件 universe。
+不要再用更复杂的 alpha protocol 去证明一个 preflight 已否决的 primitive；
+下一步应研究现有 failed/relative pools 是否只能作为组合 sleeve 被有限使用。
 ```

@@ -1,0 +1,36 @@
+candidate_id,candidate_family,formula_text,formula_hash,parameter_json,decision_date_policy,entry_policy,exit_policy,round_trip_cost_bp,active_flag
+low_vol_uptrend_preflight,low_vol_uptrend,"close_D > ma120_D
+ma60_D > ma120_D
+ret60_D >= 0
+close_D >= ma60_D * 0.98
+avg_money20_rank_pct_D >= 0.30
+realized_vol60_rank_pct_D <= 0.40
+abs(close_D / ma20_D - 1) <= 0.10
+atr20_pct_D <= 0.08
+money_ratio5_to20_D <= 2.50
+abs(ret1_D) <= 0.08",3d645fa1d1bb7103556190c1e7243135a2f45e2340e3dbff1be7b0c4bdd2973f,"{""fixed_formula_point"":""low_vol_uptrend_preflight""}",D_after_close,next_tradable_open_after_D_with_5d_lag,close_after_20_trading_days_with_5d_lag_same_split,50,True
+base_breakout_vcp_preflight,base_breakout_vcp,"base_length = 20
+base_high_D = max(high[D-20:D-1])
+base_low_D = min(low[D-20:D-1])
+base_drawdown_pct_D = base_low_D / base_high_D - 1
+breakout_ret_pct_D = close_D / base_high_D - 1
+pre_base_vol20_D = std(log_return[D-20:D-1])
+recent_vol10_D = std(log_return[D-9:D])
+vol_contraction_ratio_D = recent_vol10_D / pre_base_vol20_D
+base_drawdown_pct_D >= -0.12
+breakout_ret_pct_D >= 0.00
+breakout_ret_pct_D <= 0.08
+vol_contraction_ratio_D <= 0.80
+abs(close_D / ma20_D - 1) <= 0.12
+atr20_pct_D <= 0.10
+money_ratio5_to20_D >= 1.10
+money_ratio5_to20_D <= 2.50
+avg_money20_rank_pct_D >= 0.30",9e6bba1615f114e12a24b32893da8808ebfda0755de015d93f16833f747b64a7,"{""fixed_formula_point"":""base_breakout_vcp_preflight""}",D_after_close,next_tradable_open_after_D_with_5d_lag,close_after_20_trading_days_with_5d_lag_same_split,50,True
+cross_sectional_low_beta_low_vol_preflight,cross_sectional_low_beta_low_vol,"beta120_rank_pct_D <= 0.40
+realized_vol60_rank_pct_D <= 0.40
+avg_money20_rank_pct_D >= 0.30
+close_D >= ma120_D * 0.95
+ret20_D >= -0.03
+money_ratio5_to20_D <= 2.00
+abs(ret1_D) <= 0.08
+atr20_pct_D <= 0.08",5b7216b2b789db4ae8e1978fd93f619f9729f9efe589d7ae06fbbbbda3c07dad,"{""fixed_formula_point"":""cross_sectional_low_beta_low_vol_preflight""}",D_after_close,next_tradable_open_after_D_with_5d_lag,close_after_20_trading_days_with_5d_lag_same_split,50,True

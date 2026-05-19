@@ -1,0 +1,7 @@
+allocator_policy_id,split,validation_trading_day_count,risk_on_day_count,primary_active_lt20_day_count,secondary_active_day_count,secondary_activation_day_count,secondary_activation_day_share,activation_day_count_min,activation_day_share_min,secondary_activation_status,robustness_secondary_activation_status,policy_blocking_reason
+full_exposure_primary_baseline,validation,484,104,2,411,0,0.0,20,0.02,not_applicable,,
+full_exposure_primary_baseline,robustness,485,207,1,440,0,0.0,20,0.02,,not_applicable,
+market_state_cash_allocator_v1,validation,484,104,2,411,0,0.0,20,0.02,not_applicable,,
+market_state_cash_allocator_v1,robustness,485,207,1,440,0,0.0,20,0.02,,not_applicable,
+market_state_cash_plus_basebreakout_secondary_v1,validation,484,104,2,411,0,0.0,20,0.02,secondary_sleeve_insufficient_activation,,secondary_sleeve_insufficient_activation
+market_state_cash_plus_basebreakout_secondary_v1,robustness,485,207,1,440,0,0.0,20,0.02,,robustness_secondary_sleeve_insufficient_activation,robustness_secondary_sleeve_insufficient_activation
