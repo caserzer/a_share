@@ -188,6 +188,28 @@ same_instrument_nearby_source_event_count
 same_instrument_nearby_union_event_count
 ```
 
+该 audit 必须写入：
+
+```text
+reports/r04e_same_instrument_nearby_event_audit.csv
+```
+
+必需字段：
+
+```text
+split
+instrument_id
+union_event_key
+entry_execution_date
+source_family_set
+nearby_window_trading_days
+same_instrument_nearby_source_event_count
+same_instrument_nearby_union_event_count
+nearest_prior_union_entry_execution_date
+nearest_next_union_entry_execution_date
+nearby_event_status
+```
+
 不得用 `source_family_count` 作为 selection gate。它只能作为 descriptive diagnostic。
 
 ### 5.4 Portfolio diagnostic 不是交易策略批准
@@ -303,9 +325,9 @@ R04b validation_status == passed
 若任一条件不满足，R04e 必须 fail closed：
 
 ```text
-blocked_upstream_validation_failed
-blocked_upstream_state_changed
-blocked_missing_required_input
+r04e_blocked_upstream_validation_failed
+r04e_blocked_upstream_state_changed
+r04e_blocked_missing_required_input
 ```
 
 ## 7. Split 与 baseline
@@ -333,7 +355,8 @@ global_baseline_A:
   baseline_A_r04_included_rps_episode_first_trigger
 
 matched_baseline_A:
-  R04c matched baseline panel, replayed under the same R04e policy when possible
+  union-specific matched baseline rebuilt after union collapse from baseline_A rows,
+  replayed under the same R04e policy
 ```
 
 Comparator 角色：
@@ -345,12 +368,71 @@ global_baseline_A:
 matched_baseline_A:
   same split / calendar / market / industry matched comparator
   used for event-level matched deltas
+  R04c matched baseline panel is reconciliation-only, not the union comparator authority
 
 source_pools:
   family contribution and union decomposition
 ```
 
 `matched_baseline_A` 不得用于重新选择 union membership。
+
+### 7.1 Matched baseline construction for union
+
+R04e 的 matched baseline 必须在 union collapse 之后重建，不能把三个 source pool 的 R04c matched rows 直接相加后当成 union comparator。
+
+Matched baseline authority：
+
+```text
+baseline_A event authority:
+  ep4/outputs/r04c_candidate_pool_scanner_v1/cache/r04c_pool_event_panel.parquet
+  pool_id == baseline_A_r04_included_rps_episode_first_trigger
+
+R04c matched baseline panel:
+  used for reconciliation and source-pool audit
+  not used as row-level union membership authority if it lacks union_event_key mapping
+```
+
+Union matched baseline construction is frozen as:
+
+```text
+1. build source events from R02 family precision panel;
+2. collapse source hits into union_event_key first;
+3. assign union event split / calendar / market_state / industry_state from the collapsed union event's instrument and entry_execution_date;
+4. match baseline_A rows to collapsed union events using the same R04c fallback levels:
+   a) split + entry_calendar_year + entry_calendar_quarter + market_regime_bucket + industry_regime_bucket
+   b) split + entry_calendar_year + market_regime_bucket + industry_regime_bucket
+   c) split + entry_calendar_year + market_regime_bucket
+   d) split + entry_calendar_year
+5. each collapsed union event receives matched baseline weight 1.0 distributed across all baseline_A rows in its first available fallback bucket;
+6. multi-family collapsed events count once, not once per source family;
+7. matched baseline rows are replayed under the same R04e event policy matrix before deltas are computed.
+```
+
+Required matched-baseline audit fields:
+
+```text
+output_path = reports/r04e_matched_baseline_reconstruction_audit.csv
+split
+pool_id
+matched_comparator_status
+matched_comparator_count
+matched_comparator_unique_event_count
+matched_comparator_effective_sample_size
+matched_pool_event_count
+fallback_level
+fallback_level_share
+```
+
+`matched_comparator_status` is:
+
+```text
+sufficient:
+  matched_comparator_effective_sample_size >= 300
+  AND matched_pool_event_count > 0
+
+insufficient:
+  otherwise
+```
 
 ## 8. Gate 0: Union Readiness / P0.5
 
@@ -459,6 +541,8 @@ loss_le_minus5_rate
 loss_le_minus10_rate
 max_gain50_rate
 matched_baseline_net_return_mean
+matched_comparator_status
+matched_comparator_effective_sample_size
 net_return_mean_delta_vs_matched_baseline_A
 p10_delta_vs_matched_baseline_A
 loss_le_minus5_delta_vs_matched_baseline_A
@@ -467,6 +551,7 @@ top1_calendar_year_share
 top1_instrument_share
 top1_industry_share
 readiness_status
+readiness_failure_reason
 ```
 
 Validation readiness status：
@@ -492,6 +577,18 @@ conditional_go:
 
 stop:
   otherwise
+```
+
+`readiness_failure_reason` must use one or more pipe-separated values:
+
+```text
+insufficient_denominator
+insufficient_matched_comparator
+pseudo_diversification_concentrated
+absolute_validation_net_too_weak
+matched_delta_too_weak
+p10_delta_negative
+loss_delta_not_improved
 ```
 
 `strong_go` 可以进入 portfolio-level replay 的 positive-readout interpretation。
@@ -582,6 +679,17 @@ family_balanced_active_equal_weight:
   multi-family collapsed event receives fractional membership in each source family in source_family_set
   total gross exposure normalized to 1.0 when active_count > 0
 ```
+
+Baseline_A portfolio comparison under `family_balanced_active_equal_weight` is frozen as:
+
+```text
+baseline_A_source_family_set = ["baseline_A"]
+baseline_A_source_family_count = 1
+baseline_A uses one synthetic sleeve named baseline_A
+baseline_A family-balanced weights therefore equal baseline_A active_equal_weight weights
+```
+
+This keeps the portfolio construction code path identical while avoiding synthetic assignment of baseline_A rows to R02 source families.
 
 Active-cap sensitivity：
 
@@ -683,13 +791,31 @@ max_drawdown_p50
 max_drawdown_p90
 max_gain50_count
 max_gain50_rate
+hold120_no_exit_max_gain50_count
+policy_retained_hold120_max_gain50_count
+policy_max_gain50_retention_rate_vs_hold120_no_exit
 max_gain120d_p90
 avg_holding_days
-matched_baseline_status
+matched_comparator_status
 net_return_mean_delta_vs_matched_baseline_A
 p10_delta_vs_matched_baseline_A
 loss_le_minus5_delta_vs_matched_baseline_A
 ```
+
+For right-tail retention gates:
+
+```text
+hold120_no_exit_max_gain50_count:
+  count of events that reach +50% under union hold120 no-exit
+
+policy_retained_hold120_max_gain50_count:
+  among hold120_no_exit_max_gain50 events, count whose policy exit_execution_date is after the first +50% close hit date
+
+policy_max_gain50_retention_rate_vs_hold120_no_exit:
+  policy_retained_hold120_max_gain50_count / hold120_no_exit_max_gain50_count
+```
+
+`max_gain50_rate` remains a descriptive realized-policy rate. It must not be used as the right-tail retention denominator for shorter hold or stop policies.
 
 ### 10.2 Portfolio daily metrics
 
@@ -789,6 +915,15 @@ pullback_drawdown
 multi_family_collapsed
 ```
 
+Contribution rows for `volume_money`, `range_breakout`, and `pullback_drawdown` are additive under the active portfolio weighting semantics. `multi_family_collapsed` is a non-additive diagnostic row only:
+
+```text
+multi_family_collapsed:
+  includes events whose source_family_count > 1
+  reports their event count, active weight share, return contribution, and tail contribution as a descriptive subset
+  must not be summed with the three source-family rows when reconciling total portfolio return
+```
+
 ### 10.5 Baseline comparison metrics
 
 R04e must compare union portfolios against baseline_A under the same portfolio construction:
@@ -832,8 +967,52 @@ gate0_stop_low_quality_union:
   readiness_status == stop
 
 gate0_blocked_insufficient_inputs:
-  required inputs / matched baseline / denominator missing
+  required input files or required schemas cannot be loaded
+  OR upstream validation/final-decision state is invalid
+  OR no baseline_A rows are available to construct a comparator
 ```
+
+Low denominator after successful event construction and low matched-baseline effective sample size after successful comparator construction are not `gate0_blocked_insufficient_inputs`. They must map to `gate0_stop_low_quality_union` with `gate0_stop_category == input_or_comparator_failure`.
+
+Gate audit must include explicit reasons so final decision precedence is reproducible:
+
+```text
+split
+gate0_status
+readiness_status
+readiness_failure_reason
+gate0_stop_category
+```
+
+`gate0_stop_category` must be:
+
+```text
+not_stopped:
+  gate0_status in {gate0_strong_go, gate0_conditional_go}
+
+input_or_comparator_failure:
+  insufficient_denominator OR insufficient_matched_comparator OR pseudo_diversification_concentrated
+
+weak_absolute_but_left_tail_improved:
+  absolute_validation_net_too_weak
+  AND net_return_mean_delta_vs_matched_baseline_A >= 0.02
+  AND p10_delta_vs_matched_baseline_A >= 0
+  AND loss_le_minus5_delta_vs_matched_baseline_A < 0
+
+low_quality_union:
+  stopped for any other readiness failure
+```
+
+If `readiness_failure_reason` contains multiple pipe-separated reasons, category precedence is:
+
+```text
+1. input_or_comparator_failure
+2. weak_absolute_but_left_tail_improved
+3. low_quality_union
+4. not_stopped
+```
+
+Thus denominator / comparator / pseudo-diversification failures cannot be relabeled as `weak_absolute_but_left_tail_improved` even if relative left-tail deltas are favorable.
 
 ### 11.2 Portfolio validation gate
 
@@ -856,10 +1035,12 @@ validation portfolio daily_return_mean > 0
 validation portfolio monthly_return_p10 >= -0.05
 validation portfolio max_drawdown <= baseline_A same-policy max_drawdown
 validation portfolio monthly_return_p10_delta_vs_baseline_A >= 0
-validation event-level max_gain50_rate >= 0.80 * union_hold120_no_exit_max_gain50_rate
+validation event-level policy_max_gain50_retention_rate_vs_hold120_no_exit >= 0.80
 validation active_day_share >= 0.50
-validation active_count_p95 <= 80 for uncapped portfolio, or cap sensitivity confirms no single date dominates
+validation active_count_p95 <= 80 for uncapped portfolio
 ```
+
+If uncapped validation `active_count_p95 > 80`, the primary strong gate fails. Active-cap sensitivity may be reported as capacity / concentration audit only and cannot rescue a primary validation gate.
 
 A policy is `validation_portfolio_conditional_pass` if:
 
@@ -869,7 +1050,7 @@ validation portfolio period_compounded_return > 0
 validation portfolio daily_return_mean > 0
 validation portfolio monthly_return_p10_delta_vs_baseline_A >= 0
 validation portfolio max_drawdown_delta_vs_baseline_A <= 0
-validation event-level max_gain50_rate >= 0.60 * union_hold120_no_exit_max_gain50_rate
+validation event-level policy_max_gain50_retention_rate_vs_hold120_no_exit >= 0.60
 ```
 
 Otherwise:
@@ -924,21 +1105,24 @@ r04e_union_validation_positive_but_robustness_failed
 r04e_union_not_viable_validation
 r04e_long_only_validation_ceiling_suspected
 r04e_blocked_upstream_validation_failed
+r04e_blocked_upstream_state_changed
 r04e_blocked_missing_required_input
 r04e_blocked_validation_failed
 ```
 
 Decision precedence:
 
-1. If required input or upstream validation missing: `r04e_blocked_missing_required_input` or `r04e_blocked_upstream_validation_failed`.
-2. If validator checks fail: `r04e_blocked_validation_failed`.
-3. If Gate 0 stop because denominator, matched comparator, or pseudo-diversification is insufficient: `r04e_union_not_viable_validation`.
-4. If Gate 0 stop because absolute validation net is still weak, but baseline_A validation is also very negative and union still improves matched left-tail: `r04e_long_only_validation_ceiling_suspected`.
-5. If validation has no strong or conditional portfolio pass: `r04e_union_not_viable_validation`.
-6. If validation conditional pass and robustness confirmed or mixed: `r04e_union_portfolio_conditional_lead`.
-7. If validation strong pass and robustness confirmed: `r04e_union_portfolio_strong_lead`.
-8. If validation strong pass but robustness mixed: `r04e_union_validation_positive_but_robustness_mixed`.
-9. If validation pass but robustness failed: `r04e_union_validation_positive_but_robustness_failed`.
+1. If required input is missing: `r04e_blocked_missing_required_input`.
+2. If upstream validation is missing or failed: `r04e_blocked_upstream_validation_failed`.
+3. If upstream final decision differs from the required frozen state: `r04e_blocked_upstream_state_changed`.
+4. If validator checks fail: `r04e_blocked_validation_failed`.
+5. If `gate0_stop_category == input_or_comparator_failure`: `r04e_union_not_viable_validation`.
+6. If `gate0_stop_category == weak_absolute_but_left_tail_improved`: `r04e_long_only_validation_ceiling_suspected`.
+7. If validation has no strong or conditional portfolio pass: `r04e_union_not_viable_validation`.
+8. If validation conditional pass and robustness confirmed or mixed: `r04e_union_portfolio_conditional_lead`.
+9. If validation strong pass and robustness confirmed: `r04e_union_portfolio_strong_lead`.
+10. If validation strong pass but robustness mixed: `r04e_union_validation_positive_but_robustness_mixed`.
+11. If validation pass but robustness failed: `r04e_union_validation_positive_but_robustness_failed`.
 
 Even for `strong_lead`, report must state:
 
@@ -962,6 +1146,7 @@ ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/
   reports/
     r04e_source_pool_reconciliation.csv
     r04e_union_event_overlap_audit.csv
+    r04e_same_instrument_nearby_event_audit.csv
     r04e_pseudo_diversification_audit.csv
     r04e_daily_candidate_count_audit.csv
     r04e_union_hold120_readiness.csv
@@ -971,6 +1156,7 @@ ep4/outputs/r04e_union_pool_portfolio_level_diagnostic_v1/
     r04e_portfolio_monthly_summary.csv
     r04e_family_contribution_decomposition.csv
     r04e_baseline_A_portfolio_comparison.csv
+    r04e_matched_baseline_reconstruction_audit.csv
     r04e_gate_audit.csv
     r04e_final_decision.csv
     r04e_union_pool_portfolio_level_final_report.md
@@ -1019,21 +1205,25 @@ Required checks:
 8. Union membership is deterministic and reproducible from R02 family action-time panel.
 9. R04c source pool reconciliation overlap share for each source pool is >= 0.99.
 10. Same instrument + same entry date collapse has no duplicate `union_event_key`.
-11. `source_family_count` appears only as diagnostic; it is not used as selection filter.
-12. No market / industry / RPS gate is applied to union membership.
-13. Policy matrix contains only allowed v1 policies.
-14. Policy matrix contains no `ATR`, `EMA`, `CTA`, `profit_lock`, `market_state_gate`, or `industry_state_gate` primary rows.
-15. Event-level replay uses close-signal-next-open execution.
-16. Cost model matches R04b/R04d default.
-17. Matched baseline deltas are computed from same-policy replay, not copied from R04c hold120 rows.
-18. Baseline_A portfolio comparison uses same portfolio construction as union.
-19. Portfolio total gross exposure never exceeds 1.0 in primary portfolios.
-20. Active-cap sensitivity is not used for primary validation selection.
-21. Robustness metrics are not used to select policy or change final validation status.
-22. Final decision is one of the allowed status values.
-23. Final report includes the mandatory non-reinterpretation statements.
-24. Final report does not contain forbidden production language.
-25. Manifest contains hashes for all required artifacts.
+11. Same-instrument nearby event audit exists and uses the frozen 20 trading-day window.
+12. `source_family_count` appears only as diagnostic; it is not used as selection filter.
+13. No market / industry / RPS gate is applied to union membership.
+14. Policy matrix contains only allowed v1 policies.
+15. Policy matrix contains no `ATR`, `EMA`, `CTA`, `profit_lock`, `market_state_gate`, or `industry_state_gate` primary rows.
+16. Event-level replay uses close-signal-next-open execution.
+17. Cost model matches R04b/R04d default.
+18. Matched baseline for union is rebuilt after union collapse using the frozen R04c fallback levels, and reconstruction audit exists.
+19. Matched baseline deltas are computed from same-policy replay, not copied from R04c hold120 rows.
+20. Baseline_A portfolio comparison uses same portfolio construction as union, with one synthetic `baseline_A` sleeve for family-balanced comparison.
+21. Portfolio total gross exposure never exceeds 1.0 in primary portfolios.
+22. Right-tail validation gates use `policy_max_gain50_retention_rate_vs_hold120_no_exit`, not raw `max_gain50_rate`.
+23. Active-cap sensitivity is not used for primary validation selection.
+24. Gate 0 audit includes `readiness_failure_reason` and `gate0_stop_category`.
+25. Robustness metrics are not used to select policy or change final validation status.
+26. Final decision is one of the allowed status values.
+27. Final report includes the mandatory non-reinterpretation statements.
+28. Final report does not contain forbidden production language.
+29. Manifest contains hashes for all required artifacts.
 
 Validator output schema:
 
@@ -1055,6 +1245,7 @@ Validation manifest:
   "final_decision": "...",
   "selected_portfolio_policy_id": "...|null",
   "gate0_status": "...",
+  "gate0_stop_category": "...",
   "created_at": "..."
 }
 ```
