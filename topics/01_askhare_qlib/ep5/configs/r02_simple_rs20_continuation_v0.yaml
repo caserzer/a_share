@@ -1,0 +1,67 @@
+phase: ep5_r02_simple_rs20_continuation_v0
+plan_id: ep5_e02_simple_rs20_continuation_v0
+requirement_id: ep5_r02_simple_rs20_continuation_v0
+requirement_path: ep5/requirement_02_simple_rs20_continuation_v0.md
+output_root: ep5/outputs/r02_simple_rs20_continuation_v0
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  index_instrument: SH000300
+  provider_load_end_date: "2026-04-30"
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+execution:
+  signal_date_rule: close_derived_signal_date
+  entry_execution_rule: first_executable_next_open
+  natural_exit_rule: open_after_h_trading_days
+  horizons: [5, 10, 20]
+  primary_horizon: 10
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+  mainboard_limit_inference_pct: 0.095
+
+frozen_formula_constants:
+  ret20_window_trading_days: 20
+  ret5_window_trading_days: 5
+  ma20_window_trading_days: 20
+  avg_money20_window_trading_days: 20
+  avg_money20_floor_cny: 50000000
+  rank_pct_ret20_threshold: 0.80
+  ret5_sign_rule: strictly_gt_0
+  close_vs_ma20_rule: strictly_gt
+  weekly_observation_cadence: iso_week_last_trading_day
+  rank_cross_section_min_count: 100
+  episode_merge_gap_trading_days: 20
+  right_tail_horizon_trading_days: 120
+  right_tail_plus20_threshold: 0.20
+  right_tail_plus50_threshold: 0.50
+
+canonical_units:
+  - r02_simple_rs20_continuation_natural_exit_v0
+  - r02_weekly_liquid_universe_baseline_v0
+
+guardrails:
+  allow_extra_units: false
+  allow_extra_horizons: false
+  allow_threshold_override: false
+  allow_validation_subset_selection: false
+  allow_model_training: false
+  allow_hedged_replay: false
+  allow_market_neutral_backtest: false
+  allow_portfolio_pass_fail: false
+  allow_big_winner_pass_fail: false

@@ -1,0 +1,45 @@
+check_name,status,detail
+requirement_id,passed,ep5_r02_simple_rs20_continuation_v0
+plan_id,passed,ep5_e02_simple_rs20_continuation_v0
+canonical_units,passed,"['r02_simple_rs20_continuation_natural_exit_v0', 'r02_weekly_liquid_universe_baseline_v0']"
+horizons,passed,"[5, 10, 20]"
+primary_horizon,passed,10
+costs,passed,
+execution_lag_and_limit,passed,
+constant_ret20_window_trading_days,passed,20
+constant_ret5_window_trading_days,passed,5
+constant_ma20_window_trading_days,passed,20
+constant_avg_money20_window_trading_days,passed,20
+constant_avg_money20_floor_cny,passed,50000000
+constant_rank_pct_ret20_threshold,passed,0.8
+constant_weekly_observation_cadence,passed,iso_week_last_trading_day
+constant_rank_cross_section_min_count,passed,100
+constant_episode_merge_gap_trading_days,passed,20
+guardrail_allow_extra_units,passed,False
+guardrail_allow_extra_horizons,passed,False
+guardrail_allow_threshold_override,passed,False
+guardrail_allow_validation_subset_selection,passed,False
+guardrail_allow_model_training,passed,False
+guardrail_allow_hedged_replay,passed,False
+guardrail_allow_market_neutral_backtest,passed,False
+guardrail_allow_portfolio_pass_fail,passed,False
+guardrail_allow_big_winner_pass_fail,passed,False
+all_required_outputs_exist,passed,
+only_one_primary_decision_unit,passed,
+baseline_unit_not_primary_event,passed,
+execution_horizons_exact,passed,
+blocked_reason_unprefixed,passed,
+complete_rows_have_empty_blocked_reason,passed,
+comparator_status_values,passed,
+baseline_status_exhaustive_enum,passed,"{'comparable', 'blocked_insufficient_baseline_constituents', 'not_applicable_no_primary_complete_event'}"
+baseline_comparable_count_threshold,passed,
+baseline_blocked_count_threshold,passed,
+baseline_cannot_create_positive_decision,passed,
+summary_required_gate_columns,passed,
+final_inputs_no_right_tail_or_decomposition_filter,passed,
+final_decision_enum,passed,r02_no_simple_continuation_support
+priority_rule_enum,passed,rule_12_no_simple_continuation_support
+final_decision_replay,passed,observed=r02_no_simple_continuation_support replay=r02_no_simple_continuation_support
+would_have_matched_rules_reported,passed,
+right_tail_enums,passed,
+empty_calendar_year_rows_excluded,passed,
