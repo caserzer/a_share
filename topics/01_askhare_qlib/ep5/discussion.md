@@ -778,7 +778,7 @@ B. 7.3 的暂不启动是否合理？
 
 ## 9. 当前建议
 
-当前最合理的下一步不是写 requirement，而是先把 EP5 的问题边界讨论清楚。
+当前最合理的下一步不是立刻写 implementation-level requirement，而是先把 EP5 的问题边界讨论清楚。
 
 我现在的 working hypothesis 是：
 
@@ -823,4 +823,113 @@ Layer 2:
 
 在这个判断之上，方向选择本身交给 §7.5：当前推荐主线是 7.1 short-horizon exposure timing，7.2 作为事件来源备选，7.3 / 7.4 暂不启动。§9 只负责把 EP5 的中心目标和 big-winner diagnostic 的保留边界钉住。
 
-这不是最终结论，但这是现在最值得讨论的方向分歧。
+这不是最终结论，但这是现在最值得讨论的方向分歧。如果这个 working hypothesis 被接受，下一步才进入 §10 所说的 R01 / E01 分轨推进。
+
+---
+
+## 10. 推进方式：Requirement 与 Engineering 分轨
+
+§9 把方向钉住后，下一步不是直接写"EP5 策略系统"或"大规模 alpha search 框架"。EP5 当前最大的风险不是工程复杂，而是 7.1 容易在落地时悄悄滑成"换个 horizon 的 alpha pool search"。
+
+为了让方向纪律和工程纪律互相约束，建议把推进切成两条**分轨但有先后依赖**的轨：
+
+```text
+Requirement 轨：先回答“这个方向是否值得继续”。
+Engineering 轨：在 requirement 边界冻结后，搭一个可复用、可审计的 short-horizon 测量装置。
+```
+
+两轨的分工：
+
+```text
+Requirement 防止方向漂移；
+Engineering 防止实验不可复现。
+```
+
+任何一轨单独跑都会出问题：
+
+```text
+只有 requirement：结论不可复现，下一轮重做时又会重新争论口径。
+只有 engineering：很容易把 harness 升级成 alpha search system，
+                 偷偷把 7.1 滑成 EP4 evidence-family pool 的横向克隆。
+```
+
+### 10.1 Requirement 轨：第一份 requirement
+
+建议第一份 requirement 只做一件事：
+
+```text
+EP5 R01: short-horizon local feasibility probe.
+```
+
+它应负责冻结以下边界（具体口径留给 requirement 文档本身展开，这里只圈范围）：
+
+| 部分 | requirement 负责 |
+|:--|:--|
+| 核心问题 | 是否存在可交易的 H5/H10/H20 short-horizon exposure unit |
+| 非目标 | 不证明 short-horizon alpha 是否普遍存在；不做大规模 grid search；不做 pool search |
+| exposure unit | 少数几个 canonical units，参数低自由度，事前冻结 |
+| 成本 / 执行 | D signal -> D+1 open / close 类口径必须固定，停牌 / 涨跌停约束写清 |
+| validation 拆分 | 必须同时输出 absolute return、relative / residual edge、year / regime / beta-state |
+| comparator | same-day universe / industry / liquidity / benchmark 等 matched comparator |
+| big winner | 只作为 read-only / optional 的 post-entry holding diagnostic，不参与 pass / fail，也不在 R01 里做 holding-tuning |
+| 输出判断 | 沿用 §7.1 的四象限：absolute positive + relative positive / absolute negative + relative positive / absolute positive + relative weak-or-negative / absolute negative + relative negative |
+
+R01 **不应规定代码结构**。它的产出是边界 + 判断口径，不是接口；canonical exposure units 也应由 R01 事前冻结，不能留给 E01 在工程实现时自由选择。
+
+### 10.2 Engineering 轨：第一份 engineering plan
+
+Engineering 不要写成策略优化系统。建议第一份只做：
+
+```text
+EP5 E01: short-horizon exposure audit harness.
+```
+
+它负责的范围：
+
+| 部分 | engineering 负责 |
+|:--|:--|
+| runner | 一个 config-driven runner，可复现 R01 |
+| data panel | 复用已有 Qlib / PIT universe / price / industry / liquidity 数据 |
+| exposure replay | 支持固定 horizon：H5/H10/H20 |
+| cost model | 统一扣成本、换手、持仓天数、执行价 |
+| decomposition | 自动输出 train / validation / robustness、year、regime、beta-state 分解 |
+| comparator | 自动生成 matched comparator / relative return |
+| report artifacts | CSV + markdown summary + manifest |
+| scope ownership | 只实现 R01 冻结的 canonical exposure units，不负责选择、扩展或搜索 exposure units |
+| guardrail | 明确禁止 Phase A 变成 grid search（例如限制 config 中 exposure unit 组合数量，并禁止通过 config schema 暗含大搜索空间） |
+
+Engineering **可以为 Phase B 留接口**，但第一版不实现 search scheduler，也不接入 hedged infra。E01 的职责是让 R01 可复现，不是替 R01 发现新的 exposure unit。
+
+### 10.3 推进顺序
+
+```text
+1. 先写 requirement_01_short_horizon_local_feasibility_probe_v1.md
+   把 R01 的问题边界钉死，
+   尤其是“不做 search”和“validation beta regime 如何解释”这两条。
+
+2. 再写 engineering_plan_01_short_horizon_audit_harness.md
+   只定义 runner / 输入 / 输出 / 目录 / artifact schema，
+   不讨论经济结论。
+
+3. 实现 R01 所需的最小 harness
+   不做泛化优化，不接 hedged 基础设施，不实现 Phase B。
+
+4. 跑 R01。根据结果决定下一条 requirement：
+
+   - absolute positive and relative positive
+       -> 进入 controlled discovery / holding tuning（仍是 7.1 内部）；
+   - absolute positive but relative weak / negative
+       -> 先做 market beta / regime attribution，
+          不直接当作 stock-selection edge 通过；
+   - absolute negative but relative positive
+       -> 触发 7.3 feasibility audit（见 §7.5 激活条件）；
+   - absolute negative and relative negative
+       -> 7.1 暂停，回到 7.2 或重新定义事件来源。
+```
+
+这一节是推进方式建议，不是 requirement 本身，也不锁定 engineering 目录结构。具体文档命名 / 路径 / artifact schema 由 R01 和 E01 各自落地时决定。要点只有一个：
+
+```text
+R01 requirement 必须比 E01 engineering 更早出现，
+否则 harness 会先把方向偷偷定下来。
+```

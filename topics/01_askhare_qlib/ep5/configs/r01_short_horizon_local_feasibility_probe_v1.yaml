@@ -1,0 +1,74 @@
+phase: ep5_r01_short_horizon_local_feasibility_probe_v1
+plan_id: ep5_e01_short_horizon_exposure_audit_harness_v1
+requirement_id: ep5_r01_short_horizon_local_feasibility_probe_v1
+requirement_path: ep5/requirement_01_short_horizon_local_feasibility_probe_v1.md
+output_root: ep5/outputs/r01_short_horizon_local_feasibility_probe_v1
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  index_instrument: SH000300
+  provider_load_end_date: "2026-04-30"
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+execution:
+  signal_date_rule: close_derived_signal_date
+  entry_execution_rule: first_executable_next_open
+  natural_exit_rule: open_after_h_trading_days
+  horizons: [5, 10, 20]
+  primary_horizon: 10
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+  mainboard_limit_inference_pct: 0.095
+
+frozen_formula_constants:
+  launch_detector_id: EP2_LAUNCH_DETECTOR_V0_PRICE60_MONEY20
+  launch_history_window_rows: 80
+  launch_price_lookback_trading_days: 60
+  launch_breakout_min_return: 0.12
+  launch_money_ma_window_trading_days: 20
+  launch_money_surge_ratio: 2.0
+  launch_money_floor_cny: 50000000
+  launch_episode_merge_gap_trading_days: 20
+  fast_fail_drawdown: -0.06
+  vcp_base_length_trading_days: 20
+  vcp_base_drawdown_min: -0.12
+  vcp_breakout_ret_min: 0.00
+  vcp_breakout_ret_max: 0.08
+  vcp_vol_contraction_max: 0.80
+  vcp_ma20_distance_abs_max: 0.12
+  vcp_atr20_pct_max: 0.10
+  vcp_money_ratio5_to20_min: 1.10
+  vcp_money_ratio5_to20_max: 2.50
+  vcp_avg_money20_rank_pct_min: 0.30
+  right_tail_horizon_trading_days: 120
+  right_tail_plus20_threshold: 0.20
+  right_tail_plus50_threshold: 0.50
+
+canonical_units:
+  - r01_launch_breakout_money_surge_natural_exit_v0
+  - r01_launch_breakout_money_surge_fast_fail_v0
+  - r01_base_breakout_vcp_sparse_natural_exit_v0
+
+guardrails:
+  allow_extra_units: false
+  allow_extra_horizons: false
+  allow_threshold_override: false
+  allow_validation_subset_selection: false
+  allow_model_training: false
+  allow_hedged_replay: false
+  allow_portfolio_pass_fail: false
