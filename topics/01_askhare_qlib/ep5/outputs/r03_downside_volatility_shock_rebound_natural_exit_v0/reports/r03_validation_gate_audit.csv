@@ -1,0 +1,71 @@
+check_name,status,detail
+requirement_id,passed,ep5_r03_downside_volatility_shock_rebound_natural_exit_v0
+plan_id,passed,ep5_e03_downside_volatility_shock_rebound_v0
+canonical_units,passed,"['r03_downside_volatility_shock_rebound_natural_exit_v0', 'r03_weekly_downside_nonselected_liquid_baseline_v0']"
+horizons,passed,"[5, 10, 20]"
+primary_horizon,passed,10
+local_pit_inputs_only,passed,data/qlib/cn_data_pit;data/universe/pit_mcap500_mainboard_daily.csv;data/universe/pit_qlib_instrument_universe.csv;data/targets/pit_industry_membership.csv;data/qlib/cn_data_pit/calendars/day.txt;data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+costs,passed,
+execution_lag_and_limit,passed,
+constant_ret5_window_trading_days,passed,5
+constant_realized_vol10_window_trading_days,passed,10
+constant_realized_vol10_ddof,passed,0
+constant_realized_vol10_rank_pct_threshold,passed,0.8
+constant_avg_money20_window_trading_days,passed,20
+constant_avg_money20_floor_cny,passed,50000000
+constant_money_ma20_prev_window_trading_days,passed,20
+constant_downside_ret5_threshold,passed,-0.05
+constant_stabilization_rule,passed,close_D_strictly_gt_close_D_minus_1
+constant_money_repair_rule,passed,money_D_gte_money_ma20_prev_D
+constant_weekly_observation_cadence,passed,iso_week_last_trading_day
+constant_vol_rank_cross_section_min_count,passed,100
+constant_episode_merge_gap_trading_days,passed,20
+constant_paired_downside_baseline_min_complete_constituents_per_dh,passed,30
+constant_baseline_lift_min_comparable_observation_date_count,passed,40
+constant_baseline_lift_min_year_comparable_observation_date_count,passed,15
+guardrail_allow_extra_units,passed,False
+guardrail_allow_extra_horizons,passed,False
+guardrail_allow_threshold_override,passed,False
+guardrail_allow_validation_subset_selection,passed,False
+guardrail_allow_model_training,passed,False
+guardrail_allow_hedged_replay,passed,False
+guardrail_allow_market_neutral_backtest,passed,False
+guardrail_allow_portfolio_pass_fail,passed,False
+guardrail_allow_big_winner_pass_fail,passed,False
+all_required_outputs_exist,passed,
+feature_required_columns,passed,
+realized_vol10_ddof_configured,passed,
+vol_rank_average_rank_bounds,passed,
+only_one_primary_decision_unit,passed,
+baseline_unit_not_primary_event,passed,
+execution_horizons_exact,passed,
+blocked_reason_unprefixed,passed,
+complete_rows_have_empty_blocked_reason,passed,
+comparator_status_values,passed,
+primary_eligibility_formula,passed,
+episode_collapse_20d_first_signal,passed,
+paired_baseline_excludes_raw_primary,passed,
+baseline_status_exhaustive_enum,passed,"{'comparable', 'blocked_insufficient_baseline_constituents', 'not_applicable_no_primary_complete_event'}"
+baseline_comparable_count_threshold,passed,
+baseline_blocked_count_threshold,passed,
+baseline_lift_uses_paired_not_broad,passed,
+baseline_count_distribution_reported,passed,
+baseline_cannot_create_positive_decision,passed,
+summary_required_gate_columns,passed,
+sample_status_enum_includes_date_block,passed,{'blocked_insufficient_sample'}
+final_inputs_no_right_tail_or_decomposition_filter,passed,
+final_decision_enum,passed,r03_no_downside_rebound_support
+priority_rule_enum,passed,rule_15_no_downside_rebound_support
+final_decision_replay,passed,observed=r03_no_downside_rebound_support replay=r03_no_downside_rebound_support
+would_have_matched_rules_reported,passed,
+priority_rule_count_15,passed,15
+right_tail_enums,passed,
+no_r02_bucket_selection_gates,passed,
+empty_calendar_year_rows_excluded,passed,
+report_boundary_statement_63,passed,"R03 did not tune ret5, realized_vol10, volatility rank, stabilization, money floor, horizon, or collapse."
+report_boundary_statement_64,passed,R03 did not reuse R02 descriptive buckets as candidate rules.
+report_boundary_statement_65,passed,R03 did not use big-winner labels for pass/fail.
+report_boundary_statement_66,passed,R03 did not tune thresholds after validation.
+report_boundary_statement_67,passed,R03 did not approve a production strategy.
+report_boundary_statement_68,passed,R03 did not run a hedged or market-neutral backtest.
+report_boundary_statement_69,passed,R03 did not let the audit-only downside baseline create a positive decision.
