@@ -1,0 +1,9 @@
+priority_rule_id,condition_met,selected,candidate_final_decision,reason
+rule_01,False,False,r06_blocked_data_or_execution_contract,"Data, execution label, comparator, or split purity contract failed."
+rule_02,False,False,r06_factor_library_not_implementable_blocked,Included factor count below frozen minimum.
+rule_03,False,False,r06_family_map_not_reproducible_blocked,Family map is missing or post-metric.
+rule_04,False,False,r06_insufficient_information_audit_sample_blocked,Family or horizon label sample is insufficient.
+rule_05,False,False,r06_factor_family_information_supported,At least one family is a tradeable research candidate.
+rule_06,False,False,r06_relative_information_only,Clean residual information exists but cost or long-only evidence does not survive.
+rule_07,True,True,r06_decay_information_exists_but_not_tradeable,"Only gross, short-horizon, or unclean weak information exists."
+rule_08,True,False,r06_no_factor_information_support,No reproducible family-level information support.

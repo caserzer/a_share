@@ -1,0 +1,86 @@
+phase: ep5_r06_gtja191_factor_decay_information_content_audit_v0
+plan_id: ep5_e06_gtja191_factor_decay_information_content_audit_v0
+requirement_id: ep5_r06_gtja191_factor_decay_information_content_audit_v0
+requirement_path: ep5/requirement_06_gtja191_factor_decay_information_content_audit_v0.md
+output_root: ep5/outputs/r06_gtja191_factor_decay_information_content_audit_v0
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  index_instrument: SH000300
+  provider_load_end_date: "2026-04-30"
+  gtja191_source_path: ep5/resources/gtja191Alpha.dos
+  reuse_r05_factor_cache_root: ep5/outputs/r05_gtja191_train_only_factor_engineering_residual_feasibility_v0
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+execution:
+  signal_date_rule: close_observed_iso_week_last_trading_day
+  entry_execution_rule: first_executable_next_open
+  natural_exit_rule: open_after_h_trading_days
+  horizons: [1, 3, 5, 10, 20]
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+  mainboard_limit_inference_pct: 0.095
+
+frozen_formula_constants:
+  avg_money20_window_trading_days: 20
+  avg_money20_floor_cny: 50000000
+  weekly_observation_cadence: iso_week_last_trading_day
+  max_lookback_trading_days: 252
+  min_included_factor_count: 100
+  min_train_factor_coverage_date_count: 150
+  min_train_factor_cross_section_count_per_date: 100
+  min_unpurged_signal_date_share: 0.90
+  min_train_unpurged_signal_date_count: 180
+  min_validation_unpurged_signal_date_count: 70
+  min_robustness_unpurged_signal_date_count: 70
+  min_finite_label_date_share: 0.90
+  min_decile_cross_section_count: 100
+  min_valid_train_year_count: 4
+  min_family_evaluable_included_factor_count: 3
+  min_family_evaluable_factor_count: 2
+  min_valid_validation_dates: 70
+  min_valid_robustness_dates: 70
+  min_validation_year_count: 2
+  min_robustness_year_count: 2
+  min_family_count_for_information_audit: 3
+  partial_family_coverage_warning_family_count: 5
+  min_same_sign_year_count: 3
+  max_single_year_ic_contribution_share: 0.60
+  min_pairwise_factor_corr_observation_count: 5000
+  persistent_top1_max_share: 0.35
+  persistent_top5_union_max_share: 0.75
+  persistent_new_name_min_share: 0.30
+  persistent_rank_turnover_min: 0.35
+  style_explained_score_r2_max: 0.35
+  style_explained_spread_share_max: 0.50
+  neutralized_spread_retention_min: 0.50
+  min_style_evaluable_date_count: 70
+  cost_survival_ratio_min: 0.50
+
+canonical_units:
+  - r06_gtja191_factor_horizon_decay_audit_v0
+  - r06_gtja191_family_horizon_information_audit_v0
+  - r06_gtja191_train_selected_family_horizon_audit_v0
+
+guardrails:
+  allow_top20_strategy: false
+  allow_validation_factor_selection: false
+  allow_validation_horizon_selection: false
+  allow_validation_family_selection: false
+  allow_model_training: false
+  allow_strategy_pass_fail: false
