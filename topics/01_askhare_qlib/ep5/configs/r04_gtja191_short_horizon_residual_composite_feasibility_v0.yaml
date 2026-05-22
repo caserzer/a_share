@@ -1,0 +1,94 @@
+phase: ep5_r04_gtja191_short_horizon_residual_composite_feasibility_v0
+plan_id: ep5_e04_gtja191_short_horizon_residual_composite_feasibility_v0
+requirement_id: ep5_r04_gtja191_short_horizon_residual_composite_feasibility_v0
+requirement_path: ep5/requirement_04_gtja191_short_horizon_residual_composite_feasibility_v0.md
+output_root: ep5/outputs/r04_gtja191_short_horizon_residual_composite_feasibility_v0
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  index_instrument: SH000300
+  provider_load_end_date: "2026-04-30"
+  gtja191_source_path: ep5/resources/gtja191Alpha.dos
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+execution:
+  signal_date_rule: close_observed_iso_week_last_trading_day
+  entry_execution_rule: first_executable_next_open
+  natural_exit_rule: open_after_h_trading_days
+  horizons: [5, 10, 20]
+  primary_horizon: 10
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+  mainboard_limit_inference_pct: 0.095
+
+frozen_formula_constants:
+  avg_money20_window_trading_days: 20
+  avg_money20_floor_cny: 50000000
+  weekly_observation_cadence: iso_week_last_trading_day
+  max_lookback_trading_days: 252
+  min_included_factor_count: 120
+  min_train_factor_coverage_date_count: 150
+  min_train_factor_cross_section_count_per_date: 100
+  min_instrument_valid_factor_share: 0.60
+  min_direction_active_factor_count: 80
+  small_universe_contract_accepted: true
+  min_eligible_cross_section_count: 175
+  selected_top_fraction: 0.20
+  min_selected_count_per_signal_date: 35
+  min_nonselected_count_per_signal_date: 140
+  min_complete_nonselected_baseline_count_per_date_horizon: 120
+  sample_pass_min_complete_event_count: 3000
+  sample_pass_min_complete_event_share: 0.90
+  sample_block_min_complete_event_count: 1500
+  sample_pass_min_decision_observation_date_count: 70
+  sample_pass_min_year_complete_event_count: 1000
+  sample_pass_min_year_decision_observation_date_count: 30
+  sample_limited_min_decision_observation_date_count: 50
+  baseline_lift_min_comparable_observation_date_count: 70
+  baseline_lift_min_year_comparable_observation_date_count: 30
+  active_overlap_median_max: 0.90
+  active_overlap_p90_max: 0.97
+  active_overlap_min_effective_independent_event_count: 1000
+  adjacent_min_complete_event_count: 1500
+  adjacent_min_decision_observation_date_count: 50
+  robustness_min_complete_event_count: 3000
+  robustness_min_complete_event_share: 0.90
+  robustness_min_decision_observation_date_count: 70
+  robustness_min_year_complete_event_count: 1000
+  robustness_min_year_decision_observation_date_count: 30
+  right_tail_horizon_trading_days: 120
+  right_tail_plus20_threshold: 0.20
+  right_tail_plus50_threshold: 0.50
+
+canonical_units:
+  - r04_gtja191_train_direction_equal_weight_residual_composite_v0
+
+guardrails:
+  allow_extra_units: false
+  allow_extra_horizons: false
+  allow_factor_subset_search: false
+  allow_ic_weighting: false
+  allow_tstat_weighting: false
+  allow_model_training: false
+  allow_dynamic_weighting: false
+  allow_top_fraction_tuning: false
+  allow_validation_factor_selection: false
+  allow_hedged_replay: false
+  allow_market_neutral_backtest: false
+  allow_portfolio_pass_fail: false
+  allow_big_winner_pass_fail: false

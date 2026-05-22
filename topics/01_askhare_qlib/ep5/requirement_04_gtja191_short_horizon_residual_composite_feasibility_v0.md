@@ -271,6 +271,14 @@ Allowed `factor_status` values:
 
 Factor exclusion is allowed only for formula availability, as-of safety, missing required fields, insufficient coverage, degeneracy, or implementation failure. Factor exclusion must not use validation or robustness performance.
 
+R04 does not allow unbounded historical lookback. For every included factor:
+
+```text
+max_lookback_trading_days <= 252
+```
+
+E04 must audit each factor's `effective_first_usable_date` and the number of train signal dates blocked by factor warm-up prefix. Train early-date loss from long lookbacks must be visible in `r04_factor_coverage_audit.csv`; it must not be silently absorbed by cross-section coverage filtering.
+
 ### 9.2 Minimum Feature-Library Viability
 
 R04 requires a sufficiently broad feature library.
@@ -316,11 +324,14 @@ For each signal date D, an instrument is eligible for score ranking only if all 
 Frozen cross-section constants:
 
 ```text
-min_eligible_cross_section_count = 300
+small_universe_contract_accepted = true
+min_eligible_cross_section_count = 175
 selected_top_fraction = 0.20
-min_selected_count_per_signal_date = 50
-min_nonselected_count_per_signal_date = 200
+min_selected_count_per_signal_date = 35
+min_nonselected_count_per_signal_date = 140
 ```
+
+R04 V0 originally used a large-cross-section `300 / 50 / 200` gate. The current revision explicitly accepts the statistical cost of the available EP5 PIT universe being smaller than 300 eligible names on most weekly dates. This is not a relaxation discovered from validation returns; it is a data-contract revision made before interpreting any return gate. The accepted cost is that per-date selected and nonselected baskets are thinner, so the sample, baseline, active-overlap, and final-decision gates below must carry the burden of avoiding small-sample overclaiming.
 
 If a weekly signal date has fewer than `min_eligible_cross_section_count` eligible instruments after factor coverage checks, that date is excluded from event creation and must be audited as:
 
@@ -375,6 +386,8 @@ label_i(D, instrument) = H10_net_return(D, instrument) - H10_matched_comparator_
 
 During train direction learning, the composite selected set does not exist yet. Therefore the H10 matched comparator pool for a train candidate is the same-date eligible universe excluding the target instrument, subject to the inherited industry / liquidity / beta matching rules. Train direction learning must not use the later top-20% selected/nonselected assignment.
 
+This is an intentional V0 asymmetry: train direction learning uses an eligible-universe-minus-target comparator because the frozen composite selected/nonselected partition does not exist before directions are learned, while validation and robustness outcome evaluation prefer the nonselected liquid baseline when available. E04 must audit this asymmetry on train only by recomputing train H10 RankIC signs after the frozen composite has been formed with validation-style nonselected-preferred comparator labels. This audit must report same-sign, opposite-sign, zero-sign, and unavailable factor counts; it is read-only and must not change `direction_i`.
+
 3. For each train date D with at least `min_train_factor_cross_section_count_per_date` labeled candidates, compute Spearman rank correlation:
 
 ```text
@@ -419,6 +432,8 @@ score_raw(D, instrument)
 
 The denominator counts only active factors with `direction_i in {-1, +1}` and finite values for that instrument/date. Factors with `direction_i = 0` must not enter the numerator or denominator.
 
+R04 V0 intentionally accepts instrument/date heterogeneity in this denominator. Two instruments on the same signal date may have `score_raw` computed from different active factor subsets as long as both satisfy `min_instrument_valid_factor_share`. E04 must not impute missing factor values, recenter absent factors, or require full active-factor availability in V0.
+
 Then compute cross-sectional average-rank percentile for audit:
 
 ```text
@@ -449,6 +464,12 @@ Required score audit fields:
 - `active_factor_count_min`
 - `active_factor_count_p10`
 - `active_factor_count_median`
+- `selected_active_factor_count_p10`
+- `selected_active_factor_count_median`
+- `nonselected_active_factor_count_p10`
+- `nonselected_active_factor_count_median`
+- `selected_minus_nonselected_active_factor_count_p10`
+- `selected_minus_nonselected_active_factor_count_median`
 - `score_raw_mean`
 - `score_raw_std`
 - `score_tie_share`
@@ -491,10 +512,12 @@ baseline_comparison_status(D, H) must be one of:
 Frozen baseline threshold:
 
 ```text
-min_complete_nonselected_baseline_count_per_date_horizon = 200
+min_complete_nonselected_baseline_count_per_date_horizon = 120
 ```
 
-If a primary selected date is evaluable and the nonselected complete baseline count is at least 200 for that same `(D, H)`, then:
+This lower per-date baseline floor is part of the explicit small-universe contract. It does not make a weak baseline acceptable by itself: baseline-lift evidence must still be evaluated across enough observation dates and calendar years in §15.6.
+
+If a primary selected date is evaluable and the nonselected complete baseline count is at least `min_complete_nonselected_baseline_count_per_date_horizon` for that same `(D, H)`, then:
 
 ```text
 baseline_comparison_status(D, H) = comparable
@@ -535,12 +558,26 @@ Empty calendar-year rows are excluded from year-level gates and must be separate
 For H10 validation:
 
 ```text
-complete_event_count >= 3000
-complete_event_share >= 0.95
-decision_observation_date_count >= 70
-min_year_complete_event_count >= 1000
-min_year_decision_observation_date_count >= 30
+sample_pass_min_complete_event_count = 3000
+sample_pass_min_complete_event_share = 0.90
+sample_block_min_complete_event_count = 1500
+sample_pass_min_decision_observation_date_count = 70
+sample_pass_min_year_complete_event_count = 1000
+sample_pass_min_year_decision_observation_date_count = 30
+sample_limited_min_decision_observation_date_count = 50
 ```
+
+`sample_status(H10) = pass` requires:
+
+```text
+complete_event_count >= sample_pass_min_complete_event_count
+complete_event_share >= sample_pass_min_complete_event_share
+decision_observation_date_count >= sample_pass_min_decision_observation_date_count
+min_year_complete_event_count >= sample_pass_min_year_complete_event_count
+min_year_decision_observation_date_count >= sample_pass_min_year_decision_observation_date_count
+```
+
+These thresholds intentionally remain high enough to prevent the accepted smaller per-date universe from becoming a small-event-count pass. Small universe acceptance changes per-date basket floors, not the need for broad date/year evidence.
 
 sample_status values:
 
@@ -548,7 +585,7 @@ sample_status values:
 - `sample_limited_lead`
 - `blocked_insufficient_sample`
 - `blocked_insufficient_execution_completeness`
-- `blocked_insufficient_date_independence_sample`
+- `blocked_insufficient_year_coverage_sample`
 
 Rules:
 
@@ -557,26 +594,26 @@ pass:
   all sample gate conditions hold
 
 blocked_insufficient_sample:
-  complete_event_count < 1500
+  complete_event_count < sample_block_min_complete_event_count
 
 blocked_insufficient_execution_completeness:
-  complete_event_count >= 1500
-  AND complete_event_share < 0.95
+  complete_event_count >= sample_block_min_complete_event_count
+  AND complete_event_share < sample_pass_min_complete_event_share
 
 sample_limited_lead:
-  complete_event_count >= 1500
-  AND complete_event_count < 3000
-  AND complete_event_share >= 0.95
-  AND decision_observation_date_count >= 50
+  complete_event_count >= sample_block_min_complete_event_count
+  AND complete_event_count < sample_pass_min_complete_event_count
+  AND complete_event_share >= sample_pass_min_complete_event_share
+  AND decision_observation_date_count >= sample_limited_min_decision_observation_date_count
 
-blocked_insufficient_date_independence_sample:
-  complete_event_count >= 1500
-  AND complete_event_share >= 0.95
+blocked_insufficient_year_coverage_sample:
+  complete_event_count >= sample_block_min_complete_event_count
+  AND complete_event_share >= sample_pass_min_complete_event_share
   AND the pass condition does not hold
   AND the sample_limited_lead condition does not hold
 ```
 
-This status order is exhaustive. E04 must assign the first matching status in the order shown above.
+This status order is exhaustive. E04 must assign the first matching status in the order shown above. `blocked_insufficient_year_coverage_sample` is the year/date-coverage catch-all after event count and execution completeness have passed; it is not the same as the separate §15.3 date-independence gate.
 
 ### 15.2 Concentration Gate
 
@@ -597,21 +634,26 @@ The concentration gate is designed for a dense weekly ranking system. It is inte
 
 The `top1_instrument_event_share` floor is not expected to be the binding protection in a dense weekly system because a stock selected every week can still have low total event share. The binding repeated-name protection is `top1_instrument_selected_week_share` plus the active-overlap gate below.
 
+`top1_observation_date_profit_contribution_share` is defined in R04 as follows for each `(split, H)`: aggregate complete selected event net returns by `signal_date`, set `positive_date_profit(D, H) = max(sum_selected_event_net_return(D, H), 0)`, then compute `max_D positive_date_profit(D, H) / sum_D positive_date_profit(D, H)`. If the denominator is zero, set the share to `0` and set `no_positive_observation_date_profit = true` in the audit. This field measures whether apparent positive performance is dominated by a single observation date; it cannot rescue an absolute-positive failure.
+
 ### 15.2.1 Active Overlap Gate
 
 `active_overlap_gate(split, H)` is true only if that split and horizon H satisfy:
 
 ```text
-median_active_overlap_share_H <= 0.85
-p90_active_overlap_share_H <= 0.95
-effective_independent_event_count_H >= 1000
+active_overlap_median_max = 0.90
+active_overlap_p90_max = 0.97
+active_overlap_min_effective_independent_event_count = 1000
+median_active_overlap_share_H <= active_overlap_median_max
+p90_active_overlap_share_H <= active_overlap_p90_max
+effective_independent_event_count_H >= active_overlap_min_effective_independent_event_count
 ```
 
 For readability, `active_overlap_gate(H)` without an explicit split means `active_overlap_gate(validation, H)` unless it appears inside `robustness_confirmed`.
 
 `active_overlap_share_H(D)` is the share of selected events on signal date D whose instrument already has at least one prior selected event that has not reached its natural H-day exit.
 
-`effective_independent_event_count_H` is computed by merging overlapping selected events for the same instrument into one active-entry cluster per horizon H, then counting those clusters. This gate does not collapse the return panel; it prevents repeated weekly selections of the same names from masquerading as independent evidence.
+`effective_independent_event_count_H` is computed by merging overlapping selected events for the same instrument into one active-entry cluster per horizon H, then counting those clusters. This gate does not collapse the return panel; it prevents repeated weekly selections of the same names from masquerading as independent evidence. Under the small-universe contract this gate is non-negotiable: smaller weekly baskets are accepted only if they still produce enough independent active-entry clusters across the split.
 
 ### 15.3 Date Independence Gate
 
@@ -662,8 +704,10 @@ The `-0.03` floor on `matched_loss_rate_delta` is intentionally stricter than R0
 `baseline_lift_evaluable(H10)` is true only if:
 
 ```text
-baseline_comparable_observation_date_count >= 70
-min_year_baseline_comparable_observation_date_count >= 30
+baseline_lift_min_comparable_observation_date_count = 70
+baseline_lift_min_year_comparable_observation_date_count = 30
+baseline_comparable_observation_date_count >= baseline_lift_min_comparable_observation_date_count
+min_year_baseline_comparable_observation_date_count >= baseline_lift_min_year_comparable_observation_date_count
 ```
 
 `baseline_lift_gate(H10)` is true only if `baseline_lift_evaluable(H10)` is true and:
@@ -676,7 +720,7 @@ every non-empty validation calendar-year mean_baseline_lift >= -0.0025
 
 If `baseline_lift_evaluable(H10) = false`, then `baseline_lift_gate(H10) = false`.
 
-The R04 baseline-lift distribution check is intentionally lighter than R02/R03 because each weekly observation aggregates many selected names and at least 200 complete nonselected baseline names. Date-level mean and median already absorb most distribution information; per-event p10 and loss-rate deltas are reported in audit but do not enter this gate.
+The R04 baseline-lift distribution check is intentionally lighter than R02/R03 because each weekly observation aggregates many selected names and a same-date nonselected baseline. Under the small-universe contract the per-date baseline basket may be materially below 200 names, so baseline authority comes from date/year coverage plus mean/median/year lift checks rather than from a large per-date constituent count alone. Per-event p10 and loss-rate deltas are reported in audit but do not enter this gate.
 
 ### 15.7 H10 Validated Pass
 
@@ -704,7 +748,7 @@ absolute_positive(H) = true
 relative_positive(H) = true
 ```
 
-Rule 14 in §17 must read this as:
+Rule 16 in §17 must read this as:
 
 ```text
 (horizon_pass(H5) = true OR horizon_pass(H20) = true)
@@ -748,11 +792,17 @@ multi_comparator_relative_stable(H10) = true
 `robustness_confirmed(H10)` is true only if robustness split H10 satisfies:
 
 ```text
-complete_event_count >= 3000
-complete_event_share >= 0.95
-decision_observation_date_count >= 70
-min_year_complete_event_count >= 1000
-min_year_decision_observation_date_count >= 30
+robustness_min_complete_event_count = 3000
+robustness_min_complete_event_share = 0.90
+robustness_min_decision_observation_date_count = 70
+robustness_min_year_complete_event_count = 1000
+robustness_min_year_decision_observation_date_count = 30
+
+complete_event_count >= robustness_min_complete_event_count
+complete_event_share >= robustness_min_complete_event_share
+decision_observation_date_count >= robustness_min_decision_observation_date_count
+min_year_complete_event_count >= robustness_min_year_complete_event_count
+min_year_decision_observation_date_count >= robustness_min_year_decision_observation_date_count
 concentration_gate(robustness, H10) = true
 active_overlap_gate(robustness, H10) = true
 mean_net_return >= -0.0025
@@ -768,13 +818,19 @@ In §§16-17, `robustness_confirmed` without a horizon means `robustness_confirm
 
 Unless a gate is explicitly described as a robustness gate, all gate names in §17 refer to validation split values. Robustness split values are used only inside `robustness_confirmed(H10)`.
 
+R04 robustness is a non-deterioration gate, not a second validation pass. It intentionally does not require robustness-period `absolute_positive(H10) = true` or `relative_positive(H10) = true`; it only requires the robustness split not to violate the softer floors listed above.
+
 ### 15.10 Adjacent Horizon Clean
+
+`adjacent_horizon_clean` is a soft adjacent-horizon non-deterioration gate. It is distinct from §15.7 `horizon_pass(H)`: `adjacent_horizon_clean` only blocks or permits H10-led decisions in §17, while `horizon_pass(H)` is used only by Rule 16 to flag a horizon-specific H5/H20 lead when H10 does not validate.
 
 `adjacent_horizon_clean` is true only if both H5 and H20 validation are evaluable and each adjacent horizon H in `{H5, H20}` satisfies:
 
 ```text
-complete_event_count >= 1500
-decision_observation_date_count >= 50
+adjacent_min_complete_event_count = 1500
+adjacent_min_decision_observation_date_count = 50
+complete_event_count >= adjacent_min_complete_event_count
+decision_observation_date_count >= adjacent_min_decision_observation_date_count
 active_overlap_gate(validation, H) = true
 mean_net_return >= -0.005
 mean_matched_delta_return >= -0.005
@@ -822,6 +878,8 @@ Rules:
 
 1. If PIT universe, split, raw fields, factor registry, execution, cost, or comparator contract cannot be reproduced exactly, output `r04_blocked_data_or_execution_contract`.
 
+   Under the small-universe revision, `eligible_count < 300` is not by itself a data/execution contract failure. It becomes a contract failure only when the revised §10 floors (`min_eligible_cross_section_count`, `min_selected_count_per_signal_date`, or `min_nonselected_count_per_signal_date`) cannot be met on the required validation/robustness dates. If the revised floors are met but sample/date/year evidence is weak, §15 sample statuses and Rules 13-18 must carry the decision rather than Rule 1.
+
 2. If included factor count is below `min_included_factor_count`, output `r04_factor_library_not_implementable_blocked`.
 
 3. If nonzero train-direction factor count is below `min_direction_active_factor_count`, output `r04_factor_direction_learning_not_viable_blocked`.
@@ -840,9 +898,9 @@ Rules:
 
 10. If `sample_status(H10) = pass`, `concentration_gate(H10) = true`, `active_overlap_gate(H10) = true`, `date_independence_gate(H10) = true`, `absolute_positive(H10) = false`, `relative_positive(H10) = true`, `baseline_lift_evaluable(H10) = false`, `multi_comparator_relative_status(H10) = unavailable`, `robustness_confirmed = true`, and `adjacent_horizon_clean = true`, output `r04_comparator_unavailable_validation_lead` and set `multi_comparator_unavailable_subflag = true` in `r04_final_decision_inputs.csv`.
 
-11. If `sample_status(H10) = pass`, `concentration_gate(H10) = true`, `active_overlap_gate(H10) = true`, `date_independence_gate(H10) = true`, `absolute_positive(H10) = true`, `relative_positive(H10) = false`, and `baseline_lift_gate(H10) = true`, output `r04_absolute_only_baseline_lift_no_relative_pass`.
+11. If `sample_status(H10) = pass`, `concentration_gate(H10) = true`, `active_overlap_gate(H10) = true`, `date_independence_gate(H10) = true`, `absolute_positive(H10) = true`, `relative_positive(H10) = false`, `baseline_lift_gate(H10) = true`, `robustness_confirmed = true`, and `adjacent_horizon_clean = true`, output `r04_absolute_only_baseline_lift_no_relative_pass`.
 
-12. If `sample_status(H10) = pass`, `concentration_gate(H10) = true`, `active_overlap_gate(H10) = true`, `date_independence_gate(H10) = true`, `absolute_positive(H10) = true`, and `relative_positive(H10) = false`, output `r04_beta_or_style_exposure_only_no_stock_selection_pass`.
+12. If `sample_status(H10) = pass`, `concentration_gate(H10) = true`, `active_overlap_gate(H10) = true`, `date_independence_gate(H10) = true`, `absolute_positive(H10) = true`, `relative_positive(H10) = false`, `robustness_confirmed = true`, and `adjacent_horizon_clean = true`, output `r04_beta_or_style_exposure_only_no_stock_selection_pass`.
 
 13. If `sample_status(H10) = pass`, `concentration_gate(H10) = true`, `active_overlap_gate(H10) = true`, `date_independence_gate(H10) = true`, and H10 validation has `absolute_positive(H10) = true` or `relative_positive(H10) = true`, but robustness is not confirmed, output `r04_unstable_validation_only_lead`.
 
@@ -860,7 +918,7 @@ Note on rules 11 and 12:
 
 Rule 11 is more informative than rule 12 when baseline lift is true. Therefore E04 final-decision replay must preserve the listed order. The report must show the replayed ordered rule list exactly as implemented.
 
-Rules 11 and 12 do not subdivide on robustness because the absolute-only outcome is already a downgrade and robustness instability does not change the structural conclusion: R04 has no stock-selection residual pass. Robustness status must still be reported in audit.
+Rules 11 and 12 require `robustness_confirmed = true` and `adjacent_horizon_clean = true` like the other H10 validation-led decisions. If an absolute-only validation lead fails robustness, Rule 13 must catch it as `r04_unstable_validation_only_lead`; if adjacent horizons are unavailable or not clean, Rules 14-15 must catch it before any structural beta/style conclusion is reported.
 
 ## 18. Required Artifacts
 
@@ -874,6 +932,7 @@ audit/r04_input_data_audit.csv
 audit/r04_gtja191_factor_registry.csv
 audit/r04_factor_coverage_audit.csv
 audit/r04_factor_direction_audit.csv
+audit/r04_train_comparator_consistency_audit.csv
 audit/r04_train_rankic_by_factor_date.csv
 audit/r04_score_cross_section_audit.csv
 audit/r04_execution_block_audit.csv
@@ -910,17 +969,19 @@ The report must answer:
 2. How many GTJA191 factors were implementable, included, excluded, and direction-active?
 3. What were the main exclusion reasons?
 4. What is the train-only RankIC direction distribution?
-5. Did the composite use equal weights and fixed top 20% without validation tuning?
-6. How many H10 validation events, dates, years, selected instruments, and industries were evaluated?
-7. Did H10 validation pass absolute, relative, baseline, concentration, active-overlap, and date-independence gates?
-8. If relative failed, which specific relative sub-gate failed?
-9. If absolute failed, which specific distribution or yearly stability condition failed?
-10. Did validation evidence survive robustness?
-11. Did H5 and H20 confirm or contradict H10?
-12. Did selected top-20% outperform the same-day nonselected liquid baseline?
-13. Was the matched comparator clean, including `multi_comparator_relative_status`, or was fallback usage too high?
-14. Is the outcome best read as long-only alpha, residual ranking edge, beta/style exposure, or no support?
-15. How should R04 map back to the R01/R02/R03 failure path?
+5. Did the train comparator consistency audit show the train direction signs were stable under the validation-style nonselected-preferred comparator readout?
+6. Did the composite use equal weights and fixed top 20% without validation tuning?
+7. Did active-factor denominator heterogeneity look material, including selected versus nonselected p10/median active factor counts?
+8. How many H10 validation events, dates, years, selected instruments, and industries were evaluated?
+9. Did H10 validation pass absolute, relative, baseline, concentration, active-overlap, and date-independence gates?
+10. If relative failed, which specific relative sub-gate failed?
+11. If absolute failed, which specific distribution or yearly stability condition failed?
+12. Did validation evidence survive robustness?
+13. Did H5 and H20 confirm or contradict H10?
+14. Did selected top-20% outperform the same-day nonselected liquid baseline?
+15. Was the matched comparator clean, including `multi_comparator_relative_status`, or was fallback usage too high?
+16. Is the outcome best read as long-only alpha, residual ranking edge, beta/style exposure, or no support?
+17. How should R04 map back to the R01/R02/R03 failure path?
 
 If the final quadrant is `absolute_false__relative_true`, the report must explicitly state that this is not a long-only pass.
 
@@ -934,7 +995,7 @@ E04 must include a validator that fails the run if any of the following is false
 2. PIT universe path and inherited universe filters match R01/R02/R03.
 3. No online market-data fetch occurred during run.
 4. Required raw fields exist and are as-of safe.
-5. Factor formula registry exists and includes formula hashes.
+5. Factor formula registry exists, includes formula hashes, and every included factor satisfies `max_lookback_trading_days <= 252`.
 6. Factor exclusion reasons are limited to §9 allowed reasons.
 7. Included factor count is at least `min_included_factor_count`, unless final decision is `r04_factor_library_not_implementable_blocked`.
 8. Direction learning uses train-only H10 matched-delta RankIC.
@@ -942,18 +1003,18 @@ E04 must include a validator that fails the run if any of the following is false
 10. Validation and robustness do not alter factor direction.
 11. Composite weights are equal-weight across nonzero-direction available factors.
 12. No model, IC weighting, t-stat weighting, factor subset search, or dynamic weighting fields exist.
-13. Selected count equals `ceil(0.20 * eligible_count)` on every evaluable signal date, using `score_raw desc, instrument_id asc` as deterministic tie-break.
+13. Selected count equals `ceil(0.20 * eligible_count)` on every evaluable signal date, using `score_raw desc, instrument_id asc` as deterministic tie-break, and score audit includes selected versus nonselected active-factor count p10/median fields.
 14. No RS20, downside rebound, volatility shock, regime, or market-state filter is applied to primary selection.
 15. Execution, cost, horizon, and weekly cadence match §8.
 16. Matched comparator and nonselected baseline are both present and distinct.
-17. Train direction comparator labels do not use later top-20% selected/nonselected assignment.
-18. Baseline comparison status is one of the three enumerated §14.2 values for every `(D, H)`.
+17. Train direction comparator labels do not use later top-20% selected/nonselected assignment, and train comparator consistency audit is present as read-only evidence.
+18. Baseline comparison status is one of the three enumerated §14.2 values for every `(D, H)`, and `baseline_lift(D, H)` equals selected equal-weight net return minus nonselected baseline equal-weight net return.
 19. Empty calendar-year rows are excluded from year-level gates and separately audited.
 20. Sample, concentration, active-overlap, date-independence, absolute, relative, baseline, robustness, and adjacent-horizon gates are computed from frozen §15 definitions.
 21. `sample_status` is assigned by the exhaustive first-match status order in §15.1.
-22. Final decision replay follows §17 first-match priority.
-23. Rules 6-8 relative-only decisions with `baseline_lift_gate(H10) = true` require `robustness_confirmed = true` and `adjacent_horizon_clean = true`.
-24. Rule 7 multi-comparator-unstable relative lead must set `multi_comparator_unstable_subflag = true`; rule 8 multi-comparator-unavailable lead must set `multi_comparator_unavailable_subflag = true`.
+22. Final decision replay follows §17 first-match priority, including the Rule 16 horizon-specific condition from §15.7.
+23. Rules 4-12 validation-lead decisions require `robustness_confirmed = true` and `adjacent_horizon_clean = true`.
+24. Rule 7 multi-comparator-unstable relative lead must set `multi_comparator_unstable_subflag = true`; rules 8 and 10 multi-comparator-unavailable leads must set `multi_comparator_unavailable_subflag = true`.
 25. Rules 9-10 baseline-not-evaluable relative leads cannot be used when robustness or adjacent horizons fail.
 26. Big-winner and right-tail outputs are read-only and do not affect final decision.
 27. The final report is Chinese and answers all §19 questions.
@@ -1010,7 +1071,7 @@ E04 must stop and return to requirement revision if:
 - the local provider lacks required OHLCV/money/index fields;
 - less than `min_included_factor_count` factors are implementable;
 - less than `min_direction_active_factor_count` factors have nonzero train-only directions;
-- top-20% selection cannot produce enough selected or nonselected names on most validation dates;
+- top-20% selection cannot produce enough selected or nonselected names under the revised small-universe floors on most validation dates;
 - matched comparator or baseline construction requires changing inherited EP5 semantics;
 - runtime feasibility requires dropping large parts of validation/robustness without an auditable blocked reason;
 - a positive result requires validation-driven factor picking, weighting, threshold tuning, or filter addition.
@@ -1019,12 +1080,13 @@ Stopping under these conditions is a correct outcome. It prevents R04 from silen
 
 ## 23. Expected Interpretation Boundary
 
-R04 has four legitimate outcomes:
+R04 has five legitimate outcomes:
 
 1. GTJA191 composite has both absolute and relative support.
 2. GTJA191 composite has residual support only.
 3. GTJA191 composite has beta/style exposure only.
 4. GTJA191 composite has no local support.
+5. The revised small-universe contract is still not evaluable, in which case the final decision must remain a data/execution/sample contract block rather than an economic alpha conclusion.
 
 Only outcome 1 can justify continuing a long-only short-horizon stock-selection path.
 
