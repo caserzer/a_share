@@ -1,0 +1,8 @@
+rule_id,rule_condition_text,rule_fires_flag,selected_rule_flag
+rule_01,scope/asof/instrument_split/h3_label_contract violation,False,False
+rule_02,evaluable_family_count == 0,False,False
+rule_02b,sample_blocked_family_count / total_in_scope_family_count >= 0.50,True,True
+rule_03,supported_family_count > 0,False,False
+rule_04,seen_instrument_pass_family_count > 0 and unseen_transfer_pass_family_count == 0,False,False
+rule_05,validation_transfer_pass_family_count > 0 and robustness_transfer_pass_family_count == 0,False,False
+rule_06,otherwise,False,False
