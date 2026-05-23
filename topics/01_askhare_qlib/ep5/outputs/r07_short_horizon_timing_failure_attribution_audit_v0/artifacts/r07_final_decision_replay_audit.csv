@@ -1,0 +1,8 @@
+rule_id,rule_condition_text,raw_condition_met,rule_fires_flag,selected_rule_flag,candidate_final_decision
+rule_01,scope_violation_detected,False,False,False,r07_audit_scope_violation_blocked
+rule_02,Q1_pocket_cell_count == 0,False,False,False,r07_no_relative_pocket_in_scope
+rule_03,Q1_pocket_cell_count > 0 and state_cell_sample_majority_blocked,True,True,True,r07_insufficient_state_cell_sample_blocked
+rule_04,Q3_stable_cell_count > 0 and exists Q3 stable H1/H3/H5,False,False,False,r07_state_stable_clean_pocket_supported
+rule_05,Q3 stable exists only in H10,False,False,False,r07_relative_pocket_clean_but_not_state_stable
+rule_06,Q2 unconditional clean exists and Q3 stable count is zero,False,False,False,r07_relative_pocket_clean_but_not_state_stable
+rule_07,Q1 pocket exists and no Q2 clean or Q3 stable cell,True,False,False,r07_relative_pocket_explained_by_style_or_persistent_name

@@ -1,0 +1,15 @@
+family,horizon,gate_information_pass,gate_monotonicity_pass,gate_persistent_clean_pass,gate_style_clean_pass,gate_cost_survives_pass,Q2_unconditional_clean_flag,Q2_validation_only_clean_lead,Q2_failure_explanation_set
+close_location,H1,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
+composite_price_volume,H1,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
+composite_price_volume,H3,False,False,False,False,True,False,False,information_fail;monotonicity_fail;persistent_clean_fail;style_clean_fail
+other_gtja191,H1,False,False,False,False,True,False,False,information_fail;monotonicity_fail;persistent_clean_fail;style_clean_fail
+rank_ts_rank_structure,H1,True,False,False,False,False,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail;cost_survival_fail
+rank_ts_rank_structure,H3,False,False,False,False,False,False,False,information_fail;monotonicity_fail;persistent_clean_fail;style_clean_fail;cost_survival_fail
+volume_price_correlation,H1,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
+volume_price_correlation,H3,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
+volume_surge_money_flow,H1,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
+volume_surge_money_flow,H3,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
+volume_surge_money_flow,H5,False,False,False,False,True,False,False,information_fail;monotonicity_fail;persistent_clean_fail;style_clean_fail
+volume_surge_money_flow,H10,False,False,False,False,True,False,False,information_fail;monotonicity_fail;persistent_clean_fail;style_clean_fail
+vwap_deviation,H1,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
+vwap_deviation,H5,True,False,False,False,True,False,False,monotonicity_fail;persistent_clean_fail;style_clean_fail
