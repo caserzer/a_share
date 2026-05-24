@@ -1,0 +1,142 @@
+phase: ep5_r08_1_vwap_deviation_h3_kfold_transferability_sensitivity_audit_v0
+plan_id: ep5_e08_1_vwap_deviation_h3_kfold_transferability_sensitivity_audit_v0
+requirement_id: ep5_r08_1_vwap_deviation_h3_kfold_transferability_sensitivity_audit_v0
+requirement_path: ep5/requirement_08_1_vwap_deviation_h3_kfold_transferability_sensitivity_audit_v0.md
+output_root: ep5/outputs/r08_1_vwap_deviation_h3_kfold_transferability_sensitivity_audit_v0
+
+data_sources:
+  r06_output_root: ep5/outputs/r06_gtja191_factor_decay_information_content_audit_v0
+  r08_output_root: ep5/outputs/r08_h3_volume_price_single_stock_state_transferability_audit_v0
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  index_instrument: SH000300
+  provider_load_end_date: "2026-04-30"
+  gtja191_source_path: ep5/resources/gtja191Alpha.dos
+
+split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+execution:
+  signal_date_rule: close_observed_iso_week_last_trading_day
+  entry_execution_rule: first_executable_next_open
+  natural_exit_rule: open_after_h_trading_days
+  horizons: [3]
+  primary_horizon: 3
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+  max_entry_execution_lag_trading_days: 5
+  max_exit_execution_lag_trading_days: 5
+  mainboard_limit_inference_pct: 0.095
+
+scope:
+  primary_family: vwap_deviation
+  comparator_family: volume_price_correlation
+  excluded_family: volume_surge_money_flow
+  families:
+    - vwap_deviation
+    - volume_price_correlation
+  horizon: H3
+
+fold_assignment:
+  hash_algorithm: sha256
+  hash_modulus: 5
+  hash_digest_first_bytes: 8
+  canonical_instrument_id_transform: lowercase_repo_native_id
+
+frozen_formula_constants:
+  within_stock_lookback_trading_days: 252
+  within_stock_min_history_count: 126
+  min_self_label_history_count: 30
+  industry_relative_peer_count_min: 10
+
+  min_direction_signal_count_for_instrument_factor: 80
+  factor_nonconstant_observation_share_min: 0.80
+  train_direction_valid_instrument_count_min: 80
+  retained_vwap_factor_count_min: 5
+
+  low_state_quantile: 0.20
+  high_state_quantile: 0.80
+  decile_count: 10
+
+  full_scope_instrument_count_min: 300
+  fold_unseen_valid_instrument_count_min: 20
+  fold_unseen_valid_signal_date_count_min: 30
+  aggregate_oof_evaluable_fold_count_min: 4
+  aggregate_oof_full_valid_instrument_count_min: 100
+  aggregate_oof_valid_signal_date_count_min: 70
+
+  train_oof_full_instrument_signal_count_min: 80
+  validation_robustness_full_instrument_signal_count_min: 60
+  partial_instrument_signal_count_min: 30
+  per_date_event_floor_unseen: 5
+  instrument_state_event_count_min: 5
+
+  validation_mean_state_spread_min: 0.0
+  validation_median_state_spread_min: 0.0
+  validation_positive_year_count_min: 1
+  validation_train_spread_tolerance: 0.0030
+  validation_single_year_mean_spread_min: 0.0010
+  validation_single_year_negative_spread_floor: -0.0015
+
+  robustness_mean_state_spread_min: -0.0025
+  robustness_median_state_spread_min: -0.0025
+  robustness_train_spread_tolerance: 0.0040
+  robustness_positive_year_share_min: 0.50
+
+  validation_oof_unseen_mean_spread_min: 0.0
+  validation_oof_unseen_median_spread_min: 0.0
+  robustness_oof_unseen_mean_spread_min: -0.0025
+  positive_instrument_share_validation_min: 0.55
+  positive_instrument_share_robustness_min: 0.50
+
+  caveat_validation_mean_spread_min: 0.0015
+  caveat_validation_positive_instrument_share_min: 0.60
+  caveat_validation_positive_fold_count_min: 3
+
+  positive_fold_count_validation_min: 3
+  positive_fold_count_robustness_min: 3
+  median_fold_spread_validation_min: 0.0
+  median_fold_spread_robustness_min: 0.0
+  min_fold_spread_validation_floor: -0.0040
+  min_fold_spread_robustness_floor: -0.0040
+  fold_positive_instrument_share_median_validation_min: 0.50
+  fold_positive_instrument_share_median_robustness_min: 0.50
+
+  aggregate_state_decile_monotonicity_min: 0.60
+  fold_monotonicity_median_min: 0.50
+  fold_monotonicity_positive_count_min: 3
+  middle_state_inversion_tolerance: 0.0025
+
+  top1_instrument_contribution_share_max: 0.05
+  top5_instrument_contribution_share_max: 0.20
+  top1_industry_contribution_share_max: 0.35
+  max_fold_top1_instrument_contribution_share_max: 0.15
+  max_fold_top5_instrument_contribution_share_max: 0.45
+  max_fold_contribution_share_of_total_abs_contribution_max: 0.35
+
+  comparator_dominance_spread_margin: 0.0010
+
+guardrails:
+  allow_new_factors: false
+  allow_new_families: false
+  allow_extra_horizons: false
+  allow_strategy_unit: false
+  allow_top_n_or_fraction_selection: false
+  allow_online_data: false
+  allow_validation_direction_selection: false
+  allow_validation_threshold_selection: false
+  allow_fold_selection: false
+  allow_model_training: false
+  allow_optimizer: false
+  allow_big_winner_gate: false
+  allow_right_tail_gate: false

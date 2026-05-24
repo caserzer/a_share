@@ -1,0 +1,8 @@
+rule_id,rule_condition_text,raw_condition_met,selected_rule_flag,decision_if_selected
+rule_01,data / execution / scope / as-of / fold contract violation,False,False,r08_1_blocked_data_or_execution_contract
+rule_02,primary vwap family cannot form fold-specific state score,False,False,r08_1_blocked_kfold_sample_insufficient
+rule_03,aggregate_oof_sample_status = fail,False,False,r08_1_blocked_kfold_sample_insufficient
+rule_04,"time + aggregate instrument + monotonicity + concentration + robustness non-deterioration pass, fold stability fails",False,False,r08_1_fold_fragile_vwap_state_candidate
+rule_05,"time transfer passes, aggregate instrument transfer fails, monotonicity + concentration + robustness non-deterioration pass",False,False,r08_1_time_transfer_only_not_instrument_transfer
+rule_06,all support gates pass,False,False,r08_1_vwap_kfold_transferability_sensitivity_supported
+rule_07,otherwise,True,True,r08_1_no_vwap_kfold_transferability_support
