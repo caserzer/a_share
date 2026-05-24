@@ -1,0 +1,9 @@
+rule_id,rule_condition_text,raw_condition_met,selected_rule_flag,decision_if_selected
+rule_01,data / execution / scope / as-of / fold contract violation,False,False,r08_2_blocked_data_or_execution_contract
+rule_02,primary vwap family cannot form fold-specific state score,False,False,r08_2_blocked_overlap_controlled_sample_insufficient
+rule_03,aggregate_oof_sample_status = fail or H3 anchor sample gate fails,False,False,r08_2_blocked_overlap_controlled_sample_insufficient
+rule_04,all non-fold H3 support gates pass and fold stability fails,False,False,r08_2_daily_vwap_h3_fold_fragile_candidate
+rule_05,"time transfer passes, instrument transfer fails, other H3 cleanliness gates pass",False,False,r08_2_daily_vwap_h3_time_transfer_only
+rule_06,all H3 support gates pass,True,True,r08_2_daily_vwap_h3_transferability_diagnostic_supported
+rule_07,"H3 sample passes and H3 support fails, while H5/H10 diagnostic horizon passes",False,False,r08_2_horizon_mismatch_diagnostic_only
+rule_08,otherwise,True,False,r08_2_no_daily_vwap_h3_transferability_support
