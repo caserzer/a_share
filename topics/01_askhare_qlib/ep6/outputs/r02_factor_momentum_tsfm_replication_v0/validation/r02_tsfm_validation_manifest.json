@@ -1,0 +1,42 @@
+{
+  "validation_status": "passed",
+  "requirement_id": "ep6_paper_replica_02_factor_momentum_tsfm_replication_v0",
+  "final_decision": "ep6_tsfm_4factor_local_proxy_positive_diagnostic_only",
+  "authorized_strategy_requirement": false,
+  "data_gates": {
+    "retained_factor_count_min": true,
+    "validation_evaluable_month_count_min": true,
+    "robustness_evaluable_month_count_min": true,
+    "validation_active_factor_count_median_min": true,
+    "robustness_active_factor_count_median_min": true
+  },
+  "validation_support_gates": {
+    "validation_annualized_mean_return_positive": true,
+    "validation_t_stat_monthly_mean_positive": true,
+    "validation_sharpe_ratio_min": true,
+    "validation_positive_month_share_min": true,
+    "validation_active_factor_count_median_min": true
+  },
+  "robustness_support_gates": {
+    "robustness_annualized_mean_return_positive": true,
+    "robustness_t_stat_monthly_mean_positive": true,
+    "robustness_sharpe_ratio_min": true,
+    "robustness_positive_month_share_min": true,
+    "robustness_active_factor_count_median_min": true
+  },
+  "concentration_guard": {
+    "validation_top1_factor_abs_contribution_share": 0.34235035033325484,
+    "validation_top2_factor_abs_contribution_share": 0.6754217827244129,
+    "validation_top1_pass": true,
+    "validation_top2_pass": true,
+    "robustness_top1_factor_abs_contribution_share": 0.3821071140251785,
+    "robustness_top2_factor_abs_contribution_share": 0.7414656859084957,
+    "robustness_top1_pass": true,
+    "robustness_top2_pass": true
+  },
+  "after_cost_guard": {
+    "validation_after_cost_mean_positive": true,
+    "robustness_after_cost_mean_positive": true
+  },
+  "execution_replay_available": true
+}

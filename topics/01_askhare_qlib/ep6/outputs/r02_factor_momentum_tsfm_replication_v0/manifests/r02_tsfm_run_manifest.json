@@ -1,0 +1,91 @@
+{
+  "requirement_id": "ep6_paper_replica_02_factor_momentum_tsfm_replication_v0",
+  "short_name": "r02_factor_momentum_tsfm_replication_v0",
+  "run_timestamp_utc": "2026-05-25T15:17:05.678615+00:00",
+  "git_commit": "1a9a4d0c16395faaa080d849a0ca2711e6d8f2a8",
+  "config_path": "ep6/configs/r02_factor_momentum_tsfm_replication_v0.yaml",
+  "frozen_config_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/configs/r02_factor_momentum_tsfm_replication_v0.yaml",
+  "output_root": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0",
+  "final_decision": "ep6_tsfm_4factor_local_proxy_positive_diagnostic_only",
+  "authorized_strategy_requirement": false,
+  "price_adjustment_mode": "provider_ohlc_already_adjusted",
+  "factor_set": {
+    "retained": [
+      "SIZE",
+      "ILL",
+      "TURN",
+      "BAB"
+    ],
+    "removed": [
+      "BM",
+      "GP",
+      "CINVEST",
+      "EP",
+      "ACC",
+      "CFP"
+    ]
+  },
+  "data_meta": {
+    "loaded_instrument_count": 539,
+    "calendar_start": "2017-01-03",
+    "calendar_end": "2026-04-30",
+    "signal_month_count": 101,
+    "first_signal_period": "2017-07",
+    "last_signal_period": "2025-11",
+    "first_factor_return_period": "2017-08",
+    "last_factor_return_period": "2025-12",
+    "price_adjustment_mode": "provider_ohlc_already_adjusted",
+    "volume_unit_audit": {
+      "volume_unit_status": "verified_volume_shares_by_money_div_volume_close_parity",
+      "median_money_per_share_to_pit_close": 1.000648994235843,
+      "sample_count": 10247
+    },
+    "turn_enabled": true
+  },
+  "first_evaluable_holding_month": "2018-08",
+  "artifact_hashes_excludes": [
+    "r02_tsfm_run_manifest.json"
+  ],
+  "artifact_hashes": [
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/configs/r02_factor_momentum_tsfm_replication_v0.yaml",
+      "sha256": "c3d7654aeaaf00313c33f25d1f19ca2d213c6820cc9fcba73cbac47ece5f24e9"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/manifests/r02_factor_input_availability_manifest.csv",
+      "sha256": "5e7e8215ccbfe74287226616f743755920de43c0030114ee364d824992a9acfa"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/factors/r02_monthly_factor_returns.csv",
+      "sha256": "fdcd36a3178987560c3830f67c9ff31924b561eabba13cde38e62bdd866838b8"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/signals/r02_tsfm_monthly_signal_panel.csv",
+      "sha256": "c854287479d82e23713ff85a3bd8f4a4852d97a3215cb9ba80b5b7ac65d7cfb2"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/returns/r02_tsfm_monthly_returns.csv",
+      "sha256": "44f492fd9667439eddc4baf31586511580d3a21eff8cca105d724afbf0c0d6ca"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/reports/r02_tsfm_factor_contribution.csv",
+      "sha256": "969281da88a3659fa4fe2d48ebbda209a20366dffbfd5cda4b553f3c0017b49a"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/reports/r02_tsfm_final_report.md",
+      "sha256": "64fdd78cf22a21342b1b41ef5d971f19d7454d82a1efdc0726e843dcf34a498a"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/reports/r02_tsfm_paper_reference_comparison.csv",
+      "sha256": "387e27571ada60a8cc57494c8fb08b4a534b7090e2a6db8d8fcc653f29c547b2"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/reports/r02_tsfm_split_summary.csv",
+      "sha256": "ae14b18fcd3ea3a9f869239d276cb008a98e846a5fab20cadf1f2624ddcdc218"
+    },
+    {
+      "artifact_path": "ep6/outputs/r02_factor_momentum_tsfm_replication_v0/validation/r02_tsfm_validation_manifest.json",
+      "sha256": "2adf1f35163efbbe1c294c27fcdc66310d7b85bf45b2ed385f731e40cbf80321"
+    }
+  ]
+}

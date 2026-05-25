@@ -1,0 +1,96 @@
+phase: ep6_r02_factor_momentum_tsfm_replication_v0
+requirement_id: ep6_paper_replica_02_factor_momentum_tsfm_replication_v0
+requirement_path: ep6/papers/replica/requirement_02_factor_momentum_tsfm_replication_v0.md
+output_root: ep6/outputs/r02_factor_momentum_tsfm_replication_v0
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  target_history_path: data/targets/target_history.csv
+  index_instrument: SH000300
+  provider_load_end_date: "2026-04-30"
+
+sample_split:
+  train_start: "2017-07-04"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+price_adjustment:
+  mode: provider_ohlc_already_adjusted
+  primary_return_price: close
+  do_not_reapply_factor_day_bin_to_ohlc: true
+
+factor_set:
+  retained:
+    - SIZE
+    - ILL
+    - TURN
+    - BAB
+  removed:
+    - BM
+    - GP
+    - CINVEST
+    - EP
+    - ACC
+    - CFP
+
+factor_construction:
+  quintile_count: 5
+  min_eligible_instrument_count: 120
+  min_tail_count: 20
+  illiquidity_lookback_trading_days: 21
+  turnover_lookback_trading_days: 21
+  volume_turnover_min_valid_observations: 15
+  illiquidity_min_valid_observations: 15
+  beta_lookback_trading_days: 252
+  beta_min_valid_observations: 126
+  total_share_unit_multiplier: 10000
+
+tsfm:
+  formation_months: 12
+  position_positive_value: 1
+  position_negative_value: -1
+  position_zero_value: 0
+
+execution:
+  execution_mode: stock_constituent_replay_after_cost_mode
+  entry_execution_rule: rebalance_at_month_end_close_consistent
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+
+paper_reference:
+  annualized_mean_return: 0.0991
+  t_stat: 4.88
+  sharpe_ratio: 1.15
+  ff5_alpha: 0.0959
+  ch3_alpha: 0.0776
+  conditional_ch3_alpha: 0.0704
+  winner_leg_annualized_return: 0.1407
+  loser_leg_annualized_return: 0.0337
+
+gates:
+  retained_factor_count_min: 3
+  validation_evaluable_month_count_min: 18
+  robustness_evaluable_month_count_min: 18
+  active_factor_count_median_min: 3
+  validation_sharpe_min: 0.25
+  validation_positive_month_share_min: 0.50
+  robustness_sharpe_min: 0.25
+  robustness_positive_month_share_min: 0.50
+  top1_factor_abs_contribution_share_max: 0.60
+  top2_factor_abs_contribution_share_max: 0.85
+
+guardrails:
+  allow_online_data: false
+  allow_missing_fundamental_proxy: false
+  allow_validation_direction_selection: false
+  allow_factor_day_bin_price_adjustment: false
+  allow_strategy_authorization: false
