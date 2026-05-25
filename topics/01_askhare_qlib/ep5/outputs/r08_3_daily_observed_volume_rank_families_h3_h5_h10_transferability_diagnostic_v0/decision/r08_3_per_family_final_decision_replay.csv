@@ -1,0 +1,22 @@
+family,rule_id,rule_condition_text,raw_condition_met,selected_rule_flag,decision_if_selected
+volume_surge_money_flow,rule_F_01,"family scope, direction sample, retained factor, factor-set comparability, bucket-edge, or H3 aggregate sample fails",True,True,r08_3_family_blocked_scope_or_sample_insufficient
+volume_surge_money_flow,rule_F_02,aggregate_oof_sample_status = pass_with_fold_coverage_caveat and all non-sample H3 support gates pass,False,False,r08_3_daily_family_h3_sample_limited_candidate
+volume_surge_money_flow,rule_F_03,H3 support gates pass except fold stability,False,False,r08_3_daily_family_h3_fold_fragile_candidate
+volume_surge_money_flow,rule_F_04,"time transfer passes, instrument transfer fails, other H3 cleanliness gates pass",False,False,r08_3_daily_family_h3_time_transfer_only
+volume_surge_money_flow,rule_F_05,all H3 support gates pass,False,False,r08_3_daily_family_h3_transferability_diagnostic_supported
+volume_surge_money_flow,rule_F_06,"H3 sample passes and H3 support fails, while H5/H10 diagnostic horizon passes",False,False,r08_3_family_horizon_mismatch_diagnostic_only
+volume_surge_money_flow,rule_F_07,otherwise,True,False,r08_3_no_daily_family_h3_transferability_support
+volume_price_correlation,rule_F_01,"family scope, direction sample, retained factor, factor-set comparability, bucket-edge, or H3 aggregate sample fails",False,False,r08_3_family_blocked_scope_or_sample_insufficient
+volume_price_correlation,rule_F_02,aggregate_oof_sample_status = pass_with_fold_coverage_caveat and all non-sample H3 support gates pass,False,False,r08_3_daily_family_h3_sample_limited_candidate
+volume_price_correlation,rule_F_03,H3 support gates pass except fold stability,False,False,r08_3_daily_family_h3_fold_fragile_candidate
+volume_price_correlation,rule_F_04,"time transfer passes, instrument transfer fails, other H3 cleanliness gates pass",False,False,r08_3_daily_family_h3_time_transfer_only
+volume_price_correlation,rule_F_05,all H3 support gates pass,False,False,r08_3_daily_family_h3_transferability_diagnostic_supported
+volume_price_correlation,rule_F_06,"H3 sample passes and H3 support fails, while H5/H10 diagnostic horizon passes",False,False,r08_3_family_horizon_mismatch_diagnostic_only
+volume_price_correlation,rule_F_07,otherwise,True,True,r08_3_no_daily_family_h3_transferability_support
+rank_ts_rank_structure,rule_F_01,"family scope, direction sample, retained factor, factor-set comparability, bucket-edge, or H3 aggregate sample fails",False,False,r08_3_family_blocked_scope_or_sample_insufficient
+rank_ts_rank_structure,rule_F_02,aggregate_oof_sample_status = pass_with_fold_coverage_caveat and all non-sample H3 support gates pass,False,False,r08_3_daily_family_h3_sample_limited_candidate
+rank_ts_rank_structure,rule_F_03,H3 support gates pass except fold stability,False,False,r08_3_daily_family_h3_fold_fragile_candidate
+rank_ts_rank_structure,rule_F_04,"time transfer passes, instrument transfer fails, other H3 cleanliness gates pass",False,False,r08_3_daily_family_h3_time_transfer_only
+rank_ts_rank_structure,rule_F_05,all H3 support gates pass,False,False,r08_3_daily_family_h3_transferability_diagnostic_supported
+rank_ts_rank_structure,rule_F_06,"H3 sample passes and H3 support fails, while H5/H10 diagnostic horizon passes",False,False,r08_3_family_horizon_mismatch_diagnostic_only
+rank_ts_rank_structure,rule_F_07,otherwise,True,True,r08_3_no_daily_family_h3_transferability_support

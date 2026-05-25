@@ -61,7 +61,7 @@ rank_ts_rank_structure:
   H1/H3 pockets; only 1 included factor, so interpretation breadth is weak
 ```
 
-R08.2 then showed that daily observation can materially improve transferability diagnostics for a short-lived within-stock state. R08.3 applies the same daily-observed, overlap-controlled H3 transferability contract to three non-vwap families synchronously:
+R08.2 then showed that daily observation can materially improve H3 transferability cleanliness for a within-stock state, while H5/H10 diagnostic labels suggested possible persistence rather than an H3-only short-lived pulse. R08.3 applies the same daily-observed, overlap-controlled H3 transferability contract to three non-vwap families synchronously:
 
 ```text
 volume_surge_money_flow
@@ -375,18 +375,19 @@ final H3 support decision
 
 ## 10. Data Availability Audit
 
-R08.3 must audit data availability separately for each horizon:
+R08.3 must audit data availability separately for each split and horizon:
 
 ```text
+declared_validation_end_date = 2023-12-31
 declared_robustness_end_date = 2025-12-31
 last_available_trading_date
 last_H3_label_complete_signal_date
 last_H5_label_complete_signal_date
 last_H10_label_complete_signal_date
 
-robustness_window_actual_end_date_H
+split_window_actual_end_date_S,H
   = min(
-      declared_robustness_end_date,
+      declared_split_end_date_S,
       last_available_trading_date,
       last_H_label_complete_signal_date
     )
@@ -396,22 +397,23 @@ Required fields:
 
 ```text
 horizon
-declared_robustness_end_date
+split
+declared_split_end_date
 last_available_trading_date
 last_label_complete_signal_date
-robustness_window_actual_end_date
-robustness_end_date_data_available
-robustness_window_truncated_by_data_availability
-robustness_actual_evaluable_year_count
-robustness_actual_signal_date_count
+split_window_actual_end_date
+split_end_date_data_available
+split_window_truncated_by_data_availability
+split_actual_evaluable_year_count
+split_actual_signal_date_count
 ```
 
-Primary final decision uses H3 actual availability. H5/H10 truncation may only affect diagnostic readout.
+Primary final decision uses H3 actual availability for validation and robustness. H5/H10 truncation may only affect diagnostic readout.
 
 Evaluable year definition:
 
 ```text
-robustness_actual_evaluable_year_count_H
+split_actual_evaluable_year_count_S,H
   counts a calendar year only if
   H-complete signal date count in that year >= 60.
 ```
@@ -646,6 +648,42 @@ fold_direction_valid_instrument_count_f,k >= 80
 
 Insufficient factors are dropped before family scoring.
 
+Retained factor set comparability:
+
+```text
+retained_factor_set_F,k:
+  ordered retained factor_id list for family F and fold k
+
+retained_factor_set_identical_F
+  = retained_factor_set_F,k is identical across all 5 folds
+
+retained_factor_set_min_pairwise_jaccard_F
+  = minimum Jaccard similarity across fold retained factor sets
+
+retained_factor_set_change_explained_F
+  = every fold-level retention difference is explained by
+    factor_nonconstant_observation_audit or direction sample audit
+```
+
+Support requires:
+
+```text
+rank_ts_rank_structure:
+  retained_factor_set_identical_F = true
+
+volume_price_correlation:
+  retained_factor_set_identical_F = true
+
+volume_surge_money_flow:
+  retained_factor_set_identical_F = true
+  or (
+    retained_factor_set_min_pairwise_jaccard_F >= 0.80
+    and retained_factor_set_change_explained_F = true
+  )
+```
+
+If retained factor sets are not comparable, the family may still be reported, but it cannot receive broad family H3 diagnostic support.
+
 Family state score:
 
 ```text
@@ -671,6 +709,17 @@ frequency = daily
 Primary state buckets:
 
 ```text
+train_seen_event_count_F,k = count of train-seen events with score available
+tail_count_F,k = ceil(0.20 * train_seen_event_count_F,k)
+
+train_seen_family_fold_q20_F,k:
+  score of the tail_count_F,k-th event after sorting
+  score ascending, candidate_row_id ascending
+
+train_seen_family_fold_q80_F,k:
+  score of the tail_count_F,k-th event after sorting
+  score descending, candidate_row_id ascending
+
 bottom_quintile_state:
   score <= train_seen_family_fold_q20_F,k
 
@@ -686,6 +735,21 @@ Decile audit:
 ```text
 state_decile = 1 ... 10
 ```
+
+Bucket-edge validity:
+
+```text
+bucket_edge_valid_F,k = true only if:
+  train_seen_family_fold_q20_F,k < train_seen_family_fold_q80_F,k
+  train_seen_bottom_state_share_F,k between 0.15 and 0.30
+  train_seen_top_state_share_F,k between 0.15 and 0.30
+
+bucket_boundary_tie_share_q20_F,k
+bucket_boundary_tie_share_q80_F,k
+actual_bucket_share_by_split_family_fold_bucket
+```
+
+If a family/fold has invalid bucket edges, that fold is not H3-evaluable. If bucket-edge failure causes the family to miss sample gates, the family cannot be supported.
 
 No validation / robustness data may affect bucket edges.
 
@@ -738,6 +802,97 @@ spread(D)
     - mean(label_self_relative_H3 for bottom_quintile_state on D)
 ```
 
+Daily spread validity:
+
+```text
+date_bucket_valid_F,H,S,D = true only if:
+  top_quintile_state event count >= 5
+  bottom_quintile_state event count >= 5
+  label_self_relative_H is complete for included events
+```
+
+Fold-level and aggregate OOF aggregation:
+
+```text
+fold_anchor_mean_spread_F,H,S,k,a:
+  mean of valid date-level spread(D)
+  over unseen fold k, split S, horizon H,
+  and daily_trading_calendar_index mod H = a
+  date-weighted, not event-weighted
+
+aggregate_oof_anchor_mean_spread_F,H,S,a:
+  mean of valid date-level spread(D)
+  after concatenating all fold-unseen OOF events for family F,
+  using each instrument's own fold-specific direction and bucket edges,
+  within anchor offset a
+  date-weighted, not event-weighted
+
+anchor_controlled_mean_spread_F,H,S:
+  mean over evaluable anchor offsets of
+  aggregate_oof_anchor_mean_spread_F,H,S,a
+
+anchor_controlled_median_spread_F,H,S:
+  median over evaluable anchor offsets of
+  aggregate_oof_anchor_mean_spread_F,H,S,a
+
+anchor_positive_offset_count_F,H,S:
+  count of evaluable anchor offsets where
+  aggregate_oof_anchor_mean_spread_F,H,S,a > 0
+```
+
+Instrument positive share:
+
+```text
+instrument_spread_F,H,S,i:
+  mean label_self_relative_H for top_quintile_state events of i
+  minus mean label_self_relative_H for bottom_quintile_state events of i
+
+positive_instrument_share_F,H,S:
+  share of full-valid instruments where instrument_spread_F,H,S,i > 0
+```
+
+Concentration formula:
+
+```text
+signed_event_contribution_e:
+  + label_self_relative_H(e) / top_count(D)
+    for top_quintile_state events on D
+  - label_self_relative_H(e) / bottom_count(D)
+    for bottom_quintile_state events on D
+
+instrument_abs_contribution_i:
+  abs(sum signed_event_contribution_e for instrument i)
+
+industry_abs_contribution_g:
+  sum instrument_abs_contribution_i for instruments in industry g
+
+fold_abs_contribution_k:
+  sum instrument_abs_contribution_i for instruments in fold k
+
+total_abs_contribution:
+  sum instrument_abs_contribution_i
+
+top1_instrument_contribution_share:
+  max(instrument_abs_contribution_i) / total_abs_contribution
+
+top5_instrument_contribution_share:
+  sum of five largest instrument_abs_contribution_i / total_abs_contribution
+
+top1_industry_contribution_share:
+  max(industry_abs_contribution_g) / total_abs_contribution
+
+max_fold_contribution_share_of_total_abs_contribution:
+  max(fold_abs_contribution_k) / total_abs_contribution
+
+max_anchor_abs_contribution_share_of_total:
+  max(abs(aggregate_oof_anchor_mean_spread_F,H,S,a))
+  / sum_a abs(aggregate_oof_anchor_mean_spread_F,H,S,a)
+
+concentration_denominator_zero_flag:
+  total_abs_contribution <= 1e-12
+  or sum_a abs(aggregate_oof_anchor_mean_spread_F,H,S,a) <= 1e-12
+```
+
 Primary H3 support gates use anchor-controlled metrics. Full daily metrics are report-only unless explicitly used as a non-contradiction check.
 
 ## 17. H5/H10 Diagnostic Label Evaluation
@@ -763,11 +918,13 @@ Required diagnostic metrics per family:
 
 ```text
 H5_anchor_controlled_mean_spread
+H5_anchor_controlled_median_spread
 H5_anchor_controlled_positive_offset_count
 H5_anchor_controlled_positive_instrument_share
 H5_aggregate_decile_monotonicity_score
 
 H10_anchor_controlled_mean_spread
+H10_anchor_controlled_median_spread
 H10_anchor_controlled_positive_offset_count
 H10_anchor_controlled_positive_instrument_share
 H10_aggregate_decile_monotonicity_score
@@ -814,6 +971,7 @@ direction_label_horizon = H3
 min(fold_direction_valid_instrument_count_f,k over retained factors) >= 80
 direction_anchor_stability_pass = true
 retained_factor_count_F,k >= family-specific retained floor
+retained_factor_set_comparability_pass_F = true
 ```
 
 Fold-level H3 evaluability gate for validation and robustness:
@@ -868,6 +1026,16 @@ aggregate_oof_sample_status = pass_with_fold_coverage_caveat
 aggregate_oof_sample_status = fail
 ```
 
+`pass` requires:
+
+```text
+validation_evaluable_fold_count = 5
+robustness_evaluable_fold_count = 5
+aggregate sample floors pass
+H3_validation_anchor_offset_evaluable_count = 3 / 3
+H3_robustness_anchor_offset_evaluable_count = 3 / 3
+```
+
 `pass_with_fold_coverage_caveat` is allowed only when:
 
 ```text
@@ -879,6 +1047,8 @@ H3_validation_anchor_controlled_positive_instrument_share >= 0.60
 H3_positive_fold_count_validation >= 3
 ```
 
+`pass_with_fold_coverage_caveat` permits diagnostic reporting only. It cannot produce `r08_3_daily_family_h3_transferability_diagnostic_supported`; if all non-sample H3 support gates pass under this caveat, the family must be labeled sample-limited.
+
 Sample gates must be reported per family. A sample failure in one family does not block evaluation of the other families if shared data/execution contracts are valid.
 
 ## 19. H3 Support Gates Per Family
@@ -888,10 +1058,12 @@ Every family must pass all H3 gates independently to receive H3 diagnostic suppo
 Time transfer gate:
 
 ```text
+validation_actual_evaluable_year_count_H3 >= 2
 H3_validation_anchor_controlled_mean_spread > 0
 H3_validation_anchor_controlled_median_spread >= 0
 H3_validation_anchor_positive_offset_count >= 2
-H3_validation_positive_year_count >= 1
+H3_validation_positive_year_count
+  = validation_actual_evaluable_year_count_H3
 H3_validation_anchor_controlled_mean_spread
   >= H3_train_oof_anchor_controlled_mean_spread - 0.0030
 H3_full_daily_oof_mean_spread_validation >= -0.0010
@@ -902,23 +1074,25 @@ If validation has only one positive year for a family:
 
 ```text
 validation_single_positive_year_caveat_F = true
-H3_validation_anchor_controlled_mean_spread >= 0.0010
-H3_validation_negative_year_mean_spread >= -0.0015
+validation_single_positive_year_blocks_support_F = true
 ```
 
-These single-positive-year requirements are part of the H3 time transfer gate.
+Single-positive-year validation evidence may be reported as weak time-transfer evidence, but it fails the H3 support gate.
 
 ```text
-H3_robustness_anchor_controlled_mean_spread >= -0.0025
-H3_robustness_anchor_controlled_median_spread >= -0.0025
+robustness_actual_evaluable_year_count_H3 >= 2
+H3_robustness_anchor_controlled_mean_spread > 0
+H3_robustness_anchor_controlled_median_spread >= 0
 H3_robustness_anchor_positive_offset_count >= 2
 H3_robustness_positive_year_count
-  >= max(1, ceil(0.50 * robustness_actual_evaluable_year_count_H3))
+  = robustness_actual_evaluable_year_count_H3
 H3_robustness_anchor_controlled_mean_spread
   >= H3_train_oof_anchor_controlled_mean_spread - 0.0040
 H3_full_daily_oof_mean_spread_robustness >= -0.0015
 full_daily_anchor_sign_conflict_flag_robustness = false
 ```
+
+Negative robustness H3 mean or median cannot receive H3 diagnostic support, even if validation is positive and robustness deterioration stays within tolerance.
 
 Non-deterioration replay fields:
 
@@ -1014,7 +1188,9 @@ For each family and each diagnostic horizon H in `{H5, H10}`:
 ```text
 diagnostic_horizon_positive:
   validation mean > 0
-  robustness mean >= -0.0025
+  validation median >= 0
+  robustness mean > 0
+  robustness median >= 0
   validation positive instrument share >= 0.55
   robustness positive instrument share >= 0.50
   validation anchor decile monotonicity >= 0.50
@@ -1027,6 +1203,14 @@ diagnostic_horizon_positive:
   robustness top5 instrument contribution share <= 0.35
   diagnostic concentration denominator zero flag = false
 ```
+
+If validation mean is positive but robustness mean is between `-0.0025` and `0`, R08.3 may report:
+
+```text
+diagnostic_horizon_validation_positive_robustness_not_collapsed
+```
+
+It must not report `diagnostic_horizon_positive` for that horizon.
 
 Diagnostic results may produce annotations:
 
@@ -1086,6 +1270,7 @@ Per-family final decisions are first-match within each family:
 ```text
 r08_3_family_blocked_scope_or_sample_insufficient
 r08_3_no_daily_family_h3_transferability_support
+r08_3_daily_family_h3_sample_limited_candidate
 r08_3_daily_family_h3_fold_fragile_candidate
 r08_3_daily_family_h3_time_transfer_only
 r08_3_family_horizon_mismatch_diagnostic_only
@@ -1108,7 +1293,11 @@ Required for family `F`:
 
 ```text
 family scope pass
-aggregate_oof_sample_status in {pass, pass_with_fold_coverage_caveat}
+aggregate_oof_sample_status = pass
+validation_evaluable_fold_count = 5
+robustness_evaluable_fold_count = 5
+retained_factor_set_comparability_pass_F = true
+bucket_edge_valid for every evaluable fold = true
 H3 time transfer gate pass
 H3 instrument transfer gate pass
 H3 fold stability gate pass
@@ -1136,6 +1325,7 @@ Aggregate decision is descriptive:
 r08_3_blocked_data_or_execution_contract
 r08_3_all_families_sample_blocked
 r08_3_no_family_h3_transferability_support
+r08_3_some_family_sample_limited_candidate
 r08_3_some_family_horizon_mismatch_diagnostic_only
 r08_3_at_least_one_family_h3_transferability_diagnostic_supported
 ```
@@ -1163,32 +1353,41 @@ Per-family replay:
 
 ```text
 rule_F_01:
-  if family scope, direction sample, retained factor, or H3 sample gate fails
+  if family scope, direction sample, retained factor, factor-set comparability,
+  bucket-edge validity, or H3 aggregate sample gate fails with status = fail
   -> r08_3_family_blocked_scope_or_sample_insufficient
 
 rule_F_02:
-  if H3 support gates pass except fold stability
-  -> r08_3_daily_family_h3_fold_fragile_candidate
+  if aggregate_oof_sample_status = pass_with_fold_coverage_caveat
+  and all non-sample H3 support gates pass
+  -> r08_3_daily_family_h3_sample_limited_candidate
 
 rule_F_03:
-  if H3 time transfer passes
+  if aggregate_oof_sample_status = pass
+  and H3 support gates pass except fold stability
+  -> r08_3_daily_family_h3_fold_fragile_candidate
+
+rule_F_04:
+  if aggregate_oof_sample_status = pass
+  and H3 time transfer passes
   and H3 instrument transfer fails
   while fold stability, anchor stability, monotonicity, concentration,
   robustness non-deterioration, and overlap-controlled sample gates pass
   -> r08_3_daily_family_h3_time_transfer_only
 
-rule_F_04:
-  if all H3 support gates pass
+rule_F_05:
+  if aggregate_oof_sample_status = pass
+  and all H3 support gates pass
   -> r08_3_daily_family_h3_transferability_diagnostic_supported
 
-rule_F_05:
+rule_F_06:
   if no previous rule selected
-  and H3 sample passes
+  and aggregate_oof_sample_status = pass
   and H3 support fails
   and H5 or H10 diagnostic horizon passes
   -> r08_3_family_horizon_mismatch_diagnostic_only
 
-rule_F_06:
+rule_F_07:
   otherwise
   -> r08_3_no_daily_family_h3_transferability_support
 ```
@@ -1222,10 +1421,15 @@ aggregate_rule_03:
 
 aggregate_rule_04:
   if no family is H3 supported
+  and any per-family decision is r08_3_daily_family_h3_sample_limited_candidate
+  -> r08_3_some_family_sample_limited_candidate
+
+aggregate_rule_05:
+  if no family is H3 supported
   and any per-family decision is r08_3_family_horizon_mismatch_diagnostic_only
   -> r08_3_some_family_horizon_mismatch_diagnostic_only
 
-aggregate_rule_05:
+aggregate_rule_06:
   otherwise
   -> r08_3_no_family_h3_transferability_support
 ```
@@ -1316,26 +1520,29 @@ The final report must answer:
 13. direction 是否只来自 train years + seen folds + H3？
 14. H5/H10 是否没有参与 direction、bucket edge、factor retention？
 15. 每个 family 的 retained factor count 和 dropped factor list 是什么？
-16. family scope reference count 是否发生变化？若发生变化，是否有 replayable explanation？
-17. `rank_ts_rank_structure` 是否被明确标注 single-factor caveat？
-18. 每个 family 的 validation H3 anchor-controlled spread 是否为正？
-19. 每个 family 的 robustness H3 anchor-controlled spread 是否确认？
-20. 每个 family 的 full daily readout 是否与 anchor-controlled readout 冲突？
-21. 每个 family 的 validation / robustness H3 positive instrument share 是否达标？
-22. 每个 family 的 H3 fold stability 是否达标？
-23. 每个 family 的 H3 anchor stability 是否达标？
-24. 每个 family 的 H3 monotonicity 是否达标？
-25. 每个 family 的 H3 concentration 是否达标？
-26. 每个 family 的 H5/H10 diagnostic spread、monotonicity、positive instrument share、diagnostic concentration 是什么？
-27. 每个 family 的 horizon shape 是 short-lived、persistent、horizon-mismatch 还是 no-support？
-28. 是否确认没有按 validation / robustness 选择 winning family？
-29. per-family final decisions 是什么？
-30. aggregate R08.3 final decision 是什么？
-31. direction canonical sign 是否来自 H3 anchor-controlled train-seen stats，而不是 full daily overlapping stats？
-32. train OOF anchor-controlled baseline 是否落盘并用于 non-deterioration replay？
-33. 每个 family 是否存在 validation single-positive-year caveat？
-34. 如果 daily spread / breadth 为正但 monotonicity / concentration 失败，是否标注 `daily_observation_spread_positive_but_cleanliness_failed_F`？
-35. 是否允许写 strategy requirement？答案必须是 no。
+16. 每个 family 的 retained factor set 是否跨 fold 可比？
+17. family scope reference count 是否发生变化？若发生变化，是否有 replayable explanation？
+18. `rank_ts_rank_structure` 是否被明确标注 single-factor caveat？
+19. 每个 family/fold 的 bucket edge 是否有效，q20/q80 是否分离，实际 bucket share 是否合理？
+20. 每个 family 的 validation H3 anchor-controlled spread 是否为正？
+21. 每个 family 的 robustness H3 anchor-controlled spread 是否严格为正且 median 非负？
+22. 每个 family 的 full daily readout 是否与 anchor-controlled readout 冲突？
+23. 每个 family 的 validation / robustness H3 positive instrument share 是否达标？
+24. 每个 family 的 H3 fold stability 是否达标？
+25. 每个 family 的 H3 anchor stability 是否达标？
+26. 每个 family 的 H3 monotonicity 是否达标？
+27. 每个 family 的 H3 concentration 是否达标，且 concentration denominator 是否非零？
+28. 每个 family 的 H5/H10 diagnostic spread、monotonicity、positive instrument share、diagnostic concentration 是什么？
+29. 每个 family 的 horizon shape 是 short-lived、persistent、horizon-mismatch 还是 no-support？
+30. 是否确认没有按 validation / robustness 选择 winning family？
+31. 是否确认 `pass_with_fold_coverage_caveat` 没有被用于产生 supported decision？
+32. per-family final decisions 是什么？
+33. aggregate R08.3 final decision 是什么？
+34. direction canonical sign 是否来自 H3 anchor-controlled train-seen stats，而不是 full daily overlapping stats？
+35. train OOF anchor-controlled baseline 是否落盘并用于 non-deterioration replay？
+36. 每个 family 是否存在 validation single-positive-year caveat，且该 caveat 是否阻断 support？
+37. 如果 daily spread / breadth 为正但 monotonicity / concentration 失败，是否标注 `daily_observation_spread_positive_but_cleanliness_failed_F`？
+38. 是否允许写 strategy requirement？答案必须是 no。
 
 ## 26. Validation Requirements
 
@@ -1364,23 +1571,33 @@ H5_H10_not_used_for_direction = true
 direction_anchor_stability_checked = true
 factor_nonconstant_observation_audit_exists = true
 family_specific_retained_factor_floors_checked = true
+retained_factor_set_comparability_checked = true
 family_scope_uses_r06_executable_factor_list = true
 family_scope_reference_count_change_flag_replayable = true
 family_scope_reference_count_change_explanation_replayable = true
 unexplained_family_scope_reference_count_change_blocks_support = true
 rank_ts_single_factor_caveat_present = true
 bucket_edges_train_seen_only = true
+bucket_edge_validity_checked = true
+bucket_actual_share_audit_exists = true
 primary_evaluation_unseen_fold_only = true
 within_stock_lookback_ends_at_D_minus_1 = true
 mid_rank_tie_handling_used = true
 self_relative_labels_use_completed_labels_only = true
 overlap_anchor_offsets_exist_for_H3_H5_H10 = true
 H3_primary_gate_uses_anchor_controlled_metrics = true
+H3_supported_requires_positive_validation_and_robustness_anchor_mean = true
+H3_supported_requires_nonnegative_validation_and_robustness_anchor_median = true
+H3_supported_requires_all_evaluable_validation_and_robustness_years_positive = true
+H3_supported_requires_full_5_fold_sample_pass = true
+pass_with_fold_coverage_caveat_blocks_supported_decision = true
 full_daily_metrics_report_only_or_noncontradiction = true
 train_oof_anchor_baseline_exists = true
 full_daily_anchor_conflict_flags_exist = true
 validation_single_positive_year_caveat_replayable = true
+validation_single_positive_year_caveat_blocks_support = true
 H5_H10_diagnostic_only = true
+diagnostic_horizon_positive_requires_positive_robustness_mean = true
 horizon_switching_forbidden = true
 partial_instruments_horizon_specific = true
 partial_instruments_excluded_from_sample_gate_by_horizon = true

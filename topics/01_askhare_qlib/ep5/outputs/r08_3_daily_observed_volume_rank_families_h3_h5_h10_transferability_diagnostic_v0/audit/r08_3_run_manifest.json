@@ -1,0 +1,21 @@
+{
+  "requirement_id": "ep5_r08_3_daily_observed_volume_rank_families_h3_h5_h10_transferability_diagnostic_v0",
+  "plan_id": "ep5_e08_3_daily_observed_volume_rank_families_h3_h5_h10_transferability_diagnostic_v0",
+  "config_path": "ep5/configs/r08_3_daily_observed_volume_rank_families_h3_h5_h10_transferability_diagnostic_v0.yaml",
+  "output_root": "ep5/outputs/r08_3_daily_observed_volume_rank_families_h3_h5_h10_transferability_diagnostic_v0",
+  "created_at": "2026-05-25T06:40:57.919329+00:00",
+  "git_commit": "75895712d0b744756c08c2c0a88a2f4e27b1013b",
+  "primary_families": [
+    "volume_surge_money_flow",
+    "volume_price_correlation",
+    "rank_ts_rank_structure"
+  ],
+  "primary_horizon": "H3",
+  "diagnostic_horizons": [
+    "H5",
+    "H10"
+  ],
+  "signal_frequency": "daily",
+  "aggregate_final_decision": "r08_3_no_family_h3_transferability_support",
+  "authorized_strategy_requirement": false
+}

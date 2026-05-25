@@ -1,0 +1,7 @@
+rule_id,rule_condition_text,raw_condition_met,selected_rule_flag,decision_if_selected
+aggregate_rule_01,global data/execution contract failure,False,False,r08_3_blocked_data_or_execution_contract
+aggregate_rule_02,all families are sample blocked,False,False,r08_3_all_families_sample_blocked
+aggregate_rule_03,any family is H3 supported,False,False,r08_3_at_least_one_family_h3_transferability_diagnostic_supported
+aggregate_rule_04,no family supported and any family sample-limited,False,False,r08_3_some_family_sample_limited_candidate
+aggregate_rule_05,no family supported and any family horizon mismatch,False,False,r08_3_some_family_horizon_mismatch_diagnostic_only
+aggregate_rule_06,otherwise,True,True,r08_3_no_family_h3_transferability_support
