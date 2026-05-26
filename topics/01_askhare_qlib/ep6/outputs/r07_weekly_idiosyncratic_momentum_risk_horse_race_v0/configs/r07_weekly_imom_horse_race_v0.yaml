@@ -1,0 +1,104 @@
+phase: ep6_r07_weekly_idiosyncratic_momentum_risk_horse_race_v0
+requirement_id: ep6_paper_replica_07_weekly_idiosyncratic_momentum_risk_horse_race_v0
+requirement_path: ep6/papers/replica/requirement_07_weekly_idiosyncratic_momentum_risk_horse_race_v0.md
+output_root: ep6/outputs/r07_weekly_idiosyncratic_momentum_risk_horse_race_v0
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  target_history_path: data/targets/target_history.csv
+  index_instrument: SH000300
+  benchmark_feature_dir: data/qlib/cn_data_pit/features/sh000300
+  provider_load_end_date: "2026-04-30"
+
+sample_split:
+  warmup_start: "2017-01-03"
+  train_start: "2018-07-01"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+price_adjustment:
+  mode: provider_ohlc_already_adjusted
+  primary_return_price: close
+  do_not_reapply_factor_day_bin_to_ohlc: true
+
+weekly_calendar:
+  week_anchor: friday
+  skip_week_if_trading_days_lte: 2
+  skipped_week_denominator_policy: previous_retained_week_end
+
+residual_model:
+  residual_model_id: market_model_sh000300_ols_v0
+  local_imom_interpretation: market_residual_momentum_not_ff5_idiosyncratic_momentum
+  risk_free_mode: omitted_missing_local_source
+  beta_window_trading_days: 130
+  beta_min_valid_days: 90
+  risk_metric_window_trading_days: 130
+  risk_metric_min_valid_residual_days: 90
+  min_valid_residual_days_for_J_signal_floor: 10
+  min_valid_residual_days_for_J_signal_share: 0.60
+  valid_return_day_requires_volume_positive: true
+  valid_return_day_requires_money_positive: true
+  allow_shortened_beta_window: false
+  fill_suspended_returns_with_zero: false
+
+signals:
+  J_values: [2, 3, 4, 8, 13, 26, 52]
+  K_values: [1, 2, 3, 4, 8, 13, 26, 52]
+  short_cluster_J_values: [2, 3, 4, 8, 13]
+  short_cluster_K_values: [1, 2, 3, 4]
+  long_horizon_J_values: [26, 52]
+  long_horizon_K_values: [8, 13, 26, 52]
+
+risk_metrics:
+  primary: [IVOL, IMD]
+  diagnostic: [ISKEW, IKURT, IES5, IVAR5, IES1, IVAR1]
+  direct_adjusted_allowed: [IVOL, IMD, IES5, IVAR5, IES1, IVAR1]
+
+portfolio:
+  univariate_bucket_count: 10
+  bivariate_sort_bucket_count: 5
+  signal_eligible_instrument_count_min: 120
+  bivariate_intersection_count_min: 5
+  label_evaluable_leg_count_min: 3
+  label_evaluable_leg_share_min: 0.60
+  deterministic_tie_break: instrument_id_ascending
+
+execution:
+  execution_mode: weekly_stock_constituent_replay_after_cost_mode
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+  drift_adjusted_weights_reported: false
+
+liquidity_state:
+  money_unit_assumed: CNY
+  state_window_retained_weeks: 4
+  threshold_policy: train_weekly_AILLIQ_signal_quantiles
+  quantiles:
+    median: 0.50
+    extreme_high_liquidity: 0.20
+    extreme_low_liquidity: 0.80
+
+statistics:
+  annualization_weeks: 52
+  newey_west_lag_policy: K
+
+gates:
+  validation_evaluable_short_cluster_cell_count_min: 16
+  robustness_evaluable_short_cluster_cell_count_min: 16
+  validation_short_cluster_min_week_count_per_cell: 52
+  robustness_short_cluster_min_week_count_per_cell: 52
+
+guardrails:
+  allow_online_data: false
+  allow_factor_day_bin_price_adjustment: false
+  allow_validation_rule_tuning: false
+  allow_strategy_authorization: false

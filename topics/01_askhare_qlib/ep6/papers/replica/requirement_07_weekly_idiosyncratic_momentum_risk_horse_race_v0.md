@@ -6,7 +6,7 @@ requirement_id: `ep6_paper_replica_07_weekly_idiosyncratic_momentum_risk_horse_r
 
 short_name: `r07_weekly_idiosyncratic_momentum_risk_horse_race_v0`
 
-status: `requirement-draft`
+status: `requirement-draft-revised`
 
 workflow: `EP6`
 
@@ -24,6 +24,14 @@ source_paper:
 - paper_sample: `China A-share common stocks, 1997-01 to 2017-12`
 
 primary_output_namespace: `ep6/outputs/r07_weekly_idiosyncratic_momentum_risk_horse_race_v0/`
+
+authorization_scope:
+
+```text
+authorized_strategy_requirement = false
+```
+
+This requirement is a diagnostic replication contract only. It must not be interpreted as a live strategy, production allocator, or permission to trade long-short A-share books.
 
 ## 2. Research Positioning
 
@@ -125,6 +133,7 @@ The replication must inherit EP5's local universe and timing discipline:
 | Trading calendar | `data/qlib/cn_data_pit/calendars/day.txt` |
 | Qlib instrument file | `data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt` |
 | Market benchmark / residual benchmark | `SH000300` |
+| Market benchmark feature directory | `data/qlib/cn_data_pit/features/sh000300` |
 | Provider load end | `2026-04-30` |
 
 The universe is:
@@ -137,10 +146,19 @@ Constituent eligibility on each weekly signal date must require:
 
 1. instrument is a PIT universe member as of the signal date;
 2. instrument has enough daily close history for the relevant J window;
-3. instrument has enough next-holding-period price history for the relevant K label;
-4. instrument has enough observations for residual estimation and risk metrics;
+3. instrument has enough as-of observations for residual estimation and risk metrics;
+4. instrument has enough as-of observations to compute the relevant signal value;
 5. no stock outside the PIT universe may enter any portfolio;
 6. all joins must be keyed by `date + instrument`.
+
+Forward holding-period price availability must not be used in signal-date eligibility, ranking, or leg assignment. Future label availability is evaluated only after a portfolio is fixed and must be reported separately with:
+
+```text
+signal_eligibility_status
+holding_label_status
+assigned_leg_count
+label_evaluable_leg_count
+```
 
 The universe is not the old `selected` 36-stock pool and not the static `mcap500_mainboard_20251231` Explore1 universe.
 
@@ -234,9 +252,30 @@ The local `factor` field may be used only as an audit field to confirm provider 
 Weekly endpoints must be derived from the local trading calendar:
 
 ```text
-week_end W_t = last trading day of each Friday-ending calendar week
-skip week if the week has <= 2 trading days
-weekly_return_{i,t} = close_{i,W_t} / close_{i,W_{t-1}} - 1
+calendar_week_id = ISO week whose calendar Friday is the week anchor
+candidate_week_trading_days =
+  all local trading-calendar days from Monday through Friday of calendar_week_id
+
+week_end W_t =
+  max(candidate_week_trading_days) if candidate_week_trading_day_count > 0
+  else null
+
+skip week if candidate_week_trading_day_count <= 2
+
+weekly_return_{i,t} =
+  close_{i,W_t} / close_{i,W_{t-1_retained}} - 1
+```
+
+If Friday is not a trading day, `W_t` rolls back to the last local trading day in that Monday-Friday calendar week. If a week is skipped, the next retained week uses the most recent previous retained `W_{t-1_retained}` as the return denominator. The weekly calendar artifact must record:
+
+```text
+calendar_week_id
+calendar_friday
+candidate_week_trading_day_count
+week_end
+week_retained
+skip_reason
+previous_retained_week_end
 ```
 
 Formation and holding must follow the paper's one-week skip:
@@ -259,9 +298,20 @@ The local evaluation split is:
 | Split | Calendar window | Notes |
 |:--|:--|:--|
 | warmup | `2017-01-03` to first complete signal date | used only for residual/risk/formation history |
-| train | `2018-07-01` to `2021-12-31` | first complete local window after max lookback warmup |
+| train | `2018-07-01` to `2021-12-31` | nominal train window; cell-specific evaluable start may be later |
 | validation | `2022-01-01` to `2023-12-31` | primary out-of-sample decision window |
 | robustness | `2024-01-01` to `2025-12-31` | post-validation robustness window |
+
+Long formation windows may become evaluable after the nominal train start. In particular, `J=52` requires both a 52-week residual signal window and a preceding 130-trading-day residual beta window. The implementation must not backfill or relax history requirements to force train-start availability. Instead, it must compute and publish:
+
+```text
+first_evaluable_signal_week_by_J
+first_evaluable_portfolio_week_by_JK
+effective_split_start_by_JK
+train_weeks_lost_to_warmup_by_JK
+```
+
+If `J=52` or any other canonical cell first becomes evaluable after `2018-07-01`, that is an expected local-sample constraint and must be recorded in `r07_validation_manifest.json`, not treated as an implementation failure.
 
 Split assignment is based on the first week of the holding window. If a J/K portfolio cannot complete the full holding window before provider end, mark:
 
@@ -271,6 +321,14 @@ holding_status = blocked_incomplete_future_return_label
 
 and exclude that portfolio-week from metrics. Do not impute missing holding returns.
 
+For all other missing holding labels, the implementation must preserve the already assigned portfolio membership and then mark the affected instrument or portfolio-week after the fact:
+
+```text
+holding_label_status = complete | missing_provider_price | delisted_or_untradable | blocked_incomplete_future_return_label
+```
+
+No future label status may change the signal-date universe, rank order, bucket assignment, or long/short leg membership.
+
 ## 7. Local Idiosyncratic Return Model
 
 The paper uses daily FF5 residuals. This local requirement freezes a simpler model before any validation returns are observed:
@@ -279,7 +337,13 @@ The paper uses daily FF5 residuals. This local requirement freezes a simpler mod
 local_residual_model_id = market_model_sh000300_ols_v0
 ```
 
-For each stock `i` and each signal week `t`, estimate a rolling daily market model using daily returns over the required estimation window:
+The local residual is a **market-model residual**, not a full paper-equivalent FF5 idiosyncratic return. Artifacts may use the shorthand `IMOM`, but the run manifest and final report must also state:
+
+```text
+local_imom_interpretation = market_residual_momentum_not_ff5_idiosyncratic_momentum
+```
+
+Daily residuals are generated point-in-time. For each stock `i` and residual date `d`, estimate a rolling daily market model using only daily returns before `d`:
 
 ```text
 r_{i,d} = alpha_i + beta_i * r_{mkt,d} + epsilon_{i,d}
@@ -292,6 +356,42 @@ r_{i,d} = close_{i,d} / close_{i,d-1} - 1
 r_{mkt,d} = close_{SH000300,d} / close_{SH000300,d-1} - 1
 ```
 
+The OLS estimation window is:
+
+```text
+residual_beta_window_for_date_d:
+  130 trading days ending at d-1
+```
+
+The residual for date `d` is then computed as:
+
+```text
+epsilon_{i,d} = r_{i,d} - alpha_hat_{i,d-1} - beta_hat_{i,d-1} * r_{mkt,d}
+```
+
+Because `r_{i,d}` is known only after close on `d`, a residual can enter a signal for holding week `t` only if `d` is no later than the final trading day of week `t-2`.
+
+Valid paired observations for beta estimation and residual generation are defined as:
+
+```text
+valid_stock_return_day =
+  close_{i,d} is finite
+  close_{i,d-1} is finite
+  volume_{i,d} > 0
+  money_{i,d} > 0
+
+valid_market_return_day =
+  close_{SH000300,d} is finite
+  close_{SH000300,d-1} is finite
+
+valid_paired_observation =
+  valid_stock_return_day and valid_market_return_day
+```
+
+Suspended or non-trading stock days are excluded from the OLS sample and residual signal window. They must not be filled with zero returns. New stocks with fewer than the required valid paired observations in the fixed 130-trading-day beta window are ineligible for that residual date; expanding or shortened beta windows are not allowed.
+
+`market_return_variance` is evaluated only on the valid paired observations retained inside the same fixed 130-trading-day beta window.
+
 Risk-free adjustment is omitted because no local daily risk-free source is available. The run manifest must record:
 
 ```text
@@ -301,10 +401,12 @@ risk_free_mode = omitted_missing_local_source
 Minimum residual-estimation coverage:
 
 ```text
+lookback_days_for_residual_beta = 130 trading days
+min_valid_days_for_residual_beta = 90
 lookback_days_for_risk_metrics = 130 trading days
-min_valid_days_for_130d_model = 90
-min_valid_days_for_J_window_model = max(10, ceil(0.60 * J * 5))
-market_return_variance > 0
+min_valid_residual_days_for_risk_metrics = 90
+min_valid_residual_days_for_J_signal = max(10, ceil(0.60 * J * 5))
+market_return_variance over valid paired observations > 0
 ```
 
 The primary IMOM signal uses the daily residuals from the local market model. A diagnostic variant may also report raw market-adjusted returns:
@@ -396,7 +498,7 @@ The risk-only portfolio buys the lowest-risk decile and shorts the highest-risk 
 For each signal week `t`, J, K, and portfolio family:
 
 1. Build eligible stock universe from EP5 PIT universe as of `W_{t-1}`.
-2. Drop instruments with insufficient formation, residual, risk, or holding data.
+2. Drop instruments only for insufficient as-of formation, residual, risk, or signal data.
 3. Sort by the relevant signal using deterministic tie rules:
 
 ```text
@@ -406,6 +508,8 @@ split into 10 near-equal decile buckets
 
 4. Construct equal-weight decile portfolios.
 5. Compute calendar-time overlapping portfolio returns for K-week holding windows.
+
+Do not drop an instrument at step 2 because its future K-week holding label is missing. Missing holding labels are handled after portfolio assignment through `holding_label_status` and label-evaluable coverage metrics.
 
 Primary long-short return conventions:
 
@@ -417,25 +521,29 @@ imom_return = high_IMOM_decile_return - low_IMOM_decile_return
 risk_only_return = low_risk_decile_return - high_risk_decile_return
 ```
 
-The paper reports raw momentum in a way that highlights contrarian effects. This local requirement must report both:
+The paper reports raw momentum in a way that highlights contrarian effects. This local requirement stores the raw W-minus-L series and may show the contrarian L-minus-W view only as its deterministic sign flip:
 
 ```text
 raw_mom_W_minus_L
-raw_contrarian_L_minus_W
+raw_contrarian_L_minus_W = -raw_mom_W_minus_L
 ```
 
-Bivariate risk-adjusted IMOM is the primary risk-horse-race test:
+Bivariate risk-adjusted IMOM is the primary risk-horse-race test. To keep the local PIT mcap500 sample evaluable, the primary local bivariate sort uses independent 5 x 5 buckets, not decile x decile intersections:
 
 ```text
+bivariate_sort_bucket_count = 5
+
 long leg:
-  intersection of highest IMOM decile and lowest risk decile
+  intersection of highest IMOM quintile and lowest risk quintile
 
 short leg:
-  intersection of lowest IMOM decile and highest risk decile
+  intersection of lowest IMOM quintile and highest risk quintile
 
 risk_adjusted_imom_return:
   long_leg_return - short_leg_return
 ```
+
+The paper-style decile x decile intersection may be reported as a diagnostic only if both legs satisfy coverage. It may not replace the primary 5 x 5 bivariate decision.
 
 Direct risk-adjusted IMOM is diagnostic only:
 
@@ -454,15 +562,31 @@ It is not allowed for `ISKEW` because negative skewness values create sorting am
 Minimum portfolio coverage:
 
 ```text
-eligible_instrument_count >= 120
-decile_count_min >= 10
-bivariate_intersection_count_min >= 5 per leg
+signal_eligible_instrument_count >= 120
+univariate_decile_count_min >= 10
+bivariate_sort_bucket_count = 5
+bivariate_intersection_count_min >= 5 per assigned leg
+label_evaluable_leg_count_min >= 3 per leg
+label_evaluable_leg_share_min >= 0.60 per assigned leg
 ```
+
+For bivariate portfolios, if either the long-leg or short-leg intersection has fewer than 5 assigned instruments, the entire portfolio-week is blocked. There is no fallback to a looser bucket, alternate metric, or direct-adjusted signal.
 
 If a portfolio-week fails coverage, set:
 
 ```text
 portfolio_week_status = blocked_insufficient_portfolio_coverage
+```
+
+Coverage failures after leg assignment must not rewrite the original signal membership. They only determine whether that portfolio-week contributes to return metrics.
+
+The implementation must report block counts separately by split, family, J, K, and block reason:
+
+```text
+assigned_intersection_too_small
+label_evaluable_leg_count_too_small
+label_evaluable_leg_share_too_low
+insufficient_signal_eligible_universe
 ```
 
 ## 11. Cost And Executability Diagnostics
@@ -476,19 +600,41 @@ buy_cost_bps = 30
 sell_cost_bps = 80
 round_trip_cost_bps = 110
 execution_mode = weekly_stock_constituent_replay_after_cost_mode
+drift_adjusted_weights_reported = false by default
 ```
 
-For each weekly portfolio:
+Overlapping K-week portfolios must be replayed through explicit vintage accounting:
 
 ```text
-buy_turnover_t = sum positive increases in signed stock weights
-sell_turnover_t = sum absolute negative decreases in signed stock weights
+vintage_signal_week = s
+vintage_holding_weeks = s through s+K-1
+active_vintages_for_calendar_week h =
+  all vintages s where h is in [s, s+K-1]
+
+calendar_week_weight_vector_h =
+  equal-weight average of active vintage target weight vectors
+```
+
+Each vintage target weight vector is equal-weight inside its assigned long and short legs. The combined calendar-week weight vector is rebalanced at the close immediately before the holding week starts. If fewer than K vintages are active because the sample is warming up, average over the active vintages and record `active_vintage_count`.
+
+For each calendar-week replayed portfolio:
+
+```text
+buy_turnover_t =
+  sum positive changes from previous combined signed stock weights to current combined signed stock weights
+
+sell_turnover_t =
+  sum absolute negative changes from previous combined signed stock weights to current combined signed stock weights
+
+first_active_week_previous_weight = 0
 
 after_cost_return_t =
   gross_return_t
   - buy_turnover_t * 30bps
   - sell_turnover_t * 80bps
 ```
+
+Turnover is computed from target combined weekly weights, not from a later optimized allocator. Return-drift-adjusted weights are optional diagnostic output only if `drift_adjusted_weights_reported` is explicitly frozen in `r07_weekly_imom_horse_race_v0.yaml` before any validation or robustness metrics are computed. Even when reported, drift-adjusted weights must not replace target-weight turnover as the primary after-cost series.
 
 The report must explicitly separate:
 
@@ -523,19 +669,39 @@ Liquidity diagnostics are retained with local Amihud aggregate:
 
 ```text
 ILLIQ_{i,d} = abs(r_{i,d}) / money_{i,d}
-AILLIQ_t = equal-weight mean over eligible stocks and trading days in week t
+money_unit_assumed = CNY
+
+liquidity_state_window =
+  skip week t-1 plus the 3 retained weeks before skip week t-1
+
+AILLIQ_signal_t =
+  equal-weight mean over signal-eligible stocks and valid trading days in liquidity_state_window
 
 high_liquidity:
-  AILLIQ_t below full-sample median
+  AILLIQ_signal_t below train-only median
 
 low_liquidity:
-  AILLIQ_t above full-sample median
+  AILLIQ_signal_t above train-only median
 
 extreme_high_liquidity:
-  AILLIQ_t below 20th percentile
+  AILLIQ_signal_t below train-only 20th percentile
 
 extreme_low_liquidity:
-  AILLIQ_t above 80th percentile
+  AILLIQ_signal_t above train-only 80th percentile
+```
+
+The train-only liquidity thresholds are computed from the train split's weekly `AILLIQ_signal_t` time series. Validation and robustness weeks compare their current weekly cross-sectional aggregate `AILLIQ_signal_t` against those frozen train-period weekly thresholds. Full-sample thresholds are not allowed.
+
+The run manifest must record `money_unit_assumed = CNY`. The report bundle must also include an audit table or manifest field with `money` descriptive statistics for the first 10 sampled trading dates used in this diagnostic:
+
+```text
+sample_date
+instrument_count
+money_min
+money_p25
+money_median
+money_p75
+money_max
 ```
 
 Sentiment diagnostics are blocked:
@@ -557,10 +723,13 @@ ep6/outputs/r07_weekly_idiosyncratic_momentum_risk_horse_race_v0/
   manifests/
     r07_input_availability_manifest.csv
     r07_weekly_imom_run_manifest.json
+    r07_environment_snapshot.json
     r07_validation_manifest.json
+    r07_money_unit_audit.csv
   weekly/
     r07_weekly_calendar.csv
     r07_weekly_stock_returns.parquet
+    r07_weekly_signal_eligibility_audit.csv
   residuals/
     r07_residual_model_manifest.csv
     r07_weekly_residual_signal_panel.parquet
@@ -575,6 +744,7 @@ ep6/outputs/r07_weekly_idiosyncratic_momentum_risk_horse_race_v0/
     r07_risk_only_jk_returns.csv
     r07_bivariate_risk_adjusted_imom_jk_returns.csv
     r07_direct_risk_adjusted_imom_jk_returns.csv
+    r07_portfolio_week_label_status.csv
   reports/
     r07_jk_summary_raw_mom.csv
     r07_jk_summary_imom.csv
@@ -582,10 +752,23 @@ ep6/outputs/r07_weekly_idiosyncratic_momentum_risk_horse_race_v0/
     r07_jk_summary_bivariate_risk_adjusted_imom.csv
     r07_metric_horse_race_summary.csv
     r07_conditional_state_summary.csv
+    r07_gate_decision_summary.csv
     r07_final_report.md
 ```
 
 Parquet may be replaced by CSV only if the implementation records the reason in `r07_weekly_imom_run_manifest.json`.
+
+`r07_environment_snapshot.json` must include:
+
+```text
+python_version
+platform
+executable
+package_freeze
+uv_lock_hash_if_available
+git_commit_or_worktree_status
+created_at
+```
 
 ## 14. Required Metrics
 
@@ -594,22 +777,30 @@ Each J/K portfolio family must report by split:
 ```text
 week_count
 active_portfolio_count
-eligible_instrument_count_mean
-eligible_instrument_count_min
-long_leg_count_mean
-short_leg_count_mean
+active_vintage_count_mean
+signal_eligible_instrument_count_mean
+signal_eligible_instrument_count_min
+assigned_long_leg_count_mean
+assigned_short_leg_count_mean
+label_evaluable_long_leg_count_mean
+label_evaluable_short_leg_count_mean
+label_evaluable_long_leg_share_mean
+label_evaluable_short_leg_share_mean
 weekly_mean_return
 annualized_mean_return = weekly_mean_return * 52
 weekly_volatility
 annualized_volatility = weekly_volatility * sqrt(52)
 sharpe_ratio
 t_stat_weekly_mean_newey_west
+newey_west_lag_used = K
 positive_week_share
 max_drawdown
 mean_buy_turnover
 mean_sell_turnover
 after_cost_weekly_mean_return
 after_cost_annualized_mean_return
+after_cost_weekly_volatility
+after_cost_t_stat_newey_west
 after_cost_sharpe_ratio
 long_leg_weekly_mean_return
 short_leg_weekly_mean_return
@@ -619,13 +810,15 @@ Primary summary rows:
 
 ```text
 raw_mom_W_minus_L
-raw_contrarian_L_minus_W
+raw_contrarian_L_minus_W = -raw_mom_W_minus_L
 imom
 IVOL_risk_only
 IMD_risk_only
 IVOL_IMOM_bivariate
 IMD_IMOM_bivariate
 ```
+
+`raw_mom_W_minus_L` is the stored raw-return series. `raw_contrarian_L_minus_W` is a derived sign-flipped reporting view used only to make the paper's reversal interpretation explicit; it must not be treated as an independent portfolio family.
 
 Diagnostic summary rows:
 
@@ -643,12 +836,12 @@ IVAR1_IMOM_bivariate
 direct_adjusted_IMOM variants
 ```
 
-The final report must include a compact paper-reference comparison table:
+The final report must include a compact paper-reference comparison table using the directional claims listed in Section 3:
 
 | Paper claim | Local test | Supported locally? |
 |:--|:--|:--|
-| raw weekly MOM is mostly contrarian | raw W-L vs L-W J/K tables | yes/no/mixed |
-| IMOM is positive | IMOM J/K tables | yes/no/mixed |
+| raw weekly MOM is mostly contrarian | raw W-L table; negative W-L implies L-W reversal | yes/no/mixed |
+| IMOM is positive and stronger than raw-return directions | IMOM vs raw W-L and derived raw L-W short-cluster tables | yes/no/mixed |
 | IVOL and IMD are strongest risk metrics | horse-race summary | yes/no/mixed |
 | bivariate risk-adjusted IMOM improves results | IVOL/IMD-IMOM vs pure IMOM | yes/no/mixed |
 | upside market strengthens IMOM | conditional SH000300 state table | yes/no/mixed |
@@ -659,48 +852,97 @@ The final report must include a compact paper-reference comparison table:
 
 This requirement has no strategy-authorization gate. It has only diagnostic gates.
 
-Primary diagnostic gate:
-
-```text
-validation_short_cluster_imom_mean > validation_short_cluster_raw_mom_mean
-validation_short_cluster_imom_mean > 0
-robustness_short_cluster_imom_mean > 0
-```
-
-where:
+Cluster aggregation is fixed:
 
 ```text
 short_cluster = J in {2,3,4,8,13}, K in {1,2,3,4}
+short_cluster_cell_count = 20
+
+short_cluster_family_mean =
+  equal-weight mean of weekly_mean_return across evaluable short-cluster J/K cells
+
+short_cluster_family_after_cost_mean =
+  equal-weight mean of after_cost_weekly_mean_return across evaluable short-cluster J/K cells
+
+short_cluster_raw_best_direction_mean =
+  max(short_cluster_raw_mom_W_minus_L_mean,
+      short_cluster_raw_contrarian_L_minus_W_mean)
 ```
 
-Risk horse-race gate:
+Data sufficiency gate:
 
 ```text
-validation_short_cluster_best_of_IVOL_IMD_bivariate_mean
-  >= validation_short_cluster_imom_mean
-
-robustness_short_cluster_best_of_IVOL_IMD_bivariate_mean
-  >= robustness_short_cluster_imom_mean
+validation_evaluable_short_cluster_cell_count >= 16
+robustness_evaluable_short_cluster_cell_count >= 16
+validation_short_cluster_min_week_count_per_cell >= 52
+robustness_short_cluster_min_week_count_per_cell >= 52
 ```
 
-Weak support is allowed if one split passes and one split is mixed:
+Primary IMOM diagnostic gate:
+
+```text
+validation_short_cluster_imom_mean > validation_short_cluster_raw_best_direction_mean
+validation_short_cluster_imom_mean > 0
+validation_short_cluster_imom_t_stat_newey_west > 0
+
+robustness_short_cluster_imom_mean > 0
+robustness_short_cluster_imom_t_stat_newey_west > 0
+```
+
+Risk horse-race gate requires one fixed metric to pass both splits. The implementation may evaluate `IVOL` and `IMD`, but it must not use different winning metrics for validation and robustness:
+
+```text
+exists metric_id in {IVOL, IMD} such that:
+
+  validation_short_cluster_metric_id_IMOM_bivariate_mean
+    >= validation_short_cluster_imom_mean
+
+  robustness_short_cluster_metric_id_IMOM_bivariate_mean
+    >= robustness_short_cluster_imom_mean
+```
+
+After-cost diagnostic guard:
+
+```text
+validation_short_cluster_imom_after_cost_mean > 0
+validation_short_cluster_imom_after_cost_t_stat_newey_west > 0
+robustness_short_cluster_imom_after_cost_mean > 0
+robustness_short_cluster_imom_after_cost_t_stat_newey_west > 0
+```
+
+First-match final decision priority:
+
+```text
+1. If required local inputs or sample coverage are unavailable:
+   ep6_weekly_imom_data_blocked
+
+2. Else if portfolio replay, overlapping vintage accounting, or after-cost replay cannot be produced:
+   ep6_weekly_imom_execution_replay_blocked
+
+3. Else if data sufficiency gate fails:
+   ep6_weekly_imom_sample_insufficient
+
+4. Else if primary IMOM validation gate fails:
+   ep6_weekly_imom_local_proxy_not_supported
+
+5. Else if validation passes but robustness IMOM mean or t-stat sign fails:
+   ep6_weekly_imom_local_proxy_validation_only_not_robust
+
+6. Else if primary IMOM gates pass but no single IVOL or IMD bivariate metric passes both splits:
+   ep6_weekly_imom_positive_risk_filter_not_supported
+
+7. Else if gross gates pass but after-cost guard fails:
+   ep6_weekly_imom_gross_positive_after_cost_not_supported
+
+8. Else:
+   ep6_weekly_imom_local_proxy_positive_diagnostic_only
+```
+
+Weak or mixed support may be used only as a report interpretation label, not as the machine-readable final decision. The risk-filter weak-support label applies only when the same metric in `{IVOL, IMD}` improves IMOM in validation and has the same positive improvement sign in robustness, but fails the full strong-support gate.
 
 ```text
 ep6_weekly_imom_local_proxy_mixed_positive_diagnostic
-```
-
-Failure decisions:
-
-```text
-ep6_weekly_imom_local_proxy_not_supported
-ep6_weekly_imom_data_blocked
-ep6_weekly_imom_execution_replay_blocked
-```
-
-Positive diagnostic decision:
-
-```text
-ep6_weekly_imom_local_proxy_positive_diagnostic_only
+risk_filter_weak_support_same_metric_validation_positive_robustness_same_sign
 ```
 
 Even if all diagnostic gates pass, the final report must state:
@@ -728,14 +970,36 @@ python_version
 qlib_provider_path
 universe_path
 calendar_path
+benchmark_feature_dir
+benchmark_feature_dir_hash
 price_adjustment_mode
 residual_model_id
+local_imom_interpretation
 risk_free_mode
+residual_beta_window
+risk_metric_window
+valid_return_day_policy
+first_evaluable_signal_week_by_J
+first_evaluable_portfolio_week_by_JK
+effective_split_start_by_JK
+train_weeks_lost_to_warmup_by_JK
 J_values
 K_values
 split_boundaries
+bivariate_sort_bucket_count
+weekly_calendar_policy
+cluster_aggregation_policy
+liquidity_threshold_policy
+liquidity_state_window
+money_unit_assumed
 cost_assumptions
+overlapping_vintage_accounting_policy
+drift_adjusted_weights_reported
+label_availability_policy
+newey_west_lag_policy
+raw_contrarian_derivation_policy
 blocked_inputs
+final_decision
 ```
 
 No rule may be tuned after observing validation or robustness returns:
@@ -748,7 +1012,12 @@ winsorization
 minimum coverage thresholds
 cost assumptions
 split boundaries
+bivariate sort bucket count
+liquidity state thresholds
+liquidity state window
+cluster aggregation
+drift-adjusted diagnostic inclusion
+Newey-West lag policy
 ```
 
 If a bug fix changes historical metrics, the implementation must regenerate all downstream artifacts and document the change in `r07_validation_manifest.json`.
-

@@ -1,0 +1,7 @@
+input_id,paper_required_input,local_source,availability_status,replication_action,local_proxy_id,asof_policy,coverage_train_weeks,coverage_validation_weeks,coverage_robustness_weeks,block_reason
+raw_stock_returns,raw stock returns,data/qlib/cn_data_pit/features/*/close.day.bin,available_full,retain,provider_adjusted_close_return,provider close as-of retained week end,174,98,99,
+ff5_residual_returns,CSMAR FF5 residual returns,data/qlib/cn_data_pit/features/* plus SH000300,missing_required_factor_source,retain_local_proxy,market_model_sh000300_ols_v0,rolling 130 trading-day beta ending d-1,174,98,99,CSMAR FF5 unavailable; local market residual used
+idiosyncratic_risk_metrics,idiosyncratic risk metrics,local market residual panel,available_partial,retain_local_proxy,local_residual_risk_130d_v0,130 trading days ending week t-2,174,98,99,paper FF5 residuals unavailable
+market_state,market state,data/qlib/cn_data_pit/features/sh000300/close.day.bin,available_full,retain_local_proxy,SH000300_26w_52w_state,prior retained weeks,174,98,99,
+liquidity_state,liquidity state,return and money fields,available_full,retain_local_proxy,local_Amihud_4w_AILLIQ,skip week plus prior 3 retained weeks; train-only thresholds,174,98,99,
+sentiment_state,Baker-Wurgler sentiment inputs,,missing_required_sentiment_source,remove,,,174,98,99,"Baker-Wurgler, IPO, closed-end fund discount, dividend premium, and issuance-share inputs unavailable"
