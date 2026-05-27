@@ -1,0 +1,92 @@
+phase: ep6_r08_monthly_contrarian_strategy_replication_v0
+requirement_id: ep6_paper_replica_08_monthly_contrarian_strategy_replication_v0
+requirement_path: ep6/papers/replica/requirement_08_monthly_contrarian_strategy_replication_v0.md
+output_root: ep6/outputs/r08_monthly_contrarian_strategy_replication_v0
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  target_history_path: data/targets/target_history.csv
+  index_instrument: SH000300
+  benchmark_feature_dir: data/qlib/cn_data_pit/features/sh000300
+  provider_load_end_date: "2026-04-30"
+
+sample_split:
+  price_history_warmup_start: "2017-01-03"
+  pit_signal_start: "2017-07-04"
+  train_start: "2018-07-01"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+price_adjustment:
+  mode: provider_ohlc_already_adjusted
+  primary_return_price: close
+  do_not_reapply_factor_day_bin_to_ohlc: true
+
+signals:
+  J_values: [1, 6, 12, 18, 24, 30, 36, 42, 48]
+  K_values: [1, 6, 12, 18, 24, 30, 36, 42, 48]
+  primary_local_decision_J_values: [18, 24, 30, 36, 42, 48]
+  primary_local_decision_K_values: [1, 6, 12]
+  intermediate_cluster_J_values: [6, 12]
+  intermediate_cluster_K_values: [6, 12]
+  short_cluster_J_values: [1]
+  short_cluster_K_values: [1]
+  skip1_scope: J_equals_K_only
+  min_intermediate_monthly_close_share: 0.50
+
+portfolio:
+  grouping_methods:
+    tertile: 3
+    quintile: 5
+    decile: 10
+  primary_grouping: decile
+  signal_eligible_instrument_count_min: 120
+  decile_leg_assigned_count_min: 10
+  quintile_leg_assigned_count_min: 15
+  tertile_leg_assigned_count_min: 20
+  label_evaluable_leg_count_min: 5
+  label_evaluable_leg_share_min: 0.60
+  deterministic_tie_break: stable_hash
+  tiebreak_seed: ep6_r08_monthly_contrarian_v0
+
+execution:
+  execution_mode: monthly_stock_constituent_replay_after_cost_mode
+  buy_cost_bps: 30
+  sell_cost_bps: 80
+  round_trip_cost_bps: 110
+  drift_adjusted_weights_reported: false
+  ep5_cost_contract_reference: ep5/configs/r08_h3_volume_price_single_stock_state_transferability_audit_v0.yaml
+  ep6_cost_contract_reference: ep6/configs/r07_weekly_imom_horse_race_v0.yaml
+
+statistics:
+  annualization_months: 12
+  newey_west_lag_policy: K_minus_1
+  newey_west_alternative_lag_policy: newey_west_1994
+
+state:
+  sign_state_windows_months: [12, 24]
+  train_percentile_window_months: 12
+  train_percentile_quantiles: [0.33, 0.67]
+  bootstrap_iterations: 1000
+  bootstrap_seed: 20260527
+
+gates:
+  validation_evaluable_primary_local_decision_cell_count_min: 15
+  robustness_evaluable_primary_local_decision_cell_count_min: 15
+  validation_primary_local_decision_min_month_count_per_cell: 12
+  robustness_primary_local_decision_min_month_count_per_cell: 12
+
+guardrails:
+  allow_online_data: false
+  allow_factor_day_bin_price_adjustment: false
+  allow_validation_rule_tuning: false
+  allow_strategy_authorization: false
+  allow_full_paper_long_holding_as_primary_gate: false

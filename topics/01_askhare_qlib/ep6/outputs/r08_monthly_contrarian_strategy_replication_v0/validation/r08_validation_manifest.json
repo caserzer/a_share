@@ -1,0 +1,171 @@
+{
+  "validation_status": "passed",
+  "requirement_id": "ep6_paper_replica_08_monthly_contrarian_strategy_replication_v0",
+  "final_decision": "ep6_monthly_contrarian_validation_only_not_robust",
+  "authorized_strategy_requirement": false,
+  "gate_results": [
+    {
+      "gate": "data_inputs_available",
+      "passed": true,
+      "value": true,
+      "threshold": true,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "execution_replay_available",
+      "passed": true,
+      "value": "matched",
+      "threshold": "cost_contract matched and calendar returns non-empty",
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "validation_evaluable_primary_local_decision_cell_count",
+      "passed": true,
+      "value": 18,
+      "threshold": 15,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "robustness_evaluable_primary_local_decision_cell_count",
+      "passed": true,
+      "value": 18,
+      "threshold": 15,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "validation_primary_local_decision_mean_positive",
+      "passed": true,
+      "value": 0.0147797092055255,
+      "threshold": 0,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "validation_primary_local_decision_t_stat_positive",
+      "passed": true,
+      "value": 1.6044646914250038,
+      "threshold": 0,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "validation_loser_leg_beats_winner_leg",
+      "passed": true,
+      "value": "0.004727310948397849 > -0.010052398257127648",
+      "threshold": "loser > winner",
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "robustness_primary_local_decision_mean_positive",
+      "passed": false,
+      "value": -0.00760871352582703,
+      "threshold": 0,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "robustness_primary_local_decision_t_stat_positive",
+      "passed": false,
+      "value": -0.7581065046048122,
+      "threshold": 0,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "robustness_loser_leg_beats_winner_leg",
+      "passed": false,
+      "value": "0.007351217236255839 > 0.014959930762082869",
+      "threshold": "loser > winner",
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "validation_decile_mean_ge_tertile_mean",
+      "passed": true,
+      "value": "0.016210393158957184 >= 0.01099784073125971",
+      "threshold": "decile >= tertile",
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "robustness_decile_mean_ge_tertile_mean",
+      "passed": false,
+      "value": "-0.006660121603466447 >= -0.00555238142207941",
+      "threshold": "decile >= tertile",
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "validation_after_cost_decile_L_minus_W_mean_positive",
+      "passed": true,
+      "value": 0.011396073755100817,
+      "threshold": 0,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "robustness_after_cost_decile_L_minus_W_mean_positive",
+      "passed": false,
+      "value": -0.01138040480066039,
+      "threshold": 0,
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "validation_loser_long_only_after_cost_mean_positive",
+      "passed": true,
+      "value": 0.0030154717795849704,
+      "threshold": "diagnostic label only",
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    },
+    {
+      "gate": "robustness_loser_long_only_after_cost_mean_positive",
+      "passed": true,
+      "value": 0.005540854330951617,
+      "threshold": "diagnostic label only",
+      "final_decision": "ep6_monthly_contrarian_validation_only_not_robust"
+    }
+  ],
+  "gate_diagnostics": {
+    "cluster_stats": [
+      {
+        "split": "train",
+        "month_count": 52,
+        "monthly_mean_return": -0.0031916948901855252,
+        "annualized_mean_return": -0.038300338682226306,
+        "t_stat_monthly_mean_newey_west": -0.2746176406637449,
+        "after_cost_monthly_mean_return": -0.006515771420229435,
+        "after_cost_t_stat_newey_west": -0.5616723169126433,
+        "loser_monthly_mean_return": 0.007737019316713058,
+        "winner_monthly_mean_return": 0.010928714206898584,
+        "loser_long_only_after_cost_monthly_mean_return": 0.0061494470162560405,
+        "loser_long_only_after_cost_t_stat_newey_west": 0.7426017807149621,
+        "primary_cell_count_mean_per_month": 10.711538461538462
+      },
+      {
+        "split": "validation",
+        "month_count": 35,
+        "monthly_mean_return": 0.0147797092055255,
+        "annualized_mean_return": 0.177356510466306,
+        "t_stat_monthly_mean_newey_west": 1.6044646914250038,
+        "after_cost_monthly_mean_return": 0.011396073755100817,
+        "after_cost_t_stat_newey_west": 1.2460738428150746,
+        "loser_monthly_mean_return": 0.004727310948397849,
+        "winner_monthly_mean_return": -0.010052398257127648,
+        "loser_long_only_after_cost_monthly_mean_return": 0.0030154717795849704,
+        "loser_long_only_after_cost_t_stat_newey_west": 0.2618860881312851,
+        "primary_cell_count_mean_per_month": 15.085714285714285
+      },
+      {
+        "split": "robustness",
+        "month_count": 28,
+        "monthly_mean_return": -0.00760871352582703,
+        "annualized_mean_return": -0.09130456230992436,
+        "t_stat_monthly_mean_newey_west": -0.7581065046048122,
+        "after_cost_monthly_mean_return": -0.01138040480066039,
+        "after_cost_t_stat_newey_west": -1.107212617041591,
+        "loser_monthly_mean_return": 0.007351217236255839,
+        "winner_monthly_mean_return": 0.014959930762082869,
+        "loser_long_only_after_cost_monthly_mean_return": 0.005540854330951617,
+        "loser_long_only_after_cost_t_stat_newey_west": 0.42274641290456766,
+        "primary_cell_count_mean_per_month": 17.142857142857142
+      }
+    ],
+    "cost_contract_status": "matched",
+    "loser_long_only_after_cost_positive_both_oos": true,
+    "primary_cell_mixed_signs": true
+  },
+  "cost_contract_status": "matched",
+  "artifact_contract": "all required R08 csv/json/markdown artifacts generated"
+}

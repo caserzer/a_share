@@ -1,0 +1,92 @@
+{
+  "created_at": "2026-05-27T09:14:34.615875+00:00",
+  "requirement_id": "ep6_paper_replica_08_monthly_contrarian_strategy_replication_v0",
+  "requirement_path": "ep6/papers/replica/requirement_08_monthly_contrarian_strategy_replication_v0.md",
+  "git_commit_or_worktree_status": "082a4b298da47b0c3f5b913743e89ab6b40e24c9 (dirty)",
+  "python_version": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:12:24) [GCC 11.2.0]",
+  "qlib_provider_path": "data/qlib/cn_data_pit",
+  "universe_path": "data/universe/pit_mcap500_mainboard_daily.csv",
+  "calendar_path": "data/qlib/cn_data_pit/calendars/day.txt",
+  "provider_load_end_date": "2026-04-30",
+  "price_adjustment_mode": "provider_ohlc_already_adjusted",
+  "do_not_reapply_factor_day_bin_to_ohlc": true,
+  "J_values": [
+    1,
+    6,
+    12,
+    18,
+    24,
+    30,
+    36,
+    42,
+    48
+  ],
+  "K_values": [
+    1,
+    6,
+    12,
+    18,
+    24,
+    30,
+    36,
+    42,
+    48
+  ],
+  "primary_local_decision_J_values": [
+    18,
+    24,
+    30,
+    36,
+    42,
+    48
+  ],
+  "primary_local_decision_K_values": [
+    1,
+    6,
+    12
+  ],
+  "grouping_methods": {
+    "tertile": 3,
+    "quintile": 5,
+    "decile": 10
+  },
+  "cost_assumptions": {
+    "execution_mode": "monthly_stock_constituent_replay_after_cost_mode",
+    "buy_cost_bps": 30,
+    "sell_cost_bps": 80,
+    "round_trip_cost_bps": 110,
+    "drift_adjusted_weights_reported": false,
+    "ep5_cost_contract_reference": "ep5/configs/r08_h3_volume_price_single_stock_state_transferability_audit_v0.yaml",
+    "ep6_cost_contract_reference": "ep6/configs/r07_weekly_imom_horse_race_v0.yaml"
+  },
+  "overlapping_vintage_accounting_policy": "combined_weight_i_h = active_vintage_count^-1 * sum_active signed_leg_weight_i; entry/exit differences are turnover; final active month includes settlement to zero",
+  "split_boundaries": {
+    "price_history_warmup_start": "2017-01-03",
+    "pit_signal_start": "2017-07-04",
+    "train_start": "2018-07-01",
+    "train_end": "2021-12-31",
+    "validation_start": "2022-01-01",
+    "validation_end": "2023-12-31",
+    "robustness_start": "2024-01-01",
+    "robustness_end": "2025-12-31"
+  },
+  "final_decision": "ep6_monthly_contrarian_validation_only_not_robust",
+  "authorized_strategy_requirement": false,
+  "environment_snapshot_file": "ep6/outputs/r08_monthly_contrarian_strategy_replication_v0/manifests/r08_environment_snapshot.json",
+  "package_count": 533,
+  "report_file": "ep6/outputs/r08_monthly_contrarian_strategy_replication_v0/reports/r08_final_report.md",
+  "report_sha256": "7d2ec87e9ac98aad9823d4d59c5617b2982441794ac43bccc033860976201d28",
+  "artifact_formats": {
+    "r08_monthly_stock_returns": "parquet",
+    "r08_rank_return_panel": "parquet",
+    "r08_bucket_assignment_panel": "parquet",
+    "r08_vintage_monthly_returns": "csv_gzip_for_git_publish"
+  },
+  "large_artifact_policy": {
+    "raw_file_kept_local": "ep6/outputs/r08_monthly_contrarian_strategy_replication_v0/returns/r08_vintage_monthly_returns.csv",
+    "raw_file_sha256": "dc5dc774b6276b044b43f58d5d1f603bc1fe257e7570f607a3f730353aaafbc2",
+    "git_published_file": "ep6/outputs/r08_monthly_contrarian_strategy_replication_v0/returns/r08_vintage_monthly_returns.csv.gz",
+    "git_published_file_sha256": "22f9d2267cd6d08055f67def026825d19427467848f3c5e8d32a693e63c44b5a",
+    "reason": "raw csv is 106680701 bytes and exceeds GitHub 100MB single-file limit"
+  }
+}

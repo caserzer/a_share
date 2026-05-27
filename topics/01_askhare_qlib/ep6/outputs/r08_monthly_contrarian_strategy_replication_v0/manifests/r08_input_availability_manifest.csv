@@ -1,0 +1,7 @@
+input_id,paper_required_input,local_source,availability_status,replication_action,local_proxy_id,asof_policy,block_reason
+monthly_adjusted_stock_returns,monthly adjusted stock returns,data/qlib/cn_data_pit/features/*/close.day.bin,available_full,retain_local_proxy,provider_adjusted_close_return,provider close as-of month end,
+exchange_split,SHSE/SZSE exchange split,data/universe/pit_qlib_instrument_universe.csv.exchange,available_full,retain_local_proxy,SH_SZ_to_SHSE_SZSE_mapping,static instrument map,
+full_all_a_share_universe,full all-A-share universe,not available locally,blocked_not_reproducible,remove,,not local PIT universe,local PIT mcap500 mainboard universe is mandatory
+ipo_first_month_exclusion,IPO first-month exclusion,data/universe/pit_mcap500_mainboard_daily.csv.listing_age_trading_days,available_partial,retain_local_proxy,listing_age_min_120_audit,PIT membership as-of signal date,local universe already filters listing_age_trading_days >= 120; not paper-equivalent raw IPO deletion
+market_state,market state,data/qlib/cn_data_pit/features/sh000300/close.day.bin,available_full,retain_local_proxy,SH000300_prior_return_state,prior month-end index close,
+one_month_skip,one-month skip robustness,monthly close panel,available_full,retain,J_equals_K_skip1,signal month close only,
