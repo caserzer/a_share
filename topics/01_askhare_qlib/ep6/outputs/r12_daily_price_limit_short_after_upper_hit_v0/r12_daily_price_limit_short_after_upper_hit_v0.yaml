@@ -1,0 +1,85 @@
+phase: ep6_r12_daily_price_limit_short_after_upper_hit_v0
+requirement_id: ep6_paper_replica_12_daily_price_limit_short_after_upper_hit_v0
+short_name: r12_daily_price_limit_short_after_upper_hit_v0
+requirement_path: ep6/papers/replica/requirement_12_daily_price_limit_short_after_upper_hit_v0.md
+output_root: ep6/outputs/r12_daily_price_limit_short_after_upper_hit_v0
+
+data_sources:
+  qlib_provider_uri: data/qlib/cn_data_pit
+  pit_universe_path: data/universe/pit_mcap500_mainboard_daily.csv
+  pit_qlib_instrument_universe_path: data/universe/pit_qlib_instrument_universe.csv
+  pit_industry_path: data/targets/pit_industry_membership.csv
+  trading_calendar_path: data/qlib/cn_data_pit/calendars/day.txt
+  qlib_instrument_path: data/qlib/cn_data_pit/instruments/pit_mcap500_mainboard.txt
+  target_history_path: data/targets/target_history.csv
+  index_instrument: SH000300
+  benchmark_feature_dir: data/qlib/cn_data_pit/features/sh000300
+  provider_load_end_date: "2026-04-30"
+  official_unadjusted_daily_ohlc_path: ""
+
+sample_split:
+  warmup_start: "2017-01-03"
+  warmup_end: "2018-06-30"
+  train_start: "2018-07-01"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+  robustness_end: "2025-12-31"
+
+price_adjustment:
+  mode: provider_ohlc_already_adjusted
+  primary_return_price: open_and_close
+  do_not_reapply_factor_day_bin_to_ohlc: true
+
+limit_detection:
+  source_priority:
+    - official_unadjusted_daily_ohlc_if_available
+    - provider_ohlc_with_factor_continuity_guard
+  close_high_tolerance: 0.0015
+  one_price_lock_tolerance: 0.0005
+  factor_continuity_tolerance: 0.0001
+  max_prev_trade_gap: 10
+  regular_lower_bound: 0.0980
+  regular_upper_bound: 0.1025
+  st_lower_bound: 0.0480
+  st_upper_bound: 0.0525
+  nonlimit_lower_bound: 0.0800
+  nonlimit_upper_bound: 0.0980
+
+events:
+  entry_variants: [d1_open, d1_close, d0_close_oracle]
+  primary_entry_variant: d1_open
+  primary_report_horizons: [5, 10, 20]
+  primary_decision_horizons: [10, 20]
+  diagnostic_horizons: [1, 2, 60, 120]
+  borrow_fee_stress_bps_per_trading_day: [0, 2, 5, 10]
+
+execution:
+  short_sell_cost_bps: 80
+  buy_to_cover_cost_bps: 30
+  round_trip_cost_bps: 110
+  authorized_strategy_requirement: false
+
+calendar_time:
+  horizons: [5, 10, 20]
+  max_abs_weight_per_instrument: 0.05
+  renormalize_after_name_cap: true
+
+statistics:
+  newey_west_lag_policy: min_H_20
+
+gates:
+  minimum_regular_upper_hit_event_count: 100
+  minimum_event_month_count: 12
+  primary_entry_complete_share_min: 0.70
+  primary_horizon_label_complete_share_min: 0.70
+  date_weighted_positive_event_date_share_min: 0.52
+  validation_newey_west_tstat_min: 1.50
+  comparator_matched_event_share_min: 0.70
+
+guardrails:
+  allow_online_data: false
+  allow_factor_day_bin_price_adjustment: false
+  allow_validation_rule_tuning: false
+  allow_strategy_authorization: false

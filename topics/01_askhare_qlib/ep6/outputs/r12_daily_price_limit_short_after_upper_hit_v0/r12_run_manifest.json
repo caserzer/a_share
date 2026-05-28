@@ -1,0 +1,55 @@
+{
+  "created_at": "2026-05-28T14:53:15.331256+00:00",
+  "run_started_at": "2026-05-28T14:53:02.916126+00:00",
+  "run_completed_at": "2026-05-28T14:53:15.331256+00:00",
+  "git_commit_or_worktree_status": "f92236cde4f0f070781e84aa8a3b0c2e6cadf5f0 (dirty)",
+  "python_version": "3.11.12 (main, Apr  9 2025, 04:04:00) [Clang 20.1.0 ]",
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "requirement_id": "ep6_paper_replica_12_daily_price_limit_short_after_upper_hit_v0",
+  "short_name": "r12_daily_price_limit_short_after_upper_hit_v0",
+  "config_path": "ep6/configs/r12_daily_price_limit_short_after_upper_hit_v0.yaml",
+  "config_sha256": "5c0e452e022770bf0432151daaa7aad7ad646b60fee97029930ad24a4b284892",
+  "requirement_path": "ep6/papers/replica/requirement_12_daily_price_limit_short_after_upper_hit_v0.md",
+  "requirement_sha256": "fe8c524b811dc7c4fa4344451191359a63c30fc0c3b31f2e7ee4597c9aafa46d",
+  "provider_uri": "data/qlib/cn_data_pit",
+  "provider_calendar_min": "2017-01-03",
+  "provider_calendar_max": "2026-04-30",
+  "provider_load_end": "2026-04-30",
+  "pit_universe_path": "data/universe/pit_mcap500_mainboard_daily.csv",
+  "pit_universe_sha256": "33e037afb7f75c2f64ff6a7a6f205f164f1ba90d61b09976b670c9d3930a3a80",
+  "pit_industry_path": "data/targets/pit_industry_membership.csv",
+  "pit_industry_sha256": "9fefe9fba24993c3f92f667c4059b9e18742a1ee9bb65f713b344c29d80ca2aa",
+  "benchmark_feature_dir": "data/qlib/cn_data_pit/features/sh000300",
+  "benchmark_feature_dir_hash": "e47c82f606541ed022e4c6b2b46efed2324d470e3fb6167ece17c0fe53f7fe7b",
+  "price_adjustment_mode": "provider_ohlc_already_adjusted",
+  "limit_detection_price_source": "provider_ohlc_with_factor_continuity_guard",
+  "official_unadjusted_daily_ohlc_status": "absent_used_provider_fallback",
+  "outside_pit_audit_status": "not_evaluable_local_source_absent",
+  "factor_continuity_tolerance": 0.0001,
+  "factor_discontinuity_blocked_count": 216385,
+  "factor_discontinuity_blocked_share": 0.5695451219447998,
+  "entry_variant_primary": "d1_open",
+  "primary_report_horizons": [
+    5,
+    10,
+    20
+  ],
+  "primary_decision_horizons": [
+    10,
+    20
+  ],
+  "diagnostic_horizons": [
+    1,
+    2,
+    60,
+    120
+  ],
+  "borrow_fee_stress_bps_per_trading_day": [
+    0,
+    2,
+    5,
+    10
+  ],
+  "final_decision": "r12_not_evaluable_insufficient_comparator_coverage",
+  "authorized_strategy_requirement": false
+}
