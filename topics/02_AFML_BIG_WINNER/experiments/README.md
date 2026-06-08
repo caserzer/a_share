@@ -19,5 +19,5 @@ experiment folder.
 
 Current pending experiments:
 
-- `pending/data_prepare_pit_largecap_akshare_qlib_v0`: prepare the PIT
+- `pending/01_data_prepare_pit_largecap_akshare_qlib_v0`: prepare the PIT
   large-cap A-share universe and Qlib daily data cache from AkShare.

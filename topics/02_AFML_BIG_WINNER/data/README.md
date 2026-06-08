@@ -7,7 +7,7 @@ AkShare, and the primary consumers are Qlib-based research experiments under
 
 Most files under `raw/`, `interim/`, `processed/`, and `qlib/` are generated
 caches and are intentionally ignored by Git. The experiment reports and audit
-tables under `experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/outputs/`
+tables under `experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/`
 are the publishable summary artifacts.
 
 ## Coverage
@@ -121,21 +121,21 @@ Run commands from `topics/02_AFML_BIG_WINNER`.
 Validate configuration:
 
 ```bash
-uv run python experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode validate-config
+uv run python experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode validate-config
 ```
 
 Refresh only benchmark index data and the index Qlib provider:
 
 ```bash
 env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy \
-  uv run python experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode index-only
+  uv run python experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode index-only
 ```
 
 Run the full stock-universe and benchmark-index pipeline:
 
 ```bash
 env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy \
-  uv run python experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode full
+  uv run python experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode full
 ```
 
 Do not hand-edit generated data files. Change the requirement, config, or

@@ -22,7 +22,7 @@ def test_first_data_prepare_experiment_contract() -> None:
         root
         / "experiments"
         / "pending"
-        / "data_prepare_pit_largecap_akshare_qlib_v0"
+        / "01_data_prepare_pit_largecap_akshare_qlib_v0"
         / "config.yaml"
     )
 
@@ -40,11 +40,11 @@ def test_first_data_prepare_experiment_contract() -> None:
         config["universe"]["board_buckets"]["main_board"][
             "market_cap_threshold_cny"
         ]
-        == 100_000_000_000
+        == 50_000_000_000
     )
     assert (
         config["universe"]["board_buckets"]["chinext"]["market_cap_threshold_cny"]
-        == 50_000_000_000
+        == 20_000_000_000
     )
     assert config["universe"]["exclude_st"] is True
     assert config["universe"]["exclude_suspended"] is True
@@ -52,6 +52,10 @@ def test_first_data_prepare_experiment_contract() -> None:
     assert config["fields"]["transaction_value"]["canonical_qlib_field"] == "$money"
     assert "$money" in config["fields"]["qlib_required"]
     assert "$amount" not in config["fields"]["qlib_required"]
+    assert {"csi300", "chinext_index", "all_a"} == {
+        item["alias"] for item in config["indices"]["required"]
+    }
+    assert config["paths"]["index_qlib_provider_uri"] == "data/qlib/cn_index_data"
     assert config["validation"]["reject_st_or_suspended_membership"] is True
     assert config["validation"]["require_executable_date_keyed_qlib_market"] is True
     assert (

@@ -24,9 +24,10 @@ Runnable entrypoint:
 
 ```bash
 cd topics/02_AFML_BIG_WINNER
-uv run python experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode validate-config
-uv run python experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode preflight
-uv run python experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode full
+uv run python experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode validate-config
+uv run python experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode preflight
+uv run python experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode index-only
+uv run python experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/code/run.py --mode full
 ```
 
 The full mode is source-gated. It first writes the AkShare API audit artifacts,
@@ -37,9 +38,9 @@ date-keyed, and unproxied Shenzhen name-change history provides dated ST
 markers. For Shanghai instruments, `stock_info_change_name` returns names
 without dates; the experiment therefore uses a conservative whole-asset
 exclusion policy: if any Shanghai name-history row contains an ST marker, the
-instrument is removed from the entire universe. With that policy, source
-preflight can pass; full mode still stops at the implementation guard until the
-membership writer is reviewed against the policy.
+instrument is removed from the entire universe. Benchmark index data is written
+to a separate Qlib provider so index instruments cannot enter the tradable stock
+market universe.
 
 Primary implementation files:
 
