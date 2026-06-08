@@ -1,0 +1,147 @@
+{
+  "akshare_version": "1.18.64",
+  "audit": [
+    {
+      "category": "historical_raw_daily_bars",
+      "fallback_state": "primary_or_fallback_sampled",
+      "function_name": "stock_zh_a_daily",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Sampled 2024-05-06 through 2024-05-10, adjust=raw.",
+      "sample_rows": 5,
+      "source_columns": "date|open|high|low|close|volume|money|turnover_rate|instrument|source_function|source_volume_unit|source_turnover_unit",
+      "source_date_field": "date",
+      "support_state": "supported",
+      "units": "volume=shares;turnover=ratio;money=CNY"
+    },
+    {
+      "category": "historical_qfq_daily_bars",
+      "fallback_state": "primary_or_fallback_sampled",
+      "function_name": "stock_zh_a_daily",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Sampled 2024-05-06 through 2024-05-10, adjust=qfq.",
+      "sample_rows": 5,
+      "source_columns": "date|open|high|low|close|volume|money|turnover_rate|instrument|source_function|source_volume_unit|source_turnover_unit",
+      "source_date_field": "date",
+      "support_state": "supported",
+      "units": "volume=shares;turnover=ratio;money=CNY"
+    },
+    {
+      "category": "historical_total_market_cap_or_total_share_asof",
+      "fallback_state": "primary_gbjg_or_cninfo_share_change_fallback",
+      "function_name": "stock_zh_a_gbjg_em|stock_share_change_cninfo",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Historical share-change rows can be as-of expanded by trade date. Fallback stock_share_change_cninfo sampled with \u53d8\u52a8\u65e5\u671f and \u603b\u80a1\u672c in 10k-share units.",
+      "sample_rows": 83,
+      "source_columns": "\u53d8\u66f4\u65e5\u671f|\u603b\u80a1\u672c|\u6d41\u901a\u53d7\u9650\u80a1\u4efd|\u5176\u4ed6\u5185\u8d44\u6301\u80a1(\u53d7\u9650)|\u5883\u5185\u6cd5\u4eba\u6301\u80a1(\u53d7\u9650)|\u5883\u5185\u81ea\u7136\u4eba\u6301\u80a1(\u53d7\u9650)|\u5df2\u6d41\u901a\u80a1\u4efd|\u5df2\u4e0a\u5e02\u6d41\u901aA\u80a1|\u53d8\u52a8\u539f\u56e0|stock_share_change_cninfo.\u8bc1\u5238\u7b80\u79f0|stock_share_change_cninfo.\u673a\u6784\u540d\u79f0|stock_share_change_cninfo.\u5883\u5916\u6cd5\u4eba\u6301\u80a1|stock_share_change_cninfo.\u8bc1\u5238\u6295\u8d44\u57fa\u91d1\u6301\u80a1|stock_share_change_cninfo.\u56fd\u5bb6\u6301\u80a1-\u53d7\u9650|stock_share_change_cninfo.\u56fd\u6709\u6cd5\u4eba\u6301\u80a1|stock_share_change_cninfo.\u914d\u552e\u6cd5\u4eba\u80a1|stock_share_change_cninfo.\u53d1\u8d77\u4eba\u80a1\u4efd|stock_share_change_cninfo.\u672a\u6d41\u901a\u80a1\u4efd|stock_share_change_cninfo.\u5176\u4e2d\uff1a\u5883\u5916\u81ea\u7136\u4eba\u6301\u80a1|stock_share_change_cninfo.\u5176\u4ed6\u6d41\u901a\u53d7\u9650\u80a1\u4efd|stock_share_change_cninfo.\u5176\u4ed6\u6d41\u901a\u80a1|stock_share_change_cninfo.\u5916\u8d44\u6301\u80a1-\u53d7\u9650|stock_share_change_cninfo.\u5185\u90e8\u804c\u5de5\u80a1|stock_share_change_cninfo.\u5883\u5916\u4e0a\u5e02\u5916\u8d44\u80a1-H\u80a1|stock_share_change_cninfo.\u5176\u4e2d\uff1a\u5883\u5185\u6cd5\u4eba\u6301\u80a1|stock_share_change_cninfo.\u81ea\u7136\u4eba\u6301\u80a1|stock_share_change_cninfo.\u4eba\u6c11\u5e01\u666e\u901a\u80a1|stock_share_change_cninfo.\u56fd\u6709\u6cd5\u4eba\u6301\u80a1-\u53d7\u9650|stock_share_change_cninfo.\u4e00\u822c\u6cd5\u4eba\u6301\u80a1|stock_share_change_cninfo.\u63a7\u80a1\u80a1\u4e1c\u3001\u5b9e\u9645\u63a7\u5236\u4eba|stock_share_change_cninfo.\u5176\u4e2d\uff1a\u9650\u552eH\u80a1|stock_share_change_cninfo.\u53d8\u52a8\u539f\u56e0|stock_share_change_cninfo.\u516c\u544a\u65e5\u671f|stock_share_change_cninfo.\u5883\u5185\u6cd5\u4eba\u6301\u80a1|stock_share_change_cninfo.\u8bc1\u5238\u4ee3\u7801|stock_share_change_cninfo.\u53d8\u52a8\u65e5\u671f|stock_share_change_cninfo.\u6218\u7565\u6295\u8d44\u8005\u6301\u80a1|stock_share_change_cninfo.\u56fd\u5bb6\u6301\u80a1|stock_share_change_cninfo.\u5176\u4e2d\uff1a\u9650\u552eB\u80a1|stock_share_change_cninfo.\u5176\u4ed6\u672a\u6d41\u901a\u80a1|stock_share_change_cninfo.\u6d41\u901a\u53d7\u9650\u80a1\u4efd|stock_share_change_cninfo.\u4f18\u5148\u80a1|stock_share_change_cninfo.\u9ad8\u7ba1\u80a1|stock_share_change_cninfo.\u603b\u80a1\u672c|stock_share_change_cninfo.\u5176\u4e2d\uff1a\u9650\u552e\u9ad8\u7ba1\u80a1|stock_share_change_cninfo.\u8f6c\u914d\u80a1|stock_share_change_cninfo.\u5883\u5185\u4e0a\u5e02\u5916\u8d44\u80a1-B\u80a1|stock_share_change_cninfo.\u5176\u4e2d\uff1a\u5883\u5916\u6cd5\u4eba\u6301\u80a1|stock_share_change_cninfo.\u52df\u96c6\u6cd5\u4eba\u80a1|stock_share_change_cninfo.\u5df2\u6d41\u901a\u80a1\u4efd|stock_share_change_cninfo.\u5176\u4e2d\uff1a\u5883\u5185\u81ea\u7136\u4eba\u6301\u80a1|stock_share_change_cninfo.\u5176\u4ed6\u5185\u8d44\u6301\u80a1-\u53d7\u9650|stock_share_change_cninfo.\u53d8\u52a8\u539f\u56e0\u7f16\u7801",
+      "source_date_field": "\u53d8\u66f4\u65e5\u671f|\u53d8\u52a8\u65e5\u671f",
+      "support_state": "supported",
+      "units": "stock_zh_a_gbjg_em total_share_asof=shares; stock_share_change_cninfo \u603b\u80a1\u672c=10k shares; market_cap=raw_close_CNY*total_share_asof"
+    },
+    {
+      "category": "instrument_metadata_board_classification",
+      "fallback_state": "current_lists_plus_delist_lists",
+      "function_name": "stock_info_sh_name_code|stock_info_sz_name_code|stock_info_sh_delist|stock_info_sz_delist",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Board classification is code-prefix based after excluding non-target prefixes.",
+      "sample_rows": 4952,
+      "source_columns": "stock_info_sh_name_code.\u8bc1\u5238\u4ee3\u7801|stock_info_sh_name_code.\u8bc1\u5238\u7b80\u79f0|stock_info_sh_name_code.\u8bc1\u5238\u5168\u79f0|stock_info_sh_name_code.\u516c\u53f8\u7b80\u79f0|stock_info_sh_name_code.\u516c\u53f8\u5168\u79f0|stock_info_sh_name_code.\u4e0a\u5e02\u65e5\u671f|stock_info_sz_name_code.\u677f\u5757|stock_info_sz_name_code.A\u80a1\u4ee3\u7801|stock_info_sz_name_code.A\u80a1\u7b80\u79f0|stock_info_sz_name_code.A\u80a1\u4e0a\u5e02\u65e5\u671f|stock_info_sz_name_code.A\u80a1\u603b\u80a1\u672c|stock_info_sz_name_code.A\u80a1\u6d41\u901a\u80a1\u672c|stock_info_sz_name_code.\u6240\u5c5e\u884c\u4e1a|stock_info_sh_delist.\u516c\u53f8\u4ee3\u7801|stock_info_sh_delist.\u516c\u53f8\u7b80\u79f0|stock_info_sh_delist.\u4e0a\u5e02\u65e5\u671f|stock_info_sh_delist.\u6682\u505c\u4e0a\u5e02\u65e5\u671f|stock_info_sz_delist.\u8bc1\u5238\u4ee3\u7801|stock_info_sz_delist.\u8bc1\u5238\u7b80\u79f0|stock_info_sz_delist.\u4e0a\u5e02\u65e5\u671f|stock_info_sz_delist.\u7ec8\u6b62\u4e0a\u5e02\u65e5\u671f",
+      "source_date_field": "\u4e0a\u5e02\u65e5\u671f|\u6682\u505c\u4e0a\u5e02\u65e5\u671f|\u7ec8\u6b62\u4e0a\u5e02\u65e5\u671f",
+      "support_state": "supported",
+      "units": "code/name/listing_date/delist_date where available"
+    },
+    {
+      "category": "historical_listed_delisted_status",
+      "fallback_state": "current_lists_plus_delist_lists",
+      "function_name": "stock_info_sh_name_code|stock_info_sz_name_code|stock_info_sh_delist|stock_info_sz_delist",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Listing status can be constructed from listing/delist dates when metadata audit passes.",
+      "sample_rows": 4952,
+      "source_columns": "stock_info_sh_name_code.\u8bc1\u5238\u4ee3\u7801|stock_info_sh_name_code.\u8bc1\u5238\u7b80\u79f0|stock_info_sh_name_code.\u8bc1\u5238\u5168\u79f0|stock_info_sh_name_code.\u516c\u53f8\u7b80\u79f0|stock_info_sh_name_code.\u516c\u53f8\u5168\u79f0|stock_info_sh_name_code.\u4e0a\u5e02\u65e5\u671f|stock_info_sz_name_code.\u677f\u5757|stock_info_sz_name_code.A\u80a1\u4ee3\u7801|stock_info_sz_name_code.A\u80a1\u7b80\u79f0|stock_info_sz_name_code.A\u80a1\u4e0a\u5e02\u65e5\u671f|stock_info_sz_name_code.A\u80a1\u603b\u80a1\u672c|stock_info_sz_name_code.A\u80a1\u6d41\u901a\u80a1\u672c|stock_info_sz_name_code.\u6240\u5c5e\u884c\u4e1a|stock_info_sh_delist.\u516c\u53f8\u4ee3\u7801|stock_info_sh_delist.\u516c\u53f8\u7b80\u79f0|stock_info_sh_delist.\u4e0a\u5e02\u65e5\u671f|stock_info_sh_delist.\u6682\u505c\u4e0a\u5e02\u65e5\u671f|stock_info_sz_delist.\u8bc1\u5238\u4ee3\u7801|stock_info_sz_delist.\u8bc1\u5238\u7b80\u79f0|stock_info_sz_delist.\u4e0a\u5e02\u65e5\u671f|stock_info_sz_delist.\u7ec8\u6b62\u4e0a\u5e02\u65e5\u671f",
+      "source_date_field": "\u4e0a\u5e02\u65e5\u671f|\u6682\u505c\u4e0a\u5e02\u65e5\u671f|\u7ec8\u6b62\u4e0a\u5e02\u65e5\u671f",
+      "support_state": "supported",
+      "units": "code/name/listing_date/delist_date where available"
+    },
+    {
+      "category": "historical_st_status",
+      "fallback_state": "supported_with_sh_lifetime_st_exclusion",
+      "function_name": "stock_info_sz_change_name|stock_info_change_name|stock_zh_a_st_em",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Unproxied historical ST probe found 2612 dated Shenzhen ST-name-change rows, but Shanghai stock_info_change_name returns names without dates. Policy: remove every Shanghai asset from the whole universe when any returned name contains an ST marker; when AkShare returns no Shanghai name-history table for a symbol, treat it as no recorded Shanghai name-change rows for that symbol. Probe 600003 confirmed a Shanghai ST marker. Current ST list sample failed: ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "sample_rows": 7403,
+      "source_columns": "stock_info_sz_change_name.\u53d8\u66f4\u65e5\u671f|stock_info_sz_change_name.\u8bc1\u5238\u4ee3\u7801|stock_info_sz_change_name.\u8bc1\u5238\u7b80\u79f0|stock_info_sz_change_name.\u53d8\u66f4\u524d\u7b80\u79f0|stock_info_sz_change_name.\u53d8\u66f4\u540e\u7b80\u79f0|stock_info_change_name.index|stock_info_change_name.name|stock_info_change_name_st_probe.index|stock_info_change_name_st_probe.name",
+      "source_date_field": "SZ: \u53d8\u66f4\u65e5\u671f; SH: no date, whole-asset exclusion",
+      "support_state": "supported",
+      "units": "SZ dated ST name changes; SH lifetime exclusion when any stock_info_change_name row contains ST"
+    },
+    {
+      "category": "suspension_or_tradability_status",
+      "fallback_state": "sample_date_respected",
+      "function_name": "stock_tfp_em",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Sample for 2024-05-06 matched requested date.",
+      "sample_rows": 845,
+      "source_columns": "\u5e8f\u53f7|\u4ee3\u7801|\u540d\u79f0|\u505c\u724c\u65f6\u95f4|\u505c\u724c\u622a\u6b62\u65f6\u95f4|\u505c\u724c\u671f\u9650|\u505c\u724c\u539f\u56e0|\u6240\u5c5e\u5e02\u573a|\u9884\u8ba1\u590d\u724c\u65f6\u95f4",
+      "source_date_field": "\u505c\u724c\u65f6\u95f4|\u505c\u724c\u622a\u6b62\u65f6\u95f4",
+      "support_state": "supported",
+      "units": "suspension rows keyed by requested trade date"
+    },
+    {
+      "category": "trading_calendar",
+      "fallback_state": "calendar_covers_requested_range",
+      "function_name": "tool_trade_date_hist_sina",
+      "historical": true,
+      "latest_only": false,
+      "notes": "Resolved 2281 sessions from 2017-01-03 to 2026-05-29.",
+      "sample_rows": 8797,
+      "source_columns": "trade_date",
+      "source_date_field": "trade_date",
+      "support_state": "supported",
+      "units": "A-share trading session date"
+    }
+  ],
+  "command": [
+    "experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/code/run.py",
+    "--mode",
+    "full"
+  ],
+  "config_file_hash": "d59d905235044c4df515bc91bc881c8ed8c4d7870cfde8387db95c1668f0d7cc",
+  "config_hash": "21bee362926e8ede9bc3cffea18fe557d04851048ceb087afcf543d9df38d092",
+  "config_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/config.yaml",
+  "created_at_utc": "2026-06-08T11:13:23.449555+00:00",
+  "decision": "full_run_complete",
+  "extra": {
+    "candidate_rows": 475227,
+    "executable_membership_rows": 470682,
+    "instrument_failures": 318,
+    "interval_rows": 5697,
+    "raw_membership_rows": 471140,
+    "resolved_end_date": "2026-05-29",
+    "resolved_sessions": 2281,
+    "resolved_start_date": "2017-01-03",
+    "selected_instruments": 4915,
+    "skip_qlib_dump": false
+  },
+  "git_revision": "bd251ec7816cfb359f9543ea7700a39a9b68b496",
+  "output_hashes": {
+    "akshare_api_audit": "434c6b028a573004154af520e51ba2aa3e801a7bded1d15acf0a9ee203422788",
+    "final_report": "cae928d2d26e57cebfd54b5f6903113a42c5eac29f9bb86f2db0f9a6c134f66c",
+    "source_coverage_audit": "fbba74d902af21b22c7b07403fa0fc4d0e5789d497c83fcbad7c6111b6ce484b"
+  },
+  "outputs": {
+    "akshare_api_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/outputs/reports/akshare_api_audit.md",
+    "final_report": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/outputs/reports/data_prepare_final_report.md",
+    "source_coverage_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/data_prepare_pit_largecap_akshare_qlib_v0/outputs/tables/source_coverage_audit.csv"
+  },
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.11.12",
+  "qlib_market_date_key": "usable_trade_date",
+  "requested_end_date": "2026-05-31",
+  "requested_start_date": "2017-01-01"
+}

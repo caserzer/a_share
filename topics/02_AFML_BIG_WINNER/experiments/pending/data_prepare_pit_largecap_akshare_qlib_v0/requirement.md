@@ -63,8 +63,8 @@ Excluded from these two buckets:
 For each trading date:
 
 ```text
-main_board_member = total_market_cap_cny > 100_000_000_000
-chinext_member = total_market_cap_cny > 50_000_000_000
+main_board_member = total_market_cap_cny > 50_000_000_000
+chinext_member = total_market_cap_cny > 20_000_000_000
 ```
 
 The comparison is strict `>`, not `>=`.
