@@ -16,3 +16,8 @@ Each experiment folder owns:
 
 Reusable code belongs in top-level `src/afml_big_winner/`, not inside an
 experiment folder.
+
+Current pending experiments:
+
+- `pending/data_prepare_pit_largecap_akshare_qlib_v0`: prepare the PIT
+  large-cap A-share universe and Qlib daily data cache from AkShare.

@@ -1,0 +1,161 @@
+experiment:
+  name: "data_prepare_pit_largecap_akshare_qlib_v0"
+  status: "requirement_frozen"
+  workstream: "Data and Schema Audit"
+  objective: "Prepare a PIT large-cap A-share universe and Qlib daily data cache from AkShare."
+  data_cutoff: "2026-05-31"
+  validation_gate: "All validation gates in requirement.md section 8 must pass."
+
+date_range:
+  start_date: "2017-01-01"
+  end_date: "2026-05-31"
+  start_date_policy: "first_trading_session_on_or_after_start_date"
+  end_date_policy: "last_trading_session_on_or_before_end_date"
+  record_requested_and_resolved_dates: true
+
+universe:
+  market_name: "pit_largecap_main_chinext"
+  membership_clock: "same_day_close_observed"
+  usable_trade_date_policy: "next_trading_session_after_membership_date"
+  qlib_market_date_key: "usable_trade_date"
+  board_buckets:
+    main_board:
+      code_prefixes:
+        - "000"
+        - "001"
+        - "002"
+        - "003"
+        - "600"
+        - "601"
+        - "603"
+        - "605"
+      market_cap_threshold_cny: 100000000000
+      comparison: "strict_greater_than"
+    chinext:
+      code_prefixes:
+        - "300"
+        - "301"
+      market_cap_threshold_cny: 50000000000
+      comparison: "strict_greater_than"
+  excluded_prefixes:
+    - "688"
+    - "689"
+  exclude_st: true
+  exclude_suspended: true
+  require_listed_on_date: true
+  fail_on_missing_status_coverage: true
+
+akshare:
+  daily_history_api: "stock_zh_a_hist"
+  qfq_adjust: "qfq"
+  raw_adjust: ""
+  retry_without_proxy_on_proxy_error: true
+  preflight_required: true
+  source_column_map_required: true
+  require_historical_market_cap_or_total_share_asof: true
+  require_historical_status_sources: true
+  disallowed_market_cap_fallbacks:
+    - "latest_total_share_without_asof_date"
+    - "latest_spot_market_cap"
+    - "current_security_profile_market_cap"
+    - "qfq_close_times_shares"
+    - "unknown_currency_units"
+  required_source_categories:
+    - "historical_raw_daily_bars"
+    - "historical_qfq_daily_bars"
+    - "historical_total_market_cap_or_total_share_asof"
+    - "instrument_metadata_board_classification"
+    - "historical_listed_delisted_status"
+    - "historical_st_status"
+    - "suspension_or_tradability_status"
+    - "trading_calendar"
+
+fields:
+  qlib_required:
+    - "$open"
+    - "$high"
+    - "$low"
+    - "$close"
+    - "$volume"
+    - "$money"
+    - "$turnover_rate"
+    - "$factor"
+  transaction_value:
+    canonical_qlib_field: "$money"
+    source_columns:
+      - "成交额"
+      - "amount"
+      - "turnover"
+    optional_alias_field: "$amount"
+    require_alias_equal_to_canonical_if_written: true
+  processed_audit:
+    - "raw_open"
+    - "raw_high"
+    - "raw_low"
+    - "raw_close"
+    - "raw_volume"
+    - "raw_amount"
+    - "raw_money"
+    - "total_market_cap_cny"
+    - "float_market_cap_cny"
+    - "total_share_asof"
+    - "float_share_asof"
+    - "board_bucket"
+    - "is_listed"
+    - "is_st"
+    - "is_suspended"
+    - "source_trade_date"
+
+paths:
+  project_data_root: "data"
+  raw_akshare_root: "data/raw/akshare"
+  raw_daily_dir: "data/raw/akshare/day/raw"
+  qfq_daily_dir: "data/raw/akshare/day/qfq"
+  market_cap_dir: "data/raw/akshare/market_cap"
+  status_dir: "data/raw/akshare/status"
+  qlib_csv_dir: "data/interim/qlib_csv/day"
+  processed_universe_dir: "data/processed/universe"
+  qlib_provider_uri: "data/qlib/cn_data_pit_largecap"
+  candidate_before_status_exclusion_csv: "data/processed/universe/pit_largecap_main_chinext_candidate_before_status_exclusion.csv"
+  raw_membership_csv: "data/processed/universe/pit_largecap_main_chinext_membership_daily.csv"
+  executable_membership_csv: "data/processed/universe/pit_largecap_main_chinext_executable_daily.csv"
+  qlib_instrument_file: "data/processed/universe/qlib_pit_largecap_main_chinext.txt"
+  interval_csv: "data/processed/universe/pit_largecap_main_chinext_intervals.csv"
+  cache_manifest: "data/raw/akshare/cache_manifest.csv"
+
+outputs:
+  reports:
+    akshare_api_audit: "outputs/reports/akshare_api_audit.md"
+    final_report: "outputs/reports/data_prepare_final_report.md"
+  tables:
+    daily_universe_counts: "outputs/tables/daily_universe_counts.csv"
+    board_bucket_counts: "outputs/tables/board_bucket_counts.csv"
+    status_exclusion_counts: "outputs/tables/status_exclusion_counts.csv"
+    market_cap_source_audit: "outputs/tables/market_cap_source_audit.csv"
+    source_coverage_audit: "outputs/tables/source_coverage_audit.csv"
+    missing_data_summary: "outputs/tables/missing_data_summary.csv"
+    qlib_provider_check: "outputs/tables/qlib_provider_check.csv"
+  manifests:
+    run_manifest: "outputs/manifests/run_manifest.json"
+    cache_manifest: "outputs/manifests/cache_manifest.csv"
+  publishable_dir: "outputs/publishable"
+  local_cache_dir: "outputs/local_cache"
+  large_raw_dir: "outputs/large_raw"
+
+validation:
+  coverage_gates:
+    price_provider_coverage: "resolved_start_to_resolved_end_by_trade_date"
+    raw_membership_coverage: "all_supported_resolved_sessions_by_membership_date"
+    executable_membership_coverage: "raw_membership_shifted_to_usable_trade_date"
+  reject_duplicate_date_instrument: true
+  reject_qfq_price_violations: true
+  reject_negative_volume_or_amount: true
+  require_money_as_canonical_transaction_value: true
+  require_amount_alias_equal_money_if_written: true
+  require_market_cap_threshold_audit: true
+  reject_latest_only_market_cap_sources: true
+  require_total_share_asof_when_computing_market_cap: true
+  reject_st_or_suspended_membership: true
+  require_executable_date_keyed_qlib_market: true
+  require_qlib_provider_check: true
+  require_no_external_cache_reuse: true
