@@ -1,0 +1,35 @@
+labels:
+  as_of_policy: "close_observed"
+  entry:
+    t0: "signal_date"
+    trade_time: "next_executable_open_after_t0"
+    require_limit_filter: true
+    require_suspension_filter: true
+  barrier_observation:
+    price_adjustment: "qfq"
+    upper_touch_price: "high"
+    lower_touch_price: "low"
+    close_based_drawdown: true
+    same_bar_priority: "lower_barrier_first"
+  censoring:
+    incomplete_horizon: "censored"
+    non_executable_trade: "drop"
+  label_families:
+    failure_10:
+      horizon_days: 10
+      lower_barrier_pct: -0.08
+      max_drawdown_pct: -0.10
+      support_break: "episode_start_low"
+    confirm_20:
+      horizon_days: 20
+      upper_barrier_pct: 0.12
+      valid_new_high_window_days: 120
+    continuation_60:
+      horizon_days: 60
+      min_mfe_pct: 0.20
+      max_drawdown_pct: -0.15
+      require_confirm_20: true
+    winner_120:
+      horizon_days: 120
+      right_tail_threshold_pct: 0.50
+      hard_failure_first_blocks_winner: true

@@ -1,0 +1,29 @@
+features:
+  as_of_policy: "close_observed"
+  fit_policy: "train_only"
+  groups:
+    price_trend:
+      enabled: true
+      examples:
+        - "ema_reclaim"
+        - "distance_to_120d_high"
+    volume_price:
+      enabled: true
+      examples:
+        - "vwap_deviation"
+        - "signed_amount"
+    relative_strength:
+      enabled: true
+      examples:
+        - "stock_vs_industry"
+        - "industry_vs_market"
+    structural_break:
+      enabled: false
+      examples:
+        - "cusum_market_break"
+        - "sadf_growth_vs_large"
+    entropy:
+      enabled: false
+      examples:
+        - "entropy_sign_stock_vs_industry_60"
+        - "gaussian_joint_entropy_market_60"

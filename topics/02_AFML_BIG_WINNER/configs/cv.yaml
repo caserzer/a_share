@@ -1,0 +1,12 @@
+cross_validation:
+  primary_method: "purged_walk_forward"
+  n_splits: 5
+  purge_days: 120
+  embargo_days: 20
+  time_columns:
+    feature_start_time: "feature_start_time"
+    event_time: "t0"
+    label_end_time: "t1"
+  final_evaluation:
+    method: "chronological_holdout"
+    promote_observed_replication_to_final_test: false

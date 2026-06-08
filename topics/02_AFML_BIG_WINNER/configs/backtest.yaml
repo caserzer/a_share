@@ -1,0 +1,16 @@
+backtest:
+  trade_at: "next_executable_open"
+  side: "long_only"
+  costs:
+    commission_bps: 3.0
+    slippage_bps: 5.0
+    stamp_tax_sell_bps: 5.0
+  sizing:
+    base_size: 0.01
+    max_position_size: 0.05
+    max_portfolio_gross_exposure: 1.0
+    volatility_target_enabled: true
+  exits:
+    stop_loss_pct: -0.08
+    trailing_stop_enabled: true
+    max_holding_days: 120

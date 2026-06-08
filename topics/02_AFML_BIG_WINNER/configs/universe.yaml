@@ -1,0 +1,14 @@
+universe:
+  name: "a_share_pit_research_universe"
+  market: "cn_a_share"
+  membership_source: "pit_membership_required"
+  industry_source: "pit_industry_required"
+  as_of_policy: "close_observed"
+  exclude:
+    st: true
+    suspended: true
+    non_tradable: true
+  minimum_history_days: 240
+  notes:
+    - "Do not use current-as-of constituents for historical experiments."
+    - "Every experiment must record the universe snapshot and data cutoff."

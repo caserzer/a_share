@@ -1,0 +1,16 @@
+events:
+  as_of_policy: "close_observed"
+  active_families:
+    - "cusum_positive"
+    - "breakout_near_120d_high"
+    - "volatility_contraction_expansion"
+    - "signed_amount_confirmation"
+    - "industry_strength_confirmation"
+  emission:
+    cooldown_days: 20
+    one_active_episode_per_asset_side: true
+    require_executable_next_open: true
+  density_gates:
+    max_seed_day_rate: null
+    min_winner_recall: null
+    min_average_uniqueness: null

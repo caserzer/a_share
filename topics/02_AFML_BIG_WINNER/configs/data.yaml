@@ -1,0 +1,20 @@
+data:
+  provider: "to_be_selected"
+  calendar: "cn_stock_trade_calendar"
+  adjustment: "qfq"
+  price_fields:
+    - "open"
+    - "high"
+    - "low"
+    - "close"
+    - "volume"
+    - "amount"
+  paths:
+    raw: "data/raw"
+    interim: "data/interim"
+    processed: "data/processed"
+    external: "data/external"
+  cache_policy:
+    reuse_cache: true
+    require_manifest: true
+    forbid_silent_forward_fill: true

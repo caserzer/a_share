@@ -1,0 +1,44 @@
+experiment:
+  name: "experiment_template"
+  status: "template_only"
+  workstream: "unset"
+  objective: "Replace with one falsifiable research question."
+  data_cutoff: null
+  validation_gate: "Replace with required pass/fail gates before running."
+
+data:
+  universe_config: "configs/universe.yaml"
+  data_config: "configs/data.yaml"
+  data_cutoff: null
+  input_paths: []
+
+label_contract:
+  enabled_labels:
+    - "failure_10"
+    - "confirm_20"
+  t0: "signal_date_after_close_observed_features"
+  trade_time: "next_executable_open_after_t0"
+  t1: "first_barrier_touch_or_max_horizon_end"
+  price_adjustment: "qfq"
+  touch_priority: "lower_barrier_first"
+  censoring_policy: "censor_incomplete_horizon_drop_non_executable_trade"
+  thresholds:
+    failure_10:
+      horizon_days: 10
+      lower_barrier_pct: -0.08
+      max_drawdown_pct: -0.10
+    confirm_20:
+      horizon_days: 20
+      upper_barrier_pct: 0.12
+
+validation:
+  method: "purged_walk_forward"
+  purge_days: 120
+  embargo_days: 20
+  train_only_selection: true
+
+outputs:
+  write_manifest: true
+  publishable_dir: "outputs/publishable"
+  local_cache_dir: "outputs/local_cache"
+  large_raw_dir: "outputs/large_raw"
