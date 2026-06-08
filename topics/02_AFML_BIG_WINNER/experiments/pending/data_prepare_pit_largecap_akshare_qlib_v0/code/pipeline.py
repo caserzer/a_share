@@ -49,6 +49,34 @@ QLIB_COLUMNS = [
     "factor",
 ]
 
+INDEX_RENAME = {
+    "日期": "date",
+    "date": "date",
+    "开盘": "open",
+    "open": "open",
+    "最高": "high",
+    "high": "high",
+    "最低": "low",
+    "low": "low",
+    "收盘": "close",
+    "close": "close",
+    "成交量": "volume",
+    "volume": "volume",
+    "成交金额": "money",
+    "money": "money",
+    "amount": "amount",
+}
+
+INDEX_QLIB_COLUMNS = [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "money",
+]
+
 
 class DataSourceUnsupported(RuntimeError):
     def __init__(self, code: str, message: str):
@@ -264,6 +292,113 @@ def build_qlib_daily(raw: pd.DataFrame, qfq: pd.DataFrame) -> pd.DataFrame:
             "raw_money",
         ]
     ].reset_index(drop=True)
+
+
+def normalize_index_bars(
+    df: pd.DataFrame,
+    *,
+    index_alias: str,
+    instrument: str,
+    source_symbol: str,
+    source_function: str,
+    volume_unit: str,
+    money_unit: str,
+    amount_role: str,
+) -> pd.DataFrame:
+    renamed = df.rename(columns=INDEX_RENAME).copy()
+    required = {"date", "open", "high", "low", "close"}
+    missing = required.difference(renamed.columns)
+    if missing:
+        raise ValueError(f"{source_function} missing index columns: {sorted(missing)}")
+
+    if "volume" not in renamed.columns:
+        renamed["volume"] = np.nan
+    if "money" not in renamed.columns:
+        renamed["money"] = np.nan
+    if "amount" in renamed.columns:
+        if amount_role == "volume":
+            renamed["volume"] = renamed["amount"]
+        elif amount_role == "money":
+            renamed["money"] = renamed["amount"]
+        elif amount_role not in {"ignore", "none"}:
+            raise ValueError(f"Unsupported amount_role {amount_role!r}")
+
+    out = renamed[
+        ["date", "open", "high", "low", "close", "volume", "money"]
+    ].copy()
+    out["date"] = pd.to_datetime(out["date"], errors="coerce").dt.strftime("%Y-%m-%d")
+    for column in ["open", "high", "low", "close", "volume", "money"]:
+        out[column] = numeric_series(out[column])
+
+    if volume_unit == "hands":
+        out["volume"] = out["volume"] * 100.0
+    elif volume_unit == "10k_shares":
+        out["volume"] = out["volume"] * 10_000.0
+    elif volume_unit == "missing":
+        out["volume"] = np.nan
+    elif volume_unit not in {"shares", "unknown"}:
+        raise ValueError(f"Unsupported index volume unit {volume_unit!r}")
+
+    if money_unit == "100m_cny":
+        out["money"] = out["money"] * 100_000_000.0
+    elif money_unit == "10k_cny":
+        out["money"] = out["money"] * 10_000.0
+    elif money_unit == "missing":
+        out["money"] = np.nan
+    elif money_unit not in {"cny", "unknown"}:
+        raise ValueError(f"Unsupported index money unit {money_unit!r}")
+
+    out["trade_date"] = out["date"]
+    out["index_alias"] = index_alias
+    out["instrument"] = instrument
+    out["source_symbol"] = source_symbol
+    out["source_function"] = source_function
+    out["source_volume_unit"] = volume_unit
+    out["source_money_unit"] = money_unit
+    out["source_trade_date"] = out["date"]
+    out = out.dropna(subset=["date", "open", "high", "low", "close"])
+    out = out.drop_duplicates("date", keep="last").sort_values("date")
+    validate_index_daily(out)
+    return out.reset_index(drop=True)
+
+
+def build_qlib_index_daily(index_daily: pd.DataFrame) -> pd.DataFrame:
+    validate_index_daily(index_daily)
+    return index_daily[
+        INDEX_QLIB_COLUMNS
+        + [
+            "trade_date",
+            "index_alias",
+            "instrument",
+            "source_symbol",
+            "source_function",
+            "source_volume_unit",
+            "source_money_unit",
+            "source_trade_date",
+        ]
+    ].reset_index(drop=True)
+
+
+def validate_index_daily(df: pd.DataFrame) -> None:
+    if df.empty:
+        raise ValueError("Index daily frame is empty")
+    if df["date"].duplicated().any():
+        raise ValueError("Duplicate trade dates in index daily frame")
+    for column in ["open", "high", "low", "close", "volume", "money"]:
+        if column not in df.columns:
+            raise ValueError(f"Missing index field {column}")
+    if (df[["open", "high", "low", "close"]] <= 0).any().any():
+        raise ValueError("Index OHLC contains non-positive values")
+    if (df["volume"].dropna() < 0).any():
+        raise ValueError("Index volume contains negative values")
+    if (df["money"].dropna() < 0).any():
+        raise ValueError("Index money contains negative values")
+    high_floor = df[["open", "low", "close"]].max(axis=1)
+    low_ceiling = df[["open", "high", "close"]].min(axis=1)
+    if (df["high"] < high_floor).any():
+        raise ValueError("Index high is below open/low/close")
+    if (df["low"] > low_ceiling).any():
+        raise ValueError("Index low is above open/high/close")
 
 
 def validate_qlib_daily(df: pd.DataFrame) -> None:
@@ -609,6 +744,13 @@ def audit_akshare_sources(
         _audit_suspension_category(
             ak,
             sample_date=sample_start,
+            live=live,
+            retry_without_proxy=retry_without_proxy,
+        )
+    )
+    rows.append(
+        _audit_index_category(
+            ak,
             live=live,
             retry_without_proxy=retry_without_proxy,
         )
@@ -1072,6 +1214,104 @@ def _audit_suspension_category(
         )
 
 
+def _audit_index_category(
+    ak: Any,
+    *,
+    live: bool,
+    retry_without_proxy: bool,
+) -> SourceAuditRow:
+    del retry_without_proxy
+    functions = "stock_zh_index_daily|stock_zh_index_daily_tx"
+    if not live:
+        return _not_evaluated(
+            "benchmark_index_daily_bars",
+            functions,
+            "Benchmark index daily sources were not sampled.",
+        )
+    samples = [
+        (
+            "stock_zh_index_daily",
+            "sh000300",
+            {"symbol": "sh000300"},
+            "shares",
+            "missing",
+            "ignore",
+            "csi300",
+            "SH000300",
+        ),
+        (
+            "stock_zh_index_daily_tx",
+            "sh000985",
+            {"symbol": "sh000985"},
+            "hands",
+            "missing",
+            "volume",
+            "all_a",
+            "SH000985",
+        ),
+    ]
+    try:
+        columns: list[str] = []
+        rows = 0
+        notes: list[str] = []
+        for (
+            name,
+            symbol,
+            kwargs,
+            volume_unit,
+            money_unit,
+            amount_role,
+            alias,
+            instrument,
+        ) in samples:
+            func = getattr(ak, name, None)
+            if func is None:
+                raise AttributeError(name)
+            df = call_akshare_unproxied(func, **kwargs)
+            normalized = normalize_index_bars(
+                df,
+                index_alias=alias,
+                instrument=instrument,
+                source_symbol=symbol,
+                source_function=name,
+                volume_unit=volume_unit,
+                money_unit=money_unit,
+                amount_role=amount_role,
+            )
+            rows += len(normalized)
+            columns.extend(f"{name}.{col}" for col in df.columns)
+            notes.append(
+                f"{name} sampled {symbol} with normalized dates "
+                f"{normalized['date'].min()} to {normalized['date'].max()}"
+            )
+        return SourceAuditRow(
+            category="benchmark_index_daily_bars",
+            support_state="supported",
+            function_name=functions,
+            source_columns=tuple(columns),
+            units=(
+                "stock_zh_index_daily volume=shares,money=missing; "
+                "stock_zh_index_daily_tx amount=hands-as-volume,money=missing"
+            ),
+            source_date_field="date",
+            historical=True,
+            latest_only=False,
+            fallback_state="primary_or_tx_fallback_sampled",
+            sample_rows=rows,
+            notes="; ".join(notes),
+        )
+    except Exception as exc:
+        return SourceAuditRow(
+            category="benchmark_index_daily_bars",
+            support_state="unsupported",
+            function_name=functions,
+            historical=False,
+            latest_only=False,
+            fallback_state="index_source_sample_failed",
+            notes=f"{type(exc).__name__}: {exc}",
+        )
+
+
 def suspension_sample_matches_requested_date(df: pd.DataFrame, requested_date: str) -> bool:
     if df.empty:
         return False
@@ -1224,3 +1464,8 @@ def write_csv(df: pd.DataFrame, path: Path) -> None:
 def write_qlib_csv(df: pd.DataFrame, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(path, index=False, columns=QLIB_COLUMNS, float_format="%.10g")
+
+
+def write_qlib_index_csv(df: pd.DataFrame, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(path, index=False, columns=INDEX_QLIB_COLUMNS, float_format="%.10g")

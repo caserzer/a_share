@@ -4,9 +4,9 @@
 
 Build the first reusable data layer for `02_AFML_BIG_WINNER`.
 
-The experiment must create a point-in-time A-share universe and a Qlib daily
-data provider using AkShare as the data source. All raw, interim, processed,
-and Qlib cache artifacts must live under:
+The experiment must create a point-in-time A-share universe, benchmark index
+daily data, and Qlib daily data providers using AkShare as the data source. All
+raw, interim, processed, and Qlib cache artifacts must live under:
 
 ```text
 topics/02_AFML_BIG_WINNER/data/
@@ -164,6 +164,7 @@ Required pull categories:
 - Daily unadjusted OHLCV, amount, turnover, and status-supporting fields.
 - Daily forward-adjusted (`qfq`) OHLCV, amount, turnover, and basic trading
   fields.
+- Benchmark index daily OHLCV for the required index series.
 - Historical total market cap, or the raw fields needed to compute it without
   future leakage.
 - Trading calendar or a verifiable session list derived from daily data.
@@ -178,12 +179,65 @@ category before the full pull starts:
 - Historical listed/delisted status.
 - Historical ST status.
 - Suspension or tradability status.
+- Benchmark index daily bars.
 - Trading calendar.
 
 For every source, the audit must record source columns, units, source date,
 whether the source is historical or latest-only, and the fallback state. A
 latest-only source is not allowed for PIT membership, market-cap eligibility, or
 historical status.
+
+### 4.1 Benchmark Index Data Requirement
+
+The implementation must also fetch and cache these benchmark index series over
+the same resolved date range:
+
+| Stable alias | Chinese name | Preferred source symbol | Preferred Qlib instrument |
+| --- | --- | --- | --- |
+| `csi300` | 沪深300指数 | `sh000300` | `SH000300` |
+| `chinext_index` | 创业板指数 | `sz399006` | `SZ399006` |
+| `all_a` | 全A指数 / 中证全指 | `sh000985` | `SH000985` |
+
+Index data is a separate artifact family. It must not change the PIT stock
+universe, board buckets, status exclusions, or market-cap thresholds.
+
+The index pull must use AkShare historical daily index data. The preferred
+candidate source is:
+
+```text
+ak.stock_zh_index_daily(symbol=<index_symbol>)
+```
+
+If AkShare requires a different index function or symbol spelling, the preflight
+audit must record the actual function, source symbol, source columns, units, and
+reason for the fallback. The fallback must still be historical daily index data;
+latest-only or snapshot index sources are not acceptable.
+
+Index daily bars must be cached with raw source columns and normalized fields.
+At minimum, each cached normalized index row must include:
+
+```text
+trade_date
+index_alias
+instrument
+source_symbol
+open
+high
+low
+close
+volume
+money
+source_function
+source_trade_date
+```
+
+If the chosen AkShare index source does not provide `volume` or `money`, those
+fields may be nullable, but the report and source audit must explicitly mark the
+missing fields. OHLC fields are required and must not be nullable for covered
+trading sessions.
+
+The Qlib index provider must be separate from the stock PIT provider so that
+benchmark indices cannot enter the tradable stock market universe by mistake.
 
 Expected AkShare daily bar source:
 
@@ -251,6 +305,21 @@ source_trade_date
 
 Field naming must be consistent across raw cache, Qlib CSV, and reports.
 
+Benchmark index data uses the same OHLC naming convention. Index Qlib fields
+must include at least:
+
+```text
+$open
+$high
+$low
+$close
+$volume
+$money
+```
+
+Index data does not require `$turnover_rate`, `$factor`, ST flags, listing
+status, suspension flags, or market-cap fields.
+
 ## 6. Cache Layout
 
 All cache and generated data must stay under the topic data directory:
@@ -262,15 +331,21 @@ data/
 |       |-- day/
 |       |   |-- raw/
 |       |   `-- qfq/
+|       |-- index/
+|       |   `-- day/
 |       |-- market_cap/
 |       `-- status/
 |-- interim/
-|   `-- qlib_csv/
+|   |-- qlib_csv/
+|   |   `-- day/
+|   `-- index_qlib_csv/
 |       `-- day/
 |-- processed/
+|   |-- index/
 |   `-- universe/
 `-- qlib/
-    `-- cn_data_pit_largecap/
+    |-- cn_data_pit_largecap/
+    `-- cn_index_data/
 ```
 
 Expected key artifacts:
@@ -281,6 +356,10 @@ Expected key artifacts:
 - `data/processed/universe/qlib_pit_largecap_main_chinext.txt`
 - `data/processed/universe/pit_largecap_main_chinext_intervals.csv`
 - `data/qlib/cn_data_pit_largecap/`
+- `data/raw/akshare/index/day/`
+- `data/processed/index/benchmark_indices_daily.csv`
+- `data/processed/index/benchmark_indices_source_audit.csv`
+- `data/qlib/cn_index_data/`
 - `data/raw/akshare/cache_manifest.csv`
 
 Large raw files should remain ignored by Git. Publishable outputs must be
@@ -292,6 +371,12 @@ The Qlib provider URI is:
 
 ```text
 data/qlib/cn_data_pit_largecap
+```
+
+The Qlib benchmark index provider URI is:
+
+```text
+data/qlib/cn_index_data
 ```
 
 The Qlib market name is:
@@ -326,6 +411,11 @@ rather than collapsing to one broad start/end range.
 The implementation must verify that Qlib can load a sample of instruments and
 fields from the provider after conversion.
 
+The implementation must also verify that Qlib can load all required benchmark
+indices from the index provider for `$open`, `$high`, `$low`, and `$close`. If
+`$volume` or `$money` are nullable because the source does not provide them, the
+provider check must report that explicitly rather than failing silently.
+
 ## 8. Validation Gates
 
 The experiment passes only if all gates are satisfied:
@@ -352,6 +442,13 @@ The experiment passes only if all gates are satisfied:
 - QFQ OHLC fields are positive and internally valid:
   `low <= open <= high`, `low <= close <= high` when all fields exist.
 - Volume and amount are non-negative.
+- Required benchmark index OHLC coverage spans the resolved trading-date range
+  for `csi300`, `chinext_index`, and `all_a`, except for dates explicitly absent
+  from the verified index source calendar and recorded in the audit.
+- Benchmark index OHLC fields are positive and internally valid:
+  `low <= open <= high`, `low <= close <= high`.
+- Benchmark index rows have no duplicate `(trade_date, index_alias)` or
+  `(trade_date, instrument)` keys.
 - Duplicate `(membership_date, instrument)` rows in the raw table and duplicate
   `(usable_trade_date, instrument)` rows in the executable table are rejected.
 - Qlib provider load check succeeds for `$open`, `$high`, `$low`, `$close`,
@@ -359,7 +456,8 @@ The experiment passes only if all gates are satisfied:
   as an alias, the provider check must also verify `$amount == $money`.
 - Manifest records AkShare version, command, config hash, input/output paths,
   source column map, requested date range, resolved date range, executable-date
-  mapping, and output hashes.
+  mapping, benchmark index symbol map, benchmark index coverage, and output
+  hashes.
 
 ## 9. Required Outputs
 
@@ -377,6 +475,7 @@ Tables:
 - `outputs/tables/source_coverage_audit.csv`
 - `outputs/tables/missing_data_summary.csv`
 - `outputs/tables/qlib_provider_check.csv`
+- `outputs/tables/index_coverage_audit.csv`
 
 `outputs/tables/status_exclusion_counts.csv` must include at least:
 

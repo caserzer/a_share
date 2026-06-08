@@ -68,7 +68,25 @@ akshare:
     - "historical_listed_delisted_status"
     - "historical_st_status"
     - "suspension_or_tradability_status"
+    - "benchmark_index_daily_bars"
     - "trading_calendar"
+
+indices:
+  enabled: true
+  qlib_market_name: "benchmark_indices"
+  required:
+    - alias: "csi300"
+      name: "沪深300指数"
+      preferred_source_symbol: "sh000300"
+      qlib_instrument: "SH000300"
+    - alias: "chinext_index"
+      name: "创业板指数"
+      preferred_source_symbol: "sz399006"
+      qlib_instrument: "SZ399006"
+    - alias: "all_a"
+      name: "全A指数 / 中证全指"
+      preferred_source_symbol: "sh000985"
+      qlib_instrument: "SH000985"
 
 fields:
   qlib_required:
@@ -80,6 +98,13 @@ fields:
     - "$money"
     - "$turnover_rate"
     - "$factor"
+  index_qlib_required:
+    - "$open"
+    - "$high"
+    - "$low"
+    - "$close"
+    - "$volume"
+    - "$money"
   transaction_value:
     canonical_qlib_field: "$money"
     source_columns:
@@ -111,22 +136,30 @@ paths:
   raw_akshare_root: "data/raw/akshare"
   raw_daily_dir: "data/raw/akshare/day/raw"
   qfq_daily_dir: "data/raw/akshare/day/qfq"
+  index_raw_dir: "data/raw/akshare/index/day"
   market_cap_dir: "data/raw/akshare/market_cap"
   status_dir: "data/raw/akshare/status"
   qlib_csv_dir: "data/interim/qlib_csv/day"
+  index_qlib_csv_dir: "data/interim/index_qlib_csv/day"
   processed_universe_dir: "data/processed/universe"
+  processed_index_dir: "data/processed/index"
   qlib_provider_uri: "data/qlib/cn_data_pit_largecap"
+  index_qlib_provider_uri: "data/qlib/cn_index_data"
   candidate_before_status_exclusion_csv: "data/processed/universe/pit_largecap_main_chinext_candidate_before_status_exclusion.csv"
   raw_membership_csv: "data/processed/universe/pit_largecap_main_chinext_membership_daily.csv"
   executable_membership_csv: "data/processed/universe/pit_largecap_main_chinext_executable_daily.csv"
   qlib_instrument_file: "data/processed/universe/qlib_pit_largecap_main_chinext.txt"
   interval_csv: "data/processed/universe/pit_largecap_main_chinext_intervals.csv"
+  index_daily_csv: "data/processed/index/benchmark_indices_daily.csv"
+  index_source_audit_csv: "data/processed/index/benchmark_indices_source_audit.csv"
+  index_qlib_instrument_file: "data/processed/index/qlib_benchmark_indices.txt"
   cache_manifest: "data/raw/akshare/cache_manifest.csv"
 
 outputs:
   reports:
     akshare_api_audit: "outputs/reports/akshare_api_audit.md"
     final_report: "outputs/reports/data_prepare_final_report.md"
+    index_report: "outputs/reports/index_data_prepare_report.md"
   tables:
     daily_universe_counts: "outputs/tables/daily_universe_counts.csv"
     board_bucket_counts: "outputs/tables/board_bucket_counts.csv"
@@ -135,6 +168,8 @@ outputs:
     source_coverage_audit: "outputs/tables/source_coverage_audit.csv"
     missing_data_summary: "outputs/tables/missing_data_summary.csv"
     qlib_provider_check: "outputs/tables/qlib_provider_check.csv"
+    index_coverage_audit: "outputs/tables/index_coverage_audit.csv"
+    index_qlib_provider_check: "outputs/tables/index_qlib_provider_check.csv"
   manifests:
     run_manifest: "outputs/manifests/run_manifest.json"
     cache_manifest: "outputs/manifests/cache_manifest.csv"

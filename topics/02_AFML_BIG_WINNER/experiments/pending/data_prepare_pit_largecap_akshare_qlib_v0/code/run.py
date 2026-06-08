@@ -33,6 +33,7 @@ from pipeline import (  # noqa: E402
     audit_rows_to_frame,
     board_bucket,
     blocking_audit_issues,
+    build_qlib_index_daily,
     build_qlib_daily,
     call_akshare,
     call_akshare_unproxied,
@@ -44,6 +45,7 @@ from pipeline import (  # noqa: E402
     instrument_from_code,
     market_cap_threshold_cny,
     next_trade_date_map,
+    normalize_index_bars,
     normalize_share_history,
     resolve_trade_calendar,
     shift_membership_to_executable,
@@ -51,6 +53,7 @@ from pipeline import (  # noqa: E402
     write_audit_report,
     write_csv,
     write_qlib_csv,
+    write_qlib_index_csv,
     write_qlib_instrument_intervals,
 )
 
@@ -66,9 +69,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--mode",
-        choices=["validate-config", "preflight", "full"],
+        choices=["validate-config", "preflight", "full", "index-only"],
         default="preflight",
-        help="Run only static checks, run AkShare source audit, or execute full gated run.",
+        help="Run static checks, AkShare source audit, full stock+index run, or benchmark-index-only run.",
     )
     parser.add_argument("--sample-symbol", default="600519")
     parser.add_argument("--timeout", type=float, default=20.0)
@@ -132,11 +135,14 @@ def main() -> int:
         print(str(exc), file=sys.stderr)
         return 2
 
+    if args.mode == "index-only":
+        return run_index_only(args=args, config=config, config_path=config_path, audit_rows=rows)
+
     return run_full(args=args, config=config, config_path=config_path, audit_rows=rows)
 
 
 def validate_config(config: dict[str, Any]) -> None:
-    required_sections = {"experiment", "date_range", "universe", "akshare", "fields", "paths", "outputs", "validation"}
+    required_sections = {"experiment", "date_range", "universe", "akshare", "indices", "fields", "paths", "outputs", "validation"}
     missing_sections = required_sections.difference(config)
     if missing_sections:
         raise ValueError(f"config missing sections: {sorted(missing_sections)}")
@@ -152,6 +158,32 @@ def validate_config(config: dict[str, Any]) -> None:
         raise ValueError(f"Qlib required fields missing: {sorted(expected.difference(qlib_required))}")
     if "$amount" in qlib_required:
         raise ValueError("$amount must not be required unless explicitly written as an alias")
+    index_required = set(config["fields"].get("index_qlib_required", []))
+    expected_index = {"$open", "$high", "$low", "$close", "$volume", "$money"}
+    if not expected_index.issubset(index_required):
+        raise ValueError(f"Index Qlib required fields missing: {sorted(expected_index.difference(index_required))}")
+    required_index_aliases = {"csi300", "chinext_index", "all_a"}
+    index_specs = config["indices"].get("required", [])
+    aliases = {item.get("alias") for item in index_specs}
+    missing_aliases = required_index_aliases.difference(aliases)
+    if missing_aliases:
+        raise ValueError(f"Index specs missing aliases: {sorted(missing_aliases)}")
+    for spec in index_specs:
+        instrument = str(spec.get("qlib_instrument", ""))
+        if not (instrument.startswith(("SH", "SZ")) and len(instrument) == 8):
+            raise ValueError(f"Invalid index qlib_instrument: {instrument!r}")
+    required_path_keys = {
+        "index_raw_dir",
+        "index_qlib_csv_dir",
+        "processed_index_dir",
+        "index_qlib_provider_uri",
+        "index_daily_csv",
+        "index_source_audit_csv",
+        "index_qlib_instrument_file",
+    }
+    missing_path_keys = required_path_keys.difference(config["paths"])
+    if missing_path_keys:
+        raise ValueError(f"config paths missing index keys: {sorted(missing_path_keys)}")
 
 
 def run_preflight(
@@ -200,6 +232,7 @@ def enforce_full_run_source_support(rows, *, require_evaluated: bool) -> None:
         "instrument_metadata_board_classification",
         "trading_calendar",
     }
+    index_categories = {"benchmark_index_daily_bars"}
     if categories & market_cap_categories:
         raise DataSourceUnsupported(
             "data_source_market_cap_not_supported",
@@ -210,6 +243,11 @@ def enforce_full_run_source_support(rows, *, require_evaluated: bool) -> None:
         raise DataSourceUnsupported(
             "data_source_status_not_supported",
             f"AkShare did not provide auditable historical status coverage for: {detail}.",
+        )
+    if categories & index_categories:
+        raise DataSourceUnsupported(
+            "data_source_benchmark_index_not_supported",
+            "AkShare did not provide auditable historical benchmark index daily bars.",
         )
     raise DataSourceUnsupported(
         "data_source_required_category_not_supported",
@@ -287,6 +325,31 @@ def run_full(
         )
         write_csv(qlib_check, output_paths["tables"]["qlib_provider_check"])
 
+    index_results = prepare_benchmark_indices(
+        ak=ak,
+        config=config,
+        data_paths=data_paths,
+        output_paths=output_paths,
+        calendar=calendar,
+        args=args,
+    )
+    if not args.skip_qlib_dump:
+        dump_index_qlib_provider(config, data_paths, args)
+        index_qlib_check = check_index_qlib_provider(
+            config, data_paths, index_results["intervals"], calendar
+        )
+        write_csv(index_qlib_check, output_paths["tables"]["index_qlib_provider_check"])
+    else:
+        index_qlib_check = pd.DataFrame(
+            [
+                {
+                    "status": "skipped",
+                    "reason": "--skip-qlib-dump",
+                }
+            ]
+        )
+        write_csv(index_qlib_check, output_paths["tables"]["index_qlib_provider_check"])
+
     write_final_success_report(
         config=config,
         calendar=calendar,
@@ -297,6 +360,8 @@ def run_full(
         intervals=intervals,
         results=results,
         qlib_check=qlib_check,
+        index_results=index_results,
+        index_qlib_check=index_qlib_check,
     )
     write_run_manifest(
         config=config,
@@ -313,12 +378,290 @@ def run_full(
             "executable_membership_rows": int(len(executable)),
             "interval_rows": int(len(intervals)),
             "instrument_failures": int(len(results["failures"])),
+            "benchmark_index_rows": int(len(index_results["daily"])),
+            "benchmark_index_failures": int(len(index_results["failures"])),
             "skip_qlib_dump": bool(args.skip_qlib_dump),
         },
     )
     if results["failures"] and args.fail_fast:
         return 1
     return 0
+
+
+def run_index_only(
+    *,
+    args: argparse.Namespace,
+    config: dict[str, Any],
+    config_path: Path,
+    audit_rows,
+) -> int:
+    import akshare as ak
+
+    data_paths = resolved_data_paths(config)
+    output_paths = resolved_output_paths(config)
+    ensure_full_directories(data_paths, output_paths)
+
+    calendar = load_trade_calendar(ak, config, data_paths, args)
+    index_results = prepare_benchmark_indices(
+        ak=ak,
+        config=config,
+        data_paths=data_paths,
+        output_paths=output_paths,
+        calendar=calendar,
+        args=args,
+    )
+    if not args.skip_qlib_dump:
+        dump_index_qlib_provider(config, data_paths, args)
+        index_qlib_check = check_index_qlib_provider(
+            config, data_paths, index_results["intervals"], calendar
+        )
+        write_csv(index_qlib_check, output_paths["tables"]["index_qlib_provider_check"])
+    else:
+        index_qlib_check = pd.DataFrame(
+            [
+                {
+                    "status": "skipped",
+                    "reason": "--skip-qlib-dump",
+                }
+            ]
+        )
+        write_csv(index_qlib_check, output_paths["tables"]["index_qlib_provider_check"])
+
+    write_index_success_report(
+        config=config,
+        calendar=calendar,
+        index_results=index_results,
+        index_qlib_check=index_qlib_check,
+    )
+    write_run_manifest(
+        config=config,
+        config_path=config_path,
+        decision="index_only_complete",
+        audit_rows=audit_rows,
+        extra={
+            "resolved_start_date": calendar[0],
+            "resolved_end_date": calendar[-1],
+            "resolved_sessions": int(len(calendar)),
+            "benchmark_index_rows": int(len(index_results["daily"])),
+            "benchmark_index_failures": int(len(index_results["failures"])),
+            "skip_qlib_dump": bool(args.skip_qlib_dump),
+        },
+    )
+    return 0
+
+
+def configured_index_specs(config: dict[str, Any]) -> list[dict[str, Any]]:
+    if not config.get("indices", {}).get("enabled", False):
+        return []
+    return list(config["indices"].get("required", []))
+
+
+def prepare_benchmark_indices(
+    *,
+    ak: Any,
+    config: dict[str, Any],
+    data_paths: dict[str, Path],
+    output_paths: dict[str, dict[str, Path]],
+    calendar: list[str],
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    specs = configured_index_specs(config)
+    if not specs:
+        empty = pd.DataFrame()
+        return {
+            "daily": empty,
+            "source_audit": empty,
+            "coverage": empty,
+            "intervals": empty,
+            "failures": [],
+        }
+
+    daily_frames: list[pd.DataFrame] = []
+    audit_rows: list[dict[str, Any]] = []
+    coverage_rows: list[dict[str, Any]] = []
+    interval_rows: list[dict[str, Any]] = []
+    failures: list[dict[str, Any]] = []
+
+    for spec in specs:
+        try:
+            result = load_or_fetch_index_daily(
+                ak=ak,
+                spec=spec,
+                config=config,
+                data_paths=data_paths,
+                calendar=calendar,
+                args=args,
+            )
+            daily = result["daily"]
+            qlib_daily = build_qlib_index_daily(daily)
+            qlib_csv_path = data_paths["index_qlib_csv_dir"] / f"{spec['qlib_instrument']}.csv"
+            write_qlib_index_csv(qlib_daily, qlib_csv_path)
+
+            missing_calendar_dates = sorted(set(calendar).difference(set(daily["date"])))
+            interval_rows.append(
+                {
+                    "instrument": spec["qlib_instrument"],
+                    "start_datetime": daily["date"].min(),
+                    "end_datetime": daily["date"].max(),
+                    "session_count": int(len(daily)),
+                }
+            )
+            audit_row = {
+                "index_alias": spec["alias"],
+                "name": spec["name"],
+                "instrument": spec["qlib_instrument"],
+                "status": "ok",
+                "source_function": result["source_function"],
+                "source_symbol": result["source_symbol"],
+                "source_volume_unit": result["source_volume_unit"],
+                "source_money_unit": result["source_money_unit"],
+                "amount_role": result["amount_role"],
+                "raw_cache_path": str(result["raw_cache_path"]),
+                "qlib_csv_path": str(qlib_csv_path),
+                "first_date": daily["date"].min(),
+                "last_date": daily["date"].max(),
+                "row_count": int(len(daily)),
+                "missing_calendar_dates": int(len(missing_calendar_dates)),
+                "missing_calendar_sample": "|".join(missing_calendar_dates[:10]),
+                "nullable_volume_rows": int(daily["volume"].isna().sum()),
+                "nullable_money_rows": int(daily["money"].isna().sum()),
+            }
+            audit_rows.append(audit_row)
+            coverage_rows.append(audit_row.copy())
+            daily_frames.append(daily)
+            print(
+                f"index {spec['alias']} ok source={result['source_function']} "
+                f"rows={len(daily)} range={daily['date'].min()}..{daily['date'].max()}"
+            )
+        except Exception as exc:
+            failure = {
+                "index_alias": spec.get("alias"),
+                "name": spec.get("name"),
+                "instrument": spec.get("qlib_instrument"),
+                "status": "failed",
+                "reason": f"{type(exc).__name__}: {exc}",
+            }
+            failures.append(failure)
+            audit_rows.append(failure)
+            coverage_rows.append(failure)
+            if args.fail_fast:
+                break
+
+    if failures:
+        write_csv(pd.DataFrame(audit_rows), data_paths["index_source_audit_csv"])
+        write_csv(pd.DataFrame(coverage_rows), output_paths["tables"]["index_coverage_audit"])
+        raise RuntimeError("Benchmark index preparation failed: " + "; ".join(row["reason"] for row in failures))
+    if not daily_frames:
+        raise RuntimeError("Benchmark index preparation produced no rows")
+
+    daily_all = pd.concat(daily_frames, ignore_index=True).sort_values(["instrument", "date"])
+    source_audit = pd.DataFrame(audit_rows)
+    coverage = pd.DataFrame(coverage_rows)
+    intervals = pd.DataFrame(interval_rows).sort_values(["instrument", "start_datetime"])
+
+    write_csv(daily_all, data_paths["index_daily_csv"])
+    write_csv(source_audit, data_paths["index_source_audit_csv"])
+    write_csv(coverage, output_paths["tables"]["index_coverage_audit"])
+    write_qlib_instrument_intervals(intervals, data_paths["index_qlib_instrument_file"])
+    return {
+        "daily": daily_all.reset_index(drop=True),
+        "source_audit": source_audit,
+        "coverage": coverage,
+        "intervals": intervals,
+        "failures": failures,
+    }
+
+
+def load_or_fetch_index_daily(
+    *,
+    ak: Any,
+    spec: dict[str, Any],
+    config: dict[str, Any],
+    data_paths: dict[str, Path],
+    calendar: list[str],
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    attempts = index_source_attempts(spec, calendar)
+    errors: list[str] = []
+    calendar_set = set(calendar)
+    for attempt in attempts:
+        name = attempt["source_function"]
+        func = getattr(ak, name, None)
+        if func is None:
+            errors.append(f"{name}: missing")
+            continue
+        raw_cache_path = (
+            data_paths["index_raw_dir"]
+            / f"{spec['alias']}_{name}_{attempt['source_symbol']}.csv"
+        )
+        try:
+            if raw_cache_path.exists() and not args.force:
+                df = read_csv_cache(raw_cache_path)
+                if df is None:
+                    df = call_akshare_unproxied(func, **attempt["kwargs"])
+                    write_csv(df, raw_cache_path)
+            else:
+                df = call_akshare_unproxied(func, **attempt["kwargs"])
+                write_csv(df, raw_cache_path)
+            normalized = normalize_index_bars(
+                df,
+                index_alias=spec["alias"],
+                instrument=spec["qlib_instrument"],
+                source_symbol=attempt["source_symbol"],
+                source_function=name,
+                volume_unit=attempt["source_volume_unit"],
+                money_unit=attempt["source_money_unit"],
+                amount_role=attempt["amount_role"],
+            )
+            covered = normalized[normalized["date"].isin(calendar_set)].copy()
+            if covered.empty:
+                raise ValueError("no rows matched resolved A-share calendar")
+            missing = sorted(calendar_set.difference(set(covered["date"])))
+            if covered["date"].min() != calendar[0] or covered["date"].max() != calendar[-1]:
+                raise ValueError(
+                    "coverage range "
+                    f"{covered['date'].min()}..{covered['date'].max()} does not match "
+                    f"{calendar[0]}..{calendar[-1]}"
+                )
+            if missing:
+                raise ValueError(
+                    f"missing {len(missing)} resolved sessions, first={missing[:5]}"
+                )
+            result = {
+                "daily": covered.reset_index(drop=True),
+                "source_function": name,
+                "source_symbol": attempt["source_symbol"],
+                "source_volume_unit": attempt["source_volume_unit"],
+                "source_money_unit": attempt["source_money_unit"],
+                "amount_role": attempt["amount_role"],
+                "raw_cache_path": raw_cache_path,
+            }
+            return result
+        except Exception as exc:
+            errors.append(f"{name}({attempt['source_symbol']}): {type(exc).__name__}: {exc}")
+    raise RuntimeError("; ".join(errors))
+
+
+def index_source_attempts(spec: dict[str, Any], calendar: list[str]) -> list[dict[str, Any]]:
+    symbol = str(spec["preferred_source_symbol"])
+    return [
+        {
+            "source_function": "stock_zh_index_daily",
+            "source_symbol": symbol,
+            "kwargs": {"symbol": symbol},
+            "source_volume_unit": "shares",
+            "source_money_unit": "missing",
+            "amount_role": "ignore",
+        },
+        {
+            "source_function": "stock_zh_index_daily_tx",
+            "source_symbol": symbol,
+            "kwargs": {"symbol": symbol},
+            "source_volume_unit": "hands",
+            "source_money_unit": "missing",
+            "amount_role": "volume",
+        },
+    ]
 
 
 def resolved_data_paths(config: dict[str, Any]) -> dict[str, Path]:
@@ -338,8 +681,12 @@ def ensure_full_directories(
         "market_cap_dir",
         "status_dir",
         "qlib_csv_dir",
+        "index_raw_dir",
+        "index_qlib_csv_dir",
         "processed_universe_dir",
+        "processed_index_dir",
         "qlib_provider_uri",
+        "index_qlib_provider_uri",
     ]
     for key in directory_keys:
         data_paths[key].mkdir(parents=True, exist_ok=True)
@@ -1122,6 +1469,40 @@ def dump_qlib_provider(
     )
 
 
+def dump_index_qlib_provider(
+    config: dict[str, Any], data_paths: dict[str, Path], args: argparse.Namespace
+) -> None:
+    dump_bin = resolve_dump_bin(args)
+    provider_uri = data_paths["index_qlib_provider_uri"]
+    if provider_uri.exists():
+        shutil.rmtree(provider_uri)
+    provider_uri.mkdir(parents=True, exist_ok=True)
+    command = [
+        sys.executable,
+        str(dump_bin),
+        "dump_all",
+        "--data_path",
+        str(data_paths["index_qlib_csv_dir"]),
+        "--qlib_dir",
+        str(provider_uri),
+        "--freq",
+        "day",
+        "--include_fields",
+        "open,close,high,low,volume,money",
+        "--date_field_name",
+        "date",
+        "--file_suffix",
+        ".csv",
+    ]
+    subprocess.run(command, cwd=PROJECT_ROOT, check=True)
+    instruments_dir = provider_uri / "instruments"
+    instruments_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(
+        data_paths["index_qlib_instrument_file"],
+        instruments_dir / f"{config['indices']['qlib_market_name']}.txt",
+    )
+
+
 def resolve_dump_bin(args: argparse.Namespace) -> Path:
     if args.dump_bin_path:
         path = Path(args.dump_bin_path).expanduser()
@@ -1169,6 +1550,50 @@ def check_qlib_provider(
     )
 
 
+def check_index_qlib_provider(
+    config: dict[str, Any],
+    data_paths: dict[str, Path],
+    intervals: pd.DataFrame,
+    calendar: list[str],
+) -> pd.DataFrame:
+    if intervals.empty:
+        return pd.DataFrame([{"status": "failed", "reason": "empty index intervals"}])
+    import qlib
+    from qlib.constant import REG_CN
+    from qlib.data import D
+
+    qlib.init(provider_uri=str(data_paths["index_qlib_provider_uri"]), region=REG_CN)
+    fields = list(config["fields"]["index_qlib_required"])
+    instruments = sorted(intervals["instrument"].unique())
+    frame = D.features(
+        instruments,
+        fields,
+        start_time=calendar[0],
+        end_time=calendar[-1],
+        freq="day",
+    )
+    ohlc_fields = ["$open", "$high", "$low", "$close"]
+    rows: list[dict[str, Any]] = []
+    for instrument in instruments:
+        try:
+            one = frame.xs(instrument, level=0, drop_level=False)
+        except KeyError:
+            one = pd.DataFrame(columns=fields)
+        ohlc_non_null = int(one[ohlc_fields].dropna(how="any").shape[0]) if not one.empty else 0
+        rows.append(
+            {
+                "status": "passed" if ohlc_non_null > 0 else "failed",
+                "instrument": instrument,
+                "fields": "|".join(fields),
+                "rows": int(len(one)),
+                "ohlc_non_null_rows": ohlc_non_null,
+                "volume_nullable_rows": int(one["$volume"].isna().sum()) if "$volume" in one else 0,
+                "money_nullable_rows": int(one["$money"].isna().sum()) if "$money" in one else 0,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def write_final_success_report(
     *,
     config: dict[str, Any],
@@ -1180,6 +1605,8 @@ def write_final_success_report(
     intervals: pd.DataFrame,
     results: dict[str, Any],
     qlib_check: pd.DataFrame,
+    index_results: dict[str, Any] | None = None,
+    index_qlib_check: pd.DataFrame | None = None,
 ) -> None:
     output_paths = resolved_output_paths(config)
     path = output_paths["reports"]["final_report"]
@@ -1215,6 +1642,99 @@ def write_final_success_report(
         lines.append("- No Qlib provider check rows were produced.")
     else:
         for row in qlib_check.to_dict("records"):
+            lines.append("- " + ", ".join(f"{key}={value}" for key, value in row.items()))
+    if index_results is not None:
+        coverage = index_results["coverage"]
+        lines.extend(["", "## Benchmark Index Data", ""])
+        lines.append(f"- Index rows: `{len(index_results['daily'])}`")
+        lines.append(f"- Index failures: `{len(index_results['failures'])}`")
+        if coverage.empty:
+            lines.append("- No index coverage rows were produced.")
+        else:
+            for row in coverage.to_dict("records"):
+                lines.append(
+                    "- "
+                    + ", ".join(
+                        f"{key}={value}"
+                        for key, value in row.items()
+                        if key
+                        in {
+                            "index_alias",
+                            "instrument",
+                            "source_function",
+                            "source_symbol",
+                            "first_date",
+                            "last_date",
+                            "row_count",
+                            "nullable_money_rows",
+                        }
+                    )
+                )
+        lines.extend(["", "## Benchmark Index Qlib Provider Check", ""])
+        if index_qlib_check is None or index_qlib_check.empty:
+            lines.append("- No index Qlib provider check rows were produced.")
+        else:
+            for row in index_qlib_check.to_dict("records"):
+                lines.append("- " + ", ".join(f"{key}={value}" for key, value in row.items()))
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_index_success_report(
+    *,
+    config: dict[str, Any],
+    calendar: list[str],
+    index_results: dict[str, Any],
+    index_qlib_check: pd.DataFrame,
+) -> None:
+    output_paths = resolved_output_paths(config)
+    path = output_paths["reports"]["index_report"]
+    coverage = index_results["coverage"]
+    lines = [
+        "# Benchmark Index Data Prepare Report",
+        "",
+        "Decision: `index_only_complete`",
+        "",
+        "## Coverage",
+        "",
+        f"- Requested range: `{config['date_range']['start_date']}` to `{config['date_range']['end_date']}`",
+        f"- Resolved trading range: `{calendar[0]}` to `{calendar[-1]}`",
+        f"- Resolved sessions: `{len(calendar)}`",
+        f"- Index rows: `{len(index_results['daily'])}`",
+        f"- Index failures: `{len(index_results['failures'])}`",
+        "",
+        "## Index Series",
+        "",
+    ]
+    if coverage.empty:
+        lines.append("- No index coverage rows were produced.")
+    else:
+        for row in coverage.to_dict("records"):
+            lines.append(
+                "- "
+                + ", ".join(
+                    f"{key}={value}"
+                    for key, value in row.items()
+                    if key
+                    in {
+                        "index_alias",
+                        "name",
+                        "instrument",
+                        "source_function",
+                        "source_symbol",
+                        "first_date",
+                        "last_date",
+                        "row_count",
+                        "missing_calendar_dates",
+                        "nullable_volume_rows",
+                        "nullable_money_rows",
+                    }
+                )
+            )
+    lines.extend(["", "## Index Qlib Provider Check", ""])
+    if index_qlib_check.empty:
+        lines.append("- No index Qlib provider check rows were produced.")
+    else:
+        for row in index_qlib_check.to_dict("records"):
             lines.append("- " + ", ".join(f"{key}={value}" for key, value in row.items()))
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -1279,11 +1799,15 @@ def write_run_manifest(
     manifest_path = output_paths["manifests"]["run_manifest"]
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     outputs = {
-        "akshare_api_audit": output_paths["reports"]["akshare_api_audit"],
-        "final_report": output_paths["reports"]["final_report"],
-        "source_coverage_audit": output_paths["tables"]["source_coverage_audit"],
+        f"{section}.{key}": path
+        for section, section_paths in output_paths.items()
+        for key, path in section_paths.items()
     }
-    existing_outputs = {key: path for key, path in outputs.items() if path.is_file()}
+    existing_outputs = {
+        key: path
+        for key, path in outputs.items()
+        if path.is_file() and path != manifest_path
+    }
     try:
         import akshare as ak
 

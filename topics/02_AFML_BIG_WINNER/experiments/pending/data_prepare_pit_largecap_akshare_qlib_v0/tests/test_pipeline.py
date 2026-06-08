@@ -17,12 +17,14 @@ from pipeline import (  # noqa: E402
     _audit_historical_st_category,
     board_bucket,
     blocking_audit_issues,
+    build_qlib_index_daily,
     build_qlib_daily,
     count_dated_st_name_change_rows,
     has_any_st_name_marker,
     compress_executable_intervals,
     expand_share_asof,
     normalize_daily_bars,
+    normalize_index_bars,
     normalize_share_history,
     shift_membership_to_executable,
     suspension_sample_matches_requested_date,
@@ -78,6 +80,64 @@ def test_normalize_daily_bars_and_build_qlib_daily() -> None:
     assert qlib.loc[0, "turnover_rate"] == pytest.approx(0.015)
     assert qlib.loc[0, "factor"] == pytest.approx(1.1)
     assert qlib.loc[0, "raw_close"] == 10.0
+
+
+def test_normalize_index_bars_sina_volume_and_nullable_money() -> None:
+    source = pd.DataFrame(
+        {
+            "date": ["2024-05-06", "2024-05-07"],
+            "open": [3500.0, 3510.0],
+            "high": [3520.0, 3530.0],
+            "low": [3490.0, 3500.0],
+            "close": [3510.0, 3525.0],
+            "volume": [100_000.0, 200_000.0],
+        }
+    )
+
+    normalized = normalize_index_bars(
+        source,
+        index_alias="csi300",
+        instrument="SH000300",
+        source_symbol="sh000300",
+        source_function="stock_zh_index_daily",
+        volume_unit="shares",
+        money_unit="missing",
+        amount_role="ignore",
+    )
+    qlib = build_qlib_index_daily(normalized)
+
+    assert list(qlib["date"]) == ["2024-05-06", "2024-05-07"]
+    assert qlib.loc[0, "volume"] == 100_000.0
+    assert pd.isna(qlib.loc[0, "money"])
+    assert qlib.loc[0, "instrument"] == "SH000300"
+
+
+def test_normalize_index_bars_tx_amount_as_hands_volume() -> None:
+    source = pd.DataFrame(
+        {
+            "date": ["2024-05-06"],
+            "open": [5000.0],
+            "close": [5010.0],
+            "high": [5020.0],
+            "low": [4990.0],
+            "amount": [123.0],
+        }
+    )
+
+    normalized = normalize_index_bars(
+        source,
+        index_alias="all_a",
+        instrument="SH000985",
+        source_symbol="sh000985",
+        source_function="stock_zh_index_daily_tx",
+        volume_unit="hands",
+        money_unit="missing",
+        amount_role="volume",
+    )
+
+    assert normalized.loc[0, "volume"] == 12_300.0
+    assert pd.isna(normalized.loc[0, "money"])
+    assert normalized.loc[0, "source_volume_unit"] == "hands"
 
 
 def test_expand_share_asof_uses_latest_prior_share_change() -> None:
