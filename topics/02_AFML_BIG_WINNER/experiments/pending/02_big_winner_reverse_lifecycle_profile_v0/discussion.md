@@ -8,7 +8,8 @@
 先找出所有 big winner episode
 再观察 episode 前 30 天到 episode 后 30 天的完整生命周期
 同时叠加市场 regime、行业 regime、个股路径、成交、波动和相对强度
-最后再判断哪些可观察锚点可以转成 AFML event
+最后再判断哪些可观察锚点、状态路径或序列完成条件
+有资格进入下一阶段 AFML event contract
 ```
 
 核心问题不是：
@@ -59,8 +60,64 @@ A 股市场中，big winner 在启动、确认、主升和衰竭过程中，
 - 反向画像必须承认它天然使用事后信息，不能伪装成可交易信号。
 - 任何 lifecycle dominance 结论都必须是 `winner vs matched controls` 的差异结论。
 - 只基于 winner 单侧分布的统计只能作为 descriptive profile，不能写成规律或因果解释。
-- 如果没有稳定差异，本实验必须允许输出 null result，而不是硬挤出 event anchor。
+- 如果没有稳定差异，本实验必须允许输出 null result，而不是硬挤出 event anchor 或 sequence-completion event。
 - 行业相关结论必须先解决 PIT 行业数据依赖；没有 PIT 行业表时不能做 primary industry claim。
+
+## 2.1 Lifecycle State Path, not Single-Point Event
+
+本实验必须明确区分三件事：
+
+```text
+alignment anchor != signal
+signal != event
+event != single-day condition
+```
+
+`first_ema60_reclaim` 这类简单锚点首先是 shared alignment axis，用来让
+winners 和 matched controls 站在同一张坐标轴上比较。它不是结论，也不是
+默认的 entry event。
+
+big winner 的生命周期可能由一组可观察状态按顺序出现共同决定，而不是由某个
+单日事件独立决定。因此 v0 不只观察 marginal factor dominance，还必须允许
+评估少数冻结的 lifecycle state sequences。
+
+初始状态层级：
+
+```text
+state_0_context:
+  market regime, industry regime if PIT industry data is available, liquidity regime
+
+state_1_repair:
+  stops making lower lows, EMA/VWAP/range repair, drawdown repair
+
+state_2_confirmation:
+  amount expansion, upper-half close, VWAP hold, no gap fade, no destructive upper shadow
+
+state_3_leadership:
+  stock-vs-market persistence, stock-vs-industry persistence if available, rank jump persistence
+
+state_4_continuation:
+  persistence after +20%, near-winner vs true-winner continuation difference
+
+state_5_exhaustion_or_failure:
+  rank evaporation, destructive high-vol, gap fade, volume expansion without price hold
+```
+
+The state_0 ... state_5 list is a vocabulary of observable lifecycle states.
+The publishable sequence tests are the smaller frozen subset `S1` ... `S6`
+defined later in this document. Other state combinations remain backlog until
+their definitions are frozen.
+
+如果后续进入 AFML event contract，`t0` 可以是：
+
+```text
+sequence_completion_date:
+  first close-observed date when all required states in a frozen sequence
+  have become observable and all forbidden states are absent
+```
+
+也就是说，`t0` 是工程上的样本起点和 next-open executable date，不等于声称
+全部 alpha 都来自这一天。
 
 ## 3. Reference Episode 定义
 
@@ -161,6 +218,8 @@ episode_high_date
 qfq_low_at_low_date
 qfq_high_at_high_date
 mfe_120
+low_to_high_sessions
+low_to_high_calendar_days
 low_detection_window = 20
 forward_horizon_days = 120
 dedup_cluster_id
@@ -194,7 +253,16 @@ lookback_250_complete
 - 需要保留跨年连续 episode，避免把一个完整 winner 拆成多个不完整年度片段。
 - 如果 `profile_end_date = episode_high_date + 30 trading days` 不完整，应保留 episode 但标记 `profile_post_high_complete = false`，post-high 统计只使用 complete 子样本或显式 censored 口径。
 - 如果 `high_at_horizon_boundary = true`，说明 120d horizon 内的最高点可能只是窗口截断点，不一定是完整主升高点。这类 episode 的 `post_high_30d` 衰竭分析必须单独报告或排除，不能和已观察到高点后的 rank evaporation / gap fade 统计混在一起。
-- Full-lookback profile features require enough history. Missing feature values must distinguish `missing_insufficient_lookback` from `missing_event_absent`; these states must not be collapsed.
+- Full-lookback profile features require enough history. Missing feature values must distinguish:
+
+```text
+missing_insufficient_lookback
+missing_event_absent
+missing_source_field
+missing_unit_incompatible
+```
+
+These states must not be collapsed.
 
 ## 3.1 数据依赖和行业口径
 
@@ -321,16 +389,15 @@ duration_bucketed:
   group episodes by low_to_high_duration bucket before aggregating
 ```
 
-初始 duration buckets：
+Duration buckets use trading sessions, not calendar days. 初始 duration buckets：
 
 ```text
-fast:        low_to_high_days <= 40
-medium:      41 <= low_to_high_days <= 80
-long:        81 <= low_to_high_days <= 160
-very_long:   low_to_high_days > 160
+fast:        low_to_high_sessions <= 40
+medium:      41 <= low_to_high_sessions <= 80
+long:        81 <= low_to_high_sessions <= 120
 ```
 
-These boundaries are initial placeholders. The formal requirement must either justify them from the reference duration distribution or replace them with frozen quantile buckets computed on the train split only. Validation and robustness must not be used to tune duration bucket boundaries.
+These boundaries are initial placeholders. The formal requirement must either justify them from the reference duration distribution or replace them with frozen quantile buckets computed on the train split only. Validation and robustness must not be used to tune duration bucket boundaries. A `>120` trading-session bucket is invalid under the primary 120-session MFE horizon.
 
 报告禁止只输出全样本平均生命周期曲线。任何平均曲线必须同时给出 duration bucket 或 anchor-aligned 版本，以避免把不同生命周期长度强行混合。
 
@@ -347,6 +414,7 @@ These boundaries are initial placeholders. The formal requirement must either ju
 - 行业相对市场收益、行业宽度、行业同步状态，仅在行业数据 gate 允许时记录。
 - 市场 trend、market drawdown、market breadth、market volatility。
 - 是否触发后续可观察锚点。
+- 是否满足冻结的 lifecycle state / sequence 条件。
 
 ## 5. 可观察锚点
 
@@ -399,6 +467,9 @@ Therefore:
 - Simple anchors define when to align observations.
 - The feature bank defines what information may explain the lifecycle.
 - A feature may become important without becoming an event anchor.
+- A sequence of states may become important even if no single state is dominant.
+- An AFML `t0` may represent the completion date of an observable sequence,
+  not the causal start of the winner.
 - A complex feature such as VWAP deviation should first be tested as a
   lifecycle dominance candidate, not directly promoted to an event.
 
@@ -476,6 +547,8 @@ amount_ratio_20d
 amount_ratio_60d
 turnover_ratio_20d
 derived_daily_vwap_available
+derived_daily_vwap_price_basis
+qfq_adjustment_factor_available
 close_to_derived_daily_vwap
 open_to_derived_daily_vwap
 vwap_deviation_20d_z
@@ -489,6 +562,8 @@ atr_20_pct
 market_return_20d
 market_drawdown_60d
 market_volatility_20d
+market_regime_bucket
+benchmark_alias
 stock_vs_market_20d
 stock_vs_industry_20d if PIT industry data is available
 industry_vs_market_20d if PIT industry data is available
@@ -499,12 +574,22 @@ Anchor-specific custom fields may be emitted in separate diagnostic tables, but 
 VWAP fields are derived from daily source data, not intraday bars:
 
 ```text
-derived_daily_vwap = money / volume
+raw_daily_vwap = money / volume
+qfq_daily_vwap = raw_daily_vwap * qfq_adjustment_factor
+qfq_adjustment_factor = qfq_close / raw_close
 ```
 
 They may be used only when the source audit confirms compatible CNY money and
-share-volume units. If money or volume is missing, zero, or unit-incompatible,
-VWAP-derived fields must be marked unavailable rather than filled or inferred.
+share-volume units, and when raw close and qfq close are available on the same
+instrument-date. Snapshot fields such as `close_to_derived_daily_vwap`,
+`open_to_derived_daily_vwap`, `vwap_deviation_20d_z`, and `vwap_reclaim_flag`
+must compare qfq prices to `qfq_daily_vwap`.
+
+Raw VWAP may be retained for audit, but raw VWAP must not be compared directly
+with qfq prices in dominance tables. If money or volume is missing, zero,
+unit-incompatible, or the qfq adjustment factor cannot be verified,
+VWAP-derived fields must be marked `missing_unit_incompatible` or
+`missing_source_field` rather than filled or inferred.
 
 这样可以回答：
 
@@ -688,6 +773,17 @@ future_label_used_for_profile_only
 如果某类 control 的 match coverage 不足，相关 dominance claim 必须降级为 sample-blocked。
 
 对照必须来自同一 opportunity set。禁止拿 retrospective low 上的 winner 去对比普通 stock-day control。
+
+Control candidate pools must use the same per-instrument non-chain
+direct-interval deduplication policy as winner episode extraction before
+matching. Otherwise one choppy non-winner instrument can contribute many nearby
+`candidate_low_date` rows and inflate control coverage, average controls per
+winner, and sequence-rate denominators.
+
+If nearest same-week matching would cross a split boundary, the control match
+must be dropped or explicitly marked `cross_split_boundary_unusable`. A control
+row from validation or robustness must not enter train dominance statistics
+through nearest-week matching.
 
 建议四类对照：
 
@@ -886,14 +982,17 @@ Matched controls inherit the split of the winner episode or anchor they are matc
 
 ```text
 outputs/publishable/tables/big_winner_episode_reference_summary.csv
-outputs/publishable/tables/anchor_profile_summary.csv
+outputs/publishable/tables/frozen_anchor_profile_summary.csv
 outputs/publishable/tables/winner_vs_matched_control_stats.csv
 outputs/publishable/tables/near_winner_comparison_stats.csv
 outputs/publishable/tables/false_repair_comparison_stats.csv
 outputs/publishable/tables/shared_axis_market_regime_dominance.csv
 outputs/publishable/tables/winner_only_retrospective_stage_profile.csv
-outputs/publishable/tables/industry_regime_x_episode_stage.csv  # conditional on PIT industry data
+outputs/publishable/tables/winner_only_industry_regime_x_retrospective_stage.csv  # conditional on PIT industry data
 outputs/publishable/tables/shared_axis_factor_dominance.csv
+outputs/publishable/tables/shared_axis_sequence_dominance.csv
+outputs/publishable/tables/sequence_family_test_count.csv
+outputs/publishable/tables/sequence_examples_descriptive.csv
 outputs/publishable/reports/reverse_lifecycle_profile_report.md
 outputs/manifests/run_manifest.json
 ```
@@ -902,8 +1001,9 @@ Conditional artifact rule:
 
 ```text
 if industry_data_status != pit_available:
-  do not generate primary industry_regime_x_episode_stage.csv
+  do not generate primary winner_only_industry_regime_x_retrospective_stage.csv
   do not include industry-relative rows in shared_axis_factor_dominance.csv
+  do not include industry-relative states in shared_axis_sequence_dominance.csv
   report industry diagnostics as skipped or diagnostic-only caveat
 ```
 
@@ -929,7 +1029,58 @@ shared_axis_market_regime_dominance.csv:
 shared_axis_factor_dominance.csv:
   winner vs control factor differences by shared alignment axis,
   relative-day bucket, split, anchor family, and optional regime bucket
+
+shared_axis_sequence_dominance.csv:
+  winner vs control sequence-rate differences by shared alignment axis,
+  frozen sequence family, relative window, split, regime bucket, and duration bucket
 ```
+
+Sequence dominance is reported separately from marginal factor dominance.
+Winner-only sequence maps are descriptive and must not support event claims.
+
+Initial frozen sequence families should be small enough to avoid open-ended
+data snooping:
+
+```text
+S1_context_to_repair:
+  market/industry context -> price repair
+
+S2_repair_to_money_confirmation:
+  price repair -> amount expansion -> VWAP or range hold
+
+S3_repair_to_rank_persistence:
+  price repair -> rank jump -> rank persistence
+
+S4_contraction_to_expansion:
+  volatility contraction -> expansion -> upper-half close
+
+S5_money_expansion_without_distribution:
+  amount expansion -> no gap fade -> no destructive upper shadow
+
+S6_continuation_discriminator:
+  +20% path state -> rank/money persistence -> near-winner vs big-winner continuation
+```
+
+`S6_continuation_discriminator` can only use a close-observed `+20%` state
+measured from the same shared axis price basis. It must not use winner-only
+retrospective stages such as `20pct_to_high` or any retrospective high date.
+`near-winner` and `big-winner` are outcome groups for this discriminator; they
+must not appear as required states inside the sequence definition.
+
+Each sequence family must freeze required states, forbidden states, windows,
+order constraints, missing-value rules, and shared-axis eligibility before
+entering publishable dominance statistics.
+
+All sequence windows, order constraints, forbidden-state windows, thresholds,
+and admissible variants must be frozen once using train-split evidence only.
+Validation and robustness must not be used to select, prune, retime, or
+otherwise tune sequence structure. `sequence_family_test_count.csv` must count
+every tested variant, including variants inspected and rejected before the
+reported sequence was selected.
+
+At minimum, `sequence_family_test_count.csv` must expose tested, reported, and
+rejected variant counts, the `train_only` selection basis, and the FDR
+denominator used for each sequence family.
 
 Winner-only descriptive tables:
 
@@ -965,7 +1116,7 @@ such as `winner-only descriptive pattern`. It must not be written as
 
 ## 8.1 成功标准和证伪条件
 
-本实验必须能成功地产生 null result。不是每次反向画像都应该蒸馏出 event anchor。
+本实验必须能成功地产生 null result。不是每次反向画像都应该蒸馏出 event anchor 或 sequence-completion event。
 
 实验级 sample gates：
 
@@ -976,9 +1127,17 @@ min_robustness_winner_episodes = 30
 min_control_match_coverage = 80%
 min_average_controls_per_winner = 3
 min_anchor_occurrences_for_claim = 50
+min_sequence_occurrences_for_claim = 50
+min_feature_non_missing_coverage_for_claim = 70%
 min_anchor_year_coverage_for_claim = 3  # auxiliary concentration check
 min_anchor_split_coverage_for_headline_claim = train + validation + robustness
+min_sequence_split_coverage_for_headline_claim = train + validation + robustness
 ```
+
+`min_anchor_occurrences_for_claim = 50` and
+`min_sequence_occurrences_for_claim = 50` are all-split cumulative gates.
+`*_split_coverage_for_headline_claim = train + validation + robustness` means
+nonzero support in each split, not 50 occurrences per split.
 
 若不满足，final decision 应为：
 
@@ -993,6 +1152,10 @@ continuous_factor:
   abs(standardized_mean_difference_winner_vs_control) >= 0.25
 
 binary_or_bucket_factor:
+  odds_ratio_or_lift_winner_vs_control >= 1.25
+  or absolute_rate_difference >= 5 percentage points
+
+sequence_pattern:
   odds_ratio_or_lift_winner_vs_control >= 1.25
   or absolute_rate_difference >= 5 percentage points
 
@@ -1019,6 +1182,7 @@ Multiple-testing discipline:
 ```text
 report_total_tests:
   every factor x stage x anchor x regime x duration-bucket comparison must be counted
+  every sequence family x shared axis x relative window x regime x duration-bucket comparison must be counted
 
 headline_claim:
   must report total tests in its family
@@ -1030,12 +1194,43 @@ non_headline_claim:
   label as exploratory unless confirmed by the frozen validation and robustness criteria
 ```
 
-Split-stable sign alone is not enough to promote a claim when hundreds of candidate comparisons were inspected.
-
-如果没有任何因素满足上述要求，final decision 应为：
+BH-FDR claim-family boundaries are fixed:
 
 ```text
-reverse_lifecycle_no_stable_dominance_found
+marginal_factor_families:
+  market_regime
+  industry_regime, conditional on PIT industry data
+  price_structure
+  volume_money_vwap_turnover
+  volatility_structure
+  relative_strength
+  path_tolerance
+
+sequence_families:
+  S1_context_to_repair
+  S2_repair_to_money_confirmation
+  S3_repair_to_rank_persistence
+  S4_contraction_to_expansion
+  S5_money_expansion_without_distribution
+  S6_continuation_discriminator
+```
+
+BH-FDR, if reported, is computed separately within each fixed family. Marginal
+families and sequence families must not borrow significance from each other.
+
+Split-stable sign alone is not enough to promote a claim when hundreds of candidate comparisons were inspected.
+
+如果没有任何 factor 或 sequence 满足上述要求，final decision 应为：
+
+```text
+marginal_and_sequence_no_stable_dominance_found
+```
+
+如果单因子无稳定 dominance，但冻结状态序列有 matched-control 支持，必须根据支持强度写成以下唯一 decision 之一：
+
+```text
+reverse_lifecycle_sequence_supported_universal_dominance
+reverse_lifecycle_sequence_conditional_candidate
 ```
 
 如果只有 winner-only profile 显著、matched-control 差异不显著，必须写成：
@@ -1048,7 +1243,7 @@ descriptive_profile_only_no_control_adjusted_support
 
 - reference episode 可复现。
 - control matching 可审计。
-- dominance claim 有对照、有样本、有稳定性。
+- factor 或 sequence dominance claim 有对照、有样本、有稳定性。
 - null result 被明确允许。
 
 ## 9. 后续如何转成 AFML Event
@@ -1065,22 +1260,25 @@ Non-goals:
 - 不在缺少 PIT 行业数据时输出 primary industry conclusion。
 - 不把 current discussion 直接升级为 `03_observable_anchor_event_contract_v0`。
 
-它的目标是从反向画像中筛出可观察候选锚点：
+它的目标是从反向画像中筛出可观察候选锚点、状态路径或序列完成条件：
 
 ```text
 reverse lifecycle profile
-  -> observable anchor candidates
-  -> sparse event contract
+  -> observable anchors for alignment
+  -> lifecycle state/path dominance
+  -> candidate anchor or sequence-completion event
+  -> sparse / conditional event contract
   -> AFML t0 / t1 labels
   -> failure_10 / confirm_20 / continuation_60 / winner_120
   -> purged walk-forward validation
 ```
 
-只有当某个锚点同时满足以下条件，才进入下一阶段 event contract：
+只有当某个锚点或序列完成条件同时满足以下条件，才进入下一阶段 event contract：
 
 - 可 close-observed。
 - next open 可执行。
 - 不依赖 retrospective low/high。
+- 若是序列，`t0` 必须是全部 required states 已可观察的 completion date。
 - seed-day density 可控。
 - winner recall 不靠高密度买来。
 - 与 matched controls 相比有稳定差异。
@@ -1095,7 +1293,7 @@ reverse lifecycle profile
 ```text
 不要再急着正向找 event。
 先反向找出 A 股 big winner 的生命周期统治因素。
-再从这些统治因素中挑出可观察、稀疏、可验证的 event。
+再从这些统治因素中挑出可观察、稀疏、可验证的 anchor 或 sequence-completion event。
 ```
 
 这个实验完成后，下一步才是：

@@ -8,13 +8,14 @@ Build a reverse lifecycle profile for A-share big-winner episodes under
 This experiment must not start from candidate trading events. It must first
 construct a reproducible retrospective reference set of big-winner episodes,
 align winners and matched controls on shared axes, and identify which lifecycle
-features differ between winners and controls.
+features and state sequences differ between winners and controls.
 
 The research question is:
 
 ```text
-Which market, stock-path, volume-price, VWAP, volatility, and relative-strength
-features dominate the lifecycle of A-share big winners, after matched controls?
+Which market, stock-path, volume-price, VWAP, volatility, relative-strength
+features, and ordered observable state sequences dominate the lifecycle of
+A-share big winners, after matched controls?
 ```
 
 The final output is a profile/diagnostic report. It is not an event contract,
@@ -32,6 +33,7 @@ This experiment must not:
 - Use current-as-of industry labels for primary historical conclusions.
 - Authorize `03_observable_anchor_event_contract_v0`.
 - Claim an event edge from winner-only descriptive statistics.
+- Assume that a later AFML event must be a single-day anchor condition.
 
 ## 3. Input Data Contract
 
@@ -366,6 +368,10 @@ The lifecycle feature bank must include hidden volume-price, VWAP, money-flow,
 range-position, gap/fade, turnover, and rank-persistence expressions. A feature
 may become important without becoming an event anchor.
 
+A sequence of observable states may become important even if no single state is
+dominant. A later AFML `t0` may represent the completion date of an observable
+sequence, not the causal start of the winner.
+
 Complex features such as VWAP deviation must first be tested as lifecycle
 dominance candidates, not directly promoted to events.
 
@@ -479,6 +485,17 @@ future_label_used_for_profile_only
 
 If match coverage is insufficient, the related claim is sample-blocked.
 
+Control candidate pools must use the same per-instrument non-chain
+direct-interval deduplication policy as winner episode extraction before
+matching. Otherwise one choppy non-winner instrument can contribute many nearby
+`candidate_low_date` rows and inflate control coverage, average controls per
+winner, and sequence-rate denominators.
+
+If nearest same-week matching would cross a split boundary, the control match
+must be dropped or explicitly marked `cross_split_boundary_unusable`. A control
+row from validation or robustness must not enter train dominance statistics
+through nearest-week matching.
+
 ### 8.1 Retrospective-Low Opportunity Controls
 
 For low-aligned profiles, controls must also satisfy the same
@@ -564,6 +581,16 @@ relative strength
 path tolerance
 ```
 
+Dominance results must be reported in two separate layers:
+
+```text
+marginal_factor_dominance:
+  individual factor or bucket differences between winners and matched controls
+
+sequence_dominance:
+  ordered observable state-pattern rate differences between winners and matched controls
+```
+
 Volume-price / VWAP / money-flow candidates are mandatory. The report must not
 conclude that traditional trend features dominate until VWAP and volume-price
 candidates have been evaluated under the same winner-control design.
@@ -611,6 +638,93 @@ If 60d or 120d index lookback is unavailable, market-regime fields must be
 negative-beta validation split even if some individual dates fall into
 `transition` or `risk_on` by this rule.
 
+### 9.2 Sequence Dominance
+
+The experiment must not assume that big-winner lifecycle dominance is caused by
+a single observable anchor or single-day event.
+
+In addition to marginal factor dominance, the run must evaluate a small frozen
+set of lifecycle state sequences on shared axes. A sequence is an ordered set
+of close-observed states. Each state must be computed only from information
+available up to the state date.
+
+Sequence dominance must be reported separately from marginal factor dominance.
+Winner-only sequence maps are descriptive and must not support event claims.
+
+Initial frozen sequence families:
+
+```text
+S1_context_to_repair:
+  market/industry context -> price repair
+
+S2_repair_to_money_confirmation:
+  price repair -> amount expansion -> VWAP or range hold
+
+S3_repair_to_rank_persistence:
+  price repair -> rank jump -> rank persistence
+
+S4_contraction_to_expansion:
+  volatility contraction -> expansion -> upper-half close
+
+S5_money_expansion_without_distribution:
+  amount expansion -> no gap fade -> no destructive upper shadow
+
+S6_continuation_discriminator:
+  +20% path state -> rank/money persistence -> near-winner vs big-winner continuation
+```
+
+`S6_continuation_discriminator` may only use a close-observed `+20%` state
+measured from the same shared axis price basis. It must not use winner-only
+retrospective stages such as `20pct_to_high` or any retrospective high date.
+`near-winner` and `big-winner` are outcome groups for this discriminator; they
+must not appear as required states inside the sequence definition.
+
+Each sequence family must freeze:
+
+```text
+sequence_id
+sequence_family
+shared_axis
+anchor_family if applicable
+relative_window
+required_states
+forbidden_states
+order_constraints
+state_thresholds
+lookback_windows
+missing_value_rules
+control_eligibility
+```
+
+Sequences that use industry-relative states are primary diagnostics only when
+`industry_data_status = pit_available`. Otherwise they must be skipped or
+reported as diagnostic-only caveats and excluded from publishable primary
+sequence dominance.
+
+A sequence may become a candidate for a later AFML event contract only if:
+
+```text
+all states are close-observed
+the sequence completion date is next-open executable
+the sequence does not depend on retrospective low/high
+the sequence has matched-control lift
+the sequence is stable across splits or explicitly regime-conditional
+seed-day density is controlled
+unsupported regimes are named
+```
+
+Open-ended combination search is out of scope for v0. Pending or exploratory
+sequence patterns are a definition backlog. They must not enter publishable
+dominance statistics, validation gates, or final decisions until their formulas,
+windows, and order constraints are frozen in this requirement.
+
+All sequence windows, order constraints, forbidden-state windows, thresholds,
+and admissible variants must be frozen once using train-split evidence only.
+Validation and robustness must not be used to select, prune, retime, or
+otherwise tune sequence structure. `sequence_family_test_count.csv` must count
+every tested variant, including variants inspected and rejected before the
+reported sequence was selected.
+
 ## 10. Required Outputs
 
 Publishable outputs:
@@ -623,10 +737,57 @@ outputs/publishable/tables/near_winner_comparison_stats.csv
 outputs/publishable/tables/false_repair_comparison_stats.csv
 outputs/publishable/tables/shared_axis_market_regime_dominance.csv
 outputs/publishable/tables/shared_axis_factor_dominance.csv
+outputs/publishable/tables/shared_axis_sequence_dominance.csv
+outputs/publishable/tables/sequence_family_test_count.csv
+outputs/publishable/tables/sequence_examples_descriptive.csv
 outputs/publishable/tables/winner_only_retrospective_stage_profile.csv
 outputs/publishable/tables/winner_only_industry_regime_x_retrospective_stage.csv, conditional on PIT industry data
 outputs/publishable/reports/reverse_lifecycle_profile_report.md
 outputs/manifests/run_manifest.json
+```
+
+`shared_axis_sequence_dominance.csv` must include:
+
+```text
+sequence_id
+sequence_family
+shared_axis
+anchor_family
+relative_window
+required_states
+forbidden_states
+order_constraints
+winner_count
+control_count
+winner_sequence_rate
+control_sequence_rate
+lift
+odds_ratio
+absolute_rate_difference
+train_lift
+validation_lift
+robustness_lift
+split_stability
+regime_bucket
+duration_bucket
+near_winner_lift
+false_repair_lift
+feature_non_missing_coverage
+multiple_test_family
+claim_status
+```
+
+`sequence_family_test_count.csv` must include:
+
+```text
+sequence_family
+tested_variant_count
+reported_variant_count
+rejected_variant_count
+variant_selection_basis = train_only
+fdr_denominator_count
+validation_used_for_structure_selection = false
+robustness_used_for_structure_selection = false
 ```
 
 Large or regenerable outputs:
@@ -644,6 +805,7 @@ If `industry_data_status != pit_available`:
 ```text
 do not generate primary winner_only_industry_regime_x_retrospective_stage.csv
 do not include industry-relative rows in shared_axis_factor_dominance.csv
+do not include industry-relative states in shared_axis_sequence_dominance.csv
 report industry diagnostics as skipped or diagnostic-only caveat
 ```
 
@@ -658,10 +820,17 @@ min_robustness_winner_episodes = 30
 min_control_match_coverage = 80%
 min_average_controls_per_winner = 3
 min_anchor_occurrences_for_claim = 50
+min_sequence_occurrences_for_claim = 50
 min_feature_non_missing_coverage_for_claim = 70%
 min_anchor_year_coverage_for_claim = 3, auxiliary concentration check
 min_anchor_split_coverage_for_headline_claim = train + validation + robustness
+min_sequence_split_coverage_for_headline_claim = train + validation + robustness
 ```
+
+`min_anchor_occurrences_for_claim = 50` and
+`min_sequence_occurrences_for_claim = 50` are all-split cumulative gates.
+`*_split_coverage_for_headline_claim = train + validation + robustness` means
+nonzero support in each split, not 50 occurrences per split.
 
 Claim gates:
 
@@ -670,6 +839,10 @@ continuous_factor:
   abs(standardized_mean_difference_winner_vs_control) >= 0.25
 
 binary_or_bucket_factor:
+  odds_ratio_or_lift_winner_vs_control >= 1.25
+  or absolute_rate_difference >= 5 percentage points
+
+sequence_pattern:
   odds_ratio_or_lift_winner_vs_control >= 1.25
   or absolute_rate_difference >= 5 percentage points
 
@@ -684,9 +857,35 @@ that are unsupported or sample-blocked in 2022-2023 may only be reported as
 `regime_conditional_candidate` or sample-blocked.
 
 The experiment must count all tested factor x stage x anchor x regime x
-duration-bucket comparisons. Winner-only retrospective stages must be counted
+duration-bucket comparisons. It must also count all tested sequence family x
+shared axis x relative window x regime x duration-bucket comparisons.
+Winner-only retrospective stages and winner-only sequence maps must be counted
 separately from shared-axis dominance tests. If p-values are reported, BH-FDR
 adjusted q-values must be reported within each claim family.
+
+BH-FDR claim-family boundaries are fixed:
+
+```text
+marginal_factor_families:
+  market_regime
+  industry_regime, conditional on PIT industry data
+  price_structure
+  volume_money_vwap_turnover
+  volatility_structure
+  relative_strength
+  path_tolerance
+
+sequence_families:
+  S1_context_to_repair
+  S2_repair_to_money_confirmation
+  S3_repair_to_rank_persistence
+  S4_contraction_to_expansion
+  S5_money_expansion_without_distribution
+  S6_continuation_discriminator
+```
+
+BH-FDR, if reported, is computed separately within each fixed family. Marginal
+families and sequence families must not borrow significance from each other.
 
 Allowed final decisions:
 
@@ -696,7 +895,9 @@ reverse_lifecycle_profile_regime_conditional_candidate
 reverse_lifecycle_profile_negative_beta_not_supported
 reverse_lifecycle_profile_validation_sample_blocked
 reverse_lifecycle_profile_sample_blocked
-reverse_lifecycle_no_stable_dominance_found
+reverse_lifecycle_sequence_supported_universal_dominance
+reverse_lifecycle_sequence_conditional_candidate
+marginal_and_sequence_no_stable_dominance_found
 descriptive_profile_only_no_control_adjusted_support
 ```
 
@@ -704,6 +905,11 @@ descriptive_profile_only_no_control_adjusted_support
 difficult to reach. A valid result may be regime-conditional,
 negative-beta-unsupported, or sample-blocked. Those states are not
 implementation failures.
+
+If marginal factors are null but at least one frozen sequence family passes the
+matched-control and stability gates, the final decision must use a sequence
+candidate state. If both marginal factors and frozen sequences fail or are unsupported, use
+`marginal_and_sequence_no_stable_dominance_found`.
 
 ## 12. Report Requirements
 
@@ -717,16 +923,23 @@ The final report must include:
 - Lookback coverage audit for 60d / 120d / 250d features.
 - VWAP source-unit and qfq-adjustment availability audit.
 - Control match coverage and match-distance summary.
+- Control candidate deduplication audit.
+- Cross-split-boundary match audit.
 - Validation opportunity audit for 2022-2023.
 - Market-regime bucket counts by split.
 - Shared-axis dominance results.
+- Shared-axis sequence dominance results.
+- Sequence family test counts and frozen sequence definitions.
+- Sequence variant denominator audit, including inspected but rejected variants.
 - Winner-only retrospective-stage profile, clearly labeled descriptive.
+- Winner-only sequence examples, clearly labeled descriptive.
 - Per-feature non-missing coverage for every reported claim.
 - Multiple-testing count and claim-family summary.
 - Final decision replay.
 
 The report must not present winner-only retrospective stages as
-control-adjusted dominance.
+control-adjusted dominance. It must also not present winner-only sequence maps
+as control-adjusted dominance.
 
 ## 13. Tests and Verification
 
@@ -741,6 +954,11 @@ Focused tests must cover:
 - VWAP qfq adjustment and unavailability when money/volume units or price-basis
   alignment are missing or incompatible.
 - Market-regime bucket computation from benchmark closes.
+- Sequence state computation from close-observed information only.
+- Sequence order constraints and forbidden-state handling on synthetic paths.
+- Sequence completion date does not use future confirmation as a t0 feature.
+- Control candidate pool non-chain deduplication.
+- Nearest same-week control matching rejects or marks cross-split-boundary matches.
 - Control matching remains in the same opportunity set.
 - Split assignment by `episode_low_date`.
 - Conditional industry artifact behavior.
