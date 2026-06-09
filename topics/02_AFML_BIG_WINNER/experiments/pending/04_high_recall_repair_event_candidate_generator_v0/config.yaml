@@ -1,0 +1,105 @@
+experiment:
+  name: "high_recall_repair_event_candidate_generator_v0"
+  status: "implementation_v0"
+  workstream: "High Recall Repair Event Candidate Generator"
+  objective: "Build a high-recall observable event candidate pool for downstream primary/meta labeling."
+  data_cutoff: "2026-05-31"
+
+paths:
+  stock_daily_csv_dir: "data/interim/qlib_csv/day"
+  benchmark_daily_csv: "data/processed/index/benchmark_indices_daily.csv"
+  executable_universe_csv: "data/processed/universe/pit_largecap_main_chinext_executable_daily.csv"
+  data_prepare_run_manifest_json: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/manifests/run_manifest.json"
+  data_prepare_source_coverage_audit_csv: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/tables/source_coverage_audit.csv"
+  upstream_reverse_lifecycle_manifest_json: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/manifests/run_manifest.json"
+  upstream_big_winner_episode_reference_parquet: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/local_cache/big_winner_episode_reference.parquet"
+  upstream_big_winner_episode_reference_summary_csv: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/publishable/tables/big_winner_episode_reference_summary.csv"
+  upstream_observable_anchor_manifest_json: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/manifests/run_manifest.json"
+  upstream_observable_anchor_report_md: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/publishable/reports/observable_anchor_event_contract_report.md"
+  upstream_strict_event_pool_parquet: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/large_raw/event_candidate_pool.parquet"
+
+outputs:
+  publishable_tables_dir: "experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/publishable/tables"
+  publishable_reports_dir: "experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/publishable/reports"
+  local_cache_dir: "experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/local_cache"
+  large_raw_dir: "experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/large_raw"
+  manifests_dir: "experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/manifests"
+
+splits:
+  train_start: "2017-01-03"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+
+event_generation:
+  prior_lookback_sessions: 250
+  seed_low_lookback_sessions: 60
+  anchor_search_horizon_sessions: 120
+  e2_quality_window: 5
+  e4_relative_strength_window: 10
+  e3_false_repair_drawdown: -0.10
+  e3_variants: [5, 10]
+
+quality_flags:
+  amount_ratio_20d: 1.50
+  amount_ratio_60d: 1.20
+  close_to_derived_daily_vwap: 0.00
+  close_position_in_range: 0.60
+  upper_shadow_pct: 0.35
+
+relative_strength:
+  stock_vs_market_5d: 0.03
+  stock_vs_market_10d: 0.05
+  stock_vs_market_20d: 0.05
+
+density:
+  seed_density_window: 20
+  reclaim_density_window: 20
+  union_density_window: 20
+
+labels:
+  confirm_20:
+    horizon_days: 20
+    upper_barrier: 0.12
+    lower_barrier: -0.08
+    touch_priority: "lower_barrier_first"
+  failure_10:
+    horizon_days: 10
+    lower_barrier: -0.10
+  continuous_horizons: [10, 20, 30, 60, 120]
+  big_winner_mfe_120d: 0.50
+  super_winner_mfe_120d: 1.00
+  near_winner_mfe_lower: 0.30
+  near_winner_mfe_upper: 0.50
+  false_repair_drawdown: -0.10
+
+capture_windows:
+  pre_low: 20
+  low_to_plus: [10, 20, 30, 60, 120]
+
+gates:
+  min_total_target_episode_count: 150
+  min_validation_target_episode_count: 30
+  min_robustness_target_episode_count: 30
+  min_total_episode_recall_low_to_plus_30d: 0.70
+  min_validation_episode_recall_low_to_plus_30d: 0.60
+  min_robustness_episode_recall_low_to_plus_30d: 0.60
+  min_total_episode_recall_before_first_50pct: 0.70
+  min_validation_episode_recall_before_first_50pct: 0.60
+  min_robustness_episode_recall_before_first_50pct: 0.60
+  min_total_episode_recall_low_to_plus_20d: 0.60
+  min_validation_episode_recall_low_to_plus_20d: 0.50
+  min_robustness_episode_recall_low_to_plus_20d: 0.50
+  max_setup_inclusive_events_per_instrument_year_p95: 18
+  max_setup_inclusive_events_per_instrument_year_mean: 8
+  max_reclaim_based_events_per_instrument_year_p95: 12
+  max_reclaim_based_events_per_instrument_year_mean: 6
+  min_executable_rate: 0.80
+  min_main_label_complete_rate: 0.70
+  min_120d_outcome_complete_rate_for_precision_readout: 0.60
+  min_supported_positive_rate_for_clean_support: 0.10
+  max_supported_false_repair_20d_rate_for_clean_support: 0.50
+
+reporting:
+  max_examples: 12

@@ -1,0 +1,9 @@
+event_family,definition
+E0_seed_low_setup,60d trailing low setup; high-recall earliest observation.
+E1_first_ema60_reclaim,First EMA60 reclaim after density-kept E0 seed.
+E2_reclaim_quality_burst,Independent quality flag event within reclaim +5d.
+E3_early_no_false_repair,Survival diagnostic after reclaim +5/+10d.
+E4_early_relative_strength_turn,Early 5/10/20d relative-strength turn.
+E5_strict_rank_persistence_reference,03 E_S3 strict reference only.
+E_union_high_recall_repair_candidate,Setup-inclusive canonical union E0/E1/E2/E4.
+E_union_reclaim_based_candidate,Secondary reclaim-based canonical union E1/E2/E4.
