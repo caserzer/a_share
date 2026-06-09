@@ -1,0 +1,103 @@
+experiment:
+  name: "observable_anchor_event_contract_v0"
+  status: "implementation_v0"
+  workstream: "Observable Anchor Event Contract"
+  objective: "Turn reverse lifecycle S3/S2/S6 evidence into a close-observed next-open event contract."
+  data_cutoff: "2026-05-31"
+
+paths:
+  stock_daily_csv_dir: "data/interim/qlib_csv/day"
+  benchmark_daily_csv: "data/processed/index/benchmark_indices_daily.csv"
+  executable_universe_csv: "data/processed/universe/pit_largecap_main_chinext_executable_daily.csv"
+  data_prepare_run_manifest_json: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/manifests/run_manifest.json"
+  data_prepare_source_coverage_audit_csv: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/tables/source_coverage_audit.csv"
+  upstream_reverse_lifecycle_dir: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0"
+  upstream_reverse_lifecycle_manifest_json: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/manifests/run_manifest.json"
+  upstream_shared_axis_sequence_dominance_csv: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/publishable/tables/shared_axis_sequence_dominance.csv"
+  upstream_big_winner_episode_reference_summary_csv: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/publishable/tables/big_winner_episode_reference_summary.csv"
+  upstream_matched_control_panel_parquet: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/local_cache/matched_control_panel.parquet"
+  upstream_anchor_aligned_daily_panel_parquet: "experiments/pending/02_big_winner_reverse_lifecycle_profile_v0/outputs/large_raw/anchor_aligned_daily_panel.parquet"
+
+outputs:
+  publishable_tables_dir: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/publishable/tables"
+  publishable_reports_dir: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/publishable/reports"
+  local_cache_dir: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/local_cache"
+  large_raw_dir: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/large_raw"
+  manifests_dir: "experiments/pending/03_observable_anchor_event_contract_v0/outputs/manifests"
+
+splits:
+  train_start: "2017-01-03"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+
+industry:
+  status: "unavailable"
+  caveat: "No PIT industry membership file is present in the v0 data layer."
+
+event_contract:
+  prior_lookback_sessions: 250
+  seed_low_lookback_sessions: 60
+  anchor_search_horizon_sessions: 120
+  rank_jump_threshold: 0.05
+  rank_jump_window: 20
+  persistence_window: 20
+  persistence_floor: 0.00
+  persistence_coverage: 0.70
+  amount_ratio_20d_gate: 1.50
+  plus20_threshold: 0.20
+  continuation_window: 20
+  continuation_rank_floor: 0.00
+  continuation_rank_coverage: 0.60
+  continuation_amount_floor: 1.20
+  continuation_amount_coverage: 0.60
+
+false_repair:
+  drawdown_floor: -0.10
+  insufficient_runup_floor: 0.05
+
+density:
+  seed_density_window: 20
+  reclaim_density_window: 20
+  event_density_window: 20
+
+labels:
+  confirm_20:
+    horizon_days: 20
+    upper_barrier: 0.12
+    lower_barrier: -0.08
+    touch_priority: "lower_barrier_first"
+  failure_10:
+    horizon_days: 10
+    lower_barrier: -0.10
+  continuous_horizons:
+    - 10
+    - 20
+    - 60
+  near_winner_horizon_days: 120
+  near_winner_mfe_lower: 0.30
+  near_winner_mfe_upper: 0.50
+
+matching:
+  max_controls_per_event: 5
+  match_fields:
+    - "board_bucket"
+    - "market_cap_bucket"
+    - "liquidity_bucket"
+    - "prior_return_20d_bucket"
+    - "prior_return_60d_bucket"
+    - "prior_drawdown_bucket"
+    - "volatility_bucket"
+
+gates:
+  min_total_event_count: 120
+  min_validation_event_count: 30
+  min_robustness_event_count: 30
+  min_baseline_match_coverage: 0.80
+  min_validation_baseline_match_coverage: 0.70
+  min_robustness_baseline_match_coverage: 0.70
+  min_event_label_complete_rate: 0.70
+  min_executable_rate: 0.80
+  confirm20_rate_lift: 1.25
+  confirm20_abs_diff: 0.05

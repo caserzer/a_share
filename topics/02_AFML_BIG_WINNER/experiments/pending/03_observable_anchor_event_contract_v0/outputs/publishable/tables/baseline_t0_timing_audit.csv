@@ -1,0 +1,17 @@
+split,regime_bucket,baseline_family,baseline_t0_policy,baseline_count,median_reclaim_to_baseline_t0_days,median_reclaim_to_event_t0_days,confirm20_rate,failure10_rate,forward_return_20d_mean,policy_used_for_main_claim
+all,all,baseline_raw,observed_failure_decision_date,1296,30.0,,0.21792890262751158,0.12287480680061824,0.004220630042329452,True
+all,all,baseline_false_repair_excluded,observed_failure_decision_date,838,30.0,,0.18399044205495818,0.08482676224611709,0.0015564265978244918,True
+train,all,baseline_raw,observed_failure_decision_date,404,30.0,,0.2301980198019802,0.14356435643564355,0.004180672454644571,True
+train,all,baseline_false_repair_excluded,observed_failure_decision_date,264,29.0,,0.17803030303030304,0.12121212121212122,-0.0027427570221470903,True
+validation,all,baseline_raw,observed_failure_decision_date,318,29.0,,0.16352201257861634,0.1540880503144654,-0.012846894268016707,True
+validation,all,baseline_false_repair_excluded,observed_failure_decision_date,174,28.0,,0.09195402298850575,0.09770114942528736,-0.019730318012539726,True
+robustness,all,baseline_raw,observed_failure_decision_date,574,31.0,,0.2395104895104895,0.09090909090909091,0.013737440525047582,True
+robustness,all,baseline_false_repair_excluded,observed_failure_decision_date,400,32.5,,0.22807017543859648,0.05513784461152882,0.01368394047721264,True
+all,all,baseline_raw,deterministic_max_horizon,1282,60.0,,0.20046801872074882,0.09282371294851795,0.003662360550158449,False
+all,all,baseline_false_repair_excluded,deterministic_max_horizon,644,59.0,,0.18012422360248448,0.062111801242236024,0.005873259546503336,False
+train,all,baseline_raw,deterministic_max_horizon,394,59.0,,0.18274111675126903,0.1065989847715736,-0.0054837248791440385,False
+train,all,baseline_false_repair_excluded,deterministic_max_horizon,193,58.0,,0.14507772020725387,0.08290155440414508,-0.00868702457582073,False
+validation,all,baseline_raw,deterministic_max_horizon,314,57.0,,0.21337579617834396,0.09235668789808917,0.0044783003164458645,False
+validation,all,baseline_false_repair_excluded,deterministic_max_horizon,119,57.0,,0.15126050420168066,0.07563025210084033,-0.005740027484557035,False
+robustness,all,baseline_raw,deterministic_max_horizon,574,63.0,,0.20557491289198607,0.08362369337979095,0.009493985240978891,False
+robustness,all,baseline_false_repair_excluded,deterministic_max_horizon,332,63.0,,0.21084337349397592,0.045180722891566265,0.018500114945011557,False
