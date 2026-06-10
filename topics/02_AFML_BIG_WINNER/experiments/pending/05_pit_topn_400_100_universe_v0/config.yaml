@@ -1,0 +1,84 @@
+experiment:
+  name: "pit_topn_400_100_universe_v0"
+  status: "implementation_v0"
+  workstream: "Universe Infrastructure"
+  objective: "Build a daily fixed-quota PIT top-N 400/100 main-board/ChiNext universe for a later reverse lifecycle rerun."
+  data_cutoff: "2026-05-31"
+
+date_range:
+  requested_start_date: "2017-01-01"
+  requested_end_date: "2026-05-31"
+  start_date_policy: "first_trading_session_on_or_after_start_date"
+  end_date_policy: "last_trading_session_on_or_before_end_date"
+
+universe:
+  market_name: "pit_topn_400_100"
+  membership_clock: "same_day_close_observed"
+  usable_trade_date_policy: "next_trading_session_after_membership_date"
+  qlib_market_date_key: "usable_trade_date"
+  rank_rule_version: "pit_topn_400_100_raw_close_total_share_asof_v0"
+  membership_rule_version: "pit_topn_400_100_universe_v0"
+  candidate_panel_source: "full_board_candidate_panel"
+  minimum_history_sessions: 240
+  quotas:
+    main_board: 400
+    chinext: 100
+  board_buckets:
+    main_board:
+      code_prefixes: ["000", "001", "002", "003", "600", "601", "603", "605"]
+    chinext:
+      code_prefixes: ["300", "301"]
+  excluded_prefixes: ["688", "689"]
+  exclude_st: true
+  exclude_suspended: true
+  require_listed_on_date: true
+
+paths:
+  upstream_01_experiment_dir: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0"
+  upstream_01_config_yaml: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/config.yaml"
+  upstream_01_run_manifest_json: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/manifests/run_manifest.json"
+  upstream_01_source_coverage_audit_csv: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/tables/source_coverage_audit.csv"
+  upstream_01_market_cap_source_audit_csv: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/tables/market_cap_source_audit.csv"
+  upstream_01_daily_universe_counts_csv: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/tables/daily_universe_counts.csv"
+  raw_daily_dir: "data/raw/akshare/day/raw"
+  market_cap_dir: "data/raw/akshare/market_cap"
+  status_dir: "data/raw/akshare/status"
+  trading_calendar_csv: "data/raw/akshare/status/trading_calendar.csv"
+  instrument_metadata_csv: "data/raw/akshare/status/instrument_metadata_target_universe.csv"
+  sz_name_change_csv: "data/raw/akshare/status/stock_info_sz_change_name_short.csv"
+  sh_name_history_dir: "data/raw/akshare/status/sh_name_history"
+  fixed_cap_membership_csv: "data/processed/universe/pit_largecap_main_chinext_membership_daily.csv"
+  fixed_cap_executable_csv: "data/processed/universe/pit_largecap_main_chinext_executable_daily.csv"
+  processed_universe_dir: "data/processed/universe"
+
+processed_outputs:
+  membership_daily_csv: "data/processed/universe/pit_topn_400_100_membership_daily.csv"
+  executable_daily_csv: "data/processed/universe/pit_topn_400_100_executable_daily.csv"
+  interval_csv: "data/processed/universe/pit_topn_400_100_intervals.csv"
+  qlib_instrument_file: "data/processed/universe/qlib_pit_topn_400_100.txt"
+
+outputs:
+  publishable_tables_dir: "experiments/pending/05_pit_topn_400_100_universe_v0/outputs/publishable/tables"
+  publishable_reports_dir: "experiments/pending/05_pit_topn_400_100_universe_v0/outputs/publishable/reports"
+  local_cache_dir: "experiments/pending/05_pit_topn_400_100_universe_v0/outputs/local_cache"
+  large_raw_dir: "experiments/pending/05_pit_topn_400_100_universe_v0/outputs/large_raw"
+  manifests_dir: "experiments/pending/05_pit_topn_400_100_universe_v0/outputs/manifests"
+
+validation:
+  reject_latest_only_market_cap_sources: true
+  reject_fixed_cap_membership_as_ranking_source: true
+  require_full_board_candidate_panel: true
+  block_on_active_source_gaps: true
+  reject_duplicate_membership_key: true
+  reject_duplicate_executable_key: true
+  reject_outside_allowed_board_bucket: true
+  reject_membership_date_not_before_usable_trade_date: true
+  max_total_daily_members: 500
+  max_main_board_daily_members: 400
+  max_chinext_daily_members: 100
+  disallowed_market_cap_sources:
+    - "latest_total_share_without_asof_date"
+    - "latest_spot_market_cap"
+    - "current_security_profile_market_cap"
+    - "qfq_close_times_shares"
+    - "unknown_currency_units"
