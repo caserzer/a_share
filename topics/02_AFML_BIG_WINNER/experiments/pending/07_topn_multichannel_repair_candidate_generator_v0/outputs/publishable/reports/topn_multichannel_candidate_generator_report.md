@@ -309,7 +309,225 @@ Bridge-positive censoring is small:
 
 发现：bridge recall 不是因为 missing labels 被系统性压低。before-first-50pct 只排除 4 个 episodes，主要问题是 candidate event 自身 forward-120 MFE 未必能达到 +50%。
 
-## 10. Decision Replay
+## 10. 补充研究统计
+
+本节把 07 gate 之外、后续研究需要的统计补齐。除特别说明外，episode 统计来自 06 冻结的 `topn_big_winner_episode_reference.parquet` 与 07 的 `topn_episode_capture_audit.csv`；event path 统计来自 07 的 canonical event label cache。90d path 是按 03/04/07 相同 next-open anchor 逻辑做的报告层补充诊断，不改变 07 gate 或 manifest decision。
+
+### 10.1 06 Winner Episode Path Profile
+
+06 denominator 中，target episode 本身并不是同质样本。Validation 的 episode MFE 和持续时间都偏短，robustness 的 low-to-first50 更短，这会影响 event 是否有足够时间在 +50% 之前触发。
+
+| split | episodes | MFE120 median | MFE120 p75 | low-to-first50 median sessions | low-to-first50 p25 / p75 | low-to-high median sessions | low-to-high p25 / p75 |
+| :-- | --: | --: | --: | --: | :-- | --: | :-- |
+| train | 1,290 | 69.9% | 92.2% | 74 | 44 / 95 | 97 | 71 / 112 |
+| validation | 445 | 64.0% | 77.6% | 62 | 33 / 87 | 83 | 52 / 110 |
+| robustness | 758 | 69.7% | 96.0% | 60 | 27 / 94 | 95 | 54 / 114 |
+| all | 2,493 | 68.3% | 90.8% | 69 | 37 / 94 | 94 | 61 / 112 |
+
+06 episode regime / board composition:
+
+| bucket | episodes | share |
+| :-- | --: | --: |
+| risk_off | 1,580 | 63.4% |
+| transition | 485 | 19.5% |
+| risk_on | 428 | 17.2% |
+| main_board | 1,814 | 72.8% |
+| chinext | 679 | 27.2% |
+
+发现：07 的 recall split 看起来稳定，但 denominator 本身在 validation 更短、更弱，且 risk_off 占 63.4%。后续如果只看 all-split，会低估 risk_on / transition 的覆盖问题。
+
+### 10.2 Event Merge 与集中度
+
+07 不是把所有 raw channel event 原样作为 headline event，而是先生成 recommended raw event instances，再按同一股票同一天合并成 canonical event。
+
+| metric | value |
+| :-- | --: |
+| recommended raw event instances | 29,759 |
+| recommended canonical events | 15,161 |
+| raw instances per canonical mean | 1.96 |
+| raw cluster event count median / p75 / max | 2 / 2 / 6 |
+| triggered channel count median / p75 / max | 1 / 2 / 2 |
+
+Same-day canonical union 的 triggered channel count：
+
+| triggered channel count | canonical events | share |
+| --: | --: | --: |
+| 1 | 8,457 | 55.8% |
+| 2 | 6,704 | 44.2% |
+
+Symbol concentration:
+
+| metric | value |
+| :-- | --: |
+| symbols with canonical event | 1,092 |
+| top 10 symbols event share | 2.9% |
+| top 50 symbols event share | 12.9% |
+| max events in one symbol | 46 |
+
+发现：event pool 没有被少数股票主导；问题主要不是 symbol concentration，而是同日多通道 tag 的密度与信息增量不匹配。44.2% canonical events 带有两个 triggered channels，因此不能只用 primary channel 分布解释密度。
+
+### 10.3 Captured Episode 内 Event 数量
+
+`before_first_50pct` 口径下，any-event captured episode 通常不是只被一个 event 命中；中位数是 3 个 canonical events。
+
+| group | episodes | event count mean | median | p25 / p75 | min / max |
+| :-- | --: | --: | --: | :-- | :-- |
+| all denominator | 2,493 | 1.78 | 2 | 0 / 3 | 0 / 6 |
+| any-event captured | 1,796 | 2.47 | 3 | 2 / 3 | 1 / 6 |
+| bridge-positive captured | 865 | 2.65 | 3 | 2 / 3 | 1 / 6 |
+| any captured but bridge-negative | 931 | 2.30 | 2 | 1 / 3 | 1 / 6 |
+| missed by any-event | 697 | 0.00 | 0 | 0 / 0 | 0 / 0 |
+
+发现：bridge-positive episode 的 event count 略高于 any-only episode，但差异不大。提高 bridge recall 不太可能只靠继续增加同类 event 数量解决，更需要更早或质量更高的 event。
+
+### 10.4 Event-to-Episode Alignment
+
+下表把 `before_first_50pct` denominator 分成四组：any-event captured、bridge-positive captured、any captured 但 bridge-negative、missed by any-event。
+
+| group | episodes | low-to-first50 median | low-to-high median | first event lag from low median | first event open vs low median | first event lead to first50 median | MFE120 median |
+| :-- | --: | --: | --: | :-- | :-- | :-- | :-- |
+| any-event captured | 1,796 | 74 | 97 | 18 | 18.2% | 43 | 66.6% |
+| bridge-positive captured | 865 | 83 | 108 | 21 | 14.9% | 46 | 85.2% |
+| any captured / bridge-negative | 931 | 61 | 78 | 15 | 20.8% | 38 | 59.2% |
+| missed by any-event | 697 | 53 | 85 | NA | NA | NA | 74.3% |
+
+Bridge-positive first event 的位置：
+
+| metric | value |
+| :-- | :-- |
+| first bridge-positive lag from low median / p75 | 24 / 47 sessions |
+| first bridge-positive open vs episode low median / p75 | 14.4% / 20.8% |
+| first bridge-positive lead to first50 median / p75 | 43 / 67 sessions |
+
+发现：bridge-positive 不是越早越好这么简单。bridge-positive group 的 first event 比 any-only group 略晚，但触发价格相对 episode low 更低，且 episode 本身更强、更长。Any-only group 的 event 触发时已经从 low 上涨 20.8% 中位数，后续要从 event price 再涨 +50% 难度显著更高。
+
+### 10.5 Event 后 Path：全体 Canonical Events
+
+下表是全体 15,161 条 recommended canonical events 的 event-anchored path。Anchor 是 next-open executable price，不是 episode low。
+
+| horizon | complete events | forward median | forward p25 / p75 | positive rate | MFE median | MFE >= 20% | MFE >= 50% | MAE median | MAE <= -10% |
+| :-- | --: | --: | :-- | --: | --: | --: | --: | --: | --: |
+| 10d | 15,150 | -0.4% | -4.8% / 4.3% | 47.2% | 4.7% | 7.0% | 0.5% | -4.5% | 16.3% |
+| 20d | 15,150 | -0.7% | -6.5% / 6.0% | 46.5% | 6.7% | 14.0% | 1.3% | -6.3% | 29.3% |
+| 30d | 15,150 | -1.2% | -8.1% / 7.2% | 45.1% | 8.3% | 19.5% | 2.5% | -7.8% | 39.0% |
+| 60d | 15,150 | -1.7% | -11.1% / 9.8% | 45.5% | 12.2% | 31.9% | 6.8% | -11.0% | 53.9% |
+| 90d | 15,150 | -1.9% | -13.3% / 12.2% | 45.6% | 15.4% | 40.5% | 11.1% | -13.2% | 61.2% |
+| 120d | 15,147 | -2.4% | -15.1% / 13.1% | 44.9% | 18.3% | 46.5% | 14.5% | -15.2% | 66.3% |
+
+发现：全体 union 的 median forward return 从 10d 到 120d 都是负的，且 MAE 逐步恶化。这个结果支持“07 是候选池，不是 entry signal”的结论；如果直接把 full union 当交易入口，噪音会很大。
+
+### 10.6 Event 后 Path：命中 Big-Winner Episode 的首个 Event
+
+只看 `before_first_50pct` any-event captured episodes 的首个 event，path 明显更强。这说明 07 event 在 winner episode 内有信息，但 full union 缺少足够的筛选 / ranking。
+
+| horizon | complete events | forward median | forward p25 / p75 | positive rate | MFE median | MFE >= 20% | MFE >= 50% | MAE median | MAE <= -10% |
+| :-- | --: | --: | :-- | --: | --: | --: | --: | --: | --: |
+| 10d | 1,792 | 3.2% | -1.9% / 9.5% | 66.2% | 8.6% | 17.6% | 1.7% | -3.4% | 10.7% |
+| 20d | 1,792 | 6.1% | -1.3% / 14.8% | 69.8% | 13.9% | 33.3% | 3.3% | -4.3% | 17.8% |
+| 30d | 1,792 | 7.0% | -2.1% / 17.6% | 70.1% | 18.0% | 44.8% | 6.7% | -5.1% | 24.0% |
+| 60d | 1,792 | 14.2% | 1.5% / 27.2% | 77.4% | 30.0% | 71.9% | 19.5% | -6.4% | 33.0% |
+| 90d | 1,792 | 20.5% | 4.5% / 36.5% | 80.5% | 39.8% | 89.6% | 33.5% | -7.5% | 38.9% |
+| 120d | 1,792 | 18.5% | 1.1% / 38.0% | 76.8% | 46.1% | 94.4% | 43.8% | -8.1% | 42.4% |
+
+发现：命中 winner episode 的首个 event 在 90d 的 forward median 是 20.5%，MFE median 是 39.8%；但全体 event 的 90d forward median 是 -1.9%。下一轮研究的核心不是“07 event 完全无效”，而是要把 winner-like event 从全体 union 里分离出来。
+
+### 10.7 Path by Split 与 Channel
+
+按 split 看，validation 是最弱 path，且越长 horizon 越弱。
+
+| split | horizon | complete events | forward median | positive rate | MFE >= 20% | MFE >= 50% | MAE <= -10% |
+| :-- | :-- | --: | --: | --: | --: | --: | --: |
+| train | 60d | 7,320 | -2.9% | 42.4% | 33.2% | 7.4% | 58.9% |
+| train | 90d | 7,320 | -2.5% | 44.6% | 43.1% | 12.4% | 65.5% |
+| train | 120d | 7,320 | -2.7% | 44.5% | 49.8% | 16.8% | 70.4% |
+| validation | 60d | 4,145 | -3.2% | 39.7% | 22.2% | 2.8% | 57.8% |
+| validation | 90d | 4,145 | -5.7% | 35.9% | 28.9% | 5.3% | 67.5% |
+| validation | 120d | 4,145 | -7.5% | 34.5% | 34.2% | 7.2% | 73.2% |
+| robustness | 60d | 3,685 | 3.1% | 58.0% | 40.1% | 10.3% | 39.8% |
+| robustness | 90d | 3,685 | 3.6% | 58.7% | 48.1% | 15.3% | 45.7% |
+| robustness | 120d | 3,682 | 3.6% | 57.4% | 53.7% | 18.2% | 50.3% |
+
+按 primary channel 看，各通道在 90d / 120d 的 median forward return 都没有形成稳定正收益；E2 primary 样本只有 11 条，不能单独解释。
+
+| primary channel | horizon | complete events | forward median | positive rate | MFE >= 20% | MFE >= 50% | MAE <= -10% |
+| :-- | :-- | --: | --: | --: | --: | --: | --: |
+| E1 | 90d | 6,812 | -1.3% | 46.7% | 41.0% | 11.1% | 58.8% |
+| E1 | 120d | 6,811 | -2.0% | 45.7% | 46.9% | 14.6% | 63.9% |
+| E3 | 90d | 3,436 | -2.4% | 44.9% | 40.0% | 11.3% | 63.6% |
+| E3 | 120d | 3,435 | -2.7% | 44.5% | 46.5% | 14.5% | 68.4% |
+| E6 | 90d | 4,891 | -2.4% | 44.7% | 40.1% | 11.2% | 63.0% |
+| E6 | 120d | 4,890 | -3.0% | 44.2% | 45.9% | 14.4% | 68.0% |
+| E2 | 90d | 11 | -5.1% | 45.5% | 45.5% | 9.1% | 72.7% |
+| E2 | 120d | 11 | -1.0% | 36.4% | 45.5% | 9.1% | 72.7% |
+
+Triggered channel combination 的 90d path:
+
+| triggered combo | events | forward90 median | positive90 | MFE90 >= 20% | MFE90 >= 50% | MAE90 <= -10% |
+| :-- | --: | --: | --: | --: | --: | --: |
+| E1+E2 | 6,667 | -1.3% | 46.5% | 40.9% | 11.0% | 58.9% |
+| E6 | 4,891 | -2.4% | 44.7% | 40.1% | 11.2% | 63.0% |
+| E3 | 3,435 | -2.4% | 44.9% | 40.0% | 11.3% | 63.6% |
+| E1 | 117 | 2.2% | 55.6% | 43.6% | 12.8% | 51.3% |
+
+发现：E2 与 E1 高度同日重叠，`E1+E2` 的 90d path 并没有明显优于 E1-only small subset。E6 / E3 作为 primary 或 standalone combo 也没有改善 median path。当前更像是“E1 负责召回，其他通道负责描述状态”，而不是多个独立 alpha source 叠加。
+
+### 10.8 Bridge Failure 与 Missed Episode
+
+Bridge-positive event 与 bridge-negative event 的 path 差异很清楚：
+
+| group | horizon | events | forward median | positive rate | MFE >= 20% | MFE >= 50% | MAE <= -10% |
+| :-- | :-- | --: | --: | --: | --: | --: | --: |
+| bridge-positive first positive event | 60d | 865 | 26.1% | 90.2% | 81.2% | 44.6% | 23.9% |
+| bridge-positive first positive event | 90d | 865 | 37.0% | 96.0% | 95.8% | 75.5% | 25.1% |
+| bridge-positive first positive event | 120d | 865 | 40.0% | 96.3% | 100.0% | 100.0% | 26.5% |
+| any captured first event | 60d | 1,792 | 14.2% | 77.4% | 71.9% | 19.5% | 33.0% |
+| any captured first event | 90d | 1,792 | 20.5% | 80.5% | 89.6% | 33.5% | 38.9% |
+| any captured first event | 120d | 1,792 | 18.5% | 76.8% | 94.4% | 43.8% | 42.4% |
+| any captured / bridge-negative first event | 60d | 927 | 7.6% | 68.9% | 67.1% | 0.0% | 38.1% |
+| any captured / bridge-negative first event | 90d | 927 | 8.7% | 66.6% | 84.9% | 0.0% | 48.4% |
+| any captured / bridge-negative first event | 120d | 927 | 4.5% | 58.8% | 89.3% | 0.0% | 54.2% |
+
+Missed episodes 的 split / regime 分布：
+
+| split | missed episodes | denominator episodes | miss rate |
+| :-- | --: | --: | --: |
+| train | 369 | 1,290 | 28.6% |
+| validation | 92 | 445 | 20.7% |
+| robustness | 236 | 758 | 31.1% |
+
+| regime | missed episodes | denominator episodes | miss rate |
+| :-- | --: | --: | --: |
+| risk_off | 317 | 1,580 | 20.1% |
+| risk_on | 184 | 428 | 43.0% |
+| transition | 196 | 485 | 40.4% |
+
+发现：missed episode 主要不是 label 完整性问题，而是 event family 对 risk_on / transition 的覆盖不足。Risk_on miss rate 43.0%，transition miss rate 40.4%，远高于 risk_off 的 20.1%。这说明下一轮不能只做 density thinning；还需要检查 risk_on / transition 下是否需要更早的 momentum / breakout 类 event，或者接受这些 regime 的 recall 较低。
+
+### 10.9 Density Repair Frontier
+
+下面是用当前 canonical events 的 triggered channel membership 做的静态 frontier。它不是 rerun，也没有改变 07 config；只是回答“如果 headline union 改成某些通道集合，recall / bridge / density 会怎样”。
+
+| candidate union | canonical events | density vs full | any recall | bridge recall | bridge numerator / denominator |
+| :-- | --: | --: | --: | --: | :-- |
+| full E1+E2+E3+E6 | 15,161 | 100.0% | 72.0% | 34.8% | 865 / 2,489 |
+| E1 only | 6,820 | 45.0% | 71.1% | 32.6% | 810 / 2,488 |
+| E1+E3 | 10,257 | 67.7% | 71.6% | 33.7% | 840 / 2,489 |
+| E1+E6 | 11,714 | 77.3% | 71.8% | 33.9% | 845 / 2,489 |
+| E1+E3+E6 | 15,150 | 99.9% | 72.0% | 34.8% | 865 / 2,489 |
+| remove E6 | 10,268 | 67.7% | 71.6% | 33.7% | 840 / 2,489 |
+
+解释：E2 的 density drag 是 triggered membership drag，不是大量 E2-only canonical rows。把 E2 从 headline channel tag 降级为 E1 的 feature，并不会显著减少 canonical rows，因为 E2 几乎都与 E1 同日出现。真正能降低 row-level density 的是 E1-only 或 E1+E3 / remove E6 路线。E1-only 保留 71.1% any recall，只损失 0.9 pct recall，却把 canonical events 降到 full union 的 45.0%；这是 08 最强的起点。
+
+### 10.10 对后续研究的直接含义
+
+1. **07 已经足够证明 E1 backbone 有召回价值**：E1-only recall 71.1%，接近 full union 72.0%，且 density 只有 full union 的 45.0%。
+2. **full union 不能直接进入 entry contract**：全体 event 的 120d forward median 为 -2.4%，MAE <= -10% rate 为 66.3%，说明不加筛选的 entry 风险太高。
+3. **winner-linked event path 很强**：命中 winner episode 的 first event 在 90d 的 forward median 为 20.5%，MFE median 为 39.8%，说明后续应做 ranking / meta-label，而不是放弃 event 方向。
+4. **bridge failure 主要是 event quality / basis 问题**：any-only first event 到 120d 的 MFE >= 20% rate 高达 89.3%，但 MFE >= 50% 为 0，因为这些 event 的 entry basis 已经偏高，或者 episode 自身不够强。
+5. **risk_on / transition 是 recall repair 重点**：risk_on miss rate 43.0%，transition miss rate 40.4%；如果 08 只做 density thinning，可能继续保留这一结构性漏召回。
+6. **E2 / E6 更适合作为 feature，不适合作为 headline union 通道**：E2 是 E1 同日 confirmation tag，E6 是 continuation readout；二者在 current union 中没有提供足够独立 recall。
+
+## 11. Decision Replay
 
 Decision priority 回放：
 
@@ -327,7 +545,7 @@ topn_multichannel_candidate_generator_density_blocked
 
 这不是“多通道方向失败”。更准确的解释是：当前 recommended union 太宽，E2 / E6 作为 headline union 成员的密度成本过高，必须先做 density repair / channel thinning，才能进入下一阶段 entry contract 或 meta-label 实验。
 
-## 11. 发现与下一步
+## 12. 发现与下一步
 
 ### 发现 1：E1 可作为候选池骨架
 
