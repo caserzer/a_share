@@ -1,0 +1,6 @@
+split,raw_topn_instrument_days,evaluated_instrument_days,event_generation_instrument_days,history_ready_instrument_days,history_ready_250d_instrument_days,label_complete_120d_instrument_days,pit_clock_valid_instrument_days,stock_daily_available_instrument_days,processed_instrument_count,excluded_instrument_days,excluded_symbol_count,pit_clock_violation_days,history_not_ready_250d_days,label_incomplete_120d_days,outside_split_days,missing_stock_daily_csv_days,exclusion_reason,expected_06_evaluated_instrument_days_all,matches_06_evaluated_instrument_days_all
+outside_split,60000,0,0,59197,59187,0,60000,57856,603,60000,657,0,813,60000,60000,2144,history_not_ready_250d;label_incomplete_120d;outside_split;missing_stock_daily_csv,,
+robustness,230000,227772,227772,227867,227772,230000,230000,228954,806,2228,37,0,2228,0,0,1046,history_not_ready_250d;missing_stock_daily_csv,,
+train,608000,452114,452114,458037,452114,608000,608000,596310,1190,155886,965,0,155886,0,0,11690,history_not_ready_250d;missing_stock_daily_csv,,
+validation,242000,232965,232965,233278,232965,242000,242000,240791,824,9035,76,0,9035,0,0,1209,history_not_ready_250d;missing_stock_daily_csv,,
+all,1140000,912851,912851,978379,972038,1080000,1140000,1123911,1502,227149,1384,0,167962,60000,60000,16089,history_not_ready_250d;label_incomplete_120d;outside_split;missing_stock_daily_csv,912851.0,True
