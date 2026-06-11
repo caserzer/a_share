@@ -1,0 +1,307 @@
+experiment:
+  name: "risk_on_transition_recall_exploration_v0"
+  status: "implementation_v0"
+  workstream: "Risk-on / Transition Recall Repair Exploration"
+  objective: "Explore independent low-density observable candidate families for risk_on and transition missed episodes on the frozen 06 Top-N/proxy denominator."
+  data_cutoff: "2026-05-31"
+
+paths:
+  stock_daily_csv_dir: "data/interim/qlib_csv/day"
+  benchmark_daily_csv: "data/processed/index/benchmark_indices_daily.csv"
+  topn_executable_universe_csv: "data/processed/universe/pit_topn_400_100_executable_daily.csv"
+  topn_membership_universe_csv: "data/processed/universe/pit_topn_400_100_membership_daily.csv"
+  upstream_05_run_manifest_json: "experiments/pending/05_pit_topn_400_100_universe_v0/outputs/manifests/run_manifest.json"
+  upstream_05_data_source_coverage_audit_csv: "experiments/pending/05_pit_topn_400_100_universe_v0/outputs/publishable/tables/data_source_coverage_audit.csv"
+  upstream_06_run_manifest_json: "experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/manifests/run_manifest.json"
+  upstream_06_episode_reference_parquet: "experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/local_cache/topn_big_winner_episode_reference.parquet"
+  upstream_06_denominator_summary_csv: "experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/publishable/tables/topn_denominator_summary.csv"
+  upstream_06_split_denominator_summary_csv: "experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/publishable/tables/topn_split_denominator_summary.csv"
+  upstream_06_regime_denominator_csv: "experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/publishable/tables/topn_episode_rate_by_regime.csv"
+  upstream_07_run_manifest_json: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/manifests/run_manifest.json"
+  upstream_07_event_instances_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_multichannel_candidate_event_instances.csv"
+  upstream_07_event_canonical_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_multichannel_candidate_event_canonical.csv"
+  upstream_07_event_labels_parquet: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/local_cache/topn_canonical_event_labels.parquet"
+  upstream_07_any_recall_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_any_event_recall_by_split_regime_board.csv"
+  upstream_07_bridge_recall_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_bridge_positive_recall_by_split_regime_board.csv"
+  upstream_07_channel_density_summary_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_channel_density_summary.csv"
+  upstream_07_channel_recall_contribution_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_channel_recall_contribution.csv"
+  upstream_07_channel_overlap_matrix_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_channel_overlap_matrix.csv"
+  upstream_07_event_precision_label_readout_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_event_precision_label_readout.csv"
+  upstream_07_false_repair_diagnostic_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_false_repair_diagnostic.csv"
+  upstream_07_episode_capture_audit_csv: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_episode_capture_audit.csv"
+
+outputs:
+  publishable_tables_dir: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables"
+  publishable_reports_dir: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports"
+  local_cache_dir: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache"
+  large_raw_dir: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/large_raw"
+  manifests_dir: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests"
+
+splits:
+  train_start: "2017-01-03"
+  train_end: "2021-12-31"
+  validation_start: "2022-01-01"
+  validation_end: "2023-12-31"
+  robustness_start: "2024-01-01"
+
+event_generation:
+  prior_lookback_sessions: 250
+  family_cooldown_sessions: 20
+  canonical_same_day_merge: true
+  event_regime_gated_buckets: ["risk_on", "transition"]
+  cross_section_min_members: 120
+  rolling_breadth_window: 60
+  entropy_window: 20
+  vcp_range_window: 20
+  vcp_range_baseline_window: 60
+  persistent_ema_days: 10
+  cusum_window: 20
+
+quality_flags:
+  amount_ratio_20d: 1.50
+  amount_ratio_60d: 1.20
+  close_to_derived_daily_vwap: 0.00
+  close_position_in_range: 0.60
+  upper_shadow_pct: 0.35
+
+labels:
+  confirm_20:
+    horizon_days: 20
+    upper_barrier: 0.12
+    lower_barrier: -0.08
+  failure_10:
+    horizon_days: 10
+    lower_barrier: -0.10
+  continuous_horizons: [10, 20, 30, 60, 120]
+  big_winner_mfe_120d: 0.50
+  super_winner_mfe_120d: 1.00
+  near_winner_mfe_lower: 0.30
+  near_winner_mfe_upper: 0.50
+  false_repair_drawdown: -0.10
+
+gates:
+  min_incremental_recall_pct_points_robustness: 0.08
+  min_incremental_recall_pct_points_strong: 0.12
+  min_train_robustness_missed_capture_count: 30
+  min_earlier_capture_count: 30
+  min_earlier_days: 10
+  min_next_open_executable_rate: 0.95
+  min_event_precision_label_complete_rate: 0.70
+  max_bridge_recall_shortfall_pct_points: 0.02
+  max_bridge_exclusion_rate_excess_pct_points: 0.02
+  max_single_board_event_share: 0.80
+  max_candidate_union_canonical_events_per_instrument_year_mean: 2.75
+  max_candidate_union_canonical_events_per_instrument_year_p95: 5.00
+  max_candidate_family_canonical_events_per_instrument_year_mean: 1.25
+  max_candidate_family_canonical_events_per_instrument_year_p95: 3.00
+  max_new_family_density_share: 0.35
+  density_drag_incremental_recall_threshold: 0.02
+  density_drag_density_share_threshold: 0.20
+  validation_risk_on_sample_small_denominator: 30
+
+selection:
+  max_selected_variants: 6
+  eligible_statuses: ["runnable_existing_data", "fallback_variant"]
+  focus_episode_regimes: ["risk_on", "transition"]
+  focus_window: "before_first_50pct"
+  train_selection_min_incremental_recall: 0.005
+  train_selection_max_density_vs_e1: 0.50
+
+better_basis:
+  policy_id: "event_close_vs_episode_low_v0"
+  comparison_scope: "same target episode first event, selected candidate union vs 07 E1-only"
+  better_when: "candidate event close relative to episode low is lower than E1 event close relative to episode low"
+  forbidden_future_fields: ["episode_high_date", "qfq_high_at_high_date", "first_50pct_touch_date"]
+  minimum_earlier_sessions: 10
+
+style_proxies:
+  chinext_board:
+    membership: "board_bucket / benchmark_alias from 05/06 PIT Top-N/proxy universe rows"
+    return_calculation: "equal-weight same-date return among evaluated Top-N/proxy members in the board"
+    rebalance_policy: "daily by usable_trade_date membership"
+    lag_policy: "same-date close feature; executable at next open"
+    missing_policy: "missing board membership disables style feature for that instrument-day"
+  main_board:
+    membership: "non-ChiNext board_bucket / benchmark_alias from 05/06 PIT Top-N/proxy universe rows"
+    return_calculation: "equal-weight same-date return among evaluated Top-N/proxy members outside ChiNext"
+    rebalance_policy: "daily by usable_trade_date membership"
+    lag_policy: "same-date close feature; executable at next open"
+    missing_policy: "missing board membership disables style feature for that instrument-day"
+
+reported_reference:
+  e1_only_canonical_events: 6820
+  e1_only_any_recall_before_first_50pct: 0.711
+  e1_only_bridge_recall_before_first_50pct: 0.326
+  full_union_canonical_events: 15161
+  full_union_any_recall_before_first_50pct: 0.720
+  full_union_bridge_recall_before_first_50pct: 0.348
+
+candidate_families:
+  R1_relative_strength_breakout:
+    path: "risk_on"
+    status: "runnable_existing_data"
+    cluster: "relative_strength_cluster"
+    data_dependency: "stock_daily + all_a benchmark"
+    priority: 10
+    threshold_grid:
+      stock_vs_market_20d: [0.06, 0.08]
+      stock_vs_market_10d: [0.035]
+      close_to_ema60_min: [0.00]
+  R2_near_high_volume_expansion:
+    path: "risk_on"
+    status: "runnable_existing_data"
+    cluster: "volume_high_breakout_cluster"
+    data_dependency: "stock_daily"
+    priority: 20
+    threshold_grid:
+      near_high_60: [0.96]
+      amount_ratio_20d: [1.50]
+      close_position_in_range: [0.65]
+  R3_vcp_breakout:
+    path: "risk_on"
+    status: "runnable_existing_data"
+    cluster: "compression_break_cluster"
+    data_dependency: "stock_daily"
+    priority: 30
+    threshold_grid:
+      range_width_ratio: [0.70]
+      close_position_in_range: [0.70]
+      amount_ratio_20d: [1.15]
+  R4_industry_breadth_expansion:
+    path: "risk_on"
+    status: "family_data_blocked"
+    cluster: "breadth_cluster"
+    data_dependency: "PIT industry classification"
+    priority: 40
+    threshold_grid:
+      industry_up_share_z: [1.0]
+  R5_growth_or_small_style_confirmation:
+    path: "risk_on"
+    status: "diagnostic_only"
+    cluster: "board_style_cluster"
+    data_dependency: "PIT board bucket style proxy"
+    priority: 50
+    threshold_grid:
+      board_relative_20d: [0.03]
+      stock_vs_board_20d: [0.00]
+  R6_market_breadth_thrust:
+    path: "risk_on"
+    status: "runnable_existing_data"
+    cluster: "breadth_cluster"
+    data_dependency: "Top-N/proxy cross-section"
+    priority: 60
+    threshold_grid:
+      up_share_z: [1.0]
+      up_share_change_5d: [0.12]
+      momentum_percentile_20d: [0.70]
+  R7_cross_sectional_momentum_rank_jump:
+    path: "risk_on"
+    status: "runnable_existing_data"
+    cluster: "relative_strength_cluster"
+    data_dependency: "Top-N/proxy cross-section"
+    priority: 70
+    threshold_grid:
+      momentum_percentile_20d: [0.80]
+      lag_momentum_percentile_20d_max: [0.50]
+      rank_jump_lookback: [20]
+  R8_persistent_distance_above_ema:
+    path: "risk_on"
+    status: "runnable_existing_data"
+    cluster: "persistent_trend_cluster"
+    data_dependency: "stock_daily"
+    priority: 80
+    threshold_grid:
+      close_to_ema60_min: [0.05]
+      persistent_days: [10]
+      return_20d: [0.08]
+  T1_stock_vs_industry_CUSUM_break:
+    path: "transition"
+    status: "family_data_blocked"
+    cluster: "industry_transition_cluster"
+    data_dependency: "PIT industry classification"
+    priority: 110
+    threshold_grid:
+      cusum_20d: [0.10]
+  T2_industry_vs_market_CUSUM_break:
+    path: "transition"
+    status: "family_data_blocked"
+    cluster: "industry_transition_cluster"
+    data_dependency: "PIT industry classification"
+    priority: 120
+    threshold_grid:
+      cusum_20d: [0.08]
+  T3_style_rotation_break:
+    path: "transition"
+    status: "diagnostic_only"
+    cluster: "board_style_cluster"
+    data_dependency: "PIT board bucket style proxy"
+    priority: 130
+    threshold_grid:
+      board_relative_cusum_20d: [0.06]
+      stock_vs_board_20d: [0.00]
+  T4_entropy_compression_then_directional_expansion:
+    path: "transition"
+    status: "runnable_existing_data"
+    cluster: "compression_break_cluster"
+    data_dependency: "stock_daily"
+    priority: 140
+    threshold_grid:
+      entropy_20d_max: [0.85]
+      return_5d: [0.035]
+      stock_vs_market_10d: [0.02]
+  T5_volume_regime_shift:
+    path: "transition"
+    status: "runnable_existing_data"
+    cluster: "volume_regime_cluster"
+    data_dependency: "stock_daily"
+    priority: 150
+    threshold_grid:
+      amount_ratio_20d: [1.80]
+      amount_ratio_60d: [1.30]
+      return_5d: [0.035]
+  T6_stock_vs_market_CUSUM_break:
+    path: "transition"
+    status: "fallback_variant"
+    cluster: "relative_strength_cluster"
+    data_dependency: "stock_daily + all_a benchmark"
+    is_fallback_of: "T1_stock_vs_industry_CUSUM_break"
+    priority: 160
+    threshold_grid:
+      relative_cusum_20d: [0.10]
+      relative_5d: [0.025]
+  T7_board_relative_strength_break:
+    path: "transition"
+    status: "fallback_variant"
+    cluster: "board_style_cluster"
+    data_dependency: "PIT board bucket fallback"
+    is_fallback_of: "T2_industry_vs_market_CUSUM_break"
+    priority: 170
+    threshold_grid:
+      board_relative_cusum_20d: [0.06]
+      stock_vs_board_20d: [0.00]
+  T8_volatility_regime_contraction_break:
+    path: "transition"
+    status: "runnable_existing_data"
+    cluster: "compression_break_cluster"
+    data_dependency: "stock_daily"
+    priority: 180
+    threshold_grid:
+      atr_pct_rank_60d_max: [0.35]
+      return_5d: [0.03]
+      amount_ratio_20d: [1.15]
+
+channels:
+  recommended: []
+  primary_channel_order: []
+
+density:
+  seed_density_window: 20
+  reclaim_density_window: 20
+  recommended_union_same_day_only: true
+
+reporting:
+  max_rows_per_table: 16
+
+runtime:
+  log_progress: true
+  progress_every_instruments: 100

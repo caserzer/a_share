@@ -37,3 +37,7 @@ experiments/**/outputs/large_raw/**
 !experiments/**/outputs/large_raw/.gitkeep
 experiments/**/outputs/**/*.tmp
 experiments/**/outputs/**/*.log
+
+# Oversized generated publishable CSVs should be published as compressed artifacts.
+experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv
+experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv

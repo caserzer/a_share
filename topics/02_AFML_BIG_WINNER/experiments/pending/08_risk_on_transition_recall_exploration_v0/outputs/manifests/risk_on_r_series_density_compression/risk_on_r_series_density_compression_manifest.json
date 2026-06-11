@@ -1,0 +1,1495 @@
+{
+  "decision": "risk_on_r_series_no_compression_candidate",
+  "density_binding_preflight": {
+    "density_binding_preflight_decision": "risk_on_r_series_density_binding_confirmed",
+    "family_level_confirmed_core_count": 5,
+    "family_level_confirmed_core_families": [
+      "R1_relative_strength_breakout",
+      "R2_near_high_volume_expansion",
+      "R6_market_breadth_thrust",
+      "R7_cross_sectional_momentum_rank_jump",
+      "R8_persistent_distance_above_ema"
+    ],
+    "r5_negative_control_confirmed": true,
+    "variant_level_confirmed_core_count": 5,
+    "variant_level_confirmed_core_families": [
+      "R1_relative_strength_breakout",
+      "R2_near_high_volume_expansion",
+      "R6_market_breadth_thrust",
+      "R7_cross_sectional_momentum_rank_jump",
+      "R8_persistent_distance_above_ema"
+    ]
+  },
+  "experiment_name": "08 risk-on R-series density compression patch",
+  "generated_at": "2026-06-11T13:38:15.863408+00:00",
+  "input_artifacts": {
+    "candidate_family_bridge_exclusion_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_bridge_exclusion_audit.csv",
+      "sha256": "5de00bd6368589413db50082e13ba12c462f8642a7802aef6c2a9b1c41ea783e"
+    },
+    "candidate_family_bridge_positive_recall": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_bridge_positive_recall.csv",
+      "sha256": "c2c8f37c86940b8ac12aed9adc964e7cf9bf3a0000abea066fdd41f472217f93"
+    },
+    "candidate_family_canonical_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv",
+      "sha256": "2279191c26f2423c6813fed0cf9db60a99eaf9c5abc6040df53e90169ab3b805"
+    },
+    "candidate_family_capture": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_capture.parquet",
+      "sha256": "ffc107a57c8612d8537e84f9c28c50708f7cfa3d6978befe276d870580918d81"
+    },
+    "candidate_family_cluster_ablation": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_cluster_ablation.csv",
+      "sha256": "3621559e8296a0a82c4a8006c423a1158d8efcb3f424e18eae3318f48503033a"
+    },
+    "candidate_family_density_summary": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_density_summary.csv",
+      "sha256": "7f21c8c8b1cb2d3ff2433d42d44c45e852466cc54ad26091aae8597bb1e897bf"
+    },
+    "candidate_family_event_instances": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv",
+      "sha256": "b4f7abe202f5a02d26c9eba636d8b7846c3e29ebd34462436807883a339f51db"
+    },
+    "candidate_family_event_labels": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet",
+      "sha256": "a6fbb17753e2f6c7bf54bfeccc2aff03419a9891bd87bb4f75e1667a1f0bd5b8"
+    },
+    "candidate_family_false_repair_diagnostic": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_false_repair_diagnostic.csv",
+      "sha256": "b48cca6a918ee10c15473c91f6e746f390af610f65e81e9bbf03c4f9f3311e43"
+    },
+    "candidate_family_incremental_recall_over_e1": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_incremental_recall_over_e1.csv",
+      "sha256": "8616961f3f8e1524b70deeccc3938131364b48c9abb11850fd94386f81d028b1"
+    },
+    "candidate_family_label_quality_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_label_quality_readout.csv",
+      "sha256": "3c4f7b32864a4b7d290da81c45351fd992c43753b2cd179a7753c86203d134da"
+    },
+    "candidate_family_overlap_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_overlap_matrix.csv",
+      "sha256": "2deb353ee070c3efa8885e31a7f5485c028a9834dfaad6e3f0c39dcd881bebb3"
+    },
+    "candidate_family_run_capability_summary": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_run_capability_summary.csv",
+      "sha256": "50d39bc3e8e20d5f3d80d7983c98de44b63529e94ad89769dee56a7af114ed6c"
+    },
+    "candidate_vs_e1_timing_basis_comparison": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_vs_e1_timing_basis_comparison.csv",
+      "sha256": "bce2d971f182df74ce2431832bfc2e0ae2b1155e4c935ee18c3a9d4252bc8d5f"
+    },
+    "cross_section_feature_panel": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet",
+      "sha256": "0780c31e1852c90bc7fb453678a8738d64d6de33e3429b22454cc87f6b929d88"
+    },
+    "patch_requirement": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/requirement_patch_risk_on_r_series_density_compression.md",
+      "sha256": "beb7d154b8fab89ff34f265bf9675f5720435b8efedb39c520cd9f60ff49f1f9"
+    },
+    "regime_recall_baseline_07_e1_only": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/regime_recall_baseline_07_e1_only.csv",
+      "sha256": "053b09b7b30ea43caf4f5bae325e07179b1b26af40b86561690d219382e0dbf7"
+    },
+    "source_08_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json",
+      "sha256": "bc91830dc86c92b43ce02d3a6f30d905caed99620a56d38653b0cc84d838365e"
+    }
+  },
+  "input_gate_failures": [],
+  "input_gate_result": "pass",
+  "input_hashes": {
+    "candidate_family_bridge_exclusion_audit": "5de00bd6368589413db50082e13ba12c462f8642a7802aef6c2a9b1c41ea783e",
+    "candidate_family_bridge_positive_recall": "c2c8f37c86940b8ac12aed9adc964e7cf9bf3a0000abea066fdd41f472217f93",
+    "candidate_family_canonical_events": "2279191c26f2423c6813fed0cf9db60a99eaf9c5abc6040df53e90169ab3b805",
+    "candidate_family_capture": "ffc107a57c8612d8537e84f9c28c50708f7cfa3d6978befe276d870580918d81",
+    "candidate_family_cluster_ablation": "3621559e8296a0a82c4a8006c423a1158d8efcb3f424e18eae3318f48503033a",
+    "candidate_family_density_summary": "7f21c8c8b1cb2d3ff2433d42d44c45e852466cc54ad26091aae8597bb1e897bf",
+    "candidate_family_event_instances": "b4f7abe202f5a02d26c9eba636d8b7846c3e29ebd34462436807883a339f51db",
+    "candidate_family_event_labels": "a6fbb17753e2f6c7bf54bfeccc2aff03419a9891bd87bb4f75e1667a1f0bd5b8",
+    "candidate_family_false_repair_diagnostic": "b48cca6a918ee10c15473c91f6e746f390af610f65e81e9bbf03c4f9f3311e43",
+    "candidate_family_incremental_recall_over_e1": "8616961f3f8e1524b70deeccc3938131364b48c9abb11850fd94386f81d028b1",
+    "candidate_family_label_quality_readout": "3c4f7b32864a4b7d290da81c45351fd992c43753b2cd179a7753c86203d134da",
+    "candidate_family_overlap_matrix": "2deb353ee070c3efa8885e31a7f5485c028a9834dfaad6e3f0c39dcd881bebb3",
+    "candidate_family_run_capability_summary": "50d39bc3e8e20d5f3d80d7983c98de44b63529e94ad89769dee56a7af114ed6c",
+    "candidate_vs_e1_timing_basis_comparison": "bce2d971f182df74ce2431832bfc2e0ae2b1155e4c935ee18c3a9d4252bc8d5f",
+    "cross_section_feature_panel": "0780c31e1852c90bc7fb453678a8738d64d6de33e3429b22454cc87f6b929d88",
+    "patch_requirement": "beb7d154b8fab89ff34f265bf9675f5720435b8efedb39c520cd9f60ff49f1f9",
+    "regime_recall_baseline_07_e1_only": "053b09b7b30ea43caf4f5bae325e07179b1b26af40b86561690d219382e0dbf7",
+    "source_08_manifest": "bc91830dc86c92b43ce02d3a6f30d905caed99620a56d38653b0cc84d838365e"
+  },
+  "input_paths": {
+    "candidate_family_bridge_exclusion_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_bridge_exclusion_audit.csv",
+    "candidate_family_bridge_positive_recall": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_bridge_positive_recall.csv",
+    "candidate_family_canonical_events": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv",
+    "candidate_family_capture": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_capture.parquet",
+    "candidate_family_cluster_ablation": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_cluster_ablation.csv",
+    "candidate_family_density_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_density_summary.csv",
+    "candidate_family_event_instances": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv",
+    "candidate_family_event_labels": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet",
+    "candidate_family_false_repair_diagnostic": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_false_repair_diagnostic.csv",
+    "candidate_family_incremental_recall_over_e1": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_incremental_recall_over_e1.csv",
+    "candidate_family_label_quality_readout": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_label_quality_readout.csv",
+    "candidate_family_overlap_matrix": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_overlap_matrix.csv",
+    "candidate_family_run_capability_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_run_capability_summary.csv",
+    "candidate_vs_e1_timing_basis_comparison": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_vs_e1_timing_basis_comparison.csv",
+    "cross_section_feature_panel": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet",
+    "patch_requirement": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/requirement_patch_risk_on_r_series_density_compression.md",
+    "regime_recall_baseline_07_e1_only": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/regime_recall_baseline_07_e1_only.csv",
+    "source_08_manifest": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json"
+  },
+  "output_artifacts": {
+    "report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/risk_on_r_series_density_compression/risk_on_r_series_density_compression_report.md",
+      "sha256": "8e648d86a683eb4edc8af97ab7ca76a136131c272c0da76944789ddb754d1be7"
+    },
+    "risk_on_r_series_compressed_canonical_events": {
+      "column_schema": [],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_compressed_canonical_events.csv",
+      "row_count": 0,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    "risk_on_r_series_compression_frontier": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "compression_arm_id"
+        },
+        {
+          "dtype": "object",
+          "name": "source_family_set"
+        },
+        {
+          "dtype": "object",
+          "name": "source_variant_set"
+        },
+        {
+          "dtype": "object",
+          "name": "threshold_policy"
+        },
+        {
+          "dtype": "object",
+          "name": "score_spec_id"
+        },
+        {
+          "dtype": "object",
+          "name": "score_spec_hash"
+        },
+        {
+          "dtype": "bool",
+          "name": "selected_by_train_only_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "post_train_selection_read_only_metric"
+        },
+        {
+          "dtype": "object",
+          "name": "compression_source_variant_policy"
+        },
+        {
+          "dtype": "bool",
+          "name": "allow_ungated_compression_source"
+        },
+        {
+          "dtype": "object",
+          "name": "source_variant_fallback_reason"
+        },
+        {
+          "dtype": "object",
+          "name": "unscored_canonical_policy"
+        },
+        {
+          "dtype": "int64",
+          "name": "unscored_canonical_event_count"
+        },
+        {
+          "dtype": "float64",
+          "name": "unscored_canonical_density_share"
+        },
+        {
+          "dtype": "int64",
+          "name": "event_count"
+        },
+        {
+          "dtype": "int64",
+          "name": "canonical_event_count"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_vs_e1_full_denominator"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_full_denominator"
+        },
+        {
+          "dtype": "float64",
+          "name": "events_per_instrument_year_p95"
+        },
+        {
+          "dtype": "float64",
+          "name": "single_family_density_share_max"
+        },
+        {
+          "dtype": "object",
+          "name": "triggered_family_share"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_compression_ratio_vs_raw_r_pool"
+        },
+        {
+          "dtype": "object",
+          "name": "raw_r_pool_definition"
+        },
+        {
+          "dtype": "float64",
+          "name": "train_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "train_risk_on_bridge_recall_delta_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "validation_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "bool",
+          "name": "validation_risk_on_sample_small_flag"
+        },
+        {
+          "dtype": "float64",
+          "name": "robustness_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "robustness_risk_on_bridge_recall_delta_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "label_completeness_rate"
+        },
+        {
+          "dtype": "float64",
+          "name": "next_open_executable_rate"
+        },
+        {
+          "dtype": "float64",
+          "name": "event_big_winner_120d_rate"
+        },
+        {
+          "dtype": "bool",
+          "name": "downstream_entry_family_share_35pct_pass"
+        },
+        {
+          "dtype": "object",
+          "name": "direct_entry_union_support_status"
+        },
+        {
+          "dtype": "object",
+          "name": "ranker_arm_status"
+        },
+        {
+          "dtype": "object",
+          "name": "gate_status"
+        },
+        {
+          "dtype": "object",
+          "name": "failure_reason"
+        },
+        {
+          "dtype": "float64",
+          "name": "selection_score"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_compression_frontier.csv",
+      "row_count": 24,
+      "sha256": "a41936336400818c206332e5090be638596a95498d1401bead4735e296cc4486"
+    },
+    "risk_on_r_series_density_binding_preflight": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "candidate_scope_type"
+        },
+        {
+          "dtype": "object",
+          "name": "candidate_scope_id"
+        },
+        {
+          "dtype": "object",
+          "name": "family_id"
+        },
+        {
+          "dtype": "object",
+          "name": "variant_id"
+        },
+        {
+          "dtype": "object",
+          "name": "episode_split"
+        },
+        {
+          "dtype": "object",
+          "name": "source_regime_column_name"
+        },
+        {
+          "dtype": "object",
+          "name": "source_market_regime_bucket"
+        },
+        {
+          "dtype": "object",
+          "name": "episode_regime_bucket"
+        },
+        {
+          "dtype": "object",
+          "name": "window"
+        },
+        {
+          "dtype": "float64",
+          "name": "incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "bridge_recall"
+        },
+        {
+          "dtype": "float64",
+          "name": "e1_bridge_recall"
+        },
+        {
+          "dtype": "float64",
+          "name": "bridge_recall_delta_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_vs_e1_full_denominator"
+        },
+        {
+          "dtype": "float64",
+          "name": "events_per_instrument_year_p95"
+        },
+        {
+          "dtype": "bool",
+          "name": "recall_gate_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "bridge_gate_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "density_binding_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "negative_control_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "family_level_density_binding_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "variant_level_spot_check_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "variant_level_confirmed_family_flag"
+        },
+        {
+          "dtype": "object",
+          "name": "source_08_manifest_hash"
+        },
+        {
+          "dtype": "object",
+          "name": "patch_requirement_hash"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_density_binding_preflight.csv",
+      "row_count": 42,
+      "sha256": "fbbc166799667c83d013d7b3c58ccb632c34ee975d6fdcb015fc917e4012ea3a"
+    },
+    "risk_on_r_series_event_scores_local": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "event_id"
+        },
+        {
+          "dtype": "object",
+          "name": "instrument"
+        },
+        {
+          "dtype": "object",
+          "name": "event_family"
+        },
+        {
+          "dtype": "float64",
+          "name": "event_variant"
+        },
+        {
+          "dtype": "object",
+          "name": "union_family"
+        },
+        {
+          "dtype": "object",
+          "name": "canonical_event_scope"
+        },
+        {
+          "dtype": "object",
+          "name": "event_t0_date"
+        },
+        {
+          "dtype": "int64",
+          "name": "event_t0_pos"
+        },
+        {
+          "dtype": "object",
+          "name": "trade_open_date"
+        },
+        {
+          "dtype": "int64",
+          "name": "trade_open_pos"
+        },
+        {
+          "dtype": "float64",
+          "name": "trade_open_price"
+        },
+        {
+          "dtype": "bool",
+          "name": "non_executable_next_open"
+        },
+        {
+          "dtype": "object",
+          "name": "non_executable_reason"
+        },
+        {
+          "dtype": "object",
+          "name": "limit_threshold_status"
+        },
+        {
+          "dtype": "float64",
+          "name": "source_seed_low_date"
+        },
+        {
+          "dtype": "int64",
+          "name": "source_seed_low_pos"
+        },
+        {
+          "dtype": "float64",
+          "name": "first_ema60_reclaim_date"
+        },
+        {
+          "dtype": "int64",
+          "name": "first_ema60_reclaim_pos"
+        },
+        {
+          "dtype": "float64",
+          "name": "days_seed_to_event"
+        },
+        {
+          "dtype": "float64",
+          "name": "days_reclaim_to_event"
+        },
+        {
+          "dtype": "float64",
+          "name": "seed_cluster_id"
+        },
+        {
+          "dtype": "float64",
+          "name": "reclaim_cluster_id"
+        },
+        {
+          "dtype": "float64",
+          "name": "union_cluster_id"
+        },
+        {
+          "dtype": "bool",
+          "name": "union_density_kept"
+        },
+        {
+          "dtype": "int64",
+          "name": "event_family_priority"
+        },
+        {
+          "dtype": "object",
+          "name": "event_split"
+        },
+        {
+          "dtype": "object",
+          "name": "market_regime_bucket"
+        },
+        {
+          "dtype": "object",
+          "name": "benchmark_alias"
+        },
+        {
+          "dtype": "object",
+          "name": "board_bucket"
+        },
+        {
+          "dtype": "bool",
+          "name": "is_st"
+        },
+        {
+          "dtype": "float64",
+          "name": "total_market_cap_cny"
+        },
+        {
+          "dtype": "float64",
+          "name": "liquidity_money_20d"
+        },
+        {
+          "dtype": "bool",
+          "name": "early_no_false_repair_5d"
+        },
+        {
+          "dtype": "bool",
+          "name": "early_no_false_repair_10d"
+        },
+        {
+          "dtype": "bool",
+          "name": "early_relative_strength_turn_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "strict_rank_persistence_reference_flag"
+        },
+        {
+          "dtype": "object",
+          "name": "raw_source_event_ids"
+        },
+        {
+          "dtype": "int64",
+          "name": "raw_cluster_event_count"
+        },
+        {
+          "dtype": "float64",
+          "name": "close_to_ema20"
+        },
+        {
+          "dtype": "float64",
+          "name": "close_to_ema60"
+        },
+        {
+          "dtype": "float64",
+          "name": "ema20_slope_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "ema60_slope_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "return_5d"
+        },
+        {
+          "dtype": "float64",
+          "name": "return_10d"
+        },
+        {
+          "dtype": "float64",
+          "name": "return_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "return_60d"
+        },
+        {
+          "dtype": "float64",
+          "name": "stock_vs_market_5d"
+        },
+        {
+          "dtype": "float64",
+          "name": "stock_vs_market_10d"
+        },
+        {
+          "dtype": "float64",
+          "name": "stock_vs_market_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "amount_ratio_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "amount_ratio_60d"
+        },
+        {
+          "dtype": "float64",
+          "name": "turnover_ratio_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "turnover_ratio_60d"
+        },
+        {
+          "dtype": "bool",
+          "name": "derived_daily_vwap_available"
+        },
+        {
+          "dtype": "float64",
+          "name": "close_to_derived_daily_vwap"
+        },
+        {
+          "dtype": "float64",
+          "name": "vwap_reclaim_flag"
+        },
+        {
+          "dtype": "float64",
+          "name": "intraday_range_pct"
+        },
+        {
+          "dtype": "float64",
+          "name": "close_position_in_range"
+        },
+        {
+          "dtype": "float64",
+          "name": "upper_shadow_pct"
+        },
+        {
+          "dtype": "float64",
+          "name": "gap_open_pct"
+        },
+        {
+          "dtype": "float64",
+          "name": "gap_fade_flag"
+        },
+        {
+          "dtype": "object",
+          "name": "gap_fade_flag_status"
+        },
+        {
+          "dtype": "float64",
+          "name": "atr_20_pct"
+        },
+        {
+          "dtype": "float64",
+          "name": "market_return_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "market_drawdown_60d"
+        },
+        {
+          "dtype": "float64",
+          "name": "market_volatility_20d"
+        },
+        {
+          "dtype": "bool",
+          "name": "quality_amount_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "quality_vwap_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "quality_range_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "quality_gap_fade_flag"
+        },
+        {
+          "dtype": "object",
+          "name": "quality_amount_flag_status"
+        },
+        {
+          "dtype": "object",
+          "name": "quality_vwap_flag_status"
+        },
+        {
+          "dtype": "object",
+          "name": "quality_range_flag_status"
+        },
+        {
+          "dtype": "object",
+          "name": "quality_gap_fade_flag_status"
+        },
+        {
+          "dtype": "object",
+          "name": "family_id"
+        },
+        {
+          "dtype": "object",
+          "name": "family_input_status"
+        },
+        {
+          "dtype": "object",
+          "name": "mechanism_cluster"
+        },
+        {
+          "dtype": "object",
+          "name": "event_regime_bucket"
+        },
+        {
+          "dtype": "float64",
+          "name": "event_close"
+        },
+        {
+          "dtype": "float64",
+          "name": "event_close_to_episode_low_basis"
+        },
+        {
+          "dtype": "float64",
+          "name": "close_to_high_60"
+        },
+        {
+          "dtype": "float64",
+          "name": "close_to_high_120"
+        },
+        {
+          "dtype": "float64",
+          "name": "range_width_ratio_20d_60d"
+        },
+        {
+          "dtype": "float64",
+          "name": "direction_entropy_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "relative_cusum_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "momentum_percentile_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "momentum_percentile_20d_lag20"
+        },
+        {
+          "dtype": "float64",
+          "name": "universe_up_share"
+        },
+        {
+          "dtype": "float64",
+          "name": "universe_up_share_z"
+        },
+        {
+          "dtype": "float64",
+          "name": "universe_up_share_change_5d"
+        },
+        {
+          "dtype": "float64",
+          "name": "stock_vs_board_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "board_relative_cusum_20d"
+        },
+        {
+          "dtype": "float64",
+          "name": "atr_pct_rank_60d"
+        },
+        {
+          "dtype": "float64",
+          "name": "ema60_positive_run"
+        },
+        {
+          "dtype": "object",
+          "name": "variant_id"
+        },
+        {
+          "dtype": "object",
+          "name": "family_variant_id"
+        },
+        {
+          "dtype": "object",
+          "name": "event_regime_gating"
+        },
+        {
+          "dtype": "object",
+          "name": "threshold_variant_id"
+        },
+        {
+          "dtype": "object",
+          "name": "event_t0_confirmation_time"
+        },
+        {
+          "dtype": "object",
+          "name": "channel_id"
+        },
+        {
+          "dtype": "object",
+          "name": "channel_family"
+        },
+        {
+          "dtype": "bool",
+          "name": "is_setup_context"
+        },
+        {
+          "dtype": "bool",
+          "name": "recommended_union_included"
+        },
+        {
+          "dtype": "object",
+          "name": "event_executable_date"
+        },
+        {
+          "dtype": "object",
+          "name": "symbol"
+        },
+        {
+          "dtype": "float64",
+          "name": "momentum_percentile_60d"
+        },
+        {
+          "dtype": "float64",
+          "name": "per_family_variant_score"
+        },
+        {
+          "dtype": "bool",
+          "name": "score_rank_eligible_flag"
+        },
+        {
+          "dtype": "object",
+          "name": "score_spec_id"
+        },
+        {
+          "dtype": "object",
+          "name": "score_availability_status"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/risk_on_r_series_density_compression/risk_on_r_series_event_scores.parquet",
+      "row_count": 62786,
+      "sha256": "01bb9ae96a81192ff40e64e4810837fd326e57040f38986de5216632131e9ba3"
+    },
+    "risk_on_r_series_gate_summary": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "risk_on_r_series_density_compression_decision"
+        },
+        {
+          "dtype": "object",
+          "name": "density_binding_preflight_decision"
+        },
+        {
+          "dtype": "object",
+          "name": "selected_compression_arm_id"
+        },
+        {
+          "dtype": "bool",
+          "name": "recall_gate_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "bridge_gate_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "density_gate_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "p95_density_gate_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "label_execution_gate_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "overfit_gate_pass"
+        },
+        {
+          "dtype": "object",
+          "name": "gate_failures"
+        },
+        {
+          "dtype": "float64",
+          "name": "train_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "robustness_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "train_risk_on_bridge_recall_delta_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "robustness_risk_on_bridge_recall_delta_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_vs_e1_full_denominator"
+        },
+        {
+          "dtype": "float64",
+          "name": "events_per_instrument_year_p95"
+        },
+        {
+          "dtype": "float64",
+          "name": "single_family_density_share_max"
+        },
+        {
+          "dtype": "bool",
+          "name": "downstream_entry_family_share_35pct_pass"
+        },
+        {
+          "dtype": "bool",
+          "name": "validation_risk_on_sample_small_flag"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_gate_summary.csv",
+      "row_count": 1,
+      "sha256": "6b6b08925668959b1f649f226048ce539759a3fd152d8710add6d854888c7498"
+    },
+    "risk_on_r_series_label_quality_readout": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "compression_arm_id"
+        },
+        {
+          "dtype": "float64",
+          "name": "label_completeness_rate"
+        },
+        {
+          "dtype": "float64",
+          "name": "next_open_executable_rate"
+        },
+        {
+          "dtype": "float64",
+          "name": "event_big_winner_120d_rate"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_label_quality_readout.csv",
+      "row_count": 24,
+      "sha256": "f11e17d76c4f0435468ff3c98862e3eb1ac05c6f73c099c5c63d45cf5e73463c"
+    },
+    "risk_on_r_series_overlap_diagnostic": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "compressed_pool_id"
+        },
+        {
+          "dtype": "object",
+          "name": "comparison_scope_id"
+        },
+        {
+          "dtype": "int64",
+          "name": "selected_event_count"
+        },
+        {
+          "dtype": "int64",
+          "name": "comparison_event_count"
+        },
+        {
+          "dtype": "int64",
+          "name": "intersection_event_count"
+        },
+        {
+          "dtype": "float64",
+          "name": "selected_overlap_share"
+        },
+        {
+          "dtype": "float64",
+          "name": "comparison_overlap_share"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_overlap_diagnostic.csv",
+      "row_count": 24,
+      "sha256": "d63a0bdd982f7dbca325b000286507f0ab094aadb1a9897c90280e70660c6b78"
+    },
+    "risk_on_r_series_recall_bridge_density_by_split": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "candidate_scope_id"
+        },
+        {
+          "dtype": "object",
+          "name": "candidate_scope_type"
+        },
+        {
+          "dtype": "object",
+          "name": "family_id"
+        },
+        {
+          "dtype": "object",
+          "name": "variant_id"
+        },
+        {
+          "dtype": "object",
+          "name": "family_input_status"
+        },
+        {
+          "dtype": "object",
+          "name": "mechanism_cluster"
+        },
+        {
+          "dtype": "object",
+          "name": "episode_split"
+        },
+        {
+          "dtype": "object",
+          "name": "market_regime_bucket"
+        },
+        {
+          "dtype": "object",
+          "name": "window"
+        },
+        {
+          "dtype": "float64",
+          "name": "denominator_episodes"
+        },
+        {
+          "dtype": "float64",
+          "name": "e1_only_captured_episodes"
+        },
+        {
+          "dtype": "float64",
+          "name": "candidate_captured_episodes"
+        },
+        {
+          "dtype": "float64",
+          "name": "e1_plus_candidate_captured_episodes"
+        },
+        {
+          "dtype": "float64",
+          "name": "candidate_only_recall"
+        },
+        {
+          "dtype": "float64",
+          "name": "e1_only_recall"
+        },
+        {
+          "dtype": "float64",
+          "name": "e1_plus_candidate_recall"
+        },
+        {
+          "dtype": "float64",
+          "name": "incremental_captures_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "unique_captures_not_in_07_full_union"
+        },
+        {
+          "dtype": "float64",
+          "name": "unique_captures_not_in_e1_e2_e3_e6"
+        },
+        {
+          "dtype": "float64",
+          "name": "earlier_first_event_captures_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "better_basis_first_event_captures_vs_e1"
+        },
+        {
+          "dtype": "object",
+          "name": "percentage_point_convention"
+        },
+        {
+          "dtype": "object",
+          "name": "metric_family"
+        },
+        {
+          "dtype": "object",
+          "name": "board_bucket"
+        },
+        {
+          "dtype": "object",
+          "name": "metric_basis"
+        },
+        {
+          "dtype": "float64",
+          "name": "numerator"
+        },
+        {
+          "dtype": "float64",
+          "name": "denominator"
+        },
+        {
+          "dtype": "float64",
+          "name": "excluded_count"
+        },
+        {
+          "dtype": "float64",
+          "name": "recall"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_recall_bridge_density_by_split.csv",
+      "row_count": 6912,
+      "sha256": "c3e68df84b2972d87a30014906ffbdd0c4e901db2abfe49819bb12ba720c0eea"
+    },
+    "risk_on_r_series_score_spec": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "score_spec_id"
+        },
+        {
+          "dtype": "object",
+          "name": "family_id"
+        },
+        {
+          "dtype": "object",
+          "name": "variant_id"
+        },
+        {
+          "dtype": "object",
+          "name": "score_field_name"
+        },
+        {
+          "dtype": "object",
+          "name": "source_column"
+        },
+        {
+          "dtype": "bool",
+          "name": "source_column_required_flag"
+        },
+        {
+          "dtype": "object",
+          "name": "score_direction"
+        },
+        {
+          "dtype": "object",
+          "name": "score_transform"
+        },
+        {
+          "dtype": "object",
+          "name": "normalization_scope"
+        },
+        {
+          "dtype": "object",
+          "name": "missing_policy"
+        },
+        {
+          "dtype": "object",
+          "name": "tie_break_policy"
+        },
+        {
+          "dtype": "object",
+          "name": "feature_asof_policy"
+        },
+        {
+          "dtype": "object",
+          "name": "source_column_presence_status"
+        },
+        {
+          "dtype": "object",
+          "name": "score_availability_status"
+        },
+        {
+          "dtype": "bool",
+          "name": "proxy_score_used"
+        },
+        {
+          "dtype": "object",
+          "name": "missing_semantic_feature"
+        },
+        {
+          "dtype": "bool",
+          "name": "recompute_required_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "recomputed_from_source_artifacts"
+        },
+        {
+          "dtype": "object",
+          "name": "source_08_manifest_hash"
+        },
+        {
+          "dtype": "object",
+          "name": "patch_requirement_hash"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_score_spec.csv",
+      "row_count": 12,
+      "sha256": "c5d91e3e465094d4b9e4f1b1233eaccc7a7a89c935f065d96293efc01f9cd68e"
+    },
+    "risk_on_r_series_selected_compressed_variants": {
+      "column_schema": [],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_selected_compressed_variants.csv",
+      "row_count": 0,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    "risk_on_r_series_source_pool_summary": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "source_pool_id"
+        },
+        {
+          "dtype": "object",
+          "name": "family_id"
+        },
+        {
+          "dtype": "object",
+          "name": "variant_ids"
+        },
+        {
+          "dtype": "int64",
+          "name": "source_event_count"
+        },
+        {
+          "dtype": "int64",
+          "name": "scored_event_count"
+        },
+        {
+          "dtype": "int64",
+          "name": "unscored_event_count"
+        },
+        {
+          "dtype": "object",
+          "name": "score_availability_status"
+        },
+        {
+          "dtype": "object",
+          "name": "compression_source_variant_policy"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_source_pool_summary.csv",
+      "row_count": 10,
+      "sha256": "1613ef715eef78b75c8eb214bcc8ccbd0e686f516a7ab926e2cc90895c0f59e9"
+    },
+    "risk_on_r_series_threshold_sensitivity": {
+      "column_schema": [
+        {
+          "dtype": "object",
+          "name": "compression_arm_id"
+        },
+        {
+          "dtype": "object",
+          "name": "source_family_set"
+        },
+        {
+          "dtype": "object",
+          "name": "source_variant_set"
+        },
+        {
+          "dtype": "object",
+          "name": "threshold_policy"
+        },
+        {
+          "dtype": "object",
+          "name": "score_spec_id"
+        },
+        {
+          "dtype": "object",
+          "name": "score_spec_hash"
+        },
+        {
+          "dtype": "bool",
+          "name": "selected_by_train_only_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "post_train_selection_read_only_metric"
+        },
+        {
+          "dtype": "object",
+          "name": "compression_source_variant_policy"
+        },
+        {
+          "dtype": "bool",
+          "name": "allow_ungated_compression_source"
+        },
+        {
+          "dtype": "object",
+          "name": "source_variant_fallback_reason"
+        },
+        {
+          "dtype": "object",
+          "name": "unscored_canonical_policy"
+        },
+        {
+          "dtype": "int64",
+          "name": "unscored_canonical_event_count"
+        },
+        {
+          "dtype": "float64",
+          "name": "unscored_canonical_density_share"
+        },
+        {
+          "dtype": "int64",
+          "name": "event_count"
+        },
+        {
+          "dtype": "int64",
+          "name": "canonical_event_count"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_vs_e1_full_denominator"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_full_denominator"
+        },
+        {
+          "dtype": "float64",
+          "name": "events_per_instrument_year_p95"
+        },
+        {
+          "dtype": "float64",
+          "name": "single_family_density_share_max"
+        },
+        {
+          "dtype": "object",
+          "name": "triggered_family_share"
+        },
+        {
+          "dtype": "float64",
+          "name": "density_compression_ratio_vs_raw_r_pool"
+        },
+        {
+          "dtype": "object",
+          "name": "raw_r_pool_definition"
+        },
+        {
+          "dtype": "float64",
+          "name": "train_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "train_risk_on_bridge_recall_delta_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "validation_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "bool",
+          "name": "validation_risk_on_sample_small_flag"
+        },
+        {
+          "dtype": "float64",
+          "name": "robustness_risk_on_incremental_recall_over_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "robustness_risk_on_bridge_recall_delta_vs_e1"
+        },
+        {
+          "dtype": "float64",
+          "name": "label_completeness_rate"
+        },
+        {
+          "dtype": "float64",
+          "name": "next_open_executable_rate"
+        },
+        {
+          "dtype": "float64",
+          "name": "event_big_winner_120d_rate"
+        },
+        {
+          "dtype": "bool",
+          "name": "downstream_entry_family_share_35pct_pass"
+        },
+        {
+          "dtype": "object",
+          "name": "direct_entry_union_support_status"
+        },
+        {
+          "dtype": "object",
+          "name": "ranker_arm_status"
+        },
+        {
+          "dtype": "object",
+          "name": "gate_status"
+        },
+        {
+          "dtype": "object",
+          "name": "failure_reason"
+        },
+        {
+          "dtype": "float64",
+          "name": "selection_score"
+        }
+      ],
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_threshold_sensitivity.csv",
+      "row_count": 24,
+      "sha256": "a41936336400818c206332e5090be638596a95498d1401bead4735e296cc4486"
+    }
+  },
+  "output_hashes": {
+    "report": "8e648d86a683eb4edc8af97ab7ca76a136131c272c0da76944789ddb754d1be7",
+    "risk_on_r_series_compressed_canonical_events": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "risk_on_r_series_compression_frontier": "a41936336400818c206332e5090be638596a95498d1401bead4735e296cc4486",
+    "risk_on_r_series_density_binding_preflight": "fbbc166799667c83d013d7b3c58ccb632c34ee975d6fdcb015fc917e4012ea3a",
+    "risk_on_r_series_event_scores_local": "01bb9ae96a81192ff40e64e4810837fd326e57040f38986de5216632131e9ba3",
+    "risk_on_r_series_gate_summary": "6b6b08925668959b1f649f226048ce539759a3fd152d8710add6d854888c7498",
+    "risk_on_r_series_label_quality_readout": "f11e17d76c4f0435468ff3c98862e3eb1ac05c6f73c099c5c63d45cf5e73463c",
+    "risk_on_r_series_overlap_diagnostic": "d63a0bdd982f7dbca325b000286507f0ab094aadb1a9897c90280e70660c6b78",
+    "risk_on_r_series_recall_bridge_density_by_split": "c3e68df84b2972d87a30014906ffbdd0c4e901db2abfe49819bb12ba720c0eea",
+    "risk_on_r_series_score_spec": "c5d91e3e465094d4b9e4f1b1233eaccc7a7a89c935f065d96293efc01f9cd68e",
+    "risk_on_r_series_selected_compressed_variants": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "risk_on_r_series_source_pool_summary": "1613ef715eef78b75c8eb214bcc8ccbd0e686f516a7ab926e2cc90895c0f59e9",
+    "risk_on_r_series_threshold_sensitivity": "a41936336400818c206332e5090be638596a95498d1401bead4735e296cc4486"
+  },
+  "output_paths": {
+    "report": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/risk_on_r_series_density_compression/risk_on_r_series_density_compression_report.md",
+    "risk_on_r_series_compressed_canonical_events": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_compressed_canonical_events.csv",
+    "risk_on_r_series_compression_frontier": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_compression_frontier.csv",
+    "risk_on_r_series_density_binding_preflight": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_density_binding_preflight.csv",
+    "risk_on_r_series_event_scores_local": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/risk_on_r_series_density_compression/risk_on_r_series_event_scores.parquet",
+    "risk_on_r_series_gate_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_gate_summary.csv",
+    "risk_on_r_series_label_quality_readout": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_label_quality_readout.csv",
+    "risk_on_r_series_overlap_diagnostic": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_overlap_diagnostic.csv",
+    "risk_on_r_series_recall_bridge_density_by_split": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_recall_bridge_density_by_split.csv",
+    "risk_on_r_series_score_spec": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_score_spec.csv",
+    "risk_on_r_series_selected_compressed_variants": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_selected_compressed_variants.csv",
+    "risk_on_r_series_source_pool_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_source_pool_summary.csv",
+    "risk_on_r_series_threshold_sensitivity": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_density_compression/risk_on_r_series_threshold_sensitivity.csv"
+  },
+  "patch_requirement_hash": "beb7d154b8fab89ff34f265bf9675f5720435b8efedb39c520cd9f60ff49f1f9",
+  "patch_requirement_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/requirement_patch_risk_on_r_series_density_compression.md",
+  "ranker_arm_status": "not_evaluated_deterministic_run",
+  "ranker_label_horizon_cutoff_purge_policy": "not_evaluated",
+  "run_scope": "risk_on_r_series_density_compression_patch",
+  "selected_compression_arm_id": "",
+  "source_08_decision": "risk_on_transition_recall_exploration_density_blocked",
+  "source_08_manifest_hash": "bc91830dc86c92b43ce02d3a6f30d905caed99620a56d38653b0cc84d838365e",
+  "source_08_manifest_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json",
+  "source_git_revision": "3a4f545d1dca026e606aa3b58f81361e77048155",
+  "source_oversized_artifact_replacements": [
+    {
+      "compressed_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv.gz",
+      "compressed_sha256": "9a289c80732260602a291b7f75908408b832180c28e760847f83212be5b5df12",
+      "compressed_size_bytes": 44344626,
+      "compression": "gzip",
+      "publish_policy": "raw_csv_ignored_due_to_github_100mb_limit; compressed_csv_gz_committed",
+      "raw_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv",
+      "raw_sha256": "b4f7abe202f5a02d26c9eba636d8b7846c3e29ebd34462436807883a339f51db",
+      "raw_size_bytes": 361512604,
+      "restore_command": "gzip -dk candidate_family_event_instances.csv.gz"
+    },
+    {
+      "compressed_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz",
+      "compressed_sha256": "1bb1c445d494cb59c57a9fbb5057dfc8b61e34e8f0f8187c27bd9ce209273cb8",
+      "compressed_size_bytes": 43353244,
+      "compression": "gzip",
+      "publish_policy": "raw_csv_ignored_due_to_github_100mb_limit; compressed_csv_gz_committed",
+      "raw_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv",
+      "raw_sha256": "2279191c26f2423c6813fed0cf9db60a99eaf9c5abc6040df53e90169ab3b805",
+      "raw_size_bytes": 189282136,
+      "restore_command": "gzip -dk candidate_family_canonical_events.csv.gz"
+    }
+  ],
+  "train_only_selection_config": {
+    "density_vs_e1_max": 1.0,
+    "p95_max": 4.0,
+    "recall_min": 0.08,
+    "robustness_bridge_delta_min": 0.05,
+    "single_family_share_max": 0.65,
+    "source_variant_policy": "event_regime_gated_first",
+    "train_bridge_delta_min": 0.05,
+    "unscored_canonical_policy": "retain_and_audit"
+  }
+}

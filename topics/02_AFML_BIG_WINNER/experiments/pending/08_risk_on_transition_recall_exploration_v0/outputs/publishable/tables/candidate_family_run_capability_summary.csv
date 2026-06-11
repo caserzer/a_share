@@ -1,0 +1,17 @@
+family_id,family_input_status,data_dependency,is_fallback_of,executed_flag,blocked_reason,variant_count,selected_variant_id,event_count,notes
+R1_relative_strength_breakout,runnable_existing_data,stock_daily + all_a benchmark,,True,,2,,31385,"Runnable with existing PIT price, universe, benchmark, and board data."
+R2_near_high_volume_expansion,runnable_existing_data,stock_daily,,True,,2,,20279,"Runnable with existing PIT price, universe, benchmark, and board data."
+R3_vcp_breakout,runnable_existing_data,stock_daily,,True,,2,,16276,"Runnable with existing PIT price, universe, benchmark, and board data."
+R4_industry_breadth_expansion,family_data_blocked,PIT industry classification,,False,PIT industry classification unavailable,0,,0,"Blocked family is not silently replaced; fallback, if any, uses an independent family_id."
+R5_growth_or_small_style_confirmation,diagnostic_only,PIT board bucket style proxy,,True,,2,,4087,Executed for overlap diagnostics but excluded from graduation selection.
+R6_market_breadth_thrust,runnable_existing_data,Top-N/proxy cross-section,,True,,2,,35958,"Runnable with existing PIT price, universe, benchmark, and board data."
+R7_cross_sectional_momentum_rank_jump,runnable_existing_data,Top-N/proxy cross-section,,True,,2,,21773,"Runnable with existing PIT price, universe, benchmark, and board data."
+R8_persistent_distance_above_ema,runnable_existing_data,stock_daily,,True,,2,,26777,"Runnable with existing PIT price, universe, benchmark, and board data."
+T1_stock_vs_industry_CUSUM_break,family_data_blocked,PIT industry classification,,False,PIT industry classification unavailable,0,,0,"Blocked family is not silently replaced; fallback, if any, uses an independent family_id."
+T2_industry_vs_market_CUSUM_break,family_data_blocked,PIT industry classification,,False,PIT industry classification unavailable,0,,0,"Blocked family is not silently replaced; fallback, if any, uses an independent family_id."
+T3_style_rotation_break,diagnostic_only,PIT board bucket style proxy,,True,,2,,1259,Executed for overlap diagnostics but excluded from graduation selection.
+T4_entropy_compression_then_directional_expansion,runnable_existing_data,stock_daily,,True,,2,event_regime_gated,3121,"Runnable with existing PIT price, universe, benchmark, and board data."
+T5_volume_regime_shift,runnable_existing_data,stock_daily,,True,,2,,27500,"Runnable with existing PIT price, universe, benchmark, and board data."
+T6_stock_vs_market_CUSUM_break,fallback_variant,stock_daily + all_a benchmark,T1_stock_vs_industry_CUSUM_break,True,,2,,24311,Independent fallback for T1_stock_vs_industry_CUSUM_break; not labeled as industry family.
+T7_board_relative_strength_break,fallback_variant,PIT board bucket fallback,T2_industry_vs_market_CUSUM_break,True,,2,event_regime_gated,1259,Independent fallback for T2_industry_vs_market_CUSUM_break; not labeled as industry family.
+T8_volatility_regime_contraction_break,runnable_existing_data,stock_daily,,True,,2,,24694,"Runnable with existing PIT price, universe, benchmark, and board data."
