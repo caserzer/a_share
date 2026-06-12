@@ -19,6 +19,7 @@ import run_risk_on_r_series_density_compression_patch as rseries_patch  # noqa: 
 import run_density_fast_fail_audit as density_audit  # noqa: E402
 import run_regime_family_matrix as regime_matrix  # noqa: E402
 import run_risk_on_r_series_bridge_ranker as bridge_ranker  # noqa: E402
+import run_post_replay_event_to_episode_retention_source as post_replay_source  # noqa: E402
 
 
 def test_e1_only_replay_uses_triggered_channel_membership() -> None:
@@ -230,6 +231,405 @@ def test_density_audit_pre_replay_capture_rows_use_partial_replay_id() -> None:
     assert set(out["retention_replay_id"]) == {"pre_replay_capture_only"}
     assert not out["replay_uses_future_label"].any()
     assert out["post_replay_any_recall"].isna().all()
+
+
+def test_post_replay_episode_windows_deduplicate_scope_expanded_capture() -> None:
+    capture = pd.DataFrame(
+        [
+            {
+                "target_episode_id": "ep1",
+                "instrument": "A",
+                "episode_low_date": "2020-01-01",
+                "episode_high_date": "2020-02-01",
+                "first_50pct_touch_date": "2020-01-15",
+                "episode_split": "train",
+                "market_regime_bucket": "risk_on",
+                "board_bucket": "main_board",
+                "window": "low_to_first_50pct",
+                "window_start_pos": 10,
+                "window_end_pos": 20,
+                "any_event_denominator_included": True,
+                "bridge_positive_denominator_included": True,
+                "candidate_scope_id": "scope_a",
+            },
+            {
+                "target_episode_id": "ep1",
+                "instrument": "A",
+                "episode_low_date": "2020-01-01",
+                "episode_high_date": "2020-02-01",
+                "first_50pct_touch_date": "2020-01-15",
+                "episode_split": "train",
+                "market_regime_bucket": "risk_on",
+                "board_bucket": "main_board",
+                "window": "low_to_first_50pct",
+                "window_start_pos": 10,
+                "window_end_pos": 20,
+                "any_event_denominator_included": True,
+                "bridge_positive_denominator_included": True,
+                "candidate_scope_id": "scope_b",
+            },
+        ]
+    )
+    episodes = pd.DataFrame(
+        [
+            {
+                "episode_id": "ep1",
+                "instrument": "A",
+                "split": "train",
+                "episode_low_date": "2020-01-01",
+                "episode_high_date": "2020-02-01",
+            }
+        ]
+    )
+
+    windows = post_replay_source.build_episode_windows(capture, episodes)
+
+    assert len(windows) == 1
+    assert windows.iloc[0]["source_row_count_before_dedup"] == 2
+    assert windows.iloc[0]["episode_window_source_status"] == "episode_window_ready"
+
+
+def test_post_replay_membership_respects_exclusive_window_end() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "source_kind": "scope",
+                "source_id": "s",
+                "source_event_row_id": "e1",
+                "instrument": "A",
+                "event_t0_pos": 20,
+                "trade_open_pos": 20,
+                "event_t0_date": "2020-01-10",
+                "trade_open_date": "2020-01-10",
+                "non_executable_next_open": False,
+            }
+        ]
+    )
+    events = post_replay_source.apply_replay_anchor(events)
+    windows = pd.DataFrame(
+        [
+            {
+                "target_episode_id": "ep1",
+                "instrument": "A",
+                "episode_split": "train",
+                "market_regime_bucket": "risk_on",
+                "window": "low_to_first_50pct",
+                "window_start_pos": 10,
+                "window_end_pos": 20,
+                "window_end_inclusive_flag": False,
+                "bridge_positive_denominator_included": True,
+                "episode_window_source_status": "episode_window_ready",
+                "denominator_included_flag": True,
+            }
+        ]
+    )
+
+    membership = post_replay_source.build_membership(events, windows)
+
+    assert membership.empty
+
+
+def test_post_replay_low_to_high_sample_status_uses_target_denominator_only() -> None:
+    assert (
+        post_replay_source.sample_status(
+            target_den=120,
+            bridge_den=0,
+            window="low_to_high",
+        )
+        == "sufficient_for_cell_readout"
+    )
+
+
+def test_post_replay_sample_status_uses_e1_missed_denominator() -> None:
+    assert (
+        post_replay_source.sample_status(
+            target_den=120,
+            bridge_den=120,
+            window="low_to_first_50pct",
+            e1_missed_den=12,
+        )
+        == "diagnostic_only"
+    )
+
+
+def test_post_replay_conservative_status_uses_upstream_cell_status() -> None:
+    assert (
+        post_replay_source.more_conservative_sample_status(
+            "sufficient_for_cell_readout",
+            "diagnostic_only",
+        )
+        == "diagnostic_only"
+    )
+    assert (
+        post_replay_source.source_status_to_sample_status(
+            "post_replay_event_membership_materialized_source_caveated_upstream"
+        )
+        == "diagnostic_only"
+    )
+
+
+def test_post_replay_executable_horizon_complete_requires_10d_and_20d_labels() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "source_event_row_id": "e1",
+                "event_executable_flag": True,
+                "failure_10_complete": True,
+                "event_false_repair_20d_complete": False,
+            },
+            {
+                "source_event_row_id": "e2",
+                "event_executable_flag": True,
+                "failure_10_complete": True,
+                "event_false_repair_20d_complete": True,
+            },
+        ]
+    )
+
+    mask = post_replay_source.policy_event_mask(
+        events,
+        "post_replay_executable_horizon_complete",
+    )
+
+    assert mask.tolist() == [False, True]
+
+
+def test_post_replay_scope_selection_uses_mapping_contract_filter() -> None:
+    mapping_row = pd.Series(
+        {
+            "candidate_scope_id": "08_R6_event_regime_gated",
+            "source_experiment": "08",
+            "source_row_filter": (
+                "triggered_family_variants contains "
+                "R6_market_breadth_thrust__event_regime_gated"
+            ),
+        }
+    )
+    canonical08 = pd.DataFrame(
+        [
+            {
+                "canonical_event_id": "r6",
+                "event_id": "r6",
+                "triggered_family_variants": "R6_market_breadth_thrust__event_regime_gated",
+            },
+            {
+                "canonical_event_id": "r1",
+                "event_id": "r1",
+                "triggered_family_variants": "R1_relative_strength_breakout__event_regime_gated",
+            },
+        ]
+    )
+
+    selected = post_replay_source.select_scope_events_from_contract(
+        mapping_row,
+        pd.DataFrame(),
+        canonical08,
+    )
+
+    assert selected["canonical_event_id"].tolist() == ["r6"]
+
+
+def test_post_replay_scope_normalization_honors_anchor_union_canonicalization() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "event_id": "a",
+                "canonical_event_id": "a",
+                "instrument": "000001.SZ",
+                "event_t0_pos": 10,
+                "trade_open_pos": 11,
+                "trade_open_date": "2020-01-02",
+                "non_executable_next_open": False,
+            },
+            {
+                "event_id": "b",
+                "canonical_event_id": "b",
+                "instrument": "000001.SZ",
+                "event_t0_pos": 10,
+                "trade_open_pos": 11,
+                "trade_open_date": "2020-01-02",
+                "non_executable_next_open": False,
+            },
+        ]
+    )
+
+    out = post_replay_source.normalize_scope_events(
+        "08_R_core_event_regime_gated",
+        events,
+        pd.DataFrame(),
+        source_experiment="08",
+        source_path=Path("source.csv"),
+        canonicalization_rule="canonical union by instrument / event anchor",
+    )
+
+    assert len(out) == 1
+
+
+def test_post_replay_blocked_outputs_keep_episode_window_audit(
+    tmp_path: Path, monkeypatch
+) -> None:
+    original_paths = post_replay_source.output_paths()
+    paths = {}
+    for key in original_paths:
+        if key.endswith("manifest"):
+            suffix = ".json"
+        elif key.endswith("contract") or key.endswith("report"):
+            suffix = ".md"
+        elif key == "post_replay_event_episode_membership":
+            suffix = ".parquet"
+        else:
+            suffix = ".csv"
+        paths[key] = tmp_path / f"{key}{suffix}"
+    monkeypatch.setattr(post_replay_source, "output_paths", lambda: paths)
+    episode_windows = pd.DataFrame(
+        [
+            {
+                "target_episode_id": "ep1",
+                "instrument": "000001.SZ",
+                "episode_split": "train",
+                "market_regime_bucket": "risk_on",
+                "window": "low_to_first_50pct",
+                "window_start_pos": 10,
+                "window_end_pos": 20,
+                "episode_low_date": "2020-01-01",
+                "first_50pct_touch_date": "2020-01-15",
+                "episode_high_date": "2020-02-01",
+                "episode_window_source_status": "episode_window_conflict_blocked",
+                "denominator_included_flag": False,
+                "window_end_inclusive_flag": True,
+                "source_path": "capture.parquet",
+                "source_hash": "abc",
+                "source_row_count_before_dedup": 2,
+                "dedup_conflict_flag": True,
+                "dedup_conflict_fields": "window_end_pos",
+            }
+        ]
+    )
+
+    post_replay_source.write_blocked_outputs(
+        post_replay_source.FINAL_CONTRACT_BLOCKED,
+        ["episode_window_conflict_blocked"],
+        pd.DataFrame(),
+        {},
+        {},
+        {},
+        {},
+        episode_windows,
+    )
+
+    out = pd.read_csv(paths["post_replay_episode_window_audit"])
+    assert out.iloc[0]["episode_window_source_status"] == "episode_window_conflict_blocked"
+
+
+def test_post_replay_capture_sets_use_episode_regime_after_merge() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "source_kind": "scope",
+                "source_id": "s",
+                "source_event_row_id": "e1",
+                "instrument": "A",
+                "event_t0_pos": 15,
+                "trade_open_pos": 15,
+                "event_t0_date": "2020-01-10",
+                "trade_open_date": "2020-01-10",
+                "non_executable_next_open": False,
+                "market_regime_bucket": "risk_on",
+            }
+        ]
+    )
+    events = post_replay_source.apply_replay_anchor(events)
+    windows = pd.DataFrame(
+        [
+            {
+                "target_episode_id": "ep1",
+                "instrument": "A",
+                "episode_split": "train",
+                "market_regime_bucket": "transition",
+                "window": "low_to_first_50pct",
+                "window_start_pos": 10,
+                "window_end_pos": 20,
+                "window_end_inclusive_flag": True,
+                "bridge_positive_denominator_included": True,
+                "episode_window_source_status": "episode_window_ready",
+                "denominator_included_flag": True,
+            }
+        ]
+    )
+
+    membership = post_replay_source.build_membership(events, windows)
+    captured = post_replay_source.captured_episode_sets(
+        membership,
+        "pre_replay_capture_only",
+    )
+
+    assert captured.iloc[0]["market_regime_bucket"] == "transition"
+
+
+def test_post_replay_bridge_capture_sets_filter_bridge_denominator() -> None:
+    membership = pd.DataFrame(
+        [
+            {
+                "source_kind": "scope",
+                "source_id": "s",
+                "episode_split": "train",
+                "episode_market_regime_bucket": "risk_on",
+                "window": "low_to_first_50pct",
+                "target_episode_id": "ep1",
+                "bridge_positive_denominator_included": True,
+                "replay_anchor_pos": 10,
+            },
+            {
+                "source_kind": "scope",
+                "source_id": "s",
+                "episode_split": "train",
+                "episode_market_regime_bucket": "risk_on",
+                "window": "low_to_first_50pct",
+                "target_episode_id": "ep2",
+                "bridge_positive_denominator_included": False,
+                "replay_anchor_pos": 11,
+            },
+        ]
+    )
+
+    any_capture = post_replay_source.captured_episode_sets(
+        membership,
+        "pre_replay_capture_only",
+    )
+    bridge_capture = post_replay_source.captured_episode_sets(
+        membership,
+        "pre_replay_capture_only",
+        bridge_only=True,
+    )
+
+    assert set(any_capture["target_episode_id"]) == {"ep1", "ep2"}
+    assert bridge_capture["target_episode_id"].tolist() == ["ep1"]
+
+
+def test_post_replay_optional_cross_section_panel_does_not_block(
+    tmp_path: Path, monkeypatch
+) -> None:
+    required = tmp_path / "required.csv"
+    required.write_text("a\n1\n", encoding="utf-8")
+    monkeypatch.setattr(
+        post_replay_source,
+        "INPUT_SPECS",
+        [
+            post_replay_source.InputSpec("required", required, required=True),
+            post_replay_source.InputSpec(
+                "cross_section_feature_panel",
+                tmp_path / "missing.parquet",
+                required=False,
+            ),
+        ],
+    )
+
+    frame, failures, _ = post_replay_source.input_audit()
+
+    assert failures == []
+    optional = frame.loc[frame["source_id"] == "cross_section_feature_panel"].iloc[0]
+    assert optional["source_status"] == "missing_optional_input"
+    assert not bool(optional["blocking_flag"])
 
 
 def test_incremental_recall_uses_same_denominator_percentage_points() -> None:

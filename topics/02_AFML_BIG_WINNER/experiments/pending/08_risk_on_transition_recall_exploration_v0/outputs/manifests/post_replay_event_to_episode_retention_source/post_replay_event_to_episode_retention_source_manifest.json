@@ -1,0 +1,171 @@
+{
+  "blocked_reasons": [],
+  "created_at": "2026-06-12T14:48:49.394919+00:00",
+  "decision": "post_replay_retention_source_source_caveated_complete",
+  "entry_support_allowed": false,
+  "experiment_a_decision": "density_fast_fail_audit_partial_source_complete",
+  "experiment_b_decision": "regime_family_matrix_source_caveated_complete",
+  "experiment_c_decision": "risk_on_r_series_ranker_source_caveated_complete",
+  "experiment_id": "08_experiment_d_post_replay_event_to_episode_retention_source",
+  "input_artifacts": {
+    "06_episode_reference": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/local_cache/topn_big_winner_episode_reference.parquet",
+      "sha256": "79fba58bb0fbd45569df9fbce93338dd26259fce0d2bbb8dab2090014d15c07e"
+    },
+    "06_episode_reference_summary": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/publishable/tables/topn_big_winner_episode_reference_summary.csv",
+      "sha256": "fe6472ea3fd9ee5164cacfd51d7d498acecd4552264217e6154afea3d7636a63"
+    },
+    "06_run_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/manifests/run_manifest.json",
+      "sha256": "986269706a40a019c63d23c044cc320f5f79963a4107e61ff0a5556a9f3a33b1"
+    },
+    "07_canonical_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_multichannel_candidate_event_canonical.csv",
+      "sha256": "a35a2742075b0ccbacc1745b96851ff3daef869303f07eafee3e6d2bd605bd57"
+    },
+    "07_event_labels": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/local_cache/topn_canonical_event_labels.parquet",
+      "sha256": "2ad39e2c93f3bdf303e9b01435b5b6c002201510a5b6852c76ddc73d9e7a01a3"
+    },
+    "07_run_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/manifests/run_manifest.json",
+      "sha256": "3b7274b91a0ba1835edeb87c91b64746aec3a25fbef9b19f47704da2f9d3d316"
+    },
+    "candidate_10d_retention_by_split_regime": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_10d_retention_by_split_regime.csv",
+      "sha256": "76cd1f69c359e3162a26dae3345382f2df3d86864dbf29d762d32e2f84b3d002"
+    },
+    "candidate_family_canonical_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz",
+      "sha256": "1bb1c445d494cb59c57a9fbb5057dfc8b61e34e8f0f8187c27bd9ce209273cb8"
+    },
+    "candidate_family_capture": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_capture.parquet",
+      "sha256": "ffc107a57c8612d8537e84f9c28c50708f7cfa3d6978befe276d870580918d81"
+    },
+    "candidate_family_event_instances": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv.gz",
+      "sha256": "9a289c80732260602a291b7f75908408b832180c28e760847f83212be5b5df12"
+    },
+    "candidate_family_event_labels": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet",
+      "sha256": "a6fbb17753e2f6c7bf54bfeccc2aff03419a9891bd87bb4f75e1667a1f0bd5b8"
+    },
+    "candidate_scope_mapping_contract": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_mapping_contract.csv",
+      "sha256": "c99625e0ca82e717aa03aa497e652a47c2dcda7f17c41512575bf299de994d16"
+    },
+    "candidate_scope_reconstructability_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_reconstructability_audit.csv",
+      "sha256": "6e706b765288e5323d42d0b2cd26efd8be5a59a1ffcc0aba3e82f70fb0146dd1"
+    },
+    "cross_section_feature_panel": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet",
+      "sha256": "0780c31e1852c90bc7fb453678a8738d64d6de33e3429b22454cc87f6b929d88"
+    },
+    "density_fast_fail_audit_report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/density_fast_fail_audit/density_fast_fail_audit_report.md",
+      "sha256": "5c56c3b7f95338fd07bf513a3bbfd3ea9ca3106fb71816747f273075f64ae3fb"
+    },
+    "density_fast_fail_caliber_contract": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/density_fast_fail_audit/density_fast_fail_caliber_contract.md",
+      "sha256": "b2a483a46a6f1511ede5fd0b58d8696935a3edf7151a7be9785440f8ff9745b6"
+    },
+    "discussion": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/discussion.md",
+      "sha256": "e6253bd9d483739598c966656b58e492123f75189518d0a8c414444a72baed88"
+    },
+    "experiment_a_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/density_fast_fail_audit/density_fast_fail_audit_manifest.json",
+      "sha256": "5890db114330f848de4a6b9a37307540dc69e7dcd32b2214c42a3b8bfa18c3a2"
+    },
+    "experiment_b_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/regime_family_matrix/regime_family_matrix_manifest.json",
+      "sha256": "ebbe5513702fcd7dab7937651ad15154bc5149e54148cbf29460e0a805e381c6"
+    },
+    "experiment_c_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/risk_on_r_series_bridge_ranker/risk_on_r_series_bridge_ranker_manifest.json",
+      "sha256": "e0851f5d2f521d9c81be6399782099d79d63a97c087ada86fbf723c39f94399f"
+    },
+    "regime_family_matrix_report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/regime_family_matrix/regime_family_matrix_report.md",
+      "sha256": "78f640c120ccf7f04bea921d8b44cab84d8e6774c778b08c0bcf0f8e456f5577"
+    },
+    "regime_family_performance_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/regime_family_matrix/regime_family_performance_matrix.csv",
+      "sha256": "e3a58055ba99b2e771bf34a545e54d5879bea09e00985ba27d9b77b678e92063"
+    },
+    "requirement": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/requirement_experiment_d_post_replay_event_to_episode_retention_source.md",
+      "sha256": "523382b857b2acc11e408f5dd0e040cc72bc55d4e8dc861cb13cefabeab3ebb5"
+    },
+    "risk_on_r_series_bridge_ranker_report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/risk_on_r_series_bridge_ranker/risk_on_r_series_bridge_ranker_report.md",
+      "sha256": "d3c08f8d296e97c64dadf2d26899d7cbaf48f5259f43cc8afbf6095731c78765"
+    },
+    "risk_on_r_series_ranker_bridge_recall_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_bridge_ranker/risk_on_r_series_ranker_bridge_recall_readout.csv",
+      "sha256": "bdf94b573213fdeb72d5ea9a8bd39895939b26e6c4e36523850e81c19516e6d8"
+    },
+    "risk_on_r_series_ranker_decision_tiers": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_bridge_ranker/risk_on_r_series_ranker_decision_tiers.csv",
+      "sha256": "f1c2bebf7bad98be354fd253a99efab63553aaa623a75ac687c446d63d266bee"
+    },
+    "risk_on_r_series_ranker_rejected_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_bridge_ranker/risk_on_r_series_ranker_rejected_events.csv.gz",
+      "sha256": "504e1ee7e43d79f12a2b7fa011976b5abb8b908e2f4b635414e970e52ec9f4b8"
+    },
+    "risk_on_r_series_ranker_selected_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_r_series_bridge_ranker/risk_on_r_series_ranker_selected_events.csv.gz",
+      "sha256": "77cce898ec3126a3c0f6bf162ce6825974cfa42db0a9973ea295f7fb7e08b265"
+    }
+  },
+  "local_raw_membership": {
+    "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet",
+    "row_count": 357450,
+    "schema_fingerprint": "141aad8b0a04aa65871f23cde89280d49e81fa194986ca7d8c7fd3bf27adaf0b",
+    "sha256": "77979d5324d49a3522d8ad7a25aa67fa88639f7d49206de8c2e39d6f39e8b17e"
+  },
+  "oracle_policies_audit_only": true,
+  "output_hashes": {
+    "post_replay_arm_retention_by_split_regime": "fd9e1c11e406c03ca00a36235487cff53225f339cf9ff2cecc3231fed885c835",
+    "post_replay_e1_missed_retention_summary": "197e17f7bfb9e49ff31e78bae45bca18560d171496e2d455a906af13fa66df1a",
+    "post_replay_episode_window_audit": "6d13103f99336feb441737c447362209b3c34bb772eb35699d3c96d987ccc86e",
+    "post_replay_event_episode_membership": "77979d5324d49a3522d8ad7a25aa67fa88639f7d49206de8c2e39d6f39e8b17e",
+    "post_replay_label_leakage_audit": "12a51752e7ff76194bbc4bb1bab4c7159c02c74bf9d950d4a5b4e1cfd2f3c562",
+    "post_replay_policy_effect_summary": "6e5ea34858357950073e924aba897d24816c21827288a8a74277c43795ba482f",
+    "post_replay_reconciliation_against_a_b_c": "ec914b5768e827d7bdcdcfeacf367d192f4d44e727bb652985f81e4b9d2afae7",
+    "post_replay_retention_source_contract": "05d3795e791dfa0af5b1a802550c996444253e0ece37b037839c2f7eb81f4a7d",
+    "post_replay_retention_source_report": "0b6e09fbc7fa4fa2374fe9cf76fb5a1e1c3fda9acdf89e488d49c0005cf878a8",
+    "post_replay_scope_retention_by_split_regime": "d097883a4e36283dff768f42db181860e09f145a8123e30378eb7e61542b6ed8",
+    "post_replay_source_coverage_audit": "3eecfd3e8a61a6f1b00127afcf917ece23730498a7efabf29e6d32afb32c643b"
+  },
+  "output_paths": {
+    "post_replay_arm_retention_by_split_regime": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_arm_retention_by_split_regime.csv",
+    "post_replay_e1_missed_retention_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_e1_missed_retention_summary.csv",
+    "post_replay_episode_window_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_episode_window_audit.csv",
+    "post_replay_event_episode_membership": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet",
+    "post_replay_event_to_episode_retention_source_manifest": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/post_replay_event_to_episode_retention_source/post_replay_event_to_episode_retention_source_manifest.json",
+    "post_replay_label_leakage_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_label_leakage_audit.csv",
+    "post_replay_policy_effect_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_policy_effect_summary.csv",
+    "post_replay_reconciliation_against_a_b_c": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_reconciliation_against_a_b_c.csv",
+    "post_replay_retention_source_contract": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/post_replay_event_to_episode_retention_source/post_replay_retention_source_contract.md",
+    "post_replay_retention_source_report": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/post_replay_event_to_episode_retention_source/post_replay_retention_source_report.md",
+    "post_replay_scope_retention_by_split_regime": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_scope_retention_by_split_regime.csv",
+    "post_replay_source_coverage_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_source_coverage_audit.csv"
+  },
+  "output_row_counts": {
+    "post_replay_arm_retention_by_split_regime": 1890,
+    "post_replay_e1_missed_retention_summary": 2880,
+    "post_replay_episode_window_audit": 4986,
+    "post_replay_label_leakage_audit": 6,
+    "post_replay_policy_effect_summary": 2304,
+    "post_replay_reconciliation_against_a_b_c": 291,
+    "post_replay_scope_retention_by_split_regime": 990,
+    "post_replay_source_coverage_audit": 79
+  },
+  "requirement_hash": "523382b857b2acc11e408f5dd0e040cc72bc55d4e8dc861cb13cefabeab3ebb5",
+  "run_id": "deccd94537b0abc5f25297fa9bcbff3ac846d6f77c33e793d606c902fd5ac445",
+  "runner_code_hash": "8362e4941b86c9e12186a23932af7298459c7fc219520da29c347e4da64fefe6"
+}

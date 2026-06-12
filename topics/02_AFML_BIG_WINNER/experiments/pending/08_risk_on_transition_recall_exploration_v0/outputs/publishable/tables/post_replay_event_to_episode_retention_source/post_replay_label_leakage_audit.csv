@@ -1,0 +1,7 @@
+field_name,field_source,allowed_for_membership_join,allowed_for_replay_filter,allowed_as_t0_feature,uses_future_information,allowed_downstream_use,leakage_status
+replay_anchor_pos,event_envelope,True,True,False,False,membership_join_only,pass
+captured_target_episode_id_first,event_label_cache,False,False,False,True,reconciliation_audit_only,pass
+failure_10_label,event_label_cache,False,True,False,True,oracle_replay_audit_only,pass
+event_false_repair_20d_label,event_label_cache,False,True,False,True,oracle_replay_audit_only,pass
+event_big_winner_120d_label,event_label_cache,False,True,False,True,downstream_label_only,pass
+episode_membership,D_membership_source,False,False,False,True,post_replay_readout_only,pass
