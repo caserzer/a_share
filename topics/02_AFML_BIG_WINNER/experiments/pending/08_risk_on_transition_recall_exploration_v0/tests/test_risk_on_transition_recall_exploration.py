@@ -16,6 +16,7 @@ for import_path in (PROJECT_ROOT / "src", SRC_DIR):
 
 import pipeline  # noqa: E402
 import run_risk_on_r_series_density_compression_patch as rseries_patch  # noqa: E402
+import run_density_fast_fail_audit as density_audit  # noqa: E402
 
 
 def test_e1_only_replay_uses_triggered_channel_membership() -> None:
@@ -43,6 +44,190 @@ def test_e1_only_replay_uses_triggered_channel_membership() -> None:
 
     assert e1["event_id"].tolist() == ["a"]
     assert e1.iloc[0]["family_id"] == pipeline.CHANNEL_E1
+
+
+def test_density_audit_uses_execution_anchor_for_executable_rows() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "event_id": "a",
+                "event_t0_pos": 10,
+                "event_t0_date": "2020-01-10",
+                "trade_open_pos": 11,
+                "trade_open_date": "2020-01-13",
+                "non_executable_next_open": False,
+            },
+            {
+                "event_id": "b",
+                "event_t0_pos": 20,
+                "event_t0_date": "2020-01-24",
+                "trade_open_pos": pd.NA,
+                "trade_open_date": pd.NA,
+                "non_executable_next_open": True,
+            },
+        ]
+    )
+
+    out = density_audit.with_event_window_anchor(events)
+
+    assert out.loc[0, "event_window_anchor_pos"] == 11
+    assert out.loc[0, "event_window_anchor_status"] == "next_open_execution_anchor"
+    assert out.loc[1, "event_window_anchor_pos"] == 20
+    assert out.loc[1, "event_window_anchor_status"] == "non_executable_t0_fallback"
+
+
+def test_density_audit_rolling_count_is_same_instrument_only() -> None:
+    events = pd.DataFrame(
+        [
+            {"instrument": "A", "event_key": "a1", "event_window_anchor_pos": 1},
+            {"instrument": "A", "event_key": "a2", "event_window_anchor_pos": 5},
+            {"instrument": "B", "event_key": "b1", "event_window_anchor_pos": 3},
+        ]
+    )
+
+    counts = density_audit.rolling_window_counts(events, 10)
+
+    assert counts.tolist() == [2, 1, 1]
+
+
+def test_density_audit_uniqueness_is_same_instrument_only() -> None:
+    events = pd.DataFrame(
+        [
+            {"instrument": "A", "event_key": "a1", "event_window_anchor_pos": 1},
+            {"instrument": "A", "event_key": "a2", "event_window_anchor_pos": 5},
+            {"instrument": "B", "event_key": "b1", "event_window_anchor_pos": 1},
+        ]
+    )
+
+    uniqueness = density_audit.event_uniqueness(events, horizon=10)
+
+    assert round(float(uniqueness.iloc[0]), 4) == round((4 + 7 * 0.5) / 11, 4)
+    assert float(uniqueness.iloc[2]) == 1.0
+
+
+def test_density_audit_selected_union_uses_selected_t4_t7_variants() -> None:
+    canonical_08 = pd.DataFrame(
+        [
+            {
+                "event_id": "t4",
+                "triggered_family_variants": "T4_entropy_compression_then_directional_expansion__event_regime_gated",
+                "recommended_union_included": True,
+            },
+            {
+                "event_id": "broad",
+                "triggered_family_variants": "R6_market_breadth_thrust__ungated",
+                "recommended_union_included": True,
+            },
+            {
+                "event_id": "t7",
+                "triggered_family_variants": "T7_board_relative_strength_break__event_regime_gated",
+                "recommended_union_included": False,
+            },
+        ]
+    )
+    spec = next(
+        s
+        for s in density_audit.build_scope_specs()
+        if s.candidate_scope_id == "08_selected_T4_T7_union"
+    )
+
+    selected = density_audit.select_scope_events(spec, pd.DataFrame(), canonical_08)
+
+    assert selected["event_id"].tolist() == ["t4", "t7"]
+
+
+def test_density_audit_r_core_union_deduplicates_instrument_anchor(tmp_path: Path) -> None:
+    spec = next(
+        s
+        for s in density_audit.build_scope_specs()
+        if s.candidate_scope_id == "08_R_core_event_regime_gated"
+    )
+    events = pd.DataFrame(
+        [
+            {
+                "event_id": "r1",
+                "canonical_event_id": "r1",
+                "instrument": "A",
+                "event_t0_pos": 9,
+                "trade_open_pos": 10,
+                "event_t0_date": "2020-01-09",
+                "trade_open_date": "2020-01-10",
+                "non_executable_next_open": False,
+            },
+            {
+                "event_id": "r2",
+                "canonical_event_id": "r2",
+                "instrument": "A",
+                "event_t0_pos": 9,
+                "trade_open_pos": 10,
+                "event_t0_date": "2020-01-09",
+                "trade_open_date": "2020-01-10",
+                "non_executable_next_open": False,
+            },
+            {
+                "event_id": "r3",
+                "canonical_event_id": "r3",
+                "instrument": "A",
+                "event_t0_pos": 19,
+                "trade_open_pos": 20,
+                "event_t0_date": "2020-01-19",
+                "trade_open_date": "2020-01-20",
+                "non_executable_next_open": False,
+            },
+        ]
+    )
+
+    out = density_audit.normalise_scope_events(events, spec, source_path=tmp_path / "events.csv")
+
+    assert len(out) == 2
+    assert out[["instrument", "event_window_anchor_pos"]].drop_duplicates().shape[0] == 2
+
+
+def test_density_audit_input_audit_flags_schema_incompatible(
+    tmp_path: Path, monkeypatch
+) -> None:
+    source = tmp_path / "events.csv"
+    pd.DataFrame({"event_id": ["a"]}).to_csv(source, index=False)
+    monkeypatch.setattr(density_audit, "REQUIRED_INPUTS", {"bad_events": source})
+    monkeypatch.setattr(density_audit, "OPTIONAL_INPUTS", {})
+    monkeypatch.setattr(
+        density_audit,
+        "REQUIRED_INPUT_COLUMNS",
+        {"bad_events": ["event_id", "instrument"]},
+    )
+
+    frame, failures = density_audit.input_audit()
+
+    assert frame.iloc[0]["status"] == "schema_incompatible_required_input"
+    assert frame.iloc[0]["missing_required_columns"] == "instrument"
+    assert failures == ["schema_incompatible_required_input:bad_events:missing_columns=instrument"]
+
+
+def test_density_audit_pre_replay_capture_rows_use_partial_replay_id() -> None:
+    spec = next(
+        s for s in density_audit.build_scope_specs() if s.candidate_scope_id == "07_E1_only"
+    )
+    capture = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": "07_e1_only",
+                "window": density_audit.BEFORE_FIRST_50,
+                "target_episode_id": "ep1",
+                "episode_split": "train",
+                "market_regime_bucket": "risk_on",
+                "any_event_denominator_included": True,
+                "bridge_positive_denominator_included": True,
+                "any_event_captured": True,
+                "bridge_positive_captured": False,
+            }
+        ]
+    )
+
+    out = density_audit.retention_rows_from_capture(capture, {"07_E1_only": spec})
+
+    assert set(out["retention_replay_id"]) == {"pre_replay_capture_only"}
+    assert not out["replay_uses_future_label"].any()
+    assert out["post_replay_any_recall"].isna().all()
 
 
 def test_incremental_recall_uses_same_denominator_percentage_points() -> None:
