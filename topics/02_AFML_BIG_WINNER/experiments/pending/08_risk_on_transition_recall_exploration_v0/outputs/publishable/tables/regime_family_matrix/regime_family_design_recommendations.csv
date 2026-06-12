@@ -1,0 +1,6 @@
+recommendation_id,target_experiment,recommendation,evidence,status
+transition_reselection,Experiment C / later transition family decomposition,Use R6_market_breadth_thrust as transition candidates; keep T4/T7 as quality-filter or negative-control context.,transition split recall/bridge plus fast-fail diagnostics,source_caveated_design_recommendation
+r_core_deoverlap,Experiment C,"Evaluate R-family de-overlap, cooldown, top-k, or ranker before any R-core union.",R individual scopes are sparse but R-core rolling 10d duplicate is high.,required_before_direct_entry
+t4_t7_quality_filter,Transition signal repair,Use 08_T4_gated / 08_T7_gated only as challenged incumbents unless quality filters reduce fast-fail.,mean transition T4/T7 fast_fail_10d_rate=0.2405,quality_filter_required
+density_granularity,Any downstream use of B matrix,Treat scope-level density as scope-level only; do not infer split/regime density.,candidate_10d_density_summary.csv has no split/regime columns.,contract_constraint
+final_decision,B publication,Publish with final decision regime_family_matrix_source_caveated_complete.,Experiment A is partial-source and retention is pre-replay only.,regime_family_matrix_source_caveated_complete

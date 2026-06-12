@@ -17,6 +17,7 @@ for import_path in (PROJECT_ROOT / "src", SRC_DIR):
 import pipeline  # noqa: E402
 import run_risk_on_r_series_density_compression_patch as rseries_patch  # noqa: E402
 import run_density_fast_fail_audit as density_audit  # noqa: E402
+import run_regime_family_matrix as regime_matrix  # noqa: E402
 
 
 def test_e1_only_replay_uses_triggered_channel_membership() -> None:
@@ -657,3 +658,194 @@ def test_risk_on_r_series_missing_score_features_are_attached_from_t0_panel() ->
 
     assert attached.loc[0, "momentum_percentile_60d"] == 0.80
     assert attached.loc[0, "return_60d"] == 0.10
+
+
+def test_regime_family_matrix_scope_density_is_scope_level_only() -> None:
+    cells = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": "07_E1_only",
+                "split": "train",
+                "market_regime_bucket": "transition",
+            },
+            {
+                "candidate_scope_id": "07_E1_only",
+                "split": "validation",
+                "market_regime_bucket": "transition",
+            },
+        ]
+    )
+    density = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": "07_E1_only",
+                "event_count": 100,
+                "events_per_instrument_year_mean": 0.25,
+                "events_per_instrument_year_p95": 1.0,
+                "rolling_10d_duplicate_rate": 0.01,
+            }
+        ]
+    )
+
+    out = regime_matrix.join_scope_density(cells, density)
+
+    assert set(out["events_per_instrument_year_mean"]) == {0.25}
+    assert set(out["density_granularity"]) == {"scope_level_only"}
+    assert set(out["density_source_split"]) == {"all"}
+    assert set(out["density_source_regime"]) == {"all"}
+    assert not out["density_cell_recomputed_flag"].any()
+
+
+def test_regime_family_matrix_cell_status_uses_more_conservative_status() -> None:
+    assert regime_matrix.sample_status(29, 100) == "diagnostic_only"
+    assert regime_matrix.sample_status(99, 100) == "low_power_caution"
+    assert (
+        regime_matrix.more_conservative_status(
+            "sufficient_for_cell_readout", "low_power_caution"
+        )
+        == "low_power_caution"
+    )
+    assert (
+        regime_matrix.more_conservative_status("low_power_caution", "diagnostic_only")
+        == "diagnostic_only"
+    )
+    assert (
+        regime_matrix.more_conservative_status(
+            "not_available_publishable_source", "sufficient_for_cell_readout"
+        )
+        == "diagnostic_only"
+    )
+
+
+def test_regime_family_matrix_t4_gated_missing_incremental_is_not_source_blocked() -> None:
+    perf = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": "08_T4_gated",
+                "reference_scope_id": (
+                    "T4_entropy_compression_then_directional_expansion__event_regime_gated"
+                ),
+                "split": "train",
+                "market_regime_bucket": "transition",
+            }
+        ]
+    )
+    incremental = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": (
+                    "T4_entropy_compression_then_directional_expansion__ungated"
+                ),
+                "episode_split": "train",
+                "market_regime_bucket": "transition",
+                "window": "before_first_50pct",
+                "incremental_recall_over_e1": 0.10,
+                "incremental_captures_over_e1": 10,
+                "denominator_episodes": 100,
+            }
+        ]
+    )
+
+    out = regime_matrix.merge_incremental(perf, incremental)
+
+    assert pd.isna(out.loc[0, "incremental_recall_over_e1"])
+    assert (
+        out.loc[0, "incremental_recall_source_status"]
+        == "not_available_publishable_source"
+    )
+
+
+def test_regime_family_matrix_missing_fast_fail_blocks_family_role() -> None:
+    role = regime_matrix.classify_family_role(
+        pd.Series(
+            {
+                "candidate_scope_id": "08_R6_event_regime_gated",
+                "family_id": "R6_market_breadth_thrust",
+                "source_kind": "experiment_a_scope",
+                "market_regime_bucket": "risk_off",
+                "split": "train",
+                "cell_sample_status": "sufficient_for_cell_readout",
+                "source_scope_status": "ok",
+                "fast_fail_10d_rate": pd.NA,
+            }
+        )
+    )
+
+    assert role == "source_blocked"
+
+
+def test_regime_family_matrix_invalid_a_decision_fails_closed() -> None:
+    perf = pd.DataFrame([{"retention_source_status": ""}])
+
+    decision = regime_matrix.decide({"decision": "not_allowed"}, perf, [])
+
+    assert decision == regime_matrix.DECISION_INPUT_BLOCKED
+
+
+def test_regime_family_matrix_required_inputs_match_requirement() -> None:
+    specs = {spec.input_id: spec for spec in regime_matrix.INPUT_SPECS}
+
+    assert specs["density_fast_fail_audit_gate_summary"].required
+    assert specs["candidate_10d_density_vs_episode_density_comparison"].required
+    assert specs["regime_recall_baseline_07_e1_only"].required
+
+
+def test_regime_family_matrix_exposes_planning_pass_mode() -> None:
+    args = regime_matrix.parse_args(["--mode", "planning-pass"])
+
+    assert args.mode == "planning-pass"
+
+
+def test_regime_family_fast_fail_matrix_uses_aggregate_contract_names() -> None:
+    perf = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": "07_E1_only",
+                "family_id": "E1_early_ema60_repair",
+                "split": "train",
+                "market_regime_bucket": "transition",
+                "event_n": 10,
+                "failure_10_complete_event_count": 9,
+                "fast_fail_10d_count": 1,
+                "fast_fail_10d_rate": 0.1,
+                "false_repair_20d_count": 2,
+                "false_repair_20d_rate": 0.2,
+                "non_executable_event_count": 0,
+                "horizon_incomplete_10d_count": 1,
+                "label_source_column": "failure_10_complete",
+                "fast_fail_definition_id": "fast_fail_10d_v1",
+                "label_mapping_status": "mapped",
+                "event_level_label_source_status": "available",
+                "fast_fail_diagnostic_label_usage": "diagnostic_only_not_t0_feature",
+            }
+        ]
+    )
+
+    out = regime_matrix.build_fast_fail_diagnostic_matrix(perf)
+
+    assert "event_split" in out.columns
+    assert "event_count" in out.columns
+    assert "split" not in out.columns
+    assert "event_n" not in out.columns
+    assert not [col for col in out.columns if col.endswith("_diagnostic_label")]
+
+
+def test_regime_family_matrix_partial_a_forces_source_caveated_complete() -> None:
+    perf = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": "07_E1_only",
+                "family_id": "E1_early_ema60_repair",
+                "split": "train",
+                "market_regime_bucket": "transition",
+                "transition_reselection_role": "transition_primary_candidate",
+                "retention_source_status": "pre_replay_capture_only",
+            }
+        ]
+    )
+
+    decision = regime_matrix.decide(
+        {"decision": regime_matrix.A_DECISION_PARTIAL}, perf, []
+    )
+
+    assert decision == regime_matrix.DECISION_SOURCE_CAVEATED
