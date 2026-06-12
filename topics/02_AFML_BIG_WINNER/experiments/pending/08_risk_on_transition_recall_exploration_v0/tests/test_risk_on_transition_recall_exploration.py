@@ -18,6 +18,7 @@ import pipeline  # noqa: E402
 import run_risk_on_r_series_density_compression_patch as rseries_patch  # noqa: E402
 import run_density_fast_fail_audit as density_audit  # noqa: E402
 import run_regime_family_matrix as regime_matrix  # noqa: E402
+import run_risk_on_r_series_bridge_ranker as bridge_ranker  # noqa: E402
 
 
 def test_e1_only_replay_uses_triggered_channel_membership() -> None:
@@ -849,3 +850,140 @@ def test_regime_family_matrix_partial_a_forces_source_caveated_complete() -> Non
     )
 
     assert decision == regime_matrix.DECISION_SOURCE_CAVEATED
+
+
+def test_bridge_ranker_direct_entry_requires_sufficient_train_and_robustness() -> None:
+    metrics = {
+        "train_incremental_recall_over_e1": bridge_ranker.TRAIN_RECALL_DELTA_MIN + 0.02,
+        "train_bridge_delta_vs_e1": bridge_ranker.TRAIN_BRIDGE_DELTA_MIN + 0.02,
+        "robustness_incremental_recall_over_e1": bridge_ranker.ROB_RECALL_DELTA_MIN + 0.02,
+        "robustness_bridge_delta_vs_e1": bridge_ranker.ROB_BRIDGE_DELTA_MIN + 0.02,
+        "train_cell_sample_status": "sufficient_for_cell_readout",
+        "robustness_cell_sample_status": "low_power_caution",
+        "density_vs_e1_full_denominator": 1.0,
+        "events_per_instrument_year_mean": 2.0,
+        "events_per_instrument_year_p95": 5.0,
+        "rolling_10d_duplicate_rate": 0.01,
+        "single_family_selected_share_max": 0.2,
+        "fast_fail_10d_excess_vs_e1": 0.0,
+        "false_repair_20d_excess_vs_e1": 0.0,
+        "event_level_label_source_status": "event_level_label_available",
+        "aggregate_only": False,
+        "oos_direct_pass": True,
+        "oos_feature_pass": True,
+    }
+
+    tier, direct_pass, feature_pass, failures = bridge_ranker.target_tier(
+        metrics, source_caveated=True, is_diagnostic_pool=False
+    )
+
+    assert not direct_pass
+    assert feature_pass
+    assert tier == bridge_ranker.SOURCE_CAVEATED_FEATURE_TIER
+    assert "sample_status" in failures
+
+
+def test_bridge_ranker_feature_source_requires_oos_positive() -> None:
+    metrics = {
+        "train_incremental_recall_over_e1": bridge_ranker.TRAIN_RECALL_DELTA_MIN + 0.02,
+        "train_bridge_delta_vs_e1": bridge_ranker.TRAIN_BRIDGE_DELTA_MIN + 0.02,
+        "robustness_incremental_recall_over_e1": bridge_ranker.ROB_RECALL_DELTA_MIN + 0.02,
+        "robustness_bridge_delta_vs_e1": bridge_ranker.ROB_BRIDGE_DELTA_MIN + 0.02,
+        "train_cell_sample_status": "sufficient_for_cell_readout",
+        "robustness_cell_sample_status": "sufficient_for_cell_readout",
+        "density_vs_e1_full_denominator": 1.0,
+        "events_per_instrument_year_mean": 2.0,
+        "events_per_instrument_year_p95": 5.0,
+        "rolling_10d_duplicate_rate": 0.01,
+        "single_family_selected_share_max": 0.2,
+        "fast_fail_10d_excess_vs_e1": 0.0,
+        "false_repair_20d_excess_vs_e1": 0.0,
+        "event_level_label_source_status": "event_level_label_available",
+        "aggregate_only": False,
+        "oos_direct_pass": False,
+        "oos_feature_pass": False,
+    }
+
+    tier, direct_pass, feature_pass, failures = bridge_ranker.target_tier(
+        metrics, source_caveated=True, is_diagnostic_pool=False
+    )
+
+    assert tier == bridge_ranker.DIAGNOSTIC_TIER
+    assert not direct_pass
+    assert not feature_pass
+    assert "oos_separability" in failures
+
+
+def test_bridge_ranker_risk_off_tier_is_diagnostic_only() -> None:
+    tier, direct_pass, feature_pass, failures = bridge_ranker.target_tier(
+        {"oos_direct_pass": True, "oos_feature_pass": True},
+        source_caveated=True,
+        is_diagnostic_pool=True,
+        risk_off=True,
+    )
+
+    assert tier == bridge_ranker.RISK_OFF_TIER
+    assert not direct_pass
+    assert not feature_pass
+    assert failures == ["risk_off_diagnostic_only"]
+
+
+def test_bridge_ranker_borderline_flag_catches_near_threshold_metrics() -> None:
+    flag, names = bridge_ranker.gate_borderline(
+        {
+            "robustness_bridge_delta_vs_e1": bridge_ranker.ROB_BRIDGE_DELTA_MIN,
+            "train_incremental_recall_over_e1": bridge_ranker.TRAIN_RECALL_DELTA_MIN + 0.02,
+        }
+    )
+
+    assert flag
+    assert "robustness_bridge_delta_vs_e1" in names
+
+
+def test_bridge_ranker_label_policy_blocks_future_labels_as_features() -> None:
+    audit = bridge_ranker.build_label_policy_audit()
+
+    blocked = audit.loc[audit["field_name"].isin(["failure_10_label", "bridge_positive_event_or_episode_capture"])]
+
+    assert not blocked["allowed_as_feature"].any()
+    assert blocked["allowed_as_label"].all()
+
+
+def test_bridge_ranker_final_decision_is_manifest_level_constant_in_outputs() -> None:
+    path = (
+        bridge_ranker.C_TABLE_DIR
+        / "risk_on_r_series_ranker_decision_tiers.csv"
+    )
+    if not path.exists():
+        return
+
+    tiers = pd.read_csv(path)
+
+    assert tiers["final_decision"].nunique() == 1
+    assert "target_regime_decision_tier" in tiers.columns
+
+
+def test_bridge_ranker_outputs_keep_individual_r_scope_ids() -> None:
+    path = bridge_ranker.C_TABLE_DIR / "risk_on_r_series_ranker_selected_events.csv"
+    if not path.exists():
+        return
+
+    selected = pd.read_csv(path, usecols=["candidate_scope_id", "family_id"])
+
+    r6 = selected.loc[selected["family_id"] == bridge_ranker.R6]
+    assert bridge_ranker.R6_SCOPE in set(r6["candidate_scope_id"])
+    assert bridge_ranker.R_CORE_SCOPE in set(selected["candidate_scope_id"])
+
+
+def test_bridge_ranker_oos_outputs_required_labels_and_risk_off() -> None:
+    path = bridge_ranker.C_TABLE_DIR / "risk_on_r_series_ranker_oos_separability.csv"
+    if not path.exists():
+        return
+
+    oos = pd.read_csv(path, usecols=["target_regime", "label_name"])
+
+    assert "risk_off" in set(oos["target_regime"])
+    assert {
+        "bridge_positive_vs_bridge_negative",
+        "e1_missed_captured_vs_still_missed",
+    }.issubset(set(oos["label_name"]))
