@@ -168,7 +168,9 @@ density_fast_fail_caliber_contract.md
 
 后续实验只引用该 contract，不在各自 requirement 中重新定义 10d density 口径。
 
-## 后续实验规划
+## 历史后续实验规划（已由 A / B / C 修正）
+
+以下保留 A / B / C 运行前的实验规划，作为研究路径追溯。当前有效优先级以后文“推荐优先级（修正后）”为准；本节不再作为下一步执行顺序。
 
 ### Experiment A：10d density / fast-fail audit replay
 
@@ -326,22 +328,46 @@ density_fast_fail_caliber_contract.md
 - threshold、feature selection、family budget 必须 train-only。
 - separability 必须与 density / fast-fail cost 联合判断，不能只报告 event-level 120d positive rate。
 
-## 推荐优先级
+## A / B / C 实证结果与方向修正（2026-06）
 
-P0：先冻结 `density_fast_fail_caliber_contract.md`，再做 Experiment A。没有统一 contract 与 10d density / fast-fail replay，后续所有 ranker 与 union admission 都会继续混用 120d、episode 与 event-day 口径。
+Experiment A / B / C 已全部运行完毕，结果改变了本文原本的规划。三者的最终 decision 分别是：
 
-P1：并行设计 Experiment B 与 C。B 给出带样本量护栏的 family-regime matrix，C 聚焦 risk_on R-series ranker，并采用 direct-entry / meta-label feature-source 双档结论。二者共享同一套 contract 与 10d density / fast-fail audit。
+- A：`density_fast_fail_audit_partial_source_complete`
+- B：`regime_family_matrix_source_caveated_complete`
+- C：`risk_on_r_series_ranker_source_caveated_complete`
 
-P1：做 Experiment D，避免 T4 在 transition 中被重复机制误判为独立 family。
+C 的关键结果是一个 negative result：21×3 个 risk_on / transition / risk_off arm **全部停在 `diagnostic_only_or_no_candidate`**，direct-entry pass 0、feature-source pass 0。这把本文原先的两条工作假设证伪：
 
-P2：在 A / B / C 的输出稳定后再做 Experiment E 的完整 OOS separability package。若 C 已经训练 ranker，E 应作为其 admission audit；若 C 仍失败，E 仍可用于判断 R-series 是否只适合作为 diagnostic feature source。
+1. 「risk_on 召回来自 R-series，先做 density compression 即可」——框架错了。C 显示 compression 确实能把 density/E1 从 4.5 压到 1.3、rolling 10d duplicate 从 54% 压到 0%，但 fast-fail excess 始终 +12~16pp、false-repair excess +12~16pp，卡死所有 arm。**真正的绑定约束是事件质量（fast-fail / false-repair），不是密度。** 继续扩 compression arm grid 不会解决问题。
+2. 「transition 召回靠 T4/T7 或现有 R-series 压缩修补即可」——已被 C 证伪。C 显示当前 T4/T7 与 R-series arms 在从最密到最稀的设置上 robustness bridge delta 都是负（-5.8 到 -10pp），E1-missed capture 只有 2~4 个。这个结果不证伪所有 volatility / VCP / T6 / T8 类 transition family，但说明它们必须作为新的 family rediscovery 假设重新验证，不能沿用当前 T4/T7 或 R-series 修补路径。
 
-## 当前工作假设
+C 最有价值的洞察是 risk_on 与 transition 是两类不同问题，必须分轨：
 
-1. E1 是 candidate backbone，不应被移除。
-2. E2 / E6 是 feature / tag，不是 headline family。
-3. risk_on 的召回修复主要来自 R-series，但必须先通过 10d fast-fail 与 density compression。
-4. transition 的召回修复可能来自 T4 / volatility-compression family，但必须先 de-overlap。
-5. primary model 的第一关不是 120d big-winner precision，而是 OOS 下能否在可控 density 内减少 10d fast-fail，同时保留 bridge-positive / winner recall。
+- **risk_on 是质量成本问题。** bridge 信号真实（robustness 仍保留 72~78 个 E1-missed capture、bridge recall 47~54%），但 fast-fail / false-repair 成本压不下来。OOS 上 bridge separability 偶尔为正，`non_fast_fail` / `non_false_repair` / `winner_120d` separability 从不可靠。
+- **transition 是信号稳定性问题。** 增量召回在 robustness 上直接消失。
 
-下一份 requirement 应优先冻结 `density_fast_fail_caliber_contract.md` 与 Experiment A 的产物，然后再冻结 regime-specific family matrix、R-series bridge-positive ranker 与 T4 overlap decomposition。
+此外，A/B/C 三次都因 retention 只有 `pre_replay_capture_only`（缺 event-to-episode replay membership）而无法证明 post-filter retention。这是所有下游 rejector / meta-label 的前置缺口：没有它，任何「剔除 fast-fail 后 bridge / winner recall 是否保留」的结论都无法成立。
+
+## 推荐优先级（修正后）
+
+P0（已完成）：`density_fast_fail_caliber_contract.md` 与 Experiment A / B / C 已冻结。上方历史规划仅供追溯，下一步不再沿用 C 的 ranker-compression 主线。
+
+P0（新）：先补 **post-replay event-to-episode retention source**。这是 A/B/C 共同标记的同一个缺失项，取代原 P2 的 Experiment E 成为下一步真正的瓶颈。在它就位前，任何成本 rejector / meta-label 都无法证明 post-filter retention。
+
+P1（新，risk_on）：不再做 entry-ranker 压缩，改为 **post-filter replay / cost rejector**。目标从「提高 bridge recall」改为「在保留 bridge 的同时筛掉 fast-fail / false-repair」。bridge ranker 已够用，缺的是成本侧 supervised rejector，而它依赖上面的 replay 标签。
+
+P1（新，transition）：停止围绕 T4 / T7 / raw R-core 修补，回到 **transition-specific family rediscovery**：volatility contraction、VCP、T6 / T8、regime-boundary features，或重新定义 transition bridge-positive label source。
+
+P2（降级）：原 Experiment D（T4 de-overlap）边际价值已很低，B 与 C 已一致把 T4/T7 钉死为 negative control / quality filter，可缩成一次性诊断或跳过。
+
+P2（部分已完成）：原 Experiment E 中针对当前 R-series C arms 的 OOS separability 读数已由 C 产出，并证明这些 arms 下 fast-fail / winner 不可分。因此当前 R-series C arms 不需要重复做同口径 separability；但若补齐 post-replay 标签或发现新的 transition family，仍必须做 targeted OOS audit。真正缺口仍是 P0（新）的 replay / retention 标签。
+
+## 当前工作假设（修正后）
+
+1. E1 是 candidate backbone，不应被移除。（保持）
+2. E2 / E6 是 feature / tag，不是 headline family。（保持）
+3. risk_on 的绑定约束是事件质量（fast-fail / false-repair），不是密度。下一步是 cost rejector + post-filter replay，不是继续 density compression。（已修正：原假设 3 被 C 证伪）
+4. transition 的 R-series / T4 bridge 信号在 OOS 上不稳定，不应继续修补；下一步是 transition family rediscovery 或重定义 bridge label source。（已修正：原假设 4 被 C 证伪）
+5. primary model 的第一关不是 120d big-winner precision，而是 OOS 下能否在可控 density 内减少 10d fast-fail，同时保留 bridge-positive / winner recall；但这一关的前置条件是先补 post-replay retention source，否则无法验证。（已补充前置条件）
+
+下一份 requirement 应优先冻结 **post-replay event-to-episode retention source**，再据此设计 risk_on cost rejector 与 transition family rediscovery；不再沿用 C 的 R-series ranker-compression 主线。
