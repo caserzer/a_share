@@ -1,0 +1,322 @@
+{
+  "blocked_reasons": [
+    "cost_reduction_lt_15pct",
+    "density_gate_not_configured",
+    "feature_coverage_lt_95pct"
+  ],
+  "created_at": "2026-06-13T02:05:25.560546+00:00",
+  "d_membership_hash": "77979d5324d49a3522d8ad7a25aa67fa88639f7d49206de8c2e39d6f39e8b17e",
+  "decision": "risk_on_cost_rejector_feature_source_caveated_supported",
+  "entry_support_allowed": false,
+  "experiment_a_decision": "density_fast_fail_audit_partial_source_complete",
+  "experiment_b_decision": "regime_family_matrix_source_caveated_complete",
+  "experiment_c_decision": "risk_on_r_series_ranker_source_caveated_complete",
+  "experiment_d_decision": "post_replay_retention_source_source_caveated_complete",
+  "experiment_id": "08_experiment_e_risk_on_post_filter_cost_rejector",
+  "feature_asof_join": {
+    "feature_join_key": "instrument",
+    "feature_join_policy": "latest_same_or_prior_event_t0_date",
+    "future_join_row_count": 0,
+    "joined_row_count": 40050,
+    "missing_row_count": 0,
+    "panel_feature_columns": [
+      "return_1d",
+      "return_5d",
+      "return_20d",
+      "return_60d",
+      "stock_vs_market_20d",
+      "close_to_high_60",
+      "momentum_percentile_20d",
+      "momentum_percentile_60d",
+      "universe_up_share",
+      "universe_new_high_60_share",
+      "universe_up_share_z",
+      "universe_up_share_change_5d",
+      "board_relative_1d",
+      "board_relative_cusum_20d",
+      "board_return_20d",
+      "stock_vs_board_20d"
+    ]
+  },
+  "feature_asof_join_code_hash": "93b75ff93beef9f4ca33721e4719bb9803270beb222e3bc7c020e11a9662c751",
+  "feature_asof_missing_policy": "leave_missing_no_future_fill",
+  "feature_source_hash": "0780c31e1852c90bc7fb453678a8738d64d6de33e3429b22454cc87f6b929d88",
+  "input_artifacts": {
+    "07_canonical_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_multichannel_candidate_event_canonical.csv",
+      "sha256": "a35a2742075b0ccbacc1745b96851ff3daef869303f07eafee3e6d2bd605bd57"
+    },
+    "07_event_labels": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/local_cache/topn_canonical_event_labels.parquet",
+      "sha256": "2ad39e2c93f3bdf303e9b01435b5b6c002201510a5b6852c76ddc73d9e7a01a3"
+    },
+    "07_run_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/manifests/run_manifest.json",
+      "sha256": "3b7274b91a0ba1835edeb87c91b64746aec3a25fbef9b19f47704da2f9d3d316"
+    },
+    "candidate_10d_density_summary": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_10d_density_summary.csv",
+      "sha256": "da237dd93551fd9fefb957ed1bf33bb9dc1bb70cb2455d1e06fb37d8bc40bfba"
+    },
+    "candidate_family_canonical_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz",
+      "sha256": "1bb1c445d494cb59c57a9fbb5057dfc8b61e34e8f0f8187c27bd9ce209273cb8"
+    },
+    "candidate_family_capture": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_capture.parquet",
+      "sha256": "ffc107a57c8612d8537e84f9c28c50708f7cfa3d6978befe276d870580918d81"
+    },
+    "candidate_family_event_instances": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv.gz",
+      "sha256": "9a289c80732260602a291b7f75908408b832180c28e760847f83212be5b5df12"
+    },
+    "candidate_family_event_labels": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet",
+      "sha256": "a6fbb17753e2f6c7bf54bfeccc2aff03419a9891bd87bb4f75e1667a1f0bd5b8"
+    },
+    "candidate_scope_mapping_contract": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_mapping_contract.csv",
+      "sha256": "c99625e0ca82e717aa03aa497e652a47c2dcda7f17c41512575bf299de994d16"
+    },
+    "candidate_scope_reconstructability_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_reconstructability_audit.csv",
+      "sha256": "6e706b765288e5323d42d0b2cd26efd8be5a59a1ffcc0aba3e82f70fb0146dd1"
+    },
+    "cross_section_feature_panel": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet",
+      "sha256": "0780c31e1852c90bc7fb453678a8738d64d6de33e3429b22454cc87f6b929d88"
+    },
+    "d_contract": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/post_replay_event_to_episode_retention_source/post_replay_retention_source_contract.md",
+      "sha256": "05d3795e791dfa0af5b1a802550c996444253e0ece37b037839c2f7eb81f4a7d"
+    },
+    "d_e1_missed": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_e1_missed_retention_summary.csv",
+      "sha256": "197e17f7bfb9e49ff31e78bae45bca18560d171496e2d455a906af13fa66df1a"
+    },
+    "d_label_leakage_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_label_leakage_audit.csv",
+      "sha256": "12a51752e7ff76194bbc4bb1bab4c7159c02c74bf9d950d4a5b4e1cfd2f3c562"
+    },
+    "d_membership": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet",
+      "sha256": "77979d5324d49a3522d8ad7a25aa67fa88639f7d49206de8c2e39d6f39e8b17e"
+    },
+    "d_policy_effect": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_policy_effect_summary.csv",
+      "sha256": "6e5ea34858357950073e924aba897d24816c21827288a8a74277c43795ba482f"
+    },
+    "d_reconciliation": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_reconciliation_against_a_b_c.csv",
+      "sha256": "ec914b5768e827d7bdcdcfeacf367d192f4d44e727bb652985f81e4b9d2afae7"
+    },
+    "d_scope_retention": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_scope_retention_by_split_regime.csv",
+      "sha256": "d097883a4e36283dff768f42db181860e09f145a8123e30378eb7e61542b6ed8"
+    },
+    "d_source_coverage_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_source_coverage_audit.csv",
+      "sha256": "3eecfd3e8a61a6f1b00127afcf917ece23730498a7efabf29e6d32afb32c643b"
+    },
+    "density_fast_fail_contract": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/density_fast_fail_audit/density_fast_fail_caliber_contract.md",
+      "sha256": "b2a483a46a6f1511ede5fd0b58d8696935a3edf7151a7be9785440f8ff9745b6"
+    },
+    "experiment_a_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/density_fast_fail_audit/density_fast_fail_audit_manifest.json",
+      "sha256": "5890db114330f848de4a6b9a37307540dc69e7dcd32b2214c42a3b8bfa18c3a2"
+    },
+    "experiment_b_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/regime_family_matrix/regime_family_matrix_manifest.json",
+      "sha256": "ebbe5513702fcd7dab7937651ad15154bc5149e54148cbf29460e0a805e381c6"
+    },
+    "experiment_c_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/risk_on_r_series_bridge_ranker/risk_on_r_series_bridge_ranker_manifest.json",
+      "sha256": "e0851f5d2f521d9c81be6399782099d79d63a97c087ada86fbf723c39f94399f"
+    },
+    "experiment_d_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/post_replay_event_to_episode_retention_source/post_replay_event_to_episode_retention_source_manifest.json",
+      "sha256": "f267861517e7fb0ee9918721ccd7469a68856da76e7001aaffb597e6df6a85f3"
+    },
+    "requirement": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/requirement_experiment_e_risk_on_post_filter_cost_rejector.md",
+      "sha256": "00db30c4d4843c4a4551f6d59f8c720cf90baca9873c712f60724d3e6cbb7a99"
+    }
+  },
+  "label_join_policy": "event_id_plus_label_scope_with_membership_reconciliation",
+  "label_reconciliation_status": [
+    {
+      "cost_label_complete_n": 16168,
+      "cost_label_complete_rate": 0.9977783263391755,
+      "duplicate_join_n": 0,
+      "event_n": 16204,
+      "fail_closed_reason": "",
+      "label_joined_n": 16204,
+      "label_scope": "all_new_candidate_union",
+      "membership_label_mismatch_n": 0,
+      "membership_label_reconciled_n": 5512,
+      "missing_label_n": 0,
+      "source_pool": "08_R6_event_regime_gated"
+    },
+    {
+      "cost_label_complete_n": 47849,
+      "cost_label_complete_rate": 0.9986434027632842,
+      "duplicate_join_n": 0,
+      "event_n": 47914,
+      "fail_closed_reason": "",
+      "label_joined_n": 47914,
+      "label_scope": "all_new_candidate_union",
+      "membership_label_mismatch_n": 0,
+      "membership_label_reconciled_n": 17117,
+      "missing_label_n": 0,
+      "source_pool": "08_R_core_event_regime_gated"
+    }
+  ],
+  "label_source_hash": "a6fbb17753e2f6c7bf54bfeccc2aff03419a9891bd87bb4f75e1667a1f0bd5b8",
+  "output_hashes": {
+    "risk_on_cost_rejector_binding_audit": "c9abbb1abc4e7a870048f071d6db5d0af5b2ab9ccd384d17c81ae9af657ee70c",
+    "risk_on_cost_rejector_cost_readout": "0dab8ef3e2eae46aea77aaa29972b783553826d31b9e6885ee816fdb555dff1d",
+    "risk_on_cost_rejector_decision_tiers": "02e1e7b38e52afb56d67aa4f1c28aeb1726695c2a0dbebabc2fe10432ce11662",
+    "risk_on_cost_rejector_density_readout": "fb0da63d42da00d07f2b10724049c95825ce873b76432d80fceb2dbcce1026c2",
+    "risk_on_cost_rejector_e1_missed_retention": "827ec4f78982b91725e958c25b04888dad5153189c3f044606425bf628620cb5",
+    "risk_on_cost_rejector_event_regime_gate_audit": "ef92182be15ee2e458197e8660dd6cfbfd21665ad4e9d17ea0eb1149e95cc878",
+    "risk_on_cost_rejector_event_scores": "82035f0431fa4f2ac47bd89ada50acc7f36ffec44cd80f0f38d18a40ef59c86b",
+    "risk_on_cost_rejector_feature_contract": "824a4f1247dcde3b0901921982a4065b4d920e25f1d172740796152f31f8e196",
+    "risk_on_cost_rejector_input_audit": "5af6db70b44716725cc01ab466973a52956cadb057e187c9dd7591b37c9f995b",
+    "risk_on_cost_rejector_label_source_audit": "a3e49033ea689d01475c3ad347e10069c86db275e9f6d2a4b4c0f190073c529e",
+    "risk_on_cost_rejector_leakage_audit": "b3c50ed1e4b594491f742f29b352266f956dc5d53a53a859f01ef70f0870cbd4",
+    "risk_on_cost_rejector_model_registry": "c3e565fb83923e0ec797968c779e54a3a9d955259e18b9562a963d122a8d6739",
+    "risk_on_cost_rejector_oos_separability": "5cbb187d8d01b47ee15091ec8ceb67d2847c336f19705cf9481df734ab284350",
+    "risk_on_cost_rejector_oracle_gap_audit": "45f9590fb75dfc3c729b7de7da193b08e38341b4cb7f05ae8f672f8b46f77a3c",
+    "risk_on_cost_rejector_post_filter_retention_by_split": "1d30c9c1d1e8d3b172e8b0eab6b7755781a63cdbe28a0f72b9164af2f39c75c4",
+    "risk_on_cost_rejector_regime_role_audit": "07df4453da8a0c09cee39e5d4fd9c8081052a505fcbb3396a8859dffd70753b6",
+    "risk_on_cost_rejector_rejected_events": "eb920eea8f3df66ec643f79205c8282143d04b0414c11c84f35a24b611586f0b",
+    "risk_on_cost_rejector_scope_reconstruction_audit": "1731fedd8c9a4068e5281f9b4ee836d45affe7789881395ae4ba3ccf15f441e1",
+    "risk_on_cost_rejector_selected_events": "7e28f2aea103e4d53fe0a8d435302897b0b64275ebf2e70cfd950a8f1d158f67",
+    "risk_on_cost_rejector_source_overlap_audit": "fbc2627ae548688c6983131dbb8ef114142f523e6bc8f63a67624350938e9c3d",
+    "risk_on_cost_rejector_split_alignment_audit": "72a961cb9b931c6a9f86ac66719965763ffb3dd6f2bf309188cbc219f9e888db",
+    "risk_on_cost_rejector_threshold_frontier": "68fabb2b499e56df81ff9b7e90e76f8a998322a8d7df865f72cb9311e2f0d1c6",
+    "risk_on_cost_rejector_top_failure_examples": "edaed741b988151575bf8b7232b49e546f62647aa1ad41652b735077f723932f",
+    "risk_on_cost_rejector_training_sample_summary": "b4da8987cd73d6e39a49caa1d172d9e3fd5d840d1b0c3303fae9f21fc5cd8069",
+    "risk_on_post_filter_cost_rejector_contract": "0c22e075259b0d3e367b61f4f8e4dc029489af9d6b6515d45deada9a8eceb457",
+    "risk_on_post_filter_cost_rejector_report": "ba4ebc3532bf8aba3e7e1a8766b4909297bc0edf75a7f399f27ed0d317e8bb78"
+  },
+  "output_paths": {
+    "risk_on_cost_rejector_binding_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_binding_audit.csv",
+    "risk_on_cost_rejector_cost_readout": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_cost_readout.csv",
+    "risk_on_cost_rejector_decision_tiers": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_decision_tiers.csv",
+    "risk_on_cost_rejector_density_readout": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_density_readout.csv",
+    "risk_on_cost_rejector_e1_missed_retention": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_e1_missed_retention.csv",
+    "risk_on_cost_rejector_event_regime_gate_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_event_regime_gate_audit.csv",
+    "risk_on_cost_rejector_event_scores": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_event_scores.csv.gz",
+    "risk_on_cost_rejector_feature_contract": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_feature_contract.csv",
+    "risk_on_cost_rejector_input_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_input_audit.csv",
+    "risk_on_cost_rejector_label_source_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_label_source_audit.csv",
+    "risk_on_cost_rejector_leakage_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_leakage_audit.csv",
+    "risk_on_cost_rejector_model_registry": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_model_registry.csv",
+    "risk_on_cost_rejector_oos_separability": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_oos_separability.csv",
+    "risk_on_cost_rejector_oracle_gap_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_oracle_gap_audit.csv",
+    "risk_on_cost_rejector_post_filter_retention_by_split": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_post_filter_retention_by_split.csv",
+    "risk_on_cost_rejector_regime_role_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_regime_role_audit.csv",
+    "risk_on_cost_rejector_rejected_events": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_rejected_events.csv.gz",
+    "risk_on_cost_rejector_scope_reconstruction_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_scope_reconstruction_audit.csv",
+    "risk_on_cost_rejector_selected_events": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_selected_events.csv.gz",
+    "risk_on_cost_rejector_source_overlap_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_source_overlap_audit.csv",
+    "risk_on_cost_rejector_split_alignment_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_split_alignment_audit.csv",
+    "risk_on_cost_rejector_threshold_frontier": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_threshold_frontier.csv",
+    "risk_on_cost_rejector_top_failure_examples": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_top_failure_examples.csv",
+    "risk_on_cost_rejector_training_sample_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/risk_on_post_filter_cost_rejector/risk_on_cost_rejector_training_sample_summary.csv",
+    "risk_on_post_filter_cost_rejector_contract": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/risk_on_post_filter_cost_rejector/risk_on_post_filter_cost_rejector_contract.md",
+    "risk_on_post_filter_cost_rejector_manifest": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/risk_on_post_filter_cost_rejector/risk_on_post_filter_cost_rejector_manifest.json",
+    "risk_on_post_filter_cost_rejector_report": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/risk_on_post_filter_cost_rejector/risk_on_post_filter_cost_rejector_report.md"
+  },
+  "output_row_counts": {
+    "risk_on_cost_rejector_binding_audit": 14,
+    "risk_on_cost_rejector_cost_readout": 3,
+    "risk_on_cost_rejector_decision_tiers": 1,
+    "risk_on_cost_rejector_density_readout": 1,
+    "risk_on_cost_rejector_e1_missed_retention": 3,
+    "risk_on_cost_rejector_event_regime_gate_audit": 12,
+    "risk_on_cost_rejector_feature_contract": 51,
+    "risk_on_cost_rejector_input_audit": 29,
+    "risk_on_cost_rejector_label_source_audit": 2,
+    "risk_on_cost_rejector_leakage_audit": 4,
+    "risk_on_cost_rejector_model_registry": 6,
+    "risk_on_cost_rejector_oos_separability": 18,
+    "risk_on_cost_rejector_oracle_gap_audit": 24,
+    "risk_on_cost_rejector_post_filter_retention_by_split": 3,
+    "risk_on_cost_rejector_regime_role_audit": 10,
+    "risk_on_cost_rejector_scope_reconstruction_audit": 4,
+    "risk_on_cost_rejector_source_overlap_audit": 16196,
+    "risk_on_cost_rejector_split_alignment_audit": 251,
+    "risk_on_cost_rejector_threshold_frontier": 54,
+    "risk_on_cost_rejector_training_sample_summary": 6
+  },
+  "regime_column_role_mapping_hash": "396d61e3b9390f2e7b73e766f2c6e6b3f96a8feb46df75dccfe6ede4d84552af",
+  "requirement_hash": "00db30c4d4843c4a4551f6d59f8c720cf90baca9873c712f60724d3e6cbb7a99",
+  "run_id": "c338dd41aa1421a4ec76f5d67c8710ac558c9774ba9fd94b348226742c2b1ac4",
+  "runner_code_hash": "93b75ff93beef9f4ca33721e4719bb9803270beb222e3bc7c020e11a9662c751",
+  "scope_reconstruction_bindings": [
+    {
+      "accepted_difference_reason": "",
+      "hard_gate_eligible_flag": true,
+      "published_reference_event_count": 6820,
+      "reconstructed_event_count": 6820,
+      "reconstructed_vs_published_count_difference": 0,
+      "scope_mapping_status": "reconstructable_event_membership",
+      "scope_reconstruction_status": "pass",
+      "scope_status": "reconstructable_event_membership",
+      "source_hash": "a35a2742075b0ccbacc1745b96851ff3daef869303f07eafee3e6d2bd605bd57",
+      "source_pool": "07_E1_only",
+      "source_row_count": 6820,
+      "source_row_filter": "triggered_channels contains E1_early_ema60_repair"
+    },
+    {
+      "accepted_difference_reason": "",
+      "hard_gate_eligible_flag": true,
+      "published_reference_event_count": 16204,
+      "reconstructed_event_count": 16204,
+      "reconstructed_vs_published_count_difference": 0,
+      "scope_mapping_status": "reconstructable_event_membership",
+      "scope_reconstruction_status": "pass",
+      "scope_status": "reconstructable_event_membership",
+      "source_hash": "1bb1c445d494cb59c57a9fbb5057dfc8b61e34e8f0f8187c27bd9ce209273cb8",
+      "source_pool": "08_R6_event_regime_gated",
+      "source_row_count": 16204,
+      "source_row_filter": "triggered_family_variants contains R6_market_breadth_thrust__event_regime_gated"
+    },
+    {
+      "accepted_difference_reason": "A_audit_accepted_R_core_minus_15_published_reference_difference",
+      "hard_gate_eligible_flag": true,
+      "published_reference_event_count": 47929,
+      "reconstructed_event_count": 47914,
+      "reconstructed_vs_published_count_difference": -15,
+      "scope_mapping_status": "reconstructable_event_membership",
+      "scope_reconstruction_status": "pass",
+      "scope_status": "reconstructable_event_membership",
+      "source_hash": "1bb1c445d494cb59c57a9fbb5057dfc8b61e34e8f0f8187c27bd9ce209273cb8",
+      "source_pool": "08_R_core_event_regime_gated",
+      "source_row_count": 47914,
+      "source_row_filter": "triggered_family_variants contains any R1/R2/R6/R7/R8 event_regime_gated variant"
+    },
+    {
+      "accepted_difference_reason": "",
+      "hard_gate_eligible_flag": true,
+      "published_reference_event_count": 14363,
+      "reconstructed_event_count": 14363,
+      "reconstructed_vs_published_count_difference": 0,
+      "scope_mapping_status": "reconstructable_event_membership",
+      "scope_reconstruction_status": "pass",
+      "scope_status": "reconstructable_event_membership",
+      "source_hash": "1bb1c445d494cb59c57a9fbb5057dfc8b61e34e8f0f8187c27bd9ce209273cb8",
+      "source_pool": "08_R1_event_regime_gated",
+      "source_row_count": 14363,
+      "source_row_filter": "triggered_family_variants contains R1_relative_strength_breakout__event_regime_gated"
+    }
+  ],
+  "selected_candidate_tier": "research_entry",
+  "selected_model_id": "supervised_joint_cost_rejector",
+  "selected_source_pool": "08_R_core_event_regime_gated",
+  "selected_threshold_id": "supervised_joint_cost_rejector__08_R_core_event_regime_gated__keep_080",
+  "source_caveated": true
+}

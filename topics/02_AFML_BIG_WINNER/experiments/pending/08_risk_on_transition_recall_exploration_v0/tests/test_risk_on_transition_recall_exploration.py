@@ -20,6 +20,7 @@ import run_density_fast_fail_audit as density_audit  # noqa: E402
 import run_regime_family_matrix as regime_matrix  # noqa: E402
 import run_risk_on_r_series_bridge_ranker as bridge_ranker  # noqa: E402
 import run_post_replay_event_to_episode_retention_source as post_replay_source  # noqa: E402
+import run_risk_on_post_filter_cost_rejector as cost_rejector  # noqa: E402
 
 
 def test_e1_only_replay_uses_triggered_channel_membership() -> None:
@@ -630,6 +631,480 @@ def test_post_replay_optional_cross_section_panel_does_not_block(
     optional = frame.loc[frame["source_id"] == "cross_section_feature_panel"].iloc[0]
     assert optional["source_status"] == "missing_optional_input"
     assert not bool(optional["blocking_flag"])
+
+
+def test_cost_rejector_scope_audit_accepts_recorded_r_core_minus_15() -> None:
+    source_pool = "08_R_core_event_regime_gated"
+    scope_events = {
+        source_pool: pd.DataFrame(
+            [
+                {"event_id": "a", "event_window_anchor_pos": 1},
+                {"event_id": "b", "event_window_anchor_pos": 2},
+            ]
+        )
+    }
+    mapping = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": source_pool,
+                "scope_mapping_status": "reconstructable_event_membership",
+                "source_row_filter": "R core",
+                "source_artifact_hash": "abc",
+            }
+        ]
+    )
+    reconstruct = pd.DataFrame(
+        [
+            {
+                "candidate_scope_id": source_pool,
+                "scope_status": "reconstructable_event_membership",
+                "source_row_count": 2,
+                "published_reference_event_count": 17,
+                "reconstructed_vs_published_count_difference": -15,
+                "hard_gate_eligible_flag": True,
+            }
+        ]
+    )
+
+    audit, failures = cost_rejector.build_scope_reconstruction_audit(
+        scope_events,
+        mapping,
+        reconstruct,
+    )
+
+    row = audit.loc[audit["source_pool"] == source_pool].iloc[0]
+    assert failures == []
+    assert row["scope_reconstruction_status"] == "pass"
+    assert (
+        row["accepted_difference_reason"]
+        == "A_audit_accepted_R_core_minus_15_published_reference_difference"
+    )
+
+
+def test_cost_rejector_regime_role_audit_distinguishes_d_artifacts() -> None:
+    audit = cost_rejector.regime_role_audit()
+
+    summary = audit.loc[
+        audit["source_artifact"].eq("post_replay_scope_retention_by_split_regime.csv")
+        & audit["column_name"].eq("market_regime_bucket")
+    ].iloc[0]
+    membership_event = audit.loc[
+        audit["source_artifact"].eq("post_replay_event_episode_membership.parquet")
+        & audit["column_name"].eq("market_regime_bucket")
+    ].iloc[0]
+    membership_episode = audit.loc[
+        audit["source_artifact"].eq("post_replay_event_episode_membership.parquet")
+        & audit["column_name"].eq("episode_market_regime_bucket")
+    ].iloc[0]
+
+    assert summary["column_role"] == "episode_regime_bucket"
+    assert membership_event["column_role"] == "event_regime_bucket"
+    assert membership_episode["column_role"] == "episode_regime_bucket"
+
+
+def test_cost_rejector_asof_join_uses_latest_same_or_prior_t0_date() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "event_id": "e1",
+                "instrument": "A",
+                "event_t0_date": "2020-01-03",
+                "event_split": "train",
+            },
+            {
+                "event_id": "e2",
+                "instrument": "A",
+                "event_t0_date": "2019-12-31",
+                "event_split": "train",
+            },
+        ]
+    )
+    panel = pd.DataFrame(
+        [
+            {"instrument": "A", "date": "2020-01-01", "return_1d": 0.01},
+            {"instrument": "A", "date": "2020-01-04", "return_1d": 0.04},
+        ]
+    )
+
+    joined, meta = cost_rejector.asof_join_panel(events, panel)
+
+    assert meta["future_join_row_count"] == 0
+    assert joined.loc[joined["event_id"] == "e1", "panel_return_1d"].iloc[0] == 0.01
+    assert str(joined.loc[joined["event_id"] == "e1", "feature_as_of_date"].iloc[0].date()) == "2020-01-01"
+    assert joined.loc[joined["event_id"] == "e2", "daily_panel_feature_status"].iloc[0] == "asof_feature_missing"
+
+
+def test_cost_rejector_membership_label_reconciliation_compares_boolean_semantics() -> None:
+    source_pool = "08_R6_event_regime_gated"
+    membership = pd.DataFrame(
+        [
+            {
+                "source_id": source_pool,
+                "source_kind": "scope",
+                "event_id": "e1",
+                "failure_10_label": 0.0,
+                "failure_10_complete": 1.0,
+                "event_false_repair_20d_label": False,
+                "event_false_repair_20d_complete": True,
+            }
+        ]
+    )
+    labels_joined = pd.DataFrame(
+        [
+            {
+                "event_id": "e1",
+                "failure_10_label": False,
+                "failure_10_complete": True,
+                "event_false_repair_20d_label": 0.0,
+                "event_false_repair_20d_complete": 1.0,
+            }
+        ]
+    )
+
+    mismatch_n, reconciled_n = cost_rejector.membership_label_reconciliation(
+        source_pool,
+        "all_new_candidate_union",
+        labels_joined,
+        membership,
+    )
+
+    assert mismatch_n == 0
+    assert reconciled_n == 1
+
+
+def test_cost_rejector_selected_events_keep_density_anchor_columns() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "event_id": "e1",
+                "canonical_event_id": "e1",
+                "instrument": "A",
+                "event_t0_date": "2020-01-01",
+                "event_t0_pos": 10,
+                "trade_open_date": "2020-01-02",
+                "trade_open_pos": 11,
+                "non_executable_next_open": False,
+                "event_window_anchor_pos": 11,
+                "event_window_anchor_date": "2020-01-02",
+                "event_window_anchor_status": "next_open_execution_anchor",
+                "event_key": "e1",
+                "event_split": "train",
+                "event_regime_bucket": "risk_on",
+                "board_bucket": "main",
+                "primary_family_id": "R1",
+                "fast_fail_bad_10d": False,
+                "false_repair_bad_20d": False,
+                "cost_bad_10_20": False,
+                "horizon_complete": True,
+            }
+        ]
+    )
+    scores = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "event_id": "e1",
+                "cost_bad_score": 0.1,
+            }
+        ]
+    )
+
+    selected, rejected = cost_rejector.build_selected_event_tables(
+        events,
+        scores,
+        {
+            "source_pool": "08_R_core_event_regime_gated",
+            "model_id": "supervised_joint_cost_rejector",
+            "threshold_id": "t",
+            "threshold_value": 0.2,
+        },
+    )
+
+    assert rejected.empty
+    assert selected.loc[0, "event_window_anchor_pos"] == 11
+    assert selected.loc[0, "trade_open_pos"] == 11
+
+
+def test_cost_rejector_design_matrix_uses_train_only_numeric_preprocessing() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "event_split": "train",
+                "horizon_complete": True,
+                "amount_ratio_20d": 1.0,
+                "return_5d": -0.10,
+                "board_bucket": "main",
+            },
+            {
+                "event_split": "train",
+                "horizon_complete": True,
+                "amount_ratio_20d": 3.0,
+                "return_5d": 0.10,
+                "board_bucket": "main",
+            },
+            {
+                "event_split": "robustness",
+                "horizon_complete": True,
+                "amount_ratio_20d": 1000.0,
+                "return_5d": 10.0,
+                "board_bucket": "new_oos_board",
+            },
+        ]
+    )
+    train_mask = events["event_split"].eq("train") & events["horizon_complete"]
+
+    matrix, columns, preprocessing = cost_rejector.build_design_matrix(events, train_mask)
+
+    assert "amount_ratio_20d" in preprocessing["numeric"]["log1p_columns"]
+    assert round(float(matrix.loc[train_mask, "amount_ratio_20d"].mean()), 12) == 0.0
+    assert round(float(matrix.loc[train_mask, "return_5d"].std(ddof=0)), 12) == 1.0
+    assert "board_bucket_main" in columns
+    assert "board_bucket_new_oos_board" not in columns
+
+
+def test_cost_rejector_final_threshold_selection_is_train_only() -> None:
+    frontier = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "threshold_id": "train_better",
+                "threshold_value": 0.2,
+                "keep_fraction": 0.9,
+                "train_cost_reduction_relative": 0.20,
+                "train_any_recall_retention": 0.95,
+                "train_e1_missed_capture_retention": 0.90,
+                "robustness_cost_reduction_relative": 0.01,
+                "robustness_e1_missed_capture_retention": 0.70,
+            },
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "threshold_id": "robustness_better",
+                "threshold_value": 0.1,
+                "keep_fraction": 0.8,
+                "train_cost_reduction_relative": 0.05,
+                "train_any_recall_retention": 0.95,
+                "train_e1_missed_capture_retention": 0.90,
+                "robustness_cost_reduction_relative": 0.90,
+                "robustness_e1_missed_capture_retention": 0.90,
+            },
+        ]
+    )
+
+    selected = cost_rejector.select_final_threshold(frontier)
+
+    assert selected["threshold_id"] == "train_better"
+
+
+def test_cost_rejector_research_gate_requires_declared_density_gate() -> None:
+    oos = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "target_label": "cost_bad_10_20",
+                "split": "robustness",
+                "roc_auc": 0.60,
+                "pr_auc": 0.40,
+                "label_prevalence": 0.30,
+                "top_decile_lift": 1.5,
+            }
+        ]
+    )
+    feature_contract = pd.DataFrame(
+        [
+            {
+                "feature_name": "x",
+                "allowed_as_t0_feature": True,
+                "missing_rate_train": 0.0,
+                "missing_rate_robustness": 0.0,
+            }
+        ]
+    )
+    density = pd.DataFrame([{"density_readout_status": "auditable_no_predeclared_gate"}])
+    decision, failures = cost_rejector.decision_from_selected(
+        {
+            "source_pool": "08_R_core_event_regime_gated",
+            "model_id": "supervised_joint_cost_rejector",
+            "train_cost_reduction_relative": 0.20,
+            "robustness_cost_reduction_relative": 0.20,
+            "train_fast_fail_rate_before": 0.30,
+            "train_fast_fail_rate_after": 0.20,
+            "train_false_repair_rate_before": 0.30,
+            "train_false_repair_rate_after": 0.20,
+            "robustness_fast_fail_rate_before": 0.30,
+            "robustness_fast_fail_rate_after": 0.20,
+            "robustness_false_repair_rate_before": 0.30,
+            "robustness_false_repair_rate_after": 0.20,
+            "train_any_recall_retention": 0.95,
+            "robustness_any_recall_retention": 0.85,
+            "train_e1_missed_capture_retention": 0.90,
+            "robustness_e1_missed_capture_retention": 0.80,
+            "robustness_post_filter_e1_missed_captured_episode_n": 70,
+        },
+        source_caveated=True,
+        research_density_gate_configured=False,
+        oos=oos,
+        feature_contract=feature_contract,
+        density_readout=density,
+    )
+
+    assert decision == cost_rejector.FINAL_FEATURE_CAVEATED
+    assert "density_gate_not_configured" in failures
+
+
+def test_cost_rejector_feature_gate_blocks_oos_reversal() -> None:
+    decision, failures = cost_rejector.decision_from_selected(
+        {
+            "source_pool": "08_R_core_event_regime_gated",
+            "model_id": "supervised_joint_cost_rejector",
+            "train_cost_reduction_relative": 0.12,
+            "robustness_cost_reduction_relative": 0.12,
+            "train_fast_fail_rate_before": 0.30,
+            "train_fast_fail_rate_after": 0.20,
+            "train_false_repair_rate_before": 0.30,
+            "train_false_repair_rate_after": 0.20,
+            "robustness_fast_fail_rate_before": 0.30,
+            "robustness_fast_fail_rate_after": 0.20,
+            "robustness_false_repair_rate_before": 0.30,
+            "robustness_false_repair_rate_after": 0.20,
+            "train_any_recall_retention": 0.95,
+            "robustness_any_recall_retention": 0.85,
+            "train_e1_missed_capture_retention": 0.90,
+            "robustness_e1_missed_capture_retention": 0.80,
+            "robustness_post_filter_e1_missed_captured_episode_n": 70,
+        },
+        source_caveated=True,
+        oos=pd.DataFrame(
+            [
+                {
+                    "source_pool": "08_R_core_event_regime_gated",
+                    "model_id": "supervised_joint_cost_rejector",
+                    "target_label": "cost_bad_10_20",
+                    "split": "robustness",
+                    "roc_auc": 0.49,
+                    "pr_auc": 0.20,
+                    "label_prevalence": 0.30,
+                    "top_decile_lift": 0.8,
+                }
+            ]
+        ),
+        feature_contract=pd.DataFrame(
+            [
+                {
+                    "feature_name": "x",
+                    "allowed_as_t0_feature": True,
+                    "missing_rate_train": 0.0,
+                    "missing_rate_robustness": 0.0,
+                }
+            ]
+        ),
+        density_readout=pd.DataFrame([{"density_readout_status": "auditable_no_predeclared_gate"}]),
+    )
+
+    assert decision == cost_rejector.FINAL_DIAGNOSTIC
+    assert "feature_oos_separability_gate_failed" in failures
+
+
+def test_cost_rejector_replay_policy_ids_require_complete_executable_events() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "event_id": "complete_exec",
+                "horizon_complete": True,
+                "non_executable_next_open": False,
+            },
+            {
+                "event_id": "incomplete",
+                "horizon_complete": False,
+                "non_executable_next_open": False,
+            },
+            {
+                "event_id": "non_exec",
+                "horizon_complete": True,
+                "non_executable_next_open": True,
+            },
+        ]
+    )
+
+    ids = cost_rejector.selected_ids_for_replay_policy(
+        events,
+        {"complete_exec", "incomplete", "non_exec"},
+    )
+
+    assert ids == {"complete_exec"}
+
+
+def test_cost_rejector_binding_audit_reads_c_reconciliation() -> None:
+    reconciliation = pd.DataFrame(
+        [
+            {"source_experiment": "C", "reconciliation_status": "pass"},
+            {"source_experiment": "C", "reconciliation_status": "fail"},
+        ]
+    )
+
+    audit = cost_rejector.build_binding_audit(
+        {
+            "decision": "post_replay_retention_source_source_caveated_complete",
+            "local_raw_membership": {"row_count": 357450},
+            "output_row_counts": {"post_replay_episode_window_audit": 4986},
+            "entry_support_allowed": False,
+            "oracle_policies_audit_only": True,
+        },
+        pd.DataFrame(),
+        reconciliation,
+    )
+
+    row = audit.loc[audit["binding_name"].eq("D C-arm reconciliation")].iloc[0]
+    assert row["observed_value"] == "1/2 pass"
+    assert row["binding_status"] == "drift"
+
+
+def test_cost_rejector_density_readout_reports_concentration() -> None:
+    selected_events = pd.DataFrame(
+        [
+            {
+                "source_pool": "s",
+                "model_id": "m",
+                "threshold_id": "t",
+                "event_id": "e1",
+                "canonical_event_id": "e1",
+                "instrument": "A",
+                "event_window_anchor_pos": 1,
+                "event_key": "e1",
+                "primary_family_id": "R1",
+                "board_bucket": "main",
+            },
+            {
+                "source_pool": "s",
+                "model_id": "m",
+                "threshold_id": "t",
+                "event_id": "e2",
+                "canonical_event_id": "e2",
+                "instrument": "A",
+                "event_window_anchor_pos": 3,
+                "event_key": "e2",
+                "primary_family_id": "R1",
+                "board_bucket": "main",
+            },
+        ]
+    )
+    density_summary = pd.DataFrame(
+        [{"candidate_scope_id": "07_E1_only", "instrument_years": 2.0, "events_per_instrument_year_mean": 1.0}]
+    )
+
+    out = cost_rejector.build_density_readout(
+        selected_events,
+        density_summary,
+        {"source_pool": "s", "model_id": "m", "threshold_id": "t"},
+    )
+
+    assert out.loc[0, "family_concentration"] == 1.0
+    assert out.loc[0, "board_concentration"] == 1.0
+    assert "rolling_10d_executable_event_day_density" in out.columns
 
 
 def test_incremental_recall_uses_same_denominator_percentage_points() -> None:

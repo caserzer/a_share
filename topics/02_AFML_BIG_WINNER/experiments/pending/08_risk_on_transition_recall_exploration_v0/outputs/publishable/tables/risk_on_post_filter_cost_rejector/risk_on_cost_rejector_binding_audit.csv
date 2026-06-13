@@ -1,0 +1,15 @@
+binding_name,observed_value,expected_value,binding_status
+D decision,post_replay_retention_source_source_caveated_complete,post_replay_retention_source_source_caveated_complete,pass
+D local membership row count,357450,357450,pass
+D episode window audit rows,4986,4986,pass
+D entry_support_allowed,False,False,pass
+D oracle_policies_audit_only,True,True,pass
+D C-arm reconciliation,189/189 pass,189/189 pass,pass
+08_R_core_event_regime_gated:train:post_replay_any_recall,0.9822222222222222,0.9822222222222222,pass
+08_R_core_event_regime_gated:train:e1_missed_capture,80,80,pass
+08_R_core_event_regime_gated:robustness:post_replay_any_recall,0.9447513812154696,0.9447513812154696,pass
+08_R_core_event_regime_gated:robustness:e1_missed_capture,84,84,pass
+08_R6_event_regime_gated:train:post_replay_any_recall,0.96,0.96,pass
+08_R6_event_regime_gated:train:e1_missed_capture,77,77,pass
+08_R6_event_regime_gated:robustness:post_replay_any_recall,0.9005524861878453,0.9005524861878453,pass
+08_R6_event_regime_gated:robustness:e1_missed_capture,77,77,pass
