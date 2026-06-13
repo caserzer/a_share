@@ -1,0 +1,6 @@
+split,comparison,roc_auc_uplift,pr_auc_uplift,top_decile_lift_uplift,cost_reduction_uplift,any_recall_retention_delta,e1_missed_capture_retention_delta,prev_context_segment_concentration_status,positive_uplift_fold_share,stability_status
+train,prev_context_vs_no_context,0.019448087711012474,0.027751297126903607,0.08784385647959825,0.034428684129920284,-0.01969872537659323,-0.007722007722007707,pass,,
+validation,prev_context_vs_no_context,-0.02735359451085073,-0.02639085059156765,-0.13071236909551076,-0.010979966178516987,0.0035087719298245723,0.020000000000000018,pass,,
+robustness,prev_context_vs_no_context,-0.05539081214240915,-0.028762124588689597,-0.08096001849523882,-0.04210656935538093,-0.04312668463611857,-0.10389610389610393,pass,,
+train_internal,prev_context_vs_no_context:segment_grouped_cv,0.016787035243550297,0.005124059625114863,,,,,,0.6,stable_nonnegative_context_uplift
+train_internal,prev_context_vs_no_context:chronological_purged_segment_cv,0.02093500652298097,0.019752832989998415,,,,,,0.8,stable_nonnegative_context_uplift

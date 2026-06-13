@@ -1,0 +1,7 @@
+model_id,cv_scheme,fold_n,valid_fold_n,median_roc_auc,median_pr_auc,median_top_decile_lift,median_roc_auc_uplift_vs_no_context,median_pr_auc_uplift_vs_no_context,positive_uplift_fold_share,fold_low_power_n,stability_status
+transition_cost_rejector_context_only,chronological_purged_segment_cv,5,5,0.508424518080709,0.3156410163794216,1.2320485447803122,,,,0,diagnostic
+transition_cost_rejector_context_only,segment_grouped_cv,5,5,0.5681182747708707,0.33464609255065586,1.0299503727920596,,,,0,diagnostic
+transition_cost_rejector_no_context,chronological_purged_segment_cv,5,5,0.6733964954797881,0.46983128649582223,1.8201754385964912,,,,0,diagnostic
+transition_cost_rejector_no_context,segment_grouped_cv,5,5,0.673868941452743,0.46290530047289113,1.9376693766937672,,,,0,diagnostic
+transition_cost_rejector_prev_context,chronological_purged_segment_cv,5,5,0.6932540401679973,0.49457931104493885,1.973684210526316,0.02093500652298097,0.019752832989998415,0.8,0,stable_nonnegative_context_uplift
+transition_cost_rejector_prev_context,segment_grouped_cv,5,5,0.670559633124384,0.4585252003295297,1.911987860394537,0.016787035243550297,0.005124059625114863,0.6,0,stable_nonnegative_context_uplift
