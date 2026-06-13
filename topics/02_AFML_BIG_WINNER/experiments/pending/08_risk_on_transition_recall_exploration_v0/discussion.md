@@ -361,26 +361,77 @@ D 的新证据进一步把方向分清：
 
 这解释了为什么同一组 R-series 在 train / validation transition 里几乎全覆盖，却在 robustness transition 里塌陷：分母不是简单变少，而是子状态构成可能变了。下一步不应直接把所有 transition episode 作为同一目标去找 family，而应先做 **transition sub-regime taxonomy audit**，确认 train / validation / robustness 中各子状态占比、E1 / R-core / R6 / T4/T7 recall、E1-missed capture、fast-fail / false-repair 是否一致。
 
+## E / F / G 实证结果与方向收敛（2026-06）
+
+Experiment E / F / G 已全部运行完毕，三者各自排除了一条路径，整体证据已收敛。最终 decision 分别是：
+
+- E（risk_on post-filter cost rejector）：`risk_on_cost_rejector_feature_source_caveated_supported`
+- F（transition sub-regime taxonomy audit）：`transition_subregime_taxonomy_diagnostic_only`
+- G（previous-regime conditioned transition outcome audit）：`transition_previous_regime_conditioning_diagnostic_only`
+
+### E：risk_on cost rejector 有真实 OOS 信号，近门槛
+
+E 证明「用 t0 可见特征做 risk_on 成本 rejector」这条路有信号且接近 research-entry：
+
+- selected `supervised_joint_cost_rejector`（R-core，target `cost_bad_10_20`，logistic regression balanced L2）在 train / validation / robustness 的 ROC-AUC 为 0.692 / 0.682 / 0.686，PR-AUC 均高于 prevalence，robustness top-decile lift 2.02，decile 单调递增，**OOS 无反转**。
+- selected threshold `keep_080`：robustness 成本相对下降 20.48%，同时保留 any recall 86.55%、E1-missed retention 84.52%、captured n=71。
+- 未过 research-entry 的原因分两类：① 一个 selected-threshold 实证 gate 差 0.83pp，train 成本下降 14.17% 低于 15%（robustness 已 20.48% 过线）；② 两个工程/契约缺口，单个特征 `momentum_percentile_20d_lag20` train coverage 93.30% < 95%，以及 density 可审计但 E config 未预声明上限（`density_gate_not_configured`）。
+- 核心 tradeoff：`keep_080` 保 recall 但成本差一点，`keep_075` 成本过线但 train any recall 跌破 90%，二者卡在很窄边界。报告未 cherry-pick。
+
+### F：transition 不是独立第三态
+
+F 把 residual transition 拆成 recovery / deterioration / boundary-or-mixed，结果不稳：
+
+- boundary over-capture：train 79.2%、robustness 80.2% 的 transition events 落入 boundary 桶，core 子态被稀释。根因是默认 boundary 规则里 `short_trend_contradiction`（20d 与 60d 趋势反向）单独贡献 138 个 date——而该条件在 transition 里近乎同义反复。
+- **robustness recovery core = 0**：即使不做 boundary 重分类，date 级 recovery 原始也只有 4 个交易日（train 21 / validation 16 / robustness 4）。`recovery = trend60≥0 ∧ drawdown120≤-10%` 是个短暂瞬态，在 2024-2026 robustness 窗口几乎不出现。**任何 taxonomy 都无法造出 out-of-time 不存在的样本。**
+- 120d KMeans 选 k=3 但三簇全部退化为 boundary-like，block stability 失败（rolling k=3 vs block k=2，ARI=0.148）；有效独立窗口仅约 34.9（名义 230，lag1 自相关 0.736），说明滚动 120d 高重叠制造伪簇。
+- 有价值的副产物：deterioration 是真实风险区（robustness false-repair 30%-34%、fast-fail 24%-27%，远高于 boundary 13%-14%）。
+
+### G：前态条件化有解释力，但样本撑不起 supported taxonomy
+
+G 把 transition 按前一个非 transition regime 拆成 `transition_from_risk_on` / `transition_from_risk_off`（PIT 可知），用 next regime 做 ex-post outcome（continuation / conversion，t0 不可知）：
+
+- 前态确实带路径信息：risk_off→transition 转 risk_on 40.0%（16/40） vs risk_on→transition 转 risk_off 18.9%（14/74）。
+- 但 400 个 grid rule **零个 structural-eligible**：robustness conversion 只有 3 段，per-direction conversion 只有 1-2 段（risk_off→risk_on 1 段、risk_on→risk_off 2 段），均 < supported 所需 segment power。
+- universe drift：published transition 有 30.59% 没被 reconstructed transition 复现（60d/120d horizon mismatch），单独把上限钉死在 diagnostic。
+- `effective segment n` 指标揭示隐性低 power：robustness conversion target episode n=78 看似不小，但来自 3 段、单段 top1 episode share 高达 93.8%-100%，是少数长段在主导。
+- **最有价值的 readout 信号**：同样是 risk_on 进入的 transition，robustness 下 continuation 极干净（R-core fast-fail 2.3% / false-repair 5.3%），conversion 极脏（R-core fast-fail 23.0% / false-repair 29.0%）：fast-fail 约 10 倍，false-repair 约 5.5 倍。这个读数与 F 的 deterioration 风险抬升同向，提示 deterioration / conversion 可能在同一类转弱路径中重叠；但当前没有 F×G cross-tab，不能声称它已经解释了 F 的全部 deterioration 风险。conversion 判定依赖未来 next_regime，**只能当事后解释 / rejector 分层 readout，不能当 PIT 入场门或训练特征**。
+
+### 收敛结论
+
+三个实验联合给出明确收敛：
+
+1. **risk_on 主线（E）是唯一已被证明有 OOS 信号、且离 supported 最近的方向**，应优先推过门。
+2. **在当前 residual transition label / source 下，transition family rediscovery 应正式关闭**。F + G 已联合证明当前 transition 的问题是 residual bucket 的状态混合 + 样本稀缺，不是「缺 family」；继续在同一 label source 下找 volatility / VCP / T6 / T8 family 会把混合机制误当新 alpha。discussion 里「audit 通过后才做 rediscovery」的前置条件**没有满足**（F / G 都未 supported），rediscovery 不应启动。若未来扩样本时间跨度或重定义 regime label source，那是新数据 / 新标签问题，不属于当前主线。
+3. **G 的前态信号不能直接喂进当前 E 的 risk_on-only gate**。E 的正式 scope 是 risk_on cost rejector；G 的 `transition_from_risk_on` / `transition_from_risk_off` 只定义在 transition segment 内。下一步应先把 E 原 scope 推过 research-entry。若要利用 G，只能另开 transition-side diagnostic ablation 或 future multi-regime cost-rejector extension：把 previous non-transition regime 当作 t0 可见分层，检验它是否改善 cost_bad 排序；conversion 仍只能作为 ex-post readout。
+
 ## 推荐优先级（修正后）
 
 P0（已完成）：`density_fast_fail_caliber_contract.md` 与 Experiment A / B / C 已冻结。上方历史规划仅供追溯，下一步不再沿用 C 的 ranker-compression 主线。
 
 P0（已完成）：**post-replay event-to-episode retention source** 已由 Experiment D 补齐。它不提供 direct-entry gate，但已经提供后续 cost rejector / meta-label 所需的 post-replay membership、fast-fail / false-repair audit label、以及 C arm 对账基础。
 
-P1（新，risk_on）：不再做 entry-ranker 压缩，改为 **post-filter replay / cost rejector**。目标从「提高 bridge recall」改为「在保留 bridge / E1-missed capture 的同时筛掉 fast-fail / false-repair」。更准确地说，R-core / R6 作为 post-replay recall source 已够用；C 的 entry-ranker / compression 主线不再是瓶颈。下一步缺的是成本侧 supervised rejector，它应消费 D 的 replay membership 与 label source。
+P1（已完成，risk_on）：**post-filter replay / cost rejector** 已由 Experiment E 跑完，decision 为 `risk_on_cost_rejector_feature_source_caveated_supported`。E 证明该路线有 OOS 信号（robustness ROC-AUC 0.686、cost 相对下降 20.48%、E1-missed retention 84.52%），但未过 research-entry：一个 selected-threshold 实证 gate 差 0.83pp（train cost reduction 14.17% < 15%），另有两个工程/契约缺口（`momentum_percentile_20d_lag20` coverage < 95%、density 上限未配置）。
 
-P1（新，transition）：停止围绕 T4 / T7 / raw R-core 修补，但不要立刻进入泛化的 family rediscovery。先做 **transition sub-regime taxonomy audit**：把 residual transition 拆成 recovery / deterioration / boundary-or-mixed 子状态，检查 split 间 composition drift 与每个子状态下的 recall / fast-fail / false-repair。只有通过这个审计后，才进入子状态级的 volatility contraction、VCP、T6 / T8、regime-boundary features，或重新定义 transition bridge-positive label source。
+P1（已完成，transition）：**transition sub-regime taxonomy audit** 已由 Experiment F 跑完，decision 为 `transition_subregime_taxonomy_diagnostic_only`。F 证明 transition 不是独立第三态：boundary over-capture 80%、robustness recovery core = 0、120d 自动聚类退化为单一 boundary-like 簇。前置 audit **未通过**，因此子状态级 family rediscovery 不得启动。后续 Experiment G 进一步用 previous-regime conditioning 复核，同样停在 diagnostic_only。
+
+P0（新，最高 ROI）：**把 E 推过 research-entry**。这是整条线唯一已被证明有 OOS 信号、且离 supported 最近的方向。三个修补：① 在 E config 预声明 density / concentration 上限并写入 manifest；② 对 `momentum_percentile_20d_lag20` 二选一（剔除或补齐源数据，禁止未来填充）；③ 在同一 selected-threshold 规则下重审 `keep_080` / `keep_075` 边界，禁止从 cost frontier 与 recall frontier 分别 cherry-pick。
+
+P1（新，diagnostic extension）：**G 的前态上下文只做 transition-side diagnostic / ablation，不并入当前 E research-entry gate**。`transition_from_risk_on` / `transition_from_risk_off` 是 t0 可知的 PIT context，但只在 transition universe 内有定义；它不应污染 E 的 risk_on-only training scope。若后续要验证其增益，应另开 E-extension / multi-regime rejector requirement，明确 scope、分母、leakage audit 与 selected-threshold 规则；目标是测试 previous-regime context 是否改善 cost_bad 排序，而不是训练 PIT conversion classifier。
+
+P2（关闭）：**当前 residual transition label 下的 transition family rediscovery 正式停止**。F + G 已联合证明当前 transition 的问题是 residual bucket 的状态混合 + 样本稀缺（robustness recovery / conversion 段在 out-of-time 天然稀少），不是缺 family。若仍想复活 transition，唯一剩余路径是扩样本时间跨度或重定义 regime label source —— 这是数据采集 / 标签重构问题，短期 ROI 低，不在当前主线。
 
 P2（降级）：原 Experiment D（T4 de-overlap）边际价值已很低，B 与 C 已一致把 T4/T7 钉死为 negative control / quality filter，可缩成一次性诊断或跳过。
 
-P2（部分已完成）：原 Experiment E 中针对当前 R-series C arms 的 OOS separability 读数已由 C 产出，并证明这些 arms 下 fast-fail / winner 不可分。因此当前 R-series C arms 不需要重复做同口径 separability；但 risk_on cost rejector 和新的 transition family 仍必须做 targeted OOS audit。
+P2（部分已完成）：原 Experiment E 中针对当前 R-series C arms 的 OOS separability 读数已由 C 产出，并证明这些 arms 下 fast-fail / winner 不可分。因此当前 R-series C arms 不需要重复做同口径 separability；risk_on cost rejector 必须沿当前 E scope 做 targeted OOS audit。若未来基于新样本或新 regime label source 复活 transition family，那应另起新问题并重新做 targeted OOS audit。
 
 ## 当前工作假设（修正后）
 
 1. E1 是 candidate backbone，不应被移除。（保持）
 2. E2 / E6 是 feature / tag，不是 headline family。（保持）
 3. risk_on 的绑定约束是事件质量（fast-fail / false-repair），不是 density / recall source。下一步是 cost rejector + post-filter replay，不是继续 density compression。（已由 C/D 共同确认）
-4. transition 的 R-series / T4 bridge 信号在 OOS / robustness 上不稳定，不应继续修补；更准确地说，当前 transition 是 residual bucket，可能混合 recovery / deterioration 等不同子状态。下一步先做 transition sub-regime taxonomy audit，再决定是否做子状态级 family rediscovery 或重定义 bridge label source。（已由 C/D 共同确认，并由 regime 定义解释）
-5. primary model 的第一关不是 120d big-winner precision，而是 OOS 下能否在可控 density 内减少 10d fast-fail，同时保留 bridge-positive / winner recall。这个验证现在可以消费 D 的 post-replay retention source，但 D 本身不能作为 direct-entry gate。（已补充 D source 前置条件）
+4. 当前 residual transition label 下的 family rediscovery 正式关闭。F（taxonomy audit）与 G（previous-regime conditioning）都停在 diagnostic_only：transition 不是独立第三态，boundary over-capture 80%、robustness recovery core = 0、conversion 段 OOS 仅 1-3 段。问题是 residual bucket 的状态混合 + 样本稀缺，不是缺 family。前置 audit 未通过，子状态级 family rediscovery 不启动。（已由 F/G 确认）
+5. transition 的前态上下文（`transition_from_risk_on` / `transition_from_risk_off`，t0 可知）有解释力但不足以单独 supported；它只能作为 transition-side report / ablation 分层，或 future multi-regime rejector 的候选特征，不能直接并入当前 E 的 risk_on-only research-entry gate。G 已显示 from_risk_on/continuation 干净、from_risk_on/conversion 脏（fast-fail 约 10 倍、false-repair 约 5.5 倍），但 conversion 依赖未来 regime，只能当事后 readout。（已由 G 确认）
+6. primary model 的第一关不是 120d big-winner precision，而是 OOS 下能否在可控 density 内减少 10d fast-fail，同时保留 bridge-positive / winner recall。E 已证明 risk_on cost rejector 有此 OOS 信号（robustness cost 降 20.48%、E1-missed retention 84.52%），但未过 research-entry：train cost reduction 差 0.83pp，且还缺 density config + 特征 coverage 两个工程/契约修补。（已由 E 确认）
 
-下一份 requirement 应优先设计 **risk_on post-filter cost rejector**，并平行开一条 **transition sub-regime taxonomy audit**；audit 通过后再做 transition-specific family rediscovery。不再沿用 C 的 R-series ranker-compression 主线，也不再把 residual transition 当成单一目标状态直接建模。
+下一份 requirement 应聚焦 **把 E 的 risk_on cost rejector 原 scope 推过 research-entry**：配置 density / concentration 上限、修正 `momentum_percentile_20d_lag20` coverage、在同一阈值规则下重审 keep fraction 边界。G 的前态上下文不得直接带入当前 E gate；如需验证，另开 transition-side diagnostic / multi-regime extension。不再沿用 C 的 R-series ranker-compression 主线，不再把 residual transition 当单一目标状态建模，也不启动当前 label source 下的 transition family rediscovery。

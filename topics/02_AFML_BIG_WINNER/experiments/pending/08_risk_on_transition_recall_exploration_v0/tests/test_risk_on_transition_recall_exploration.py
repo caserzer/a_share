@@ -22,6 +22,7 @@ import run_risk_on_r_series_bridge_ranker as bridge_ranker  # noqa: E402
 import run_post_replay_event_to_episode_retention_source as post_replay_source  # noqa: E402
 import run_risk_on_post_filter_cost_rejector as cost_rejector  # noqa: E402
 import run_transition_subregime_taxonomy_audit as transition_taxonomy  # noqa: E402
+import run_transition_previous_regime_outcome_audit as previous_regime_outcome  # noqa: E402
 
 
 def test_e1_only_replay_uses_triggered_channel_membership() -> None:
@@ -1386,6 +1387,195 @@ def test_transition_taxonomy_density_uses_replay_anchor_pos() -> None:
     assert out.loc[0, "rolling_10d_executable_event_day_density"] == 1.5
     assert out.loc[0, "rolling_10d_duplicate_rate"] == 0.5
     assert out.loc[0, "cross_family_collision_rate"] == 0.5
+
+
+def test_previous_regime_segments_label_continuation_and_conversion() -> None:
+    components = pd.DataFrame(
+        {
+            "date": pd.date_range("2020-01-01", periods=8, freq="D"),
+            "close": [100, 101, 102, 101, 100, 99, 98, 99],
+            "market_regime_bucket_reconstructed": [
+                "risk_on",
+                "risk_on",
+                "transition",
+                "transition",
+                "risk_off",
+                "transition",
+                "transition",
+                "risk_off",
+            ],
+        }
+    )
+
+    segments, components_with_segments = previous_regime_outcome.build_segment_catalog(components)
+    transitions = segments.loc[segments["regime"].eq("transition")].reset_index(drop=True)
+
+    assert transitions.loc[0, "previous_non_transition_regime"] == "risk_on"
+    assert transitions.loc[0, "next_non_transition_regime"] == "risk_off"
+    assert transitions.loc[0, "transition_outcome_label"] == "transition_conversion"
+    assert (
+        transitions.loc[0, "transition_outcome_direction"]
+        == "risk_on_to_risk_off_deterioration_conversion"
+    )
+    assert transitions.loc[1, "transition_outcome_label"] == "transition_continuation"
+    assert transitions.loc[1, "transition_outcome_direction"] == "risk_off_continuation_buffer"
+    assert components_with_segments["transition_segment_id"].astype(str).str.startswith("transition_seg_").sum() == 4
+
+
+def test_previous_regime_grid_rule_censors_long_transition_without_future_pit_use() -> None:
+    base = pd.DataFrame(
+        [
+            {
+                "event_key": "e1",
+                "event_id": "e1",
+                "event_t0_date": "2020-01-03",
+                "event_t0_pos": 3,
+                "event_split": "train",
+                "published_market_regime_bucket": "transition",
+                "reconstructed_market_regime_bucket": "transition",
+                "universe_binding_status": "published_and_reconstructed_transition",
+                "transition_segment_id": "s1",
+                "segment_start_date": pd.Timestamp("2020-01-01"),
+                "segment_end_date": pd.Timestamp("2020-01-20"),
+                "final_segment_trading_day_n": 20,
+                "segment_age_at_event_t0": 3,
+                "observed_segment_trading_day_n_asof_t0": 3,
+                "previous_non_transition_regime": "risk_on",
+                "previous_non_transition_trading_day_n": 10,
+                "next_non_transition_regime": "risk_off",
+                "transition_outcome_label": "transition_conversion",
+                "transition_outcome_direction": "risk_on_to_risk_off_deterioration_conversion",
+            }
+        ]
+    )
+
+    out = previous_regime_outcome.apply_grid_rule(
+        base,
+        {
+            "grid_rule_id": "test",
+            "min_previous_regime_trading_day_n": 1,
+            "min_segment_age_at_event_t0": 2,
+            "online_confirmation_trading_day_n": 0,
+            "outcome_max_transition_trading_day_n": 5,
+        },
+    )
+
+    assert bool(out.loc[0, "rule_event_included"])
+    assert out.loc[0, "pit_transition_context"] == "transition_from_risk_on"
+    assert out.loc[0, "transition_outcome_label_rule"] == "transition_outcome_pending_or_censored"
+    assert bool(out.loc[0, "outcome_censor_flag"])
+
+
+def test_previous_regime_segment_matrix_uses_unique_segments_and_concentration() -> None:
+    source_events = pd.DataFrame(
+        [
+            {
+                "grid_rule_id": "g",
+                "event_split": "train",
+                "universe_binding_status": "published_and_reconstructed_transition",
+                "pit_transition_context": "transition_from_risk_on",
+                "transition_outcome_label": "transition_continuation",
+                "transition_outcome_direction": "risk_on_continuation_buffer",
+                "transition_segment_id": "s1",
+                "event_id": "e1",
+                "canonical_event_id": "e1",
+                "target_episode_id": "ep1",
+                "final_segment_trading_day_n": 10,
+            },
+            {
+                "grid_rule_id": "g",
+                "event_split": "train",
+                "universe_binding_status": "published_and_reconstructed_transition",
+                "pit_transition_context": "transition_from_risk_on",
+                "transition_outcome_label": "transition_continuation",
+                "transition_outcome_direction": "risk_on_continuation_buffer",
+                "transition_segment_id": "s1",
+                "event_id": "e2",
+                "canonical_event_id": "e2",
+                "target_episode_id": "ep2",
+                "final_segment_trading_day_n": 10,
+            },
+            {
+                "grid_rule_id": "g",
+                "event_split": "robustness",
+                "universe_binding_status": "published_and_reconstructed_transition",
+                "pit_transition_context": "transition_from_risk_on",
+                "transition_outcome_label": "transition_continuation",
+                "transition_outcome_direction": "risk_on_continuation_buffer",
+                "transition_segment_id": "s1",
+                "event_id": "e3",
+                "canonical_event_id": "e3",
+                "target_episode_id": "ep3",
+                "final_segment_trading_day_n": 10,
+            },
+        ]
+    )
+
+    out = previous_regime_outcome.segment_matrix(source_events)
+    train = out.loc[out["split"].eq("train")].iloc[0]
+
+    assert train["unique_segment_n"] == 1
+    assert train["cross_split_segment_n"] == 1
+    assert bool(train["segment_cross_split_flag"])
+    assert train["top1_segment_episode_share"] == 1.0
+    assert train["segment_power_status"] == "low_segment_power_diagnostic"
+
+
+def test_previous_regime_recall_uses_outcome_cell_episode_denominator() -> None:
+    source_events = pd.DataFrame(
+        [
+            {
+                "grid_rule_id": "g",
+                "event_split": "train",
+                "universe_binding_status": "published_and_reconstructed_transition",
+                "pit_transition_context": "transition_from_risk_on",
+                "transition_outcome_label": "transition_continuation",
+                "transition_outcome_direction": "risk_on_continuation_buffer",
+                "transition_segment_id": "s1",
+                "source_id": "07_E1_only",
+                "event_id": "e1",
+                "canonical_event_id": "e1",
+                "target_episode_id": "ep1",
+                "window": previous_regime_outcome.HEADLINE_WINDOW,
+                "replay_anchor_pos": 1,
+                "event_executable_flag": True,
+                "failure_10_complete": True,
+                "event_false_repair_20d_complete": True,
+                "bridge_positive_denominator_included": True,
+            },
+            {
+                "grid_rule_id": "g",
+                "event_split": "train",
+                "universe_binding_status": "published_and_reconstructed_transition",
+                "pit_transition_context": "transition_from_risk_on",
+                "transition_outcome_label": "transition_continuation",
+                "transition_outcome_direction": "risk_on_continuation_buffer",
+                "transition_segment_id": "s2",
+                "source_id": "08_R_core_event_regime_gated",
+                "event_id": "e2",
+                "canonical_event_id": "e2",
+                "target_episode_id": "ep2",
+                "window": previous_regime_outcome.HEADLINE_WINDOW,
+                "replay_anchor_pos": 2,
+                "event_executable_flag": True,
+                "failure_10_complete": True,
+                "event_false_repair_20d_complete": True,
+                "bridge_positive_denominator_included": True,
+            },
+        ]
+    )
+
+    recall, e1 = previous_regime_outcome.recall_retention_matrix(source_events)
+    row = recall.loc[
+        recall["source_id"].eq("08_R_core_event_regime_gated")
+        & recall["transition_outcome_label"].eq("transition_continuation")
+    ].iloc[0]
+
+    assert row["target_episode_denominator_n"] == 2
+    assert row["source_post_replay_captured_episode_n"] == 1
+    assert row["source_post_replay_recall"] == 0.5
+    assert row["e1_missed_episode_n"] == 1
+    assert e1.loc[e1["source_id"].eq("08_R_core_event_regime_gated"), "source_post_replay_captures_e1_missed_n"].iloc[0] == 1
 
 
 def test_incremental_recall_uses_same_denominator_percentage_points() -> None:

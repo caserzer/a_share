@@ -338,8 +338,8 @@ transition_previous_regime_outcome_input_blocked
 
 G 必须与 F 使用同一套 reconstructed regime component 口径。优先级：
 
-1. 若 F 输出了可复用的 date-level component / window feature artifact，G 必须直接复用 F artifact，并记录 `component_reuse_policy = reuse_experiment_f_component_artifact`。
-2. 若 F 只在 manifest / audit 表中记录 component source、formula 与 hash，G 可以重新从同一 SH000985 source 重建，但必须对齐：
+1. 若 F 输出了覆盖完整交易日历、可直接支持 G event-to-segment binding 的 date-level component / segment artifact，G 必须直接复用 F artifact，并记录 `component_reuse_policy = reuse_experiment_f_component_artifact`。
+2. 若 F 只输出 event/window-level artifact，或只在 manifest / audit 表中记录 component source、formula 与 hash，不足以覆盖 G 的完整 reconstructed transition universe，G 可以重新从同一 SH000985 source 重建，但必须记录 `component_reuse_policy = rebuild_from_experiment_f_component_audit`，并对齐：
    - `component_source`
    - `component_source_hash`
    - `reconstruction_formula`
@@ -755,6 +755,7 @@ outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_p
 outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_previous_regime_e1_missed_capture.csv
 outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_previous_regime_cost_quality_matrix.csv
 outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_previous_regime_density_overlap_matrix.csv
+outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_previous_regime_label_join_audit.csv
 outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_previous_regime_leakage_audit.csv
 outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_previous_regime_decision_tiers.csv
 ```
@@ -763,6 +764,7 @@ outputs/publishable/tables/transition_previous_regime_outcome_audit/transition_p
 
 ```text
 outputs/publishable/reports/transition_previous_regime_outcome_audit/transition_previous_regime_outcome_audit_report.md
+outputs/publishable/reports/transition_previous_regime_outcome_audit/transition_previous_regime_outcome_contract.md
 outputs/publishable/reports/transition_previous_regime_outcome_audit/transition_previous_regime_timeline.png
 outputs/publishable/reports/transition_previous_regime_outcome_audit/transition_previous_regime_timeline.svg
 ```
@@ -798,6 +800,7 @@ selection_reason
 transition_universe_policy
 universe_binding_summary
 f_component_alignment_status
+component_reuse_policy
 segment_power_summary
 contribution_concentration_summary
 per_direction_conversion_policy
