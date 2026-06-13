@@ -21,6 +21,7 @@ import run_regime_family_matrix as regime_matrix  # noqa: E402
 import run_risk_on_r_series_bridge_ranker as bridge_ranker  # noqa: E402
 import run_post_replay_event_to_episode_retention_source as post_replay_source  # noqa: E402
 import run_risk_on_post_filter_cost_rejector as cost_rejector  # noqa: E402
+import run_risk_on_cost_rejector_research_entry_hardening as hardening  # noqa: E402
 import run_transition_subregime_taxonomy_audit as transition_taxonomy  # noqa: E402
 import run_transition_previous_regime_outcome_audit as previous_regime_outcome  # noqa: E402
 
@@ -1107,6 +1108,234 @@ def test_cost_rejector_density_readout_reports_concentration() -> None:
     assert out.loc[0, "family_concentration"] == 1.0
     assert out.loc[0, "board_concentration"] == 1.0
     assert "rolling_10d_executable_event_day_density" in out.columns
+
+
+def test_hardening_threshold_ids_use_four_digit_keep_suffixes() -> None:
+    assert (
+        hardening.threshold_id_for_keep_fraction(0.80)
+        == "supervised_joint_cost_rejector__08_R_core_event_regime_gated__keep_0800"
+    )
+    assert (
+        hardening.threshold_id_for_keep_fraction(0.825)
+        == "supervised_joint_cost_rejector__08_R_core_event_regime_gated__keep_0825"
+    )
+
+
+def test_hardening_train_threshold_selection_uses_lowest_eligible_keep_fraction() -> None:
+    frontier = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "threshold_id": "keep_0800",
+                "keep_fraction": 0.80,
+                "train_cost_reduction_relative": 0.17,
+                "train_fast_fail_rate_before": 0.30,
+                "train_fast_fail_rate_after": 0.20,
+                "train_false_repair_rate_before": 0.30,
+                "train_false_repair_rate_after": 0.20,
+                "train_any_recall_retention": 0.91,
+                "train_e1_missed_capture_retention": 0.88,
+                "train_post_filter_e1_missed_captured_episode_n": 65,
+                "after_train_horizon_complete_event_n": 100,
+            },
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "threshold_id": "keep_0775",
+                "keep_fraction": 0.775,
+                "train_cost_reduction_relative": 0.16,
+                "train_fast_fail_rate_before": 0.30,
+                "train_fast_fail_rate_after": 0.20,
+                "train_false_repair_rate_before": 0.30,
+                "train_false_repair_rate_after": 0.20,
+                "train_any_recall_retention": 0.90,
+                "train_e1_missed_capture_retention": 0.86,
+                "train_post_filter_e1_missed_captured_episode_n": 60,
+                "after_train_horizon_complete_event_n": 90,
+            },
+        ]
+    )
+
+    selected, failure = hardening.select_train_threshold(frontier)
+
+    assert failure == ""
+    assert selected["threshold_id"] == "keep_0775"
+
+
+def test_hardening_design_matrix_drops_low_coverage_lag20_feature() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "event_split": "train",
+                "horizon_complete": True,
+                "momentum_percentile_20d": 0.5,
+                "momentum_percentile_20d_lag20": 0.1,
+                "board_bucket": "main",
+            },
+            {
+                "event_split": "train",
+                "horizon_complete": True,
+                "momentum_percentile_20d": 0.7,
+                "momentum_percentile_20d_lag20": 0.2,
+                "board_bucket": "main",
+            },
+        ]
+    )
+    train_mask = events["event_split"].eq("train") & events["horizon_complete"]
+
+    matrix, columns, preprocessing = hardening.build_design_matrix(events, train_mask)
+
+    assert "momentum_percentile_20d" in columns
+    assert "momentum_percentile_20d_lag20" not in columns
+    assert preprocessing["dropped_features"] == ["momentum_percentile_20d_lag20"]
+    assert "momentum_percentile_20d_lag20" not in matrix.columns
+
+
+def test_hardening_denominator_audit_uses_same_horizon_complete_policy() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "event_id": "a",
+                "event_split": "train",
+                "horizon_complete": True,
+            },
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "event_id": "b",
+                "event_split": "train",
+                "horizon_complete": False,
+            },
+        ]
+    )
+    scores = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "event_id": "a",
+                "cost_bad_score": 0.1,
+            },
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "event_id": "b",
+                "cost_bad_score": 0.2,
+            },
+        ]
+    )
+    frontier = pd.DataFrame(
+        [
+            {
+                "source_pool": "08_R_core_event_regime_gated",
+                "model_id": "supervised_joint_cost_rejector",
+                "threshold_id": "t",
+                "keep_fraction": 0.8,
+                "threshold_value": 0.15,
+            }
+        ]
+    )
+
+    audit = hardening.build_metric_denominator_audit(events, scores, frontier)
+    train = audit.loc[audit["split"].eq("train")].iloc[0]
+
+    assert train["raw_event_n"] == 2
+    assert train["raw_horizon_complete_n"] == 1
+    assert train["selected_event_n"] == 1
+    assert train["selected_horizon_complete_n"] == 1
+    assert train["before_after_denominator_status"] == "pass"
+
+
+def test_hardening_oracle_gap_marks_missing_train_selection() -> None:
+    frontier = pd.DataFrame(
+        [
+            {
+                "threshold_id": "robust_best",
+                "keep_fraction": 0.725,
+                "robustness_cost_reduction_relative": 0.25,
+                "robustness_any_recall_retention": 0.82,
+                "robustness_e1_missed_capture_retention": 0.78,
+                "robustness_post_filter_e1_missed_captured_episode_n": 64,
+            }
+        ]
+    )
+
+    audit = hardening.build_oracle_gap_audit(frontier, {})
+
+    assert audit.loc[0, "train_selection_status"] == "no_train_eligible_threshold"
+    assert pd.isna(audit.loc[0, "thresholds_differ"])
+
+
+def test_hardening_config_contract_uses_requirement_density_cap_keys() -> None:
+    contract, failures = hardening.build_config_contract()
+    cap_rows = contract.loc[contract["config_key"].astype(str).str.startswith("density_caps.")]
+
+    assert failures == []
+    assert "density_caps.formal_event_day_density_max" in set(cap_rows["config_key"])
+    assert "density_caps.formal_event_day_density" not in set(cap_rows["config_key"])
+    formal = cap_rows.loc[cap_rows["config_key"].eq("density_caps.formal_event_day_density_max")].iloc[0]
+    assert formal["metric_column"] == "formal_event_day_density"
+
+
+def test_hardening_density_caps_map_requirement_keys_to_metric_columns() -> None:
+    density = pd.DataFrame(
+        [
+            {
+                "formal_event_day_density": 1.0,
+                "p95_density": 2.0,
+                "rolling_10d_executable_event_day_density": 1.0,
+                "rolling_20d_executable_event_day_density": 1.5,
+                "family_concentration": 0.1,
+                "board_concentration": 0.2,
+            }
+        ]
+    )
+    selected = pd.DataFrame([{"event_id": "a"}])
+    source = pd.DataFrame([{"event_id": "a"}, {"event_id": "b"}])
+
+    out = hardening.apply_density_caps(density, selected, source)
+
+    assert out.loc[0, "formal_event_day_density_max"] == 7.50
+    assert out.loc[0, "formal_event_day_density_cap_pass"]
+    assert out.loc[0, "density_readout_status"] == "predeclared_caps_pass"
+
+
+def test_hardening_no_selected_density_readout_keeps_contract_schema() -> None:
+    _, _, _, density = hardening.no_selected_readouts("missing_train_threshold")
+    row = density.iloc[0]
+
+    assert row["density_readout_status"] == "not_evaluable_no_selected_threshold"
+    assert "rolling_10d_duplicate_rate" in density.columns
+    assert "adjacent_gap_median" in density.columns
+    assert "density_contract_source_hash" in density.columns
+    assert "formal_event_day_density_max" in density.columns
+    assert not bool(row["formal_event_day_density_cap_pass"])
+
+
+def test_hardening_event_level_output_metadata_records_gzip_count_and_schema(tmp_path: Path) -> None:
+    event_path = tmp_path / "events.csv.gz"
+    selected_path = tmp_path / "selected.csv.gz"
+    rejected_path = tmp_path / "rejected.csv.gz"
+    pd.DataFrame([{"event_id": "a", "score": 0.1}, {"event_id": "b", "score": 0.2}]).to_csv(
+        event_path,
+        index=False,
+    )
+    pd.DataFrame([{"event_id": "a", "score": 0.1}]).to_csv(selected_path, index=False)
+    pd.DataFrame(columns=["event_id", "score"]).to_csv(rejected_path, index=False)
+
+    meta = hardening.event_level_output_metadata(
+        {
+            "risk_on_hardening_event_scores": event_path,
+            "risk_on_hardening_selected_events": selected_path,
+            "risk_on_hardening_rejected_events": rejected_path,
+        }
+    )
+
+    assert meta["risk_on_hardening_event_scores"]["uncompressed_row_count"] == 2
+    assert meta["risk_on_hardening_rejected_events"]["uncompressed_row_count"] == 0
+    assert meta["risk_on_hardening_event_scores"]["compressed_sha256"]
+    assert meta["risk_on_hardening_event_scores"]["schema_fingerprint"]
 
 
 def test_transition_taxonomy_default_boundary_is_reclassification() -> None:

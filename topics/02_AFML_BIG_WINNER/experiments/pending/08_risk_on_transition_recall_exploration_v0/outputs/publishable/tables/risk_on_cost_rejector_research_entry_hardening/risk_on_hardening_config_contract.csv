@@ -1,0 +1,17 @@
+config_key,config_value,config_status,metric_column
+experiment_id,"""08_experiment_h_risk_on_cost_rejector_research_entry_hardening""",declared,
+target_regime,"""risk_on""",declared,
+primary_source_pool,"""08_R_core_event_regime_gated""",declared,
+primary_model_id,"""supervised_joint_cost_rejector""",declared,
+primary_target_label,"""cost_bad_10_20""",declared,
+feature_fix_policy,"""drop_low_coverage_lag20""",declared,
+threshold_grid,"[0.85, 0.825, 0.8, 0.775, 0.75, 0.725, 0.7]",declared,
+threshold_selection_policy,"""train_constrained_lowest_keep_fraction_then_robustness_gate_replay""",declared,
+validation_policy,"""diagnostic_only_no_threshold_tuning""",declared,
+density_caps.board_concentration_max,0.85,declared,board_concentration
+density_caps.family_concentration_max,0.3,declared,family_concentration
+density_caps.formal_event_day_density_max,7.5,declared,formal_event_day_density
+density_caps.p95_density_max,20.0,declared,p95_density
+density_caps.rolling_10d_executable_event_day_density_max,1.8,declared,rolling_10d_executable_event_day_density
+density_caps.rolling_20d_executable_event_day_density_max,2.2,declared,rolling_20d_executable_event_day_density
+h_config_hash,1433cbeda7a3724e902176e05fc7e61ffb341f9301df40c525c414b234a939d6,hash_recorded,
