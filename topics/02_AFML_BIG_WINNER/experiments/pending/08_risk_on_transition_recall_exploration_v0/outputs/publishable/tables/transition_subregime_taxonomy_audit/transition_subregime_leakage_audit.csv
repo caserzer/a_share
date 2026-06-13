@@ -1,0 +1,8 @@
+field_name,allowed_as_taxonomy_feature,allowed_as_label,allowed_downstream_use,leakage_status
+market_trend_60d,True,False,date_level_asof_component,pass
+market_drawdown_120d,True,False,date_level_asof_component,pass
+failure_10_label,False,True,readout_only,pass
+event_false_repair_20d_label,False,True,readout_only,pass
+event_big_winner_120d_label,False,True,readout_only,pass
+target_episode_id,False,False,episode_readout_denominator_only,pass
+auto_120d_features,True,False,window_end_date_eq_event_t0_date,pass

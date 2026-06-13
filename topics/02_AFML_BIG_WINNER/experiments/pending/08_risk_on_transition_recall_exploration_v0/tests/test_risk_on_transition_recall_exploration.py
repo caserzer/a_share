@@ -21,6 +21,7 @@ import run_regime_family_matrix as regime_matrix  # noqa: E402
 import run_risk_on_r_series_bridge_ranker as bridge_ranker  # noqa: E402
 import run_post_replay_event_to_episode_retention_source as post_replay_source  # noqa: E402
 import run_risk_on_post_filter_cost_rejector as cost_rejector  # noqa: E402
+import run_transition_subregime_taxonomy_audit as transition_taxonomy  # noqa: E402
 
 
 def test_e1_only_replay_uses_triggered_channel_membership() -> None:
@@ -1105,6 +1106,286 @@ def test_cost_rejector_density_readout_reports_concentration() -> None:
     assert out.loc[0, "family_concentration"] == 1.0
     assert out.loc[0, "board_concentration"] == 1.0
     assert "rolling_10d_executable_event_day_density" in out.columns
+
+
+def test_transition_taxonomy_default_boundary_is_reclassification() -> None:
+    events = pd.DataFrame(
+        [
+            {
+                "event_split": "train",
+                "market_trend_60d": 0.05,
+                "market_trend_20d": 0.04,
+                "market_drawdown_120d": -0.12,
+                "market_volatility_20d": 0.01,
+            },
+            {
+                "event_split": "train",
+                "market_trend_60d": -0.05,
+                "market_trend_20d": -0.03,
+                "market_drawdown_120d": -0.02,
+                "market_volatility_20d": 0.01,
+            },
+            {
+                "event_split": "train",
+                "market_trend_60d": 0.005,
+                "market_trend_20d": 0.02,
+                "market_drawdown_120d": -0.12,
+                "market_volatility_20d": 0.01,
+            },
+            {
+                "event_split": "train",
+                "market_trend_60d": pd.NA,
+                "market_trend_20d": pd.NA,
+                "market_drawdown_120d": -0.12,
+                "market_volatility_20d": 0.01,
+            },
+        ]
+    )
+
+    out = transition_taxonomy.assign_default_subregime(events)
+
+    assert out["raw_core_quadrant"].tolist() == [
+        "recovery",
+        "deterioration",
+        "recovery",
+        "component_missing",
+    ]
+    assert out["final_default_subregime"].tolist() == [
+        "transition_recovery",
+        "transition_deterioration",
+        "transition_boundary_or_mixed",
+        "transition_component_missing",
+    ]
+    assert (
+        out.loc[2, "boundary_reclassification_reason"]
+        == "trend_boundary_margin"
+    )
+
+
+def test_transition_taxonomy_preprocessing_is_train_only() -> None:
+    features = pd.DataFrame(
+        {
+            "split": ["train", "train", "robustness"],
+            "market_return_20d": [1.0, 3.0, 1000.0],
+            "market_volatility_20d": [0.1, 0.3, 100.0],
+        }
+    )
+
+    matrix, meta = transition_taxonomy.preprocess_auto_features(
+        features,
+        ["market_return_20d", "market_volatility_20d"],
+    )
+
+    train = matrix.loc[features["split"].eq("train")]
+    assert meta["policy"] == "train_median_impute__train_winsorize_1_99__train_zscore"
+    assert round(float(train["market_return_20d"].mean()), 12) == 0.0
+    assert round(float(train["market_volatility_20d"].std(ddof=0)), 12) == 1.0
+
+
+def test_transition_taxonomy_block_stability_uses_date_assignments(monkeypatch) -> None:
+    class FakeKMeans:
+        def __init__(self, n_clusters, random_state, n_init, max_iter):
+            self.n_clusters = n_clusters
+
+        def fit_predict(self, matrix):
+            return [0 if idx < len(matrix) // 2 else 1 for idx in range(len(matrix))]
+
+    monkeypatch.setattr(transition_taxonomy, "KMeans", FakeKMeans)
+    monkeypatch.setattr(
+        transition_taxonomy,
+        "elbow_table_for_matrix",
+        lambda matrix, k_candidates: pd.DataFrame(
+            {
+                "k": [2],
+                "min_cluster_share": [0.5],
+                "silhouette": [0.5],
+            }
+        ),
+    )
+    monkeypatch.setattr(
+        transition_taxonomy,
+        "select_elbow_k",
+        lambda elbow: (2, "test_stub"),
+    )
+    dates = pd.date_range("2020-01-01", periods=120, freq="D")
+    features = pd.DataFrame({"date": dates, "split": ["train"] * len(dates)})
+    index_values = pd.Series(range(len(dates)), dtype=float)
+    cluster = pd.Series([0, 0, 0, 1, 1, 1] * 20)
+    matrix = pd.DataFrame(
+        {
+            "market_return_20d": index_values / 10.0,
+            "market_volatility_20d": (index_values % 17) / 10.0,
+        }
+    )
+    rolling_assignments = pd.DataFrame(
+        {"date": dates, "auto_cluster_id": cluster}
+    )
+
+    out = transition_taxonomy.block_stability(
+        features,
+        matrix,
+        ["market_return_20d", "market_volatility_20d"],
+        rolling_k=2,
+        rolling_assignments=rolling_assignments,
+    )
+
+    assert out.loc[0, "block_sample_n"] == 6
+    assert out.loc[0, "block_stability_status"] in {
+        "pass",
+        "block_stability_failed",
+    }
+    assert not pd.isna(out.loc[0, "adjusted_rand_index"])
+
+
+def test_transition_taxonomy_composition_deduplicates_target_episodes() -> None:
+    event_view = pd.DataFrame(
+        [
+            {
+                "taxonomy_method": "default_deterministic",
+                "event_split": "train",
+                "subregime_label": "transition_recovery",
+                "event_key": "e1",
+                "date": pd.Timestamp("2020-01-01"),
+            },
+            {
+                "taxonomy_method": "default_deterministic",
+                "event_split": "train",
+                "subregime_label": "transition_recovery",
+                "event_key": "e2",
+                "date": pd.Timestamp("2020-01-02"),
+            },
+        ]
+    )
+    membership = pd.DataFrame(
+        [
+            {
+                "event_split": "train",
+                "date": pd.Timestamp("2020-01-01"),
+                "target_episode_id": "ep1",
+            },
+            {
+                "event_split": "train",
+                "date": pd.Timestamp("2020-01-02"),
+                "target_episode_id": "ep1",
+            },
+        ]
+    )
+
+    out = transition_taxonomy.composition_by_split(event_view, membership)
+
+    assert out.loc[0, "event_count"] == 2
+    assert out.loc[0, "target_episode_n"] == 1
+    assert out.loc[0, "target_episode_share"] == 1.0
+
+
+def test_transition_taxonomy_recall_uses_subregime_episode_denominator() -> None:
+    source_events = pd.DataFrame(
+        [
+            {
+                "source_id": "07_E1_only",
+                "event_split": "train",
+                "taxonomy_method": "default_deterministic",
+                "subregime_label": "transition_recovery",
+                "window": transition_taxonomy.HEADLINE_WINDOW,
+                "target_episode_id": "ep1",
+                "replay_anchor_pos": 1,
+                "event_executable_flag": True,
+                "failure_10_complete": True,
+                "event_false_repair_20d_complete": True,
+                "bridge_positive_denominator_included": True,
+            },
+            {
+                "source_id": "08_R_core_event_regime_gated",
+                "event_split": "train",
+                "taxonomy_method": "default_deterministic",
+                "subregime_label": "transition_recovery",
+                "window": transition_taxonomy.HEADLINE_WINDOW,
+                "target_episode_id": "ep2",
+                "replay_anchor_pos": 2,
+                "event_executable_flag": True,
+                "failure_10_complete": True,
+                "event_false_repair_20d_complete": True,
+                "bridge_positive_denominator_included": True,
+            },
+            {
+                "source_id": "08_R_core_event_regime_gated",
+                "event_split": "train",
+                "taxonomy_method": "default_deterministic",
+                "subregime_label": "transition_deterioration",
+                "window": transition_taxonomy.HEADLINE_WINDOW,
+                "target_episode_id": "ep3",
+                "replay_anchor_pos": 3,
+                "event_executable_flag": True,
+                "failure_10_complete": True,
+                "event_false_repair_20d_complete": True,
+                "bridge_positive_denominator_included": True,
+            },
+        ]
+    )
+
+    recall, e1 = transition_taxonomy.recall_retention_matrix(source_events)
+    row = recall.loc[
+        recall["source_id"].eq("08_R_core_event_regime_gated")
+        & recall["split"].eq("train")
+        & recall["subregime_label"].eq("transition_recovery")
+    ].iloc[0]
+
+    assert row["target_episode_denominator_n"] == 2
+    assert row["bridge_episode_denominator_n"] == 2
+    assert row["source_post_replay_any_captured_episode_n"] == 1
+    assert row["source_post_replay_any_recall"] == 0.5
+    assert row["source_post_replay_bridge_recall"] == 0.5
+    assert row["e1_missed_episode_n"] == 1
+    assert e1.loc[
+        e1["source_id"].eq("08_R_core_event_regime_gated")
+        & e1["split"].eq("train")
+        & e1["subregime_label"].eq("transition_recovery"),
+        "target_episode_denominator_n",
+    ].iloc[0] == 2
+
+
+def test_transition_taxonomy_density_uses_replay_anchor_pos() -> None:
+    source_events = pd.DataFrame(
+        [
+            {
+                "taxonomy_method": "default_deterministic",
+                "event_split": "train",
+                "subregime_label": "transition_recovery",
+                "source_id": "08_R_core_event_regime_gated",
+                "event_id": "e1",
+                "canonical_event_id": "e1",
+                "instrument": "A",
+                "event_t0_pos": 100,
+                "event_t0_date": "2020-01-01",
+                "replay_anchor_pos": 10,
+                "replay_anchor_date": "2020-01-02",
+                "family_id": "R1",
+                "board_bucket": "main",
+            },
+            {
+                "taxonomy_method": "default_deterministic",
+                "event_split": "train",
+                "subregime_label": "transition_recovery",
+                "source_id": "08_R_core_event_regime_gated",
+                "event_id": "e2",
+                "canonical_event_id": "e2",
+                "instrument": "A",
+                "event_t0_pos": 200,
+                "event_t0_date": "2020-01-03",
+                "replay_anchor_pos": 12,
+                "replay_anchor_date": "2020-01-04",
+                "family_id": "R2",
+                "board_bucket": "main",
+            },
+        ]
+    )
+
+    out = transition_taxonomy.density_overlap_matrix(source_events)
+
+    assert out.loc[0, "density_contract_reference"] == "A_density_contract_replay_anchor_pos"
+    assert out.loc[0, "rolling_10d_executable_event_day_density"] == 1.5
+    assert out.loc[0, "rolling_10d_duplicate_rate"] == 0.5
+    assert out.loc[0, "cross_family_collision_rate"] == 0.5
 
 
 def test_incremental_recall_uses_same_denominator_percentage_points() -> None:
