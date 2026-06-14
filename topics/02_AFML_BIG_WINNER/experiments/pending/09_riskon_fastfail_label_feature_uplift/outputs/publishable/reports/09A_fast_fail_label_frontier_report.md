@@ -4,18 +4,20 @@
 
 - decision: `09A_label_frontier_candidate_source_caveated_selected`
 - selected fast-fail labels: `break_swing_low_20`, `fixed_mae10_neg_12`
+- 09C supported fast-fail label: `break_swing_low_20`
+- sensitivity / readout fast-fail label: `fixed_mae10_neg_12`
 - event binding primary fast-fail label: `break_swing_low_20`
 - selected cost target: `selected_fast_fail_10_label OR frozen_event_false_repair_20d_label`
 - 09A 只做 label diagnostic，不训练模型；09C 必须读取事件级 binding，并独立评估 fast-fail-only target。
 
 ## 1. 结论
 
-09A 可以进入 09C，但结论需要比初版报告更克制：
+09A 可以进入 09B/09C 的下一阶段，但结论需要比初版报告更克制：
 
 1. `break_swing_low_20` 是一个很温和的 structural fast-fail gate。它在 train 的 positive rate 只有 7.5433%，episode winner recall retention 为 100.0000%，winner injury rate 为 3.7062%，确实比 incumbent -10% 更少误伤 winner。
 2. 但这不能直接解释为“精准 cost rejector”。在 train non-winner 样本上，`break_swing_low_20` 的 fast-fail 命中率只有 8.3805%，远低于 incumbent -10% 的 32.2870% 和 `fixed_mae10_neg_12` 的 21.4953%。它可能只是“杀得少”，因此自然更少杀错。
 3. 两个入选 label 的 fast-fail 机制差异很大，但与 `false_repair_20d` 合成后，hybrid cost target 几乎相同。`fixed_mae10_neg_12` 与 `break_swing_low_20` 的 fast-fail Jaccard 只有 0.2619，但 cost-target positive-rate 差异只有 0.0227pp。这说明 09C 如果只训练 hybrid target，模型大概率主要学习 false-repair 结构，而不是 fast-fail 机制差异。
-4. 因此 09C 的硬要求是：hybrid cost target 可以保留，但必须同时报告 fast-fail-only target 的排序质量、bad-side coverage、component-level contribution 和两个 selected label 的对照结果。否则无法回答 swing-low 是否真的提升 cost sorting。
+4. 因此 09C 的硬要求是：hybrid cost target 可以保留，但必须同时报告 fast-fail-only target 的排序质量、bad-side coverage 与 component-level contribution。`fixed_mae10_neg_12` 只作为 sensitivity / fixed-barrier 对照，除非 09A 另行补发它的事件级 binding，否则不得进入 09C supported gate。
 
 ## 2. 本轮任务边界
 
@@ -69,18 +71,18 @@
 
 ## 5. 入选 Label 的真实含义
 
-09A 最终选出两个 label：
+09A 最终选出两个 label，但只有第一名 materialize 事件级 binding 并进入 09C supported gate：
 
-| selected fast-fail label | mechanism | train positive | train kill-wrong | train winner injury | train episode retention | max split positive spread |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| `break_swing_low_20` | structural | 7.5433% | 8.8000% | 3.7062% | 100.0000% | 1.5732pp |
-| `fixed_mae10_neg_12` | fixed MAE10 | 19.7031% | 10.4441% | 11.4892% | 97.5021% | 9.1083pp |
+| selected fast-fail label | 09C role | mechanism | train positive | train kill-wrong | train winner injury | train episode retention | max split positive spread |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| `break_swing_low_20` | supported primary | structural | 7.5433% | 8.8000% | 3.7062% | 100.0000% | 1.5732pp |
+| `fixed_mae10_neg_12` | sensitivity / readout | fixed MAE10 | 19.7031% | 10.4441% | 11.4892% | 97.5021% | 9.1083pp |
 
 解释：
 
 - `break_swing_low_20` 更像 winner-preserving 的 conservative gate，而不是已经证明有效的 cost rejector。
 - `fixed_mae10_neg_12` 是 incumbent -10% 的更保守 fixed-barrier 对照，牺牲一部分 bad-side coverage，换取更低 winner injury。
-- 两者都可以进入 09C，但必须拆开 fast-fail component 看效果。
+- 09B / 09C 只能把 `break_swing_low_20__or_false_repair_20d` 当作 supported target 消费；`fixed_mae10_neg_12` 只能作为 aggregate sensitivity 解读，除非后续补发事件级 binding。
 
 ## 6. Validation Power Caveat
 
@@ -92,7 +94,7 @@ validation 上的 winner 样本太少，不能用来支撑 label 选择，只能
 | `fixed_mae10_neg_12` | 472 | 18 | 3.8136% | 6.0403% | 298 |
 | `incumbent_failure_10_label` | 870 | 36 | 4.1379% | 12.0805% | 298 |
 
-`break_swing_low_20` validation 只杀到 5 个 winner，这个单元格没有足够 power。报告中任何“validation 证明 swing-low 更优”的表述都应删除；正确说法是 train-only selection 通过，validation 未发现结构性反证，但 winner injury 读数低 power。
+`break_swing_low_20` validation 只杀到 5 个 winner，这个单元格没有足够 power。报告中任何“validation 证明 swing-low 更优”的表述都应删除；正确说法是 train-only selection 通过，validation 未发现结构性反证，但 winner injury 读数 low-power。
 
 ## 7. Non-Winner Hit Rate：低 Positive Rate 的反向证据
 
@@ -145,6 +147,8 @@ winner injury 没有全面恶化，但 kill-wrong 在 robustness 对三个核心
 
 - `outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet`
 
+当前 binding 只 materialize `break_swing_low_20__or_false_repair_20d`。`fixed_mae10_neg_12__or_false_repair_20d` 在 `selected_label_contract.csv` 中保留为 sensitivity / readout，`usable_for_09C_supported_gate=false`，且不记录 event binding hash。
+
 本轮修复了一个容易误用的字段语义：
 
 - `selected_fast_fail_touch_pos`：标的日线文件里的绝对 bar index，不是相对 horizon。
@@ -175,16 +179,17 @@ winner injury 没有全面恶化，但 kill-wrong 在 robustness 对三个核心
 3. `break_swing_low_20` 的主要价值是 winner-preserving，而不是已证明的 bad-sample recall。它 train episode retention 为 100.0000%，但 non-winner hit rate 只有 8.3805%。
 4. cost target 的变化被 false-repair component 明显稀释。两个入选 label 的 fast-fail component 差异很大，但 hybrid target 几乎相同。
 5. validation winner 单元格 power 太低，不能作为选择证据。09A 的选择纪律仍然是 train-only，OOS 只读。
-6. transition 不应进入 09A/09C 主线；本轮所有 selected label 都绑定在 risk_on 主分母。
+6. transition 不应进入 09A/09C 主线；本轮 supported binding 只绑定在 risk_on 主分母。
 
 ## 12. 对 09C 的硬要求
 
-09C 可以使用两个 selected cost target：
+09C 当前只能使用一个 supported cost target：
 
 - `break_swing_low_20__or_false_repair_20d`
-- `fixed_mae10_neg_12__or_false_repair_20d`
 
-但必须增加以下硬约束：
+`fixed_mae10_neg_12__or_false_repair_20d` 只作为 sensitivity / aggregate fixed-barrier 对照；除非 09A 后续补发完整事件级 binding，否则 09B / 09C 不得把它作为 supported target 消费。
+
+09C 必须增加以下硬约束：
 
 1. 必须单独训练或至少单独评估 fast-fail-only target，不能只报告 hybrid cost target。
 2. 必须拆分 component-level metrics：fast-fail component、false-repair component、hybrid target 三套读数都要报。
@@ -198,8 +203,8 @@ winner injury 没有全面恶化，但 kill-wrong 在 robustness 对三个核心
 
 09A 的价值不是“找到了最终答案”，而是把 09C 的问题收窄了：
 
-- 如果目标是低误伤结构性停损，`break_swing_low_20` 值得保留。
-- 如果目标是替代 incumbent -10% 的更温和 fixed barrier，`fixed_mae10_neg_12` 是合理对照。
+- 如果目标是低误伤结构性停损，`break_swing_low_20` 值得保留，并且是当前唯一 09C supported target。
+- 如果目标是替代 incumbent -10% 的更温和 fixed barrier，`fixed_mae10_neg_12` 是合理对照，但当前只作为 sensitivity / readout。
 - 如果目标是提升 cost rejector 排序质量，09C 不能只看 hybrid target。它必须证明 fast-fail component 本身能改善 cost sorting，否则 09A 的 label uplift 会被 false-repair component 吞掉。
 
-最终建议：09C 继续，但把 `break_swing_low_20` 定位为 conservative structural gate candidate，把 `fixed_mae10_neg_12` 定位为 incumbent fixed-barrier challenger，并把 fast-fail-only evaluation 升级为硬 gate。
+最终建议：09C 继续，但把 `break_swing_low_20` 定位为 conservative structural gate candidate，把 `fixed_mae10_neg_12` 定位为 incumbent fixed-barrier sensitivity challenger，并把 fast-fail-only evaluation 升级为硬 gate。

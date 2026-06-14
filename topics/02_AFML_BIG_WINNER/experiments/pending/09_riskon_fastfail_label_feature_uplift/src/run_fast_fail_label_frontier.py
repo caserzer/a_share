@@ -1257,6 +1257,17 @@ def select_labels(frontier: pd.DataFrame, candidate_eval: pd.DataFrame, config: 
     for _, row in train.loc[train["candidate_label_status"] == "evaluable"].iterrows():
         cid = row["candidate_label_id"]
         selected_flag = cid in selected_rank
+        supported_primary_flag = bool(selected_flag and selected_rank[cid] == 1)
+        if selected_flag:
+            selection_reason = (
+                "train_pareto_selected_primary_binding"
+                if supported_primary_flag
+                else "train_pareto_selected_sensitivity_only"
+            )
+        else:
+            selection_reason = (
+                "bound_gate_failed" if not row["bound_gate_pass"] else "not_selected_after_pareto"
+            )
         rows.append(
             {
                 "selected_target_id": f"{cid}__or_false_repair_20d",
@@ -1264,14 +1275,14 @@ def select_labels(frontier: pd.DataFrame, candidate_eval: pd.DataFrame, config: 
                 "false_repair_component_id": FALSE_REPAIR_COMPONENT_ID,
                 "selection_rank": selected_rank[cid] if selected_flag else np.nan,
                 "selection_status": "selected" if selected_flag else "rejected",
-                "selection_reason": "train_pareto_selected" if selected_flag else ("bound_gate_failed" if not row["bound_gate_pass"] else "not_selected_after_pareto"),
+                "selection_reason": selection_reason,
                 "mechanism_family": config["candidate_labels"][cid]["mechanism_family"],
                 "primary_denominator_id": sel["primary_denominator_id"],
                 "candidate_label_status": row["candidate_label_status"],
                 "source_caveated": False,
                 "label_contract_hash": "",
                 "event_binding_hash": "",
-                "usable_for_09C_supported_gate": bool(selected_flag),
+                "usable_for_09C_supported_gate": supported_primary_flag,
                 "winner_readout_label": "event_big_winner_120d_label",
                 "winner_readout_completeness_rule": "horizon_complete_120d_true_drop_null_winner",
                 "winner_censoring_status_mapping": "candidate_outcome_120d_status_v1",
@@ -1519,6 +1530,12 @@ def report_text(decision: str, frontier: pd.DataFrame, selected: pd.DataFrame) -
         if not selected_rows.empty
         else "无"
     )
+    supported_rows = selected_rows.loc[selected_rows["usable_for_09C_supported_gate"].eq(True)]
+    supported_label = (
+        ", ".join(supported_rows["selected_fast_fail_label_id"].astype(str).tolist())
+        if not supported_rows.empty
+        else "无"
+    )
     primary_label = (
         str(selected_rows.iloc[0]["selected_fast_fail_label_id"]) if not selected_rows.empty else "无"
     )
@@ -1531,6 +1548,7 @@ def report_text(decision: str, frontier: pd.DataFrame, selected: pd.DataFrame) -
         "",
         f"- decision: `{decision}`",
         f"- selected fast-fail label: `{selected_label}`",
+        f"- 09C supported fast-fail label: `{supported_label}`",
         f"- event binding primary fast-fail label: `{primary_label}`",
         "- 09A 只做 label diagnostic，不训练模型；09C 必须读取事件级 binding。",
         "",
@@ -1589,6 +1607,10 @@ def contract_text(selected: pd.DataFrame, config: dict[str, Any]) -> str:
         "selection_rank", na_position="last"
     )
     labels = selected_rows["selected_fast_fail_label_id"].astype(str).tolist()
+    supported_labels = selected_rows.loc[
+        selected_rows["usable_for_09C_supported_gate"].eq(True),
+        "selected_fast_fail_label_id",
+    ].astype(str).tolist()
     primary = labels[0] if labels else "none"
     rows = [
         "| label_id | mechanism | t0 | trade_time | fast_fail_t1 | price_field | adjustment_policy | barrier | censoring |",
@@ -1607,6 +1629,7 @@ def contract_text(selected: pd.DataFrame, config: dict[str, Any]) -> str:
         "# 09A Fast-Fail Label Contract",
         "",
         f"- selected_fast_fail_10_label: `{';'.join(labels) if labels else 'none'}`",
+        f"- 09C_supported_fast_fail_10_label: `{';'.join(supported_labels) if supported_labels else 'none'}`",
         f"- event_binding_primary_fast_fail_label: `{primary}`",
         f"- selected_cost_bad_10_20_target: `selected_fast_fail_10_label OR {FALSE_REPAIR_COMPONENT_ID}`",
         "- selected_cost_bad_10_20_target label_t1_date: 20D cost horizon end date, used for purged CV / embargo / uniqueness.",
@@ -1695,7 +1718,7 @@ def build_manifest(
     }
     return {
         "experiment_id": config["experiment"]["id"],
-        "phase": config["experiment"]["phase"],
+        "phase": "09A_fast_fail_label_frontier",
         "run_timestamp": datetime.now(timezone.utc).isoformat(),
         "git_commit": git_revision(PROJECT_ROOT),
         "decision": decision,
@@ -1820,7 +1843,11 @@ def run_frontier(config_path: Path = CONFIG_PATH, *, check_inputs_only: bool = F
     write_df(outputs["selected_label_contract"], selected)
     write_df(outputs["selected_label_event_bindings"], binding)
     event_binding_hash = file_sha256(outputs["selected_label_event_bindings"])
-    selected["event_binding_hash"] = event_binding_hash
+    selected["event_binding_hash"] = ""
+    selected.loc[
+        selected["usable_for_09C_supported_gate"].eq(True),
+        "event_binding_hash",
+    ] = event_binding_hash
     write_df(outputs["selected_label_contract"], selected)
     write_df(outputs["selected_label_event_binding_summary"], summary)
     write_text(outputs["report"], report_text(decision, frontier, selected))

@@ -1,0 +1,4 @@
+feature_domain,pit_available_flag,coverage_rate,effective_date_policy,feature_policy,industry_pit_status,blocked_family_count,notes
+industry,False,0.0,not_available,block_industry_features,industry_pit_unavailable,3,No PIT industry classification artifact is declared in the 08 input contract.
+style_proxy_board,True,1.0,source_membership_date close; usable next trade date,board_fallback_not_industry,board_fallback_available,0,Board bucket comes from the 05/06 PIT Top-N/proxy universe artifact.
+market_breadth,True,1.0,"same-day close feature, next-open executable",market_breadth_available,pit_available,0,Breadth uses only same-date evaluated Top-N/proxy instrument-days.

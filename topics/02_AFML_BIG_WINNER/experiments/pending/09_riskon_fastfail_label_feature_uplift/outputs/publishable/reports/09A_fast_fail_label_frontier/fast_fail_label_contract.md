@@ -1,6 +1,7 @@
 # 09A Fast-Fail Label Contract
 
 - selected_fast_fail_10_label: `break_swing_low_20;fixed_mae10_neg_12`
+- 09C_supported_fast_fail_10_label: `break_swing_low_20`
 - event_binding_primary_fast_fail_label: `break_swing_low_20`
 - selected_cost_bad_10_20_target: `selected_fast_fail_10_label OR frozen_event_false_repair_20d_label`
 - selected_cost_bad_10_20_target label_t1_date: 20D cost horizon end date, used for purged CV / embargo / uniqueness.

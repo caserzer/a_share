@@ -126,3 +126,77 @@ def test_frontier_uses_explicit_10d_and_120d_completeness_columns() -> None:
     assert "horizon_complete_10d_n" in out.columns
     assert "winner_120_complete_n" in out.columns
     assert "horizon_complete_n" not in out.columns
+
+
+def test_only_primary_selected_label_is_09c_supported() -> None:
+    frame = pd.DataFrame(
+        [
+            {
+                "denominator_id": "risk_on_r_core_horizon_complete",
+                "split": "train",
+                "candidate_label_id": "break_swing_low_20",
+                "not_evaluable_share": 0.0,
+                "positive_rate": 0.08,
+                "episode_winner_recall_retention": 1.0,
+                "kill_wrong_rate": 0.08,
+                "winner_injury_rate": 0.03,
+            },
+            {
+                "denominator_id": "risk_on_r_core_horizon_complete",
+                "split": "train",
+                "candidate_label_id": "fixed_mae10_neg_12",
+                "not_evaluable_share": 0.0,
+                "positive_rate": 0.20,
+                "episode_winner_recall_retention": 0.97,
+                "kill_wrong_rate": 0.10,
+                "winner_injury_rate": 0.11,
+            },
+        ]
+    )
+    candidate_eval = pd.DataFrame(
+        [
+            {
+                "candidate_label_id": "break_swing_low_20",
+                "candidate_label_status": "evaluable",
+            },
+            {
+                "candidate_label_id": "fixed_mae10_neg_12",
+                "candidate_label_status": "evaluable",
+            },
+        ]
+    )
+    config = {
+        "selection": {
+            "primary_denominator_id": "risk_on_r_core_horizon_complete",
+            "train_not_evaluable_share_max": 0.005,
+            "train_positive_rate_min": 0.05,
+            "train_positive_rate_max": 0.45,
+            "train_episode_winner_recall_retention_min": 0.85,
+            "selected_label_max_count": 2,
+        },
+        "candidate_labels": {
+            "break_swing_low_20": {
+                "mechanism_family": "structural",
+                "selected_allowed": True,
+            },
+            "fixed_mae10_neg_12": {
+                "mechanism_family": "fixed_mae10",
+                "selected_allowed": True,
+            },
+        },
+    }
+
+    selected = frontier.select_labels(frame, candidate_eval, config)
+
+    selected_rows = selected.loc[selected["selection_status"].eq("selected")].sort_values(
+        "selection_rank"
+    )
+    assert selected_rows["selected_fast_fail_label_id"].tolist() == [
+        "break_swing_low_20",
+        "fixed_mae10_neg_12",
+    ]
+    assert selected_rows["usable_for_09C_supported_gate"].tolist() == [True, False]
+    assert selected_rows["selection_reason"].tolist() == [
+        "train_pareto_selected_primary_binding",
+        "train_pareto_selected_sensitivity_only",
+    ]

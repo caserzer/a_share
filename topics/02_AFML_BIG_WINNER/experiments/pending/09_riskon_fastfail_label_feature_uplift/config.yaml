@@ -1,6 +1,6 @@
 experiment:
   id: "09_riskon_fastfail_label_feature_uplift"
-  phase: "09A_fast_fail_label_frontier"
+  phase: "09B_feature_foundation_ablation"
   data_cutoff: "2026-05-31"
 
 paths:
@@ -45,6 +45,26 @@ selection:
   duplicate_jaccard_threshold: 0.90
   duplicate_kappa_threshold: 0.85
   selected_label_max_count: 2
+
+stationary_hygiene:
+  rolling_window_sessions: 60
+  rolling_min_periods: 20
+  fracdiff_d: 0.4
+  fracdiff_max_lags: 20
+  fracdiff_weight_threshold: 0.0001
+
+diagnostic_model:
+  estimator: "balanced_logistic"
+  sklearn_class: "sklearn.linear_model.LogisticRegression"
+  penalty: "l2"
+  class_weight: "balanced"
+  solver: "liblinear"
+  random_state: 17
+  max_iter: 1000
+
+importance:
+  permutation_random_state: 17
+  stability_top_k: 3
 
 candidate_labels:
   fixed_mae10_neg_05:
