@@ -66,6 +66,46 @@ importance:
   permutation_random_state: 17
   stability_top_k: 3
 
+cost_rejector:
+  selected_target_label: "break_swing_low_20"
+  selected_supported_target_id: "break_swing_low_20__or_false_repair_20d"
+  selected_model_family: "regularized_logistic_or_elastic_net"
+  selected_train_target_component: "hybrid_cost_bad_10_20"
+  selected_ablation_id: "full"
+  selected_calibration_id: "none"
+  target_component_selection_policy: "hybrid_train_only_with_fast_fail_noncollapse_readout"
+  threshold_selection_policy: "train_only_hybrid_cost_reduction_then_recall_with_fast_fail_noncollapse"
+  baseline_replay_gate_refreeze_policy: "freeze_after_train_baseline_before_oos_readout"
+  threshold_grid: [0.85, 0.825, 0.80, 0.775, 0.75, 0.725, 0.70]
+  oos_positive_rate_spread_force_diagnostic_threshold: 0.15
+  bridge_retention_min_train: "report_and_noncollapse"
+  robustness_no_reversal_rule: "robustness_cost_reduction_gt_0_and_recall_min"
+  family_concentration_cap: 0.30
+  board_concentration_cap: 0.85
+  fast_fail_only_bad_side_capture_min_policy: ">= selected_threshold_rejected_fraction_train"
+  model:
+    random_state: 17
+    max_iter: 1000
+    rf_n_estimators: 40
+    rf_max_depth: 3
+    rf_min_samples_leaf: 80
+    rf_n_jobs: 1
+  research_entry_gate:
+    cost_reduction_min_train: 0.15
+    any_recall_retention_min_train: 0.90
+    e1_missed_retention_min_train: 0.85
+    robustness_any_recall_retention_min: 0.80
+    robustness_e1_missed_retention_min: 0.70
+    fast_fail_only_auc_min_robustness: 0.60
+    fast_fail_component_contribution_min_train: 0.10
+  density_caps:
+    formal_event_day_density: 7.50
+    p95_density: 20.00
+    rolling_10d_executable_event_day_density: 1.80
+    rolling_20d_executable_event_day_density: 2.20
+    family_concentration: 0.30
+    board_concentration: 0.85
+
 candidate_labels:
   fixed_mae10_neg_05:
     mechanism_family: "fixed_mae10"
