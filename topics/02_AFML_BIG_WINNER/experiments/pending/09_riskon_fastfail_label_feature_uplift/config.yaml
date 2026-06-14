@@ -1,0 +1,114 @@
+experiment:
+  id: "09_riskon_fastfail_label_feature_uplift"
+  phase: "09A_fast_fail_label_frontier"
+  data_cutoff: "2026-05-31"
+
+paths:
+  stock_daily_csv_dir: "data/interim/qlib_csv/day"
+  index_daily_csv_dir: "data/interim/index_qlib_csv/day"
+  upstream_01_run_manifest: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/manifests/run_manifest.json"
+  upstream_01_cache_manifest: "experiments/pending/01_data_prepare_pit_largecap_akshare_qlib_v0/outputs/manifests/cache_manifest.csv"
+  upstream_07_run_manifest: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/manifests/run_manifest.json"
+  upstream_07_canonical_events: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_multichannel_candidate_event_canonical.csv"
+  upstream_07_event_labels: "experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/local_cache/topn_canonical_event_labels.parquet"
+  upstream_08_final_report: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/08_all_experiments_final_report.md"
+  upstream_08_a_manifest: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/density_fast_fail_audit/density_fast_fail_audit_manifest.json"
+  upstream_08_d_manifest: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/post_replay_event_to_episode_retention_source/post_replay_event_to_episode_retention_source_manifest.json"
+  upstream_08_e_manifest: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/risk_on_post_filter_cost_rejector/risk_on_post_filter_cost_rejector_manifest.json"
+  upstream_08_h_manifest: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/risk_on_cost_rejector_research_entry_hardening/risk_on_cost_rejector_research_entry_hardening_manifest.json"
+  upstream_08_transition_subregime_taxonomy_manifest: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/transition_subregime_taxonomy_audit/transition_subregime_taxonomy_audit_manifest.json"
+  upstream_08_transition_previous_regime_outcome_manifest: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/transition_previous_regime_outcome_audit/transition_previous_regime_outcome_audit_manifest.json"
+  upstream_08_transition_previous_regime_context_manifest: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/transition_previous_regime_context_cost_rejector_ablation/transition_previous_regime_context_cost_rejector_ablation_manifest.json"
+  candidate_scope_mapping_contract: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_mapping_contract.csv"
+  candidate_scope_reconstructability_audit: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_reconstructability_audit.csv"
+  upstream_08_canonical_events: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz"
+  upstream_08_event_instances: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv.gz"
+  upstream_08_event_labels: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet"
+  upstream_08_capture: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_capture.parquet"
+  upstream_08_feature_panel: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet"
+  upstream_08_membership: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet"
+  upstream_08_leakage_audit: "experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_label_leakage_audit.csv"
+
+outputs:
+  tables_dir: "experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables"
+  reports_dir: "experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/publishable/reports"
+  manifests_dir: "experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/manifests"
+  local_cache_dir: "experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/local_cache"
+
+selection:
+  primary_denominator_id: "risk_on_r_core_horizon_complete"
+  oos_positive_rate_spread_force_diagnostic_threshold: 0.15
+  train_positive_rate_min: 0.05
+  train_positive_rate_max: 0.45
+  train_not_evaluable_share_max: 0.005
+  train_episode_winner_recall_retention_min: 0.85
+  duplicate_jaccard_threshold: 0.90
+  duplicate_kappa_threshold: 0.85
+  selected_label_max_count: 2
+
+candidate_labels:
+  fixed_mae10_neg_05:
+    mechanism_family: "fixed_mae10"
+    barrier_pct: -0.05
+    selected_allowed: true
+  fixed_mae10_neg_06:
+    mechanism_family: "fixed_mae10"
+    barrier_pct: -0.06
+    selected_allowed: false
+    candidate_label_status_override: "sensitivity_only"
+  fixed_mae10_neg_08:
+    mechanism_family: "fixed_mae10"
+    barrier_pct: -0.08
+    selected_allowed: true
+  fixed_mae10_neg_10:
+    mechanism_family: "fixed_mae10"
+    barrier_pct: -0.10
+    selected_allowed: true
+  fixed_mae10_neg_12:
+    mechanism_family: "fixed_mae10"
+    barrier_pct: -0.12
+    selected_allowed: true
+  vol_sigma20_1_0:
+    mechanism_family: "vol_scaled"
+    sigma_window: 20
+    sigma_multiplier: 1.0
+    selected_allowed: true
+  vol_sigma20_1_5:
+    mechanism_family: "vol_scaled"
+    sigma_window: 20
+    sigma_multiplier: 1.5
+    selected_allowed: true
+  vol_sigma20_2_0:
+    mechanism_family: "vol_scaled"
+    sigma_window: 20
+    sigma_multiplier: 2.0
+    selected_allowed: true
+  atr14_1_5:
+    mechanism_family: "atr_scaled"
+    atr_window: 14
+    atr_multiplier: 1.5
+    selected_allowed: true
+  atr14_2_0:
+    mechanism_family: "atr_scaled"
+    atr_window: 14
+    atr_multiplier: 2.0
+    selected_allowed: true
+  break_event_low:
+    mechanism_family: "structural"
+    structural_rule: "event_low"
+    selected_allowed: true
+  break_swing_low_20:
+    mechanism_family: "structural"
+    structural_rule: "swing_low"
+    swing_lookback: 20
+    selected_allowed: true
+  break_ema20:
+    mechanism_family: "structural"
+    structural_rule: "ema"
+    ema_span: 20
+    selected_allowed: true
+  break_ema60:
+    mechanism_family: "structural"
+    structural_rule: "ema"
+    ema_span: 60
+    selected_allowed: true
