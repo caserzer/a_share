@@ -1,0 +1,126 @@
+experiment:
+  id: "10_riskon_layered_rejector_system_v0"
+  phase: "10B_fast_fail_structural_gate"
+  data_cutoff: "2026-05-31"
+
+paths:
+  upstream_10a_manifest: "outputs/manifests/10A_density_rule_system_manifest.json"
+  upstream_10a_population_contract: "outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv"
+  upstream_10a_sample_count_by_split: "outputs/publishable/tables/10A_density_rule_system/post_dedup_sample_count_by_split.csv"
+  upstream_10a_fast_fail_power_audit: "outputs/publishable/tables/10A_density_rule_system/post_dedup_fast_fail_power_audit.csv"
+  upstream_10a_power_audit_config: "outputs/publishable/tables/10A_density_rule_system/power_audit_config.csv"
+  upstream_10a_event_bindings: "outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet"
+  upstream_09b_feature_contract: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09B_feature_foundation/feature_contract.csv"
+  upstream_09b_feature_matrix: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/feature_matrix.parquet"
+  upstream_09b_sample_weights: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/sample_uniqueness_weights.parquet"
+  upstream_08_event_labels: "../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet"
+  upstream_09c_manifest: "../09_riskon_fastfail_label_feature_uplift/outputs/manifests/09C_riskon_cost_rejector_uplift_manifest.json"
+  upstream_09c_event_scores: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09C_riskon_cost_rejector/event_scores.csv.gz"
+
+outputs:
+  publishable_tables_dir: "outputs/publishable/tables/10B_fast_fail_structural_gate"
+  publishable_reports_dir: "outputs/publishable/reports"
+  local_cache_dir: "outputs/local_cache/10B_fast_fail_structural_gate"
+  manifests_dir: "outputs/manifests"
+
+defaults:
+  selected_population_id: "10A__same_instrument_cooldown_10d"
+  selected_rule_arm_id: "same_instrument_cooldown_10d"
+  selected_input_denominator_id: "risk_on_r_core_horizon_complete"
+  selected_denominator_id: "post_dedup_risk_on_r_core"
+  random_seed: 20260615
+  selected_model_id: "regularized_logistic_fast_fail_10d_l2_v1"
+  target_column: "selected_fast_fail_10_label"
+  positive_label: true
+  winner_column: "winner_120"
+  fit_split: "train"
+  readout_splits:
+    - "train"
+    - "validation"
+    - "robustness"
+  sensitivity_capacity_ids:
+    - "keep_9000"
+  selectable_capacity_ids:
+    - "keep_9250"
+    - "keep_9300"
+    - "keep_9400"
+    - "keep_9500"
+
+model:
+  estimator: "sklearn.linear_model.LogisticRegression"
+  penalty: "l2"
+  C: 1.0
+  solver: "liblinear"
+  max_iter: 1000
+  random_state: 20260615
+  class_weight: null
+
+utility_weights:
+  utility_weight_profile_id: "10B_default_v1"
+  random_lift_weight: 0.5
+  winner_injury_excess_weight: 10.0
+  mae_worse_excess_weight: 1.0
+  density_excess_weight: 100.0
+  oos_threshold_instability_weight: 10.0
+
+gates:
+  capture_lift_margin: 0.02
+  winner_retention_floor: 0.94
+  wrong_kill_rate_cap: 0.06
+  oos_severe_reversal_floor: -0.01
+  rolling_10d_density_cap: 0.1
+  rolling_20d_density_cap: 0.1
+  min_positive_count: 100
+  min_winner_count: 20
+  min_rule_positive_count: 10
+  min_rule_winner_count: 3
+
+expected_10a_sanity_counts:
+  train:
+    input_row_n: 16603
+    admitted_event_n: 8318
+    suppressed_event_n: 8253
+    non_executable_audit_only_n: 32
+    winner_n: 1491
+    fast_fail_positive_n: 702
+    fast_fail_winner_n: 70
+    false_repair_positive_n: 3025
+  robustness:
+    input_row_n: 9730
+    admitted_event_n: 4970
+    suppressed_event_n: 4741
+    non_executable_audit_only_n: 19
+    winner_n: 995
+    fast_fail_positive_n: 342
+    fast_fail_winner_n: 39
+    false_repair_positive_n: 1299
+  validation:
+    input_row_n: 4457
+    admitted_event_n: 2514
+    suppressed_event_n: 1941
+    non_executable_audit_only_n: 2
+    winner_n: 161
+    fast_fail_positive_n: 236
+    fast_fail_winner_n: 5
+    false_repair_positive_n: 709
+
+rule_baseline:
+  rule_baseline_id: "structural_swing_low_rank_v1"
+  required_features:
+    - "close_to_ema60"
+    - "ema60_slope_20d"
+    - "return_20d"
+    - "stock_vs_market_20d"
+    - "atr_20_pct"
+
+ablation:
+  no_overlap_ablation_id: "drop_fs2_fs3_mechanism_overlap"
+  drop_feature_families:
+    - "FS2_basis_path_quality"
+    - "FS3_vol_range_stop_distance"
+  drop_overlap_policy: "non_none"
+  drop_overlap_types:
+    - "related"
+
+diagnostics:
+  enable_pre_dedup_replay_without_10a_cache: false
