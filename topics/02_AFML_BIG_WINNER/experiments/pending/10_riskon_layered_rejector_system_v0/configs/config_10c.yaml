@@ -1,0 +1,113 @@
+run:
+  experiment_id: "10C_false_repair_rejector"
+  random_seed: 20260615
+  selected_population_id: "10A__same_instrument_cooldown_10d"
+  selected_rule_arm_id: "same_instrument_cooldown_10d"
+  input_denominator_id: "risk_on_r_core_horizon_complete"
+  denominator_id: "post_dedup_risk_on_r_core"
+  target_component: "false_repair_20d_component"
+  target_label_column: "frozen_false_repair_20d_label"
+  weight_horizon_id: "cost_bad_10_20_20d"
+  r2_source_policy: "separate_family_budget_cooldown"
+  fit_split: "train"
+  readout_splits:
+    - "train"
+    - "validation"
+    - "robustness"
+
+paths:
+  upstream_10a_manifest: "outputs/manifests/10A_density_rule_system_manifest.json"
+  upstream_10a_population_contract: "outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv"
+  upstream_10a_false_repair_power_audit: "outputs/publishable/tables/10A_density_rule_system/post_dedup_false_repair_power_audit.csv"
+  upstream_10a_power_audit_config: "outputs/publishable/tables/10A_density_rule_system/power_audit_config.csv"
+  upstream_10a_event_bindings: "outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet"
+  upstream_09b_manifest: "../09_riskon_fastfail_label_feature_uplift/outputs/manifests/09B_feature_foundation_ablation_manifest.json"
+  upstream_09b_feature_contract: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09B_feature_foundation/feature_contract.csv"
+  upstream_09b_feature_matrix: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/feature_matrix.parquet"
+  upstream_09b_sample_weights: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/sample_uniqueness_weights.parquet"
+  upstream_09b_sample_uniqueness_audit: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09B_feature_foundation/sample_uniqueness_audit.csv"
+  upstream_08_event_labels: "../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet"
+  upstream_08_episode_membership: "../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet"
+  upstream_08_run_manifest: "../08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json"
+  upstream_10b_manifest: "outputs/manifests/10B_fast_fail_structural_gate_manifest.json"
+  upstream_10b_scores: "outputs/local_cache/10B_fast_fail_structural_gate/post_dedup_fast_fail_scores.parquet"
+  upstream_09c_manifest: "../09_riskon_fastfail_label_feature_uplift/outputs/manifests/09C_riskon_cost_rejector_uplift_manifest.json"
+  upstream_09c_report: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/reports/09C_riskon_cost_rejector_uplift_report.md"
+
+model:
+  model_id: "regularized_logistic_false_repair_20d_l2_v1"
+  estimator: "sklearn.linear_model.LogisticRegression"
+  solver: "liblinear"
+  penalty: "l2"
+  C: 1.0
+  max_iter: 1000
+  random_state: 20260615
+  class_weight: null
+
+capacity_grid:
+  keep_8000: 0.200
+  keep_8250: 0.175
+  keep_8500: 0.150
+  keep_8750: 0.125
+  keep_9000: 0.100
+
+cascade:
+  require_10b_for_supported_decision: true
+  use_10b_manifest_selected_gate: true
+  expected_10b_model_id: "regularized_logistic_fast_fail_10d_l2_v1"
+  expected_10b_ablation_id: "full"
+  expected_10b_capacity_id: "keep_9400"
+  expected_10b_threshold_id: "keep_9400"
+  expected_10b_reject_fraction: 0.0600
+
+utility:
+  false_repair_capture_weight: 1.0
+  exposure_days_reduction_weight: 0.5
+  winner_injury_excess_weight: 10.0
+  e1_missed_injury_excess_weight: 5.0
+  bridge_injury_excess_weight: 2.0
+  threshold_instability_weight: 1.0
+  wrong_kill_rate_cap: 0.1500
+  e1_missed_wrong_kill_rate_cap: 0.1500
+  bridge_wrong_kill_rate_cap: 0.1500
+  winner_retention_floor: 0.8500
+  e1_missed_retention_floor: 0.8500
+  bridge_retention_floor: 0.8500
+  oos_rejected_fraction_spread_cap: 0.1500
+  train_cv_selected_reject_fraction_std_cap: 0.0500
+  oos_capture_lift_severe_reversal_floor: -0.0200
+  oos_winner_retention_floor: 0.8000
+  oos_e1_missed_retention_floor: 0.8000
+  oos_bridge_retention_floor: 0.8000
+
+ablation:
+  full_ablation_id: "full"
+  no_label_mechanism_overlap_ablation_id: "no_label_mechanism_overlap"
+
+expected_10a_sanity_counts:
+  train:
+    admitted: 8318
+    false_repair_positive_n: 3025
+    hybrid_positive_n: 3132
+    winner_n: 1491
+    e1_missed_winner_n: 811
+  validation:
+    admitted: 2514
+    false_repair_positive_n: 709
+    hybrid_positive_n: 782
+    winner_n: 161
+    e1_missed_winner_n: 64
+  robustness:
+    admitted: 4970
+    false_repair_positive_n: 1299
+    hybrid_positive_n: 1402
+    winner_n: 995
+    e1_missed_winner_n: 482
+
+diagnostics:
+  label_mismatch_rate_cap: 0.005
+  exposure_interval_invalid_rate_cap: 0.01
+  bridge_membership_missing_rate_cap_for_binding_gate: 0.5000
+  bridge_winner_min_for_binding_gate: 100
+  train_cv_fold_count: 5
+  train_cv_embargo_calendar_days: 20
