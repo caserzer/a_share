@@ -62,9 +62,13 @@ outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet
 supported training / threshold / gate scope：
 
 ```text
+population_id = 10A__same_instrument_cooldown_10d
 denominator_id = post_dedup_risk_on_r_core
+readout_only_flag = false
 target_component = false_repair_20d_component
 ```
+
+`population_id` 必须在 run config 中预声明，并且默认只能使用上面这个 10A frozen population。若要改用其他 10A arm，必须先修改本 requirement / config；不得根据 validation / robustness readout 回选。
 
 R6 只能 readout：
 
@@ -81,12 +85,15 @@ E1 baseline 只能作为外部 repair baseline、E1-missed retention 或 fallbac
 
 R2 source 处理必须作为 10C frozen input 定死，不得留作 10C 内部可调项。
 
-允许二选一，但必须预声明并记录 hash：
+10C 默认 frozen policy 固定为：
 
 ```text
-补齐 amount / volume 字段
-给 R2 单独 family budget / cooldown
+r2_source_policy = separate_family_budget_cooldown
 ```
+
+该策略表示 10C 不在本阶段补齐 amount / volume 字段，不重建 09B feature matrix，也不根据 10C 模型读数回改 10A population。R2 相关事件只允许继承 10A frozen population 中已经 materialized 的 family / cooldown 处理；`r2_source_policy`、10A population hash、09B feature matrix hash 必须写入 10C manifest。
+
+`backfill_amount_volume` 明确不是本 requirement 的支持路径。若未来要改用该路径，必须先更新本 requirement 与上游 frozen artifacts，再重新运行；不得在 10C 内部作为可调项切换。
 
 如果 R2 处理会同时改变 feature set 与样本总体，10C 必须 input-blocked 或降级 diagnostic。
 
@@ -103,6 +110,18 @@ keep_9000
 ```
 
 selected operating point 必须由 train-only threshold policy 冻结。validation / robustness 只能 readout。
+
+10C 必须先消费 10A 的 `post_dedup_false_repair_power_audit.csv`。如果出现以下情况，10C 只能输出 diagnostic：
+
+```text
+false_repair_ml_supported_gate_allowed != true
+post_dedup_false_repair_positive_n < 300
+post_dedup_winner_n < 100
+winner_retention_power_status != pass
+e1_missed_proxy_status = episode_membership_proxy_input_blocked
+```
+
+这里的 `e1_missed_proxy_status` 指 10A `post_dedup_false_repair_power_audit.csv` 中的 aggregate rollup status。`mixed_non_blocking`、`all_episode_level_proxy_from_08_membership`、`all_no_episode_membership_for_event` 都不因 E1 proxy 本身阻塞 10C；只有 `episode_membership_proxy_input_blocked` 会强制 10C diagnostic-only。
 
 ## 7. Binding Metrics
 
@@ -127,7 +146,21 @@ purged-CV 下 selected threshold / reject-fraction 的方差
 
 该 proxy 只能来自 train-only purged folds，不得读取 validation / robustness。
 
-winner retention floor 可以低于 10B fast-fail layer，但不得接近 09C 的 67% 到 70%。否则只能输出有 cost signal 但不可用的 rejector diagnostic。
+winner retention floor 可以低于 10B fast-fail layer，但必须满足：
+
+```text
+winner_retention >= 0.8500
+```
+
+如果 winner retention 接近 09C 的 67% 到 70%，或低于 0.8500，只能输出有 cost signal 但不可用的 rejector diagnostic。
+
+`OOS rejected-fraction spread` cap 冻结为：
+
+```text
+max(validation_rejected_fraction, robustness_rejected_fraction)
+    - min(validation_rejected_fraction, robustness_rejected_fraction)
+    <= 0.1500
+```
 
 ## 8. Cascade Readout
 

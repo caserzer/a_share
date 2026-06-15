@@ -63,8 +63,10 @@ supported scope：
 
 ```text
 event_regime_bucket = risk_on
-source_pool = 08_R_core_event_regime_gated
-population = 10A frozen post-dedup population
+source_pool_id = 08_R_core_event_regime_gated
+input_denominator_id = risk_on_r_core_horizon_complete
+denominator_id = post_dedup_risk_on_r_core
+population_id = 10A__same_instrument_cooldown_10d by default
 ```
 
 R6 只能 readout-only：

@@ -225,6 +225,18 @@ FS6_recurrence_local_density:
     same instrument recurrence, family recurrence, de-overlap context
 ```
 
+10B / 10A downstream `structural_swing_low_rank_v1` rule-baseline dependency requires the following frozen feature IDs to be registered as literal feature contract names, not only as feature-family concepts:
+
+| feature_id | feature_family | source_column | required `allowed_for_09C_flag` | feature_as_of_date_rule |
+| --- | --- | --- | --- | --- |
+| `close_to_ema60` | `FS2_basis_path_quality` | `close_to_ema60` | `true` | `feature_as_of_date = event_t0_date` |
+| `ema60_slope_20d` | `FS2_basis_path_quality` | `ema60_slope_20d` | `true` | `feature_as_of_date = event_t0_date` |
+| `return_20d` | `FS2_basis_path_quality` | `return_20d` | `true` | `feature_as_of_date = event_t0_date` |
+| `stock_vs_market_20d` | `FS2_basis_path_quality` | `stock_vs_market_20d` | `true` | `feature_as_of_date = event_t0_date` |
+| `atr_20_pct` | `FS3_vol_range_stop_distance` | `atr_20_pct` | `true` | `feature_as_of_date = event_t0_date` |
+
+If any of these five feature IDs cannot be produced as t0-visible, stationarity-passing, `allowed_for_09C_flag = true` columns in `feature_matrix.parquet`, 09B must still write the feature contract row with the blocking reason, and downstream 10A must treat `structural_swing_low_rank_v1` as `rule_baseline_status = input_blocked`.
+
 任何 industry feature 必须先证明 PIT membership；否则降级为 blocked 或 board-level fallback，不得静默冒充 industry。
 
 PIT membership 审计必须读取并输出：
@@ -491,6 +503,8 @@ outputs/publishable/tables/09B_feature_foundation/selected_target_binding_covera
 16. `missing_value_policy`
 
 只有 `allowed_for_09C_flag = true` 的 feature 可以进入 09C model matrix。
+
+The five frozen `structural_swing_low_rank_v1` feature IDs listed in §6 must appear at most once each in `feature_contract.csv`. If their `allowed_for_09C_flag = true`, they must also appear as same-named columns in `feature_matrix.parquet`; if any is blocked, the contract must record `allowed_for_09C_flag = false` and a non-empty `forbidden_reason`.
 
 `feature_matrix.parquet` 是 09C 唯一允许消费的 frozen feature matrix。至少包含：
 

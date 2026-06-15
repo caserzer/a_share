@@ -53,6 +53,34 @@ stationary_hygiene:
   fracdiff_max_lags: 20
   fracdiff_weight_threshold: 0.0001
 
+feature_contract:
+  structural_swing_low_rank_v1_required_features:
+    - feature_id: "close_to_ema60"
+      feature_family: "FS2_basis_path_quality"
+      source_column: "close_to_ema60"
+      allowed_for_09C_flag: true
+      feature_as_of_date_rule: "feature_as_of_date = event_t0_date"
+    - feature_id: "ema60_slope_20d"
+      feature_family: "FS2_basis_path_quality"
+      source_column: "ema60_slope_20d"
+      allowed_for_09C_flag: true
+      feature_as_of_date_rule: "feature_as_of_date = event_t0_date"
+    - feature_id: "return_20d"
+      feature_family: "FS2_basis_path_quality"
+      source_column: "return_20d"
+      allowed_for_09C_flag: true
+      feature_as_of_date_rule: "feature_as_of_date = event_t0_date"
+    - feature_id: "stock_vs_market_20d"
+      feature_family: "FS2_basis_path_quality"
+      source_column: "stock_vs_market_20d"
+      allowed_for_09C_flag: true
+      feature_as_of_date_rule: "feature_as_of_date = event_t0_date"
+    - feature_id: "atr_20_pct"
+      feature_family: "FS3_vol_range_stop_distance"
+      source_column: "atr_20_pct"
+      allowed_for_09C_flag: true
+      feature_as_of_date_rule: "feature_as_of_date = event_t0_date"
+
 diagnostic_model:
   estimator: "balanced_logistic"
   sklearn_class: "sklearn.linear_model.LogisticRegression"

@@ -58,8 +58,12 @@ supported gate 下，10B 必须在 post-dedup population 上重新训练、重�
 supported training / threshold / gate scope：
 
 ```text
+population_id = 10A__same_instrument_cooldown_10d
 denominator_id = post_dedup_risk_on_r_core
+readout_only_flag = false
 ```
+
+`population_id` 必须在 run config 中预声明，并且默认只能使用上面这个 10A frozen population。若要改用其他 10A arm，必须先修改本 requirement / config；不得根据 validation / robustness readout 回选。
 
 R6 只能 readout：
 
@@ -94,6 +98,27 @@ keep_9250 到 keep_9700
 
 并由 winner-retention floor 与 power gate 约束，不得因为 grid 包含 `keep_9000` 就允许 10% reject capacity。
 
+## 5.1 Rule Baseline
+
+10B 的主比较对象是 10A `power_audit_config.csv` 中冻结的：
+
+```text
+rule_baseline_id = structural_swing_low_rank_v1
+```
+
+该 baseline 不是 ML 模型，也不是 10A density arm。它只使用 09B frozen feature matrix 中的 t0 feature，并按以下 deterministic tuple 从最弱 structural state 到最强 structural state 排序：
+
+```text
+close_to_ema60 ascending nulls last
+ema60_slope_20d ascending nulls last
+return_20d ascending nulls last
+stock_vs_market_20d ascending nulls last
+atr_20_pct descending nulls last
+input_event_key ascending
+```
+
+每个 `capacity_id` 下，rule baseline reject 前 `ceil(post_dedup_sample_n * reject_fraction)` rows。10B 的 supported pass 必须相对该 rule baseline 与 random baseline 同时有 incremental capture lift。
+
 ## 6. Power Gate
 
 10B 必须先消费 10A 的 `post_dedup_fast_fail_power_audit.csv`。
@@ -101,10 +126,14 @@ keep_9250 到 keep_9700
 如果出现以下情况，10B 只能输出 rule-based structural stop diagnostic：
 
 ```text
-post_dedup_fast_fail_positive_n < predeclared_min_positive_count
-post_dedup_fast_fail_winner_n < predeclared_min_winner_count
-rule_baseline_rejected_fast_fail_positive_n < predeclared_min_rule_positive_count
-rule_baseline_rejected_fast_fail_winner_n < predeclared_min_rule_winner_count
+post_dedup_fast_fail_positive_n < 100
+post_dedup_fast_fail_winner_n < 20
+rule_baseline_rejected_fast_fail_positive_n < 10
+rule_baseline_rejected_fast_fail_winner_n < 3
+capture_lift_power_status != pass
+winner_injury_power_status != pass
+rule_baseline_status != pass
+fast_fail_ml_supported_gate_allowed != true
 ```
 
 低功效 split 的 low wrong-kill 读数不得写成稳定支持证据。
@@ -114,19 +143,29 @@ rule_baseline_rejected_fast_fail_winner_n < predeclared_min_rule_winner_count
 决定 pass / fail 的 binding objectives：
 
 ```text
-capacity_matched_capture_lift_over_rule_baseline > predeclared_margin
-capacity_matched_capture_lift_over_random > predeclared_margin
+capacity_matched_capture_lift_over_rule_baseline >= 0.0200
+capacity_matched_capture_lift_over_random >= 0.0200
 accepted_MAE_10_improves
+```
+
+`accepted_MAE_10_improves` 冻结为：
+
+```text
+candidate_accepted_mean_MAE_10 <= rule_baseline_accepted_mean_MAE_10
+and
+candidate_accepted_mean_MAE_10 <= random_baseline_accepted_mean_MAE_10
 ```
 
 必要 side constraints：
 
 ```text
-winner_retention >= predeclared_floor
-wrong_kill_rate <= predeclared_cap
+winner_retention >= 0.9400
+wrong_kill_rate <= 0.0600
 density_after_Layer_0 == 10A frozen density
 OOS readout no severe reversal
 ```
+
+`OOS readout no severe reversal` 冻结为：validation 与 robustness 任一 split 的 `capacity_matched_capture_lift_over_rule_baseline < -0.0100`，或 `capacity_matched_capture_lift_over_random < -0.0100`，则 supported pass 禁止，只能输出 diagnostic。
 
 winner retention 是 floor，不是主优化目标。
 

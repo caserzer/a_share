@@ -1,0 +1,65 @@
+experiment:
+  id: "10_riskon_layered_rejector_system_v0"
+  phase: "10A_density_rule_system"
+  data_cutoff: "2026-05-31"
+
+paths:
+  upstream_09a_manifest: "../09_riskon_fastfail_label_feature_uplift/outputs/manifests/09A_fast_fail_label_frontier_manifest.json"
+  upstream_09b_manifest: "../09_riskon_fastfail_label_feature_uplift/outputs/manifests/09B_feature_foundation_ablation_manifest.json"
+  upstream_09c_manifest: "../09_riskon_fastfail_label_feature_uplift/outputs/manifests/09C_riskon_cost_rejector_uplift_manifest.json"
+  upstream_09a_bindings: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet"
+  upstream_09b_feature_matrix: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/feature_matrix.parquet"
+  upstream_09b_feature_contract: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09B_feature_foundation/feature_contract.csv"
+  upstream_09b_sample_weights: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/sample_uniqueness_weights.parquet"
+  upstream_08_canonical_events: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz"
+  upstream_08_event_instances: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv.gz"
+  upstream_08_density_caliber_contract: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/reports/density_fast_fail_audit/density_fast_fail_caliber_contract.md"
+  upstream_08_scope_mapping_contract: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_mapping_contract.csv"
+  upstream_08_scope_reconstructability_audit: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_reconstructability_audit.csv"
+  upstream_08_post_replay_label_leakage_audit: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/post_replay_event_to_episode_retention_source/post_replay_label_leakage_audit.csv"
+  upstream_08_episode_membership: "../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet"
+
+outputs:
+  publishable_tables_dir: "outputs/publishable/tables/10A_density_rule_system"
+  publishable_reports_dir: "outputs/publishable/reports"
+  local_cache_dir: "outputs/local_cache/10A_density_rule_system"
+  manifests_dir: "outputs/manifests"
+
+defaults:
+  supported_population_id: "10A__same_instrument_cooldown_10d"
+  supported_denominator_id: "post_dedup_risk_on_r_core"
+  random_seed: 20260615
+
+rule_arms:
+  - rule_arm_id: "same_instrument_cooldown_10d"
+    rule_arm_type: "same_instrument_cooldown"
+    window_sessions: 10
+    cap: 1
+    required_field: null
+  - rule_arm_id: "same_family_dedup_10d"
+    rule_arm_type: "same_family_dedup"
+    window_sessions: 10
+    cap: 1
+    required_field: "source_family_id"
+  - rule_arm_id: "same_mechanism_dedup_10d"
+    rule_arm_type: "same_mechanism_dedup"
+    window_sessions: 10
+    cap: 1
+    required_field: "mechanism_id"
+  - rule_arm_id: "same_instrument_rolling_cap_10d_cap1"
+    rule_arm_type: "same_instrument_rolling_cap"
+    window_sessions: 10
+    cap: 1
+    required_field: null
+  - rule_arm_id: "same_instrument_rolling_cap_20d_cap1"
+    rule_arm_type: "same_instrument_rolling_cap"
+    window_sessions: 20
+    cap: 1
+    required_field: null
+
+structural_swing_low_rank_v1_required_features:
+  - "close_to_ema60"
+  - "ema60_slope_20d"
+  - "return_20d"
+  - "stock_vs_market_20d"
+  - "atr_20_pct"
