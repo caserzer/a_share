@@ -1,0 +1,136 @@
+{
+  "command": [
+    "experiments/pending/11_archetype_proxy_validation_system_v0/src/run_11a0_regime_pit_availability_audit.py",
+    "--config",
+    "experiments/pending/11_archetype_proxy_validation_system_v0/configs/config_11a0_regime_pit_availability_audit.yaml"
+  ],
+  "config_file_hash": "893053783fecd19b410291ce630a286aea013b546621bb9c564581551f290da4",
+  "config_hash": "2ae8c03777b4d84281c731ab99cfae9ade86c314b4b5f3bd6d8414268305b6a7",
+  "config_path": "experiments/pending/11_archetype_proxy_validation_system_v0/configs/config_11a0_regime_pit_availability_audit.yaml",
+  "created_at_utc": "2026-06-16T13:33:22.785756+00:00",
+  "experiment_id": "11_archetype_proxy_validation_system_v0",
+  "final_status": "11A0_regime_pit_available_stable_supported",
+  "git_revision": "3022f47b634ce2455bcc3c8f8ddb6991bc29dc4a",
+  "input_artifacts": {
+    "next_step_discussion": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/next_step_discussion.md",
+      "sha256": "2da86f7be29728b8c77fd0fc0069dcdf6fff827b3a277b89cb01c5becd4bb17d"
+    },
+    "pit_executable_universe": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/processed/universe/pit_largecap_main_chinext_executable_daily.csv",
+      "sha256": "92c3d52d55354e86e5093f2849dd40da1a6677159f2f5f4c4af57927eb891a13"
+    },
+    "qfq_fallback_dir": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/interim/qlib_csv/day",
+      "sha256": ""
+    },
+    "qfq_primary_dir": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq",
+      "sha256": ""
+    },
+    "requirement_11a0": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/requirement_11a0_regime_pit_availability_audit.md",
+      "sha256": "44c6cd5ee892b3f87e3f3eb6941f5cd130f370e471506d66c5c85ca7f6cd006e"
+    },
+    "requirement_11a1": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/requirement_11a1_archetype_proxy_robust_payoff_risk_audit.md",
+      "sha256": "77f7f91923740d25a1eb67972437c1e741c9cc1ec044ade3b643de88028adb1f"
+    },
+    "upstream_08_candidate_family_capture": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_capture.parquet",
+      "sha256": "ffc107a57c8612d8537e84f9c28c50708f7cfa3d6978befe276d870580918d81"
+    },
+    "upstream_08_canonical_events": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz",
+      "sha256": "1bb1c445d494cb59c57a9fbb5057dfc8b61e34e8f0f8187c27bd9ce209273cb8"
+    },
+    "upstream_08_cross_section_feature_panel": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet",
+      "sha256": "0780c31e1852c90bc7fb453678a8738d64d6de33e3429b22454cc87f6b929d88"
+    },
+    "upstream_08_event_episode_membership": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet",
+      "sha256": "77979d5324d49a3522d8ad7a25aa67fa88639f7d49206de8c2e39d6f39e8b17e"
+    },
+    "upstream_08_event_instances_optional": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv.gz",
+      "sha256": "9a289c80732260602a291b7f75908408b832180c28e760847f83212be5b5df12"
+    },
+    "upstream_08_run_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json",
+      "sha256": "77f5a1cdc7d34eaada2f25b6e95ab75ff156d7bc38e7d3d6a10964a3c6ae07c7"
+    },
+    "upstream_09a_bindings": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet",
+      "sha256": "1e252016d9d334407fdbbf1924cb3a8395f86069e76bae1c560efacc5f715191"
+    },
+    "upstream_09a_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/manifests/09A_fast_fail_label_frontier_manifest.json",
+      "sha256": "cfbff286645eed6471bfbd0ff9a4c0a60b55a3e10ac13a86a54cca6c8eb471f3"
+    },
+    "upstream_09a_regime_pit_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09A_fast_fail_label_frontier/regime_label_pit_audit.csv",
+      "sha256": "d4ec43fe7431f34f7d7ab4ae961ebb8ee0bb767fecd41efb8232bbfe0e461787"
+    },
+    "upstream_09a_regime_pit_report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/publishable/reports/09A_fast_fail_label_frontier/regime_label_pit_audit.md",
+      "sha256": "bedcf30fc0988c1e5eb1a8dc7451946976f355232425237d180916b9e9162c8c"
+    },
+    "upstream_09a_selected_label_contract": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09A_fast_fail_label_frontier/selected_label_contract.csv",
+      "sha256": "d96bf91cd76ef904ae2461b50d27712434149ae8f77017707b8875ab285b32c1"
+    },
+    "upstream_10a_event_bindings": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet",
+      "sha256": "8d5d8993b17a32cb29b68de2e8906cc50dcb698fedbab42c597d76581f9d6b4f"
+    },
+    "upstream_10a_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/outputs/manifests/10A_density_rule_system_manifest.json",
+      "sha256": "7286e02ebb313bbb6ec33d0902a5754efeee012521acd00d179674e70a8a3b59"
+    }
+  },
+  "output_hashes": {
+    "acceptance_summary": "2a1167917353a000e36675db7ee043e94cc347de1ca0b29940c8e855cf11e7cc",
+    "daily_regime_series": "91af28d98bbbaa4af249e4f7192d06acee17f38e6d8a630bf5b89d1ab9bfb005",
+    "downstream_10a_regime_coverage_audit": "6abfc2abba13cef05914763cc7b93c466f866d53cde76f0a192cc42f57fb4bbe",
+    "downstream_11a1_regime_usage_decision": "b7f7703655df7a4f82f20c8df2b4fd71aa493860a056711b2f498398437f3f5d",
+    "episode_event_regime_divergence": "d9ccf8d1b2781d9cc2bb43c042e0d54f7b0152b625672dfd6992d0c2dbdca9e1",
+    "event_regime_gating_readout": "b06a7b2e049a7f97e19f413904dd7b6e0809289766a3bd8ce95a0790fce447bd",
+    "event_regime_join_coverage": "9349d7fccf5dc82b39f6360612d03ead01449a8ebc41190ff843b73b1d4d6f8c",
+    "input_artifact_audit": "fc9dcc021a60b5fd73454aeb30054f3e3974f293768d7eea0f9043ed23188594",
+    "manifest": "6939a6fad320e924a06cae2dccc28e3bba323ef611791920a281df9a139dc96b",
+    "real_time_flip_stability": "e36ea0e6781f95514dd614882e1b3e78ae7f5d75a89e4e20ad8ce2bdd9d9dd2a",
+    "regime_age_confidence_distribution": "2d0692e76e068be6c2f59beb4b395123eea2c2871897c71475aed12608494b97",
+    "regime_daily_series_audit": "8ec181dd392b20c1677c61c5a74f4d6bfa5609f78782057958c96ec63e600898",
+    "regime_scored_events": "edab6ea3a2f36c245ed9025890acd40330e7df33c09bb76b4db9b7b198fc6ee9",
+    "regime_source_contract": "0e73b96e3dcd7990932fe7120666d696785159eb2eaaac9f6b092ab753bd924b",
+    "regime_source_reconciliation": "248ce7f3558216b89f9594b2dcb4da92331193e3f81c90d26ad315534955b2a6",
+    "report": "f2036dabf9f9216548459e468cd7f8ac402374ebabe43f841aae91a27a728f88",
+    "split_regime_sample_power": "fc02f80a87d2c12e07ac2f5c2c5d701705da112123576b7270076f5682d67536",
+    "t0_causality_audit": "9c6847890d636109bb3447eec8286aa32eee257ca6e31b0fcff0f13dc9412cb3"
+  },
+  "outputs": {
+    "acceptance_summary": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/acceptance_summary.csv",
+    "daily_regime_series": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11A0_regime_pit_availability_audit/daily_regime_series.parquet",
+    "downstream_10a_regime_coverage_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/downstream_10a_regime_coverage_audit.csv",
+    "downstream_11a1_regime_usage_decision": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/downstream_11a1_regime_usage_decision.csv",
+    "episode_event_regime_divergence": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/episode_event_regime_divergence.csv",
+    "event_regime_gating_readout": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/event_regime_gating_readout.csv",
+    "event_regime_join_coverage": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/event_regime_join_coverage.csv",
+    "input_artifact_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/input_artifact_audit.csv",
+    "manifest": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/manifest_11A0_regime_pit_availability_audit.json",
+    "real_time_flip_stability": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/real_time_flip_stability.csv",
+    "regime_age_confidence_distribution": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_age_confidence_distribution.csv",
+    "regime_daily_series_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv",
+    "regime_scored_events": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11A0_regime_pit_availability_audit/regime_scored_events.parquet",
+    "regime_source_contract": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_source_contract.csv",
+    "regime_source_reconciliation": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_source_reconciliation.csv",
+    "report": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/reports/11A0_regime_pit_availability_audit_report.md",
+    "split_regime_sample_power": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/split_regime_sample_power.csv",
+    "t0_causality_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/t0_causality_audit.csv"
+  },
+  "parent_experiment_id": "10_riskon_layered_rejector_system_v0",
+  "platform": "Linux-6.18.33.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "primary_run_id": "11A0_regime_pit_availability_audit",
+  "python": "3.11.12"
+}

@@ -1,0 +1,58 @@
+run:
+  experiment_id: "11_archetype_proxy_validation_system_v0"
+  primary_run_id: "11A0_regime_pit_availability_audit"
+  parent_experiment_id: "10_riskon_layered_rejector_system_v0"
+
+paths:
+  requirement_11a0: "requirement_11a0_regime_pit_availability_audit.md"
+  requirement_11a1: "requirement_11a1_archetype_proxy_robust_payoff_risk_audit.md"
+  next_step_discussion: "../10_riskon_layered_rejector_system_v0/next_step_discussion.md"
+
+  upstream_09a_manifest: "../09_riskon_fastfail_label_feature_uplift/outputs/manifests/09A_fast_fail_label_frontier_manifest.json"
+  upstream_09a_regime_pit_audit: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09A_fast_fail_label_frontier/regime_label_pit_audit.csv"
+  upstream_09a_regime_pit_report: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/reports/09A_fast_fail_label_frontier/regime_label_pit_audit.md"
+  upstream_09a_selected_label_contract: "../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09A_fast_fail_label_frontier/selected_label_contract.csv"
+  upstream_09a_bindings: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet"
+
+  upstream_08_run_manifest: "../08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json"
+  upstream_08_canonical_events: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz"
+  upstream_08_event_instances_optional: "../08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_event_instances.csv.gz"
+  upstream_08_cross_section_feature_panel: "../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet"
+  upstream_08_candidate_family_capture: "../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_capture.parquet"
+  upstream_08_event_episode_membership: "../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/post_replay_event_to_episode_retention_source/post_replay_event_episode_membership.parquet"
+
+  upstream_10a_manifest: "../10_riskon_layered_rejector_system_v0/outputs/manifests/10A_density_rule_system_manifest.json"
+  upstream_10a_event_bindings: "../10_riskon_layered_rejector_system_v0/outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet"
+
+  pit_executable_universe: "topics/02_AFML_BIG_WINNER/data/processed/universe/pit_largecap_main_chinext_executable_daily.csv"
+  qfq_primary_dir: "topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq"
+  qfq_fallback_dir: "topics/02_AFML_BIG_WINNER/data/interim/qlib_csv/day"
+
+scope:
+  ten_a_population_id: "10A__same_instrument_cooldown_10d"
+  ten_a_rule_arm_id: "same_instrument_cooldown_10d"
+  ten_a_denominator_id: "post_dedup_risk_on_r_core"
+  ten_a_admission_status: "admitted"
+  ten_a_readout_only_flag: false
+  downstream_required_regimes: ["risk_on"]
+
+thresholds:
+  event_market_agreement_floor: 0.995
+  event_vs_daily_match_floor: 0.995
+  t0_regime_available_floor: 0.995
+  calendar_mismatch_rate_cap: 0.005
+  daily_conflict_rate_cap: 0.01
+  date_level_min_n: 100
+  date_forward_20d_eligible_floor: 0.90
+  date_flip_end_5d_cap: 0.25
+  date_flip_end_20d_cap: 0.45
+  date_confirmation_lag_not_found_20d_cap: 0.25
+  date_median_regime_age_min: 3
+  ten_a_event_n_min: 500
+  ten_a_split_event_n_min: 100
+  ten_a_authority_regime_coverage_floor: 0.995
+
+calendar_reconciliation:
+  qfq_max_files: 0
+  # 0 means read all primary qfq files. The fallback dir is used only if the primary dir
+  # is missing or empty.

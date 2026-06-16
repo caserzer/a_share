@@ -13,7 +13,7 @@
 - experiment_id: `11_archetype_proxy_validation_system_v0`
 - primary_run_id: `11A0_regime_pit_availability_audit`
 - parent_experiment_id: `10_riskon_layered_rejector_system_v0`
-- status: `pending_implementation`
+- status: `implemented_and_run`
 - expected_entrypoint: `src/run_11a0_regime_pit_availability_audit.py`
 - expected_config: `configs/config_11a0_regime_pit_availability_audit.yaml`
 - expected_test_file: `tests/test_regime_pit_availability_audit.py`
