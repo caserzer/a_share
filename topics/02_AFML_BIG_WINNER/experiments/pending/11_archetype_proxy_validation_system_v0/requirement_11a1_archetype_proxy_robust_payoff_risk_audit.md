@@ -1,4 +1,4 @@
-# 需求：11A Archetype Proxy Robust Payoff-Risk Audit
+# 需求：11A1 Archetype Proxy Robust Payoff-Risk Audit
 
 ## 0. 本需求要回答的问题
 
@@ -6,16 +6,16 @@
 
 > 能否用 **t0 可见、可预注册、可全分母打分** 的 proxy，把 winner archetype 从事后描述转化为一个稳健的 payoff-risk screen？
 
-11A 只做诊断和审计，不授权交易、不放宽 rejector、不改变 10A/10B/10C 的既有产物。
+11A1 只做诊断和审计，不授权交易、不放宽 rejector、不改变 10A/10B/10C 的既有产物。
 
 ## 1. 实验名称与状态
 
-- experiment_id: `11A_archetype_proxy_robust_payoff_risk_audit`
+- experiment_id: `11_archetype_proxy_validation_system_v0`
 - primary_run_id: `11A1_archetype_proxy_robust_payoff_risk_audit`
 - parent_experiment_id: `10_riskon_layered_rejector_system_v0`
 - status: `pending_implementation`
-- expected_entrypoint: `src/run_11a_archetype_proxy_robust_payoff_risk_audit.py`
-- expected_config: `configs/config_11a_archetype_proxy_robust_payoff_risk_audit.yaml`
+- expected_entrypoint: `src/run_11a1_archetype_proxy_robust_payoff_risk_audit.py`
+- expected_config: `configs/config_11a1_archetype_proxy_robust_payoff_risk_audit.yaml`
 - expected_test_file: `tests/test_archetype_proxy_robust_payoff_risk_audit.py`
 
 ## 2. 核心原则
@@ -34,16 +34,16 @@ proxy 不是买入信号，也不是 winner 标签的替代品。它的作用是
 - proxy: 必须在 t0 或 t0 之前可见，可在 full denominator 上打分，用于统计检验。
 - retrospective path metric: 只能用于解释 archetype，不能进入 11A1 的 supported proxy registry。
 
-### 2.3 11A 不做的事
+### 2.3 11A1 不做的事
 
-11A 明确不做以下事项：
+11A1 明确不做以下事项：
 
 - 不输出交易策略、仓位、组合收益、手续费后策略 EV。
 - 不把 MFE 当成可实现收益；MFE 只作为上界型路径读数。
 - 不用 `winner_120`、`mfe_*`、`mae_*`、`forward_return_*` 或未来路径构造 proxy。
 - 不根据 outcome 结果反向挑选 proxy 或阈值。
 - 不修改 10A/10B/10C/10D 的输入、输出或既有结论。
-- 不用 11A 结果直接降低 10C rejector 的保留底线。
+- 不用 11A1 结果直接降低 10C rejector 的保留底线。
 
 ## 3. 上游输入
 
@@ -51,9 +51,9 @@ proxy 不是买入信号，也不是 winner 标签的替代品。它的作用是
 
 以下文件作为需求与解释来源，不作为可变数据输入：
 
-- `next_step_discussion.md`
-- `requirement_big_winner_archetype_profiling.md`
-- `outputs/publishable/reports/big_winner_archetype_profiling_report.md`
+- `../10_riskon_layered_rejector_system_v0/next_step_discussion.md`
+- `../10_riskon_layered_rejector_system_v0/requirement_big_winner_archetype_profiling.md`
+- `../10_riskon_layered_rejector_system_v0/outputs/publishable/reports/big_winner_archetype_profiling_report.md`
 
 runner 必须在 `input_artifact_audit.csv` 中记录这些文件的 path、sha256、mtime。
 
@@ -61,11 +61,11 @@ runner 必须在 `input_artifact_audit.csv` 中记录这些文件的 path、sha2
 
 必需输入：
 
-- `outputs/manifests/10A_density_rule_system_manifest.json`
-- `outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet`
-- `outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv`
-- `outputs/publishable/tables/10A_density_rule_system/post_dedup_false_repair_power_audit.csv`
-- `outputs/publishable/tables/10A_density_rule_system/power_audit_config.csv`
+- `../10_riskon_layered_rejector_system_v0/outputs/manifests/10A_density_rule_system_manifest.json`
+- `../10_riskon_layered_rejector_system_v0/outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet`
+- `../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv`
+- `../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/post_dedup_false_repair_power_audit.csv`
+- `../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/power_audit_config.csv`
 
 必须使用的主分母为 10A admitted post-dedup R-core：
 
@@ -78,7 +78,7 @@ runner 必须在 `input_artifact_audit.csv` 中记录这些文件的 path、sha2
 | `admission_status` | `admitted` |
 | `readout_only_flag` | `false` |
 
-该分母是 11A 的完整候选分母，必须保留 winner 与 non-winner、后续被 10C reject 与未被 reject 的样本。不得只在 winner episode 上评估 proxy。
+该分母是 11A1 的完整候选分母，必须保留 winner 与 non-winner、后续被 10C reject 与未被 reject 的样本。不得只在 winner episode 上评估 proxy。
 
 ### 3.3 09B t0 feature foundation
 
@@ -159,8 +159,8 @@ analysis_regime_bucket =
 
 必需输入：
 
-- `outputs/manifests/10C_false_repair_rejector_manifest.json`
-- `outputs/local_cache/10C_false_repair_rejector/post_dedup_false_repair_scores.parquet`
+- `../10_riskon_layered_rejector_system_v0/outputs/manifests/10C_false_repair_rejector_manifest.json`
+- `../10_riskon_layered_rejector_system_v0/outputs/local_cache/10C_false_repair_rejector/post_dedup_false_repair_scores.parquet`
 
 主读数使用 10C 的 frozen reference slice：
 
@@ -173,7 +173,7 @@ analysis_regime_bucket =
 | `population_id` | `10A__same_instrument_cooldown_10d` |
 | `denominator_id` | `post_dedup_risk_on_r_core` |
 
-10C score 和 reject flag 只能用于 rejected-subpopulation override readout，不允许作为 11A proxy 特征。
+10C score 和 reject flag 只能用于 rejected-subpopulation override readout，不允许作为 11A1 proxy 特征。
 
 ### 3.7 价格、PIT universe 与状态数据
 
@@ -190,7 +190,7 @@ qfq daily bar 至少包含：`instrument`, `date`, `open`, `high`, `low`, `close
 
 PIT universe/status 至少能判断样本 t0 是否属于 PIT universe，以及是否存在 ST/delist/停牌造成的不可评价状态。
 
-如果本地数据源无法识别 delisted/ST/left-tail 状态，11A 不得静默通过，必须在 `denominator_completeness_st_delist_audit.csv` 中给出 `left_tail_status_audit_incomplete`，最终状态不得高于 `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete`。
+如果本地数据源无法识别 delisted/ST/left-tail 状态，11A1 不得静默通过，必须在 `denominator_completeness_st_delist_audit.csv` 中给出 `left_tail_status_audit_incomplete`，最终状态不得高于 `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete`。
 
 ## 4. 主分母与 join contract
 
@@ -665,7 +665,7 @@ OR (family_count >= train_p60 AND channel_count >= train_p60)
 
 ### 7.1 为什么需要 matched base
 
-proxy-positive 与 full base 的直接比较可能混入时间、source pool、regime 与事件密度差异。11A 必须提供 matched base，判断 proxy 是否在可比分母下仍有 payoff-risk 优势。
+proxy-positive 与 full base 的直接比较可能混入时间、source pool、regime 与事件密度差异。11A1 必须提供 matched base，判断 proxy 是否在可比分母下仍有 payoff-risk 优势。
 
 ### 7.2 primary matched cell
 
@@ -715,7 +715,7 @@ zero/empty cell 处理：
 
 ### 7.4 regime matched readout
 
-regime 不是 11A 的 primary matched cell，但必须输出附加读数：
+regime 不是 11A1 的 primary matched cell，但必须输出附加读数：
 
 ```text
 split
@@ -891,7 +891,7 @@ null simulation 规则：
 
 > 被 10C reject 的样本中，是否存在某些 proxy 子群体具有足够右尾价值和可控风险，值得后续单独研究 override？
 
-11A 不允许直接推翻 10C rejector。
+11A1 不允许直接推翻 10C rejector。
 
 ### 10.2 子分母
 
@@ -1114,7 +1114,7 @@ local cache 默认不要求进入 git，但 manifest 必须记录其 path、sha2
 
 ```bash
 uv run python -m pytest tests/test_archetype_proxy_robust_payoff_risk_audit.py
-uv run python src/run_11a_archetype_proxy_robust_payoff_risk_audit.py --config configs/config_11a_archetype_proxy_robust_payoff_risk_audit.yaml
+uv run python src/run_11a1_archetype_proxy_robust_payoff_risk_audit.py --config configs/config_11a1_archetype_proxy_robust_payoff_risk_audit.yaml
 ```
 
 若项目当前没有 `uv` 环境，允许使用项目既有 Python runner，但必须在 report 中记录实际命令。
@@ -1134,7 +1134,7 @@ runner 完成后必须校验：
 
 - “proxy 是买入信号”
 - “MFE 收益”
-- “11A 证明策略有效”
+- “11A1 证明策略有效”
 - “可以直接 override 10C”
 
 允许使用：
@@ -1148,11 +1148,11 @@ runner 完成后必须校验：
 
 ## 15. 后续依赖
 
-11A 的唯一合法下游用途：
+11A1 的唯一合法下游用途：
 
 - 若 `screen_supported`：进入 11B，设计 rejector-safe proxy interaction 或 candidate ranking diagnostic。
 - 若 `screen_empty`：停止 archetype proxy 方向，不放宽 gate。
 - 若 `statistics_incomplete`：先补数据完整性或 matched-base power，不做策略化。
 - 若 `input_blocked`：先修数据 contract，不做统计解释。
 
-11C 的策略 EV 或组合级回测必须另立需求，不能由 11A report 直接外推。
+11C 的策略 EV 或组合级回测必须另立需求，不能由 11A1 report 直接外推。
