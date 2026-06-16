@@ -1,0 +1,95 @@
+run:
+  experiment_id: "big_winner_archetype_profiling_v0"
+  random_seed: 20260615
+  winner_label_column: "event_big_winner_120d_label"
+  winner_mfe_threshold_source: "topics/02_AFML_BIG_WINNER/configs/labels.yaml:labels.label_families.winner_120.right_tail_threshold_pct"
+  confirm_upper_barrier_source: "topics/02_AFML_BIG_WINNER/configs/labels.yaml:labels.label_families.confirm_20.upper_barrier_pct"
+  failure_lower_barrier_source: "topics/02_AFML_BIG_WINNER/configs/labels.yaml:labels.label_families.failure_10.lower_barrier_pct"
+  failure_max_drawdown_source: "topics/02_AFML_BIG_WINNER/configs/labels.yaml:labels.label_families.failure_10.max_drawdown_pct"
+  close_based_drawdown_policy_source: "topics/02_AFML_BIG_WINNER/configs/labels.yaml:labels.barrier_observation.close_based_drawdown"
+  hard_failure_first_blocks_winner_source: "topics/02_AFML_BIG_WINNER/configs/labels.yaml:labels.label_families.winner_120.hard_failure_first_blocks_winner"
+
+paths:
+  pit_executable_universe: "topics/02_AFML_BIG_WINNER/data/processed/universe/pit_largecap_main_chinext_executable_daily.csv"
+  upstream_09a_bindings: "../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet"
+  upstream_10a_bindings: "outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet"
+  upstream_10c_scores: "outputs/local_cache/10C_false_repair_rejector/post_dedup_false_repair_scores.parquet"
+  labels_config: "topics/02_AFML_BIG_WINNER/configs/labels.yaml"
+  qfq_dir: "topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq"
+  qfq_fallback_dir: "topics/02_AFML_BIG_WINNER/data/interim/qlib_csv/day"
+  board_metadata: "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv"
+  sh_name_history_dir: "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history"
+  sz_name_history: "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv"
+
+scope:
+  profiling_population: "pit_universe_winner_120_horizon_complete"
+  pit_universe_name: "pit_largecap_main_chinext"
+  pit_universe_join_key: ["instrument", "usable_trade_date"]
+  pit_universe_date_key: "usable_trade_date"
+  pit_universe_filter_policy: "require_instrument_trade_open_date_in_executable_universe"
+  injury_non_pit_policy: "exclude_from_main_readout_and_audit"
+  injury_population_id: "10A__same_instrument_cooldown_10d"
+  injury_denominator_id: "post_dedup_risk_on_r_core"
+  injury_admission_status: "admitted"
+
+forward_path:
+  forward_sessions: 120
+  min_path_coverage: 0.90
+  agg_path_mismatch_tol: 0.02
+  source_priority:
+    - "qfq_dir"
+    - "qfq_fallback_dir"
+
+board_limit_proxy:
+  main_board: 0.095
+  chinext_star: 0.195
+  st: 0.048
+  unknown_fallback: 0.095
+  board_bucket_source: "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv:board_bucket"
+  board_bucket_fallback: "code-prefix fallback"
+  st_status_sources:
+    - "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history/{instrument}.csv"
+    - "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv"
+    - "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv:name"
+  st_not_evaluable_policy: "use_board_bucket_proxy_and_mark_st_status_not_evaluable"
+
+distribution_audit:
+  quantiles: [0.01, 0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95, 0.99]
+  split_levels: ["all", "train", "validation", "robustness"]
+  path_regime_levels: ["all", "risk_on", "risk_off", "transition"]
+  required_reporting_views: ["split_only", "regime_only", "split_regime"]
+  regime_state_source: "coalesce_non_empty(09A selected_label_event_bindings.episode_regime_bucket, 09A selected_label_event_bindings.event_regime_bucket)"
+  regime_source_precedence: ["episode_regime_bucket", "event_regime_bucket"]
+  episode_regime_missing_policy: "fallback_to_event_regime_bucket_and_audit_path_regime_source"
+  residual_regime_missing_policy: "only_if_episode_and_event_regime_both_missing_or_invalid; decision_statistics_incomplete_if_nonzero"
+  histogram_bins:
+    day_to_target: [0, 20, 40, 60, 90, 120]
+    deepest_pre_target_ret_low: [-1.00, -0.30, -0.20, -0.12, -0.08, -0.04, 0.00, 0.50]
+    max_drawdown_to_target: [-1.00, -0.30, -0.20, -0.12, -0.08, -0.04, 0.00]
+    max_gap_open_return_to_target: [-0.20, -0.05, 0.00, 0.04, 0.08, 0.12, 0.20, 0.50]
+    limit_like_up_day_count_to_target: [0, 1, 2, 3, 5, 10, 120]
+
+style_migration:
+  compute_ks: true
+  compute_psi: true
+  compute_quantile_delta: true
+  compute_regime_pairwise: true
+  min_bin_count: 5
+  min_split_n_for_commentary: 100
+  min_regime_n_for_commentary: 100
+
+injury:
+  reference_10c_model_id: "regularized_logistic_false_repair_20d_l2_v1"
+  reference_10c_ablation_id: "full"
+  reference_10c_capacity_id: "keep_9000"
+  reference_10c_threshold_id: "keep_9000"
+  report_lift_alert_floor: 0.05
+
+seed_hypothesis:
+  use_appendix_a_as_binding: false
+  precedence:
+    - "seed_gap_or_event_driven_flag"
+    - "seed_shakeout_reversal_flag"
+    - "seed_volatile_chop_flag"
+    - "seed_early_momentum_flag"
+    - "seed_late_bloomer_flag"
