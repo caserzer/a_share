@@ -8,12 +8,14 @@
 
 11A1 只做诊断和审计，不授权交易、不放宽 rejector、不改变 10A/10B/10C 的既有产物。
 
+本轮 11A1 的验证范围固定为 `analysis_regime_bucket == risk_on`。原因是 10 号实验已经显示 big winner 在 `risk_on` / `risk_off` / `transition` 下的分布不同，直接跨 regime 合并会把 regime composition 差异混入 proxy payoff-risk 判断。本轮先只回答 `risk_on` 内 proxy 是否稳健；`risk_off` 与 `transition` 不在本轮 supported/empty 判定范围内。
+
 ## 1. 实验名称与状态
 
 - experiment_id: `11_archetype_proxy_validation_system_v0`
 - primary_run_id: `11A1_archetype_proxy_robust_payoff_risk_audit`
 - parent_experiment_id: `10_riskon_layered_rejector_system_v0`
-- status: `pending_implementation`
+- status: `implemented_and_run`
 - expected_entrypoint: `src/run_11a1_archetype_proxy_robust_payoff_risk_audit.py`
 - expected_config: `configs/config_11a1_archetype_proxy_robust_payoff_risk_audit.yaml`
 - expected_test_file: `tests/test_archetype_proxy_robust_payoff_risk_audit.py`
@@ -44,6 +46,17 @@ proxy 不是买入信号，也不是 winner 标签的替代品。它的作用是
 - 不根据 outcome 结果反向挑选 proxy 或阈值。
 - 不修改 10A/10B/10C/10D 的输入、输出或既有结论。
 - 不用 11A1 结果直接降低 10C rejector 的保留底线。
+- 不比较或解释 `risk_off`、`transition` 下的 proxy 支持性；这些 regime 只能作为 out-of-scope row count 审计。
+
+### 2.4 本轮 regime scope
+
+11A1 是 `risk_on-only` proxy audit：
+
+- primary evaluated denominator 必须满足 §3.2 的 10A R-core 条件，且 §3.5 的 `analysis_regime_bucket == risk_on`。
+- 在 `analysis_regime_bucket == risk_on` 之后，必须先对 PIT executable universe 做 strict inner join，只保留 PIT 命中且 t0 可执行状态有效的行进入最终 evaluated denominator。
+- `risk_off`、`transition`、`regime_missing_after_backfill` 行不得进入 proxy threshold fitting、proxy membership evaluation、matched base、bootstrap、top-k sensitivity、multiple-comparison simulation、rejected-subpopulation override supported readout 或 final supported/empty 判定。
+- runner 必须输出被排除的非 `risk_on` / missing row count，用于确认 scope，而不是把这些 row 当作负面证据。
+- 本轮报告不得把 `risk_on` 结论外推到 `risk_off` 或 `transition`。
 
 ## 3. 上游输入
 
@@ -79,6 +92,26 @@ runner 必须在 `input_artifact_audit.csv` 中记录这些文件的 path、sha2
 | `readout_only_flag` | `false` |
 
 该分母是 11A1 的完整候选分母，必须保留 winner 与 non-winner、后续被 10C reject 与未被 reject 的样本。不得只在 winner episode 上评估 proxy。
+
+在完成 §3.5 的 `analysis_regime_bucket` 回填后，evaluated denominator 必须进一步限制为：
+
+```text
+analysis_regime_bucket == risk_on
+```
+
+该过滤是本轮实验 scope，不是 outcome-driven sample selection。被排除的 `risk_off`、`transition`、missing/invalid regime 行必须保留在 `risk_on_scope_filter_audit.csv` 中计数，但不得进入任何 proxy 支持性判定。
+
+随后必须在 11A1 evaluated denominator 形成之前执行 strict PIT universe filter：
+
+```text
+10A_risk_on_row.instrument + 10A_risk_on_row.event_t0_date
+  INNER JOIN pit_largecap_main_chinext_executable_daily.instrument + membership_date
+WHERE is_listed = true
+  AND is_st = false
+  AND is_suspended = false
+```
+
+只有该过滤后的 `risk_on ∩ PIT-valid` 行允许进入 09B weights、proxy threshold fitting、proxy membership、matched base、bootstrap、top-k、multiple-comparison 与 final accepted/empty 判定。PIT 未命中或状态不可执行的行必须进入 `pit_universe_scope_filter_audit.csv` 与 `pit_universe_exclusion_diagnostic.csv`，不得作为 11A1 proxy payoff-risk 分母。
 
 ### 3.3 09B t0 feature foundation
 
@@ -136,7 +169,7 @@ runner 必须在 `input_artifact_audit.csv` 中记录这些文件的 path、sha2
 - 冻结 `labels.label_families.winner_120.hard_failure_first_blocks_winner`。
 - 输出 hard-failure-first conditioning 对 winner 分母的影响。
 
-regime readout 必须使用：
+regime scope 必须使用：
 
 ```text
 analysis_regime_bucket =
@@ -154,6 +187,8 @@ analysis_regime_bucket =
 - `transition`
 
 若以上三层均缺失或不在允许值内，必须输出 `regime_missing_after_backfill`；残余缺失率大于 0 时，最终状态不得高于 `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete`。不得把 missing 当成独立 regime 解释。
+
+本轮只保留 `analysis_regime_bucket == risk_on` 进入 evaluated denominator。`risk_off` 和 `transition` 只输出 out-of-scope count；不得在本轮报告中比较不同 regime 的 payoff-risk 或 big winner 分布，也不得把非 `risk_on` 结果纳入 `proxy_supported` / `screen_empty` 判定。
 
 ### 3.6 10C rejector score 与 rejected subpopulation readout
 
@@ -190,7 +225,14 @@ qfq daily bar 至少包含：`instrument`, `date`, `open`, `high`, `low`, `close
 
 PIT universe/status 至少能判断样本 t0 是否属于 PIT universe，以及是否存在 ST/delist/停牌造成的不可评价状态。
 
-如果本地数据源无法识别 delisted/ST/left-tail 状态，11A1 不得静默通过，必须在 `denominator_completeness_st_delist_audit.csv` 中给出 `left_tail_status_audit_incomplete`，最终状态不得高于 `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete`。
+11A1 strict 版本必须把 PIT universe 从“完整性审计”提升为“evaluated denominator 前置过滤”：
+
+- join key 固定为 `instrument + event_t0_date = instrument + membership_date`。
+- `pit_valid` 定义为 PIT membership 命中，且 `is_listed == true`、`is_st == false`、`is_suspended == false`。
+- PIT 未命中、非上市、ST、停牌行必须从最终 evaluated denominator 中排除，并在审计表中记录排除原因。
+- 若 PIT source 不存在或 PIT-valid evaluated denominator 为空，最终状态必须为 `11A1_archetype_proxy_robust_payoff_risk_input_blocked`。
+
+如果过滤后的 evaluated denominator 仍无法识别 delisted/ST/left-tail 状态，11A1 不得静默通过，必须在 `denominator_completeness_st_delist_audit.csv` 中给出 `left_tail_status_audit_incomplete`，最终状态不得高于 `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete`。
 
 ## 4. 主分母与 join contract
 
@@ -309,6 +351,7 @@ join 后必须校验：
 
 - `split`
 - `analysis_regime_bucket`
+- `risk_on_scope_flag`
 - `episode_regime_bucket_n`
 - `event_regime_backfill_n`
 - `residual_missing_n`
@@ -316,7 +359,61 @@ join 后必须校验：
 - `invalid_regime_n`
 - `regime_source_status`
 
-必须输出 `hard_failure_conditioning_reconciliation.csv`，按 `split` 和 `analysis_regime_bucket` 至少包含：
+必须输出 `risk_on_scope_filter_audit.csv`：
+
+- `split`
+- `pre_scope_primary_denominator_row_n`
+- `risk_on_evaluated_row_n`，表示 strict PIT 前的 `analysis_regime_bucket == risk_on` row count
+- `risk_off_out_of_scope_row_n`
+- `transition_out_of_scope_row_n`
+- `regime_missing_after_backfill_row_n`
+- `invalid_regime_row_n`
+- `risk_on_evaluated_rate`
+- `scope_filter_status`
+
+必须输出 `pit_universe_scope_filter_audit.csv`：
+
+- `split`
+- `pre_pit_risk_on_row_n`
+- `pit_membership_joined_row_n`
+- `pit_membership_join_rate`
+- `pit_valid_evaluated_row_n`
+- `pit_valid_evaluated_rate`
+- `pit_excluded_row_n`
+- `pit_excluded_rate`
+- `non_listed_excluded_row_n`
+- `st_excluded_row_n`
+- `suspended_excluded_row_n`
+- `pit_universe_event_date_col`
+- `pit_universe_date_key`
+- `pit_scope_filter_status`
+
+必须输出 `pit_universe_exclusion_diagnostic.csv`，至少按 `all`、`split`、`event_year`、`board_bucket`、`source_family_id` 分解：
+
+- `dimension_name`
+- `dimension_value`
+- `pit_scope_filter_reason`
+- `row_n`
+- `unique_instrument_n`
+- `winner_120_row_n`
+- `winner_120_rate`
+- `big_failure_proxy_row_n`
+- `big_failure_proxy_rate`
+
+`pit_scope_filter_reason` 至少包含：
+
+- `pit_valid`
+- `instrument_never_in_pit`
+- `before_first_pit_membership`
+- `after_last_pit_membership`
+- `not_pit_member_on_event_t0_date`
+- `not_listed_on_event_t0_date`
+- `st_on_event_t0_date`
+- `suspended_on_event_t0_date`
+
+`pit_valid_evaluated_row_n` 是 11A1 后续所有 proxy、matched base、bootstrap 与 acceptance 计算的唯一分母。若 strict PIT 前 `risk_on_evaluated_row_n == 0` 或 strict PIT 后 `pit_valid_evaluated_row_n == 0`，最终状态必须为 `11A1_archetype_proxy_robust_payoff_risk_input_blocked`。
+
+必须输出 `hard_failure_conditioning_reconciliation.csv`，在 `risk_on` evaluated denominator 内按 `split` 至少包含；`analysis_regime_bucket` 作为固定审计字段输出，取值应为 `risk_on`：
 
 - `labels_yaml_hard_failure_first_blocks_winner`
 - `primary_denominator_row_n`
@@ -463,6 +560,7 @@ big_failure_proxy = fast_fail_10 OR false_repair_20
 
 - `threshold_fit_split = train`
 - `threshold_fit_denominator_id = post_dedup_risk_on_r_core`
+- `threshold_fit_regime_scope = risk_on`
 - `threshold_fit_population_id = 10A__same_instrument_cooldown_10d`
 - `threshold_operator`
 - `threshold_quantile`
@@ -475,7 +573,7 @@ big_failure_proxy = fast_fail_10 OR false_repair_20
 
 `pre_imputation_non_null_n` 与 `pre_imputation_missing_rate` 必须优先来自 09B `feature_transform_contract.json` 的 `missing_rate_before_impute`，并用 `feature_stationarity_audit.csv.raw_missing_rate` cross-check。不得用 09B 已 train-median-impute 后的 feature matrix 非空率冒充原始可用性。
 
-若某字段 train pre-imputation 非空样本少于 500，包含该字段的 proxy family 必须标记为 `proxy_input_underpowered`。若 pre-imputation missing audit 不可得，则该字段标记为 `pre_imputation_missing_audit_unavailable`；proxy 可继续计算，但最终状态不得高于 `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete`。
+所有 threshold quantile、`fit_row_n` 与 power floor 都必须在 `analysis_regime_bucket == risk_on` 的 train evaluated denominator 内计算。若某字段 train pre-imputation 非空样本少于 500，包含该字段的 proxy family 必须标记为 `proxy_input_underpowered`。若 pre-imputation missing audit 不可得，则该字段标记为 `pre_imputation_missing_audit_unavailable`；proxy 可继续计算，但最终状态不得高于 `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete`。
 
 ### 6.4 预注册 proxy family
 
@@ -665,11 +763,11 @@ OR (family_count >= train_p60 AND channel_count >= train_p60)
 
 ### 7.1 为什么需要 matched base
 
-proxy-positive 与 full base 的直接比较可能混入时间、source pool、regime 与事件密度差异。11A1 必须提供 matched base，判断 proxy 是否在可比分母下仍有 payoff-risk 优势。
+proxy-positive 与 full base 的直接比较可能混入时间、source pool 与事件密度差异。11A1 必须先过滤到 `analysis_regime_bucket == risk_on`，再提供 matched base，判断 proxy 是否在同一 regime 的可比分母下仍有 payoff-risk 优势。
 
 ### 7.2 primary matched cell
 
-每个 proxy family 单独构造 matched base。proxy-positive rows 与 proxy-negative rows 使用以下 cell 对齐：
+每个 proxy family 单独在 `risk_on` evaluated denominator 内构造 matched base。proxy-positive rows 与 proxy-negative rows 使用以下 cell 对齐：
 
 ```text
 split
@@ -713,24 +811,19 @@ zero/empty cell 处理：
 
 否则该 split 标记为 `matched_base_underpowered`。如果 train 或 robustness underpowered，该 proxy 不得进入 supported。
 
-### 7.4 regime matched readout
+### 7.4 risk_on scope audit
 
-regime 不是 11A1 的 primary matched cell，但必须输出附加读数：
+本轮不做 `risk_on` / `risk_off` / `transition` matched readout。`analysis_regime_bucket` 只用于 scope filtering：
 
-```text
-split
-event_year_quarter
-source_family_id
-analysis_regime_bucket
-```
-
-`analysis_regime_bucket` 必须按 §3.5 的 `episode_regime_bucket -> 10A.event_regime_bucket -> 09A.event_regime_bucket` 顺序回填。仍无法回填时输出 `regime_missing_after_backfill`，不得把 missing 当成独立 regime 解释 big winner 分布。
+- `risk_on` 行进入 evaluated denominator。
+- `risk_off`、`transition`、`regime_missing_after_backfill` 行只进入 `risk_on_scope_filter_audit.csv`。
+- supported/empty 判定不得引用非 `risk_on` 行的 payoff、winner 或 failure 读数。
 
 ## 8. Robust payoff-risk metrics
 
 ### 8.1 基础 count 与 coverage
 
-每个 proxy family、split、regime readout、matched status 必须输出：
+每个 proxy family、split、matched status 必须在 `risk_on` evaluated denominator 内输出：
 
 - `denominator_row_n`
 - `proxy_positive_row_n`
@@ -798,7 +891,7 @@ return_60d_per_rejector_active_day_diagnostic
 
 ### 9.1 split 约束
 
-阈值只在 train 拟合。评估必须分别输出：
+阈值只在 `risk_on` train evaluated denominator 内拟合。评估必须在 `risk_on` evaluated denominator 内分别输出：
 
 - `train`
 - `validation`
@@ -875,9 +968,10 @@ return_60d_per_rejector_active_day_diagnostic
 
 null simulation 规则：
 
-1. 在每个 `split + event_year_quarter + source_family_id` cell 内随机置换 proxy membership，保持每个 proxy 的 coverage 不变。
-2. 每次 simulation 重新计算 hard veto、required evidence items 与 `evidence_score`。
-3. 至少运行 500 次，random_seed 使用 `20260616`。
+1. 只在 `risk_on` evaluated denominator 内运行。
+2. 在每个 `split + event_year_quarter + source_family_id` cell 内随机置换 proxy membership，保持每个 proxy 的 coverage 不变。
+3. 每次 simulation 重新计算 hard veto、required evidence items 与 `evidence_score`。
+4. 至少运行 500 次，random_seed 使用 `20260616`。
 
 该审计解释为：proxy family 是否优于同 coverage、同时间/source-family 分布的随机 proxy；它不是总体 power test，也不用于重估 base rate。
 
@@ -895,7 +989,7 @@ null simulation 规则：
 
 ### 10.2 子分母
 
-使用 10C frozen reference slice：
+使用 `risk_on` evaluated denominator 内的 10C frozen reference slice：
 
 ```text
 candidate_rejected_flag == true
@@ -937,6 +1031,7 @@ underpowered 不代表负面结论，但禁止在报告中称其支持 override�
 
 - 主输入文件缺失。
 - 10A primary denominator 为空。
+- `analysis_regime_bucket == risk_on` 的 evaluated denominator 为空。
 - 10A -> 09B feature join 成功率 < 99.5%。
 - 10A -> 08 label join 成功率 < 99.5%。
 - 所有 category A proxy 都因字段缺失或阈值 underpowered 无法计算。
@@ -947,6 +1042,7 @@ underpowered 不代表负面结论，但禁止在报告中称其支持 override�
 
 - 10A -> 09A label frontier join 成功率 < 99.5%。
 - 09A regime source 部分缺失但可由 10A `event_regime_bucket` 回填。
+- `risk_off` 或 `transition` 行被 scope filter 排除。
 - hard-failure conditioning reconciliation 所需字段部分不可得。
 - pre-imputation missing audit 不可得。
 
@@ -1013,8 +1109,8 @@ validation split 只作为 out-of-sample readout，不作为硬门槛；若 vali
 
 | status | 条件 |
 | --- | --- |
-| `11A1_archetype_proxy_robust_payoff_risk_screen_supported` | global gates 通过，无 statistics-incomplete ceiling，且至少一个 category A proxy 达到 `proxy_supported` |
-| `11A1_archetype_proxy_robust_payoff_risk_screen_empty` | global gates 通过，无 statistics-incomplete ceiling，统计完整，但无 proxy 达到 `proxy_supported` |
+| `11A1_archetype_proxy_robust_payoff_risk_screen_supported` | global gates 通过，无 statistics-incomplete ceiling，且 `risk_on` evaluated denominator 内至少一个 category A proxy 达到 `proxy_supported` |
+| `11A1_archetype_proxy_robust_payoff_risk_screen_empty` | global gates 通过，无 statistics-incomplete ceiling，统计完整，但 `risk_on` evaluated denominator 内无 proxy 达到 `proxy_supported` |
 | `11A1_archetype_proxy_robust_payoff_risk_statistics_incomplete` | 输入可读，但 matched base、ST/delist、horizon 或 power 审计不完整，无法给 supported/empty |
 | `11A1_archetype_proxy_robust_payoff_risk_input_blocked` | global input gates 失败 |
 
@@ -1036,13 +1132,15 @@ outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/
 - `denominator_completeness_st_delist_audit.csv`
 - `label_join_reconciliation_audit.csv`
 - `regime_source_reconciliation_audit.csv`
+- `risk_on_scope_filter_audit.csv`
+- `pit_universe_scope_filter_audit.csv`
+- `pit_universe_exclusion_diagnostic.csv`
 - `hard_failure_conditioning_reconciliation.csv`
 - `proxy_definition_registry.csv`
 - `proxy_threshold_registry.csv`
 - `proxy_membership_count.csv`
 - `matched_base_construction_audit.csv`
 - `robust_payoff_risk_readout.csv`
-- `regime_provisional_readout.csv`
 - `bootstrap_stability_readout.csv`
 - `topk_sensitivity_readout.csv`
 - `multiple_comparison_audit.csv`
@@ -1065,7 +1163,7 @@ outputs/local_cache/11A1_archetype_proxy_robust_payoff_risk_audit/
 - `matched_base_row_weights.parquet`
 - `bootstrap_samples.parquet`
 
-local cache 默认不要求进入 git，但 manifest 必须记录其 path、sha256、row_count、schema。
+`proxy_scored_denominator.parquet`、`matched_base_row_weights.parquet` 与 `bootstrap_samples.parquet` 均只能包含 strict PIT 后的 `risk_on ∩ PIT-valid` evaluated rows；若保存 pre-scope 或 pre-PIT intermediate cache，必须另命名并在 manifest 标记为 `scope_audit_only`，不得被后续 acceptance 读取。local cache 默认不要求进入 git，但 manifest 必须记录其 path、sha256、row_count、schema。
 
 ### 12.3 report 与 manifest
 
@@ -1077,11 +1175,11 @@ local cache 默认不要求进入 git，但 manifest 必须记录其 path、sha2
 报告必须包含：
 
 1. 数据来源与 join 成功率。
-2. 主分母 row count 与 PIT/ST/delist 完整性。
+2. 主分母 row count、`risk_on` scope filter、strict PIT universe filter、PIT/ST/delist 完整性。
 3. 每个 proxy 的字段、阈值和 coverage。
 4. 每个 proxy 的 payoff-risk matched-base 对比。
-5. train/validation/robustness/all 分 split 读数。
-6. risk_on/risk_off/transition regime 附加读数，并解释 `analysis_regime_bucket` 的 episode/event 回填来源。
+5. `risk_on` 内 train/validation/robustness/all 分 split 读数。
+6. `analysis_regime_bucket` 的 episode/event 回填来源、`risk_on` pre-PIT row count、PIT-valid evaluated row count、PIT exclusion reason，以及 `risk_off` / `transition` / missing 被排除的 row count；不得输出跨 regime proxy 支持性比较。
 7. top-k sensitivity、bootstrap 与 multiple-comparison audit 解释。
 8. rejected-subpopulation override readout，并明确 underpowered 状态。
 9. final_status 与不能越界使用的说明。
@@ -1102,6 +1200,8 @@ local cache 默认不要求进入 git，但 manifest 必须记录其 path、sha2
 - train-only quantile threshold fitting。
 - pre-imputation missing audit 读取 `feature_transform_contract.json` / `feature_stationarity_audit.csv`。
 - `big_failure_proxy = fast_fail_10 OR false_repair_20`。
+- `analysis_regime_bucket == risk_on` scope filter：非 `risk_on` 行只进入 `risk_on_scope_filter_audit.csv`，不进入 threshold/matched/bootstrap/acceptance。
+- strict PIT universe filter：`risk_on` 后必须先 inner join PIT universe，只保留 PIT-valid 行进入 09B weights、threshold/matched/bootstrap/acceptance；PIT miss/ST/停牌/非上市行只能进入 PIT 审计表。
 - matched base deterministic cell reweighting 与 zero/empty cell 排除。
 - primary instrument bootstrap 与 secondary event bootstrap 分离。
 - hard veto、required evidence items 与 evidence score 分离。

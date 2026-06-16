@@ -1,0 +1,9 @@
+proxy_family_id,category,field_list,description,field_n,missing_fields,forbidden_fields,contract_bad_fields,contract_missing_fields,underpowered_fields,missing_audit_unavailable_fields,proxy_input_status
+P1_gap_event_proxy,A_t0_feature_contract,gap_open_pct|intraday_range_atr_norm|close_position_in_range|amount_ratio_20d|turnover_ratio_20d|family_count|channel_count,event shock: gap/range/volume-position,7,,,,,,,ok
+P2_shakeout_prior_path_proxy,A_t0_feature_contract,close_to_high_60|close_to_high_120|upper_shadow_pct|close_position_in_range|atr_pct_rank_60d|stock_vs_board_20d,shakeout near prior high with higher volatility,6,,,,,,,ok
+P3_volatility_expansion_proxy,A_t0_feature_contract,direction_entropy_20d|atr_pct_rank_60d|range_width_ratio_20d_60d,directional entropy plus volatility expansion,3,,,,,,,ok
+P4_momentum_leader_proxy,A_t0_feature_contract,momentum_percentile_20d|return_20d|close_to_ema20,relative momentum leadership,3,,,,,,,ok
+P5_low_noise_accumulation_proxy,A_t0_feature_contract,return_20d|atr_pct_rank_60d|prior_event_count_60d|ema60_positive_run,"moderate trend, lower volatility, repeated prior events",4,,,,,,,ok
+P6_repair_structure_proxy,A_t0_feature_contract,close_to_ema20|close_to_ema60|ema20_slope_20d|atr_pct_rank_60d,clean EMA repair structure with controlled volatility,4,,,,,,,ok
+P7_flow_confirmation_proxy,A_t0_feature_contract,amount_ratio_20d|amount_ratio_60d|turnover_ratio_20d|turnover_ratio_60d|quality_amount_flag,amount/turnover confirmation,5,,,,,,,ok
+P8_recurrence_density_proxy,A_t0_feature_contract,prior_event_count_20d|prior_event_count_60d|family_count|channel_count|raw_cluster_event_count,same instrument/family recurrence density,5,,,,,,,ok
