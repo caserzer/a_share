@@ -1,0 +1,322 @@
+{
+  "cache_artifacts": {
+    "bootstrap_samples": {
+      "path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11A2_post_t0_archetype_path_divergence_diagnostic/bootstrap_samples.parquet",
+      "row_count": 2000,
+      "schema": [
+        {
+          "dtype": "object",
+          "name": "contrast_id"
+        },
+        {
+          "dtype": "object",
+          "name": "block_level"
+        },
+        {
+          "dtype": "int64",
+          "name": "bootstrap_iteration"
+        },
+        {
+          "dtype": "float64",
+          "name": "confirmed_divergence_onset_day"
+        },
+        {
+          "dtype": "float64",
+          "name": "dual_channel_tier2_stability_adjusted_onset_day"
+        },
+        {
+          "dtype": "float64",
+          "name": "return_channel_tier3_confirmed_onset_day"
+        },
+        {
+          "dtype": "float64",
+          "name": "structure_channel_tier3_confirmed_onset_day"
+        }
+      ],
+      "sha256": "8014da7fa52bf46543fdd159498e5f8a10bbe47fca97f5ce47992d8cb803f2f7"
+    },
+    "early_path_feature_matrix": {
+      "path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11A2_post_t0_archetype_path_divergence_diagnostic/early_path_feature_matrix.parquet",
+      "row_count": 55980,
+      "schema": [
+        {
+          "dtype": "int64",
+          "name": "row_id"
+        },
+        {
+          "dtype": "object",
+          "name": "split"
+        },
+        {
+          "dtype": "object",
+          "name": "instrument"
+        },
+        {
+          "dtype": "object",
+          "name": "event_t0_date"
+        },
+        {
+          "dtype": "object",
+          "name": "event_year_quarter"
+        },
+        {
+          "dtype": "object",
+          "name": "source_family_id_matched"
+        },
+        {
+          "dtype": "object",
+          "name": "binding_canonical_event_id"
+        },
+        {
+          "dtype": "float64",
+          "name": "final_sample_weight"
+        },
+        {
+          "dtype": "bool",
+          "name": "class_big_winner_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "class_big_failure_proxy_nonwinner_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "subclass_fast_fail_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "subclass_false_repair_only_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "class_neutral_chop_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "class_all_nonwinner_resolved_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "class_unresolved_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "winner_120_bool"
+        },
+        {
+          "dtype": "bool",
+          "name": "fast_fail_10_bool"
+        },
+        {
+          "dtype": "bool",
+          "name": "false_repair_20_bool"
+        },
+        {
+          "dtype": "float64",
+          "name": "mfe_120d_frozen"
+        },
+        {
+          "dtype": "float64",
+          "name": "forward_return_120d"
+        },
+        {
+          "dtype": "int64",
+          "name": "K"
+        },
+        {
+          "dtype": "object",
+          "name": "entry_anchor_date"
+        },
+        {
+          "dtype": "float64",
+          "name": "entry_anchor_price"
+        },
+        {
+          "dtype": "float64",
+          "name": "event_t0_close"
+        },
+        {
+          "dtype": "bool",
+          "name": "ep_fast_fail_barrier_touched_by_K_flag"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_days_to_first_fast_fail"
+        },
+        {
+          "dtype": "float64",
+          "name": "mfe_120_recomputed"
+        },
+        {
+          "dtype": "object",
+          "name": "mfe_basis_status"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_ret_t0_to_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_close_vs_t0_close"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_max_drawdown_to_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_min_close_ret_to_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_recovery_from_min_to_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_close_in_range_K"
+        },
+        {
+          "dtype": "bool",
+          "name": "ep_close_above_ema20_at_K_flag"
+        },
+        {
+          "dtype": "int64",
+          "name": "ep_days_above_ema20_through_K"
+        },
+        {
+          "dtype": "bool",
+          "name": "ep_breach_t0_low_through_K_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "ep_close_above_t0_high_at_K_flag"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_down_day_vol_contraction_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_up_day_vol_expansion_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_vol_decay_ratio_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_atr_change_t0_to_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_range_contraction_K"
+        },
+        {
+          "dtype": "bool",
+          "name": "ep_structural_drawdown_8pct_by_K_flag"
+        },
+        {
+          "dtype": "bool",
+          "name": "ep_structural_drawdown_10pct_by_K_flag"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_days_to_first_structural_drawdown"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_mfe_to_K"
+        },
+        {
+          "dtype": "float64",
+          "name": "ep_mae_to_K"
+        },
+        {
+          "dtype": "object",
+          "name": "cohort"
+        },
+        {
+          "dtype": "bool",
+          "name": "eligible_flag"
+        },
+        {
+          "dtype": "object",
+          "name": "fill_reason"
+        },
+        {
+          "dtype": "float64",
+          "name": "delist_haircut"
+        },
+        {
+          "dtype": "object",
+          "name": "instrument_source"
+        }
+      ],
+      "sha256": "ffa33b02d95ecdd45a29187aab16e49ec05368d76fed081b0570ffb38f2068c8"
+    }
+  },
+  "command": [
+    "experiments/pending/11_archetype_proxy_validation_system_v0/src/run_11a2_post_t0_archetype_path_divergence_diagnostic.py",
+    "--config",
+    "experiments/pending/11_archetype_proxy_validation_system_v0/configs/config_11a2_post_t0_archetype_path_divergence_diagnostic.yaml"
+  ],
+  "config_hash": "bb661b1e9998a86085d951c3d334a1174a40028327556a729eeca88f2340ec17",
+  "config_path": "experiments/pending/11_archetype_proxy_validation_system_v0/configs/config_11a2_post_t0_archetype_path_divergence_diagnostic.yaml",
+  "config_sha256": "6f02288343574aefc2018e3c79878d8ecd786d504cff69bb379a199c661eff0f",
+  "created_at_utc": "2026-06-17T07:35:52.152030+00:00",
+  "final_status": "11A2_post_t0_archetype_path_divergence_separation_detected_tradable",
+  "git_revision": "9ee0eab7a0fc316557fb2991a38a9d0201993fe6",
+  "output_hashes": {
+    "bootstrap_samples": "8014da7fa52bf46543fdd159498e5f8a10bbe47fca97f5ce47992d8cb803f2f7",
+    "bootstrap_separation_readout": "b95cc085592107e4f8057bade50a541749eb7bb54d947e4cdbf69735299e49ed",
+    "denominator_contract_audit": "02f338280ed0f74da5b80c6908f54869bbf29a7a84bac4d2a8cbfeb17141d5ba",
+    "diagnostic_summary": "041608b10e6e77abc2bfd8588e949d07efd672bfcf6788abbdee353ac87bf4b0",
+    "divergence_onset_readout": "ea091e1635b81eba4aaafc23529e62869f723d105b6172bbf2b6e3f8140cd40c",
+    "early_path_feature_coverage_audit": "7cf03e610c89fd1c5ff870b68fec5f1be30012dae33a1d1c0c5dce79a4b03ef6",
+    "early_path_feature_matrix": "ffa33b02d95ecdd45a29187aab16e49ec05368d76fed081b0570ffb38f2068c8",
+    "early_path_feature_registry": "750470dd809e4e715c47ea08d97d6d5366f64c67b4301944fea5d2b199b753df",
+    "full_cohort_fill_audit": "e0b6d85476ff569643b4ea45c9dfc415d6ee3189898cf365e45ef5e43cbc0786",
+    "input_artifact_audit": "ba7bf402f47ecf9e78f5e2049aed141c72c217e1d01f431e528407d36d8ccc5b",
+    "label_overlap_tautology_audit": "e7e0f853f6897dcbc7c2cbec77a04cd15c797b02c86a563cab96beef6a8677b7",
+    "mfe_basis_reconciliation": "ef9e7b5111dd240c6c562cdb77ccaca6e1129eef8839f570c811d7ff13deac1a",
+    "multiple_comparison_audit": "3c735894d13fd9cff531397b0d6efc29727e12b3111a2abd85dcfce670600840",
+    "multivariate_separability_readout": "b1b70834c4dde80011d193af8ec481f421f47ba5d7baee88928fceb699498986",
+    "outcome_class_count_audit": "850145ab0f080e91034490375fe9a8c4062230e8268efd9b563efeb97c9f0568",
+    "price_anchor_reconciliation": "d8b693d62cdf02139ff512a93f8a3be8db8fc6ce7ab5ae3e0a006d9e9e25d062",
+    "report": "5b3f0075d13c9b67faba6a45298f00717a9ad45b2231be2125eaa88ed742c21c",
+    "scope_reconciliation_vs_11a1": "410f0a1a0629e7134467519097f9e9b6b25a7fcd9f54628b4a2a4c2651c60c08",
+    "separation_curve_readout": "8f71e759a36a500b2e439baa5adf711bc3c271ef4d47e321654d02754b21d54f",
+    "split_onset_consistency": "6b01041f204190b95ce83036a10000a1285868ef90076e211134614abc4722d8",
+    "survivorship_separation_audit": "4dbecb2a51232975d0fc59be0ef1df7ba4bf682d249c94b7aae8a0cf6c184d91",
+    "touch_pos_coordinate_policy": "8d3dd3aabd26b6eae763d346e5e1814f2ddc50f80811ddcd5120f39d6eee373f",
+    "tradability_lag_readout": "9604702f06aeede76eefc170f81938d39c06ac298be725ae7bad1b11f463fa5e"
+  },
+  "outputs": {
+    "bootstrap_samples": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11A2_post_t0_archetype_path_divergence_diagnostic/bootstrap_samples.parquet",
+    "bootstrap_separation_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/bootstrap_separation_readout.csv",
+    "denominator_contract_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/denominator_contract_audit.csv",
+    "diagnostic_summary": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/diagnostic_summary.csv",
+    "divergence_onset_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/divergence_onset_readout.csv",
+    "early_path_feature_coverage_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/early_path_feature_coverage_audit.csv",
+    "early_path_feature_matrix": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11A2_post_t0_archetype_path_divergence_diagnostic/early_path_feature_matrix.parquet",
+    "early_path_feature_registry": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/early_path_feature_registry.csv",
+    "full_cohort_fill_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/full_cohort_fill_audit.csv",
+    "input_artifact_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/input_artifact_audit.csv",
+    "label_overlap_tautology_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/label_overlap_tautology_audit.csv",
+    "mfe_basis_reconciliation": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/mfe_basis_reconciliation.csv",
+    "multiple_comparison_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/multiple_comparison_audit.csv",
+    "multivariate_separability_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/multivariate_separability_readout.csv",
+    "outcome_class_count_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/outcome_class_count_audit.csv",
+    "price_anchor_reconciliation": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/price_anchor_reconciliation.csv",
+    "report": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/reports/11A2_post_t0_archetype_path_divergence_diagnostic_report.md",
+    "scope_reconciliation_vs_11a1": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/scope_reconciliation_vs_11a1.csv",
+    "separation_curve_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/separation_curve_readout.csv",
+    "split_onset_consistency": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/split_onset_consistency.csv",
+    "survivorship_separation_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/survivorship_separation_audit.csv",
+    "touch_pos_coordinate_policy": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/touch_pos_coordinate_policy.csv",
+    "tradability_lag_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/tradability_lag_readout.csv"
+  },
+  "platform": "Linux-6.18.33.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.4",
+  "run_id": "11A2_post_t0_archetype_path_divergence_diagnostic"
+}

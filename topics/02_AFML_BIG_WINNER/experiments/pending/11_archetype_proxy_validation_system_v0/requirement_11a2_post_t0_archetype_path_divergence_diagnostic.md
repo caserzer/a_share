@@ -62,7 +62,7 @@
 
 1. **幸存者条款（survivorship）**：早期路径特征条件在「存活到 t0+K」上。任何分离都必须**同时**在两种口径下报告：
    - (a) survivors-only：t0+K 仍 active 的样本；
-   - (b) full-cohort：包含在 t0+K 之前已 fast-fail / 退市 / 停牌的样本，并对其早期路径用 §6.4 预注册 fill contract 赋值（退市按 `delist_haircut` 参数；停牌 carry-forward 停牌前最后收盘；barrier-stop 命中按 barrier 价）。
+   - (b) full-cohort：包含在 t0+K 之前已 fast-fail / 退市 / 停牌的样本，并对退市 / 停牌导致的不可成交路径用 §6.4 预注册 fill contract 赋值（退市按 `delist_haircut` 参数；停牌 carry-forward 停牌前最后收盘）。**fast-fail label touch 本身不得作为 primary full-cohort 的终止性 fill 事件**：若 touch 后仍有真实 qfq bar，EP1–EP7、`ep_mfe/ep_mae`、onset 与 tradability 一律继续使用真实价格路径；`selected_fast_fail_*` touch / barrier 字段只能进入 EP8B label-overlap audit。
    `separation_detected_*` 状态必须以 full-cohort confirmed K* 为准（见 §7.3 / §9）；survivors-only 仅作对照。若分离仅在 survivors-only 口径成立，而在 full-cohort 口径塌缩，则该分离必须标记 `survivorship_induced_separation`，最终状态不得为 `separation_detected_tradable`。
 
 2. **可交易性条款（tradability lag）**：若分离只在「最终行情已实现大部分」之后才出现，则预注册结论是 `separation_detected_late`，不是成功。判据见 §7.4：在 full-cohort confirmed onset day `K*`，big winner 组 `median(ep_mfe_to_K* / mfe_120_recomputed)`（同源同锚点重算，见 §7.4）超过 `tradability_realized_fraction_ceiling`（默认 0.50）即判为 late。
@@ -135,9 +135,9 @@ analysis_regime_bucket =
 - SH name history dir: `topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history`
 - SZ name history: `topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv`
 
-qfq daily bar 至少包含：`instrument`, `date`, `open`, `high`, `low`, `close`, `volume`, `money`。
+qfq primary daily bar 至少包含：`instrument`, `date`, `open`, `high`, `low`, `close`, `volume`, `money`。若使用 qfq fallback dir，允许从文件名派生 `instrument`，但必须在 `early_path_feature_coverage_audit.csv` / manifest 中标记 `instrument_source = filename_derived_fallback`。
 
-PIT/status 数据必须能在 t0 之后逐日判断退市 / ST / 停牌，用于 §2.3 幸存者条款的 full-cohort fill。
+PIT/status 数据必须能在 t0 之后逐日判断退市 / 停牌，用于 §2.3 幸存者条款的 full-cohort fill。`ST` 仅用于 t0 strict PIT eligibility（`event_t0_date` 当天 `is_st=false`），**本轮不做 post-t0 / future-ST 状态处理**：t0 之后进入 ST 不作为 full-cohort fill、剔除、终止或 final-status ceiling 条件。
 
 > 早期路径特征只允许使用 t0 之后**实际发生**的 daily bar；不得使用任何超出 `[t0, t0+K]` 窗口的未来信息构造 t0+K 的特征值（例如 t0+K 的特征不得引用 t0+20 的价格）。
 
@@ -247,7 +247,7 @@ K ∈ {1, 3, 5, 10, 15, 20}  （交易日，相对 t0）
 - 所有「收益型」early-path 量（`ep_ret_t0_to_K`、`ep_max_drawdown_to_K`、`ep_recovery_from_min_to_K`、`ep_mfe_to_K`、`ep_mae_to_K`）一律以 `entry_anchor_price` 为分母，模拟「t0 收盘看到事件、t0+1 开盘可建仓」的可执行口径，避免把 t0 当日不可成交的涨跌幅算进收益。
 - 「结构型」量（`ep_close_vs_t0_close`、`ep_breach_t0_low_through_K_flag`、`ep_close_above_t0_high_at_K_flag`）以 `event_t0_close` / t0 当日 high/low 为参考。
 - 窗口区间统一为 `(t0, t0+K]`，即从 `t0+1` 到 `t0+K`（含），不含 t0 当日。`ep_mfe_to_K`、`ep_mae_to_K` 在该区间内用 daily high/low 相对 `entry_anchor_price` 计算。
-- runner 必须输出 `price_anchor_reconciliation.csv`，把 `entry_anchor_price` 与 10A label 的 `trade_open_date` / `trade_open_price`（若存在）逐行对账：字段 `anchor_date_match_rate`、`anchor_price_rel_diff_p95`、`anchor_source`、`anchor_status`。若 10A 未物化 trade-open 字段，则锚点回退为 `t0+1` qfq 开盘价并标 `anchor_fallback_t0p1_open`；若 `t0+1` 开盘缺失（停牌等），按 §6.4 full-cohort fill 处理并标 `anchor_unavailable_filled`。
+- runner 必须输出 `price_anchor_reconciliation.csv`，把 `entry_anchor_price` 与 10A/11A1 物化的 executable anchor 逐行对账：优先使用 `event_window_anchor_date` / `event_window_anchor_pos`，并把 09A `trade_time` 视作同义 trade-open date cross-check；若上游另有 `trade_open_date` / `trade_open_price`（例如 08 label artifact）则作为补充 price check。字段至少包括 `anchor_date_match_rate`、`anchor_price_rel_diff_p95`、`anchor_source`、`anchor_status`。`entry_anchor_price` 必须从 qfq 在 `event_window_anchor_date`（通常为 t0+1 可执行开盘日）的 `open` 重算；若只存在 `event_t0_date` 而无法解析 executable anchor，则回退为 `session_after(event_t0_date)` qfq 开盘价并标 `anchor_fallback_t0p1_open`；若开盘缺失（停牌等），按 §6.4 full-cohort fill 处理并标 `anchor_unavailable_filled`。
 - 锚点对账失败率（`1 - anchor_date_match_rate`）超过 config 阈值（默认 0.5%）时，最终状态不得高于 `11A2_post_t0_archetype_path_divergence_statistics_incomplete`。
 
 ### 6.3 特征族（全部 category B early-path readout）
@@ -283,19 +283,19 @@ survivors-only 与 full-cohort 两口径的 fill 规则必须写成可执行 con
 
 survivors-only 口径：要求样本在 `(t0, t0+K]` 内有完整 daily bar 且 `entry_anchor_price` 可得；否则该样本在该 K 的 survivors-only 统计中剔除并计数。
 
-full-cohort 口径：在 `(t0, t0+K]` 内发生终止性事件的样本不得剔除，按下列**优先级顺序**（先命中先适用）赋值，并记录 `fill_reason`：
+full-cohort 口径：在 `(t0, t0+K]` 内发生退市 / 停牌导致不可成交的样本不得剔除，按下列**优先级顺序**（先命中先适用）赋值，并记录 `fill_reason`。fast-fail label touch 不是 primary full-cohort 的终止性事件，不能改写 EP1–EP7 / `ep_mfe` / `ep_mae` 的真实价格路径。
 
 | 优先级 | fill_reason | 状态源 | 触发条件 | 填充价 / 赋值 |
 | --- | --- | --- | --- | --- |
 | 1 | `delisted` | board metadata + SH/SZ name history delist date | 在 `(t0, t0+K]` 内退市 | 退市生效日起，价格序列填 `delist_fill_price`；config 预注册为 `last_tradable_close * (1 - delist_haircut)`，默认 `delist_haircut = 1.0`（即归零）；同时输出 `delist_haircut` 取值，便于敏感性 |
 | 2 | `suspended` | PIT universe `is_suspended` + qfq 缺 bar | 在 `(t0, t0+K]` 内停牌且无成交 | 停牌期价格 carry-forward 停牌前最后收盘 `last_pre_suspend_close`；复牌后恢复真实 bar |
-| 3 | `barrier_stop_fast_fail` | 09A `selected_fast_fail_barrier_id` + `selected_fast_fail_touch_pos` | fast-fail touch session date `<= t0+K`（见下方坐标系约束） | 触达日起价格填该 barrier 价 `fast_fail_barrier_price`（来自 09A barrier 定义）；`fast_fail_barrier_price` 不可得时填触达日 qfq 收盘并标 `barrier_price_fallback_close` |
-| 4 | `complete_path` | qfq | 窗口内完整可成交 | 使用真实 daily bar |
+| 3 | `complete_path` | qfq | 窗口内完整可成交，或 fast-fail touch 后仍有真实 qfq bar | 使用真实 daily bar |
 
 约束：
 
-- 终止性事件的判定与赋值只用 `<= t0+K` 的信息，barrier 触发时点来自 09A frozen label，不引入新前视。
-- **fast-fail touch 坐标系（防 off-by-one）**：09A/10A 的 `selected_fast_fail_touch_pos` 很可能相对 `trade_open_pos`（即建仓日为 0），而 11A2 的 K 相对 t0、窗口 `(t0, t0+K]` 从 t0+1 开始；不得直接拿 `selected_fast_fail_touch_pos <= K` 比较。实现必须：(1) 先把 `selected_fast_fail_touch_pos` 按其原始坐标系转换成 actual session date `fast_fail_touch_date`；(2) 再判断 `fast_fail_touch_date <= session_date(t0 + K)`。runner 必须输出 `touch_pos_coordinate_policy`（字段：`touch_pos_origin`、`touch_pos_origin_offset_vs_t0`、`converted_via`、`coordinate_status`），并对 10A/09A 的 `trade_open_date` 与 t0 的相对偏移做一致性校验；偏移不可解析率超 config 阈值时，最终状态不得高于 `11A2_post_t0_archetype_path_divergence_statistics_incomplete`。
+- 退市 / 停牌终止性事件的判定与赋值只用 `<= t0+K` 的信息。post-t0 ST 不参与本轮 fill / exclusion / ceiling。
+- **fast-fail touch 坐标系（防 off-by-one）**：`selected_fast_fail_*` 只允许用于 EP8B `label_overlap_tautology_audit.csv` 与 `touch_pos_coordinate_policy.csv`，不得用于 primary full-cohort fill、EP1–EP7、`ep_mfe/ep_mae`、onset、tradability 或 final status。09A/10A 的 `selected_fast_fail_touch_pos` 可能是绝对 session index，不得直接拿 `selected_fast_fail_touch_pos <= K` 比较。实现必须优先使用 `selected_fast_fail_touch_date` 或 `selected_fast_fail_touch_offset_sessions` 转换成 actual session date `fast_fail_touch_date`，再判断 `fast_fail_touch_date <= session_date(t0 + K)`。runner 必须输出 `touch_pos_coordinate_policy`（字段：`touch_pos_origin`、`touch_pos_origin_offset_vs_t0`、`converted_via`、`coordinate_status`），并对 10A/11A1 `event_window_anchor_date`、09A `trade_time` 与 t0 的相对偏移做一致性校验；偏移不可解析率超 config 阈值时，最终状态不得高于 `11A2_post_t0_archetype_path_divergence_statistics_incomplete`。
+- 若报告需要额外展示 label-aligned barrier-stop sensitivity，必须单独输出为 `label_aligned_barrier_stop_sensitivity`，且不得进入 `separation_curve_readout.csv` 的 primary rows、`divergence_onset_readout.csv`、`tradability_lag_readout.csv` 或任何 `separation_detected_*` final status。`break_swing_low_20` 的 barrier price 若需重构，必须按 09A frozen contract 从 qfq 在 trade-open 前一交易日的 `prior_swing_low_20 = low.shift(1).rolling(20, min_periods=20).min()` 计算；不可得时只允许标记 `barrier_price_unavailable`，不得用触达日收盘价替代 primary path。
 - `delist_haircut` 是预注册敏感性参数。final status 的 primary 口径使用 config 中的 `delist_haircut`（默认 `1.0`，即归零）；report 必须同时给出 `delist_haircut = 1.0` 与 `delist_haircut = 0`（最后可成交价）两个端点下的 survivorship audit。若 `delist_haircut = 0` 端点会推翻 primary 口径下的 `separation_detected_tradable`（例如变成 `survivorship_induced_separation`、`survivorship_direction_flip`、`separation_absent` 或 `late_most_move_realized`），必须标记 `delist_haircut_sensitivity_conflict`，最终状态不得高于 `11A2_post_t0_archetype_path_divergence_statistics_incomplete`。
 - 每个 (feature, K, split) 必须输出 survivors-only 与 full-cohort 两套 `eligible_row_n` 与缺失率。
 - 必须输出 `full_cohort_fill_audit.csv`：`split`、`K`、`delist_haircut`、`fill_reason`、`row_n`、`weight_sum`、`unique_instrument_n`，给出 fill_reason 分布，并能复核 `delist_haircut = 1.0 / 0.0` 两端点。
@@ -511,8 +511,8 @@ Tier3 confirmed onset 与 dual-channel confirmed onset 是「最小满足 K」�
 - `full_cohort_separation_metric`
 - `survivors_only_eligible_n`
 - `full_cohort_eligible_n`
-- `pre_K_failure_dropout_n`（survivors-only 相对 full-cohort 因 t0+K 前失败/退市/停牌而少掉的样本）
-- `pre_K_failure_dropout_rate`
+- `pre_K_path_unavailable_dropout_n`（survivors-only 相对 full-cohort 因 t0+K 前退市 / 停牌 / qfq 缺 bar 而少掉的样本；fast-fail touch 不计入 dropout）
+- `pre_K_path_unavailable_dropout_rate`
 - `survivorship_strength_gap = abs(survivors_only_separation_metric) - abs(full_cohort_separation_metric)`
 - `survivorship_direction_status`：`same_direction` / `direction_flip` / `undetermined`
 - `delist_haircut`
@@ -690,9 +690,9 @@ manifest 必须记录每个 cache 的 path、sha256、row_count、schema。
 - outcome class 互斥划分：`class_big_failure_proxy_nonwinner == winner_120=false AND (fast_fail_10 OR false_repair_20)`，与 11A1 `big_failure_proxy` 口径一致；`subclass_fast_fail` 与 `subclass_false_repair_only` 互斥且并集等于父类。
 - primary contrast `C1` 负类口径等于 11A1 `big_failure_proxy` 非 winner 并集，不被窄化为 fast_fail-only。
 - horizon 完整性 -> `class_unresolved`。
-- 价格锚点：收益型量以 `entry_anchor_price`（t0+1 开盘）为分母，结构型量以 `event_t0_close` 为参考；`price_anchor_reconciliation` 与 10A trade-open 对账，失败率超阈值触发 statistics_incomplete。
+- 价格锚点：收益型量以 `entry_anchor_price`（t0+1 开盘）为分母，结构型量以 `event_t0_close` 为参考；`price_anchor_reconciliation` 与 10A/11A1 executable anchor（`event_window_anchor_date` / `event_window_anchor_pos`，09A `trade_time` cross-check）对账，失败率超阈值触发 statistics_incomplete。
 - 早期路径特征只用 `(t0, t0+K]` 窗口，不引用窗口外未来 bar。
-- survivors-only 与 full-cohort 两 cohort 的 eligible 计数与 §6.4 fill contract（delist/suspend/barrier_stop 优先级与 fill_reason）。
+- survivors-only 与 full-cohort 两 cohort 的 eligible 计数与 §6.4 fill contract（delist/suspend/complete_path 优先级与 fill_reason），并验证 post-t0 ST 不触发 fill / exclusion / ceiling。
 - `EP8A` 与 `EP8B` 拆分：`EP8A` 只能用 qfq price path 与预注册 drawdown 阈值重算，不读取 09A/10A `selected_fast_fail_*` 字段；`EP8B` 被排除在 onset 主曲线与 multivariate separability 之外，仅进入 `label_overlap_tautology_audit`。
 - `ep_mfe/ep_mae` 不进入 onset 主曲线，只进入 tradability lag。
 - divergence onset 使用预注册 dual-channel：`return_channel = EP1.ep_ret_t0_to_K` 的 Cliff's delta，`structure_channel = EP2.ep_max_drawdown_to_K` 的 Cliff's delta；不做跨特征 max 选择。
@@ -704,7 +704,7 @@ manifest 必须记录每个 cache 的 path、sha256、row_count、schema。
 - 跨 split bootstrap：Tier2/Tier3 每次迭代对 train 与 robustness 各自独立 instrument-block 重采样（per-split 派生子种子），再做跨 split 一致性判定；Tier3 输出 `confirmed_onset_hit_rate` / onset day 分布而非单点 CI；bootstrap-stable 判定使用 `confirmed_onset_hit_rate_floor` 与 `onset_day_bootstrap_drift_ceiling`。
 - tradability lag 以 full-cohort confirmed K* 计算；survivors-only K* 不决定 final status。
 - tradability lag basis 对账：分母用 `mfe_120_recomputed`，`mfe_basis_mismatch` 行被排除出 tradability status；`ep_ret/forward_return_120d` 比值标 `secondary_basis_unchecked` 不进 status。
-- fast-fail `touch_pos` 坐标转换：先转 session date 再判 `<= t0+K`，输出 `touch_pos_coordinate_policy`，偏移不可解析超阈触发 statistics_incomplete。
+- fast-fail `touch_pos` 坐标转换仅用于 EP8B / label-overlap audit：先转 session date 再判 `<= t0+K`，输出 `touch_pos_coordinate_policy`，偏移不可解析超阈触发 statistics_incomplete；并验证 `selected_fast_fail_*` 不得改写 primary full-cohort price path 或进入 final status。
 - tradability lag 状态分类（tradable_window_open / late_most_move_realized / onset_absent）。
 - survivorship_flag 触发逻辑：基于绝对分离强度差与方向一致性，覆盖 `survivorship_induced_separation` / `survivorship_direction_flip`，并验证 `delist_haircut` 两端点冲突会 ceiling 到 statistics_incomplete。
 - validation power guard：样本不足时标 `validation_low_power`，不得写 `validation_onset_conflict`。

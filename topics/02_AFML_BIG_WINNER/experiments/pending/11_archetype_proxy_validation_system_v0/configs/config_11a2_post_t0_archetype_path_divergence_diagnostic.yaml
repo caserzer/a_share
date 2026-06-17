@@ -1,0 +1,70 @@
+run:
+  run_id: 11A2_post_t0_archetype_path_divergence_diagnostic
+  random_seed: 20260617
+
+scope:
+  population_id: 10A__same_instrument_cooldown_10d
+  denominator_id: post_dedup_risk_on_r_core
+  admission_status: admitted
+  readout_only_flag: false
+  analysis_regime_bucket: risk_on
+  strict_pit_universe_filter_flag: true
+  pit_universe_event_date_col: event_t0_date
+  pit_universe_date_key: membership_date
+
+parameters:
+  observation_windows_K: [1, 3, 5, 10, 15, 20]
+  primary_onset_channels: ["return_channel", "structure_channel"]
+  onset_threshold: 0.147
+  null_band_upper: 0.05
+  tier2_directional_prob_floor: 0.60
+  confirmed_onset_hit_rate_floor: 0.60
+  onset_day_bootstrap_drift_ceiling: 1
+  dual_channel_collinearity_corr_ceiling: 0.85
+  dual_channel_direction_agreement_ceiling: 0.95
+  ep8a_structural_drawdown_pct_levels: [0.08, 0.10]
+  survivorship_gap_ceiling: 0.10
+  delist_haircut: 1.0
+  delist_haircut_sensitivity_values: [1.0, 0.0]
+  tradability_realized_fraction_ceiling: 0.50
+  mfe_basis_rel_diff_ceiling: 0.05
+  validation_min_class_n: 30
+  validation_min_instrument_n: 20
+  contrast_min_class_n: 60
+  contrast_min_instrument_n: 30
+  eligible_row_n_floor_ratio: 0.70
+  class_unresolved_ceiling: 0.30
+  denominator_drift_ceiling: 0.005
+  anchor_recon_fail_ceiling: 0.005
+  mfe_basis_mismatch_ceiling: 0.20
+  touch_pos_offset_unresolved_ceiling: 0.005
+  bootstrap_n: 1000
+  bootstrap_seed: 20260617
+  null_simulation_n: 500
+  null_simulation_seed: 20260617
+
+inputs:
+  discussion_next_step: ../10_riskon_layered_rejector_system_v0/next_step_discussion.md
+  requirement_11a1: requirement_11a1_archetype_proxy_robust_payoff_risk_audit.md
+  report_11a1: outputs/publishable/reports/11A1_archetype_proxy_robust_payoff_risk_audit_report.md
+  eleven_a1_scope_risk_on: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/risk_on_scope_filter_audit.csv
+  eleven_a1_scope_pit: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/pit_universe_scope_filter_audit.csv
+  eleven_a1_acceptance_summary: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/acceptance_summary.csv
+  eleven_a1_proxy_scored_denominator: outputs/local_cache/11A1_archetype_proxy_robust_payoff_risk_audit/proxy_scored_denominator.parquet
+  ten_a_manifest: ../10_riskon_layered_rejector_system_v0/outputs/manifests/10A_density_rule_system_manifest.json
+  ten_a_bindings: ../10_riskon_layered_rejector_system_v0/outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet
+  ten_a_population_contract: ../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv
+  nine_b_feature_contract: ../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09B_feature_foundation/feature_contract.csv
+  nine_b_transform_contract: ../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09B_feature_foundation/feature_transform_contract.json
+  nine_b_feature_matrix: ../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/feature_matrix.parquet
+  nine_b_sample_weights: ../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/sample_uniqueness_weights.parquet
+  eight_labels: ../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet
+  eight_manifest: ../08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json
+  nine_a_bindings: ../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet
+  labels_yaml: topics/02_AFML_BIG_WINNER/configs/labels.yaml
+  pit_universe: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_largecap_main_chinext_executable_daily.csv
+  qfq_primary_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+  qfq_fallback_dir: topics/02_AFML_BIG_WINNER/data/interim/qlib_csv/day
+  board_metadata: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv
+  sh_name_history_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history
+  sz_name_history: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv
