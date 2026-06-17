@@ -1,0 +1,69 @@
+run:
+  run_id: 11B_archetype_protected_retention_readout
+  random_seed: 20260617
+
+scope:
+  population_id: 10A__same_instrument_cooldown_10d
+  rule_arm_id: same_instrument_cooldown_10d
+  input_denominator_id: risk_on_r_core_horizon_complete
+  denominator_id: post_dedup_risk_on_r_core
+  admission_status: admitted
+  readout_only_flag: false
+  analysis_regime_bucket: risk_on
+  strict_pit_universe_filter_flag: true
+  pit_universe_event_date_col: event_t0_date
+  pit_universe_date_key: membership_date
+  reference_slice:
+    model_id: regularized_logistic_false_repair_20d_l2_v1
+    ablation_id: full
+    capacity_id: keep_9000
+    threshold_id: keep_9000
+    population_id: 10A__same_instrument_cooldown_10d
+    denominator_id: post_dedup_risk_on_r_core
+
+parameters:
+  relative_retention_floor: 0.90
+  retention_min_winner_n: 60
+  retention_min_winner_instrument_n: 30
+  validation_min_class_n: 30
+  validation_min_instrument_n: 20
+  denominator_drift_ceiling: 0.005
+  retention_recon_abs_diff_ceiling: 0.02
+  class_unresolved_ceiling: 0.30
+  bootstrap_n: 1000
+  bootstrap_seed: 20260617
+  multiple_comparison_null_n: 500
+  multiple_comparison_null_seed: 20260617
+
+inputs:
+  discussion_next_step: ../10_riskon_layered_rejector_system_v0/next_step_discussion.md
+  requirement_11a1: requirement_11a1_archetype_proxy_robust_payoff_risk_audit.md
+  requirement_11a2: requirement_11a2_post_t0_archetype_path_divergence_diagnostic.md
+  report_11a1: outputs/publishable/reports/11A1_archetype_proxy_robust_payoff_risk_audit_report.md
+  report_11a2: outputs/publishable/reports/11A2_post_t0_archetype_path_divergence_diagnostic_report.md
+  eleven_a1_scope_risk_on: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/risk_on_scope_filter_audit.csv
+  eleven_a1_scope_pit: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/pit_universe_scope_filter_audit.csv
+  eleven_a1_acceptance_summary: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/acceptance_summary.csv
+  eleven_a1_denominator_contract: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/denominator_contract_audit.csv
+  eleven_a1_denominator_completeness: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/denominator_completeness_st_delist_audit.csv
+  eleven_a1_proxy_scored_denominator: outputs/local_cache/11A1_archetype_proxy_robust_payoff_risk_audit/proxy_scored_denominator.parquet
+  eleven_a2_scope_reconciliation: outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/scope_reconciliation_vs_11a1.csv
+  eleven_a2_outcome_class_count: outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/outcome_class_count_audit.csv
+  ten_a_manifest: ../10_riskon_layered_rejector_system_v0/outputs/manifests/10A_density_rule_system_manifest.json
+  ten_a_bindings: ../10_riskon_layered_rejector_system_v0/outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet
+  ten_a_population_contract: ../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv
+  nine_b_feature_contract: ../09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/09B_feature_foundation/feature_contract.csv
+  nine_b_feature_matrix: ../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/feature_matrix.parquet
+  nine_b_sample_weights: ../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09B_feature_foundation/sample_uniqueness_weights.parquet
+  eight_labels: ../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet
+  eight_manifest: ../08_risk_on_transition_recall_exploration_v0/outputs/manifests/run_manifest.json
+  nine_a_bindings: ../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet
+  labels_yaml: topics/02_AFML_BIG_WINNER/configs/labels.yaml
+  ten_c_manifest: ../10_riskon_layered_rejector_system_v0/outputs/manifests/10C_false_repair_rejector_manifest.json
+  ten_c_scores: ../10_riskon_layered_rejector_system_v0/outputs/local_cache/10C_false_repair_rejector/post_dedup_false_repair_scores.parquet
+  ten_c_threshold_frontier: ../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10C_false_repair_rejector/false_repair_threshold_frontier.csv
+  ten_c_winner_retention_audit: ../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10C_false_repair_rejector/winner_retention_audit.csv
+  pit_universe: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_largecap_main_chinext_executable_daily.csv
+  board_metadata: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv
+  sh_name_history_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history
+  sz_name_history: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv

@@ -1,0 +1,13 @@
+config_key,expected_default,configured_value,present_flag,matches_preregistered_default_flag,config_contract_status
+relative_retention_floor,0.9,0.9,True,True,ok
+retention_min_winner_n,60.0,60.0,True,True,ok
+retention_min_winner_instrument_n,30.0,30.0,True,True,ok
+validation_min_class_n,30.0,30.0,True,True,ok
+validation_min_instrument_n,20.0,20.0,True,True,ok
+denominator_drift_ceiling,0.005,0.005,True,True,ok
+retention_recon_abs_diff_ceiling,0.02,0.02,True,True,ok
+class_unresolved_ceiling,0.3,0.3,True,True,ok
+bootstrap_n,1000.0,1000.0,True,True,ok
+bootstrap_seed,20260617.0,20260617.0,True,True,ok
+multiple_comparison_null_n,500.0,500.0,True,True,ok
+multiple_comparison_null_seed,20260617.0,20260617.0,True,True,ok
