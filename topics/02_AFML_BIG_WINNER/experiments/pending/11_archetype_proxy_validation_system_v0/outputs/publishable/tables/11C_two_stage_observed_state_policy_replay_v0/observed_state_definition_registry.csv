@@ -1,0 +1,4 @@
+state_id,formula
+S0_return_damage_basic,ep_ret_t0_to_3 >= 0 AND ep_max_drawdown_to_3 >= -0.08 AND entry_t0p4_executable_flag == true
+S1_reclaim_damage,ep_close_vs_t0_close_at_3 >= 0 AND ep_breach_t0_low_through_3_flag == false AND entry_t0p4_executable_flag == true
+S2_return_reclaim_liquidity,ep_ret_t0_to_3 >= 0 AND ep_close_above_t0_high_at_3_flag == true AND ep_money_ratio_3d_vs_20d >= 1.0 AND entry_t0p4_executable_flag == true

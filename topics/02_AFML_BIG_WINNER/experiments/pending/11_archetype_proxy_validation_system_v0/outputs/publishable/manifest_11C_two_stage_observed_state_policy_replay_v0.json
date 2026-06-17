@@ -1,0 +1,1826 @@
+{
+  "command": [
+    "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/src/run_11c_two_stage_observed_state_policy_replay.py",
+    "--config",
+    "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/configs/config_11c_two_stage_observed_state_policy_replay.yaml"
+  ],
+  "config_file_hash": "c311cb810fcd0d9ca85a55814119ee8ea3479f3e4f72070115ea8e485b5f426e",
+  "config_hash": "ffc82a0337f84c830ceb8a0012d74210f0045113807ecf42a8942260c92c2e54",
+  "config_path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/configs/config_11c_two_stage_observed_state_policy_replay.yaml",
+  "created_at_utc": "2026-06-17T12:26:35.403449+00:00",
+  "final_status": "11C_two_stage_policy_statistics_incomplete",
+  "git_revision": "f2fabfe2f05c2d56e49a17dd29b417ed060a5e26",
+  "local_cache_metadata": {
+    "bootstrap_samples": {
+      "path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/bootstrap_samples.parquet",
+      "row_count": 3000,
+      "schema": [
+        {
+          "name": "arm_variant_id",
+          "type": "string"
+        },
+        {
+          "name": "split",
+          "type": "string"
+        },
+        {
+          "name": "iteration",
+          "type": "int64"
+        },
+        {
+          "name": "net_ev_per_exposure_day_lift_vs_B0",
+          "type": "double"
+        }
+      ],
+      "sha256": "131d02c9cffb059094b1501f09b0947af494397cf3df354563cda44e911cb726"
+    },
+    "event_level_trade_ledger": {
+      "path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/event_level_trade_ledger.parquet",
+      "row_count": 114898,
+      "schema": [
+        {
+          "name": "policy_row_id",
+          "type": "string"
+        },
+        {
+          "name": "sample_id",
+          "type": "string"
+        },
+        {
+          "name": "selected_target_id",
+          "type": "string"
+        },
+        {
+          "name": "denominator_id",
+          "type": "string"
+        },
+        {
+          "name": "input_event_key",
+          "type": "string"
+        },
+        {
+          "name": "instrument",
+          "type": "string"
+        },
+        {
+          "name": "event_t0_date",
+          "type": "string"
+        },
+        {
+          "name": "split",
+          "type": "string"
+        },
+        {
+          "name": "lane_id",
+          "type": "string"
+        },
+        {
+          "name": "arm_id",
+          "type": "string"
+        },
+        {
+          "name": "arm_variant_id",
+          "type": "string"
+        },
+        {
+          "name": "state_id",
+          "type": "string"
+        },
+        {
+          "name": "trial_size",
+          "type": "double"
+        },
+        {
+          "name": "upgrade_size",
+          "type": "double"
+        },
+        {
+          "name": "state_positive_flag",
+          "type": "bool"
+        },
+        {
+          "name": "winner_120_bool",
+          "type": "bool"
+        },
+        {
+          "name": "big_failure_proxy_bool",
+          "type": "bool"
+        },
+        {
+          "name": "fast_fail_10_bool",
+          "type": "bool"
+        },
+        {
+          "name": "false_repair_20_bool",
+          "type": "bool"
+        },
+        {
+          "name": "binding_canonical_event_id",
+          "type": "string"
+        },
+        {
+          "name": "board_bucket",
+          "type": "string"
+        },
+        {
+          "name": "entry_filled_flag",
+          "type": "bool"
+        },
+        {
+          "name": "first_entry_date",
+          "type": "string"
+        },
+        {
+          "name": "first_entry_pos",
+          "type": "double"
+        },
+        {
+          "name": "exit_date",
+          "type": "string"
+        },
+        {
+          "name": "exit_pos",
+          "type": "double"
+        },
+        {
+          "name": "exit_reason",
+          "type": "string"
+        },
+        {
+          "name": "gross_pnl_full_notional",
+          "type": "double"
+        },
+        {
+          "name": "buy_notional_full",
+          "type": "double"
+        },
+        {
+          "name": "sell_notional_full",
+          "type": "double"
+        },
+        {
+          "name": "turnover_notional_full",
+          "type": "double"
+        },
+        {
+          "name": "exposure_days_full",
+          "type": "double"
+        },
+        {
+          "name": "holding_sessions",
+          "type": "int64"
+        },
+        {
+          "name": "max_position_size",
+          "type": "double"
+        },
+        {
+          "name": "final_position_size",
+          "type": "double"
+        },
+        {
+          "name": "risk_stop_anchor_price",
+          "type": "double"
+        },
+        {
+          "name": "mae",
+          "type": "double"
+        },
+        {
+          "name": "mfe",
+          "type": "double"
+        },
+        {
+          "name": "max_drawdown",
+          "type": "double"
+        },
+        {
+          "name": "scheduled_buy_order_n",
+          "type": "int64"
+        },
+        {
+          "name": "scheduled_sell_order_n",
+          "type": "int64"
+        },
+        {
+          "name": "limit_up_unfilled_n",
+          "type": "int64"
+        },
+        {
+          "name": "limit_down_exit_failure_n",
+          "type": "int64"
+        },
+        {
+          "name": "missing_open_unfilled_n",
+          "type": "int64"
+        },
+        {
+          "name": "unfilled_reason",
+          "type": "string"
+        },
+        {
+          "name": "exit_failure_reason",
+          "type": "string"
+        },
+        {
+          "name": "component_role",
+          "type": "string"
+        },
+        {
+          "name": "instrument_source",
+          "type": "string"
+        }
+      ],
+      "sha256": "0706f40d62aaf29f5478d54c54c10bb94be6e2a6dbb60bb34fbd87dbc502f3e1"
+    },
+    "k3_observed_state_matrix": {
+      "path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/k3_observed_state_matrix.parquet",
+      "row_count": 4665,
+      "schema": [
+        {
+          "name": "row_id",
+          "type": "int64"
+        },
+        {
+          "name": "split",
+          "type": "string"
+        },
+        {
+          "name": "instrument",
+          "type": "string"
+        },
+        {
+          "name": "event_t0_date",
+          "type": "string"
+        },
+        {
+          "name": "event_year_quarter",
+          "type": "string"
+        },
+        {
+          "name": "source_family_id_matched",
+          "type": "string"
+        },
+        {
+          "name": "binding_canonical_event_id",
+          "type": "string"
+        },
+        {
+          "name": "final_sample_weight",
+          "type": "double"
+        },
+        {
+          "name": "class_big_winner_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_big_failure_proxy_nonwinner_flag",
+          "type": "bool"
+        },
+        {
+          "name": "subclass_fast_fail_flag",
+          "type": "bool"
+        },
+        {
+          "name": "subclass_false_repair_only_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_neutral_chop_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_all_nonwinner_resolved_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_unresolved_flag",
+          "type": "bool"
+        },
+        {
+          "name": "winner_120_bool",
+          "type": "bool"
+        },
+        {
+          "name": "fast_fail_10_bool",
+          "type": "bool"
+        },
+        {
+          "name": "false_repair_20_bool",
+          "type": "bool"
+        },
+        {
+          "name": "mfe_120d_frozen",
+          "type": "double"
+        },
+        {
+          "name": "forward_return_120d",
+          "type": "double"
+        },
+        {
+          "name": "K",
+          "type": "int64"
+        },
+        {
+          "name": "entry_anchor_date",
+          "type": "string"
+        },
+        {
+          "name": "entry_anchor_price",
+          "type": "double"
+        },
+        {
+          "name": "event_t0_close",
+          "type": "double"
+        },
+        {
+          "name": "ep_fast_fail_barrier_touched_by_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_days_to_first_fast_fail",
+          "type": "double"
+        },
+        {
+          "name": "mfe_120_recomputed",
+          "type": "double"
+        },
+        {
+          "name": "mfe_basis_status",
+          "type": "string"
+        },
+        {
+          "name": "ep_ret_t0_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_close_vs_t0_close",
+          "type": "double"
+        },
+        {
+          "name": "ep_max_drawdown_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_min_close_ret_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_recovery_from_min_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_close_in_range_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_close_above_ema20_at_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_days_above_ema20_through_K",
+          "type": "int64"
+        },
+        {
+          "name": "ep_breach_t0_low_through_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_close_above_t0_high_at_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_down_day_vol_contraction_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_up_day_vol_expansion_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_vol_decay_ratio_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_atr_change_t0_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_range_contraction_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_structural_drawdown_8pct_by_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_structural_drawdown_10pct_by_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_days_to_first_structural_drawdown",
+          "type": "double"
+        },
+        {
+          "name": "ep_mfe_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_mae_to_K",
+          "type": "double"
+        },
+        {
+          "name": "cohort",
+          "type": "string"
+        },
+        {
+          "name": "eligible_flag",
+          "type": "bool"
+        },
+        {
+          "name": "fill_reason",
+          "type": "string"
+        },
+        {
+          "name": "delist_haircut",
+          "type": "double"
+        },
+        {
+          "name": "instrument_source",
+          "type": "string"
+        },
+        {
+          "name": "policy_row_id",
+          "type": "string"
+        },
+        {
+          "name": "sample_id",
+          "type": "string"
+        },
+        {
+          "name": "selected_target_id",
+          "type": "string"
+        },
+        {
+          "name": "denominator_id",
+          "type": "string"
+        },
+        {
+          "name": "input_event_key",
+          "type": "string"
+        },
+        {
+          "name": "event_window_anchor_date",
+          "type": "string"
+        },
+        {
+          "name": "binding_canonical_event_id_denom",
+          "type": "string"
+        },
+        {
+          "name": "entry_t0p4_pos",
+          "type": "int64"
+        },
+        {
+          "name": "entry_t0p4_executable_flag",
+          "type": "bool"
+        },
+        {
+          "name": "entry_t0p4_fill_reason",
+          "type": "string"
+        },
+        {
+          "name": "limit_up_locked_t0p4_flag",
+          "type": "bool"
+        },
+        {
+          "name": "suspended_through_K3_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_volume_ratio_3d_vs_20d",
+          "type": "double"
+        },
+        {
+          "name": "ep_money_ratio_3d_vs_20d",
+          "type": "double"
+        },
+        {
+          "name": "board_bucket",
+          "type": "string"
+        },
+        {
+          "name": "state_positive_S0_return_damage_basic",
+          "type": "bool"
+        },
+        {
+          "name": "state_positive_S1_reclaim_damage",
+          "type": "bool"
+        },
+        {
+          "name": "state_positive_S2_return_reclaim_liquidity",
+          "type": "bool"
+        }
+      ],
+      "sha256": "30be859540f93a2c72acc0e97137b0fa85a0a341d7d09d9158b407d81a54ca37"
+    },
+    "policy_replay_base_denominator": {
+      "path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/policy_replay_base_denominator.parquet",
+      "row_count": 4665,
+      "schema": [
+        {
+          "name": "population_id",
+          "type": "string"
+        },
+        {
+          "name": "rule_arm_id",
+          "type": "string"
+        },
+        {
+          "name": "input_event_key",
+          "type": "string"
+        },
+        {
+          "name": "sample_id",
+          "type": "string"
+        },
+        {
+          "name": "selected_target_id",
+          "type": "string"
+        },
+        {
+          "name": "input_denominator_id",
+          "type": "string"
+        },
+        {
+          "name": "denominator_id",
+          "type": "string"
+        },
+        {
+          "name": "split",
+          "type": "string"
+        },
+        {
+          "name": "instrument",
+          "type": "string"
+        },
+        {
+          "name": "event_t0_date",
+          "type": "string"
+        },
+        {
+          "name": "event_t0_pos",
+          "type": "int64"
+        },
+        {
+          "name": "event_window_anchor_date",
+          "type": "string"
+        },
+        {
+          "name": "event_window_anchor_pos",
+          "type": "int64"
+        },
+        {
+          "name": "event_window_anchor_status",
+          "type": "string"
+        },
+        {
+          "name": "source_pool_id",
+          "type": "string"
+        },
+        {
+          "name": "source_family_id",
+          "type": "string"
+        },
+        {
+          "name": "mechanism_id",
+          "type": "string"
+        },
+        {
+          "name": "source_family_id_set",
+          "type": "string"
+        },
+        {
+          "name": "event_regime_bucket",
+          "type": "string"
+        },
+        {
+          "name": "raw_event_status",
+          "type": "string"
+        },
+        {
+          "name": "admission_status",
+          "type": "string"
+        },
+        {
+          "name": "readout_only_flag",
+          "type": "bool"
+        },
+        {
+          "name": "admitted_event_id",
+          "type": "string"
+        },
+        {
+          "name": "representative_sample_id",
+          "type": "string"
+        },
+        {
+          "name": "suppressed_by_sample_id",
+          "type": "null"
+        },
+        {
+          "name": "suppression_reason",
+          "type": "string"
+        },
+        {
+          "name": "selected_fast_fail_10_label",
+          "type": "bool"
+        },
+        {
+          "name": "frozen_false_repair_20d_label",
+          "type": "bool"
+        },
+        {
+          "name": "selected_cost_bad_10_20_target",
+          "type": "bool"
+        },
+        {
+          "name": "winner_120",
+          "type": "bool"
+        },
+        {
+          "name": "E1_missed_winner_flag",
+          "type": "bool"
+        },
+        {
+          "name": "e1_episode_hit_flag",
+          "type": "bool"
+        },
+        {
+          "name": "e1_missed_proxy_flag",
+          "type": "bool"
+        },
+        {
+          "name": "e1_missed_proxy_status",
+          "type": "string"
+        },
+        {
+          "name": "feature_matrix_join_key",
+          "type": "string"
+        },
+        {
+          "name": "fast_fail_sample_weight_join_key",
+          "type": "string"
+        },
+        {
+          "name": "cost_bad_sample_weight_join_key",
+          "type": "string"
+        },
+        {
+          "name": "row_id",
+          "type": "int64"
+        },
+        {
+          "name": "binding_canonical_event_id",
+          "type": "string"
+        },
+        {
+          "name": "candidate_false_repair_score",
+          "type": "double"
+        },
+        {
+          "name": "candidate_rank",
+          "type": "int64"
+        },
+        {
+          "name": "candidate_rejected_flag",
+          "type": "bool"
+        },
+        {
+          "name": "fast_fail_rejected_flag",
+          "type": "bool"
+        },
+        {
+          "name": "cascade_bucket",
+          "type": "string"
+        },
+        {
+          "name": "active_interval_calendar_day_n",
+          "type": "int64"
+        },
+        {
+          "name": "canonical_id_source",
+          "type": "string"
+        },
+        {
+          "name": "canonical_id_parse_crosscheck_mismatch_flag",
+          "type": "bool"
+        },
+        {
+          "name": "canonical_id_fallback_to_join_key_parse_flag",
+          "type": "bool"
+        },
+        {
+          "name": "input_event_key_parse_success_flag",
+          "type": "bool"
+        },
+        {
+          "name": "feature_sample_id",
+          "type": "string"
+        },
+        {
+          "name": "feature_selected_target_id",
+          "type": "string"
+        },
+        {
+          "name": "feature_denominator_id",
+          "type": "string"
+        },
+        {
+          "name": "feature_canonical_event_id",
+          "type": "string"
+        },
+        {
+          "name": "feature_instrument",
+          "type": "string"
+        },
+        {
+          "name": "feature_event_t0_date",
+          "type": "string"
+        },
+        {
+          "name": "feature_event_split",
+          "type": "string"
+        },
+        {
+          "name": "feature_as_of_date_09b",
+          "type": "string"
+        },
+        {
+          "name": "return_10d",
+          "type": "double"
+        },
+        {
+          "name": "return_60d",
+          "type": "double"
+        },
+        {
+          "name": "stock_vs_market_5d",
+          "type": "double"
+        },
+        {
+          "name": "stock_vs_market_10d",
+          "type": "double"
+        },
+        {
+          "name": "close_to_high_120",
+          "type": "double"
+        },
+        {
+          "name": "direction_entropy_20d",
+          "type": "double"
+        },
+        {
+          "name": "ema60_positive_run",
+          "type": "double"
+        },
+        {
+          "name": "panel_return_20d_rolling_z_60d",
+          "type": "double"
+        },
+        {
+          "name": "panel_return_20d_rolling_pct_60d",
+          "type": "double"
+        },
+        {
+          "name": "log_close_fracdiff_d04",
+          "type": "double"
+        },
+        {
+          "name": "family_count",
+          "type": "double"
+        },
+        {
+          "name": "channel_count",
+          "type": "double"
+        },
+        {
+          "name": "raw_cluster_event_count",
+          "type": "double"
+        },
+        {
+          "name": "event_family_priority",
+          "type": "double"
+        },
+        {
+          "name": "close_to_ema20",
+          "type": "double"
+        },
+        {
+          "name": "close_to_ema60",
+          "type": "double"
+        },
+        {
+          "name": "ema20_slope_20d",
+          "type": "double"
+        },
+        {
+          "name": "ema60_slope_20d",
+          "type": "double"
+        },
+        {
+          "name": "return_5d",
+          "type": "double"
+        },
+        {
+          "name": "return_20d",
+          "type": "double"
+        },
+        {
+          "name": "stock_vs_market_20d",
+          "type": "double"
+        },
+        {
+          "name": "stock_vs_board_20d",
+          "type": "double"
+        },
+        {
+          "name": "close_to_high_60",
+          "type": "double"
+        },
+        {
+          "name": "relative_cusum_20d",
+          "type": "double"
+        },
+        {
+          "name": "atr_20_pct",
+          "type": "double"
+        },
+        {
+          "name": "atr_pct_rank_60d",
+          "type": "double"
+        },
+        {
+          "name": "intraday_range_pct",
+          "type": "double"
+        },
+        {
+          "name": "close_position_in_range",
+          "type": "double"
+        },
+        {
+          "name": "upper_shadow_pct",
+          "type": "double"
+        },
+        {
+          "name": "gap_open_pct",
+          "type": "double"
+        },
+        {
+          "name": "range_width_ratio_20d_60d",
+          "type": "double"
+        },
+        {
+          "name": "intraday_range_atr_norm",
+          "type": "double"
+        },
+        {
+          "name": "return_20d_sigma_norm",
+          "type": "double"
+        },
+        {
+          "name": "amount_ratio_20d",
+          "type": "double"
+        },
+        {
+          "name": "amount_ratio_60d",
+          "type": "double"
+        },
+        {
+          "name": "turnover_ratio_20d",
+          "type": "double"
+        },
+        {
+          "name": "turnover_ratio_60d",
+          "type": "double"
+        },
+        {
+          "name": "quality_amount_flag",
+          "type": "double"
+        },
+        {
+          "name": "market_return_20d",
+          "type": "double"
+        },
+        {
+          "name": "market_drawdown_60d",
+          "type": "double"
+        },
+        {
+          "name": "market_volatility_20d",
+          "type": "double"
+        },
+        {
+          "name": "universe_up_share",
+          "type": "double"
+        },
+        {
+          "name": "universe_up_share_z",
+          "type": "double"
+        },
+        {
+          "name": "universe_up_share_change_5d",
+          "type": "double"
+        },
+        {
+          "name": "board_relative_cusum_20d",
+          "type": "double"
+        },
+        {
+          "name": "momentum_percentile_20d",
+          "type": "double"
+        },
+        {
+          "name": "prior_event_count_20d",
+          "type": "double"
+        },
+        {
+          "name": "prior_event_count_60d",
+          "type": "double"
+        },
+        {
+          "name": "_feature_matrix_join_key",
+          "type": "string"
+        },
+        {
+          "name": "event_id",
+          "type": "string"
+        },
+        {
+          "name": "label_instrument_08",
+          "type": "string"
+        },
+        {
+          "name": "label_event_t0_date_08",
+          "type": "string"
+        },
+        {
+          "name": "label_event_split_08",
+          "type": "string"
+        },
+        {
+          "name": "confirm_20_touch_pos",
+          "type": "int64"
+        },
+        {
+          "name": "forward_return_20d",
+          "type": "double"
+        },
+        {
+          "name": "forward_return_60d",
+          "type": "double"
+        },
+        {
+          "name": "forward_return_120d",
+          "type": "double"
+        },
+        {
+          "name": "mfe_20d",
+          "type": "double"
+        },
+        {
+          "name": "mfe_60d",
+          "type": "double"
+        },
+        {
+          "name": "mfe_120d",
+          "type": "double"
+        },
+        {
+          "name": "mae_20d",
+          "type": "double"
+        },
+        {
+          "name": "mae_60d",
+          "type": "double"
+        },
+        {
+          "name": "mae_120d",
+          "type": "double"
+        },
+        {
+          "name": "horizon_complete_20d",
+          "type": "bool"
+        },
+        {
+          "name": "horizon_complete_60d",
+          "type": "bool"
+        },
+        {
+          "name": "horizon_complete_120d",
+          "type": "bool"
+        },
+        {
+          "name": "candidate_outcome_120d_status",
+          "type": "string"
+        },
+        {
+          "name": "event_big_winner_120d_label",
+          "type": "bool"
+        },
+        {
+          "name": "_09a_join_key",
+          "type": "string"
+        },
+        {
+          "name": "sample_id_09a_raw",
+          "type": "string"
+        },
+        {
+          "name": "selected_target_id_09a_raw",
+          "type": "string"
+        },
+        {
+          "name": "selected_fast_fail_label_id",
+          "type": "string"
+        },
+        {
+          "name": "canonical_event_id",
+          "type": "string"
+        },
+        {
+          "name": "instrument_09a",
+          "type": "string"
+        },
+        {
+          "name": "event_t0_date_09a",
+          "type": "string"
+        },
+        {
+          "name": "trade_time",
+          "type": "string"
+        },
+        {
+          "name": "event_split_09a",
+          "type": "string"
+        },
+        {
+          "name": "source_pool_id_09a_raw",
+          "type": "string"
+        },
+        {
+          "name": "event_regime_bucket_09a",
+          "type": "string"
+        },
+        {
+          "name": "episode_regime_bucket_09a",
+          "type": "string"
+        },
+        {
+          "name": "denominator_id_09a_raw",
+          "type": "string"
+        },
+        {
+          "name": "horizon_complete_10d",
+          "type": "bool"
+        },
+        {
+          "name": "horizon_complete_20d_09a_raw",
+          "type": "bool"
+        },
+        {
+          "name": "horizon_complete_120d_09a_raw",
+          "type": "bool"
+        },
+        {
+          "name": "candidate_outcome_120d_status_09a_raw",
+          "type": "string"
+        },
+        {
+          "name": "selected_fast_fail_10_label_09a",
+          "type": "bool"
+        },
+        {
+          "name": "selected_fast_fail_touch_date",
+          "type": "string"
+        },
+        {
+          "name": "selected_fast_fail_touch_pos",
+          "type": "int64"
+        },
+        {
+          "name": "selected_fast_fail_touch_offset_sessions",
+          "type": "int64"
+        },
+        {
+          "name": "selected_fast_fail_barrier_id",
+          "type": "string"
+        },
+        {
+          "name": "frozen_false_repair_20d_label_09a",
+          "type": "bool"
+        },
+        {
+          "name": "selected_cost_bad_10_20_target_09a_raw",
+          "type": "bool"
+        },
+        {
+          "name": "event_big_winner_120d_label_09a",
+          "type": "bool"
+        },
+        {
+          "name": "event_super_winner_120d_label",
+          "type": "bool"
+        },
+        {
+          "name": "event_near_winner_120d_label",
+          "type": "bool"
+        },
+        {
+          "name": "winner_censoring_status",
+          "type": "string"
+        },
+        {
+          "name": "label_t1_date",
+          "type": "string"
+        },
+        {
+          "name": "censoring_status",
+          "type": "string"
+        },
+        {
+          "name": "analysis_regime_bucket",
+          "type": "string"
+        },
+        {
+          "name": "analysis_regime_source",
+          "type": "string"
+        },
+        {
+          "name": "risk_on_scope_flag",
+          "type": "bool"
+        },
+        {
+          "name": "pit_membership_date",
+          "type": "string"
+        },
+        {
+          "name": "pit_instrument",
+          "type": "string"
+        },
+        {
+          "name": "pit_board_bucket",
+          "type": "string"
+        },
+        {
+          "name": "pit_is_listed",
+          "type": "bool"
+        },
+        {
+          "name": "pit_is_st",
+          "type": "bool"
+        },
+        {
+          "name": "pit_is_suspended",
+          "type": "bool"
+        },
+        {
+          "name": "pit_total_market_cap_cny",
+          "type": "double"
+        },
+        {
+          "name": "pit_market_cap_threshold_cny",
+          "type": "double"
+        },
+        {
+          "name": "pit_source_trade_date",
+          "type": "string"
+        },
+        {
+          "name": "pit_membership_rule_version",
+          "type": "string"
+        },
+        {
+          "name": "pit_usable_trade_date",
+          "type": "string"
+        },
+        {
+          "name": "pit_first_membership_date",
+          "type": "timestamp[ns]"
+        },
+        {
+          "name": "pit_last_membership_date",
+          "type": "timestamp[ns]"
+        },
+        {
+          "name": "pit_membership_match_flag",
+          "type": "bool"
+        },
+        {
+          "name": "pit_valid_executable_flag",
+          "type": "bool"
+        },
+        {
+          "name": "pit_scope_filter_reason",
+          "type": "string"
+        },
+        {
+          "name": "w_cost_supported_final_sample_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_cost_supported_average_uniqueness",
+          "type": "double"
+        },
+        {
+          "name": "w_cost_supported_time_decay_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_cost_supported_active_interval_start",
+          "type": "string"
+        },
+        {
+          "name": "w_cost_supported_active_interval_end",
+          "type": "string"
+        },
+        {
+          "name": "w_cost_supported_scope_usage",
+          "type": "string"
+        },
+        {
+          "name": "w_cost_supported_supported_training_scope_flag",
+          "type": "bool"
+        },
+        {
+          "name": "w_cost_supported_weight_status",
+          "type": "string"
+        },
+        {
+          "name": "w_cost_readout_final_sample_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_cost_readout_average_uniqueness",
+          "type": "double"
+        },
+        {
+          "name": "w_cost_readout_time_decay_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_cost_readout_active_interval_start",
+          "type": "null"
+        },
+        {
+          "name": "w_cost_readout_active_interval_end",
+          "type": "null"
+        },
+        {
+          "name": "w_cost_readout_scope_usage",
+          "type": "null"
+        },
+        {
+          "name": "w_cost_readout_supported_training_scope_flag",
+          "type": "null"
+        },
+        {
+          "name": "w_cost_readout_weight_status",
+          "type": "null"
+        },
+        {
+          "name": "w_fast_supported_final_sample_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_fast_supported_average_uniqueness",
+          "type": "double"
+        },
+        {
+          "name": "w_fast_supported_time_decay_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_fast_supported_active_interval_start",
+          "type": "string"
+        },
+        {
+          "name": "w_fast_supported_active_interval_end",
+          "type": "string"
+        },
+        {
+          "name": "w_fast_supported_scope_usage",
+          "type": "string"
+        },
+        {
+          "name": "w_fast_supported_supported_training_scope_flag",
+          "type": "bool"
+        },
+        {
+          "name": "w_fast_supported_weight_status",
+          "type": "string"
+        },
+        {
+          "name": "w_fast_readout_final_sample_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_fast_readout_average_uniqueness",
+          "type": "double"
+        },
+        {
+          "name": "w_fast_readout_time_decay_weight",
+          "type": "double"
+        },
+        {
+          "name": "w_fast_readout_active_interval_start",
+          "type": "null"
+        },
+        {
+          "name": "w_fast_readout_active_interval_end",
+          "type": "null"
+        },
+        {
+          "name": "w_fast_readout_scope_usage",
+          "type": "null"
+        },
+        {
+          "name": "w_fast_readout_supported_training_scope_flag",
+          "type": "null"
+        },
+        {
+          "name": "w_fast_readout_weight_status",
+          "type": "null"
+        },
+        {
+          "name": "final_sample_weight",
+          "type": "double"
+        },
+        {
+          "name": "average_uniqueness",
+          "type": "double"
+        },
+        {
+          "name": "time_decay_weight",
+          "type": "double"
+        },
+        {
+          "name": "active_interval_start",
+          "type": "string"
+        },
+        {
+          "name": "active_interval_end",
+          "type": "string"
+        },
+        {
+          "name": "scope_usage",
+          "type": "string"
+        },
+        {
+          "name": "supported_training_scope_flag",
+          "type": "bool"
+        },
+        {
+          "name": "weight_status",
+          "type": "string"
+        },
+        {
+          "name": "weight_source_priority",
+          "type": "string"
+        },
+        {
+          "name": "weight_missing_fallback_flag",
+          "type": "bool"
+        },
+        {
+          "name": "weight_scope_fallback_to_readout_only",
+          "type": "bool"
+        },
+        {
+          "name": "winner_120_bool",
+          "type": "bool"
+        },
+        {
+          "name": "fast_fail_10_bool",
+          "type": "bool"
+        },
+        {
+          "name": "false_repair_20_bool",
+          "type": "bool"
+        },
+        {
+          "name": "big_failure_proxy_bool",
+          "type": "bool"
+        },
+        {
+          "name": "e1_missed_winner_bool",
+          "type": "bool"
+        },
+        {
+          "name": "event_year_quarter",
+          "type": "string"
+        },
+        {
+          "name": "source_family_id_matched",
+          "type": "string"
+        },
+        {
+          "name": "P1_gap_event_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "P2_shakeout_prior_path_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "P3_volatility_expansion_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "P4_momentum_leader_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "P5_low_noise_accumulation_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "P6_repair_structure_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "P7_flow_confirmation_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "P8_recurrence_density_proxy",
+          "type": "bool"
+        },
+        {
+          "name": "policy_row_id",
+          "type": "string"
+        },
+        {
+          "name": "horizon_complete_120d_bool",
+          "type": "bool"
+        },
+        {
+          "name": "class_big_winner_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_big_failure_proxy_nonwinner_flag",
+          "type": "bool"
+        },
+        {
+          "name": "subclass_fast_fail_flag",
+          "type": "bool"
+        },
+        {
+          "name": "subclass_false_repair_only_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_neutral_chop_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_all_nonwinner_resolved_flag",
+          "type": "bool"
+        },
+        {
+          "name": "class_unresolved_flag",
+          "type": "bool"
+        },
+        {
+          "name": "mfe_120d_frozen",
+          "type": "double"
+        },
+        {
+          "name": "K",
+          "type": "int64"
+        },
+        {
+          "name": "entry_anchor_date",
+          "type": "string"
+        },
+        {
+          "name": "entry_anchor_price",
+          "type": "double"
+        },
+        {
+          "name": "event_t0_close",
+          "type": "double"
+        },
+        {
+          "name": "ep_fast_fail_barrier_touched_by_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_days_to_first_fast_fail",
+          "type": "double"
+        },
+        {
+          "name": "mfe_120_recomputed",
+          "type": "double"
+        },
+        {
+          "name": "mfe_basis_status",
+          "type": "string"
+        },
+        {
+          "name": "ep_ret_t0_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_close_vs_t0_close",
+          "type": "double"
+        },
+        {
+          "name": "ep_max_drawdown_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_min_close_ret_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_recovery_from_min_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_close_in_range_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_close_above_ema20_at_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_days_above_ema20_through_K",
+          "type": "int64"
+        },
+        {
+          "name": "ep_breach_t0_low_through_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_close_above_t0_high_at_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_down_day_vol_contraction_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_up_day_vol_expansion_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_vol_decay_ratio_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_atr_change_t0_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_range_contraction_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_structural_drawdown_8pct_by_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_structural_drawdown_10pct_by_K_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_days_to_first_structural_drawdown",
+          "type": "double"
+        },
+        {
+          "name": "ep_mfe_to_K",
+          "type": "double"
+        },
+        {
+          "name": "ep_mae_to_K",
+          "type": "double"
+        },
+        {
+          "name": "cohort",
+          "type": "string"
+        },
+        {
+          "name": "eligible_flag",
+          "type": "bool"
+        },
+        {
+          "name": "fill_reason",
+          "type": "string"
+        },
+        {
+          "name": "delist_haircut",
+          "type": "double"
+        },
+        {
+          "name": "instrument_source",
+          "type": "string"
+        },
+        {
+          "name": "binding_canonical_event_id_denom",
+          "type": "string"
+        },
+        {
+          "name": "entry_t0p4_pos",
+          "type": "int64"
+        },
+        {
+          "name": "entry_t0p4_executable_flag",
+          "type": "bool"
+        },
+        {
+          "name": "entry_t0p4_fill_reason",
+          "type": "string"
+        },
+        {
+          "name": "limit_up_locked_t0p4_flag",
+          "type": "bool"
+        },
+        {
+          "name": "suspended_through_K3_flag",
+          "type": "bool"
+        },
+        {
+          "name": "ep_volume_ratio_3d_vs_20d",
+          "type": "double"
+        },
+        {
+          "name": "ep_money_ratio_3d_vs_20d",
+          "type": "double"
+        },
+        {
+          "name": "board_bucket",
+          "type": "string"
+        },
+        {
+          "name": "state_positive_S0_return_damage_basic",
+          "type": "bool"
+        },
+        {
+          "name": "state_positive_S1_reclaim_damage",
+          "type": "bool"
+        },
+        {
+          "name": "state_positive_S2_return_reclaim_liquidity",
+          "type": "bool"
+        },
+        {
+          "name": "tenb_instrument",
+          "type": "string"
+        },
+        {
+          "name": "tenb_event_t0_date",
+          "type": "string"
+        },
+        {
+          "name": "tenb_split",
+          "type": "string"
+        },
+        {
+          "name": "tenb_rejected_flag",
+          "type": "bool"
+        },
+        {
+          "name": "tenc_ref_instrument",
+          "type": "string"
+        },
+        {
+          "name": "tenc_ref_event_t0_date",
+          "type": "string"
+        },
+        {
+          "name": "tenc_ref_split",
+          "type": "string"
+        },
+        {
+          "name": "tenc_ref_rejected_flag",
+          "type": "bool"
+        },
+        {
+          "name": "deployed_baseline_kept_flag",
+          "type": "bool"
+        },
+        {
+          "name": "lane_id",
+          "type": "string"
+        }
+      ],
+      "sha256": "3f749ba33b96f26468e1757c8e70caf88ebfe5eb0586790ab86994c97ce61213"
+    },
+    "portfolio_daily_ledger": {
+      "path": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/portfolio_daily_ledger.parquet",
+      "row_count": 262581,
+      "schema": [
+        {
+          "name": "arm_variant_id",
+          "type": "string"
+        },
+        {
+          "name": "capacity_slots",
+          "type": "int64"
+        },
+        {
+          "name": "date",
+          "type": "string"
+        },
+        {
+          "name": "gross_exposure",
+          "type": "double"
+        },
+        {
+          "name": "cash_drag_day",
+          "type": "double"
+        },
+        {
+          "name": "concurrent_positions",
+          "type": "int64"
+        },
+        {
+          "name": "portfolio_daily_status",
+          "type": "string"
+        }
+      ],
+      "sha256": "90ec9e2f0fd4b5d2e565e2718893d1044613ebb6cf4f5bbec6e496a8832e59fa"
+    }
+  },
+  "output_hashes": {
+    "bootstrap_samples": "131d02c9cffb059094b1501f09b0947af494397cf3df354563cda44e911cb726",
+    "capital_utilization_readout": "229efdc31f445381efbad141fa709602d4bddf1216485b9d7eae2cd8bdba7a4c",
+    "concentration_readout": "4ba7d6acfd59bbcb443805539fef8e5589f0f78ac5ad343dff5eecad9f55d7d3",
+    "event_level_trade_ledger": "0706f40d62aaf29f5478d54c54c10bb94be6e2a6dbb60bb34fbd87dbc502f3e1",
+    "execution_fill_audit": "65f7edfc2ed5d29a935a1559fd40b27ac64d90ff3ca1cb93f0570b5742a856d2",
+    "failure_exposure_readout": "320ae161634a87e8e6fa395e23357fdca0b29cc1828f65f3a41d982596b27542",
+    "failure_mode_decision_table": "9eda50b350ba58c6bf6fab149d7fff4d587613319af76504de534932bd8d9608",
+    "final_policy_decision": "b60b24d96488e1791dc5f9dfee6db644f2f1e39ed299b98255c17a638f7f5000",
+    "input_artifact_audit": "d4f7200aa701bf4b6ba10cb98db67919f773a9a15e9069855a2946c3c2a664f7",
+    "instrument_block_bootstrap_ci": "c48eaaea6db0d6cdddfb314c1e67e60e4a4984722317a4d997fc242974a92b7e",
+    "k3_observed_state_matrix": "30be859540f93a2c72acc0e97137b0fa85a0a341d7d09d9158b407d81a54ca37",
+    "k3_row_id_rehydration_audit": "554d65438032f47e214ad529c5367ccf4e66daedf6fc61f37cf90cc6b3f1dc13",
+    "label_overlap_policy_audit": "af2b0a1a40b7f0b795330f99a7ab31eeece2e1fb7c25b47300417a2abc4bb979",
+    "lane_b_rescue_power_readout": "224615c6e2399c38e469691282b8412df78316eaa532781b5e733421f4bc5f63",
+    "lane_population_audit": "46578261c0c71eaee3748f195d66d01c445e85227fd1e9c3921d795eef6fa3b7",
+    "limit_execution_audit": "07068e021952d6fe74fdc8f3f6d643eb0227ff738a6f692ad489c06fcc60fe1a",
+    "mae_drawdown_distribution": "e4eea479f7f38d68f79424d9d51e9e9d1967fb814be97def1d72c5fb3d5f4e98",
+    "observed_state_definition_registry": "5e37737378ce21015377b3503bfed5938d489cce0066133d1d76e4e345c7d88d",
+    "observed_state_feature_registry": "2080126ae2385914b7aff0e667bd0ea09e38e54252f5df1d6e1234e7ed229b01",
+    "policy_arm_registry": "f790d88a3bac2e23d8cfb0b1415eea086072c754f4e067292b1dddd36807c0cc",
+    "policy_performance_summary": "91cd9262d0c1a71e5e07daf8c345f50e805a880449b4a25ba02db65e435995fe",
+    "policy_replay_base_denominator": "3f749ba33b96f26468e1757c8e70caf88ebfe5eb0586790ab86994c97ce61213",
+    "portfolio_daily_ledger": "90ec9e2f0fd4b5d2e565e2718893d1044613ebb6cf4f5bbec6e496a8832e59fa",
+    "report": "4a2acf98022ac92a07b000069b7ad801901fdf890dc11264f6d6c0392845635f",
+    "robust_metric_package": "36c1c16adc0a96924fb6d781d7a68d9f8eabaf998c4d890d5f94ea7ffa56a233",
+    "scope_reconciliation_vs_11a1_11a2": "b80954ba4a2643661cc6a397898921141f9d6d125095256f330ef110c57c0da0",
+    "state_selection_readout": "56ca66b8f38ed3b71a58bba6ce6b3e441ea486cca23a685fc0935c168ac54345",
+    "topk_removal_sensitivity": "369cb83e4406341e2a7a31fa0253534c4f38ee7cdc242507aa903149240c2e57",
+    "turnover_cost_readout": "34af018921604dd76f646ad6836a6b5683eddb51d0b2af877bf52679e09a62b1",
+    "winner_capture_readout": "6cde241ded470f4ff4fde14fad22bf55252f147ec9ec5d83dbf89bc7db2501ee"
+  },
+  "outputs": {
+    "bootstrap_samples": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/bootstrap_samples.parquet",
+    "capital_utilization_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/capital_utilization_readout.csv",
+    "concentration_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/concentration_readout.csv",
+    "event_level_trade_ledger": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/event_level_trade_ledger.parquet",
+    "execution_fill_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/execution_fill_audit.csv",
+    "failure_exposure_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/failure_exposure_readout.csv",
+    "failure_mode_decision_table": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/failure_mode_decision_table.csv",
+    "final_policy_decision": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/final_policy_decision.csv",
+    "input_artifact_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/input_artifact_audit.csv",
+    "instrument_block_bootstrap_ci": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/instrument_block_bootstrap_ci.csv",
+    "k3_observed_state_matrix": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/k3_observed_state_matrix.parquet",
+    "k3_row_id_rehydration_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/k3_row_id_rehydration_audit.csv",
+    "label_overlap_policy_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/label_overlap_policy_audit.csv",
+    "lane_b_rescue_power_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/lane_b_rescue_power_readout.csv",
+    "lane_population_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/lane_population_audit.csv",
+    "limit_execution_audit": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/limit_execution_audit.csv",
+    "mae_drawdown_distribution": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/mae_drawdown_distribution.csv",
+    "observed_state_definition_registry": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/observed_state_definition_registry.csv",
+    "observed_state_feature_registry": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/observed_state_feature_registry.csv",
+    "policy_arm_registry": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/policy_arm_registry.csv",
+    "policy_performance_summary": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/policy_performance_summary.csv",
+    "policy_replay_base_denominator": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/policy_replay_base_denominator.parquet",
+    "portfolio_daily_ledger": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/local_cache/11C_two_stage_observed_state_policy_replay_v0/portfolio_daily_ledger.parquet",
+    "report": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/reports/11C_two_stage_observed_state_policy_replay_v0_report.md",
+    "robust_metric_package": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/robust_metric_package.csv",
+    "scope_reconciliation_vs_11a1_11a2": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/scope_reconciliation_vs_11a1_11a2.csv",
+    "state_selection_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/state_selection_readout.csv",
+    "topk_removal_sensitivity": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/topk_removal_sensitivity.csv",
+    "turnover_cost_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/turnover_cost_readout.csv",
+    "winner_capture_readout": "topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11C_two_stage_observed_state_policy_replay_v0/winner_capture_readout.csv"
+  },
+  "platform": "Linux-6.18.33.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.4",
+  "run_id": "11C_two_stage_observed_state_policy_replay_v0",
+  "selected_arm_variant_id": "B2_wait_confirm_K3__S1_reclaim_damage__target_1.00"
+}

@@ -143,7 +143,10 @@ fast-fail touch 只能进入 `label_overlap_policy_audit.csv`，不得进入 `ob
 - `outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/label_overlap_tautology_audit.csv`
 - `outputs/publishable/tables/11B_archetype_protected_retention_readout/retention_summary.csv`
 - `outputs/publishable/tables/11B_archetype_protected_retention_readout/non_discrimination_metric_readout.csv`
+- `outputs/publishable/tables/11B_archetype_protected_retention_readout/protected_subgroup_retention_readout.csv`
 - `outputs/publishable/tables/11B_archetype_protected_retention_readout/rejector_decision_reconstruction_audit.csv`
+- `outputs/publishable/tables/11B_archetype_protected_retention_readout/rejector_retention_reconciliation_vs_10c.csv`
+- `outputs/publishable/tables/11B_archetype_protected_retention_readout/subgroup_multiple_comparison_audit.csv`
 
 若存在以下 local cache，11C 可以消费其 K3 feature values，但必须校验 manifest hash，并且只能使用 `K == 3` 且 `cohort == full_cohort` 的 4,665 行：
 
@@ -165,15 +168,50 @@ fast-fail touch 只能进入 `label_overlap_policy_audit.csv`，不得进入 `ob
 | evaluated row count | `4665` |
 | unique instruments | `593` |
 | winner realized fraction status | `tradable_window_open` |
-| 11B final_status | one of `11B_archetype_protected_retention_non_discriminatory`, `11B_archetype_protected_retention_discriminatory`, `11B_archetype_protected_retention_ambiguous`, `11B_archetype_protected_retention_inconclusive_underpowered`, `11B_archetype_protected_retention_inconclusive_mixed_power` |
+| 11B final_status | one of `11B_archetype_protected_retention_non_discriminatory`, `11B_archetype_protected_retention_discriminatory`, `11B_archetype_protected_retention_ambiguous`, `11B_archetype_protected_retention_inconclusive_underpowered`, `11B_archetype_protected_retention_inconclusive_mixed_power`, `11B_archetype_protected_retention_statistics_incomplete` |
 
-若 11A2 gate 任一项不满足，11C 必须 `11C_two_stage_policy_input_blocked`，不得继续输出 policy conclusion。若 11B artifact 缺失、hash 不可复算、`retention_summary.csv` 没有唯一 final_status，或 11B final_status 为 `statistics_incomplete` / `input_blocked`，11C 最终状态不得高于 `11C_two_stage_policy_statistics_incomplete`，不得输出 positive policy conclusion。
+若 11A2 gate 任一项不满足，11C 必须 `11C_two_stage_policy_input_blocked`，不得继续输出 policy conclusion。若 11B artifact 缺失、hash 不可复算、`retention_summary.csv` 没有唯一 final_status，或 11B final_status 为 `statistics_incomplete` / `input_blocked`，11C 可以继续执行 replay 与 readout，但最终状态不得高于 `11C_two_stage_policy_statistics_incomplete`，不得输出 positive policy conclusion。
+
+当前冻结 11B 结果：
+
+| item | value |
+| --- | --- |
+| 11B final_status | `11B_archetype_protected_retention_statistics_incomplete` |
+| direct cause | `risk_on_pre_pit_retention_recon_diff_gt_ceiling` |
+| pre-ceiling retention gate | `ambiguous` |
+| evaluated denominator | 4,665 PIT-valid rows |
+| protected / reference class counts | 446 `winner_120_protected` + 4,217 `nonwinner_reference`; `class_unresolved` = 2 |
+| overall PIT-valid winner / nonwinner / relative retention | 0.8475 / 0.9274 / 0.9138 |
+
+因此，除非 11B 上游 artifact 被重新运行并产生新的 hash-consistent non-ceiling final_status，否则本轮 11C 的 policy replay 即使所有交易指标为正，最终也只能是 `11C_two_stage_policy_statistics_incomplete`。这不是 11C 执行失败，而是 11B retention prerequisite 的 contract ceiling。
 
 11B 对 11C 的解释作用：
 
 - 若 11B `non_discriminatory`：11C 不需要为 winner retention 单独加入 carve-out，但仍必须按 §9.4 检查 winner capture。
 - 若 11B `discriminatory`：11C 必须把 10C `keep_9000` reference-slice 的 winner-retention 损失作为显式 diagnostic cost 写入 report，并在 failure-mode table 中单独标注；不得把 Lane B rescue 写成放宽 10C。
 - 若 11B `ambiguous` / `inconclusive_underpowered` / `inconclusive_mixed_power`：11C 可以继续 replay，但 retention 维度只能 readout；final report 必须声明 10C reference-slice retention 证据不足，不能据此支持 carve-out。
+- 若 11B `statistics_incomplete` 且 `statistics_incomplete_reasons` 包含 `risk_on_pre_pit_retention_recon_diff_gt_ceiling`：11C 必须把 10C published frontier retention 与 11B risk_on/PIT-valid retention 分开报告；不得用 10C frontier retention 证明 11C executable universe 中的 retention 非歧视；retention 维度只能 readout，且 final status ceiling 到 `11C_two_stage_policy_statistics_incomplete`。
+
+当前 11B split-level readout 必须进入 11C report 的 prerequisite section：
+
+| split | winner_n | winner_retention | nonwinner_retention | relative retention | CI 5%-95% | 11B split status |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| train | 151 | 0.9603 | 0.9383 | 1.0234 | [0.9898, 1.0519] | `non_discriminatory` |
+| validation | 16 | 0.5625 | 0.9376 | 0.6000 | [0.3243, 0.8119] | `validation_low_power` |
+| robustness | 279 | 0.8029 | 0.9133 | 0.8791 | [0.8166, 0.9313] | `ambiguous` |
+
+当前 11B frontier reconciliation 必须进入 11C report 的 prerequisite section：
+
+| scope | train diff | validation diff | robustness diff | required interpretation |
+| --- | ---: | ---: | ---: | --- |
+| score-cache primary vs 10C published frontier | 0.0000 | 0.0000 | 0.0000 | 10C frontier itself is reproduced |
+| risk_on pre-PIT vs 10C published frontier | 0.0605 | 0.1788 | 0.0722 | 10C frontier retention cannot be directly extrapolated to the 11C executable universe |
+
+当前 11B seed readout 必须作为 11C sensitivity hook：
+
+- `winner_shakeout_seed` 是 retention 风险最集中的解释性子群：all relative retention = 0.7448，CI [0.6564, 0.8381]；robustness relative retention = 0.6940，CI [0.5919, 0.7983]。
+- `subgroup_multiple_comparison_audit.csv` 当前为 `multiple_comparison_status = ok`，因此 seed 结果只能作为 sensitivity/readout，不得成为 policy feature 或 carve-out 授权。
+- 若 11C 的 EV lift 主要来自 10C reference-slice 更容易 reject 的 shakeout-like winners，report 必须单独标注该收益依赖，不得把它直接解释成可交易 alpha 或 10C override 证据。
 
 ### 3.2 10A / 10B / 10C current baseline 输入
 
@@ -747,7 +785,7 @@ Exactly one final status must be emitted:
 | `11C_two_stage_policy_observation_first_preferred` | B2 wait-confirm dominates B3 trial-entry after cost and robustness |
 | `11C_two_stage_policy_staged_sizing_candidate` | B3 trial-entry dominates B2 and passes all gates; only authorizes further staged-sizing research |
 | `11C_two_stage_policy_not_supported_diagnostic` | Inputs readable, but no policy passes pre-registered gates |
-| `11C_two_stage_policy_statistics_incomplete` | Non-blocking but conclusion-critical metrics incomplete, hash mismatch, or denominator drift |
+| `11C_two_stage_policy_statistics_incomplete` | Non-blocking but conclusion-critical metrics incomplete, hash mismatch, denominator drift, or an upstream 11B retention prerequisite is ceilinged by `statistics_incomplete` |
 | `11C_two_stage_policy_input_blocked` | Required inputs missing, baseline not reconstructable, leakage detected, or execution replay impossible |
 
 Precedence:
@@ -788,6 +826,7 @@ If B3 trial-entry clearly beats B2, report conclusion must be:
 | Case 5 | 只在 Lane B（10C reference-slice rejected）有效，但 power 不足 | 只允许 readout，不授权交易 |
 | Case 6 | wait-confirm 明显优于 trial-entry | observation-first 优先 |
 | Case 7 | trial-entry 明显优于 wait-confirm | staged sizing candidate，但还需成本/容量/涨跌停复核 |
+| Case 8 | 11B final_status 为 `statistics_incomplete`，尤其因 `risk_on_pre_pit_retention_recon_diff_gt_ceiling` 被 ceiling | 11C 可输出完整 replay readout，但最终不得 positive；retention prerequisite 只能 readout |
 
 ## 13. Required outputs
 
@@ -855,7 +894,7 @@ Report must be Chinese and include:
 
 1. Scope reconciliation against 11A1/11A2/11B, including why 6,628 PIT-excluded rows remain out-of-scope.
 2. 11A2 prerequisite check: K*=3, tradable window open, and diagnostic-only boundary.
-3. 11B prerequisite check: protected retention final_status, non-discrimination metric summary, and whether retention is non_discriminatory / discriminatory / readout-only.
+3. 11B prerequisite check: protected retention final_status, non-discrimination metric summary, and whether retention is non_discriminatory / discriminatory / readout-only. 当前 11B 若仍为 `11B_archetype_protected_retention_statistics_incomplete`，必须列出 `risk_on_pre_pit_retention_recon_diff_gt_ceiling`、overall PIT-valid winner/nonwinner/relative retention = 0.8475 / 0.9274 / 0.9138、train/validation/robustness split 状态、score-cache primary exact reconciliation、risk_on pre-PIT frontier diff，以及 `winner_shakeout_seed` sensitivity。
 4. Lane A / Lane B population counts、deployed baseline（10A + 10B selected）provenance、以及 10C `tenc_slice_mode`（当前预期 `keep_9000_reference_slice`，非已部署 gate）。
 5. K3 observed-state registry, selected state definition, and leakage/label-overlap audit.
 6. B0/B1/B2/B3/LB0/LB2 replay result under zero/base/stress cost.
@@ -865,7 +904,7 @@ Report must be Chinese and include:
 10. Board/sector concentration.
 11. Top-k removal and instrument-block bootstrap.
 12. Lane B power and whether rescue remains readout-only.
-13. Seven pre-registered failure modes.
+13. Eight pre-registered failure modes.
 14. Final status and exact reason list.
 
 ## 14. Validation requirements
@@ -876,7 +915,9 @@ Report must be Chinese and include:
 
 - 11A1/11A2 denominator reconciliation, including expected `4665` row count and fail-closed behavior on drift.
 - 11A2 prerequisite status: only `separation_detected_tradable` with K*=3 allows policy replay.
-- 11B upstream contract：manifest/report tables are readable and hashable; `retention_summary.csv` has exactly one final_status; 11B `statistics_incomplete` / `input_blocked` ceilings 11C to `statistics_incomplete`; 11B `discriminatory` forces report to carry winner-retention loss as diagnostic cost; 11B ambiguous/underpowered/mixed-power remains readout-only.
+- 11B upstream contract：manifest/report tables are readable and hashable; `retention_summary.csv` has exactly one final_status; current 11B `statistics_incomplete` with `statistics_incomplete_reasons = risk_on_pre_pit_retention_recon_diff_gt_ceiling` ceilings 11C to `statistics_incomplete` while still allowing replay readout; 11B `input_blocked` also ceilings 11C to `statistics_incomplete`; 11B `discriminatory` forces report to carry winner-retention loss as diagnostic cost; 11B ambiguous/underpowered/mixed-power remains readout-only.
+- 11B current result hook：tests must verify the runner reads `rejector_retention_reconciliation_vs_10c.csv` and reports score-cache primary exact reconciliation separately from risk_on pre-PIT diff_gt_ceiling; tests must verify the current PIT-valid split statuses are train `non_discriminatory`, validation `validation_low_power`, robustness `ambiguous`.
+- 11B seed sensitivity hook：tests must verify `winner_shakeout_seed` is read from `protected_subgroup_retention_readout.csv` as sensitivity/readout-only and cannot enter K3 observed-state features, routing, sizing, entry, exit, or final policy decision.
 - PIT-excluded rows never enter policy metrics.
 - 10B deployed selected gate 从 10B manifest authoritative `selected_*` fields 与 `selected_operating_point.ablation_id` 读取（非硬编码，且不得使用 10C manifest 的 `actual_10b_selected_*` 作为 source）；deployed baseline 不可重建时 input_blocked。
 - 10C 无 selected gate（`selected_capacity_id == null` / `selected_cascade_status == blocked`）时，`tenc_slice_mode == keep_9000_reference_slice`，且该状态**不**触发 input_blocked；仅当 deployed baseline 不可重建或 10C `keep_9000` slice 在 scores cache 上 0 行时才 input_blocked。

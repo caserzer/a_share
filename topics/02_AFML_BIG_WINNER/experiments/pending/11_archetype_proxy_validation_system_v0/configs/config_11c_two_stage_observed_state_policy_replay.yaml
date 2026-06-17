@@ -1,0 +1,112 @@
+run:
+  run_id: 11C_two_stage_observed_state_policy_replay_v0
+  random_seed: 20260617
+
+scope:
+  population_id: 10A__same_instrument_cooldown_10d
+  denominator_id: post_dedup_risk_on_r_core
+  admission_status: admitted
+  readout_only_flag: false
+  analysis_regime_bucket: risk_on
+  strict_pit_universe_filter_flag: true
+  expected_evaluated_row_n: 4665
+  expected_unique_instrument_n: 593
+  reference_slice:
+    model_id: regularized_logistic_false_repair_20d_l2_v1
+    ablation_id: full
+    capacity_id: keep_9000
+    threshold_id: keep_9000
+    population_id: 10A__same_instrument_cooldown_10d
+    denominator_id: post_dedup_risk_on_r_core
+
+parameters:
+  exit_contract_id: common_exit_120d_with_risk_stop_v1
+  state_observation_k: 3
+  max_holding_sessions: 120
+  risk_stop_drawdown_from_cost_basis: -0.10
+  delist_haircut: 1.0
+  allow_delayed_entry_chase: false
+  trial_size_grid: [0.00, 0.10, 0.25]
+  upgrade_size_grid: [0.50, 1.00]
+  primary_capacity_slots: 50
+  capacity_slots: [20, 50, 100]
+  per_position_full_size_notional: null
+  max_gross_exposure: 1.0
+  max_instrument_weight: 0.05
+  max_board_weight: 0.40
+  max_industry_weight: 0.25
+  cost_scenarios:
+    zero_cost_decomposition:
+      buy_cost_bps: 0
+      sell_cost_bps: 0
+    base_cost:
+      buy_cost_bps: 8
+      sell_cost_bps: 13
+    stress_cost:
+      buy_cost_bps: 15
+      sell_cost_bps: 25
+  train_state_positive_entry_n_floor: 100
+  train_state_positive_winner_n_floor: 20
+  winner_capture_tolerance: 0.05
+  big_failure_entry_lift_ceiling: 0.005
+  false_repair_entry_lift_ceiling: 0.005
+  fast_fail_loss_lift_ceiling: 0.005
+  mae_p95_lift_ceiling: 0.02
+  winner_retention_floor: 0.85
+  limit_up_unfilled_rate_ceiling: 0.20
+  limit_down_exit_failure_rate_ceiling: 0.10
+  cash_drag_lift_ceiling: 0.10
+  board_concentration_hhi_lift_ceiling: 0.10
+  top1_contribution_share_ceiling: 0.35
+  top5_contribution_share_ceiling: 0.60
+  episode_contribution_share_ceiling: 0.35
+  validation_min_winner_n: 30
+  validation_min_state_positive_winner_n: 10
+  lane_b_train_entry_floor: 100
+  lane_b_train_winner_floor: 20
+  lane_b_robustness_entry_floor: 50
+  lane_b_robustness_winner_floor: 10
+  bootstrap_n: 1000
+  bootstrap_seed: 20260617
+  winsor_low: 0.01
+  winsor_high: 0.99
+
+inputs:
+  requirement_11c: requirement_11c_two_stage_observed_state_policy_replay.md
+  eleven_a1_manifest: outputs/publishable/manifest_11A1_archetype_proxy_robust_payoff_risk_audit.json
+  eleven_a2_manifest: outputs/publishable/manifest_11A2_post_t0_archetype_path_divergence_diagnostic.json
+  eleven_b_manifest: outputs/publishable/manifest_11B_archetype_protected_retention_readout.json
+  eleven_a1_scope_risk_on: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/risk_on_scope_filter_audit.csv
+  eleven_a1_scope_pit: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/pit_universe_scope_filter_audit.csv
+  eleven_a1_pit_exclusion: outputs/publishable/tables/11A1_archetype_proxy_robust_payoff_risk_audit/pit_universe_exclusion_diagnostic.csv
+  eleven_a1_proxy_scored_denominator: outputs/local_cache/11A1_archetype_proxy_robust_payoff_risk_audit/proxy_scored_denominator.parquet
+  eleven_a2_diagnostic_summary: outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/diagnostic_summary.csv
+  eleven_a2_divergence_onset: outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/divergence_onset_readout.csv
+  eleven_a2_tradability_lag: outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/tradability_lag_readout.csv
+  eleven_a2_feature_registry: outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/early_path_feature_registry.csv
+  eleven_a2_label_overlap: outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/label_overlap_tautology_audit.csv
+  eleven_a2_early_path_matrix: outputs/local_cache/11A2_post_t0_archetype_path_divergence_diagnostic/early_path_feature_matrix.parquet
+  eleven_b_retention_summary: outputs/publishable/tables/11B_archetype_protected_retention_readout/retention_summary.csv
+  eleven_b_non_discrimination: outputs/publishable/tables/11B_archetype_protected_retention_readout/non_discrimination_metric_readout.csv
+  eleven_b_protected_subgroup_retention: outputs/publishable/tables/11B_archetype_protected_retention_readout/protected_subgroup_retention_readout.csv
+  eleven_b_rejector_decision_reconstruction: outputs/publishable/tables/11B_archetype_protected_retention_readout/rejector_decision_reconstruction_audit.csv
+  eleven_b_reconciliation_vs_10c: outputs/publishable/tables/11B_archetype_protected_retention_readout/rejector_retention_reconciliation_vs_10c.csv
+  eleven_b_subgroup_multiple_comparison: outputs/publishable/tables/11B_archetype_protected_retention_readout/subgroup_multiple_comparison_audit.csv
+  ten_a_manifest: ../10_riskon_layered_rejector_system_v0/outputs/manifests/10A_density_rule_system_manifest.json
+  ten_a_bindings: ../10_riskon_layered_rejector_system_v0/outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet
+  ten_a_population_contract: ../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv
+  ten_b_manifest: ../10_riskon_layered_rejector_system_v0/outputs/manifests/10B_fast_fail_structural_gate_manifest.json
+  ten_b_scores: ../10_riskon_layered_rejector_system_v0/outputs/local_cache/10B_fast_fail_structural_gate/post_dedup_fast_fail_scores.parquet
+  ten_c_manifest: ../10_riskon_layered_rejector_system_v0/outputs/manifests/10C_false_repair_rejector_manifest.json
+  ten_c_scores: ../10_riskon_layered_rejector_system_v0/outputs/local_cache/10C_false_repair_rejector/post_dedup_false_repair_scores.parquet
+  ten_c_threshold_frontier: ../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10C_false_repair_rejector/false_repair_threshold_frontier.csv
+  ten_c_cascade_overlap: ../10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10C_false_repair_rejector/cascade_overlap_attribution.csv
+  nine_a_bindings: ../09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet
+  eight_labels: ../08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet
+  labels_yaml: topics/02_AFML_BIG_WINNER/configs/labels.yaml
+  pit_universe: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_largecap_main_chinext_executable_daily.csv
+  qfq_primary_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+  qfq_fallback_dir: topics/02_AFML_BIG_WINNER/data/interim/qlib_csv/day
+  board_metadata: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv
+  sh_name_history_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history
+  sz_name_history: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv
