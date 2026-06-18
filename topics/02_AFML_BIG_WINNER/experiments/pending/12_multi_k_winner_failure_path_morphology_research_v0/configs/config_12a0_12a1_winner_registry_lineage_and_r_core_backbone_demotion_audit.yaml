@@ -1,0 +1,61 @@
+run_id: 12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  episode_06_csv: topics/02_AFML_BIG_WINNER/experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/publishable/tables/topn_big_winner_episode_reference_summary.csv
+  episode_06_manifest: topics/02_AFML_BIG_WINNER/experiments/pending/06_rerun_02_reverse_lifecycle_on_topn_universe_v0/outputs/manifests/run_manifest.json
+  mfe_11a2_csv: topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/mfe_basis_reconciliation.csv
+  denominator_11a2_audit: topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/denominator_contract_audit.csv
+  outcome_11a2_audit: topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A2_post_t0_archetype_path_divergence_diagnostic/outcome_class_count_audit.csv
+  manifest_11a2: topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/manifest_11A2_post_t0_archetype_path_divergence_diagnostic.json
+  canonical_08_events: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/candidate_family_canonical_events.csv.gz
+  scope_mapping_08: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_mapping_contract.csv
+  scope_reconstruct_08: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_scope_reconstructability_audit.csv
+  density_08: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/density_fast_fail_audit/candidate_10d_density_summary.csv
+  badside_e1_08: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/publishable/tables/regime_family_matrix/regime_family_fast_fail_diagnostic_matrix.csv
+  labels_08: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet
+  source_pool_09: topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/publishable/tables/input_audit/source_pool_reconstruction_audit.csv
+  label_bindings_09a: topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet
+  bindings_10a: topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/outputs/local_cache/10A_density_rule_system/post_dedup_event_bindings.parquet
+  population_10a: topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/post_dedup_population_contract.csv
+  density_10a: topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10A_density_rule_system/post_dedup_density_audit.csv
+  scores_10b: topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/outputs/local_cache/10B_fast_fail_structural_gate/post_dedup_fast_fail_scores.parquet
+  frontier_10b: topics/02_AFML_BIG_WINNER/experiments/pending/10_riskon_layered_rejector_system_v0/outputs/publishable/tables/10B_fast_fail_structural_gate/fast_fail_threshold_frontier.csv
+
+baseline_diagnostics:
+  alignment_summary: outputs/diagnostics/winner_428_vs_446_alignment_summary.csv
+  episode_06_rows: outputs/diagnostics/06_topn_risk_on_big_winner_episodes_428.csv
+  winner_11a2_rows: outputs/diagnostics/11a2_risk_on_pit_valid_big_winner_rows_446.csv
+  episode_to_winner_alignment: outputs/diagnostics/06_428_episodes_to_11a2_446_rows_alignment.csv
+  winner_to_episode_alignment: outputs/diagnostics/11a2_446_rows_to_nearest_06_episode_alignment.csv
+  detail_manifest: outputs/diagnostics/winner_428_vs_446_detail_manifest.csv
+
+thresholds:
+  backbone_supported:
+    episode_recall_pre120_calendar_to_high: 0.70
+    episode_recall_low_to_high: 0.45
+    event_precision_pre120_calendar_to_high: 0.25
+    event_precision_low_to_high: 0.15
+    outside_event_rate_low_to_high_max: 0.85
+    density_vs_e1_full_denominator_max: 2.50
+    events_per_instrument_year_p95_max: 10.00
+    rolling_10d_duplicate_rate_max: 0.20
+    fast_fail_10d_excess_vs_07_E1_only_max: 0.05
+    false_repair_20d_excess_vs_07_E1_only_max: 0.05
+    event_after_episode_high_rate_max: 0.20
+    label_completeness_coverage_min: 0.995
+  feature_source_minimum:
+    episode_recall_pre120_calendar_to_high: 0.70
+    event_precision_pre120_calendar_to_high: 0.15
+    event_precision_low_to_high: 0.08
+    density_vs_e1_full_denominator_max: 4.00
+    events_per_instrument_year_p95_max: 20.00
+    rolling_10d_duplicate_rate_max: 0.35
+    label_completeness_coverage_min: 0.995
+
+tenb_operating_point:
+  model_id: regularized_logistic_fast_fail_10d_l2_v1
+  ablation_id: full
+  threshold_id: keep_9400
+  capacity_id: keep_9400
