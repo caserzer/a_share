@@ -1,0 +1,16 @@
+experiment,artifact,record_unit,id,instrument,date,aux_date,regime,split,present_in_stage,note
+06,topn_big_winner_episode_reference_summary.csv,deduped_episode,SH600019_20201215_0000,SH600019,2020-12-15,2021-03-15,risk_on,train,True,06 episode_low_date baseline
+06,topn_big_winner_episode_reference_summary.csv,deduped_episode,SH600019_20210618_0001,SH600019,2021-06-18,2021-09-13,risk_on,train,True,06 episode_low_date baseline
+07,topn_multichannel_candidate_event_canonical.csv,recommended_canonical_event,,SH600019,2020-10-16,,,,False,07 recommended event check for dates relevant to mismatch
+07,topn_multichannel_candidate_event_canonical.csv,recommended_canonical_event,,SH600019,2020-11-12,,,,False,07 recommended event check for dates relevant to mismatch
+07,topn_multichannel_candidate_event_canonical.csv,recommended_canonical_event,,SH600019,2020-12-15,,,,False,07 recommended event check for dates relevant to mismatch
+07,topn_multichannel_candidate_event_canonical.csv,recommended_canonical_event,,SH600019,2021-06-18,,,,False,07 recommended event check for dates relevant to mismatch
+07,topn_multichannel_candidate_event_canonical.csv,recommended_canonical_event,SH600019_20210715_recommended_union,SH600019,2021-07-15,2021-07-16,risk_on,train,True,07 recommended event check for dates relevant to mismatch
+08 canonical,candidate_family_canonical_events.csv.gz,candidate_family_canonical_event,SH600019_20201016_risk_on_transition_union,SH600019,2020-10-16,2020-10-19,risk_on,train,True,mismatch rows survive here
+08 canonical,candidate_family_canonical_events.csv.gz,candidate_family_canonical_event,SH600019_20201112_risk_on_transition_union,SH600019,2020-11-12,2020-11-13,risk_on,train,True,mismatch rows survive here
+08 selected,risk_on_cost_rejector_selected_events.csv.gz,risk_on_selected_event,SH600019_20201016_risk_on_transition_union,SH600019,2020-10-16,2020-10-19,risk_on,train,True,mismatch rows survive here
+08 selected,risk_on_cost_rejector_selected_events.csv.gz,risk_on_selected_event,SH600019_20201112_risk_on_transition_union,SH600019,2020-11-12,2020-11-13,risk_on,train,True,mismatch rows survive here
+09C,selected_events.csv.gz,09C_selected_event,SH600019_20201016_risk_on_transition_union,SH600019,2020-10-16,,,train,True,mismatch rows survive here
+09C,selected_events.csv.gz,09C_selected_event,SH600019_20201112_risk_on_transition_union,SH600019,2020-11-12,,,train,True,mismatch rows survive here
+11A2,mfe_basis_reconciliation.csv,risk_on_pit_valid_winner_candidate_row,186,SH600019,2020-10-16,,risk_on scope,,True,mfe_120d_frozen=0.826196; candidate row not episode low
+11A2,mfe_basis_reconciliation.csv,risk_on_pit_valid_winner_candidate_row,187,SH600019,2020-11-12,,risk_on scope,,True,mfe_120d_frozen=0.513570; candidate row not episode low
