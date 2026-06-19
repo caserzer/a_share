@@ -1,0 +1,68 @@
+run_id: 12A3_episode_precision_recall_frontier
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a3_episode_precision_recall_frontier.md
+
+  state_change_generation_decision: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_generation_decision.csv
+  state_change_candidate_event_canonical: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_canonical.csv.gz
+  state_change_candidate_event_instances: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_instances.csv.gz
+  state_change_family_formula_spec: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_family_formula_spec.csv
+  state_change_canonicalization_spec: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_canonicalization_spec.csv
+  state_change_density_audit: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_density_audit.csv
+  state_change_feature_pit_audit: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_feature_pit_audit.csv
+  state_change_family_overlap_diagnostic: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_family_overlap_diagnostic.csv
+  manifest_12a2: outputs/manifests/12A2_state_change_backbone_candidate_generator_manifest.json
+
+  episode_target_registry_06: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/episode_target_registry_06_risk_on_428.csv
+  r_core_demote_or_keep_decision: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_demote_or_keep_decision.csv
+  r_core_arm_event_registry: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_arm_event_registry.csv.gz
+  r_core_episode_alignment_by_window: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_episode_alignment_by_window.csv
+  r_core_event_precision_by_window: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_event_precision_by_window.csv
+  r_core_density_badside_tradeoff: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_density_badside_tradeoff.csv
+  manifest_12a0_12a1: outputs/manifests/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit_manifest.json
+
+  labels_yaml: topics/02_AFML_BIG_WINNER/configs/labels.yaml
+  label_rule_source_04: topics/02_AFML_BIG_WINNER/experiments/pending/04_high_recall_repair_event_candidate_generator_v0/code/pipeline.py
+  source_08_config: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/config.yaml
+  labels_08: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet
+  label_bindings_09a: topics/02_AFML_BIG_WINNER/experiments/pending/09_riskon_fastfail_label_feature_uplift/outputs/local_cache/09A_fast_fail_label_frontier/selected_label_event_bindings.parquet
+  pit_executable_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+  benchmark_daily_csv: topics/02_AFML_BIG_WINNER/data/processed/index/benchmark_indices_daily.csv
+  stock_daily_csv_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+
+thresholds:
+  min_pre120_recall_all: 0.70
+  min_pre120_recall_robustness: 0.60
+  min_low_to_high_recall_all: 0.45
+  min_low_to_high_precision_abs_delta: 0.02
+  min_low_to_high_precision_ratio: 1.30
+  max_density_ratio_vs_r_core: 0.75
+  max_duplicate_rate: 0.20
+  min_next_open_executable_rate: 0.99
+  min_label_20d_complete_rate: 0.90
+  min_label_120d_complete_rate: 0.80
+  min_label_parity_match_rate: 0.995
+
+canonicalization:
+  union_level_cooldown_sessions: 10
+  supported_first_trigger_statuses:
+    - first_observed_in_sample
+    - first_after_reset
+  current_priority_order:
+    B1: 10
+    B3: 20
+    B2: 30
+    B4: 40
+    B5: 50
+    B6: 60
+    B8: 70
+  b3_before_b1_priority_order:
+    B3: 10
+    B1: 20
+    B2: 30
+    B4: 40
+    B5: 50
+    B6: 60
+    B8: 70
