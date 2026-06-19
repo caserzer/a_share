@@ -1,0 +1,73 @@
+run_id: 12A4_state_change_meta_label_filter_feasibility
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a4_state_change_meta_label_filter_feasibility.md
+
+  backbone_frontier_decision: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_frontier_decision.csv
+  backbone_episode_recall_precision_frontier: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_episode_recall_precision_frontier.csv
+  backbone_event_timing_distribution: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_event_timing_distribution.csv
+  backbone_captured_episode_density: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_captured_episode_density.csv
+  backbone_frontier_slice_readout: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_frontier_slice_readout.csv
+  backbone_missed_episode_diagnostics: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_missed_episode_diagnostics.csv
+  backbone_b8_incremental_episode_recall: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_b8_incremental_episode_recall.csv
+  backbone_event_label_exposure: outputs/publishable/tables/12A3_episode_precision_recall_frontier/backbone_event_label_exposure.csv
+  state_change_label_recompute_parity_audit: outputs/publishable/tables/12A3_episode_precision_recall_frontier/state_change_label_recompute_parity_audit.csv
+  manifest_12a3: outputs/manifests/12A3_episode_precision_recall_frontier_manifest.json
+
+  state_change_generation_decision: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_generation_decision.csv
+  state_change_candidate_event_canonical: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_canonical.csv.gz
+  state_change_candidate_event_instances: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_instances.csv.gz
+  state_change_family_formula_spec: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_family_formula_spec.csv
+  state_change_canonicalization_spec: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_canonicalization_spec.csv
+  state_change_density_audit: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_density_audit.csv
+  manifest_12a2: outputs/manifests/12A2_state_change_backbone_candidate_generator_manifest.json
+
+  episode_target_registry_06: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/episode_target_registry_06_risk_on_428.csv
+  r_core_demote_or_keep_decision: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_demote_or_keep_decision.csv
+  r_core_arm_event_registry: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_arm_event_registry.csv.gz
+  r_core_density_badside_tradeoff: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_density_badside_tradeoff.csv
+  manifest_12a0_12a1: outputs/manifests/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit_manifest.json
+
+  source_08_config: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/config.yaml
+  source_08_feature_panel: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/cross_section_feature_panel.parquet
+  labels_08: topics/02_AFML_BIG_WINNER/experiments/pending/08_risk_on_transition_recall_exploration_v0/outputs/local_cache/candidate_family_event_labels.parquet
+  pit_executable_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+  benchmark_daily_csv: topics/02_AFML_BIG_WINNER/data/processed/index/benchmark_indices_daily.csv
+  stock_daily_csv_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+
+thresholds:
+  validation_min_event_n: 500
+  validation_min_positive_n: 50
+  validation_min_base_precision_ratio_vs_train: 0.50
+  partial_min_precision: 0.0839
+  supported_top20_precision: 0.10
+  supported_top10_precision: 0.12
+  supported_lift_vs_r_core: 1.50
+  supported_lift_vs_c0: 1.75
+  supported_lift_vs_best_non_model: 1.20
+  supported_episode_recall: 0.35
+  supported_min_top20_event_n: 500
+  redundancy_corr_max: 0.95
+  audit_min_coverage_rate: 0.80
+  nearby_window_sessions: 5
+  active_state_horizons: [5, 10, 20, 40, 60]
+
+models:
+  score_bucket_fractions: [0.10, 0.20]
+  random_state: 42
+  logistic_max_iter: 1000
+  tree_max_depth: 3
+  tree_min_samples_leaf: 100
+  lightgbm:
+    optional: true
+    objective: binary
+    boosting_type: gbdt
+    num_leaves_max: 7
+    max_depth_max: 3
+    min_data_in_leaf_min: 100
+    learning_rate_max: 0.05
+    feature_fraction_max: 0.80
+    bagging_fraction_max: 0.80
+    class_weight_policy: none
