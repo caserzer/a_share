@@ -1,0 +1,66 @@
+run_id: 12A5A_badside_decoupling_feasibility_probe
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a5a_badside_decoupling_feasibility_probe.md
+  config_12a4: configs/config_12a4_state_change_meta_label_filter_feasibility.yaml
+  manifest_12a4: outputs/manifests/12A4_state_change_meta_label_filter_feasibility_manifest.json
+
+  meta_label_decision: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_decision.csv
+  meta_label_event_universe: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_event_universe.csv.gz
+  meta_label_event_targets: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_event_targets.csv.gz
+  meta_label_score_bucket_frontier: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_score_bucket_frontier.csv
+  non_model_filter_frontier: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/non_model_filter_frontier.csv
+  meta_label_model_card: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_model_card.csv
+  lightgbm_challenger_score_bucket_frontier: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/lightgbm_challenger_score_bucket_frontier.csv
+  lightgbm_challenger_model_card: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/lightgbm_challenger_model_card.csv
+  risk_on_r_core_baseline: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/risk_on_r_core_baseline.csv
+  meta_label_feature_dictionary: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_feature_dictionary.csv
+  validation_threshold_health: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/validation_threshold_health.csv
+  supported_gate_feasibility_selfcheck: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/supported_gate_feasibility_selfcheck.csv
+  meta_label_event_feature_matrix: outputs/local_cache/12A4_state_change_meta_label_filter_feasibility/meta_label_event_feature_matrix.parquet
+
+thresholds:
+  reconstruction_float_tolerance: 0.000000001
+  label_20d_complete_min_rate: 0.95
+  label_120d_complete_min_rate: 0.95
+  clean_winner_min_eval_n: 30
+  train_clean_winner_min_n: 30
+  train_bad_side_min_n: 100
+  cv_n_splits: 3
+  cv_fold_min_clean_winner_n: 8
+  cv_fold_min_bad_side_n: 30
+  train_cv_min_retained_event_n: 500
+  train_cv_min_precision_floor: 0.0839
+  supported_min_precision: 0.10
+  supported_min_badside_reduction_abs: 0.05
+  supported_max_badside_rate: 0.33
+  supported_min_precision_delta_vs_c0: 0.02
+  supported_min_retained_event_n: 500
+  supported_min_retained_episode_recall: 0.35
+  partial_min_precision_abs: 0.09
+  partial_min_precision_delta_vs_c0: 0.005
+  partial_min_precision_delta_vs_pool: -0.01
+  partial_min_badside_reduction_abs: 0.03
+  separability_min_auc: 0.60
+  separability_min_auc_ci_low: 0.55
+  separability_min_univariate_abs_auc_minus_0p5: 0.10
+  min_feature_coverage_rate: 0.80
+
+models:
+  random_state: 42
+  logistic_max_iter: 1000
+  tree_min_samples_leaf: 100
+  reject_fractions: [0.05, 0.10, 0.15, 0.20, 0.30, 0.40]
+  bootstrap_n: 1000
+  lowcapacity_methods:
+    - logistic_l2
+    - shallow_tree_depth_2
+    - scorecard_quantile
+  rejectors:
+    - logistic_regression_l2
+    - logistic_regression_l1
+    - shallow_decision_tree_max_depth_3
+    - scorecard_quantile_binning
+    - lightgbm_rejector_depth_3
