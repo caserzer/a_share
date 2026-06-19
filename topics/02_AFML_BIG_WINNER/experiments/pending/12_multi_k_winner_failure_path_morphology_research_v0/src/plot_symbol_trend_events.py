@@ -163,13 +163,23 @@ def read_price(price_dir: Path, instrument: str) -> pd.DataFrame:
     return out[["date", "close"]].reset_index(drop=True)
 
 
-def read_panel(panel_path: Path, instrument: str) -> pd.DataFrame:
+def read_regime_calendar(panel_path: Path) -> pd.DataFrame:
     columns = ["date", "instrument", "market_regime_bucket"]
     frame = pd.read_parquet(panel_path, columns=columns)
-    out = frame.loc[frame["instrument"].astype(str).eq(instrument)].copy()
+    out = frame.copy()
     out["date"] = pd.to_datetime(out["date"], errors="coerce")
-    out = out.dropna(subset=["date"]).sort_values("date").drop_duplicates("date", keep="last")
+    out = out.dropna(subset=["date", "market_regime_bucket"])
+    per_date_regime_n = out.groupby("date")["market_regime_bucket"].nunique(dropna=True)
+    conflict_dates = per_date_regime_n.loc[per_date_regime_n.gt(1)]
+    if not conflict_dates.empty:
+        sample_dates = [str(x.date()) for x in conflict_dates.index[:5]]
+        raise ValueError(f"Market regime is not unique by date; sample conflict dates: {sample_dates}")
+    out = out.sort_values("date").drop_duplicates("date", keep="last")
     return out[["date", "market_regime_bucket"]].reset_index(drop=True)
+
+
+def read_panel(panel_path: Path, instrument: str) -> pd.DataFrame:
+    return read_regime_calendar(panel_path)
 
 
 def read_events(event_path: Path, instrument: str) -> pd.DataFrame:
@@ -345,7 +355,7 @@ def main(argv: list[str] | None = None) -> int:
     output_path = topic_path(args.output) if args.output else default_output_path(instrument)
 
     price = read_price(price_dir, instrument)
-    panel = read_panel(panel_path, instrument)
+    regime_calendar = read_regime_calendar(panel_path)
     episodes = read_big_winner_episodes(episode_path, instrument)
     events = read_events(event_path, instrument)
     plotted_events = event_points(events, price)
@@ -353,7 +363,7 @@ def main(argv: list[str] | None = None) -> int:
     plot_symbol(
         instrument,
         price,
-        panel,
+        regime_calendar,
         episodes,
         events,
         output_path,
@@ -365,7 +375,10 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"instrument={instrument}")
     print(f"price_rows={len(price)} date_range={price['date'].min().date()}..{price['date'].max().date()}")
-    print(f"panel_rows={len(panel)} risk_on_segments={len(risk_on_segments(panel, price['date'].min(), price['date'].max()))}")
+    print(
+        f"regime_calendar_rows={len(regime_calendar)} "
+        f"risk_on_segments={len(risk_on_segments(regime_calendar, price['date'].min(), price['date'].max()))}"
+    )
     print(f"big_winner_episode_n={len(episodes)}")
     print(f"c0_event_n={summary['c0_event_n']} r_core_event_n={summary['r_core_event_n']} total_event_n={summary['total_event_n']}")
     print(f"output={output_path}")

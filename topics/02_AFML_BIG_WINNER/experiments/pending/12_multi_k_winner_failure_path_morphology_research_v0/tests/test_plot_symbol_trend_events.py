@@ -45,6 +45,51 @@ def test_risk_on_segments_split_on_non_risk_on_rows():
     ]
 
 
+def test_read_regime_calendar_uses_market_wide_dates_not_instrument_scope(tmp_path):
+    tool = load_tool()
+    panel_path = tmp_path / "panel.parquet"
+    pd.DataFrame(
+        {
+            "date": pd.to_datetime(
+                [
+                    "2024-01-02",
+                    "2024-01-02",
+                    "2024-01-03",
+                    "2024-01-04",
+                ]
+            ),
+            "instrument": ["SH600000", "SZ300750", "SH600000", "SZ300750"],
+            "market_regime_bucket": ["risk_on", "risk_on", "risk_off", "risk_on"],
+        }
+    ).to_parquet(panel_path, index=False)
+
+    calendar = tool.read_regime_calendar(panel_path)
+    legacy_calendar = tool.read_panel(panel_path, "SH600000")
+
+    assert calendar["date"].tolist() == list(pd.to_datetime(["2024-01-02", "2024-01-03", "2024-01-04"]))
+    assert calendar["market_regime_bucket"].tolist() == ["risk_on", "risk_off", "risk_on"]
+    pd.testing.assert_frame_equal(calendar, legacy_calendar)
+
+
+def test_read_regime_calendar_rejects_date_level_regime_conflicts(tmp_path):
+    tool = load_tool()
+    panel_path = tmp_path / "panel.parquet"
+    pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2024-01-02", "2024-01-02"]),
+            "instrument": ["SH600000", "SZ300750"],
+            "market_regime_bucket": ["risk_on", "risk_off"],
+        }
+    ).to_parquet(panel_path, index=False)
+
+    try:
+        tool.read_regime_calendar(panel_path)
+    except ValueError as exc:
+        assert "Market regime is not unique by date" in str(exc)
+    else:
+        raise AssertionError("expected date-level regime conflict to fail")
+
+
 def test_event_points_maps_event_dates_to_qfq_close():
     tool = load_tool()
     price = pd.DataFrame(
