@@ -1,0 +1,49 @@
+run_id: 12A6b_c0_risk_on_fast_fail_survival_uplift_audit
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a6b_c0_risk_on_fast_fail_survival_uplift_audit.md
+
+  state_change_candidate_event_canonical: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_canonical.csv.gz
+  r_core_arm_event_registry: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_arm_event_registry.csv.gz
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+  pit_executable_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+  stock_daily_csv_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+
+grid:
+  horizon_sessions: [10, 20]
+  lower_barrier_pct: [-0.06, -0.08, -0.10, -0.12, -0.15, -0.20]
+  upper_barrier_pct: [0.10, 0.15, 0.20, 0.25, 0.30]
+
+primary_label:
+  lower_barrier_pct: -0.10
+  horizon_sessions: 20
+  label_id: no_fast_fail_L10_H20
+
+conditional_readout:
+  condition_lower_barrier_pct: -0.10
+  condition_horizon_sessions: 20
+  upper_horizon_sessions: 20
+  gate_upper_barrier_pct: [0.10, 0.15]
+
+random_baseline:
+  base_seed: 120600
+  random_seed_n: 100
+  replacement_rate_degraded_threshold: 0.25
+  exclude_exact_c0_keys: true
+  fallback_merge_calendar_month_to_quarter: true
+
+expected_counts:
+  c0_primary_risk_on_event_n: 15113
+  r_core_12a3_quoted_raw_event_n: 47914
+  r_core_headline_executable_next_open_event_n: 47849
+  r_core_expected_difference_n: 65
+
+gates:
+  min_complete_executable_event_n: 500
+  train_fast_fail_delta_vs_random_p50: -0.03
+  train_fast_fail_delta_vs_r_core: -0.02
+  robustness_fast_fail_delta_vs_random_p50: -0.02
+  robustness_fast_fail_delta_vs_r_core: 0.0
+  min_no_fast_fail_rate: 0.50
