@@ -1,0 +1,45 @@
+run_id: 12A6_c0_local_survival_episode_audit
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a6_c0_local_survival_episode_audit.md
+
+  state_change_generation_decision: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_generation_decision.csv
+  state_change_candidate_event_canonical: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_canonical.csv.gz
+  state_change_candidate_event_instances: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_instances.csv.gz
+  state_change_canonicalization_spec: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_canonicalization_spec.csv
+  state_change_density_audit: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_density_audit.csv
+  manifest_12a2: outputs/manifests/12A2_state_change_backbone_candidate_generator_manifest.json
+
+  labels_yaml: topics/02_AFML_BIG_WINNER/configs/labels.yaml
+  stock_daily_csv_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+  pit_executable_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+
+  episode_target_registry_06: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/episode_target_registry_06_risk_on_428.csv
+  pit_candidate_winner_registry_11a2: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/pit_candidate_winner_registry_11a2_446.csv
+  meta_label_event_targets_12a4: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_event_targets.csv.gz
+
+grid:
+  horizon_sessions: [10, 20, 40, 60, 80, 120]
+  upper_barrier_pct: [0.10, 0.15, 0.20, 0.25, 0.30, 0.40]
+  lower_barrier_pct: [-0.06, -0.08, -0.10, -0.12, -0.15, -0.20]
+
+thresholds:
+  train_min_complete_executable_event_n: 500
+  train_min_upper_first_rate: 0.10
+  train_max_lower_first_rate: 0.40
+  train_max_true_survivor_killed_by_lower_rate: 0.25
+  train_min_expected_r_multiple_proxy: 0.0
+  train_max_median_time_to_upper_horizon_fraction: 0.80
+  plateau_incremental_upper_first_rate_max: 0.03
+
+  robustness_min_upper_first_rate_relative_to_train: 0.70
+  robustness_max_lower_first_rate_minus_train: 0.10
+  robustness_min_expected_r_multiple_proxy: 0.0
+  robustness_hard_min_upper_first_rate_relative_to_train: 0.40
+  robustness_hard_min_expected_r_multiple_proxy: -0.25
+  robustness_hard_min_complete_executable_event_n: 300
+  robustness_hard_min_selected_upper_first_rate: 0.05
+  instability_min_slice_event_n: 500
+  instability_min_slice_relative_upper_first_rate: 0.50
