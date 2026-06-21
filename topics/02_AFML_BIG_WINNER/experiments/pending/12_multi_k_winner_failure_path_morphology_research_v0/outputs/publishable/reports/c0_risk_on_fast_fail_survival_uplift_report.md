@@ -15,7 +15,8 @@ next_allowed_requirement = requirement_12a6c_fast_fail_scope_or_threshold_revisi
 1. C0 risk_on 不是一个已经成立的 fast-fail survival filter。以 primary label `L=-10%, H=20` 计算，C0 的 fast-fail rate 在 train / validation / robustness 都高于 matched random p50。
 2. C0 相对 R-core 的 fast-fail rate 更低，说明 C0 比高重复、压力池性质的 R-core 更干净，但这不足以证明 C0 本身有 risk_on survival edge。
 3. C0 的 no-fast-fail cohort 明显富集 continuation。也就是说，C0 不像“少输过滤器”，更像“高波动 continuation opportunity”：留下来的样本更容易继续涨，但进入 no-fast-fail 之前的失败率并不低。
-4. 因此不能直接进入 12A7 fast-fail meta-label training 的 supported 路径。下一步应先写 12A6c，重新讨论 fast-fail scope、barrier、短窗口定义，或者把 C0 作为 continuation source，而不是 survival source。
+4. 90-session dedup 敏感性会显著降低 C0 密度，并把 C0 相对 random p50 的 fast-fail 劣势从 +4.34 pp 压到约 +2.1 至 +2.5 pp；但劣势没有消失，尤其 robustness split 仍明显差于 random。
+5. 因此不能直接进入 12A7 fast-fail meta-label training 的 supported 路径。下一步应先写 12A6c，重新讨论 fast-fail scope、barrier、短窗口定义，或者把 C0 作为 continuation source，而不是 survival source。
 
 ## 2. 分母与 Baseline 质量
 
@@ -180,16 +181,87 @@ Family slice 是 C0-only diagnostic，不与 random / R-core 做 headline uplift
 
 B2 / B3 的 fast-fail 最低，B4 明显最差，但 B4 样本只有 307，且 requirement 已规定 per-family 不能参与 headline gate。下一步如果做 12A6c，可以把 B2/B3 作为机制假设，但不能在本阶段事后选择 family 作为支持结论。
 
-## 7. Findings
+## 7. 90-day Dedup Sensitivity
+
+本节是 post-run sensitivity，不替代 12A6b 的 predeclared headline gate。口径为同一 `instrument` 触发 C0 后，在 cooldown 窗口内不再接受后续 C0；matched random p50 按 dedup 后的 split / board / calendar-month cell count 重新对齐样本量。
+
+这里保留两个 trading-session 口径：
+
+- `risk_on-only 90-session dedup`：只在 risk_on C0 分母内部做同 instrument 90 个交易 session cooldown；
+- `all-C0 stream 90-session dedup then risk_on`：先对全 regime C0 信号流做 cooldown，再取 risk_on 子集；这个口径更接近真实信号占用，因为 transition / risk_off 的早期 C0 也会占用后续 risk_on cooldown。
+
+### 7.1 Headline Readout
+
+| 口径 | C0 n | retained vs original risk_on | C0 fast-fail | matched random p50 | C0 - random p50 | no-fast-fail | +10% given no-fast-fail | random p50 | +20% given no-fast-fail | random p50 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| original risk_on no dedup | 15,113 | 100.0% | 37.27% | 32.93% | +4.34 pp | 62.73% | 53.64% | 47.56% | 25.06% | 20.69% |
+| risk_on-only 90-session dedup | 6,624 | 43.8% | 34.10% | 31.60% | +2.50 pp | 65.90% | 53.52% | 48.54% | 25.75% | 21.40% |
+| all-C0 stream 90-session dedup then risk_on | 4,479 | 29.6% | 36.79% | 34.72% | +2.08 pp | 63.21% | 52.49% | 47.83% | 25.11% | 21.00% |
+
+Dedup 的作用很清楚：它主要去掉同一股票上的密集重复触发，使 risk_on 分母从 15,113 降到 6,624，或者在全 C0 信号流 cooldown 后降到 4,479。fast-fail 劣势也随之收窄，但没有反转。C0 仍高于同 cell 匹配的 random p50，因此 dedup 只能解释一部分 fast-fail 劣势，不能把 C0 改写成 standalone survival filter。
+
+同时，dedup 后 continuation 价值仍然保留。risk_on-only 90-session dedup 下，`+10% given no-fast-fail` 为 53.52%，仍高于 random p50 的 48.54%；`+20% given no-fast-fail` 为 25.75%，也高于 random p50 的 21.40%。这说明 cooldown 更像 density hygiene，而不是 survival edge 的充分条件。
+
+### 7.2 Split Readout
+
+| 口径 | split | C0 n | C0 fast-fail | matched random p50 | C0 - random p50 | +10% given no-fast-fail | random p50 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| risk_on-only 90-session dedup | train | 3,544 | 36.65% | 35.10% | +1.55 pp | 61.74% | 56.92% |
+| risk_on-only 90-session dedup | validation | 1,146 | 31.85% | 30.98% | +0.87 pp | 38.67% | 31.79% |
+| risk_on-only 90-session dedup | robustness | 1,934 | 30.77% | 25.65% | +5.12 pp | 48.39% | 44.51% |
+| all-C0 stream 90-session dedup then risk_on | train | 2,572 | 41.02% | 40.14% | +0.87 pp | 59.39% | 55.60% |
+| all-C0 stream 90-session dedup then risk_on | validation | 605 | 33.06% | 33.22% | -0.17 pp | 38.52% | 34.32% |
+| all-C0 stream 90-session dedup then risk_on | robustness | 1,302 | 30.18% | 24.73% | +5.45 pp | 47.19% | 41.28% |
+
+Split 层面，dedup 对 train / validation 的改善最明显：risk_on-only 口径下，train 劣势从 +3.83 pp 缩到 +1.55 pp，validation 从 +2.72 pp 缩到 +0.87 pp；all-C0 stream 口径下，validation 甚至略低于 random p50。但 robustness 仍差 5 pp 以上，说明后期样本中的 fast-fail 劣势不是单纯由同股票重复触发造成的。
+
+### 7.3 Board And Family Readout
+
+| 口径 | board | C0 n | C0 fast-fail | matched random p50 | C0 - random p50 | +10% given no-fast-fail | random p50 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| risk_on-only 90-session dedup | chinext | 1,337 | 47.42% | 43.42% | +4.00 pp | 72.12% | 67.35% |
+| risk_on-only 90-session dedup | main_board | 5,287 | 30.74% | 28.61% | +2.13 pp | 49.95% | 44.86% |
+| all-C0 stream 90-session dedup then risk_on | chinext | 892 | 48.99% | 44.67% | +4.32 pp | 71.65% | 65.91% |
+| all-C0 stream 90-session dedup then risk_on | main_board | 3,587 | 33.76% | 32.27% | +1.49 pp | 48.82% | 44.20% |
+
+Board 结构没有被 dedup 改写。Chinext 仍然是高 fast-fail、高 continuation 的弹性池；main_board 的 fast-fail 劣势更容易被 cooldown 压低，但仍没有稳定转正。
+
+Primary family 的 risk_on-only 90-session dedup 读数如下：
+
+| family | C0 n | fast-fail | +10% total upper | +10% given no-fast-fail | both -10% and +10% | median min low | median max high |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| B4 | 126 | 65.08% | 50.00% | 88.64% | 19.05% | -13.80% | 9.87% |
+| B6 | 314 | 42.36% | 40.76% | 53.04% | 10.19% | -8.34% | 7.70% |
+| B8 | 907 | 38.26% | 44.10% | 58.39% | 8.05% | -7.98% | 8.31% |
+| B1 | 712 | 34.97% | 41.71% | 53.56% | 6.88% | -7.33% | 8.09% |
+| B5 | 2,824 | 34.49% | 43.27% | 55.35% | 7.01% | -6.79% | 8.32% |
+| B3 | 784 | 27.42% | 42.22% | 53.78% | 3.19% | -5.52% | 7.44% |
+| B2 | 957 | 27.06% | 35.42% | 42.41% | 4.49% | -5.02% | 6.93% |
+
+Family 层面，B2 / B3 在 dedup 后仍是相对更干净的 family，B4 / B6 / B8 仍偏高波动。B5 是最大样本来源，dedup 后 fast-fail 从原始 37.97% 降至 34.49%，但它仍不是低失败 family；更合理的解释是 B5 提供了大量 continuation opportunity，同时也带来明显的 path volatility。
+
+### 7.4 90 Calendar-day Sensitivity
+
+如果把“90天”解释为 90 个自然日，而不是 90 个交易 session，结论仍一致。
+
+| 口径 | C0 n | retained vs original risk_on | C0 fast-fail | matched random p50 | C0 - random p50 | +10% given no-fast-fail | random p50 | +20% given no-fast-fail | random p50 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| risk_on-only 90-calendar-day dedup | 7,791 | 51.6% | 34.48% | 31.73% | +2.75 pp | 51.40% | 47.04% | 23.66% | 20.33% |
+| all-C0 stream 90-calendar-day dedup then risk_on | 5,909 | 39.1% | 35.98% | 33.62% | +2.36 pp | 52.15% | 47.07% | 24.29% | 20.52% |
+
+自然日 cooldown 保留的样本更多，所以 fast-fail 劣势略大于 90-session 口径。但方向不变：dedup 是必要的密度控制和评估卫生，不是足以通过 support gate 的 survival 修复。
+
+## 8. Findings
 
 1. C0 的 primary survival uplift 不成立。C0 在 `L=-10%, H=20` 下比 random p50 多 4.34 pp fast-fail；train、validation、robustness 分别多 3.83、2.72、6.18 pp。
 2. C0 比 R-core 更少 fast-fail。全 risk_on 少 3.62 pp，train 少 4.05 pp，robustness 少 4.43 pp。这证明 C0 比 R-core 这个高重复 stress pool 干净，但不能替代 random baseline 的结论。
 3. no-fast-fail 后 continuation 很强。全 risk_on 下，+10%、+15%、+20% conditional continuation 分别为 53.64%、36.20%、25.06%，均高于 random p50。
 4. C0 的问题是“先活下来”而不是“活下来之后没有机会”。这与 12A6 的 upper-first 读数相吻合：upper-first 结构存在，但 survival 主标签不能直接用 upper-first 替代。
-5. Board 和 year 的结构说明 C0 更像高弹性买点。Chinext 更容易 fast-fail，也更容易在幸存后 continuation；2025 绝对 fast-fail 低，但 random 更低。
-6. R-core baseline degraded，但不改变主判断。C0 vs random 是独立且高质量的 matched baseline；即使完全忽略 R-core，C0 也没有通过 fast-fail support gate。
+5. 90-session dedup 能显著降低密度和部分 fast-fail 劣势，但不能改变 support gate。risk_on-only dedup 后 C0 仍比 random p50 多 2.50 pp fast-fail；all-C0 stream dedup 后仍多 2.08 pp。
+6. Board 和 year 的结构说明 C0 更像高弹性买点。Chinext 更容易 fast-fail，也更容易在幸存后 continuation；2025 绝对 fast-fail 低，但 random 更低。
+7. R-core baseline degraded，但不改变主判断。C0 vs random 是独立且高质量的 matched baseline；即使完全忽略 R-core，C0 也没有通过 fast-fail support gate。
 
-## 8. Insight
+## 9. Insight
 
 12A6b 把问题拆清楚后，C0 的角色更明确了：
 
@@ -202,12 +274,13 @@ C0 is a continuation-opportunity source that still needs a fast-fail rejector.
 
 1. 保留 C0 作为 candidate source；
 2. 在 C0 内训练或设计一个 fast-fail rejector，目标是降低 `L=-10%, H=20` 的 early failure；
-3. 只在 no-fast-fail / low-fast-fail-risk cohort 内读取 continuation；
-4. 12A7 不能直接承接为 supported meta-label training，必须先走 12A6c 修订 threshold / scope / rejector framing。
+3. 引入同 instrument cooldown / event dedup 作为密度卫生，但不能把它当成 survival edge 的替代证据；
+4. 只在 no-fast-fail / low-fast-fail-risk cohort 内读取 continuation；
+5. 12A7 不能直接承接为 supported meta-label training，必须先走 12A6c 修订 threshold / scope / rejector framing。
 
 换句话说，12A6 的 upper-first 结果不是错，而是回答了另一个问题：C0 中有 continuation morphology。12A6b 证明的是：这个 morphology 不能被误读成“C0 自带 survival uplift”。
 
-## 9. 下一步
+## 10. 下一步
 
 建议下一步进入：
 
@@ -218,8 +291,9 @@ requirement_12a6c_fast_fail_scope_or_threshold_revision.md
 12A6c 应重点评估：
 
 1. 是否把 primary fast-fail label 从 `L=-10%, H=20` 改成更短的 `H=10` 或更宽/更窄的 lower barrier；
-2. 是否单独建 fast-fail rejector，而不是继续寻找一个 C0-only survival definition；
-3. 是否把 B2/B3、main_board、特定年份作为 diagnostic hypotheses，而不是 headline selection；
-4. 是否把 continuation readout 从 support gate 中拆出来，作为 C0 candidate source 的二阶段价值证明。
+2. 是否把同 instrument cooldown / dedup 纳入正式候选生成或评估 hygiene，但仍用 matched random 做独立 support gate；
+3. 是否单独建 fast-fail rejector，而不是继续寻找一个 C0-only survival definition；
+4. 是否把 B2/B3、main_board、特定年份作为 diagnostic hypotheses，而不是 headline selection；
+5. 是否把 continuation readout 从 support gate 中拆出来，作为 C0 candidate source 的二阶段价值证明。
 
 当前阶段不建议进入 `requirement_12a7_c0_fast_fail_survival_meta_label_feasibility.md` 的 supported 路径。
