@@ -1,0 +1,114 @@
+run_id: 12A7_direction_a_trailing_rank_operating_point_audit
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a7_direction_a_trailing_rank_operating_point_audit.md
+
+  two_stage_input_artifact_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/input_artifact_audit.csv
+  two_stage_event_universe: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_universe.csv.gz
+  two_stage_event_targets: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_targets.csv.gz
+  two_stage_feature_dictionary: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_dictionary.csv
+  two_stage_feature_pit_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_pit_audit.csv
+  stage_1_model_card: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_1_model_card.csv
+  stage_2_model_card: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_2_model_card.csv
+  stage_1_rejector_readout: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_1_rejector_readout.csv
+  stage_2_continuation_readout: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_2_continuation_readout.csv
+  stage_1_single_feature_frontier: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_1_single_feature_frontier.csv
+  stage_2_single_feature_frontier: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_2_single_feature_frontier.csv
+  stage_1_score_bucket_readout: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_1_score_bucket_readout.csv
+  stage_2_score_bucket_readout: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_2_score_bucket_readout.csv
+  stage_1_random_same_budget_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_1_random_same_budget_audit.csv
+  stage_2_random_same_budget_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_2_random_same_budget_audit.csv
+  stage_threshold_health: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage_threshold_health.csv
+  two_stage_decision: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_decision.csv
+  split_time_boundary_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/split_time_boundary_audit.csv
+  realized_path_feature_redundancy_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/realized_path_feature_redundancy_audit.csv
+
+  two_stage_feature_matrix: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_matrix.parquet
+  stage2_path_cache: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet
+  frozen_row_level_scores: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_row_level_scores.parquet
+  manifest_12a6c: outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json
+
+  matched_random_sampled_entries: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/matched_random_sampled_entries.csv.gz
+  entry_forward_path_cache: outputs/local_cache/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/entry_forward_path_cache.parquet
+  manifest_12a6b: outputs/manifests/12A6b_c0_risk_on_fast_fail_survival_uplift_audit_manifest.json
+
+history_policies:
+  primary:
+    history_policy_id: board_then_global_rolling_504_sessions
+    history_window_mode: rolling_sessions
+    trailing_history_window_sessions: 504
+    diagnostic_only_flag: false
+  diagnostics:
+    - history_policy_id: board_then_global_rolling_252_sessions
+      history_window_mode: rolling_sessions
+      trailing_history_window_sessions: 252
+      diagnostic_only_flag: true
+    - history_policy_id: board_then_global_rolling_1008_sessions
+      history_window_mode: rolling_sessions
+      trailing_history_window_sessions: 1008
+      diagnostic_only_flag: true
+    - history_policy_id: board_then_global_expanding_from_inception
+      history_window_mode: expanding_from_inception
+      trailing_history_window_sessions:
+      diagnostic_only_flag: true
+
+history_min_n:
+  stage_1_global_min_history_n: 500
+  stage_1_board_min_history_n: 150
+  stage_2_global_min_history_n: 250
+  stage_2_board_min_history_n: 75
+
+budget_grid: [0.30, 0.50, 0.70]
+primary_X_stage_1: 0.50
+primary_X_stage_2: 0.50
+
+models:
+  random_state: 42
+  logistic_max_iter: 1000
+  primary_stage_1_model_id: logistic_regression_l2
+  primary_stage_2_model_id: logistic_regression_l2
+
+random_baseline:
+  min_random_seed_n: 100
+  base_seed: 120700
+  retention_rank_columns:
+    - replacement_draw_index
+    - sample_draw_id
+    - instrument
+    - random_trade_open_date
+    - path_key
+
+single_feature_challenger:
+  common_denominator_min_coverage: 0.95
+  stage_1_candidates:
+    volatility_20d: asc
+    volatility_60d: asc
+    max_drawdown_60d: asc
+    distance_to_60d_low: asc
+    distance_to_120d_low: asc
+    rebound_from_60d_low: asc
+  stage_2_candidates:
+    realized_path_volatility_0_20d: desc
+    realized_max_high_return_0_20d: desc
+    realized_early_window_ret_0_10d: desc
+    realized_ma_5_20_spread_at_day20: desc
+    distance_to_120d_low: desc
+
+bootstrap:
+  seed: 120701
+  n_resamples: 2000
+  ci_low_q: 0.025
+  ci_high_q: 0.975
+
+gates:
+  stage1_auc_robustness_min: 0.55
+  stage2_auc_robustness_min: 0.55
+  headline_split_min_selected_n: 300
+  stage2_headline_min_selected_n: 150
+  bootstrap_min_positive_n: 30
+  stage1_delta_vs_random_p50_max: -0.02
+  stage1_delta_vs_single_feature_max: -0.01
+  stage2_delta_vs_random_p50_min: 0.02
+  stage2_delta_vs_single_feature_min: 0.01
