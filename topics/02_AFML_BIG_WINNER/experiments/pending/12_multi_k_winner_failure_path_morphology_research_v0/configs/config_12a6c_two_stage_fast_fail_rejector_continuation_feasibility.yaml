@@ -1,0 +1,78 @@
+run_id: 12A6c_two_stage_fast_fail_rejector_continuation_feasibility
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a6c_two_stage_fast_fail_rejector_continuation_feasibility.md
+
+  meta_label_event_universe: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_event_universe.csv.gz
+  meta_label_event_targets: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_event_targets.csv.gz
+  meta_label_feature_dictionary: outputs/publishable/tables/12A4_state_change_meta_label_filter_feasibility/meta_label_feature_dictionary.csv
+  meta_label_feature_matrix: outputs/local_cache/12A4_state_change_meta_label_filter_feasibility/meta_label_event_feature_matrix.parquet
+  manifest_12a4: outputs/manifests/12A4_state_change_meta_label_filter_feasibility_manifest.json
+
+  state_change_generation_decision: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_generation_decision.csv
+  r_core_demote_or_keep_decision: outputs/publishable/tables/12A0_12A1_winner_registry_lineage_and_r_core_backbone_demotion_audit/r_core_demote_or_keep_decision.csv
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+  pit_executable_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+
+  entry_forward_path_cache: outputs/local_cache/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/entry_forward_path_cache.parquet
+  matched_random_sampled_entries: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/matched_random_sampled_entries.csv.gz
+  fast_fail_uplift_vs_baselines: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/fast_fail_uplift_vs_baselines.csv
+  conditional_continuation_readout: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/conditional_continuation_readout.csv
+  fast_fail_decision: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/fast_fail_decision.csv
+  manifest_12a6b: outputs/manifests/12A6b_c0_risk_on_fast_fail_survival_uplift_audit_manifest.json
+
+  stock_daily_csv_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+
+stage_1:
+  target_id: fast_fail_L10_H20
+  lower_barrier_pct: -0.10
+  horizon_sessions: 20
+  keep_budget_primary: 0.50
+  keep_budget_grid: [0.30, 0.50, 0.70]
+
+stage_2:
+  target_id: continuation_U20_L10_H2_20
+  upper_barrier_pct: 0.20
+  lower_barrier_pct: -0.10
+  horizon_sessions_h2: 20
+  continue_budget_primary: 0.50
+  continue_budget_grid: [0.30, 0.50, 0.70]
+  upper_barrier_grid: [0.10, 0.15, 0.20, 0.30]
+  lower_barrier_grid: [-0.08, -0.10, -0.12]
+  horizon_grid_h2: [20, 40]
+
+models:
+  random_state: 42
+  logistic_max_iter: 1000
+  tree_max_depth: 3
+  tree_min_samples_leaf: 100
+  primary_stage_1_model_id: logistic_regression_l2
+  primary_stage_2_model_id: logistic_regression_l2
+  budget_tolerance_abs: 0.005
+
+random_baseline:
+  min_random_seed_n: 100
+  retention_rank_columns:
+    - replacement_draw_index
+    - sample_draw_id
+    - instrument
+    - random_trade_open_date
+    - path_key
+
+gates:
+  stage_1_train_keep_n_min: 500
+  stage_1_robustness_keep_n_min: 300
+  stage_1_train_delta_vs_random_p50: -0.03
+  stage_1_train_delta_vs_c0_baseline: -0.03
+  stage_1_robustness_delta_vs_random_p50: -0.02
+  stage_1_robustness_delta_vs_c0_baseline: -0.02
+  stage_1_min_keep_retention: 0.50
+
+  stage_2_train_evaluable_n_min: 300
+  stage_2_train_continue_n_min: 150
+  stage_2_robustness_evaluable_n_min: 200
+  stage_2_robustness_continue_n_min: 100
+  stage_2_train_delta_vs_random_p50: 0.03
+  stage_2_robustness_delta_vs_random_p50: 0.02
