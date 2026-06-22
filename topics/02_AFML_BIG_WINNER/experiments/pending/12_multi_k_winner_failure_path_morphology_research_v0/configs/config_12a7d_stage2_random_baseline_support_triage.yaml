@@ -1,0 +1,72 @@
+run_id: 12A7d_stage2_random_baseline_support_triage
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a7d_stage2_random_baseline_support_triage.md
+  upstream_requirement_12a7c: requirement_12a7c_direction_e_stage2_decoupling_chained_readouts.md
+
+  a7c_input_artifact_audit: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/input_artifact_audit.csv
+  a7c_scope_universe_audit: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/scope_universe_audit.csv
+  a7c_stage1_anchor_rule_card: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage1_anchor_rule_card.csv
+  a7c_stage2_candidate_card: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_candidate_card.csv
+  a7c_stage2_train_selection: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_train_selection.csv
+  a7c_stage2_ground_truth_survivor_readout: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_ground_truth_survivor_readout.csv
+  a7c_stage2_chained_trailing_rank_readout: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_chained_trailing_rank_readout.csv
+  a7c_stage2_random_same_budget_audit: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_random_same_budget_audit.csv
+  a7c_stage2_single_feature_challenger: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_single_feature_challenger.csv
+  a7c_stage2_complex_model_matched_comparator: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_complex_model_matched_comparator.csv
+  a7c_stage2_budget_drift_audit: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_budget_drift_audit.csv
+  a7c_stage2_opportunity_cost_audit: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_opportunity_cost_audit.csv
+  a7c_direction_e_decision: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/direction_e_decision.csv
+  a7c_report: outputs/publishable/reports/stage2_decoupling_chained_readouts_report.md
+  a7c_manifest: outputs/manifests/12A7c_direction_e_stage2_decoupling_chained_readouts_manifest.json
+  a7c_stage2_decoupling_score_matrix: outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_decoupling_score_matrix.parquet
+  a7c_random_stage2_selected: outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/random_stage2_selected.parquet
+  a7c_bootstrap_replicates: outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/bootstrap_replicates.parquet
+
+  matched_random_sampled_entries: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/matched_random_sampled_entries.csv.gz
+  entry_forward_path_cache: outputs/local_cache/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/entry_forward_path_cache.parquet
+  stage2_path_cache: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet
+  manifest_12a6b: outputs/manifests/12A6b_c0_risk_on_fast_fail_survival_uplift_audit_manifest.json
+  manifest_12a6c: outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json
+
+history_policy:
+  history_policy_id: board_then_global_rolling_504_sessions
+  history_window_mode: rolling_sessions
+  trailing_history_window_sessions: 504
+  diagnostic_only_flag: false
+
+history_min_n:
+  stage_2_global_min_history_n: 250
+  stage_2_board_min_history_n: 75
+
+random_baseline:
+  min_random_seed_n: 100
+  retention_rank_columns:
+    - replacement_draw_index
+    - sample_draw_id
+    - instrument
+    - random_trade_open_date
+    - path_key
+  variants:
+    - strict_exact_cell_replay
+    - hierarchical_month_quarter_replay
+    - hierarchical_split_board_fallback_replay
+    - pooled_cell_weighted_replay
+    - with_replacement_replay
+  pooled_min_supported_weight_share: 0.80
+  pooled_min_effective_seed_n: 30
+  replacement_effective_n_floor_fraction: 0.50
+
+bootstrap:
+  seed: 120712
+  n_resamples: 2000
+  ci_low_q: 0.025
+  ci_high_q: 0.975
+  bootstrap_min_valid_replicates: 1500
+
+gates:
+  selected_n_min: 150
+  selected_positive_n_min: 30
+  delta_vs_random_p50_min: 0.02

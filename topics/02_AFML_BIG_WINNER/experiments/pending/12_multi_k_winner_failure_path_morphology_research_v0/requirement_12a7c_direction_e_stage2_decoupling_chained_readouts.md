@@ -1064,6 +1064,7 @@ selected_chained_candidate_family
 selected_chained_X
 selected_chained_deployable_at_stage_2_decision_time
 stage1_defense_opportunity_cost_status
+gate_failure_reasons
 next_allowed_requirement
 recommended_internal_followup
 ```
