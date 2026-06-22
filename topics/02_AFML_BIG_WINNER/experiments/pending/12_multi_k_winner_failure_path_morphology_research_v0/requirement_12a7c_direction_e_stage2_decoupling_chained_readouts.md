@@ -1089,6 +1089,44 @@ outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/bootstr
 outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/random_stage2_selected.parquet
 ```
 
+`stage2_decoupling_score_matrix.parquet` required fields:
+
+```text
+meta_event_id
+instrument
+event_t0_date
+event_t0_pos
+split
+board_bucket
+calendar_month
+calendar_quarter
+path_key
+source_arm_is_c0
+market_regime_bucket
+stage_1_evaluable
+stage_1_fast_fail_target
+no_fast_fail_L10_H20
+stage_2_path_evaluable
+stage_2_entry_blocked
+stage_2_horizon_complete_20d
+stage_2_decision_pos
+stage_2_continuation_target
+stage2_label_read_status
+stage2_continuation_score
+score_source_mode
+score_source_caveat
+stage1_anchor_rank_percentile
+stage1_anchor_rank_status
+stage1_anchor_selected_flag
+volatility_20d
+```
+
+These fields are a downstream contract, not incidental implementation output.
+If a future Direction E implementation renames, removes, or changes the
+semantics of any required field, it must either update this schema explicitly or
+emit a compatible migration artifact. Downstream 12A7d / 12A7e requirements are
+allowed to fail closed when this schema is not met.
+
 ## 14. Decision Map
 
 Decision states:

@@ -1,0 +1,81 @@
+run_id: 12A7e_defense_participation_frontier
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a7e_defense_participation_frontier.md
+  upstream_requirement_12a7c: requirement_12a7c_direction_e_stage2_decoupling_chained_readouts.md
+  upstream_requirement_12a7d: requirement_12a7d_stage2_random_baseline_support_triage.md
+
+  a7b_direction_c_decision: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/direction_c_decision.csv
+  a7b_simple_backbone_train_selection: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_train_selection.csv
+  a7b_simple_backbone_operating_point_readout: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_operating_point_readout.csv
+  a7b_simple_backbone_random_same_budget_audit: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_random_same_budget_audit.csv
+  a7b_simple_backbone_score_matrix: outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_score_matrix.parquet
+
+  a7c_direction_e_decision: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/direction_e_decision.csv
+  a7c_stage2_train_selection: outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_train_selection.csv
+  a7c_stage2_decoupling_score_matrix: outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_decoupling_score_matrix.parquet
+  a7_direction_trailing_rank_score_matrix: outputs/local_cache/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_score_matrix.parquet
+
+  a7d_stage2_chained_sensitivity_decision: outputs/publishable/tables/12A7d_stage2_random_baseline_support_triage/stage2_chained_sensitivity_decision.csv
+  a7d_frozen_candidate_reconciliation: outputs/publishable/tables/12A7d_stage2_random_baseline_support_triage/frozen_candidate_reconciliation.csv
+  a7d_random_replay_variant_readout: outputs/publishable/tables/12A7d_stage2_random_baseline_support_triage/random_replay_variant_readout.csv
+  a7d_report: outputs/publishable/reports/stage2_random_baseline_triage_report.md
+  a7d_manifest: outputs/manifests/12A7d_stage2_random_baseline_support_triage_manifest.json
+
+  matched_random_sampled_entries: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/matched_random_sampled_entries.csv.gz
+  entry_forward_path_cache: outputs/local_cache/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/entry_forward_path_cache.parquet
+  stage2_path_cache: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet
+  two_stage_feature_matrix: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_matrix.parquet
+  manifest_12a6b: outputs/manifests/12A6b_c0_risk_on_fast_fail_survival_uplift_audit_manifest.json
+  manifest_12a6c: outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json
+
+stage1:
+  feature: volatility_20d
+  orientation: asc
+  x_grid: [0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.85, 1.00]
+  anchor_x: 0.30
+
+stage2:
+  candidate_id: complex_stage2_score
+  candidate_family: complex_stage2_score
+  feature: stage2_continuation_score
+  orientation: desc
+  x: 0.30
+
+history_policy:
+  history_policy_id: board_then_global_rolling_504_sessions
+  history_window_mode: rolling_sessions
+  trailing_history_window_sessions: 504
+  diagnostic_only_flag: false
+
+history_min_n:
+  stage_2_global_min_history_n: 250
+  stage_2_board_min_history_n: 75
+
+random_baseline:
+  min_random_seed_n: 100
+  retention_rank_columns:
+    - replacement_draw_index
+    - sample_draw_id
+    - instrument
+    - random_trade_open_date
+    - path_key
+
+bootstrap:
+  seed: 120713
+  n_resamples: 2000
+  ci_low_q: 0.025
+  ci_high_q: 0.975
+  bootstrap_min_valid_replicates: 1500
+
+frontier:
+  fast_fail_improvement_min_vs_x100: 0.02
+  stage2_selected_n_min: 150
+  stage2_selected_positive_n_min: 30
+  chained_survivor_share_guard_threshold: 0.50
+  survivor_share_material_lift_min: 0.10
+  positive_capture_material_lift_min: 0.05
+  severe_fast_fail_abs_lift: 0.05
+  budget_drift_tolerance: 0.02
