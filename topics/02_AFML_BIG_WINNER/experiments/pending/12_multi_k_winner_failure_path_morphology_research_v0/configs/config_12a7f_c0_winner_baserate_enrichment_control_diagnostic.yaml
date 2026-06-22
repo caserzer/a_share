@@ -1,0 +1,64 @@
+run_id: 12A7f_c0_winner_baserate_enrichment_control_diagnostic
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a7f_c0_winner_baserate_enrichment_control_diagnostic.md
+  state_change_candidate_event_canonical: outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_canonical.csv.gz
+  two_stage_event_universe: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_universe.csv.gz
+  two_stage_event_targets: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_targets.csv.gz
+  two_stage_decision: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_decision.csv
+  split_time_boundary_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/split_time_boundary_audit.csv
+  stage2_path_cache: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet
+  manifest_12a6c: outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json
+  pit_topn_400_100_executable_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+  global_regime_calendar: topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+control_matching:
+  control_sample_seed: 120713
+  control_match_multiplier: 1
+  control_match_min_coverage: 0.90
+  control_sampling_mode: without_replacement_fixed_canonical_sample
+
+barriers:
+  lower_barrier_pct: -0.10
+  direct_entry:
+    - winner_barrier: direct_entry_win_up_10_h20
+      upper_barrier_pct: 0.10
+      horizon_sessions: 20
+    - winner_barrier: direct_entry_win_up_15_h20
+      upper_barrier_pct: 0.15
+      horizon_sessions: 20
+    - winner_barrier: direct_entry_win_up_20_h20
+      upper_barrier_pct: 0.20
+      horizon_sessions: 20
+    - winner_barrier: direct_entry_win_up_20_h40
+      upper_barrier_pct: 0.20
+      horizon_sessions: 40
+  post_survivor:
+    - winner_barrier: post_survivor_continuation_U10_L10_H2_20
+      cache_column: continuation_U10_L10_H2_20
+      horizon_column: stage_2_horizon_complete_20d
+    - winner_barrier: post_survivor_continuation_U15_L10_H2_20
+      cache_column: continuation_U15_L10_H2_20
+      horizon_column: stage_2_horizon_complete_20d
+    - winner_barrier: post_survivor_continuation_U20_L10_H2_20
+      cache_column: continuation_U20_L10_H2_20
+      horizon_column: stage_2_horizon_complete_20d
+    - winner_barrier: post_survivor_continuation_U20_L10_H2_40
+      cache_column: continuation_U20_L10_H2_40
+      horizon_column: stage_2_horizon_complete_40d
+
+bootstrap:
+  seed: 120713
+  n_resamples: 2000
+  ci_low_q: 0.025
+  ci_high_q: 0.975
+  bootstrap_min_c0_denominator_n: 100
+  bootstrap_min_winner_positive_n: 30
+  bootstrap_min_valid_replicates: 1500
+
+decision:
+  min_winner_rate_diff: 0.02

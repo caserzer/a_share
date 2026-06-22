@@ -1,0 +1,179 @@
+{
+  "config_hash": "b05671259029f4de6dc014ab0db0c2b1a7304fc486e593a63664147c1bfa0d4d",
+  "config_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/configs/config_12a7f_c0_winner_baserate_enrichment_control_diagnostic.yaml",
+  "config_sha256": "32947cdec65cbeb5a58aa1f930b79027a020dcb2b19aa06ad8be9bee1bbffcce",
+  "created_at_utc": "2026-06-22T15:48:46.747315+00:00",
+  "decision_state": "12A7f_c0_winner_enrichment_weak_or_horizon_dependent",
+  "entrypoint_hash": "eb421e029d1416ee78d3845e2a7f6e1ab47b7c529b9f9dfe58eb0ca02e824941",
+  "experiment_id": "12_state_change_event_backbone_rebuild_v0",
+  "git_revision": "db4de158a2cce55f187eea3a1a8835cebcca9ae3",
+  "input_hashes": {
+    "global_regime_calendar": "8ec181dd392b20c1677c61c5a74f4d6bfa5609f78782057958c96ec63e600898",
+    "manifest_12a6c": "6a94be86a54d58e7c8c8b04fd85e7bd8cf546d5309395d4fff18f4a1043f8ce2",
+    "pit_topn_400_100_executable_daily": "e73968ddf54b646ab2d831467a0e2882970e5f96880df12c41bd01a39c243965",
+    "pit_topn_400_100_membership_daily": "982cc6930b27c4b255f019af5180ef835667280b841154af8c2ca9b0138a863b",
+    "requirement": "db06dc2ee7e21bb8c305bbedfe4b785310d84b7ab6298c0faccf6e436f90eab3",
+    "split_time_boundary_audit": "48d6fed2e2db6c77716fc8a9acb062fbf5e24feee6ce76045566cc3ca8c95986",
+    "stage2_path_cache": "0ab5bb232ed12db5b2c0540a3da0a9bb44b21f5ab21a0c728534d6c3651663a3",
+    "state_change_candidate_event_canonical": "4035524801cfc0b21f499e5840fa110794885f7236525c4af0afa59f1b043048",
+    "stock_daily_qfq_dir": "",
+    "two_stage_decision": "2d272d83520c309c362ec3c63f051afe4891d60ed950b7ca52f7c24640a0789c",
+    "two_stage_event_targets": "ed7cc23fe4c858db224f3f6dffddd14feacbaf66e911c5f8549fb134e9297681",
+    "two_stage_event_universe": "f3f58981ddc66a242c3e19a037c715a4bd300eeda18eda79f3809611014763c4"
+  },
+  "inputs": {
+    "global_regime_calendar": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "8ec181dd392b20c1677c61c5a74f4d6bfa5609f78782057958c96ec63e600898"
+    },
+    "manifest_12a6c": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json",
+      "read_status": "pass",
+      "schema_status": "file",
+      "sha256": "6a94be86a54d58e7c8c8b04fd85e7bd8cf546d5309395d4fff18f4a1043f8ce2"
+    },
+    "pit_topn_400_100_executable_daily": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "e73968ddf54b646ab2d831467a0e2882970e5f96880df12c41bd01a39c243965"
+    },
+    "pit_topn_400_100_membership_daily": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_membership_daily.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "982cc6930b27c4b255f019af5180ef835667280b841154af8c2ca9b0138a863b"
+    },
+    "requirement": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7f_c0_winner_baserate_enrichment_control_diagnostic.md",
+      "read_status": "pass",
+      "schema_status": "file",
+      "sha256": "db06dc2ee7e21bb8c305bbedfe4b785310d84b7ab6298c0faccf6e436f90eab3"
+    },
+    "split_time_boundary_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/split_time_boundary_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "48d6fed2e2db6c77716fc8a9acb062fbf5e24feee6ce76045566cc3ca8c95986"
+    },
+    "stage2_path_cache": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "0ab5bb232ed12db5b2c0540a3da0a9bb44b21f5ab21a0c728534d6c3651663a3"
+    },
+    "state_change_candidate_event_canonical": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A2_state_change_backbone_candidate_generator/state_change_candidate_event_canonical.csv.gz",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "4035524801cfc0b21f499e5840fa110794885f7236525c4af0afa59f1b043048"
+    },
+    "stock_daily_qfq_dir": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq",
+      "read_status": "pass",
+      "schema_status": "directory",
+      "sha256": ""
+    },
+    "two_stage_decision": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_decision.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "2d272d83520c309c362ec3c63f051afe4891d60ed950b7ca52f7c24640a0789c"
+    },
+    "two_stage_event_targets": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_targets.csv.gz",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "ed7cc23fe4c858db224f3f6dffddd14feacbaf66e911c5f8549fb134e9297681"
+    },
+    "two_stage_event_universe": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_universe.csv.gz",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "f3f58981ddc66a242c3e19a037c715a4bd300eeda18eda79f3809611014763c4"
+    }
+  },
+  "legacy_directory_id": "12_multi_k_winner_failure_path_morphology_research_v0",
+  "output_hashes": {
+    "bootstrap_replicates": "c4cb0d75e9a00b8fd11852673d575f8b7af569879273029d97ff2e54b60d8417",
+    "c0_arm_winner_label_matrix": "28855e06fbc68a53bd77864ee828f9ba01c6762d91a2582523a5460c416ee055",
+    "c0_vs_control_winner_baserate_readout": "110e3ee12dda71aadc89392aa835f7772f72ac75c21deb21462aaadc78edecf6",
+    "c0_winner_enrichment_decision": "a4f7d5bda24250c78ccea3b2828ba81afd2fabad8e2f6ab4d35935e60ff31ab6",
+    "control_arm_winner_label_matrix": "e8d82f52a0008b396c6f9f8cd54f42987142a9a9eb70bf090b1e6980bbe70445",
+    "control_match_cell_audit": "c64de1de82e07fb42e1327acef51642453d88839763667843560d68f297e5ccd",
+    "enrichment_stability_slice_audit": "6fa0be83947c403d4210b9353db8b6161561e5c60e2a1e10e445a1be6876600f",
+    "input_artifact_audit": "9ac6031e89b222ff5f5fbdf913b0da6ef5f91ee415fdb78bb6731884b31649ac",
+    "report": "6305f89b8ad5b7cc4f191aa52aea664553b821719ed1b01f96d86d0bf46fd4f6",
+    "scope_universe_audit": "1f9ff4b02d0cd94e07b67bf91b2cdddce1876a110de013c708a1c92953889e79",
+    "winner_baserate_bootstrap_ci": "b737ced198dd160aac3cab626e9a5dd0ec184286db9e29891a98f5423c818d2f",
+    "winner_label_source_audit": "acb40210b7897b103b456d8cb12e144eba7058b6d7f4916bf8f200ab6db75c3b"
+  },
+  "outputs": {
+    "bootstrap_replicates": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7f_c0_winner_baserate_enrichment_control_diagnostic/bootstrap_replicates.parquet",
+      "row_count": 96000,
+      "sha256": "c4cb0d75e9a00b8fd11852673d575f8b7af569879273029d97ff2e54b60d8417"
+    },
+    "c0_arm_winner_label_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7f_c0_winner_baserate_enrichment_control_diagnostic/c0_arm_winner_label_matrix.parquet",
+      "row_count": 15113,
+      "sha256": "28855e06fbc68a53bd77864ee828f9ba01c6762d91a2582523a5460c416ee055"
+    },
+    "c0_vs_control_winner_baserate_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/c0_vs_control_winner_baserate_readout.csv",
+      "row_count": 48,
+      "sha256": "110e3ee12dda71aadc89392aa835f7772f72ac75c21deb21462aaadc78edecf6"
+    },
+    "c0_winner_enrichment_decision": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/c0_winner_enrichment_decision.csv",
+      "row_count": 1,
+      "sha256": "a4f7d5bda24250c78ccea3b2828ba81afd2fabad8e2f6ab4d35935e60ff31ab6"
+    },
+    "control_arm_winner_label_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7f_c0_winner_baserate_enrichment_control_diagnostic/control_arm_winner_label_matrix.parquet",
+      "row_count": 15113,
+      "sha256": "e8d82f52a0008b396c6f9f8cd54f42987142a9a9eb70bf090b1e6980bbe70445"
+    },
+    "control_match_cell_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/control_match_cell_audit.csv",
+      "row_count": 128,
+      "sha256": "c64de1de82e07fb42e1327acef51642453d88839763667843560d68f297e5ccd"
+    },
+    "enrichment_stability_slice_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/enrichment_stability_slice_audit.csv",
+      "row_count": 168,
+      "sha256": "6fa0be83947c403d4210b9353db8b6161561e5c60e2a1e10e445a1be6876600f"
+    },
+    "input_artifact_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/input_artifact_audit.csv",
+      "row_count": 12,
+      "sha256": "9ac6031e89b222ff5f5fbdf913b0da6ef5f91ee415fdb78bb6731884b31649ac"
+    },
+    "report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/reports/c0_winner_baserate_enrichment_control_report.md",
+      "row_count": 1,
+      "sha256": "6305f89b8ad5b7cc4f191aa52aea664553b821719ed1b01f96d86d0bf46fd4f6"
+    },
+    "scope_universe_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/scope_universe_audit.csv",
+      "row_count": 6,
+      "sha256": "1f9ff4b02d0cd94e07b67bf91b2cdddce1876a110de013c708a1c92953889e79"
+    },
+    "winner_baserate_bootstrap_ci": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/winner_baserate_bootstrap_ci.csv",
+      "row_count": 48,
+      "sha256": "b737ced198dd160aac3cab626e9a5dd0ec184286db9e29891a98f5423c818d2f"
+    },
+    "winner_label_source_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/winner_label_source_audit.csv",
+      "row_count": 16,
+      "sha256": "acb40210b7897b103b456d8cb12e144eba7058b6d7f4916bf8f200ab6db75c3b"
+    }
+  },
+  "python": "3.12.4",
+  "requirement_hash": "db06dc2ee7e21bb8c305bbedfe4b785310d84b7ab6298c0faccf6e436f90eab3",
+  "requirement_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7f_c0_winner_baserate_enrichment_control_diagnostic.md",
+  "run_id": "12A7f_c0_winner_baserate_enrichment_control_diagnostic"
+}
