@@ -1,0 +1,397 @@
+{
+  "config_hash": "ad781110b1939a1cee2b29896fbcfb4a447c2d832dce5d263cb0173ca031433c",
+  "config_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/configs/config_12a7c_direction_e_stage2_decoupling_chained_readouts.yaml",
+  "config_sha256": "d4f963f2bb1cc1767ddcc2eb049e7961b8813821c8e409591cc3233763c7864f",
+  "created_at_utc": "2026-06-22T08:49:44.487632+00:00",
+  "decision_state": "12A7c_blocked_input_or_stage1_anchor_failure",
+  "entrypoint_hash": "b316bb9b0cc2738e2b279d181845c523f7af557b9622efc5a7203db470b756d3",
+  "experiment_id": "12_state_change_event_backbone_rebuild_v0",
+  "git_revision": "3271af591da6831d18edc21ec49954003799550a",
+  "input_hashes": {
+    "a7_input_artifact_audit": "b50fa9ffa46dca2cfc9e66c6adc1585d89fa2b3214d6e9bdb0151a1ef04f8d61",
+    "a7_manifest": "a29528db286b3dd31f4b5d9f28a355fe56866c22b44dc4e06e42dfcd91228704",
+    "a7_report": "c78176e541a29f1ccfc15dc91a92fc0208db4d66d0d46161e9742de49d0c9a55",
+    "a7_score_reproduction_audit": "fd2ece7538c4a66047961a0ebe2f6cb8300b29f52d3d81060e9e397921d44d80",
+    "a7_split_time_boundary_audit": "48d6fed2e2db6c77716fc8a9acb062fbf5e24feee6ce76045566cc3ca8c95986",
+    "a7_trailing_rank_budget_curve_readout": "8c077d2a079dc39c7cfca57cb0a4b56f1faf7e3aa20c4cbf633850b54359f1c4",
+    "a7_trailing_rank_budget_drift_audit": "6178583031b5e82f613ed6922637bc5c41b3843f01ed46c8a6ca0f9052843350",
+    "a7_trailing_rank_decile_lift_readout": "79198bcde8c7d01598623e6fc24b77fc8fd47f4fe6e68d6868bfb3cf9b0967da",
+    "a7_trailing_rank_decision": "51ac0b0c77702dc999d7819509bc64e65fe8c07adffab3de5f8b5e41bacdccda",
+    "a7_trailing_rank_operating_point_readout": "1d98a7792d6cab8c20b6eafe4c2eab2946cb323f37ea3a587cacc285eb483aa3",
+    "a7_trailing_rank_random_same_budget_audit": "8eca4ebc83b68a9712bc9d9558f15759a5507ee0d41ad522e4104fcee3dabe9f",
+    "a7_trailing_rank_score_matrix": "76333bcfefe51e98a28536aa5b022ca8b81c6ac59aa0d0a262ea2b549be3e6f6",
+    "a7_trailing_rank_score_quality_metrics": "0b7b0715d19f5406ea324145ebb99b39759275b2df95fc424f46a72fe3228064",
+    "a7_trailing_rank_single_feature_challenger": "ca7264b306f0fd57b93f5a4d2f1cb73efc6b514d04564a94bf5f51ea0be5e836",
+    "a7b_backbone_stability_slice_audit": "9698a625209be4038132426c0cc275b1e7c99bbdfd89fdbee68560e3e538b20a",
+    "a7b_bootstrap_replicates": "1b8ab4fe8d64ece4a7fc75215810ebbcf162a75eb9f8e13678037aabfead6784",
+    "a7b_direction_c_decision": "221d3f11d68d100968fcfa466571c461b346620048e2298bc6872cbf7c19d18f",
+    "a7b_input_artifact_audit": "d7310ceb328fcab817e4e38a30d47dafcc3d53e461b2382b4ace094427da10bb",
+    "a7b_manifest": "e7907959ce0a3b4ab09d0ced685c80947be2e40c4038697f48f8d7b0f8e56822",
+    "a7b_report": "519bd7ad6dede9408ae45a274a8819e0baea8de2090d749ccfdbd9da53197d50",
+    "a7b_simple_backbone_budget_drift_audit": "0e50aec34e2bf3fb1c5ef3fac1b3557fdaf8b9f88d6426443f6a9db12f0a5bd0",
+    "a7b_simple_backbone_operating_point_readout": "1f265b6cab409f7a3b643dcb1225b1b88d47caf06a0e3bbfe31aae9ace4c4212",
+    "a7b_simple_backbone_score_matrix": "c05b5b59d7c3498ca79e8383034f93dc31b6a191d4c59abcbf594dbe14c8f268",
+    "a7b_simple_backbone_train_selection": "011d0320fdd1adf6bb88983a81615ee53312c33881fe41924c6f56249cdf7b21",
+    "a7b_stage2_diagnostic_backbone_readout": "0421cf851228a0afbf2e027c7cbe650556f257619cd8910164f3ad76951dade2",
+    "entry_forward_path_cache": "244bd5e1ba04b7a431f11579ca3bbe7a68dc052d62a0866bafb6671568f6a03b",
+    "manifest_12a6b": "19f6a8f54e3930c34b913edd3ccc3e71718e503315a6edbf3a25ed86b24b1f15",
+    "manifest_12a6c": "6a94be86a54d58e7c8c8b04fd85e7bd8cf546d5309395d4fff18f4a1043f8ce2",
+    "matched_random_sampled_entries": "f75371d5fb30a40f12c09c91523f8f8a669aa9b99698a377960ec07dfcf50eb5",
+    "requirement": "a0c6ddd51ed66c6c81a0bd1a57796a6073c088bbfe8d9e301e1067b85f7fd0d2",
+    "stage2_path_cache": "0ab5bb232ed12db5b2c0540a3da0a9bb44b21f5ab21a0c728534d6c3651663a3",
+    "two_stage_event_targets": "ed7cc23fe4c858db224f3f6dffddd14feacbaf66e911c5f8549fb134e9297681",
+    "two_stage_event_universe": "f3f58981ddc66a242c3e19a037c715a4bd300eeda18eda79f3809611014763c4",
+    "two_stage_feature_dictionary": "95f1966043afcc03386e2791389ff4c16116b9a5822f09838326dd30847d3b67",
+    "two_stage_feature_matrix": "233b3361194e94ba494edcec077dcafa055cb647f79c3321b9dd53a68b68e5cd",
+    "two_stage_feature_pit_audit": "1442ea146560bddd4511e1018f9b17e4b5037192aaea9e9c4106fc83906fb816",
+    "two_stage_row_level_scores": "",
+    "two_stage_split_time_boundary_audit": "48d6fed2e2db6c77716fc8a9acb062fbf5e24feee6ce76045566cc3ca8c95986"
+  },
+  "inputs": {
+    "a7_input_artifact_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/input_artifact_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "b50fa9ffa46dca2cfc9e66c6adc1585d89fa2b3214d6e9bdb0151a1ef04f8d61"
+    },
+    "a7_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A7_direction_a_trailing_rank_operating_point_audit_manifest.json",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "a29528db286b3dd31f4b5d9f28a355fe56866c22b44dc4e06e42dfcd91228704"
+    },
+    "a7_report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/reports/trailing_rank_operating_point_validation_report.md",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "c78176e541a29f1ccfc15dc91a92fc0208db4d66d0d46161e9742de49d0c9a55"
+    },
+    "a7_score_reproduction_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/score_reproduction_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "fd2ece7538c4a66047961a0ebe2f6cb8300b29f52d3d81060e9e397921d44d80"
+    },
+    "a7_split_time_boundary_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/split_time_boundary_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "48d6fed2e2db6c77716fc8a9acb062fbf5e24feee6ce76045566cc3ca8c95986"
+    },
+    "a7_trailing_rank_budget_curve_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_budget_curve_readout.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "8c077d2a079dc39c7cfca57cb0a4b56f1faf7e3aa20c4cbf633850b54359f1c4"
+    },
+    "a7_trailing_rank_budget_drift_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_budget_drift_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "6178583031b5e82f613ed6922637bc5c41b3843f01ed46c8a6ca0f9052843350"
+    },
+    "a7_trailing_rank_decile_lift_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_decile_lift_readout.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "79198bcde8c7d01598623e6fc24b77fc8fd47f4fe6e68d6868bfb3cf9b0967da"
+    },
+    "a7_trailing_rank_decision": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_decision.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "51ac0b0c77702dc999d7819509bc64e65fe8c07adffab3de5f8b5e41bacdccda"
+    },
+    "a7_trailing_rank_operating_point_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_operating_point_readout.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "1d98a7792d6cab8c20b6eafe4c2eab2946cb323f37ea3a587cacc285eb483aa3"
+    },
+    "a7_trailing_rank_random_same_budget_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_random_same_budget_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "8eca4ebc83b68a9712bc9d9558f15759a5507ee0d41ad522e4104fcee3dabe9f"
+    },
+    "a7_trailing_rank_score_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_score_matrix.parquet",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "76333bcfefe51e98a28536aa5b022ca8b81c6ac59aa0d0a262ea2b549be3e6f6"
+    },
+    "a7_trailing_rank_score_quality_metrics": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_score_quality_metrics.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "0b7b0715d19f5406ea324145ebb99b39759275b2df95fc424f46a72fe3228064"
+    },
+    "a7_trailing_rank_single_feature_challenger": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_single_feature_challenger.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "ca7264b306f0fd57b93f5a4d2f1cb73efc6b514d04564a94bf5f51ea0be5e836"
+    },
+    "a7b_backbone_stability_slice_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/backbone_stability_slice_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "9698a625209be4038132426c0cc275b1e7c99bbdfd89fdbee68560e3e538b20a"
+    },
+    "a7b_bootstrap_replicates": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/bootstrap_replicates.parquet",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "1b8ab4fe8d64ece4a7fc75215810ebbcf162a75eb9f8e13678037aabfead6784"
+    },
+    "a7b_direction_c_decision": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/direction_c_decision.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "221d3f11d68d100968fcfa466571c461b346620048e2298bc6872cbf7c19d18f"
+    },
+    "a7b_input_artifact_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/input_artifact_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "d7310ceb328fcab817e4e38a30d47dafcc3d53e461b2382b4ace094427da10bb"
+    },
+    "a7b_manifest": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A7b_direction_c_simple_backbone_operating_rule_validation_manifest.json",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "e7907959ce0a3b4ab09d0ced685c80947be2e40c4038697f48f8d7b0f8e56822"
+    },
+    "a7b_report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/reports/simple_backbone_operating_rule_validation_report.md",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "519bd7ad6dede9408ae45a274a8819e0baea8de2090d749ccfdbd9da53197d50"
+    },
+    "a7b_simple_backbone_budget_drift_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_budget_drift_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "0e50aec34e2bf3fb1c5ef3fac1b3557fdaf8b9f88d6426443f6a9db12f0a5bd0"
+    },
+    "a7b_simple_backbone_operating_point_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_operating_point_readout.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "1f265b6cab409f7a3b643dcb1225b1b88d47caf06a0e3bbfe31aae9ace4c4212"
+    },
+    "a7b_simple_backbone_score_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_score_matrix.parquet",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "c05b5b59d7c3498ca79e8383034f93dc31b6a191d4c59abcbf594dbe14c8f268"
+    },
+    "a7b_simple_backbone_train_selection": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_train_selection.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "011d0320fdd1adf6bb88983a81615ee53312c33881fe41924c6f56249cdf7b21"
+    },
+    "a7b_stage2_diagnostic_backbone_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/stage2_diagnostic_backbone_readout.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "0421cf851228a0afbf2e027c7cbe650556f257619cd8910164f3ad76951dade2"
+    },
+    "entry_forward_path_cache": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/entry_forward_path_cache.parquet",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "244bd5e1ba04b7a431f11579ca3bbe7a68dc052d62a0866bafb6671568f6a03b"
+    },
+    "manifest_12a6b": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A6b_c0_risk_on_fast_fail_survival_uplift_audit_manifest.json",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "19f6a8f54e3930c34b913edd3ccc3e71718e503315a6edbf3a25ed86b24b1f15"
+    },
+    "manifest_12a6c": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "6a94be86a54d58e7c8c8b04fd85e7bd8cf546d5309395d4fff18f4a1043f8ce2"
+    },
+    "matched_random_sampled_entries": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/matched_random_sampled_entries.csv.gz",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "f75371d5fb30a40f12c09c91523f8f8a669aa9b99698a377960ec07dfcf50eb5"
+    },
+    "requirement": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7c_direction_e_stage2_decoupling_chained_readouts.md",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "a0c6ddd51ed66c6c81a0bd1a57796a6073c088bbfe8d9e301e1067b85f7fd0d2"
+    },
+    "stage2_path_cache": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "0ab5bb232ed12db5b2c0540a3da0a9bb44b21f5ab21a0c728534d6c3651663a3"
+    },
+    "two_stage_event_targets": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_targets.csv.gz",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "ed7cc23fe4c858db224f3f6dffddd14feacbaf66e911c5f8549fb134e9297681"
+    },
+    "two_stage_event_universe": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_universe.csv.gz",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "f3f58981ddc66a242c3e19a037c715a4bd300eeda18eda79f3809611014763c4"
+    },
+    "two_stage_feature_dictionary": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_dictionary.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "95f1966043afcc03386e2791389ff4c16116b9a5822f09838326dd30847d3b67"
+    },
+    "two_stage_feature_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_matrix.parquet",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "233b3361194e94ba494edcec077dcafa055cb647f79c3321b9dd53a68b68e5cd"
+    },
+    "two_stage_feature_pit_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_pit_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "1442ea146560bddd4511e1018f9b17e4b5037192aaea9e9c4106fc83906fb816"
+    },
+    "two_stage_row_level_scores": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_row_level_scores.parquet",
+      "read_status": "optional_missing",
+      "schema_status": "pass",
+      "sha256": ""
+    },
+    "two_stage_split_time_boundary_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/split_time_boundary_audit.csv",
+      "read_status": "pass",
+      "schema_status": "pass",
+      "sha256": "48d6fed2e2db6c77716fc8a9acb062fbf5e24feee6ce76045566cc3ca8c95986"
+    }
+  },
+  "legacy_directory_id": "12_multi_k_winner_failure_path_morphology_research_v0",
+  "output_hashes": {
+    "bootstrap_replicates": "af198882fe312f1c8d1a917431cbe8a3e208a0faf4f79f51e32155469b188ae1",
+    "direction_e_decision": "78f9d0099c471920b3740e3854d2aca650b656fa87f2f4a37281132479e28d0f",
+    "input_artifact_audit": "079ba7587100b75648d0f1237882c6923f2f509c724031c317337f6bb642df68",
+    "random_stage2_selected": "6049fe6f497c865dc452117afbe93fd2c08a120a0c2131f66f9e23a1426388dc",
+    "report": "4da921e252637484235cae8629aa9da806422273963f278f1a6ede5a473d0e65",
+    "scope_universe_audit": "6bd9d1361bdf5698e3ed78b4e07149507f470f190d97d13c4fb98089b9224680",
+    "score_matrix": "08c943cd1e94cfabfc32c70496ba5c3de9e09f299ce241cd0ab6aa3bfba5efda",
+    "stage1_anchor_rule_card": "96b25efe39bb124904133f72f3966b296828a860d8b3c6b222b6bc7dcad66390",
+    "stage2_budget_drift_audit": "ca00be97dc8f970d5f7a4c24d6ff9f92cf648c25cb27223826f999fb97009fcc",
+    "stage2_candidate_card": "eefbcd983dd014bf0159dd043e7a1dfb898de6df39450c299a7faff3cae44069",
+    "stage2_chained_trailing_rank_readout": "f1f1b3c00c30d9b55bd9a620780e59756c83753c6cc9e8bb3cb487459ea575e7",
+    "stage2_complex_model_matched_comparator": "2ab1a821dfcd2d7a504bc4e15fd67b3d7b41a36322ca4086711d366d5d2378dc",
+    "stage2_ground_truth_survivor_readout": "a4cde3a4c0e3e34de34dd59d7ef4575b5c8a38d51de15c2c91a639f014d90e59",
+    "stage2_opportunity_cost_audit": "dbc7e00d9a37c7c5e0e465ab72c56819679075e1dee9b82e5f0578f597b78b35",
+    "stage2_random_same_budget_audit": "21f917d05ecb693a2d056272eb461dc8eeb75cf73ccdbccc819d9c0e71e29ac8",
+    "stage2_single_feature_challenger": "96243a07b9c517803d065610b930446e84a77489d10595ce48a147d0bd61d9af",
+    "stage2_stability_slice_audit": "f8faa50422424523227ac0a03753b4002ef5bf3079977a94698c1e66d75eb39d",
+    "stage2_train_selection": "3d450e469fcf8aba513f73c37da6641e3b47ddce21dca07cd299b2977cf31b7f"
+  },
+  "outputs": {
+    "bootstrap_replicates": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/bootstrap_replicates.parquet",
+      "row_count": 168000,
+      "sha256": "af198882fe312f1c8d1a917431cbe8a3e208a0faf4f79f51e32155469b188ae1"
+    },
+    "direction_e_decision": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/direction_e_decision.csv",
+      "row_count": 1,
+      "sha256": "78f9d0099c471920b3740e3854d2aca650b656fa87f2f4a37281132479e28d0f"
+    },
+    "input_artifact_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/input_artifact_audit.csv",
+      "row_count": 38,
+      "sha256": "079ba7587100b75648d0f1237882c6923f2f509c724031c317337f6bb642df68"
+    },
+    "random_stage2_selected": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/random_stage2_selected.parquet",
+      "row_count": 621064,
+      "sha256": "6049fe6f497c865dc452117afbe93fd2c08a120a0c2131f66f9e23a1426388dc"
+    },
+    "report": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/reports/stage2_decoupling_chained_readouts_report.md",
+      "row_count": 1,
+      "sha256": "4da921e252637484235cae8629aa9da806422273963f278f1a6ede5a473d0e65"
+    },
+    "scope_universe_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/scope_universe_audit.csv",
+      "row_count": 4,
+      "sha256": "6bd9d1361bdf5698e3ed78b4e07149507f470f190d97d13c4fb98089b9224680"
+    },
+    "score_matrix": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_decoupling_score_matrix.parquet",
+      "row_count": 15113,
+      "sha256": "08c943cd1e94cfabfc32c70496ba5c3de9e09f299ce241cd0ab6aa3bfba5efda"
+    },
+    "stage1_anchor_rule_card": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage1_anchor_rule_card.csv",
+      "row_count": 1,
+      "sha256": "96b25efe39bb124904133f72f3966b296828a860d8b3c6b222b6bc7dcad66390"
+    },
+    "stage2_budget_drift_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_budget_drift_audit.csv",
+      "row_count": 144,
+      "sha256": "ca00be97dc8f970d5f7a4c24d6ff9f92cf648c25cb27223826f999fb97009fcc"
+    },
+    "stage2_candidate_card": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_candidate_card.csv",
+      "row_count": 6,
+      "sha256": "eefbcd983dd014bf0159dd043e7a1dfb898de6df39450c299a7faff3cae44069"
+    },
+    "stage2_chained_trailing_rank_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_chained_trailing_rank_readout.csv",
+      "row_count": 72,
+      "sha256": "f1f1b3c00c30d9b55bd9a620780e59756c83753c6cc9e8bb3cb487459ea575e7"
+    },
+    "stage2_complex_model_matched_comparator": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_complex_model_matched_comparator.csv",
+      "row_count": 24,
+      "sha256": "2ab1a821dfcd2d7a504bc4e15fd67b3d7b41a36322ca4086711d366d5d2378dc"
+    },
+    "stage2_ground_truth_survivor_readout": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_ground_truth_survivor_readout.csv",
+      "row_count": 72,
+      "sha256": "a4cde3a4c0e3e34de34dd59d7ef4575b5c8a38d51de15c2c91a639f014d90e59"
+    },
+    "stage2_opportunity_cost_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_opportunity_cost_audit.csv",
+      "row_count": 4,
+      "sha256": "dbc7e00d9a37c7c5e0e465ab72c56819679075e1dee9b82e5f0578f597b78b35"
+    },
+    "stage2_random_same_budget_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_random_same_budget_audit.csv",
+      "row_count": 394500,
+      "sha256": "21f917d05ecb693a2d056272eb461dc8eeb75cf73ccdbccc819d9c0e71e29ac8"
+    },
+    "stage2_single_feature_challenger": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_single_feature_challenger.csv",
+      "row_count": 24,
+      "sha256": "96243a07b9c517803d065610b930446e84a77489d10595ce48a147d0bd61d9af"
+    },
+    "stage2_stability_slice_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_stability_slice_audit.csv",
+      "row_count": 102,
+      "sha256": "f8faa50422424523227ac0a03753b4002ef5bf3079977a94698c1e66d75eb39d"
+    },
+    "stage2_train_selection": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7c_direction_e_stage2_decoupling_chained_readouts/stage2_train_selection.csv",
+      "row_count": 4,
+      "sha256": "3d450e469fcf8aba513f73c37da6641e3b47ddce21dca07cd299b2977cf31b7f"
+    }
+  },
+  "python": "3.12.4",
+  "requirement_hash": "a0c6ddd51ed66c6c81a0bd1a57796a6073c088bbfe8d9e301e1067b85f7fd0d2",
+  "requirement_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7c_direction_e_stage2_decoupling_chained_readouts.md",
+  "run_id": "12A7c_direction_e_stage2_decoupling_chained_readouts"
+}

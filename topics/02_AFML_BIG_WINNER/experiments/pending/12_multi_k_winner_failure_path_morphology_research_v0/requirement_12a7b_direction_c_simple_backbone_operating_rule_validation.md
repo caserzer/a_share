@@ -136,6 +136,8 @@ outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/
 outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_random_same_budget_audit.csv
 outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_score_quality_metrics.csv
 outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_decile_lift_readout.csv
+outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/split_time_boundary_audit.csv
+outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/score_reproduction_audit.csv
 outputs/publishable/reports/trailing_rank_operating_point_validation_report.md
 outputs/manifests/12A7_direction_a_trailing_rank_operating_point_audit_manifest.json
 ```
@@ -171,6 +173,63 @@ outputs/manifests/12A6b_c0_risk_on_fast_fail_survival_uplift_audit_manifest.json
 ```
 
 Random baseline must be replayed under the same split x board_bucket x calendar_month selected-count profile as the candidate rule. Aggregated random p50 from an unmatched denominator is not acceptable.
+
+Random replay contract:
+
+```text
+For each candidate rule and split:
+  1. Build candidate selected-count cells by:
+       split x board_bucket x calendar_month
+  2. For each random seed, draw exactly the same selected_n per cell
+     from `matched_random_sampled_entries.csv.gz`.
+  3. Join random entries to `entry_forward_path_cache.parquet`
+     to recompute the same fast-fail target used by the candidate.
+  4. Compute per-seed random_fast_fail_rate and then p05 / p50 / p95
+     from valid seeds only.
+
+Random path label join key:
+  path_key
+  instrument
+  entry_pos
+  entry_price
+
+Cache-side uniqueness:
+  `entry_forward_path_cache.parquet` must be unique on the join key.
+  If the cache has duplicate join keys or a sampled random row has no cache match:
+    random_replay_status = fail
+    input_gate_status = fail
+    decision_state = 12A7b_blocked_input_or_pit_failure
+
+Required random seed validity:
+  valid_seed_n >= 100
+  every candidate selected-count cell has sampled_random_n = requested_selected_n
+  random_fast_fail_target read status = pass
+
+If any selected-count cell cannot be replayed exactly for enough seeds:
+  random_replay_status = fail
+  input_gate_status = fail
+  decision_state = 12A7b_blocked_input_or_pit_failure
+```
+
+`simple_backbone_random_same_budget_audit.csv` must include at least:
+
+```text
+rule_id
+split
+seed
+board_bucket
+calendar_month
+requested_selected_n
+sampled_random_n
+available_random_n
+replacement_used_flag
+random_fast_fail_positive_n
+random_fast_fail_rate
+path_label_join_status
+cache_key_unique_status
+sampling_status
+random_replay_status
+```
 
 ## 5. Primary Universe
 
@@ -369,7 +428,7 @@ robustness labels / rates / budgets / random readout
 aggregate OOS curve behavior
 ```
 
-Eligibility:
+Minimum train eligibility:
 
 ```text
 train_selected_n >= 300
@@ -377,22 +436,34 @@ train_rank_evaluable_n >= 1000
 train_denominator_positive_n >= 30
 ```
 
+Train random-uplift hard gate:
+
+```text
+train_delta_vs_random_p50 <= -0.02
+```
+
 Primary simple backbone selection:
 
 ```text
-1. Keep only eligible train candidate tuples.
-2. Compute train_fast_fail_rate and train_delta_vs_random_p50.
-3. Prefer tuples with train_delta_vs_random_p50 <= -0.02.
-4. Choose the tuple with the lowest train_fast_fail_rate.
-5. If absolute train_fast_fail_rate difference <= 0.002, choose the larger selected_n.
-6. If still tied, choose lower complexity:
-     single feature before two-feature model before three-feature model.
-7. If still tied, choose feature_name ASC and X ASC.
+1. Keep only tuples that pass minimum train eligibility.
+2. If no tuple passes minimum train eligibility:
+     selection_status = no_train_eligible_backbone_tuple
+     phase_1_simple_backbone_gate_status = diagnostic_only
+     decision_state = 12A7b_backbone_diagnostic_only
+3. Compute train_fast_fail_rate and train_delta_vs_random_p50.
+4. Keep only tuples with train_delta_vs_random_p50 <= -0.02.
+5. If no tuple satisfies train_delta_vs_random_p50 <= -0.02:
+     selection_status = no_train_random_uplift_candidate
+     phase_1_simple_backbone_gate_status = fail
+     decision_state = 12A7b_no_simple_backbone_transport
+6. Otherwise choose the surviving tuple with the lowest train_fast_fail_rate.
+7. If absolute train_fast_fail_rate difference <= 0.002, choose the larger selected_n.
+8. If still tied, choose feature_name ASC and X ASC.
 ```
 
 The selected feature, orientation, X, history policy, and tie-break path must be written to `simple_backbone_train_selection.csv` and then applied unchanged to validation and robustness.
 
-The train objective can naturally prefer the smallest X in the grid because lower X is more selective. This is acceptable only if the tuple passes the train eligibility gates and later robustness support gates. The selected tuple's X-driven capacity tradeoff must be reported explicitly in `simple_backbone_train_selection.csv`.
+The train objective can naturally prefer the smallest X in the grid because lower X is more selective. This is acceptable only if the tuple passes the train eligibility gates, the train random-uplift gate, and later robustness support gates. The selected tuple's X-driven capacity tradeoff must be reported explicitly in `simple_backbone_train_selection.csv`.
 
 ### 7.4 Sequential monotone-model validation
 
@@ -403,12 +474,15 @@ phase_1 = single_feature_backbone_operating_rule_validation
 phase_2 = low_capacity_monotone_incremental_value_validation
 ```
 
-Phase 2 is enabled only if phase 1 supports the simple backbone on robustness:
+Phase 2 is mandatory if phase 1 supports the simple backbone on robustness:
 
 ```text
 phase_2_enabled =
   phase_1_simple_backbone_gate_status = pass
   and phase_1_selected_tuple_frozen = true
+
+phase_2_execution_policy = mandatory_after_phase_1_pass
+phase_2_config_skip_allowed = false
 ```
 
 If phase 1 does not support the simple backbone, monotone output must be:
@@ -417,6 +491,14 @@ If phase 1 does not support the simple backbone, monotone output must be:
 low_capacity_status = skipped_backbone_not_supported
 diagnostic_only_flag = true
 not_allowed_for_decision = true
+```
+
+If phase 1 passes but phase 2 cannot produce required row-level ranks, matched random/bootstrap readouts, or monotone score constraints because of input, PIT, leakage, split-boundary, or random replay failure:
+
+```text
+phase_2_enabled = true
+low_capacity_status = blocked_required_phase_2_execution
+decision_state = 12A7b_blocked_input_or_pit_failure
 ```
 
 Allowed phase-2 families:
@@ -519,12 +601,32 @@ The 12A7 Direction A complex model must remain a comparator, not a new primary:
 ```text
 complex_model_source = 12A7_direction_a_trailing_rank_operating_point_audit
 stage1_score_id = stage1_fast_fail_score
+complex_row_level_score_source =
+  outputs/local_cache/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_score_matrix.parquet
 history_policy_id = board_then_global_rolling_504_sessions
-score_reproduction_status = imported from trailing_rank_decision.csv
+score_reproduction_status = imported from trailing_rank_decision.csv and score_reproduction_audit.csv
 score_source_caveat = imported from trailing_rank_decision.csv
 ```
 
 Complex model comparison must be matched by split x board_bucket x calendar_month selected_n on the common denominator. Raw unmatched budget differences cannot drive support status.
+
+The matched complex comparator must be computed from row-level `stage1_fast_fail_score` in `trailing_rank_score_matrix.parquet`. `trailing_rank_decision.csv` is a decision summary only; it can provide caveat and reproduction-status flags, but it cannot provide row-level scores and must not be used to infer selected rows. Required row-level columns:
+
+```text
+meta_event_id
+stage1_fast_fail_score
+split
+board_bucket
+calendar_month
+```
+
+For each split x board_bucket x calendar_month cell inside the common denominator, select the same `selected_n` as the candidate by lowest `stage1_fast_fail_score`. Missing row-level score, duplicate `meta_event_id`, or incomplete common-denominator join must fail closed:
+
+```text
+complex_comparator_status = blocked_row_level_score_source_failure
+input_gate_status = fail
+decision_state = 12A7b_blocked_input_or_pit_failure
+```
 
 The complex comparator is diagnostic-only for phase-1 backbone support:
 
@@ -536,17 +638,27 @@ complex_delta_near_miss_guard = 0.005 absolute fast-fail-rate difference
 Comparator caveat rule:
 
 ```text
-if score_source_caveat != "":
-  complex_comparator_status = numerical_near_miss_diagnostic
+complex_score_caveat_flag = score_source_caveat != ""
+complex_near_miss_flag = abs(delta_vs_complex_model) <= complex_delta_near_miss_guard
+complex_ci_cross_zero_flag =
+  delta_vs_complex_model_ci95_low <= 0 <= delta_vs_complex_model_ci95_high
 
-if abs(delta_vs_complex_model) <= complex_delta_near_miss_guard:
-  complex_comparator_status = complex_parity_or_near_miss
-
-if bootstrap_ci95(candidate_minus_complex_model) crosses 0:
-  complex_comparator_status = complex_parity_or_uncertain
+complex_comparator_status priority:
+  1. if complex_score_caveat_flag:
+       numerical_near_miss_diagnostic
+  2. else if complex_near_miss_flag:
+       complex_parity_or_near_miss
+  3. else if complex_ci_cross_zero_flag:
+       complex_parity_or_uncertain
+  4. else if delta_vs_complex_model_ci95_high < 0:
+       candidate_beats_complex_model
+  5. else if delta_vs_complex_model_ci95_low > 0:
+       complex_model_beats_candidate_diagnostic
+  6. else:
+       complex_comparator_inconclusive
 ```
 
-These statuses must be reported, but they cannot downgrade `phase_1_simple_backbone_gate_status` if the backbone passes random, stability, budget, PIT, and coverage gates.
+The three flags and the single priority status must all be reported. They cannot downgrade `phase_1_simple_backbone_gate_status` if the backbone passes random, stability, budget, PIT, and coverage gates.
 
 Common denominator definition:
 
@@ -580,6 +692,9 @@ phase_1_simple_backbone_gate_status
 phase_2_enabled
 complex_score_reproduction_status
 complex_score_source_caveat
+complex_score_caveat_flag
+complex_near_miss_flag
+complex_ci_cross_zero_flag
 complex_comparator_status
 feature_list
 feature_orientation_json
@@ -607,16 +722,16 @@ random_p05
 random_p50
 random_p95
 delta_vs_random_p50
+delta_vs_random_p50_ci95_low
+delta_vs_random_p50_ci95_high
 complex_model_matched_rate
 delta_vs_complex_model
+delta_vs_complex_model_ci95_low
+delta_vs_complex_model_ci95_high
 simple_backbone_matched_rate
 delta_vs_simple_backbone
-bootstrap_random_ci95_low
-bootstrap_random_ci95_high
-bootstrap_complex_ci95_low
-bootstrap_complex_ci95_high
-bootstrap_backbone_ci95_low
-bootstrap_backbone_ci95_high
+delta_vs_simple_backbone_ci95_low
+delta_vs_simple_backbone_ci95_high
 bootstrap_denominator_positive_n
 bootstrap_replicate_valid_n
 readout_status
@@ -630,6 +745,16 @@ selected_fast_fail_rate lower is better
 delta_vs_random_p50 < 0 is better
 delta_vs_complex_model < 0 means candidate beats complex model
 delta_vs_simple_backbone < 0 means low-capacity model beats simple backbone
+```
+
+Base-rate definition:
+
+```text
+base_fast_fail_rate = denominator_positive_n / denominator_n
+delta_vs_base = selected_fast_fail_rate - base_fast_fail_rate
+
+For paired/common-denominator comparator readouts:
+  base_fast_fail_rate must be recomputed on the same denominator used by that row.
 ```
 
 Budget drift readout:
@@ -673,12 +798,26 @@ Random CI:
 Use nested random-seed bootstrap.
 Each bootstrap replicate must resample model events and random seeds,
 then recompute random p50 from the resampled seed distribution.
+
+Canonical CI fields:
+  delta_vs_random_p50_ci95_low / high =
+    bootstrap CI of candidate_fast_fail_rate - random_p50
 ```
 
 Comparator CI:
 
 ```text
 Use paired event bootstrap on the common denominator.
+
+Canonical CI fields:
+  delta_vs_complex_model_ci95_low / high =
+    bootstrap CI of candidate_fast_fail_rate - complex_model_matched_rate
+
+  delta_vs_simple_backbone_ci95_low / high =
+    bootstrap CI of low-capacity selected_fast_fail_rate - simple_backbone_matched_rate
+
+Lower-is-better direction:
+  support requires the relevant CI high bound < 0.
 ```
 
 Stage-1 simple backbone is supported if robustness satisfies all:
@@ -689,9 +828,10 @@ pit_gate_status = pass
 selected_n >= 300
 denominator_positive_n >= 30
 bootstrap_replicate_valid_n >= 1500
-selected_fast_fail_rate <= random_p50 - 0.02
-bootstrap_ci95(candidate_minus_random_p50) entirely below 0
+delta_vs_random_p50 <= -0.02
+delta_vs_random_p50_ci95_high < 0
 selected_budget_total <= 0.60
+budget_abs_delta_rank_evaluable_vs_X <= 0.10
 rank_not_evaluable_rate <= 0.05
 ```
 
@@ -705,8 +845,10 @@ phase_2_enabled = true
 selected_n >= 300
 denominator_positive_n >= 30
 bootstrap_replicate_valid_n >= 1500
-low_capacity_fast_fail_rate <= simple_backbone_matched_rate - 0.01
-bootstrap_ci95(low_capacity_minus_simple_backbone) entirely below 0
+selected_fast_fail_rate <= simple_backbone_matched_rate - 0.01
+delta_vs_simple_backbone <= -0.01
+delta_vs_simple_backbone_ci95_high < 0
+budget_abs_delta_rank_evaluable_vs_X <= 0.10
 all monotone additive score constraints satisfied
 feature_count <= 3
 rank_not_evaluable_rate <= 0.05
@@ -837,14 +979,10 @@ outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/
 ## 13. Decision Map
 
 ```text
-12A7b_simple_backbone_supported:
-  phase-1 train-frozen simple backbone passes robustness support gates and beats random;
-  complex model comparison is diagnostic-only;
-  phase-2 was not run or was explicitly skipped by config.
-
 12A7b_simple_backbone_supported_low_capacity_not_supported:
   phase-1 simple backbone passes;
-  phase-2 runs but low-capacity monotone model does not significantly beat the supported backbone.
+  phase-2 mandatory low-capacity monotone readout runs;
+  low-capacity monotone model does not significantly beat the supported backbone.
 
 12A7b_low_capacity_monotone_supported_over_backbone:
   phase-1 simple backbone passes;
@@ -855,7 +993,8 @@ outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/
   budget drift or rank-evaluable coverage blocks support.
 
 12A7b_no_simple_backbone_transport:
-  phase-1 train-frozen simple backbone fails random baseline or direction stability on robustness.
+  phase-1 has no train random-uplift eligible tuple,
+  or the train-frozen simple backbone fails random baseline or direction stability on robustness.
 
 12A7b_blocked_input_or_pit_failure:
   required input, PIT, leakage, random, or split-boundary gate fails.
@@ -869,37 +1008,42 @@ Decision precedence must be exclusive:
 
 2. Else evaluate phase-1 simple backbone support gate.
 
-3. If phase-1 fails random baseline or direction stability:
+3. If no train tuple passes minimum eligibility:
+     decision_state = 12A7b_backbone_diagnostic_only
+
+4. If no train tuple passes the train random-uplift hard gate,
+   or phase-1 fails random baseline or direction stability:
      decision_state = 12A7b_no_simple_backbone_transport
 
-4. If phase-1 has favorable point estimate but fails sample-size, CI, budget-drift,
+5. If phase-1 has favorable point estimate but fails sample-size, CI, budget-drift,
    or rank-evaluable coverage:
      decision_state = 12A7b_backbone_diagnostic_only
 
-4b. If phase-1 beats random and is directionally stable but complex comparison is
+6. If phase-1 beats random and is directionally stable but complex comparison is
     parity / uncertain / numerical near-miss:
       keep evaluating phase-1 support without using complex as a blocker;
       write complex_comparator_status to the report.
 
-5. If phase-1 passes and phase_2_enabled = false:
-     decision_state = 12A7b_simple_backbone_supported
+7. If phase-1 passes:
+     phase_2_enabled = true
+     phase_2_execution_policy = mandatory_after_phase_1_pass
+     evaluate phase-2.
 
-6. If phase-1 passes and phase_2_enabled = true, evaluate phase-2.
+8. If mandatory phase-2 cannot produce required readouts because of input / PIT /
+   leakage / split-boundary / random replay failure:
+     decision_state = 12A7b_blocked_input_or_pit_failure
 
-7. If phase-2 passes monotone-over-backbone support gate:
+9. Else if phase-2 passes monotone-over-backbone support gate:
      decision_state = 12A7b_low_capacity_monotone_supported_over_backbone
 
-8. If phase-2 runs but does not pass monotone-over-backbone support gate:
+10. Else:
      decision_state = 12A7b_simple_backbone_supported_low_capacity_not_supported
 ```
 
 `next_allowed_requirement` mapping:
 
 ```text
-if decision_state in [
-  12A7b_simple_backbone_supported,
-  12A7b_simple_backbone_supported_low_capacity_not_supported
-]:
+if decision_state = 12A7b_simple_backbone_supported_low_capacity_not_supported:
   next_allowed_requirement = none
   recommended_internal_followup = simple_backbone_policy_replay_or_12A8_calibration_scope_review
 
@@ -921,30 +1065,45 @@ if decision_state starts with 12A7b_blocked:
 
 Required tests:
 
-1. Input artifact audit includes every required artifact and fails closed on missing required files.
+1. Input artifact audit includes every required artifact, including 12A7 `split_time_boundary_audit.csv` and `score_reproduction_audit.csv`, and fails closed on missing required files.
 2. Primary universe is restricted to `source_arm_is_c0 = true`, `market_regime_bucket = risk_on`, `stage_1_evaluable = true`.
 3. Split boundaries match 12A6c / 12A7 Direction A boundaries.
 4. Feature PIT status is pass for every selected candidate.
 5. Train-only selection does not read validation or robustness labels, rates, budgets, or bootstrap results.
-6. Validation rows are never used for feature, orientation, X, history policy, or model-family selection.
-7. Rolling history uses only prior `event_t0_pos` rows and never same-month full-cohort membership.
-8. Validation / robustness PIT ranks are computed on the full chronological C0 risk_on rank frame, not split-local frames.
-9. Board history falls back to global only when board history is below min history.
-10. `rank_not_evaluable` rows cannot be selected but remain in total denominator.
-11. Budget fields distinguish total denominator and rank-evaluable denominator.
-12. Random baseline selected counts are matched by split x board_bucket x calendar_month.
-13. Complex-model comparator uses common denominator and matched selected_n, not raw unmatched budgets.
-14. Bootstrap CI direction is lower-is-better for stage-1 fast-fail rate.
-15. Support gates use `selected_budget_total`, not an alias such as `budget_total`.
-16. Complex comparator is diagnostic-only and cannot block phase-1 simple-backbone support.
-17. Phase-2 reports common-denominator coverage vs simple backbone as paired-comparison completeness, not as a warm-up support gate.
-18. Low-capacity model cannot be supported if monotone additive score constraints are violated.
-19. Phase-2 composite `monotone_risk_score_percentile` is computed from prior composite scores under the same PIT history policy.
-20. Phase-2 support gate enforces `rank_not_evaluable_rate <= 0.05`.
-21. Stage-2 outputs are marked diagnostic-only and cannot alter `direction_c_decision.csv`.
-22. Diagnostic look-ahead ranks, if produced, are marked `not_allowed_for_decision = true`.
-23. Report reproduces `direction_c_decision.csv` headline numbers exactly.
-24. Manifest records code path, config path, input sha256, output sha256, git revision, and run timestamp.
+6. Train-only selection separates minimum train eligibility from the random-uplift hard gate.
+7. If no train tuple passes minimum eligibility, `selection_status = no_train_eligible_backbone_tuple` and the final decision is `12A7b_backbone_diagnostic_only`.
+8. Train-only selection treats `train_delta_vs_random_p50 <= -0.02` as a hard random-uplift gate.
+9. If no train tuple passes the random-uplift gate, `selection_status = no_train_random_uplift_candidate` and the final decision is `12A7b_no_simple_backbone_transport`.
+10. Validation rows are never used for feature, orientation, X, history policy, or model-family selection.
+11. Rolling history uses only prior `event_t0_pos` rows and never same-month full-cohort membership.
+12. Validation / robustness PIT ranks are computed on the full chronological C0 risk_on rank frame, not split-local frames.
+13. Board history falls back to global only when board history is below min history.
+14. `rank_not_evaluable` rows cannot be selected but remain in total denominator.
+15. Budget fields distinguish total denominator and rank-evaluable denominator.
+16. `base_fast_fail_rate = denominator_positive_n / denominator_n`, and paired/common-denominator readouts recompute base rate on their own denominator.
+17. Random baseline selected counts are matched by split x board_bucket x calendar_month for every rule and split.
+18. Random path labels join on `path_key`, `instrument`, `entry_pos`, `entry_price`, and cache-side join keys are unique.
+19. Random replay fails closed when any selected-count cell cannot be replayed exactly for enough valid seeds.
+20. Bootstrap random CI uses nested model-event and random-seed resampling and writes `delta_vs_random_p50_ci95_low/high`.
+21. Complex-model comparator uses row-level `stage1_fast_fail_score` from `trailing_rank_score_matrix.parquet`.
+22. Complex-model comparator uses common denominator and matched selected_n, not raw unmatched budgets.
+23. Missing complex row-level score, duplicate `meta_event_id`, or incomplete common-denominator join fails closed.
+24. Complex comparator writes `complex_score_caveat_flag`, `complex_near_miss_flag`, `complex_ci_cross_zero_flag`, and one priority `complex_comparator_status`.
+25. Bootstrap CI direction is lower-is-better for stage-1 fast-fail rate.
+26. Support gates use `selected_budget_total`, not an alias such as `budget_total`.
+27. Support gates use `budget_abs_delta_rank_evaluable_vs_X <= 0.10` to prevent X-relative budget drift from passing as support.
+28. Support gates use canonical CI columns: `delta_vs_random_p50_ci95_high`, `delta_vs_complex_model_ci95_high`, and `delta_vs_simple_backbone_ci95_high`.
+29. Complex comparator is diagnostic-only and cannot block phase-1 simple-backbone support.
+30. If phase-1 passes, phase-2 is mandatory; config skip is forbidden.
+31. Phase-2 reports common-denominator coverage vs simple backbone as paired-comparison completeness, not as a warm-up support gate.
+32. Low-capacity model cannot be supported if monotone additive score constraints are violated.
+33. Phase-2 composite `monotone_risk_score_percentile` is computed from prior composite scores under the same PIT history policy.
+34. Phase-2 support gate enforces `rank_not_evaluable_rate <= 0.05`.
+35. Mandatory phase-2 input / PIT / leakage / split-boundary / random replay failure maps to `12A7b_blocked_input_or_pit_failure`.
+36. Stage-2 outputs are marked diagnostic-only and cannot alter `direction_c_decision.csv`.
+37. Diagnostic look-ahead ranks, if produced, are marked `not_allowed_for_decision = true`.
+38. Report reproduces `direction_c_decision.csv` headline numbers exactly.
+39. Manifest records code path, config path, input sha256, output sha256, git revision, and run timestamp.
 
 ## 15. Report Requirements
 
@@ -955,11 +1114,13 @@ final decision
 selected primary simple backbone tuple
 robustness selected_n
 robustness budget_total
+robustness budget_abs_delta_rank_evaluable_vs_X
 robustness fast_fail_rate
 delta_vs_random_p50 with CI
 delta_vs_complex_model with CI
 complex_score_source_caveat
 complex_comparator_status
+phase_2_execution_policy
 low_capacity_vs_simple_backbone result
 validation stress warning
 recommended next step
@@ -970,6 +1131,7 @@ The report must explicitly state:
 ```text
 Validation is readout-only because prior 12A6c / 12A7 evidence shows a pathological low-base-rate budget-drift interval.
 No feature, orientation, X, or model capacity was chosen using validation or robustness.
+If phase-1 simple backbone passes, phase-2 low-capacity monotone validation was mandatory and could not be skipped by config.
 The conclusion applies only to C0 risk_on events, not all regimes.
 ```
 

@@ -1,0 +1,93 @@
+run_id: 12A7c_direction_e_stage2_decoupling_chained_readouts
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a7c_direction_e_stage2_decoupling_chained_readouts.md
+
+  a7_input_artifact_audit: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/input_artifact_audit.csv
+  a7_trailing_rank_decision: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_decision.csv
+  a7_trailing_rank_operating_point_readout: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_operating_point_readout.csv
+  a7_trailing_rank_budget_curve_readout: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_budget_curve_readout.csv
+  a7_trailing_rank_budget_drift_audit: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_budget_drift_audit.csv
+  a7_trailing_rank_single_feature_challenger: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_single_feature_challenger.csv
+  a7_trailing_rank_random_same_budget_audit: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_random_same_budget_audit.csv
+  a7_trailing_rank_score_quality_metrics: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_score_quality_metrics.csv
+  a7_trailing_rank_decile_lift_readout: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_decile_lift_readout.csv
+  a7_split_time_boundary_audit: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/split_time_boundary_audit.csv
+  a7_score_reproduction_audit: outputs/publishable/tables/12A7_direction_a_trailing_rank_operating_point_audit/score_reproduction_audit.csv
+  a7_report: outputs/publishable/reports/trailing_rank_operating_point_validation_report.md
+  a7_manifest: outputs/manifests/12A7_direction_a_trailing_rank_operating_point_audit_manifest.json
+  a7_trailing_rank_score_matrix: outputs/local_cache/12A7_direction_a_trailing_rank_operating_point_audit/trailing_rank_score_matrix.parquet
+
+  a7b_input_artifact_audit: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/input_artifact_audit.csv
+  a7b_simple_backbone_train_selection: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_train_selection.csv
+  a7b_simple_backbone_operating_point_readout: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_operating_point_readout.csv
+  a7b_simple_backbone_budget_drift_audit: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_budget_drift_audit.csv
+  a7b_backbone_stability_slice_audit: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/backbone_stability_slice_audit.csv
+  a7b_stage2_diagnostic_backbone_readout: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/stage2_diagnostic_backbone_readout.csv
+  a7b_direction_c_decision: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/direction_c_decision.csv
+  a7b_report: outputs/publishable/reports/simple_backbone_operating_rule_validation_report.md
+  a7b_manifest: outputs/manifests/12A7b_direction_c_simple_backbone_operating_rule_validation_manifest.json
+  a7b_simple_backbone_score_matrix: outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_score_matrix.parquet
+  a7b_bootstrap_replicates: outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/bootstrap_replicates.parquet
+
+  two_stage_event_universe: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_universe.csv.gz
+  two_stage_event_targets: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_targets.csv.gz
+  two_stage_feature_dictionary: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_dictionary.csv
+  two_stage_feature_pit_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_pit_audit.csv
+  two_stage_split_time_boundary_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/split_time_boundary_audit.csv
+  two_stage_feature_matrix: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_matrix.parquet
+  stage2_path_cache: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet
+  two_stage_row_level_scores: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_row_level_scores.parquet
+  manifest_12a6c: outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json
+
+  matched_random_sampled_entries: outputs/publishable/tables/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/matched_random_sampled_entries.csv.gz
+  entry_forward_path_cache: outputs/local_cache/12A6b_c0_risk_on_fast_fail_survival_uplift_audit/entry_forward_path_cache.parquet
+  manifest_12a6b: outputs/manifests/12A6b_c0_risk_on_fast_fail_survival_uplift_audit_manifest.json
+
+history_policy:
+  history_policy_id: board_then_global_rolling_504_sessions
+  history_window_mode: rolling_sessions
+  trailing_history_window_sessions: 504
+  diagnostic_only_flag: false
+
+history_min_n:
+  stage_1_global_min_history_n: 500
+  stage_1_board_min_history_n: 150
+  stage_2_global_min_history_n: 250
+  stage_2_board_min_history_n: 75
+
+stage2_X_grid: [0.30, 0.50, 0.70]
+
+stage2_candidate_features:
+  realized_path_volatility_0_20d: desc
+  realized_max_high_return_0_20d: desc
+  realized_early_window_ret_0_10d: desc
+  realized_ma_5_20_spread_at_day20: desc
+  distance_to_120d_low: desc
+
+random_baseline:
+  min_random_seed_n: 100
+  retention_rank_columns:
+    - replacement_draw_index
+    - sample_draw_id
+    - instrument
+    - random_trade_open_date
+    - path_key
+
+bootstrap:
+  seed: 120712
+  n_resamples: 2000
+  ci_low_q: 0.025
+  ci_high_q: 0.975
+  bootstrap_min_denominator_positive_n: 30
+  bootstrap_min_valid_replicates: 1500
+
+gates:
+  selected_n_min: 150
+  denominator_positive_n_min: 30
+  delta_vs_random_p50_min: 0.02
+  delta_vs_single_feature_min: 0.01
+  rank_not_evaluable_rate_max: 0.05
+  budget_abs_delta_rank_evaluable_vs_X_max: 0.10
