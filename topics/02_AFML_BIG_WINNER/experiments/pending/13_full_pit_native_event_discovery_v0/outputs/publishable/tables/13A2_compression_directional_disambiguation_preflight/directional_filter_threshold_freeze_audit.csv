@@ -1,0 +1,73 @@
+primitive_id,filter_family_id,raw_feature_formula,bullish_score_formula,threshold_rule,threshold_quantile,threshold_value,threshold_source_split,threshold_source_scope,available_at,future_data_used,feature_availability_status,threshold_freeze_status
+stock_vs_board_20d,relative_strength,ret_20d - same-board equal-weight ret_20d at reference_date,stock_vs_board_20d,top_50pct,0.5,-0.04099139897345405,train,base_compression_cohort,reference_date_close,False,available,pass
+stock_vs_board_20d,relative_strength,ret_20d - same-board equal-weight ret_20d at reference_date,stock_vs_board_20d,top_40pct,0.6,-0.02930978256831016,train,base_compression_cohort,reference_date_close,False,available,pass
+stock_vs_board_20d,relative_strength,ret_20d - same-board equal-weight ret_20d at reference_date,stock_vs_board_20d,top_30pct,0.7,-0.01640073860861642,train,base_compression_cohort,reference_date_close,False,available,pass
+stock_vs_board_20d,relative_strength,ret_20d - same-board equal-weight ret_20d at reference_date,stock_vs_board_20d,top_20pct,0.8,-0.00045785227831770874,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_20d,relative_strength,close / close.shift(20) - 1,ret_20d,top_50pct,0.5,0.0,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_20d,relative_strength,close / close.shift(20) - 1,ret_20d,top_40pct,0.6,0.014169738578074752,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_20d,relative_strength,close / close.shift(20) - 1,ret_20d,top_30pct,0.7,0.029197080291970767,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_20d,relative_strength,close / close.shift(20) - 1,ret_20d,top_20pct,0.8,0.04751004242700964,train,base_compression_cohort,reference_date_close,False,available,pass
+close_vs_sma20,relative_strength,close / sma20 - 1,close_vs_sma20,top_50pct,0.5,0.0019518542615484247,train,base_compression_cohort,reference_date_close,False,available,pass
+close_vs_sma20,relative_strength,close / sma20 - 1,close_vs_sma20,top_40pct,0.6,0.009092400728416414,train,base_compression_cohort,reference_date_close,False,available,pass
+close_vs_sma20,relative_strength,close / sma20 - 1,close_vs_sma20,top_30pct,0.7,0.017063013417105165,train,base_compression_cohort,reference_date_close,False,available,pass
+close_vs_sma20,relative_strength,close / sma20 - 1,close_vs_sma20,top_20pct,0.8,0.027299989364180856,train,base_compression_cohort,reference_date_close,False,available,pass
+stock_vs_board_5d,relative_strength,ret_5d - same-board equal-weight ret_5d at reference_date,stock_vs_board_5d,top_50pct,0.5,-0.00973059119841666,train,base_compression_cohort,reference_date_close,False,available,pass
+stock_vs_board_5d,relative_strength,ret_5d - same-board equal-weight ret_5d at reference_date,stock_vs_board_5d,top_40pct,0.6,-0.004227633348533113,train,base_compression_cohort,reference_date_close,False,available,pass
+stock_vs_board_5d,relative_strength,ret_5d - same-board equal-weight ret_5d at reference_date,stock_vs_board_5d,top_30pct,0.7,0.0021037399286940577,train,base_compression_cohort,reference_date_close,False,available,pass
+stock_vs_board_5d,relative_strength,ret_5d - same-board equal-weight ret_5d at reference_date,stock_vs_board_5d,top_20pct,0.8,0.01023392037703909,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_5d,relative_strength,close / close.shift(5) - 1,ret_5d,top_50pct,0.5,0.002083333333333215,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_5d,relative_strength,close / close.shift(5) - 1,ret_5d,top_40pct,0.6,0.009002127782354695,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_5d,relative_strength,close / close.shift(5) - 1,ret_5d,top_30pct,0.7,0.016778523489932917,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_5d,relative_strength,close / close.shift(5) - 1,ret_5d,top_20pct,0.8,0.026226715392883772,train,base_compression_cohort,reference_date_close,False,available,pass
+close_position_20d,range_position,"(close - low_20d) / max(high_20d - low_20d, 1e-12)",close_position_20d,top_50pct,0.5,0.4878048780487813,train,base_compression_cohort,reference_date_close,False,available,pass
+close_position_20d,range_position,"(close - low_20d) / max(high_20d - low_20d, 1e-12)",close_position_20d,top_40pct,0.6,0.5909090909090889,train,base_compression_cohort,reference_date_close,False,available,pass
+close_position_20d,range_position,"(close - low_20d) / max(high_20d - low_20d, 1e-12)",close_position_20d,top_30pct,0.7,0.6904761904761898,train,base_compression_cohort,reference_date_close,False,available,pass
+close_position_20d,range_position,"(close - low_20d) / max(high_20d - low_20d, 1e-12)",close_position_20d,top_20pct,0.8,0.7826873893370079,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_20d_high,range_position,high_20d / close - 1,-distance_to_20d_high,top_50pct,0.5,-0.040712468193384144,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_20d_high,range_position,high_20d / close - 1,-distance_to_20d_high,top_40pct,0.6,-0.032558139534883956,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_20d_high,range_position,high_20d / close - 1,-distance_to_20d_high,top_30pct,0.7,-0.02516872955421059,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_20d_high,range_position,high_20d / close - 1,-distance_to_20d_high,top_20pct,0.8,-0.018038861993500886,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_from_20d_low,range_position,close / low_20d - 1,distance_from_20d_low,top_50pct,0.5,0.03969128996692395,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_from_20d_low,range_position,close / low_20d - 1,distance_from_20d_low,top_40pct,0.6,0.04909560723514206,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_from_20d_low,range_position,close / low_20d - 1,distance_from_20d_low,top_30pct,0.7,0.06017878296186429,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_from_20d_low,range_position,close / low_20d - 1,distance_from_20d_low,top_20pct,0.8,0.07524464096895121,train,base_compression_cohort,reference_date_close,False,available,pass
+higher_low_slope_10d,range_position,slope(low over prior 10 sessions),higher_low_slope_10d,top_50pct,0.5,0.000412159874939957,train,base_compression_cohort,reference_date_close,False,available,pass
+higher_low_slope_10d,range_position,slope(low over prior 10 sessions),higher_low_slope_10d,top_40pct,0.6,0.0013952444362896695,train,base_compression_cohort,reference_date_close,False,available,pass
+higher_low_slope_10d,range_position,slope(low over prior 10 sessions),higher_low_slope_10d,top_30pct,0.7,0.0025174187921494125,train,base_compression_cohort,reference_date_close,False,available,pass
+higher_low_slope_10d,range_position,slope(low over prior 10 sessions),higher_low_slope_10d,top_20pct,0.8,0.00385063497140417,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_20d,drawdown_exclusion,min(close / running_max_close - 1) over prior 20 sessions,max_drawdown_20d,top_50pct,0.5,-0.04493628437290409,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_20d,drawdown_exclusion,min(close / running_max_close - 1) over prior 20 sessions,max_drawdown_20d,top_40pct,0.6,-0.03915269561115593,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_20d,drawdown_exclusion,min(close / running_max_close - 1) over prior 20 sessions,max_drawdown_20d,top_30pct,0.7,-0.03383458646616555,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_20d,drawdown_exclusion,min(close / running_max_close - 1) over prior 20 sessions,max_drawdown_20d,top_20pct,0.8,-0.0285017577798871,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_60d,drawdown_exclusion,close / close.shift(60) - 1,ret_60d,top_50pct,0.5,-0.027253668763102756,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_60d,drawdown_exclusion,close / close.shift(60) - 1,ret_60d,top_40pct,0.6,-0.0064850870361405095,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_60d,drawdown_exclusion,close / close.shift(60) - 1,ret_60d,top_30pct,0.7,0.017376627782937144,train,base_compression_cohort,reference_date_close,False,available,pass
+ret_60d,drawdown_exclusion,close / close.shift(60) - 1,ret_60d,top_20pct,0.8,0.04762534851850109,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_60d_low,drawdown_exclusion,close / low_60d - 1,distance_to_60d_low,top_50pct,0.5,0.06447963800904977,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_60d_low,drawdown_exclusion,close / low_60d - 1,distance_to_60d_low,top_40pct,0.6,0.07920792079207928,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_60d_low,drawdown_exclusion,close / low_60d - 1,distance_to_60d_low,top_30pct,0.7,0.09725645531047285,train,base_compression_cohort,reference_date_close,False,available,pass
+distance_to_60d_low,drawdown_exclusion,close / low_60d - 1,distance_to_60d_low,top_20pct,0.8,0.12144212523719178,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_60d,drawdown_exclusion,min(close / running_max_close - 1) over prior 60 sessions,max_drawdown_60d,top_50pct,0.5,-0.11470795214637586,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_60d,drawdown_exclusion,min(close / running_max_close - 1) over prior 60 sessions,max_drawdown_60d,top_40pct,0.6,-0.10282258064516125,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_60d,drawdown_exclusion,min(close / running_max_close - 1) over prior 60 sessions,max_drawdown_60d,top_30pct,0.7,-0.09126984126984128,train,base_compression_cohort,reference_date_close,False,available,pass
+max_drawdown_60d,drawdown_exclusion,min(close / running_max_close - 1) over prior 60 sessions,max_drawdown_60d,top_20pct,0.8,-0.07809110629067251,train,base_compression_cohort,reference_date_close,False,available,pass
+turnover_zscore_20d,participation,(turnover - mean20(turnover)) / std20(turnover),turnover_zscore_20d,top_50pct,0.5,-0.12679031738427451,train,base_compression_cohort,reference_date_close,False,available,pass
+turnover_zscore_20d,participation,(turnover - mean20(turnover)) / std20(turnover),turnover_zscore_20d,top_40pct,0.6,0.1631598812311651,train,base_compression_cohort,reference_date_close,False,available,pass
+turnover_zscore_20d,participation,(turnover - mean20(turnover)) / std20(turnover),turnover_zscore_20d,top_30pct,0.7,0.5272489508098294,train,base_compression_cohort,reference_date_close,False,available,pass
+turnover_zscore_20d,participation,(turnover - mean20(turnover)) / std20(turnover),turnover_zscore_20d,top_20pct,0.8,1.017927245606128,train,base_compression_cohort,reference_date_close,False,available,pass
+volume_up_price_not_down_5d,participation,sum(volume where close >= close.shift(1) over 5d) / sum(volume over 5d),volume_up_price_not_down_5d,top_50pct,0.5,0.5855504290116275,train,base_compression_cohort,reference_date_close,False,available,pass
+volume_up_price_not_down_5d,participation,sum(volume where close >= close.shift(1) over 5d) / sum(volume over 5d),volume_up_price_not_down_5d,top_40pct,0.6,0.6351986771993207,train,base_compression_cohort,reference_date_close,False,available,pass
+volume_up_price_not_down_5d,participation,sum(volume where close >= close.shift(1) over 5d) / sum(volume over 5d),volume_up_price_not_down_5d,top_30pct,0.7,0.6856292042579251,train,base_compression_cohort,reference_date_close,False,available,pass
+volume_up_price_not_down_5d,participation,sum(volume where close >= close.shift(1) over 5d) / sum(volume over 5d),volume_up_price_not_down_5d,top_20pct,0.8,0.7883482452845267,train,base_compression_cohort,reference_date_close,False,available,pass
+amount_ratio_5d_20d,participation,mean5(amount) / mean20(amount),amount_ratio_5d_20d,top_50pct,0.5,1.0055141136197394,train,base_compression_cohort,reference_date_close,False,available,pass
+amount_ratio_5d_20d,participation,mean5(amount) / mean20(amount),amount_ratio_5d_20d,top_40pct,0.6,1.0775475116644033,train,base_compression_cohort,reference_date_close,False,available,pass
+amount_ratio_5d_20d,participation,mean5(amount) / mean20(amount),amount_ratio_5d_20d,top_30pct,0.7,1.1662107669814483,train,base_compression_cohort,reference_date_close,False,available,pass
+amount_ratio_5d_20d,participation,mean5(amount) / mean20(amount),amount_ratio_5d_20d,top_20pct,0.8,1.2788076529063603,train,base_compression_cohort,reference_date_close,False,available,pass
+up_day_volume_share_20d,participation,sum(volume on up days over 20d) / sum(volume over 20d),up_day_volume_share_20d,top_50pct,0.5,0.5617413751276191,train,base_compression_cohort,reference_date_close,False,available,pass
+up_day_volume_share_20d,participation,sum(volume on up days over 20d) / sum(volume over 20d),up_day_volume_share_20d,top_40pct,0.6,0.5925441827090225,train,base_compression_cohort,reference_date_close,False,available,pass
+up_day_volume_share_20d,participation,sum(volume on up days over 20d) / sum(volume over 20d),up_day_volume_share_20d,top_30pct,0.7,0.6246347519236213,train,base_compression_cohort,reference_date_close,False,available,pass
+up_day_volume_share_20d,participation,sum(volume on up days over 20d) / sum(volume over 20d),up_day_volume_share_20d,top_20pct,0.8,0.6616997520904622,train,base_compression_cohort,reference_date_close,False,available,pass
+money_median_5d_vs_20d,participation,median5(money) / median20(money) - 1,money_median_5d_vs_20d,top_50pct,0.5,0.01319062251844505,train,base_compression_cohort,reference_date_close,False,available,pass
+money_median_5d_vs_20d,participation,median5(money) / median20(money) - 1,money_median_5d_vs_20d,top_40pct,0.6,0.07723102010285099,train,base_compression_cohort,reference_date_close,False,available,pass
+money_median_5d_vs_20d,participation,median5(money) / median20(money) - 1,money_median_5d_vs_20d,top_30pct,0.7,0.1722567003770319,train,base_compression_cohort,reference_date_close,False,available,pass
+money_median_5d_vs_20d,participation,median5(money) / median20(money) - 1,money_median_5d_vs_20d,top_20pct,0.8,0.31075645980187505,train,base_compression_cohort,reference_date_close,False,available,pass

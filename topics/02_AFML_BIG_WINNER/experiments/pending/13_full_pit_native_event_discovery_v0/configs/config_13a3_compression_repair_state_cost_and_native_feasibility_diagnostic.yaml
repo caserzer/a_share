@@ -1,0 +1,108 @@
+run_id: 13A3_compression_repair_state_cost_and_native_feasibility_diagnostic
+experiment_id: 13_full_pit_native_event_discovery_v0
+phase_id: 13A3
+
+paths:
+  requirement: requirement_13a3_compression_repair_state_cost_and_native_feasibility_diagnostic.md
+  upstream_requirement_13a: requirement_13a_full_pit_native_token_cartography_preflight.md
+  upstream_requirement_13a2: requirement_13a2_compression_directional_disambiguation_preflight.md
+  upstream_report_13a: outputs/publishable/reports/native_token_cartography_preflight_report.md
+  upstream_report_13a2: outputs/publishable/reports/compression_directional_disambiguation_preflight_report.md
+  upstream_requirement_12a7g: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7g_vol_scaled_label_panel_c0_separability_triage.md
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+  upstream_12a7g_table_dir: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage
+  upstream_12a7g_manifest: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A7g_vol_scaled_label_panel_c0_separability_triage_manifest.json
+
+  upstream_13a_manifest: outputs/manifests/13A_full_pit_native_token_cartography_preflight_manifest.json
+  upstream_13a_decision: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_cartography_decision.csv
+  upstream_13a_token_dictionary: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_dictionary.csv
+  upstream_13a_morphology: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_morphology_collinearity_audit.csv
+  upstream_13a_native_universe_cache: outputs/local_cache/13A_full_pit_native_token_cartography_preflight/native_universe_panel.parquet
+  upstream_13a_native_token_matrix_cache: outputs/local_cache/13A_full_pit_native_token_cartography_preflight/native_token_matrix.parquet
+
+  upstream_13a2_manifest: outputs/manifests/13A2_compression_directional_disambiguation_preflight_manifest.json
+  upstream_13a2_decision: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/compression_directional_disambiguation_decision.csv
+  upstream_13a2_filter_dictionary: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/directional_filter_dictionary.csv
+  upstream_13a2_threshold_freeze: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/directional_filter_threshold_freeze_audit.csv
+  upstream_13a2_readout: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/compression_directional_readout.csv
+  upstream_13a2_badside: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/compression_directional_badside_utility_audit.csv
+  upstream_13a2_match: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/directional_filter_matched_control_audit.csv
+  upstream_13a2_search: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/compression_directional_search_multiplicity_audit.csv
+  upstream_13a2_compression_base_cache: outputs/local_cache/13A2_compression_directional_disambiguation_preflight/compression_base_panel.parquet
+  upstream_13a2_directional_filter_matrix_cache: outputs/local_cache/13A2_compression_directional_disambiguation_preflight/directional_filter_matrix.parquet
+
+  upstream_13a_config: configs/config_13a_full_pit_native_token_cartography_preflight.yaml
+  upstream_13a2_config: configs/config_13a2_compression_directional_disambiguation_preflight.yaml
+
+cost_buffer:
+  grid: [0.0, 0.0025, 0.005, 0.0075, 0.01]
+  reference_return: 0.01
+  moderate_return: 0.005
+
+composite_states:
+  - state_id: repair_range_participation_core_30
+    state_priority: 1
+    source_13a2_filter_id: distance_from_20d_low__top_30pct__AND__turnover_zscore_20d__top_30pct
+    component_family: range+participation
+    directional_component_class: position_strength_component
+    morphology_risk: normal
+  - state_id: repair_sma_participation_core_30
+    state_priority: 2
+    source_13a2_filter_id: close_vs_sma20__top_30pct__AND__turnover_zscore_20d__top_30pct
+    component_family: relative+participation
+    directional_component_class: position_strength_component
+    morphology_risk: normal
+  - state_id: repair_close_position_participation_core_30
+    state_priority: 3
+    source_13a2_filter_id: close_position_20d__top_30pct__AND__turnover_zscore_20d__top_30pct
+    component_family: range+participation
+    directional_component_class: position_strength_component
+    morphology_risk: normal
+  - state_id: repair_range_participation_broad_40
+    state_priority: 4
+    source_13a2_filter_id: distance_from_20d_low__top_40pct__AND__turnover_zscore_20d__top_40pct
+    component_family: range+participation
+    directional_component_class: position_strength_component
+    morphology_risk: normal
+  - state_id: repair_ret60_volume_suspect_30
+    state_priority: 5
+    source_13a2_filter_id: ret_60d__top_30pct__AND__volume_up_price_not_down_5d__top_30pct
+    component_family: drawdown_momentum+participation
+    directional_component_class: drawdown_momentum_suspect_component
+    morphology_risk: morphology_suspect
+  - state_id: repair_drawdown_amount_suspect_30
+    state_priority: 6
+    source_13a2_filter_id: max_drawdown_20d__top_30pct__AND__amount_ratio_5d_20d__top_30pct
+    component_family: drawdown+participation
+    directional_component_class: drawdown_momentum_suspect_component
+    morphology_risk: morphology_suspect
+
+thresholds:
+  min_train_treated_n: 1000
+  min_train_positive_n: 100
+  min_eval_treated_n: 500
+  min_eval_positive_n: 50
+  badside_max_lower_first_uplift_vs_compression_base: 0.0
+  badside_max_fast_fail_uplift_vs_compression_base: 0.01
+  board_primary_drift_vs_native: 0.20
+  board_primary_drift_vs_complement: 0.25
+  board_extreme_drift_vs_native: 0.35
+  year_primary_drift_vs_native: 0.15
+  year_extreme_drift_vs_native: 0.30
+  liquidity_primary_ratio_min: 0.50
+  liquidity_primary_ratio_max: 2.00
+  liquidity_extreme_ratio_min: 0.25
+  liquidity_extreme_ratio_max: 4.00
+  compression_primary_ratio_min: 0.50
+  compression_primary_ratio_max: 1.50
+  morphology_corr_threshold: 0.70
+
+bootstrap:
+  seed: 13303
+  n_resamples: 300
+  min_valid_replicates: 150
+  ci_low_quantile: 0.05
+  unit: instrument_month_block

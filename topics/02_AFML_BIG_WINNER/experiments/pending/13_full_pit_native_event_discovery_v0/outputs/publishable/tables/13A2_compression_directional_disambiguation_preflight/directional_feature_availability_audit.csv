@@ -1,0 +1,19 @@
+primitive_id,filter_family_id,raw_feature_formula,bullish_score_formula,available_at,future_data_used,available_row_n,nonfinite_row_n,feature_availability_status
+stock_vs_board_20d,relative_strength,ret_20d - same-board equal-weight ret_20d at reference_date,stock_vs_board_20d,reference_date_close,False,431239,0,available
+ret_20d,relative_strength,close / close.shift(20) - 1,ret_20d,reference_date_close,False,431239,0,available
+close_vs_sma20,relative_strength,close / sma20 - 1,close_vs_sma20,reference_date_close,False,431239,0,available
+stock_vs_board_5d,relative_strength,ret_5d - same-board equal-weight ret_5d at reference_date,stock_vs_board_5d,reference_date_close,False,431239,0,available
+ret_5d,relative_strength,close / close.shift(5) - 1,ret_5d,reference_date_close,False,431239,0,available
+close_position_20d,range_position,"(close - low_20d) / max(high_20d - low_20d, 1e-12)",close_position_20d,reference_date_close,False,431239,0,available
+distance_to_20d_high,range_position,high_20d / close - 1,-distance_to_20d_high,reference_date_close,False,431239,0,available
+distance_from_20d_low,range_position,close / low_20d - 1,distance_from_20d_low,reference_date_close,False,431239,0,available
+higher_low_slope_10d,range_position,slope(low over prior 10 sessions),higher_low_slope_10d,reference_date_close,False,431239,0,available
+max_drawdown_20d,drawdown_exclusion,min(close / running_max_close - 1) over prior 20 sessions,max_drawdown_20d,reference_date_close,False,431239,0,available
+ret_60d,drawdown_exclusion,close / close.shift(60) - 1,ret_60d,reference_date_close,False,431239,0,available
+distance_to_60d_low,drawdown_exclusion,close / low_60d - 1,distance_to_60d_low,reference_date_close,False,431239,0,available
+max_drawdown_60d,drawdown_exclusion,min(close / running_max_close - 1) over prior 60 sessions,max_drawdown_60d,reference_date_close,False,431239,0,available
+turnover_zscore_20d,participation,(turnover - mean20(turnover)) / std20(turnover),turnover_zscore_20d,reference_date_close,False,431239,0,available
+volume_up_price_not_down_5d,participation,sum(volume where close >= close.shift(1) over 5d) / sum(volume over 5d),volume_up_price_not_down_5d,reference_date_close,False,431239,0,available
+amount_ratio_5d_20d,participation,mean5(amount) / mean20(amount),amount_ratio_5d_20d,reference_date_close,False,431239,0,available
+up_day_volume_share_20d,participation,sum(volume on up days over 20d) / sum(volume over 20d),up_day_volume_share_20d,reference_date_close,False,431239,0,available
+money_median_5d_vs_20d,participation,median5(money) / median20(money) - 1,money_median_5d_vs_20d,reference_date_close,False,431239,0,available

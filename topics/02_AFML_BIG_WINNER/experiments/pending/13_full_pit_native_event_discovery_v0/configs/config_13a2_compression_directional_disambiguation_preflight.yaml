@@ -1,0 +1,104 @@
+run_id: 13A2_compression_directional_disambiguation_preflight
+experiment_id: 13_full_pit_native_event_discovery_v0
+phase_id: 13A2
+
+paths:
+  requirement: requirement_13a2_compression_directional_disambiguation_preflight.md
+  upstream_requirement_13a: requirement_13a_full_pit_native_token_cartography_preflight.md
+  upstream_report_13a: outputs/publishable/reports/native_token_cartography_preflight_report.md
+  upstream_requirement_12a7g: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7g_vol_scaled_label_panel_c0_separability_triage.md
+  upstream_config_12a7g: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/configs/config_12a7g_vol_scaled_label_panel_c0_separability_triage.yaml
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+  upstream_12a7g_table_dir: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage
+  upstream_12a7g_manifest: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A7g_vol_scaled_label_panel_c0_separability_triage_manifest.json
+  upstream_full_pit_label_panel_cache: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7g_vol_scaled_label_panel_c0_separability_triage/full_pit_vol_scaled_label_panel.parquet
+  upstream_full_pit_primitive_panel_cache: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7g_vol_scaled_label_panel_c0_separability_triage/full_universe_primitive_feature_panel.parquet
+
+  upstream_13a_table_dir: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight
+  upstream_13a_manifest: outputs/manifests/13A_full_pit_native_token_cartography_preflight_manifest.json
+  upstream_13a_decision: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_cartography_decision.csv
+  upstream_13a_token_dictionary: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_dictionary.csv
+  upstream_13a_readout: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_cartography_readout.csv
+  upstream_13a_badside: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_badside_veto_audit.csv
+  upstream_13a_matched_control: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/matched_control_design_audit.csv
+  upstream_13a_deployability: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_deployability_gate_audit.csv
+  upstream_13a_morphology: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_morphology_collinearity_audit.csv
+  upstream_13a_native_thresholds: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_universe_frozen_thresholds.csv
+  upstream_13a_label_portability: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_label_portability_audit.csv
+
+selected_label:
+  label_id: vol20d_kup2p0_kdn1p0_H20
+  vol_reference_id: volatility_20d
+  horizon_sessions: 20
+  k_up: 2.0
+  k_dn: 1.0
+
+native_universe:
+  liquidity_quantile: 0.05
+  continuity_threshold: 0.95
+  volatility_floor_quantile: 0.01
+  volatility_cap_quantile: 0.99
+  liquidity_quantile_candidates: [0.01, 0.02, 0.05, 0.10]
+  continuity_threshold_candidates: [0.80, 0.90, 0.95, 1.00]
+  volatility_floor_quantile_candidates: [0.01, 0.02, 0.05]
+  volatility_cap_quantile_candidates: [0.95, 0.98, 0.99]
+
+base_compression:
+  selected_token_id: volatility_20d__bottom_20pct
+  selected_token_family_id: volatility_range
+  selected_primitive_id: volatility_20d
+  min_train_n: 5000
+  min_validation_n: 1000
+  min_robustness_n: 1000
+
+directional_filters:
+  max_directional_candidate_n: 240
+  quantile_rules:
+    - threshold_rule: top_50pct
+      quantile: 0.50
+    - threshold_rule: top_40pct
+      quantile: 0.60
+    - threshold_rule: top_30pct
+      quantile: 0.70
+    - threshold_rule: top_20pct
+      quantile: 0.80
+  pair_threshold_rules:
+    - threshold_rule: top_40pct
+      quantile: 0.60
+    - threshold_rule: top_30pct
+      quantile: 0.70
+
+thresholds:
+  min_train_treated_n: 1000
+  min_train_positive_n: 100
+  min_eval_treated_n: 500
+  min_eval_positive_n: 50
+  min_train_auc: 0.55
+  min_eval_auc: 0.55
+  min_top_decile_lift: 0.02
+  max_train_lower_first_uplift: 0.02
+  max_eval_lower_first_uplift: 0.0
+  max_eval_fast_fail_uplift: 0.01
+  min_coverage_share_within_native: 0.005
+  min_coverage_share_within_base: 0.02
+  min_captured_positive_n: 50
+  min_captured_positive_share_within_base: 0.05
+  morphology_corr_threshold: 0.70
+  fdr_q_value_max: 0.10
+  min_deflated_auc_validation: 0.55
+  max_board_drift_default: 0.15
+  max_board_drift_strict: 0.10
+
+bootstrap:
+  seed: 13202
+  n_resamples: 500
+  min_valid_replicates: 250
+  ci_low_quantile: 0.05
+  unit: instrument_month_block
+
+cost_buffer:
+  default_return: 0.01
