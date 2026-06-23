@@ -1,0 +1,5 @@
+threshold_id,feature_id,threshold_value,threshold_quantile,threshold_source_split,tie_break_source,outcome_used_for_freeze,candidate_count,candidate_pass_count,universe_balance_score
+basic_liquidity_floor,money_median_20d,41820824.20000001,0.05,train,label_free_default_candidate_pass,False,144,84,0.08076154877736288
+trading_continuity_floor,trading_continuity_20d,0.95,,train,label_free_default_candidate_pass,False,144,84,0.08076154877736288
+volatility_sanity_floor,volatility_20d,0.005882916035870006,0.01,train,label_free_default_candidate_pass,False,144,84,0.08076154877736288
+volatility_sanity_cap,volatility_20d,0.06136464154221207,0.99,train,label_free_default_candidate_pass,False,144,84,0.08076154877736288

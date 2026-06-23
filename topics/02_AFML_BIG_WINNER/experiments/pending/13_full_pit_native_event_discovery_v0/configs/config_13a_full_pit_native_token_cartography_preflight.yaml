@@ -1,0 +1,111 @@
+run_id: 13A_full_pit_native_token_cartography_preflight
+experiment_id: 13_full_pit_native_event_discovery_v0
+phase_id: 13A
+
+paths:
+  requirement: requirement_13a_full_pit_native_token_cartography_preflight.md
+  source_discussion: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/discussion3.md
+  upstream_requirement_12a7g: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7g_vol_scaled_label_panel_c0_separability_triage.md
+  upstream_config_12a7g: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/configs/config_12a7g_vol_scaled_label_panel_c0_separability_triage.yaml
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+  upstream_12a7g_table_dir: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage
+  upstream_12a7g_manifest: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A7g_vol_scaled_label_panel_c0_separability_triage_manifest.json
+  upstream_full_pit_label_panel_cache: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7g_vol_scaled_label_panel_c0_separability_triage/full_pit_vol_scaled_label_panel.parquet
+  upstream_full_pit_primitive_panel_cache: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/local_cache/12A7g_vol_scaled_label_panel_c0_separability_triage/full_universe_primitive_feature_panel.parquet
+
+selected_label:
+  label_id: vol20d_kup2p0_kdn1p0_H20
+  vol_reference_id: volatility_20d
+  horizon_sessions: 20
+  k_up: 2.0
+  k_dn: 1.0
+
+native_universe:
+  liquidity_quantile: 0.05
+  continuity_threshold: 0.95
+  volatility_floor_quantile: 0.01
+  volatility_cap_quantile: 0.99
+  liquidity_quantile_candidates: [0.01, 0.02, 0.05, 0.10]
+  continuity_threshold_candidates: [0.80, 0.90, 0.95, 1.00]
+  volatility_floor_quantile_candidates: [0.01, 0.02, 0.05]
+  volatility_cap_quantile_candidates: [0.95, 0.98, 0.99]
+  sensitivity_variants:
+    - variant_id: base
+      liquidity_quantile: 0.05
+      continuity_threshold: 0.95
+      volatility_floor_quantile: 0.01
+      volatility_cap_quantile: 0.99
+    - variant_id: loose_liquidity_p02
+      liquidity_quantile: 0.02
+      continuity_threshold: 0.95
+      volatility_floor_quantile: 0.01
+      volatility_cap_quantile: 0.99
+    - variant_id: strict_liquidity_p10
+      liquidity_quantile: 0.10
+      continuity_threshold: 0.95
+      volatility_floor_quantile: 0.01
+      volatility_cap_quantile: 0.99
+    - variant_id: strict_continuity_100
+      liquidity_quantile: 0.05
+      continuity_threshold: 1.00
+      volatility_floor_quantile: 0.01
+      volatility_cap_quantile: 0.99
+    - variant_id: strict_vol_p02_p98
+      liquidity_quantile: 0.05
+      continuity_threshold: 0.95
+      volatility_floor_quantile: 0.02
+      volatility_cap_quantile: 0.98
+
+label_cache_mismatch:
+  return_abs_tolerance: 0.0000000001
+
+tokens:
+  max_token_candidate_n: 120
+  quantile_rules:
+    - threshold_rule: bottom_10pct
+      quantile: 0.10
+      comparator: le
+      orientation: asc
+    - threshold_rule: bottom_20pct
+      quantile: 0.20
+      comparator: le
+      orientation: asc
+    - threshold_rule: top_20pct
+      quantile: 0.80
+      comparator: ge
+      orientation: desc
+    - threshold_rule: top_10pct
+      quantile: 0.90
+      comparator: ge
+      orientation: desc
+
+thresholds:
+  min_train_token_support_n: 500
+  min_train_token_positive_n: 50
+  min_validation_token_support_n: 200
+  min_robustness_token_support_n: 200
+  min_validation_auc: 0.55
+  min_robustness_auc: 0.55
+  min_validation_top_decile_lift: 0.02
+  max_fast_fail_uplift: 0.02
+  max_lower_first_uplift: 0.01
+  min_captured_positive_n: 50
+  min_coverage_share: 0.005
+  cost_buffer_bps: 100
+  morphology_corr_threshold: 0.70
+  morphology_auc_margin: 0.02
+  fdr_q_value_max: 0.10
+  min_deflated_auc_validation: 0.53
+  max_retained_row_share_delta: 0.10
+  max_winner_base_rate_delta: 0.02
+  max_board_mix_abs_delta: 0.08
+  max_year_mix_abs_delta: 0.08
+
+bootstrap:
+  seed: 1313
+  n_resamples: 200
+  min_valid_replicates: 100
