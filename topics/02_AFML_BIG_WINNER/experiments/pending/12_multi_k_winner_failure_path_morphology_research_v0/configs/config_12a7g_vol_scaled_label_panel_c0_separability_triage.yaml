@@ -1,0 +1,105 @@
+run_id: 12A7g_vol_scaled_label_panel_c0_separability_triage
+experiment_id: 12_state_change_event_backbone_rebuild_v0
+legacy_directory_id: 12_multi_k_winner_failure_path_morphology_research_v0
+
+paths:
+  requirement: requirement_12a7g_vol_scaled_label_panel_c0_separability_triage.md
+  discussion_source: discussion2.md
+  research_plan_source: research_plan_3_winner_label_form_and_decoupled_selector.md
+
+  pit_topn_400_100_executable_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+  global_regime_calendar: topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+  two_stage_event_universe: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_universe.csv.gz
+  two_stage_event_targets: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_event_targets.csv.gz
+  two_stage_feature_dictionary: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_dictionary.csv
+  two_stage_feature_pit_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_pit_audit.csv
+  split_time_boundary_audit: outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/split_time_boundary_audit.csv
+  two_stage_feature_matrix: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/two_stage_feature_matrix.parquet
+  stage2_path_cache: outputs/local_cache/12A6c_two_stage_fast_fail_rejector_continuation_feasibility/stage2_path_cache.parquet
+  manifest_12a6c: outputs/manifests/12A6c_two_stage_fast_fail_rejector_continuation_feasibility_manifest.json
+
+  simple_backbone_train_selection: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_train_selection.csv
+  simple_backbone_operating_point_readout: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_operating_point_readout.csv
+  direction_c_decision: outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_validation/direction_c_decision.csv
+  defense_participation_decision: outputs/publishable/tables/12A7e_defense_participation_frontier/defense_participation_decision.csv
+  stage1_frontier_readout: outputs/publishable/tables/12A7e_defense_participation_frontier/stage1_frontier_readout.csv
+  defense_participation_frontier: outputs/publishable/tables/12A7e_defense_participation_frontier/defense_participation_frontier.csv
+  simple_backbone_score_matrix: outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_score_matrix.parquet
+  manifest_12a7b: outputs/manifests/12A7b_direction_c_simple_backbone_operating_rule_validation_manifest.json
+  manifest_12a7e: outputs/manifests/12A7e_defense_participation_frontier_manifest.json
+
+  c0_winner_enrichment_decision: outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/c0_winner_enrichment_decision.csv
+  c0_vs_control_winner_baserate_readout: outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/c0_vs_control_winner_baserate_readout.csv
+  winner_label_source_audit: outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/winner_label_source_audit.csv
+  enrichment_stability_slice_audit: outputs/publishable/tables/12A7f_c0_winner_baserate_enrichment_control_diagnostic/enrichment_stability_slice_audit.csv
+  manifest_12a7f: outputs/manifests/12A7f_c0_winner_baserate_enrichment_control_diagnostic_manifest.json
+
+supported_boards:
+  - main_board
+  - chinext
+  - star
+
+labels:
+  vol_reference_ids: [volatility_20d, volatility_60d]
+  horizons: [20, 40, 60]
+  k_up: [1.0, 1.5, 2.0, 2.5]
+  k_dn: [0.75, 1.0, 1.25]
+  fixed_anchors:
+    - label_id: fixed_U15_L10_H20
+      upper_barrier: 0.15
+      lower_barrier: -0.10
+      horizon_sessions: 20
+    - label_id: fixed_U20_L10_H20
+      upper_barrier: 0.20
+      lower_barrier: -0.10
+      horizon_sessions: 20
+    - label_id: fixed_U20_L10_H40
+      upper_barrier: 0.20
+      lower_barrier: -0.10
+      horizon_sessions: 40
+
+thresholds:
+  min_label_base_rate: 0.05
+  max_label_base_rate: 0.35
+  target_label_base_rate: 0.15
+  min_train_positive_n: 200
+  max_same_bar_conflict_rate: 0.03
+  max_label_base_rate_dispersion: 0.10
+  min_label_stability_slice_n: 200
+  min_label_stability_slice_positive_n: 20
+  max_label_stability_score_tolerance: 0.02
+  max_label_base_rate_dispersion_tolerance: 0.02
+  max_same_bar_conflict_rate_tolerance: 0.005
+
+  min_auc: 0.55
+  min_top_decile_lift_abs: 0.03
+  min_top_decile_lift_ratio: 1.20
+  min_top_decile_positive_n: 30
+  max_rank_not_evaluable_rate: 0.05
+  search_adjustment_method: bonferroni_bootstrap_ci
+  search_adjustment_alpha: 0.05
+
+  cost_buffer_bps: 100
+  min_recall_vs_entry: 0.70
+  max_recall_adjusted_utility_deterioration: 0.10
+  recall_floor_feasibility_warning_margin: 0.05
+
+  min_full_universe_auc_delta: 0.02
+  min_full_universe_effective_block_n: 200
+  min_full_vs_c0_top_decile_lift_delta_abs: 0.02
+  max_active_band_c0_coverage_rate_split_delta: 0.15
+  max_active_band_share_split_delta: 0.20
+  min_full_universe_stability_slice_n: 500
+  min_full_universe_stability_slice_positive_n: 30
+  max_full_vs_c0_stability_dispersion_delta: 0.02
+
+  min_c0_instrument_n: 30
+  min_c0_instrument_month_block_n: 30
+
+bootstrap:
+  seed: 120714
+  n_resamples: 200
+  min_valid_replicates: 100

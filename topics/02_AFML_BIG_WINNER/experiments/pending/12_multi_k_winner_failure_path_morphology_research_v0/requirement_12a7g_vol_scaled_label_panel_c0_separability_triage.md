@@ -145,7 +145,45 @@ C0 fast-fail robustness:
 topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
 topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_membership_daily.csv
 topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq/{instrument}.csv
+topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
 ```
+
+`regime_daily_series_audit.csv` 必须提供：
+
+```text
+date
+daily_regime_bucket
+daily_regime_conflict_n
+daily_regime_conflict_flag
+```
+
+Regime 映射规则：
+
+```text
+regime_join_key = reference_date
+market_regime_bucket = daily_regime_bucket
+required_status =
+  every retained primary-scope reference_date has exactly one regime row
+  and daily_regime_conflict_flag == false
+  and daily_regime_conflict_n == 0
+```
+
+Regime calendar 允许因前后窗口计算约束而覆盖范围短于 PIT universe。若某个 `reference_date` 缺 regime row，不得从 event key、calendar month、报告文本或 C0 聚合表反推 regime，也不得 fail open；runner 必须逐行标记：
+
+```text
+regime_calendar_available = false
+regime_missing_date_bypassed = true
+market_regime_bucket = missing_regime_calendar
+```
+
+这些行必须从 `primary_scope`、train label selection、validation / robustness readout、C0-comparable active-band full-universe denominator、full-vs-C0 deltas 和所有 decision gates 中剔除，只能进入 audit 计数。仅因为缺 regime row 而剔除数据时：
+
+```text
+global_regime_calendar_status = pass_with_missing_date_bypass
+global_regime_calendar_reason = missing_regime_date_bypassed
+```
+
+若所有可用 regime row 均被剔除后 primary retained universe 为空，必须 fail closed。若同 date 多 regime、`daily_regime_conflict_flag == true` 或 `daily_regime_conflict_n > 0`，仍必须 `global_regime_calendar_status = fail` 并 fail closed。
 
 全 PIT universe label panel 的 primary scope：
 
@@ -157,13 +195,40 @@ entry_date = next executable open after reference_date
 entry_pos = qfq daily position for entry_date
 entry_price = qfq open at entry_pos
 primary_scope =
-  market_regime_bucket == risk_on
+  regime_calendar_available == true
+  and market_regime_bucket == risk_on
   and board_bucket in supported boards
   and next-open entry executable
   and required pre-vol lookback complete
 ```
 
 All-regime label panel 可作为 secondary diagnostic，但 primary comparison 必须保持和 C0 risk_on 口径一致。
+
+Full-universe primitive features 必须从 PIT universe row 和 qfq daily bar 逐行重建，不能复用 C0 event feature matrix，也不能把 C0 membership / event family 信息带入 full universe。qfq daily bar 必须按 `date` 稳定排序并建立 `date_pos`，每个 `(instrument, reference_date)` 必须能唯一映射到 qfq `reference_pos`；若 qfq row 缺失、重复或 OHLC 非有限值，该行 feature / label 状态为 not evaluable。
+
+Full-universe primitive formula freeze：
+
+```text
+price_reference = qfq close at reference_pos
+ret_Nd = close[reference_pos] / close[reference_pos - N] - 1
+daily_return = close[t] / close[t - 1] - 1
+volatility_Nd = std(daily_return over reference_pos - N + 1 ... reference_pos, ddof=0)
+distance_to_Nd_high = close[reference_pos] / max(high over last N sessions including reference_pos) - 1
+distance_to_Nd_low = close[reference_pos] / min(low over last N sessions including reference_pos) - 1
+trend_ma_5_20_spread = mean(close last 5 sessions) / mean(close last 20 sessions) - 1
+trend_ma_20_60_spread = mean(close last 20 sessions) / mean(close last 60 sessions) - 1
+max_drawdown_Nd = min(close[t] / max(close up to t within last N sessions) - 1)
+turnover_zscore_20d = (turnover_rate[reference_pos] - mean(turnover_rate last 20 sessions)) / std(turnover_rate last 20 sessions, ddof=0)
+turnover_rate_median_20d = median(turnover_rate last 20 sessions)
+money_median_20d = median(money last 20 sessions)
+trading_continuity_20d = qfq bar count in last 20 exchange sessions / 20
+recent_range_activity_20d = max(high last 20 sessions) / min(low last 20 sessions) - 1
+intraday_range_mean_20d = mean(high / low - 1 over last 20 sessions)
+board_return_20d = equal-weight mean ret_20d by board_bucket x reference_date over PIT executable rows with finite ret_20d
+stock_vs_board_20d = ret_20d - board_return_20d
+```
+
+`required pre-vol lookback complete` means `volatility_20d` and `volatility_60d` both have complete close-return lookbacks, qfq OHLC is finite through `reference_pos`, and `reference_pos + max(horizon_sessions)` can be checked for horizon completeness without inferring label values. Any deviation must be recorded in `full_universe_primitive_feature_audit.csv`.
 
 Full-universe raw pool 不能直接和 C0 denominator 比 separability。C0 已经过 state-change / risk / evaluability 过滤，raw full universe 里会包含大量明显 inactive / low-liquidity / no-motion hard negatives，直接比较会把 `full_vs_c0_auc_delta` 灌水。用于 §12 / §13.4 cartography gate 的 primary full-universe denominator 必须先构造 C0-comparable active opportunity band：
 
@@ -188,11 +253,31 @@ market_regime_bucket == risk_on
 board_bucket in supported boards
 next-open entry executable
 required pre-vol lookback complete
+liquidity_or_turnover_activity = turnover_rate_median_20d, fallback money_median_20d
+recent_trading_continuity = trading_continuity_20d
+pre_event_volatility_range = volatility_20d
+recent_motion_or_range_activity = recent_range_activity_20d, fallback intraday_range_mean_20d
+
 liquidity_or_turnover_activity >= train_c0_entry_p05
 recent_trading_continuity >= train_c0_entry_p05
-pre_event_volatility between train_c0_entry_p01 and train_c0_entry_p99
+pre_event_volatility_range between train_c0_entry_p01 and train_c0_entry_p99
 recent_motion_or_range_activity >= train_c0_entry_p05
 ```
+
+Active-band threshold source rows are:
+
+```text
+source = c0_entry_t0 train split rows
+reference_date = event_t0_date
+feature_source =
+  recompute the same qfq primitive formulas at event_t0_date close
+  and reconcile volatility_20d / volatility_60d against two_stage_feature_matrix
+threshold_quantile_source =
+  train_c0_entry_p05 for lower activity / continuity / motion thresholds
+  train_c0_entry_p01 and train_c0_entry_p99 for volatility range
+```
+
+If recomputed C0 primitive values and `two_stage_feature_matrix` values disagree for `volatility_20d` or `volatility_60d` beyond `1e-12` absolute tolerance on any row with finite values, `full_universe_active_band_audit.csv` must record `fallback_status = volatility_reconciliation_fail` and `active_band_cartography_gate_eligible = false`.
 
 若某个维度没有 PIT-safe primitive，runner 必须在 audit 中记录 fallback；若无法构造至少 liquidity/activity + volatility + trading-continuity 三类约束，`full_pit_risk_on_universe_raw_diagnostic` 只能作为 diagnostic，不得触发 `12A7g_full_universe_more_separable_start_event_cartography`。
 
@@ -234,6 +319,22 @@ split_source = outputs/publishable/tables/12A6c_two_stage_fast_fail_rejector_con
 split_assignment_rule = assign by reference_date using frozen split boundaries
 boundary_policy = reference_date, not label horizon end date
 ```
+
+`split_time_boundary_audit.csv` is expected to contain train / evaluation boundary rows:
+
+```text
+train_end = validation.train_max_event_t0_date
+validation_start = validation.eval_min_event_t0_date
+robustness_start = robustness.eval_min_event_t0_date
+
+assigned split:
+  train if reference_date <= train_end
+  validation if validation_start <= reference_date < robustness_start
+  robustness if reference_date >= robustness_start
+  boundary_gap_excluded otherwise
+```
+
+`boundary_gap_excluded` rows must be counted in `full_universe_split_boundary_audit.csv` and excluded from train selection, validation readout, robustness gates, and full-vs-C0 deltas. They do not by themselves fail the run unless their row count is nonzero on an exchange session with a missing upstream boundary explanation.
 
 Runner 必须输出 `full_universe_split_boundary_audit.csv`，至少包含：
 
@@ -324,6 +425,7 @@ outputs/publishable/tables/12A7b_direction_c_simple_backbone_operating_rule_vali
 outputs/publishable/tables/12A7e_defense_participation_frontier/defense_participation_decision.csv
 outputs/publishable/tables/12A7e_defense_participation_frontier/stage1_frontier_readout.csv
 outputs/publishable/tables/12A7e_defense_participation_frontier/defense_participation_frontier.csv
+outputs/local_cache/12A7b_direction_c_simple_backbone_operating_rule_validation/simple_backbone_score_matrix.parquet
 outputs/manifests/12A7b_direction_c_simple_backbone_operating_rule_validation_manifest.json
 outputs/manifests/12A7e_defense_participation_frontier_manifest.json
 ```
@@ -342,6 +444,61 @@ Required upstream state:
 ```text
 decision_state = 12A7g_blocked_input_or_lineage_failure
 ```
+
+12A7g 必须 row-level 重建 12A7b / 12A7e 的 X=0.30 stage-1 keep，不能从 aggregate selected_n 反推。重建规则：
+
+```text
+stage1_anchor_source = simple_backbone_score_matrix.parquet
+required_columns =
+  meta_event_id
+  volatility_20d
+  volatility_20d__rank_percentile
+  volatility_20d__rank_status
+
+stage1_anchor_feature = volatility_20d
+stage1_anchor_orientation = asc
+stage1_anchor_X = 0.30
+stage1_anchor_selected_flag =
+  volatility_20d__rank_status == rank_evaluable
+  and volatility_20d__rank_percentile <= 0.30
+```
+
+The rank source must be auditable as:
+
+```text
+history_policy_id = board_then_global_rolling_504_sessions
+history_window_mode = rolling_sessions
+trailing_history_window_sessions = 504
+stage_1_global_min_history_n = 500
+stage_1_board_min_history_n = 150
+percentile_formula =
+  (count(history_value < current_value) + 0.5 * count(history_value == current_value)) / history_n
+history_window =
+  prior rows with event_t0_pos < current event_t0_pos
+  and event_t0_pos >= current event_t0_pos - 504
+history_scope =
+  board history if board history_n >= 150
+  else global history if global history_n >= 500
+  else rank_not_evaluable
+```
+
+Runner 必须输出 `stage1_anchor_x030_reconstruction_audit.csv`，至少包含：
+
+```text
+split
+recomputed_selected_n
+upstream_selected_n
+recomputed_rank_evaluable_n
+upstream_rank_evaluable_n
+recomputed_selected_budget_rank_evaluable
+upstream_selected_budget_rank_evaluable
+selected_n_match_status
+rank_evaluable_match_status
+budget_match_status
+stage1_anchor_reconstruction_status
+```
+
+`upstream_selected_n / upstream_rank_evaluable_n / upstream_selected_budget_rank_evaluable` 来自 12A7e `stage1_frontier_readout.csv` 的 `stage1_X = 0.30` 行。任一 split 的 selected_n 或 rank_evaluable_n 不一致，或 budget 差异超过 `1e-12`，必须 fail closed。`c0_deployable_stage2_reference` 只能使用通过该重建的 `stage1_anchor_selected_flag`。
 
 ### 5.4 12A7f enrichment artifacts
 
@@ -457,6 +614,57 @@ fixed_U20_L10_H20
 fixed_U20_L10_H40
 ```
 
+Barrier traversal is frozen for both vol-scaled and fixed anchor labels:
+
+```text
+horizon_complete =
+  reference_pos is finite
+  and reference_pos + horizon_sessions < instrument_qfq_row_n
+
+path_window =
+  qfq rows from reference_pos through reference_pos + horizon_sessions, inclusive
+
+upper_touch at offset s =
+  high[reference_pos + s] / reference_price - 1 >= upper_barrier
+
+lower_touch at offset s =
+  low[reference_pos + s] / reference_price - 1 <= lower_barrier
+
+time_to_upper = first offset s with upper_touch, else NA
+time_to_lower = first offset s with lower_touch, else NA
+same_bar_conflict =
+  time_to_upper is finite
+  and time_to_lower is finite
+  and time_to_upper == time_to_lower
+
+upper_first =
+  horizon_complete
+  and time_to_upper is finite
+  and (time_to_lower is NA or time_to_upper < time_to_lower)
+
+lower_first =
+  horizon_complete
+  and time_to_lower is finite
+  and (time_to_upper is NA or time_to_lower <= time_to_upper)
+
+neutral =
+  horizon_complete
+  and time_to_upper is NA
+  and time_to_lower is NA
+
+censored = not horizon_complete
+```
+
+This implements `same_bar_priority = lower_first`: same-offset high/low touches are `same_bar_conflict = true`, `lower_first = true`, and `upper_first = false`. Offset 0 is included because the reference price is the executable open for entry / continuation views and the same session's high / low is not known at decision time but is the realized path being labeled.
+
+Fixed anchor labels use the same traversal with:
+
+```text
+fixed_U15_L10_H20: upper_barrier = 0.15, lower_barrier = -0.10, horizon_sessions = 20
+fixed_U20_L10_H20: upper_barrier = 0.20, lower_barrier = -0.10, horizon_sessions = 20
+fixed_U20_L10_H40: upper_barrier = 0.20, lower_barrier = -0.10, horizon_sessions = 40
+```
+
 所有 label 都必须输出以下状态：
 
 ```text
@@ -486,6 +694,8 @@ time_to_upper
 time_to_lower
 pre_success_MAE_for_upper_touch
 ```
+
+`pre_success_MAE_for_upper_touch` is `min(low / reference_price - 1)` over offsets `0 ... time_to_upper`, inclusive, when `time_to_upper` is finite; otherwise it is NA. `max_high_return` and `min_low_return` use the complete `path_window` and are NA when `horizon_complete = false`.
 
 ## 7. Denominator contracts
 
@@ -596,6 +806,23 @@ feature_time_bucket = realized_0_20d
 
 若 `stage_2_reference_pos` 不等于 `entry_pos + 20`，不得用固定 +20 偏移替代逐行 availability assertion。若 realized-path feature 在 `c0_entry_t0` 或 `c0_posthoc_no_fast_fail_survivor` 的 entry-time readout 中出现，或任一 stage-2 row 的 `feature.availability_time > stage_2_reference_pos close`，必须 fail closed。
 
+Realized-path feature availability must be audited row by row:
+
+```text
+realized_0_20d feature source =
+  two_stage_event_universe.csv.gz columns with prefix realized_
+  or stage2_path_cache.parquet columns with prefix realized_
+
+realized_0_20d availability_time =
+  close at stage_2_reference_pos - 1 if feature was computed through day-20 close
+  else close at stage_2_reference_pos when the feature explicitly uses stage_2_reference_pos row
+
+stage2_feature_availability_status =
+  pass only if availability_time <= close at stage_2_reference_pos for every selected stage-2 row
+```
+
+Runner must record the resolved source and availability convention in `denominator_contract_audit.csv`. `c0_entry_t0` and `c0_posthoc_no_fast_fail_survivor` may report realized-path features only as excluded candidates with `exclusion_reason = realized_path_not_entry_time_pit`; they cannot enter rank, AUC, rank-IC, decile lift, utility support, or decision flags.
+
 ### 8.3 Full universe primitive feature set
 
 Full universe primitive scan 只允许 event-agnostic PIT primitives：
@@ -644,15 +871,43 @@ eligible label if:
   train winner_positive_n >= min_train_positive_n
   train winner_base_rate between min_label_base_rate and max_label_base_rate
   train same_bar_conflict_rate <= max_same_bar_conflict_rate
+  train label_base_rate_dispersion <= max_label_base_rate_dispersion
 
 selection order:
-  1. prefer vol_scaled over fixed anchor if train stability is not worse
+  1. prefer best_vol_scaled_label over best_fixed_anchor_label if vol_scaled_not_worse_than_fixed == true
   2. higher train label_stability_score
   3. lower regime/year base-rate dispersion
   4. lower train same_bar_conflict_rate
   5. base-rate closer to target_label_base_rate
   6. shorter horizon
   7. deterministic label_id lexical tie-break
+```
+
+Label stability metrics are train-only and computed on `full_pit_c0_comparable_active_band` when eligible; if active band is not eligible, compute on `full_pit_risk_on_universe_raw_diagnostic` and mark `label_selection_active_band_status = diagnostic_source`. They must not use any C0 separability, survivor readout, full-universe feature separability, or utility proxy.
+
+```text
+eligible stability slices =
+  calendar_year
+  board_bucket
+  market_regime_bucket
+
+slice included if:
+  slice_denominator_n >= min_label_stability_slice_n
+  and slice_positive_n >= min_label_stability_slice_positive_n
+
+label_base_rate_dispersion =
+  max(abs(slice_winner_base_rate - train_winner_base_rate)) over included slices
+
+label_stability_score =
+  train_horizon_complete_rate
+  - train_same_bar_conflict_rate
+  - label_base_rate_dispersion
+  - abs(train_winner_base_rate - target_label_base_rate)
+
+vol_scaled_not_worse_than_fixed =
+  best_vol_scaled_label.label_stability_score >= best_fixed_anchor_label.label_stability_score - max_label_stability_score_tolerance
+  and best_vol_scaled_label.label_base_rate_dispersion <= best_fixed_anchor_label.label_base_rate_dispersion + max_label_base_rate_dispersion_tolerance
+  and best_vol_scaled_label.same_bar_conflict_rate <= best_fixed_anchor_label.same_bar_conflict_rate + max_same_bar_conflict_rate_tolerance
 ```
 
 Label selection 不得使用 C0-entry separability、post-survivor separability、full-universe primitive separability 或 utility proxy。Validation 和 robustness 不能改变 selected label。
@@ -670,6 +925,56 @@ validation:
 
 robustness:
   final readout-only gate
+```
+
+Feature orientation and score are deterministic:
+
+```text
+auc_desc = AUC(feature_value, winner_positive)
+auc_asc = 1 - auc_desc
+rank_ic_desc = Spearman(feature_value, winner_positive)
+rank_ic_asc = -1 * rank_ic_desc
+
+top_decile for desc = highest 10% finite feature values within split / denominator
+top_decile for asc = lowest 10% finite feature values within split / denominator
+
+top_decile_lift_abs = top_decile_winner_rate - base_winner_rate
+top_decile_lift_ratio = top_decile_winner_rate / base_winner_rate
+top_decile_lift_abs_desc = desc_top_decile_winner_rate - base_winner_rate
+top_decile_lift_abs_asc = asc_top_decile_winner_rate - base_winner_rate
+
+orientation chosen on train =
+  desc if separability_score_desc > separability_score_asc
+  asc if separability_score_asc > separability_score_desc
+  lexical tie-break asc
+
+separability_score_desc =
+  auc_desc
+  + 0.50 * max(0, top_decile_lift_abs_desc)
+  + 0.10 * max(0, rank_ic_desc)
+
+separability_score_asc =
+  auc_asc
+  + 0.50 * max(0, top_decile_lift_abs_asc)
+  + 0.10 * max(0, rank_ic_asc)
+
+separability_score_orientation =
+  oriented_auc
+  + 0.50 * max(0, top_decile_lift_abs)
+  + 0.10 * max(0, oriented_rank_ic)
+```
+
+Feature tie-break order after `separability_score_orientation`:
+
+```text
+1. raw train separability pass before non-pass
+2. higher oriented_auc
+3. higher top_decile_lift_abs
+4. higher top_decile_positive_n
+5. lower rank_not_evaluable_rate
+6. feature_time_bucket order t0_pit before realized_0_20d
+7. feature_id lexical order
+8. orientation lexical order asc before desc
 ```
 
 Feature selection must write:
@@ -699,6 +1004,12 @@ max_label_base_rate = 0.35
 target_label_base_rate = 0.15
 min_train_positive_n = 200
 max_same_bar_conflict_rate = 0.03
+max_label_base_rate_dispersion = 0.10
+min_label_stability_slice_n = 200
+min_label_stability_slice_positive_n = 20
+max_label_stability_score_tolerance = 0.02
+max_label_base_rate_dispersion_tolerance = 0.02
+max_same_bar_conflict_rate_tolerance = 0.005
 
 # separability pass
 min_auc = 0.55
@@ -706,6 +1017,8 @@ min_top_decile_lift_abs = 0.03
 min_top_decile_lift_ratio = 1.20
 min_top_decile_positive_n = 30
 max_rank_not_evaluable_rate = 0.05
+search_adjustment_method = bonferroni_bootstrap_ci
+search_adjustment_alpha = 0.05
 
 # recall / utility gate
 cost_buffer_bps = 100
@@ -719,6 +1032,9 @@ min_full_universe_effective_block_n = 200
 min_full_vs_c0_top_decile_lift_delta_abs = 0.02
 max_active_band_c0_coverage_rate_split_delta = 0.15
 max_active_band_share_split_delta = 0.20
+min_full_universe_stability_slice_n = 500
+min_full_universe_stability_slice_positive_n = 30
+max_full_vs_c0_stability_dispersion_delta = 0.02
 
 # C0 denominator diversity
 min_c0_instrument_n = 30
@@ -788,7 +1104,25 @@ feature_grid_size
 effective_search_size
 ```
 
-The search-adjusted method may be bootstrap max-stat, Benjamini-Hochberg FDR, or a pre-registered conservative Bonferroni-style correction. The method must be recorded in `search_multiplicity_audit.csv`.
+Search-adjusted status is fixed to `bonferroni_bootstrap_ci`:
+
+```text
+effective_search_size =
+  max(1, label_grid_size * feature_grid_size * orientation_count_for_feature)
+
+adjusted_alpha =
+  search_adjustment_alpha / effective_search_size
+
+adjusted_ci_low_quantile = adjusted_alpha / 2
+adjusted_ci_high_quantile = 1 - adjusted_alpha / 2
+
+search_adjusted_status = pass only if:
+  raw_separability_status == pass
+  and adjusted top_decile_lift_ci_low > 0
+  and adjusted rank_ic_ci excludes 0 in the train-selected direction
+```
+
+For full-vs-C0 deltas, the same adjusted quantiles must be used for `full_vs_c0_auc_delta_ci95_low` and `full_vs_c0_top_decile_lift_delta_abs_ci95_low`; column names may keep `ci95` for compatibility, but `search_multiplicity_audit.csv` must record the adjusted quantiles actually used. Runner may additionally report unadjusted CI columns, but decision flags must use adjusted status.
 
 ## 11. Recall-accounted utility proxy
 
@@ -919,12 +1253,32 @@ active_band_id
 active_band_cartography_gate_eligible
 ```
 
+Year / board stability is measured on the train-selected feature / orientation and selected label:
+
+```text
+stability_slice included if:
+  slice_denominator_n >= min_full_universe_stability_slice_n
+  and slice_positive_n >= min_full_universe_stability_slice_positive_n
+
+year_stability_dispersion =
+  max(abs(slice_top_decile_lift_abs - overall_top_decile_lift_abs)) over calendar_year slices
+
+board_stability_dispersion =
+  max(abs(slice_top_decile_lift_abs - overall_top_decile_lift_abs)) over board_bucket slices
+
+full_universe_stability_not_worse_than_c0 =
+  full_universe_year_stability_dispersion <= best_c0_year_stability_dispersion + max_full_vs_c0_stability_dispersion_delta
+  and full_universe_board_stability_dispersion <= best_c0_board_stability_dispersion + max_full_vs_c0_stability_dispersion_delta
+```
+
+If C0 lacks enough included year / board slices to compute a comparator dispersion, `full_universe_stability_not_worse_than_c0 = false` for the cartography gate and the full-universe readout is diagnostic-only.
+
 Full-universe primitive pass:
 
 ```text
 full_universe robustness separability pass
 and search_adjusted_status = pass
-and year / board stability not worse than C0 readout
+and full_universe_stability_not_worse_than_c0 = true
 and full_vs_c0_auc_delta >= min_full_universe_auc_delta
 and full_vs_c0_auc_delta_ci95_low > 0
 and full_vs_c0_top_decile_lift_delta_abs >= min_full_vs_c0_top_decile_lift_delta_abs
@@ -974,7 +1328,8 @@ decision_precedence:
 
 ```text
 12A7g_c0_vol_scaled_label_separable_continue_without_event_rebuild:
-  selected label is vol-scaled or fixed anchor with vol-scaled not worse;
+  selected label passes train-frozen eligibility and stability;
+  if selected label is fixed anchor, it was selected by §9.1 without validation / robustness feedback;
   c0_deployable_stage2_reference robustness separability pass on continuation_view;
   c0_entry_t0 or c0_deployable_stage2_reference utility_proxy_total_indexed_to_entry_n is positive after cost buffer;
   cross-horizon comparison uses utility_proxy_per_20d, not raw utility_proxy;
@@ -1010,7 +1365,7 @@ next_allowed_requirement =
   full_universe is better than best C0 readout by pre-registered delta thresholds;
   full_universe effective_block_n passes overlap-correlation control;
   active_band_cartography_gate_eligible == true;
-  utility proxy suggests potential after cost buffer.
+  full_pit_c0_comparable_active_band utility_proxy_per_20d > 0 after cost buffer.
 
 next_allowed_requirement =
   requirement_12a7h_event_family_enrichment_cartography.md
@@ -1039,6 +1394,25 @@ next_allowed_requirement =
   requirement_12a7g_label_form_stability_revision.md
 ```
 
+This state is triggered mechanically before separability decisions if any of the following train-frozen label conditions is true:
+
+```text
+no label passes eligibility
+selected_label.label_base_rate_dispersion > max_label_base_rate_dispersion
+selected_label.same_bar_conflict_rate > max_same_bar_conflict_rate
+selected_label.horizon_complete_rate < 0.98
+selected_label.winner_positive_n < min_train_positive_n
+best_vol_scaled_label exists
+  and best_fixed_anchor_label exists
+  and vol_scaled_not_worse_than_fixed == false
+  and selected_label.label_type == vol_scaled
+label_selection_active_band_status == diagnostic_source
+  and full_universe_active_band_audit.active_band_cartography_gate_eligible == false
+  and active-band ineligibility reason prevents stable label drift interpretation
+```
+
+If fixed anchors are selected because `vol_scaled_not_worse_than_fixed == false`, the decision is not automatically `label_drift_unresolved`; the runner must continue with the fixed anchor only when the fixed anchor itself passes all label eligibility and stability thresholds. Otherwise it must set `12A7g_vol_scaled_label_drift_unresolved`. This case must be explicit in `label_selection_train_audit.csv`.
+
 ## 14. Required outputs
 
 Publishable tables:
@@ -1046,7 +1420,9 @@ Publishable tables:
 ```text
 outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/input_artifact_audit.csv
 outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/full_universe_split_boundary_audit.csv
+outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/full_universe_primitive_feature_audit.csv
 outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/full_universe_active_band_audit.csv
+outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/stage1_anchor_x030_reconstruction_audit.csv
 outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/label_overlap_effective_n_audit.csv
 outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/label_formula_audit.csv
 outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/vol_scaled_label_panel_summary.csv
@@ -1093,11 +1469,11 @@ Report must include:
 2. Explicit statement that full-universe label panel is event-agnostic and not event support.
 3. Decision precedence audit if multiple candidate states are true.
 4. Pre-registered threshold audit with defaults / overrides.
-5. Full-universe split boundary audit, active-band audit, active-band coverage drift, and overlap-correlation effective-N audit.
+5. Global regime calendar audit, full-universe split boundary audit, primitive feature audit, active-band audit, active-band coverage drift, and overlap-correlation effective-N audit.
 6. Horizon completeness by split / horizon, proving separability excludes censored endpoint rows.
-7. Label selection audit showing train-only choice and validation / robustness readout-only status.
+7. Label selection audit showing train-only choice, stability score, drift status, vol-scaled-vs-fixed comparison, and validation / robustness readout-only status.
 8. Label-feature construction coupling audit, especially volatility label vs volatility feature and same-bar conflict by vol bucket.
-9. C0 entry, post-hoc survivor, and deployable stage2 denominators in separate tables, including diversity counts.
+9. C0 entry, post-hoc survivor, and deployable stage2 denominators in separate tables, including diversity counts and X=0.30 row-level reconstruction.
 10. A warning if post-hoc survivor passes but deployable stage2 denominator fails.
 11. Recall cost table using common entry-anchor positives, with continuation positives reported separately.
 12. Recall floor feasibility audit showing whether `min_recall_vs_entry` is structurally binding.
@@ -1105,6 +1481,7 @@ Report must include:
 14. Full-universe primitive readout and whether the C0-comparable active band justifies event-family cartography under relative-vs-C0 thresholds.
 15. Search multiplicity audit and adjusted status.
 16. Stability slices by split, calendar_year, board_bucket, market_regime_bucket, and primary C0 family where applicable.
+17. Missing regime calendar dates, if any, are reported as bypassed row / unique-date counts, excluded from primary-scope denominators, and do not by themselves set `input_gate_status = fail`.
 
 ## 16. Validation commands
 
@@ -1120,26 +1497,31 @@ python experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0
 ## 17. Acceptance checklist
 
 1. `input_artifact_audit.csv` includes every required artifact and all required rows have `read_status = pass`, `schema_status = pass`.
-2. `full_universe_split_boundary_audit.csv` proves reference-date split assignment with frozen upstream boundaries.
-3. `full_universe_active_band_audit.csv` proves the cartography gate uses C0-comparable active opportunity band, not raw full universe, and passes active-band coverage drift thresholds.
-4. `label_overlap_effective_n_audit.csv` proves full-universe primitive CI uses block/effective-N controls.
-5. `horizon_completeness_by_split_audit.csv` proves separability excludes censored endpoint rows.
-6. `pre_registered_threshold_audit.csv` records all default / overridden go/no-go constants before run execution.
-7. `label_formula_audit.csv` records every label formula, vol reference unit, k grid value, horizon, same-bar priority, and horizon completeness.
-8. Full PIT label panel is computed without using C0 membership, event family, future returns, or episode labels as features.
-9. Primary label selection is train-only, deterministic, and does not use any separability readout.
-10. C0 post-hoc survivor readout is marked `diagnostic_only` and cannot set deployable support.
-11. C0 deployable stage2 readout uses only features whose row-level `availability_time <= stage_2_reference_pos`.
-12. C0 denominator diversity passes `min_c0_instrument_n` and `min_c0_instrument_month_block_n`.
-13. Label-feature construction coupling is audited; same-source volatility features are not primary unless orthogonalized, and same-bar conflict is stratified by vol bucket.
-14. Recall cost uses common entry-anchor positives; continuation positives are reported separately.
-15. `recall_floor_feasibility_audit.csv` reports whether `min_recall_vs_entry` is structurally binding before final decision.
-16. Continue-C0 decision requires `recall_adjusted_utility_deterioration_vs_entry <= max_recall_adjusted_utility_deterioration`.
-17. Full-universe primitive readout cannot directly support an event family and must beat C0 inside the active band by pre-registered delta thresholds to authorize cartography.
-18. Search multiplicity is recorded and final status reports adjusted support.
-19. Utility proxy includes neutral component and per-20d normalized proxy; it is not described as NAV, alpha, policy replay, or deployable return.
-20. `decision_precedence_audit.csv` records candidate states and precedence if more than one condition is true.
-21. `vol_scaled_label_separability_decision.csv` has exactly one row and one allowed decision state.
+2. Global regime calendar is an explicit required input, every primary reference_date maps to one non-conflicted regime row, and `risk_on` is joined from `daily_regime_bucket`.
+3. `full_universe_split_boundary_audit.csv` proves reference-date split assignment with frozen upstream boundaries and counts any `boundary_gap_excluded` rows.
+4. `full_universe_primitive_feature_audit.csv` records qfq-derived primitive formulas, lookbacks, PIT availability, missing / duplicate qfq status, and C0 volatility reconciliation.
+5. `full_universe_active_band_audit.csv` proves the cartography gate uses C0-comparable active opportunity band, not raw full universe, and passes active-band coverage drift thresholds.
+6. `stage1_anchor_x030_reconstruction_audit.csv` proves row-level X=0.30 keep reconstruction against upstream 12A7e selected_n / rank_evaluable_n / budget.
+7. `label_overlap_effective_n_audit.csv` proves full-universe primitive CI uses block/effective-N controls.
+8. `horizon_completeness_by_split_audit.csv` proves separability excludes censored endpoint rows.
+9. `pre_registered_threshold_audit.csv` records all default / overridden go/no-go constants before run execution.
+10. `label_formula_audit.csv` records every label formula, vol reference unit, k grid value, horizon, same-bar priority, path-window inclusivity, and horizon completeness.
+11. Full PIT label panel is computed without using C0 membership, event family, future returns, or episode labels as features.
+12. Primary label selection is train-only, deterministic, uses the registered stability score, and does not use any separability readout.
+13. Feature / orientation selection uses the registered separability score and deterministic tie-breaks.
+14. C0 post-hoc survivor readout is marked `diagnostic_only` and cannot set deployable support.
+15. C0 deployable stage2 readout uses only features whose row-level `availability_time <= stage_2_reference_pos`.
+16. C0 denominator diversity passes `min_c0_instrument_n` and `min_c0_instrument_month_block_n`.
+17. Label-feature construction coupling is audited; same-source volatility features are not primary unless orthogonalized, and same-bar conflict is stratified by vol bucket.
+18. Recall cost uses common entry-anchor positives; continuation positives are reported separately.
+19. `recall_floor_feasibility_audit.csv` reports whether `min_recall_vs_entry` is structurally binding before final decision.
+20. Continue-C0 decision requires `recall_adjusted_utility_deterioration_vs_entry <= max_recall_adjusted_utility_deterioration`.
+21. Full-universe primitive readout cannot directly support an event family and must beat C0 inside the active band by pre-registered delta thresholds to authorize cartography.
+22. Search multiplicity is recorded with `bonferroni_bootstrap_ci`, and final status reports adjusted support.
+23. Label drift unresolved is triggered only by the mechanical conditions in §13.6.
+24. Utility proxy includes neutral component and per-20d normalized proxy; it is not described as NAV, alpha, policy replay, or deployable return.
+25. `decision_precedence_audit.csv` records candidate states and precedence if more than one condition is true.
+26. `vol_scaled_label_separability_decision.csv` has exactly one row and one allowed decision state.
 
 Allowed decision states:
 
