@@ -1,0 +1,192 @@
+{
+  "config_hash": "cf154ef55ace4350e52e4a28d375929ef170e67b251169c260f0737a23b0f679",
+  "config_path": "topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/configs/config_13e_nonlinear_winner_train_kfold_feasibility_diagnostic.yaml",
+  "config_sha256": "577a9b98fb855ddb9e90ad8bfa029c0e717d885b3c7ccf72d78ccb91cfd496f4",
+  "experiment_id": "13_full_pit_native_event_discovery_v0",
+  "generated_at_utc": "2026-06-24T09:07:57.990019+00:00",
+  "git_revision": "133412739302a4a0487841e66ca9fbb0f936712c",
+  "input_artifacts": [
+    {
+      "artifact_id": "requirement",
+      "column_count": NaN,
+      "lineage_role": "run_config_input",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/requirement_13e_nonlinear_winner_train_kfold_feasibility_diagnostic.md",
+      "row_count": NaN,
+      "schema_status": "pass",
+      "sha256": "1341068082d3ce81b40d4c4b3426affb6fd7c2545824416f2d0149aa84c05093"
+    },
+    {
+      "artifact_id": "upstream_requirement_13c",
+      "column_count": NaN,
+      "lineage_role": "run_config_input",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/requirement_13c_morphology_orthogonal_residual_importance_diagnostic.md",
+      "row_count": NaN,
+      "schema_status": "pass",
+      "sha256": "807718a7467b160dafe861c3f2dbc6ccfeebe08211ab6a22ba8849448a1bbcb9"
+    },
+    {
+      "artifact_id": "upstream_report_13c",
+      "column_count": NaN,
+      "lineage_role": "lineage_report_only_not_row_truth",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/reports/morphology_orthogonal_residual_importance_diagnostic_report.md",
+      "row_count": NaN,
+      "schema_status": "pass",
+      "sha256": "fa2ebc21214bb680677ee633a8414f9a9536a4130d86ec50fb95cabd0f33013b"
+    },
+    {
+      "artifact_id": "upstream_13c_manifest",
+      "column_count": NaN,
+      "lineage_role": "upstream_13c_lineage",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/manifests/13C_morphology_orthogonal_residual_importance_diagnostic_manifest.json",
+      "row_count": NaN,
+      "schema_status": "pass",
+      "sha256": "c5790b3f78a4bfca6bdff35d5b0cfc2212eafe61a02f3f532ae806e30bbeb7a2"
+    },
+    {
+      "artifact_id": "upstream_13c_decision",
+      "column_count": 24.0,
+      "lineage_role": "upstream_13c_lineage",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_orthogonal_residual_importance_decision.csv",
+      "row_count": 1.0,
+      "schema_status": "pass",
+      "sha256": "67ec71e5a8b703ce365945461d40766effbd6a8d5a433f9585c2f25164eba57f"
+    },
+    {
+      "artifact_id": "upstream_13c_feature_cluster_dictionary",
+      "column_count": 8.0,
+      "lineage_role": "upstream_13c_lineage",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/feature_cluster_dictionary.csv",
+      "row_count": 17.0,
+      "schema_status": "pass",
+      "sha256": "ef7661a83801a6c39aa43549281945c21707658ec966487de5c39602caa74329"
+    },
+    {
+      "artifact_id": "upstream_13c_sample_uniqueness_audit",
+      "column_count": 17.0,
+      "lineage_role": "upstream_13c_lineage",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/sample_uniqueness_audit.csv",
+      "row_count": 18.0,
+      "schema_status": "pass",
+      "sha256": "e198b3b5613be63d6b7657cae823c155fc70ee0381338689e04a124fe957c515"
+    },
+    {
+      "artifact_id": "upstream_13c_incremental_model_comparison",
+      "column_count": 13.0,
+      "lineage_role": "upstream_13c_lineage",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/incremental_model_comparison.csv",
+      "row_count": 8.0,
+      "schema_status": "pass",
+      "sha256": "700b1c22ef67e6b34c2e45ae852ede95527b7c0d038f82e4a8d9579e09490087"
+    },
+    {
+      "artifact_id": "upstream_13c_clustered_mda_importance",
+      "column_count": 13.0,
+      "lineage_role": "upstream_13c_lineage",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/clustered_mda_importance.csv",
+      "row_count": 40.0,
+      "schema_status": "pass",
+      "sha256": "3bc5bcc7d96b5f69831c233791d505b336c0a68ce75e1218f06b002c8aec1e91"
+    },
+    {
+      "artifact_id": "upstream_13c_morphology_residual_panel_cache",
+      "column_count": 136.0,
+      "lineage_role": "upstream_13c_lineage",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_residual_panel.parquet",
+      "row_count": 431239.0,
+      "schema_status": "pass",
+      "sha256": "6e8efa1053baa46cee39f1edd0568618e8bdb4212cd9e494b1dc89c9827ca3bf"
+    },
+    {
+      "artifact_id": "pit_topn_400_100_executable_daily",
+      "column_count": 33.0,
+      "lineage_role": "raw_pit_lineage_guard",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv",
+      "row_count": 1140000.0,
+      "schema_status": "pass",
+      "sha256": "e73968ddf54b646ab2d831467a0e2882970e5f96880df12c41bd01a39c243965"
+    },
+    {
+      "artifact_id": "pit_topn_400_100_membership_daily",
+      "column_count": 32.0,
+      "lineage_role": "raw_pit_lineage_guard",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_membership_daily.csv",
+      "row_count": 1140500.0,
+      "schema_status": "pass",
+      "sha256": "982cc6930b27c4b255f019af5180ef835667280b841154af8c2ca9b0138a863b"
+    },
+    {
+      "artifact_id": "stock_daily_qfq_dir",
+      "column_count": NaN,
+      "lineage_role": "raw_pit_lineage_guard",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq",
+      "row_count": 4598.0,
+      "schema_status": "directory",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "global_regime_calendar",
+      "column_count": 7.0,
+      "lineage_role": "raw_pit_lineage_guard",
+      "read_status": "pass",
+      "required_flag": true,
+      "resolved_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv",
+      "row_count": 1912.0,
+      "schema_status": "pass",
+      "sha256": "8ec181dd392b20c1677c61c5a74f4d6bfa5609f78782057958c96ec63e600898"
+    }
+  ],
+  "local_cache_audit": [],
+  "local_cache_outputs_excluded": [],
+  "output_hashes": {
+    "input_artifact_audit": "4926824e345ef2d6a8be6c95347efbe144c0b75ee8421097440a288530175e43",
+    "nonlinear_vs_linear_comparison": "68d50eccc5d3368bcd3f7d7a54be752982e7302c9a94d0e70e99ce2f801b1036",
+    "nonlinear_winner_train_kfold_feasibility_decision": "4a06eff207472104e44f459cacdca2b1557917274bb4bd89c56993fceed4a7dc",
+    "report": "24c11320c471da37a91703f548618b89986bd49e98995f4fc10619d5e66078b4",
+    "row_level_rebuild_audit": "f1587f2b2a58e6bc9872486721893c7b9570c12e5d6ff750ac2b8e8f2e220981",
+    "search_multiplicity_audit": "e21f71de72801314830702feec17cf4df1bee464c30d1a07d376e3dc72052aef",
+    "train_kfold_fold_metrics": "5ba75668a958e38acd2edf7578cbca5f407503b7a9e15fef8e6d70a14f4987be",
+    "train_kfold_uniqueness_audit": "17fe4c117334d9861574bb0a7d13eb7ad901397a31f99260450c164066d25de8",
+    "upstream_13c_lineage_audit": "5f70cf5aea23b98d897e5ea290cfe5752ef7cefb2cd9fbe3dd0e0d30da160648"
+  },
+  "phase_id": "13E",
+  "platform": "Linux-6.18.33.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "publishable_outputs": {
+    "input_artifact_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/input_artifact_audit.csv",
+    "nonlinear_vs_linear_comparison": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/nonlinear_vs_linear_comparison.csv",
+    "nonlinear_winner_train_kfold_feasibility_decision": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/nonlinear_winner_train_kfold_feasibility_decision.csv",
+    "report": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/reports/nonlinear_winner_train_kfold_feasibility_diagnostic_report.md",
+    "row_level_rebuild_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/row_level_rebuild_audit.csv",
+    "search_multiplicity_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/search_multiplicity_audit.csv",
+    "train_kfold_fold_metrics": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/train_kfold_fold_metrics.csv",
+    "train_kfold_uniqueness_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/train_kfold_uniqueness_audit.csv",
+    "upstream_13c_lineage_audit": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/upstream_13c_lineage_audit.csv"
+  },
+  "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:12:24) [GCC 11.2.0]",
+  "run_id": "13E_nonlinear_winner_train_kfold_feasibility_diagnostic"
+}

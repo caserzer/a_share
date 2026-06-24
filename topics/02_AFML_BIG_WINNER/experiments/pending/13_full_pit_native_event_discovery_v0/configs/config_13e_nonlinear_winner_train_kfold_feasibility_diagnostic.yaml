@@ -1,0 +1,85 @@
+run_id: 13E_nonlinear_winner_train_kfold_feasibility_diagnostic
+experiment_id: 13_full_pit_native_event_discovery_v0
+phase_id: 13E
+
+paths:
+  requirement: requirement_13e_nonlinear_winner_train_kfold_feasibility_diagnostic.md
+  upstream_requirement_13c: requirement_13c_morphology_orthogonal_residual_importance_diagnostic.md
+  upstream_report_13c: outputs/publishable/reports/morphology_orthogonal_residual_importance_diagnostic_report.md
+  upstream_13c_manifest: outputs/manifests/13C_morphology_orthogonal_residual_importance_diagnostic_manifest.json
+  upstream_13c_decision: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_orthogonal_residual_importance_decision.csv
+  upstream_13c_feature_cluster_dictionary: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/feature_cluster_dictionary.csv
+  upstream_13c_sample_uniqueness_audit: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/sample_uniqueness_audit.csv
+  upstream_13c_incremental_model_comparison: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/incremental_model_comparison.csv
+  upstream_13c_clustered_mda_importance: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/clustered_mda_importance.csv
+  upstream_13c_morphology_residual_panel_cache: outputs/local_cache/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_residual_panel.parquet
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+selected_state_id: repair_range_participation_core_30
+selected_label:
+  label_id: vol20d_kup2p0_kdn1p0_H20
+  vol_reference_id: volatility_20d
+  k_up: 2.0
+  k_dn: 1.0
+  horizon_sessions: 20
+  same_bar_priority: lower_first
+
+fold_protocol:
+  fold_n: 5
+  purge_window_sessions: 20
+  embargo_sessions: 20
+  purge_group_unit: instrument
+  embargo_scope: global_calendar_session
+  min_effective_train_event_n_per_fold: 300
+  min_effective_test_event_n_per_fold: 50
+
+model:
+  logistic_l2:
+    C: 0.50
+    penalty: l2
+    solver: liblinear
+    max_iter: 200
+    standardize_features: true
+  sklearn_hgb_low_capacity:
+    loss: log_loss
+    max_iter: 200
+    learning_rate: 0.03
+    max_leaf_nodes: 15
+    max_depth: 4
+    min_samples_leaf: 100
+    l2_regularization: 1.0
+    random_state: 13050
+    early_stopping: false
+  top_fraction: 0.20
+  explicit_interaction_probe: false
+
+thresholds:
+  min_train_event_n: 1000
+  auc_improvement_min: 0.005
+
+feature_clusters:
+  cluster_drawdown_morphology:
+    - max_drawdown_20d
+    - ret_20d
+    - ret_60d
+    - rebound_from_20d_low
+  cluster_denominator_controls:
+    - board_bucket
+    - calendar_year
+    - liquidity_bucket
+    - volatility_bucket
+  cluster_compression:
+    - volatility_20d
+    - volatility_60d
+    - range_width_20d
+  cluster_position_strength:
+    - distance_from_20d_low
+    - close_vs_sma20
+    - close_position_20d
+  cluster_participation:
+    - turnover_zscore_20d
+    - amount_ratio_5d_20d
+    - volume_up_price_not_down_5d
