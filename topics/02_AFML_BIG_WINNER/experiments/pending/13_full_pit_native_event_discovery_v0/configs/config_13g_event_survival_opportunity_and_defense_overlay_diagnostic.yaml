@@ -1,0 +1,75 @@
+run_id: 13G_event_survival_opportunity_and_defense_overlay_diagnostic
+experiment_id: 13_full_pit_native_event_discovery_v0
+phase_id: 13G
+
+paths:
+  requirement: requirement_13g_event_survival_opportunity_and_defense_overlay_diagnostic.md
+  upstream_requirement_13a3: requirement_13a3_compression_repair_state_cost_and_native_feasibility_diagnostic.md
+  upstream_requirement_13c: requirement_13c_morphology_orthogonal_residual_importance_diagnostic.md
+  upstream_requirement_13e: requirement_13e_nonlinear_winner_train_kfold_feasibility_diagnostic.md
+  upstream_requirement_13f: requirement_13f_early_path_confirmation_delayed_entry_train_diagnostic.md
+  upstream_13c_config: configs/config_13c_morphology_orthogonal_residual_importance_diagnostic.yaml
+  upstream_report_13c: outputs/publishable/reports/morphology_orthogonal_residual_importance_diagnostic_report.md
+  upstream_report_13e: outputs/publishable/reports/nonlinear_winner_train_kfold_feasibility_diagnostic_report.md
+  upstream_report_13f: outputs/publishable/reports/early_path_confirmation_delayed_entry_train_diagnostic_report.md
+  upstream_13c_manifest: outputs/manifests/13C_morphology_orthogonal_residual_importance_diagnostic_manifest.json
+  upstream_13a3_decision: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/compression_repair_state_feasibility_decision.csv
+  upstream_13c_decision: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_orthogonal_residual_importance_decision.csv
+  upstream_13c_feature_cluster_dictionary: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/feature_cluster_dictionary.csv
+  upstream_13c_sample_uniqueness_audit: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/sample_uniqueness_audit.csv
+  upstream_13c_row_level_rebuild_audit: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/row_level_rebuild_audit.csv
+  upstream_13c_morphology_residual_panel_cache: outputs/local_cache/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_residual_panel.parquet
+  upstream_13e_decision: outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/nonlinear_winner_train_kfold_feasibility_decision.csv
+  upstream_13f_decision: outputs/publishable/tables/13F_early_path_confirmation_delayed_entry_train_diagnostic/early_path_confirmation_delayed_entry_decision.csv
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+selected_state_id: repair_range_participation_core_30
+
+label_grid:
+  up_mfe_threshold_grid: [0.20, 0.30, 0.50]
+  down_mae_threshold_grid: [-0.10, -0.15, -0.20]
+  horizon_sessions_grid: [20, 60, 120]
+  same_bar_priority: lower_first
+  primary_up_threshold: 0.30
+  primary_down_threshold: -0.15
+  primary_horizon_sessions: 60
+  max_horizon_sessions: 120
+  min_analysis_event_fraction_by_split: 0.80
+  min_analysis_event_n_by_split:
+    train: 300
+    validation: 100
+    robustness: 100
+
+overlay:
+  risk_budget_multiplier:
+    increase: 1.50
+    keep: 1.00
+    reduce: 0.50
+    skip: 0.00
+  cost_tier_bps: [0, 50, 100]
+  cost_buffer_return_by_tier:
+    0: 0.0000
+    50: 0.0050
+    100: 0.0100
+  overlay_adjustment_cost_buffer_by_tier:
+    0: 0.0000
+    50: 0.0050
+    100: 0.0100
+  rule_feature_missing_max_fraction: 0.05
+  min_badside_event_n_by_split: 30
+  winner_retention_min_validation: 0.80
+  winner_retention_min_robustness: 0.75
+  duplicate_delta_share_max: 0.80
+
+search_accounting:
+  label_endpoint_n: 27
+  action_n: 4
+  rule_family_n: 1
+  ml_model_used: false
+  hyperparameter_search_used: false
+  validation_used_for_rule_freeze: false
+  robustness_used_for_rule_freeze: false
+  confirmatory_status: false

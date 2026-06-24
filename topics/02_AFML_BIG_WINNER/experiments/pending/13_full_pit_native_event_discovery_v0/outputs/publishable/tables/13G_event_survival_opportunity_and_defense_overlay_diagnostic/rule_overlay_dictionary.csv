@@ -1,0 +1,10 @@
+rule_feature_id,source_column,bucket_labels,threshold_q33,threshold_q66_or_p80,direction,train_row_count,threshold_source,validation_used_for_rule_freeze,robustness_used_for_rule_freeze,ml_model_used,hyperparameter_search_used,rule_feature_missing_fraction,rule_freeze_gate_status
+t0_ret_20d_bucket,ret_20d,weak|flat|positive,0.04543419874664287,0.07800175284837874,high,6232,13C_column_train_frozen,False,False,False,False,0.0,pass
+t0_max_drawdown_20d_bucket,max_drawdown_20d,mild|moderate|severe,-0.04207920792079212,-0.02733485193621865,low,6232,13C_column_train_frozen,False,False,False,False,0.0,pass
+t0_distance_to_20d_low_bucket,distance_from_20d_low,near_low|mid|far_from_low,0.07796610169491514,0.10447761194029881,high,6232,13C_column_train_frozen,False,False,False,False,0.0,pass
+t0_volatility_20d_bucket,volatility_20d,low|medium|high,0.012473197382273404,0.01452144180040347,high,6232,13C_column_train_frozen,False,False,False,False,0.0,pass
+t0_liquidity_or_turnover_bucket,turnover_zscore_20d,low|medium|high,1.1096971624062109,1.9989018604872835,high,6232,13C_liquidity_or_turnover_train_frozen,False,False,False,False,0.0,pass
+t0_prior_selected_event_count_20d_bucket,t0_prior_selected_event_count_20d,low|medium|high,1.0,4.0,high,6232,train_frozen_p80,False,False,False,False,0.0,pass
+t0_active_selected_event_count_120d_bucket,t0_active_selected_event_count_120d,low|medium|high,2.0,7.0,high,6232,train_frozen_p80,False,False,False,False,0.0,pass
+t0_market_selected_event_count_today_bucket,t0_market_selected_event_count_today,low|medium|high,17.0,59.0,high,6232,train_frozen_p80,False,False,False,False,0.0,pass
+t0_compression_repair_feature_cluster_status,13C_feature_cluster_dictionary,neutral,,,neutral_fallback,6232,neutral_fallback_no_non_outcome_direction,False,False,False,False,0.0,pass

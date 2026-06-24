@@ -1,0 +1,92 @@
+run_id: 13F_early_path_confirmation_delayed_entry_train_diagnostic
+experiment_id: 13_full_pit_native_event_discovery_v0
+phase_id: 13F
+
+paths:
+  requirement: requirement_13f_early_path_confirmation_delayed_entry_train_diagnostic.md
+  upstream_requirement_13c: requirement_13c_morphology_orthogonal_residual_importance_diagnostic.md
+  upstream_requirement_13e: requirement_13e_nonlinear_winner_train_kfold_feasibility_diagnostic.md
+  upstream_report_13c: outputs/publishable/reports/morphology_orthogonal_residual_importance_diagnostic_report.md
+  upstream_report_13e: outputs/publishable/reports/nonlinear_winner_train_kfold_feasibility_diagnostic_report.md
+  upstream_13c_manifest: outputs/manifests/13C_morphology_orthogonal_residual_importance_diagnostic_manifest.json
+  upstream_13c_decision: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_orthogonal_residual_importance_decision.csv
+  upstream_13c_feature_cluster_dictionary: outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/feature_cluster_dictionary.csv
+  upstream_13c_morphology_residual_panel_cache: outputs/local_cache/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_residual_panel.parquet
+  upstream_13e_decision: outputs/publishable/tables/13E_nonlinear_winner_train_kfold_feasibility_diagnostic/nonlinear_winner_train_kfold_feasibility_decision.csv
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+selected_state_id: repair_range_participation_core_30
+selected_label:
+  label_id: vol20d_kup2p0_kdn1p0_H20
+  vol_reference_id: volatility_20d
+  k_up: 2.0
+  k_dn: 1.0
+  horizon_sessions: 20
+  same_bar_priority: lower_first
+
+early_path:
+  k_grid: [2, 3, 5, 8, 13]
+  primary_k: 3
+  horizon_modes: [horizon_mode_from_entry, horizon_mode_calendar_t0]
+  primary_horizon_mode: horizon_mode_from_entry
+  primary_arm: arm_model_delayed
+  main_gate_arm: arm_model_delayed
+  gate_arm: arm_gate_delayed
+  delayed_entry_not_executable_max_fraction: 0.10
+  min_early_path_evaluable_fraction: 0.95
+  max_forward_shift_sessions: 5
+
+fold_protocol:
+  fold_n: 5
+  purge_window_sessions: 20
+  embargo_sessions: 20
+  purge_group_unit: instrument
+  embargo_scope: global_calendar_session
+  min_effective_train_event_n_per_fold: 300
+  min_effective_test_event_n_per_fold: 50
+
+model:
+  logistic_l2:
+    C: 0.50
+    penalty: l2
+    solver: liblinear
+    max_iter: 200
+    standardize_features: true
+  top_fraction: 0.50
+  sensitivity_top_fraction: 0.30
+  include_t0_context_features: false
+  hyperparameter_search_used: false
+  fold_internal_tuning_used: false
+  early_stopping_used: false
+
+thresholds:
+  min_train_event_n: 1000
+  cost_buffer_grid: [0.0, 0.005, 0.01]
+  reference_cost_buffer_return: 0.01
+
+feature_clusters:
+  cluster_drawdown_morphology:
+    - max_drawdown_20d
+    - ret_20d
+    - ret_60d
+    - rebound_from_20d_low
+  cluster_denominator_controls:
+    - board_bucket
+    - calendar_year
+    - liquidity_bucket
+    - volatility_bucket
+  cluster_compression:
+    - volatility_20d
+    - volatility_60d
+    - range_width_20d
+  cluster_position_strength:
+    - distance_from_20d_low
+    - close_vs_sma20
+    - close_position_20d
+  cluster_participation:
+    - turnover_zscore_20d
+    - amount_ratio_5d_20d
+    - volume_up_price_not_down_5d
