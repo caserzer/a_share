@@ -1,0 +1,109 @@
+run_id: 13C_morphology_orthogonal_residual_importance_diagnostic
+experiment_id: 13_full_pit_native_event_discovery_v0
+phase_id: 13C
+
+paths:
+  requirement: requirement_13c_morphology_orthogonal_residual_importance_diagnostic.md
+  upstream_requirement_13a: requirement_13a_full_pit_native_token_cartography_preflight.md
+  upstream_requirement_13a2: requirement_13a2_compression_directional_disambiguation_preflight.md
+  upstream_requirement_13a3: requirement_13a3_compression_repair_state_cost_and_native_feasibility_diagnostic.md
+  upstream_report_13a: outputs/publishable/reports/native_token_cartography_preflight_report.md
+  upstream_report_13a2: outputs/publishable/reports/compression_directional_disambiguation_preflight_report.md
+  upstream_report_13a3: outputs/publishable/reports/compression_repair_state_cost_and_native_feasibility_diagnostic_report.md
+  upstream_requirement_12a7g: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7g_vol_scaled_label_panel_c0_separability_triage.md
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+  upstream_13a_manifest: outputs/manifests/13A_full_pit_native_token_cartography_preflight_manifest.json
+  upstream_13a_token_dictionary: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_dictionary.csv
+  upstream_13a_morphology: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_morphology_collinearity_audit.csv
+  upstream_13a_native_thresholds: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_universe_frozen_thresholds.csv
+  upstream_13a_label_portability: outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_label_portability_audit.csv
+  upstream_13a_native_universe_cache: outputs/local_cache/13A_full_pit_native_token_cartography_preflight/native_universe_panel.parquet
+  upstream_13a_native_token_matrix_cache: outputs/local_cache/13A_full_pit_native_token_cartography_preflight/native_token_matrix.parquet
+
+  upstream_13a2_manifest: outputs/manifests/13A2_compression_directional_disambiguation_preflight_manifest.json
+  upstream_13a2_filter_dictionary: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/directional_filter_dictionary.csv
+  upstream_13a2_threshold_freeze: outputs/publishable/tables/13A2_compression_directional_disambiguation_preflight/directional_filter_threshold_freeze_audit.csv
+  upstream_13a2_compression_base_cache: outputs/local_cache/13A2_compression_directional_disambiguation_preflight/compression_base_panel.parquet
+  upstream_13a2_directional_filter_matrix_cache: outputs/local_cache/13A2_compression_directional_disambiguation_preflight/directional_filter_matrix.parquet
+
+  upstream_13a3_manifest: outputs/manifests/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic_manifest.json
+  upstream_13a3_decision: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/compression_repair_state_feasibility_decision.csv
+  upstream_13a3_dictionary: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_repair_state_dictionary.csv
+  upstream_13a3_native_readout: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_native_readout.csv
+  upstream_13a3_badside: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_badside_utility_audit.csv
+  upstream_13a3_morphology: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_morphology_independent_evidence_audit.csv
+  upstream_13a3_denominator_drift: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_denominator_drift_audit.csv
+  upstream_13a3_cost_buffer_sensitivity: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/cost_buffer_sensitivity_audit.csv
+  upstream_13a3_row_level_cache_audit: outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/row_level_cache_audit.csv
+  upstream_13a3_composite_state_matrix_cache: outputs/local_cache/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_state_matrix.parquet
+
+  upstream_13a_config: configs/config_13a_full_pit_native_token_cartography_preflight.yaml
+  upstream_13a2_config: configs/config_13a2_compression_directional_disambiguation_preflight.yaml
+  upstream_13a3_config: configs/config_13a3_compression_repair_state_cost_and_native_feasibility_diagnostic.yaml
+
+selected_state_id: repair_range_participation_core_30
+selected_label:
+  label_id: vol20d_kup2p0_kdn1p0_H20
+  vol_reference_id: volatility_20d
+  k_up: 2.0
+  k_dn: 1.0
+  horizon_sessions: 20
+  same_bar_priority: lower_first
+
+cost_buffer:
+  grid: [0.0, 0.0025, 0.005, 0.0075, 0.01]
+  reference_return: 0.01
+  moderate_return: 0.005
+
+residualization:
+  method: cell_mean_residualization
+  min_treated_per_cell: 20
+  min_control_per_cell: 50
+  min_positive_per_split: 50
+  quantile_bucket_n: 5
+  decile_bucket_n: 10
+
+model:
+  family: low_capacity_logistic_l2
+  l2_C: 0.50
+  max_iter: 200
+  permutation_n: 10
+  random_seed: 13013
+  purge_window_sessions: 20
+  embargo_sessions: 20
+  group_unit: instrument
+
+feature_clusters:
+  cluster_compression:
+    - volatility_20d
+    - volatility_60d
+    - range_width_20d
+  cluster_position_strength:
+    - distance_from_20d_low
+    - close_vs_sma20
+    - close_position_20d
+  cluster_participation:
+    - turnover_zscore_20d
+    - amount_ratio_5d_20d
+    - volume_up_price_not_down_5d
+  cluster_drawdown_morphology:
+    - max_drawdown_20d
+    - ret_20d
+    - ret_60d
+    - rebound_from_20d_low
+  cluster_denominator_controls:
+    - board_bucket
+    - calendar_year
+    - liquidity_bucket
+    - volatility_bucket
+
+thresholds:
+  binary_calibration_weighted_abs_error: 0.02
+  utility_calibration_weighted_abs_error: 0.0025
+  min_eval_treated_n: 1
+  min_eval_control_n: 1
+  broad_baseline_min_control_n: 50

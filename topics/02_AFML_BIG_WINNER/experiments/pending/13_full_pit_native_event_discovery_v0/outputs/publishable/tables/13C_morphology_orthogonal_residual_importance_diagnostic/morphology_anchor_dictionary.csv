@@ -1,0 +1,14 @@
+anchor_id,source_column,available_row_n,transform,train_mean,train_std,future_data_used,anchor_status,bucket_edges
+max_drawdown_20d,max_drawdown_20d,431239,train_frozen_zscore,-0.09203522692094118,0.05367962654950182,False,pass,
+distance_from_20d_low,distance_from_20d_low,431239,train_frozen_zscore,0.127469182806667,0.13167822045182886,False,pass,
+close_position_20d,close_position_20d,431239,train_frozen_zscore,0.531294191568482,0.28518031989682724,False,pass,
+ret_20d,ret_20d,431239,train_frozen_zscore,0.05184535506995333,0.148180610577323,False,pass,
+ret_60d,ret_60d,431239,train_frozen_zscore,0.11843790233314638,0.2930341133534463,False,pass,
+rebound_from_20d_low,rebound_from_20d_low,431239,train_frozen_zscore,0.127469182806667,0.13167822045182886,False,pass,
+volatility_20d,volatility_20d,431239,train_frozen_zscore,0.026036659175092177,0.01116986323835251,False,pass,
+volatility_60d,volatility_60d,431239,train_frozen_zscore,0.026408301571845913,0.010304362327132723,False,pass,
+liquidity_bucket,liquidity_bucket,431239,train_frozen_quantile_bucket,,,False,pass,"[123658026.7, 225459605.5, 385665273.2999998, 737733431.5]"
+volatility_bucket,volatility_bucket,431239,train_frozen_quantile_bucket,,,False,pass,"[0.01602314980036395, 0.021809098947421744, 0.02765969630429693, 0.03520643911992531]"
+max_drawdown_20d_decile,max_drawdown_20d_decile,431239,train_frozen_quantile_bucket,,,False,pass,"[-0.16561421188247563, -0.13297872340425532, -0.11077844311377238, -0.0944505696435134, -0.08047161946900838, -0.06820950060901343, -0.057324640146146244, -0.04639776171601773, -0.034220532319391594]"
+max_drawdown_20d_quintile,max_drawdown_20d_quintile,431239,train_frozen_quantile_bucket,,,False,pass,"[-0.13297872340425532, -0.0944505696435134, -0.06820950060901343, -0.04639776171601773]"
+compression_severity_bucket,compression_severity_bucket,431239,train_frozen_quantile_bucket,,,False,pass,"[0.009611586030971045, 0.011703496318933157, 0.01333138666313787, 0.014752944394290056]"
