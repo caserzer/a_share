@@ -1,0 +1,7 @@
+cohort_arm_id,cohort_arm_name,cohort_denominator,minimum_cohort_finite_n,rank_direction,pit_availability_required
+C1,same_date_full_cross_section,all native_scope rows on reference_date,100,high_is_stronger,True
+C2,same_date_same_board_cross_section,all native_scope rows on reference_date and board_bucket,30,high_is_stronger,True
+C3,rolling_prior_event_family_252d,prior accepted events from same arm,50,high_is_stronger,True
+C4,rolling_prior_board_event_family_252d,prior accepted events from same arm and board,30,high_is_stronger,True
+C5,month_to_date_partial_event_cohort,same-month accepted events up to t0,20,high_is_stronger,True
+C6,week_to_date_partial_event_cohort,same-week accepted events up to t0,10,high_is_stronger,True

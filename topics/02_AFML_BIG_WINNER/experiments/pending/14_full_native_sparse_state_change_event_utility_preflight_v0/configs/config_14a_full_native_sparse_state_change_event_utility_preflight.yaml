@@ -1,0 +1,130 @@
+run_id: 14A_full_native_sparse_state_change_event_utility_preflight
+experiment_id: 14_full_native_sparse_state_change_event_utility_preflight_v0
+phase_id: 14A
+
+paths:
+  requirement: requirement_14a_full_native_sparse_state_change_event_utility_preflight.md
+  source_plan: research_plan.md
+
+  upstream_requirement_13a: experiments/pending/13_full_pit_native_event_discovery_v0/requirement_13a_full_pit_native_token_cartography_preflight.md
+  upstream_requirement_12a7g: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/requirement_12a7g_vol_scaled_label_panel_c0_separability_triage.md
+
+  pit_topn_400_100_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_topn_400_100_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  benchmark_indices_daily: data/processed/index/benchmark_indices_daily.csv
+  global_regime_calendar: experiments/pending/11_archetype_proxy_validation_system_v0/outputs/publishable/tables/11A0_regime_pit_availability_audit/regime_daily_series_audit.csv
+
+  upstream_12a7g_decision: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/vol_scaled_label_separability_decision.csv
+  upstream_12a7g_label_formula: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/label_formula_audit.csv
+  upstream_12a7g_label_selection: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/label_selection_train_audit.csv
+  upstream_12a7g_split_boundary: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/publishable/tables/12A7g_vol_scaled_label_panel_c0_separability_triage/full_universe_split_boundary_audit.csv
+  upstream_12a7g_manifest: experiments/pending/12_multi_k_winner_failure_path_morphology_research_v0/outputs/manifests/12A7g_vol_scaled_label_panel_c0_separability_triage_manifest.json
+
+  upstream_13a_config: experiments/pending/13_full_pit_native_event_discovery_v0/configs/config_13a_full_pit_native_token_cartography_preflight.yaml
+  upstream_13a_manifest: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/manifests/13A_full_pit_native_token_cartography_preflight_manifest.json
+  upstream_13a_input_audit: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/input_artifact_audit.csv
+  upstream_13a_lineage_audit: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/upstream_12a7g_lineage_audit.csv
+  upstream_13a_decision: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_cartography_decision.csv
+  upstream_13a_universe_definition: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_universe_definition_audit.csv
+  upstream_13a_universe_thresholds: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_universe_frozen_thresholds.csv
+  upstream_13a_label_portability: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_label_portability_audit.csv
+  upstream_13a_token_dictionary: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_dictionary.csv
+  upstream_13a_token_readout: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_cartography_readout.csv
+  upstream_13a_morphology: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A_full_pit_native_token_cartography_preflight/native_token_morphology_collinearity_audit.csv
+  upstream_13a_native_universe_cache: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13A_full_pit_native_token_cartography_preflight/native_universe_panel.parquet
+  upstream_13a_native_label_cache: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13A_full_pit_native_token_cartography_preflight/native_label_panel.parquet
+  upstream_13a_native_token_matrix_cache: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13A_full_pit_native_token_cartography_preflight/native_token_matrix.parquet
+
+  optional_13a3_composite_dictionary: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_repair_state_dictionary.csv
+  optional_13a3_composite_state_matrix: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13A3_compression_repair_state_cost_and_native_feasibility_diagnostic/composite_state_matrix.parquet
+  optional_13c_decision: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/publishable/tables/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_orthogonal_residual_importance_decision.csv
+  optional_13c_morphology_panel: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13C_morphology_orthogonal_residual_importance_diagnostic/morphology_residual_panel.parquet
+
+selected_label:
+  label_id: vol20d_kup2p0_kdn1p0_H20
+  vol_reference_id: volatility_20d
+  horizon_sessions: 20
+  k_up: 2.0
+  k_dn: 1.0
+  implemented_path_window: entry_pos_through_entry_pos_plus_horizon_inclusive
+
+cost_tiers_bps: [0, 50, 100]
+primary_cost_tier_bps: 50
+
+families:
+  f1_residual_cusum_break:
+    enabled: true
+    lookback_sessions: [60, 120]
+    trigger_threshold_z: [2.5, 3.0]
+    cooldown_sessions: 20
+  f2_compression_to_directional_expansion:
+    enabled: true
+    expansion_ratio_threshold: [1.5, 2.0]
+    cooldown_sessions: 20
+  f3_controlled_damage_first_reclaim:
+    enabled: true
+    damage_lookback_sessions: [20, 60]
+    cooldown_sessions: 20
+  f4_board_relative_strength_rank_jump:
+    enabled: true
+    relative_return_window: [20, 60]
+    rank_jump_decile_threshold: [2, 3]
+    cooldown_sessions: 15
+  f5_participation_ignition_with_price_control:
+    enabled: true
+    participation_window: [20, 60]
+    participation_ratio_threshold: [1.5, 2.0]
+    cooldown_sessions: 15
+  f6_low_volatility_range_expansion_first_trigger:
+    enabled: true
+    range_expansion_ratio_threshold: [1.5, 2.0]
+    cooldown_sessions: 20
+
+thresholds:
+  min_train_event_n_per_parameter: 100
+  min_validation_event_n_per_operating_arm: 30
+  min_robustness_event_n_per_operating_arm: 30
+  target_max_event_density_per_instrument_year: 3.0
+  hard_max_event_density_per_instrument_year: 6.0
+  max_duplicate_episode_fraction: 0.35
+  min_average_uniqueness: 0.50
+  raw_winner_rate_lift: 0.02
+  raw_intensity_top_bottom_delta: 0.03
+  raw_intensity_side_min_n: 30
+  min_train_selected_event_n: 50
+  min_validation_selected_event_n: 30
+  min_robustness_selected_event_n: 30
+  selected_event_fraction_min: 0.03
+  selected_event_fraction_max: 0.50
+  max_fast_fail_uplift: 0.02
+  max_lower_first_uplift: 0.01
+  cohort_transport_delta_min: 0.0010
+  morphology_overlap_fail_threshold: 0.70
+  morphology_strict_overlap_threshold: 0.50
+
+cohort_arms:
+  rank_cutoffs:
+    top20pct: 0.80
+    top10pct: 0.90
+  minimum_cohort_finite_n:
+    C1: 100
+    C2: 30
+    C3: 50
+    C4: 30
+    C5: 20
+    C6: 10
+  rolling_prior_sessions: 252
+
+search_accounting:
+  family_count: 6
+  parameter_grid_count: 16
+  cohort_arm_family_count: 6
+  maximum_train_selected_raw_arms_into_cohort: 6
+  maximum_operating_arms_allowed_into_validation: 3
+
+label_rebuild_audit:
+  minimum_audited_rows: 500
+  allowed_label_mismatch_rate: 0.0
+  barrier_abs_tolerance: 0.0000000001
+  terminal_return_abs_tolerance: 0.0000000001

@@ -1,0 +1,53 @@
+run_id: 14C_cohort_rank_monotonicity_stress_diagnostic
+experiment_id: 14_full_native_sparse_state_change_event_utility_preflight_v0
+phase_id: 14C
+
+paths:
+  requirement: requirement_14c_cohort_rank_monotonicity_stress_diagnostic.md
+  upstream_requirement_14a: requirement_14a_full_native_sparse_state_change_event_utility_preflight.md
+  upstream_14a_manifest: outputs/manifests/14A_full_native_sparse_state_change_event_utility_preflight_manifest.json
+  upstream_14a_decision: outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/full_native_sparse_state_change_event_utility_decision.csv
+  upstream_14a_search_multiplicity: outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/search_multiplicity_audit.csv
+  upstream_14a_cohort_dictionary: outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/pit_cohort_normalization_dictionary.csv
+  upstream_14a_rank_availability: outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/pit_cohort_rank_availability_audit.csv
+  upstream_14a_utility_readout: outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/pit_cohort_normalized_utility_readout.csv
+  upstream_14a_validation_stress: outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/validation_stress_interpretation_audit.csv
+  upstream_14a_raw_readout: outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/sparse_event_raw_readout.csv
+  upstream_14a_report: outputs/publishable/reports/full_native_sparse_state_change_event_utility_preflight_report.md
+  upstream_14a_cohort_event_panel_cache: outputs/local_cache/14A_full_native_sparse_state_change_event_utility_preflight/pit_cohort_normalized_event_panel.parquet
+  upstream_14a_sparse_event_panel_cache: outputs/local_cache/14A_full_native_sparse_state_change_event_utility_preflight/sparse_event_panel.parquet
+  upstream_14a_state_change_feature_panel_cache: outputs/local_cache/14A_full_native_sparse_state_change_event_utility_preflight/state_change_feature_panel.parquet
+
+primary:
+  selected_raw_event_arm_id: F4_board_relative_strength_rank_jump__ret60_jump3
+  selected_cohort_arm_id: C3
+  selected_rank_cutoff_id: top20pct
+  primary_cost_tier_bps: 50
+
+rank_ic:
+  minimum_rank_ic_n: 100
+  minimum_stress_stratum_rank_ic_n: 50
+
+bootstrap:
+  seed: 1403001
+  n: 500
+  ci_level: 0.90
+  minimum_clusters: 30
+
+power_gate:
+  minimum_same_event_denominator_n: 300
+  minimum_finite_rank_n: 300
+  minimum_finite_rank_coverage: 0.90
+
+stress_gates:
+  validation_rank_ic_fast_fail_max: -0.03
+  validation_top_bottom_fast_fail_delta_max: -0.03
+  validation_rank_ic_utility_50bps_min: 0.03
+  validation_rank_ic_winner_min: 0.03
+  train_rank_ic_max_for_badside: 0.0
+  robustness_rank_ic_max_for_badside: 0.0
+  train_rank_ic_min_for_positive_targets: 0.0
+  robustness_rank_ic_min_for_positive_targets: 0.0
+
+coverage_audit:
+  early_history_drop_share_threshold: 0.80
