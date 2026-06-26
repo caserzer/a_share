@@ -1,0 +1,4 @@
+threshold_id,cluster_split_bucket,baseline_variant,sharp_share_real,sharp_share_random,sharp_share_uplift,mean_membership_entropy_real,mean_membership_entropy_random,membership_entropy_reduction,membership_sharpness_is_real,random_baseline_status
+up50pct,train,column_shuffle_joint_break,0.14787583132995244,0.00024128309965430712,0.14763454823029815,0.7320084853112269,0.8796102075150409,0.14760172220381407,True,pass
+up50pct,train,hard_label_permutation_refit,0.14787583132995244,0.0,0.14787583132995244,0.7320084853112269,0.9998629433743286,0.2678544580631017,True,pass
+up50pct,train,episode_cluster_blocked_shuffle,0.14787583132995244,0.1566146665028866,-0.008738835172934167,0.7320084853112269,0.7320084853112269,0.0,False,pass

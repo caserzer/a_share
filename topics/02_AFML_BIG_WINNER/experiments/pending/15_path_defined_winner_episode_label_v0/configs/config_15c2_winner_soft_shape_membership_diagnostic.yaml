@@ -1,0 +1,71 @@
+run_id: 15C2_winner_soft_shape_membership_diagnostic
+phase_id: 15C2
+selected_threshold_id: up50pct
+threshold_sensitivity_grid: [up50pct, up100pct, up150pct]
+splits: [train, validation, robustness]
+
+random_baseline_seed: 20260626
+random_baseline_repeat_n: 20
+bootstrap_repeat_n: 20
+temperature_primary: 1.0
+temperature_sensitivity_set: [0.5, 1.0, 2.0]
+sharpness_entropy_threshold: 0.60
+sharpness_top1_threshold: 0.50
+min_prototype_anchor_n: 50
+drop_prototype_anchor_n: 20
+out_of_prototype_distance_percentile_threshold: 0.95
+high_membership_threshold: 0.50
+bridge_pair_anchor_share_threshold: 0.05
+bridge_pair_gap_threshold: 0.20
+material_sharp_share_threshold: 0.35
+max_residual_share_threshold: 0.25
+max_low_confidence_share_threshold: 0.25
+overlap_tolerance: 0.05
+known_failed_high_membership_min_n: 50
+
+shape_features:
+  - path_efficiency
+  - max_drawdown_before_hit_abs
+  - underwater_days_share
+  - directional_entropy_5state
+  - trend_line_r2
+  - top1_positive_gain_share
+  - top3_positive_gain_share
+  - pullback_5pct_count
+  - log_time_to_threshold
+
+morphology_prototypes:
+  - smooth_trend_winner
+  - stair_step_winner
+  - jump_repricing_winner
+  - choppy_reversal_winner
+  - slow_grind_winner
+  - late_rescue_winner
+
+capture_friendly_prototypes:
+  - smooth_trend_winner
+  - stair_step_winner
+  - slow_grind_winner
+
+baseline_variant_set:
+  - column_shuffle_joint_break
+  - hard_label_permutation_refit
+  - episode_cluster_blocked_shuffle
+
+inputs:
+  rule_audit_15b: outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/path_shape_taxonomy_rule_audit.csv
+  winner_episode_cluster_membership_15b: outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/winner_episode_cluster_membership_audit.csv
+  split_overlap_audit_15b: outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/split_overlap_audit.csv
+  taxonomy_assignment_panel_15b: outputs/local_cache/15B_winner_path_shape_taxonomy_diagnostic/taxonomy_assignment_panel.parquet
+  path_shape_feature_panel_15b: outputs/local_cache/15B_winner_path_shape_taxonomy_diagnostic/anchor_path_shape_feature_panel.parquet
+  upstream_lineage_audit_15b: outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/upstream_lineage_audit.csv
+  price_path_completeness_audit_15b: outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/price_path_completeness_audit.csv
+  decision_15c: outputs/publishable/tables/15C_winner_entry_phase_and_mixture_taxonomy_diagnostic/winner_entry_phase_mixture_decision.csv
+  entry_phase_assignment_15c: outputs/publishable/tables/15C_winner_entry_phase_and_mixture_taxonomy_diagnostic/entry_phase_assignment_readout.csv
+  search_accounting_15c: outputs/publishable/tables/15C_winner_entry_phase_and_mixture_taxonomy_diagnostic/search_accounting_audit.csv
+
+outputs:
+  table_dir: outputs/publishable/tables/15C2_winner_soft_shape_membership_diagnostic
+  local_cache_dir: outputs/local_cache/15C2_winner_soft_shape_membership_diagnostic
+  report_path: outputs/publishable/reports/winner_soft_shape_membership_diagnostic_report.md
+  manifest_path: outputs/manifests/15C2_winner_soft_shape_membership_diagnostic_manifest.json
