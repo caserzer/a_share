@@ -44,20 +44,32 @@ Episode 15 不再在同一地基上换 token / family / cohort / model / entry-t
 授权：仅可能授权 15B；不授权任何 entry / 模型 / 仓位 / label 部署。
 ```
 
-### Phase 15B: Path-Defined Winner Separability Diagnostic（条件开启）
+### Phase 15B: Winner Path Shape Taxonomy Diagnostic（本轮新增）
 
 ```text
-前提：15A decision = 15A_material_censoring_with_distinct_slow_winner_surface。
-目标：在 path-defined winner label 上，检验 t0-close 可观测特征对
-      winner / censored / non-winner 是否有可分性（train-only），
-      并预注册新的 morphology independence gate，防止重新发现 compression / reversal。
-注意：15B 仍是 separability 诊断，不是 entry。即使可分，也不直接授权交易。
+前提：15A 已证明 fixed-horizon label 存在 material right-censoring，
+      但 slow winner 未通过已知失败形态独立性读数。
+目标：在任何 separability / signal search 之前，先把 path-defined winner
+      按 realized path shape 做 episode 去重后的 taxonomy diagnostic，
+      区分 smooth trend、stair-step、jump repricing、choppy reversal、
+      slow grind、late rescue 等形态，并检验 entropy 是否提供独立信息。
+裁决：是否存在稳定、可解释、跨 split 可读的 winner path type。
+授权：仅可能授权 15C；不授权任何 entry / 模型 / 仓位 / label 部署。
 ```
 
-### Phase 15C+（远期，仅在 15B 通过后定义）
+### Phase 15C: Path-Shape Label Separability Diagnostic（条件开启）
 
 ```text
-若 path-defined winner 可分，且不是已失败形态换名，
+前提：15B decision = 15B_path_shape_taxonomy_supported_for_label_revision。
+目标：只对 15B 支持的 path type 候选，检验 t0-close 可观测特征是否存在
+      train-only 可分性，并重新做 morphology independence gate。
+注意：15C 仍是 separability 诊断，不是 entry。即使可分，也不直接授权交易。
+```
+
+### Phase 15D+（远期，仅在 15C 通过后定义）
+
+```text
+若 path-shape label 可分，且不是已失败形态换名，
 后续才进入序贯 / 续航范式：t0 不预测终局，只判断 "下一小段是否值得参与"，
 用短 horizon survival label 链式叠加，让市场用后续 path 持续淘汰输家。
 这一阶段才是真正的 winner entry，且 cost 被长持有摊薄。
@@ -71,9 +83,12 @@ Episode 15 不再在同一地基上换 token / family / cohort / model / entry-t
 2. 三档阈值 {0.50, 1.00, 1.50} 预注册冻结，不得用 validation / robustness 事后增减。
 3. 任何 t0-close morphology readout 只用 reference_pos 及之前数据；label 可用未来 path。
 4. slow winner 必须做与 compression / drawdown-reversal 的 overlap 诊断；
-   若只是这些已失败形态换名，不授权 15B。
-5. 15A 是 label 诊断，绝不产生 entry / 模型 / 仓位 / label 部署授权。
-6. entry / cost / universe 三块地基本轮不动（universe 右尾密度可作为另一独立诊断方向，
+   若只是这些已失败形态换名，不直接进入 separability。
+5. 15B 必须先解决 winner path type，而不是把 fast / slow 当成最终 label。
+6. path-shape taxonomy 必须先 episode 去重，再讨论 anchor-row readout。
+7. entropy 只能作为 path-shape descriptor，不能单独定义 winner。
+8. 15A / 15B 都是 label 诊断，绝不产生 entry / 模型 / 仓位 / label 部署授权。
+9. entry / cost / universe 三块地基本轮不动（universe 右尾密度可作为另一独立诊断方向，
    不在 15A scope 内）。
 ```
 

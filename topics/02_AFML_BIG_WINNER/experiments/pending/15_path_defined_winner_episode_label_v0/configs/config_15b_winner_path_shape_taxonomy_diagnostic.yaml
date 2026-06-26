@@ -1,0 +1,35 @@
+run_id: 15B_winner_path_shape_taxonomy_diagnostic
+experiment_id: 15_path_defined_winner_episode_label_v0
+phase_id: 15B
+
+paths:
+  requirement: requirement_15b_winner_path_shape_taxonomy_diagnostic.md
+  source_plan: research_plan.md
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+
+  upstream_requirement_15a: requirement_15a_winner_episode_label_censoring_diagnostic.md
+  upstream_15a_manifest: outputs/manifests/15A_winner_episode_label_censoring_diagnostic_manifest.json
+  upstream_15a_path_defined_label_cache: outputs/local_cache/15A_winner_episode_label_censoring_diagnostic/path_defined_label_panel.parquet
+  upstream_15a_decision: outputs/publishable/tables/15A_winner_episode_label_censoring_diagnostic/winner_episode_label_censoring_decision.csv
+  upstream_15a_winner_set_difference: outputs/publishable/tables/15A_winner_episode_label_censoring_diagnostic/winner_set_difference_readout.csv
+  upstream_15a_time_to_threshold: outputs/publishable/tables/15A_winner_episode_label_censoring_diagnostic/time_to_threshold_distribution_readout.csv
+  upstream_15a_episode_overlap: outputs/publishable/tables/15A_winner_episode_label_censoring_diagnostic/episode_overlap_density_audit.csv
+  upstream_15a_search_accounting: outputs/publishable/tables/15A_winner_episode_label_censoring_diagnostic/search_accounting_audit.csv
+  upstream_15a_lineage: outputs/publishable/tables/15A_winner_episode_label_censoring_diagnostic/upstream_lineage_audit.csv
+
+taxonomy:
+  selected_threshold_id: up50pct
+  selected_threshold_return: 0.50
+  threshold_sensitivity_grid: [up50pct, up100pct, up150pct]
+  min_segment_sessions_for_shape: 10
+  startup_authorization_basis: 15A_material_censoring_finding_not_15A_morphology_verdict
+  manual_research_plan_override: true
+  eligible_train_episode_cluster_min_n: 200
+  material_path_type_min_n: 50
+  material_path_type_min_share: 0.05
+  material_path_type_min_count: 3
+  largest_path_type_share_max: 0.75
+  unclassified_share_max: 0.35
+  representative_disagreement_share_max: 0.35
+  stability_js_extreme_max: 0.30
+  representative_disagreement_extreme_max: 0.50

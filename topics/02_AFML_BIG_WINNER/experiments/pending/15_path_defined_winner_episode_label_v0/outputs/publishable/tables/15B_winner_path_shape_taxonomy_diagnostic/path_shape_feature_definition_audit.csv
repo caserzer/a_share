@@ -1,0 +1,20 @@
+feature_id,feature_role,feature_definition,return_basis,price_basis,used_by_taxonomy_predicate,used_by_medoid,definition_status
+directional_entropy_5state,taxonomy_rule_input;medoid_input,normalized entropy of entry-vol-scaled daily log-return states over large_down/small_down/flat/small_up/large_up,log_return,qfq_close,True,True,pass
+directional_entropy_5state_realized,descriptive_readout_only,same five-state entropy with realized segment volatility scaling; diagnostic only,log_return,qfq_close,False,False,pass
+entry_underwater_days_share,descriptive_readout_only,mean(close_t < segment_start_close),log_return,qfq_close,False,False,pass
+large_up_day_count,taxonomy_rule_input,count(simple_return_t >= 0.095),simple_return_threshold_0p095,qfq_close,True,False,pass
+large_up_day_share,descriptive_readout_only,count(simple_return_t >= 0.095) / segment_sessions,simple_return_threshold_0p095,qfq_close,False,False,pass
+log_time_to_threshold,medoid_input,log1p(time_to_threshold_sessions),log_return,qfq_close,False,True,pass
+ma20_hold_share,descriptive_readout_only,mean(close_t >= trailing 20-session moving average) where MA20 is observable,log_return,qfq_close,False,False,pass
+max_drawdown_before_hit_abs,taxonomy_rule_input;medoid_input,abs(min(close_t / running_max_close_t - 1)),log_return,qfq_close,True,True,pass
+median_recovery_sessions,descriptive_readout_only,median sessions from pullback trough back to prior running peak,log_return,qfq_close,False,False,pass
+path_efficiency,taxonomy_rule_input;medoid_input,abs(log(close_end / close_start)) / sum(abs(daily_log_return_t)); NaN when total variation is zero,log_return,qfq_close,True,True,pass
+positive_day_share,descriptive_readout_only,mean(daily_log_return_t > 0),log_return,qfq_close,False,False,pass
+pullback_10pct_count,descriptive_readout_only,running-peak-to-trough pullback events with drawdown <= -10%,log_return,qfq_close,False,False,pass
+pullback_5pct_count,taxonomy_rule_input,running-peak-to-trough pullback events with drawdown <= -5%,log_return,qfq_close,True,False,pass
+realized_volatility_to_hit,descriptive_readout_only,sample standard deviation of daily log returns over the segment,log_return,qfq_close,False,False,pass
+time_to_threshold_sessions,taxonomy_rule_input,first_threshold_hit_pos - entry_pos,log_return,qfq_close,True,False,pass
+top1_positive_gain_share,taxonomy_rule_input;medoid_input,largest positive daily log return divided by sum of positive daily log returns,log_return,qfq_close,True,True,pass
+top3_positive_gain_share,taxonomy_rule_input;medoid_input,top three positive daily log returns divided by sum of positive daily log returns,log_return,qfq_close,True,True,pass
+trend_line_r2,taxonomy_rule_input;medoid_input,OLS R^2 of log(close_t) on segment session index,log_return,qfq_close,True,True,pass
+underwater_days_share,taxonomy_rule_input;medoid_input,mean(close_t < running_max_close_t),log_return,qfq_close,True,True,pass
