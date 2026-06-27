@@ -36,7 +36,8 @@ Episode 16 的第一步**不是**直接做序贯 entry，而是先做采样几�
 ```text
 目标：在写任何序贯 label / entry 之前，先钉死采样几何真相——
       anchor 数 vs episode cluster 数 vs 时间去重 step 数的真实比例、
-      短窗 horizon 网格、step 间时间重叠、effective sample size、跨 episode 并发折减。
+      短窗 horizon 网格、step 间时间重叠、effective sample size、
+      同 threshold / instrument 的 episode cluster non-overlap lineage audit。
 裁决：序贯范式可用的采样单元与 horizon 候选是什么，anchor 高估了多少倍有效样本，
       effective sample 是否足够、是否跨 split 稳定。
 授权：仅可能授权 16B 设计诊断；不授权任何 sequential label / entry / 收益 / 模型 / separability。
