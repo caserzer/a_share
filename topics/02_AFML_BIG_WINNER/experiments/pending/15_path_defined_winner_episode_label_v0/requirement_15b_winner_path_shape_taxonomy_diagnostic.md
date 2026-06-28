@@ -242,6 +242,7 @@ source_row_key = (instrument, reference_date, row_id, threshold_id)
 15B.winner_interval_start_price <- 15A.entry_price
 15B.winner_interval_end_pos     <- 15A.episode_threshold_pos
 15B.time_to_threshold_sessions  <- 15A.time_to_threshold_sessions
+15B.available_forward_sessions  <- 15A.available_forward_sessions
 15B.first_threshold_hit_pos     <- 15A.episode_threshold_pos
 15B.first_threshold_hit_date    <- qfq trading date at episode_threshold_pos
 15B.entry_volatility_20d        <- 15A.volatility_20d
@@ -304,9 +305,12 @@ winner_interval_end_pos = first_threshold_hit_pos
 winner_interval_start_date = entry_date
 winner_interval_end_date = first_threshold_hit_date
 time_to_threshold_sessions = winner_interval_end_pos - winner_interval_start_pos
+available_forward_sessions = max forward sessions observable from winner_interval_start_pos
+time_to_threshold_available_forward_share = time_to_threshold_sessions / available_forward_sessions
 ```
 
 `path_winner = false` 或 `is_censored = true` 的 rows 不进入 primary taxonomy，只能进入 censoring / non-hit readout。
+若 `available_forward_sessions <= 0` 或缺失，`time_to_threshold_available_forward_share = NaN`，依赖 duration 的 class-specific predicate 视为 false。
 
 ### 6.2 Transitive overlap cluster
 
@@ -737,9 +741,15 @@ large_up_day_share = large_up_day_count / segment_sessions
 ```text
 time_to_threshold_sessions
 log_time_to_threshold = log1p(time_to_threshold_sessions)
+available_forward_sessions
+time_to_threshold_available_forward_share = time_to_threshold_sessions / available_forward_sessions
 ```
 
 Duration 只能作为辅助轴。15B 的 primary taxonomy 不得退化成 fast / slow 二分。
+`time_to_threshold_sessions` 保留为 medoid/readout 维度；`long_duration` 必须使用
+`time_to_threshold_available_forward_share`，而不是绝对 session 数。原因是 validation / robustness
+可能是短压力测试窗，若用 train 冻结的绝对 session q75，会让 duration-driven class 在短窗 split 上结构性不可达。
+这不是允许 validation / robustness 重拟合；归一化比例的 q75 仍只从 train eligible episode clusters 冻结。
 
 ### 8.8 Realized volatility to hit
 
@@ -805,14 +815,17 @@ q_trend_r2_50 / 70
 q_top1_gain_share_70 / 85
 q_top3_gain_share_70 / 85
 q_large_up_day_count_70
-q_time_to_threshold_75
+q_time_to_threshold_available_forward_share_75
 q_pullback_5pct_count_50 / 70
 ```
 
 收紧 `high_gain_concentration` 后，`large_up_day_share` 不再进入任何 predicate，因此不冻结
 `q_large_up_day_share_70`；`large_up_day_share` 降级为 `descriptive_readout_only`（见 §8）。
-`time_to_threshold` 只有 `q_time_to_threshold_75` 被 `long_duration` 使用，故不冻结
-`q_time_to_threshold_50`（其唯一引用方 `medium_or_long_duration` 已在 §9.3 移除）。
+`time_to_threshold_available_forward_share` 只有
+`q_time_to_threshold_available_forward_share_75` 被 `long_duration` 使用，故不冻结
+`q_time_to_threshold_available_forward_share_50`（其唯一引用方 `medium_or_long_duration` 已在 §9.3 移除）。
+不得再用绝对 `q_time_to_threshold_75` 作为 `long_duration` gate；绝对
+`time_to_threshold_sessions` 只能作为 medoid/readout feature。
 
 Drawdown quantile 必须按 absolute drawdown severity 处理，避免 `-0.30` 与 `-0.05` 的方向混淆。
 
@@ -859,12 +872,12 @@ class_specific_required_features =
   unclassified_short_path:
     segment_sessions
   late_rescue_winner:
-    time_to_threshold_sessions, max_drawdown_before_hit, underwater_days_share, path_efficiency
+    time_to_threshold_available_forward_share, max_drawdown_before_hit, underwater_days_share, path_efficiency
   smooth_trend_winner:
     path_efficiency, max_drawdown_before_hit, underwater_days_share,
     top1_positive_gain_share, top3_positive_gain_share, trend_line_r2, directional_entropy_5state
   slow_grind_winner:
-    time_to_threshold_sessions, path_efficiency, max_drawdown_before_hit,
+    time_to_threshold_available_forward_share, path_efficiency, max_drawdown_before_hit,
     underwater_days_share, top1_positive_gain_share, top3_positive_gain_share, trend_line_r2
   stair_step_winner:
     path_efficiency, pullback_5pct_count, max_drawdown_before_hit,
@@ -946,7 +959,7 @@ smooth_overrides_jump =
   and not_high_entropy
 
 long_duration =
-  time_to_threshold_sessions >= q_time_to_threshold_75
+  time_to_threshold_available_forward_share >= q_time_to_threshold_available_forward_share_75
 
 some_pullbacks =
   pullback_5pct_count >= q_pullback_5pct_count_50
@@ -960,6 +973,9 @@ data_quality_blocked =
 ```
 
 `q_max_drawdown_abs_*` 是对 `drawdown_abs` 的 train quantile，不是对负数 drawdown 原值直接取方向不明的分位数。
+`long_duration` 的比例分母必须来自 15A `available_forward_sessions`，不能用 split 内最大日期、
+cluster_end_pos 或完整 qfq 长度重建。这样 duration gate 衡量“在可观测机会窗中较晚触达”，而不是
+“绝对日历上耗时很长”。
 
 ### 9.4 Deterministic class predicates
 
@@ -1447,6 +1463,7 @@ test_15a_path_defined_label_adapter_maps_episode_threshold_pos
 test_censored_rows_excluded_from_primary_taxonomy
 test_execution_dag_assigns_anchor_types_only_after_episode_quantile_fit
 test_train_only_quantiles_do_not_use_validation_or_robustness
+test_long_duration_uses_available_forward_normalized_share
 test_path_efficiency_handles_zero_total_variation_fail_closed
 test_entropy_5state_formula_and_zero_vol_fallback
 test_short_path_missing_entropy_does_not_data_quality_block

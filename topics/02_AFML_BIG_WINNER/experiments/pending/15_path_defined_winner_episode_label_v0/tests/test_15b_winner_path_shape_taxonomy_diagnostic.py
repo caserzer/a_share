@@ -32,6 +32,7 @@ def base_label(rows: list[dict[str, object]]) -> pd.DataFrame:
         "entry_date": "2020-01-02",
         "entry_price": 10.0,
         "time_to_threshold_sessions": 10,
+        "available_forward_sessions": 20,
         "volatility_20d": 0.02,
         "fast_winner_flag": False,
         "slow_winner_flag": True,
@@ -59,7 +60,7 @@ def quantiles() -> dict[str, float]:
         "q_top3_gain_share_70": 0.60,
         "q_top3_gain_share_85": 0.80,
         "q_large_up_day_count_70": 3.0,
-        "q_time_to_threshold_75": 100.0,
+        "q_time_to_threshold_available_forward_share_75": 0.50,
         "q_pullback_5pct_count_50": 1.0,
         "q_pullback_5pct_count_70": 3.0,
     }
@@ -91,9 +92,16 @@ def metric_row(**overrides: object) -> dict[str, object]:
         "top3_positive_gain_share": 0.50,
         "large_up_day_count": 0,
         "time_to_threshold_sessions": 20,
+        "available_forward_sessions": 40,
         "pullback_5pct_count": 0,
     }
     base.update(overrides)
+    if "time_to_threshold_available_forward_share" not in overrides:
+        time_to_threshold = float(base["time_to_threshold_sessions"])
+        available_forward = float(base["available_forward_sessions"])
+        base["time_to_threshold_available_forward_share"] = (
+            time_to_threshold / available_forward if np.isfinite(available_forward) and available_forward > 0 else np.nan
+        )
     return base
 
 
@@ -379,6 +387,47 @@ def test_train_only_quantiles_do_not_use_validation_or_robustness():
     assert quantile_values["q_efficiency_70"] < 1.0
 
 
+def test_long_duration_uses_available_forward_normalized_share():
+    runner = load_runner()
+    frame = pd.DataFrame(
+        [
+            metric_row(
+                source_row_key="S1|2020-01-01|r1|up50pct",
+                row_id="r1",
+                time_to_threshold_sessions=80,
+                available_forward_sessions=100,
+                path_efficiency=0.60,
+                max_drawdown_before_hit=-0.30,
+                max_drawdown_before_hit_abs=0.30,
+                underwater_days_share=0.20,
+                trend_line_r2=0.80,
+                top1_positive_gain_share=0.20,
+                top3_positive_gain_share=0.40,
+            ),
+            metric_row(
+                source_row_key="S1|2020-01-02|r2|up50pct",
+                row_id="r2",
+                time_to_threshold_sessions=80,
+                available_forward_sessions=400,
+                path_efficiency=0.60,
+                max_drawdown_before_hit=-0.30,
+                max_drawdown_before_hit_abs=0.30,
+                underwater_days_share=0.20,
+                trend_line_r2=0.80,
+                top1_positive_gain_share=0.20,
+                top3_positive_gain_share=0.40,
+            ),
+        ]
+    )
+
+    assigned = runner.assign_taxonomy(frame, quantiles())
+
+    assert assigned.loc[0, "predicate_long_duration"]
+    assert assigned.loc[0, "path_type"] == "late_rescue_winner"
+    assert not assigned.loc[1, "predicate_long_duration"]
+    assert assigned.loc[1, "path_type"] != "late_rescue_winner"
+
+
 def test_split_overlap_clusters_excluded_from_rule_fit():
     runner = load_runner()
     extra = [
@@ -405,7 +454,7 @@ def test_split_overlap_clusters_excluded_from_rule_fit():
     quantile_values, fit_pop, _rules = runner.fit_taxonomy_quantiles(taxonomy_fit_frame(extra))
 
     assert len(fit_pop) == 5
-    assert quantile_values["q_time_to_threshold_75"] < 100
+    assert quantile_values["q_time_to_threshold_available_forward_share_75"] < 1.0
 
 
 def test_path_efficiency_handles_zero_total_variation_fail_closed():
@@ -433,6 +482,7 @@ def test_path_efficiency_handles_zero_total_variation_fail_closed():
         episode_threshold_pos=5,
         entry_price=10.0,
         time_to_threshold_sessions=5,
+        available_forward_sessions=10,
         fast_winner_flag=True,
         slow_winner_flag=False,
         volatility_20d=0.02,
@@ -469,6 +519,7 @@ def test_large_up_day_share_uses_segment_session_denominator():
         episode_threshold_pos=4,
         entry_price=10.0,
         time_to_threshold_sessions=4,
+        available_forward_sessions=8,
         fast_winner_flag=True,
         slow_winner_flag=False,
         volatility_20d=0.02,
@@ -505,6 +556,7 @@ def test_entropy_5state_formula_and_zero_vol_fallback():
         episode_threshold_pos=10,
         entry_price=10.0,
         time_to_threshold_sessions=10,
+        available_forward_sessions=20,
         fast_winner_flag=True,
         slow_winner_flag=False,
         volatility_20d=0.0,
@@ -561,6 +613,7 @@ def test_late_rescue_precedence_over_slow_grind():
         [
             metric_row(
                 time_to_threshold_sessions=200,
+                available_forward_sessions=250,
                 path_efficiency=0.60,
                 max_drawdown_before_hit=-0.30,
                 max_drawdown_before_hit_abs=0.30,

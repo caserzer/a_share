@@ -134,7 +134,8 @@ Q2. 在 winner episode 内部，forward 短窗 horizon（候选网格 {5, 8, 13,
 
 Q3. 用 episode-cluster-blocked 与 time-block（非重叠 step）两种去重方案，
     有效独立样本数（effective sample size）相对 anchor 数折减多少？
-    这个折减在 train / validation / robustness 上是否稳定？
+    这个折减在 train / robustness 上是否稳定？
+    validation 是压力测试 / stress-test readout，不进入 split-stability gate。
 
 Q4. 三档阈值 {up50, up100, up150} 下，采样几何如何变化？高阈值 episode 更长，
     是否意味着 step 数更多但 step 间重叠更严重？
@@ -680,7 +681,8 @@ Report 必须用中文写，至少包含：
 6. 同 threshold / instrument 的 episode cluster non-overlap audit，以及是否触发 lineage fail-closed；
 7. episode-cluster-blocked 与 time-block 两种去重方案下的 effective sample 对 anchor 的折减；
 8. 三档阈值下采样几何变化，强调不可外推；
-9. split stability 是否可评估；若 validation / robustness cluster 数不足，必须说明 sparse split caveat；
+9. split stability 是否可评估；若 robustness cluster 数不足，必须说明 sparse split caveat；
+   validation 是压力测试集，只做 stress-test readout，不因 validation cluster 数低于 100 阻断 primary decision；
    若 train 的 `median_episode_length_sessions < primary_horizon_sessions`，必须说明 primary horizon
    下 full-horizon labelable step 可能稀疏，`effective_sample_nontrivial` 失败属于预注册 horizon
    的预期结果而不是实现错误；
@@ -721,8 +723,11 @@ sufficient_episode_clusters:
   episode_cluster_n_train >= 200
 
 minimum_split_support_for_stability_gate:
-  min(episode_cluster_n_train, episode_cluster_n_validation, episode_cluster_n_robustness) >= 100
-  若任一 split 低于 100，geometry_stable_across_splits 不可评估；
+  stability_gate_split_buckets = {train, robustness}
+  min(episode_cluster_n_train, episode_cluster_n_robustness) >= 100
+  validation_usage = stress_test_readout_only
+  validation 是压力测试集，不参与 >=100 的 split-stability support gate；
+  若 train 或 robustness 低于 100，geometry_stable_across_splits 不可评估；
   decision 进入 16A_sampling_geometry_inconclusive_too_sparse，而不是
   16A_sampling_geometry_unstable_across_splits。
 
@@ -734,8 +739,9 @@ effective_sample_nontrivial:
   effective_sample_size_train_primary_horizon >= 200
 
 geometry_stable_across_splits:
-  effective_to_anchor_ratio 在 train / validation / robustness 的 absolute range <= 0.20
+  effective_to_anchor_ratio 在 train / robustness 的 absolute range <= 0.20
   absolute range = max(split_effective_to_anchor_ratio) - min(split_effective_to_anchor_ratio)
+  validation 只作为压力测试 readout 记录，不进入 absolute range；
   仅当 minimum_split_support_for_stability_gate 通过后才计算；否则 split stability 不可评估。
 ```
 
@@ -810,7 +816,7 @@ manual_research_plan_override = true
 selected_threshold_id = up50pct
 threshold_selection_source = inherited_from_15A_lowest_pre_registered_material_censoring_threshold
 geometry_fit_split = none_descriptive_only
-validation_usage = readout_only
+validation_usage = stress_test_readout_only
 robustness_usage = readout_only
 horizon_grid_sessions = {5, 8, 13, 15, 20}
 primary_horizon_sessions = 20
@@ -856,7 +862,8 @@ test_same_threshold_instrument_episode_overlap_fails_closed
 test_forward_return_not_computed_anywhere
 test_threshold_sensitivity_does_not_change_primary_decision
 test_primary_horizon_frozen_at_20_and_5_8_13_15_are_sensitivity_only
-test_sparse_validation_split_makes_stability_not_evaluable_not_unstable
+test_sparse_validation_split_is_stress_readout_and_does_not_block_stability
+test_sparse_robustness_split_makes_stability_not_evaluable_not_unstable
 test_geometry_stable_requires_effective_to_anchor_ratio_absolute_range_within_0p20
 test_primary_horizon_longer_than_median_episode_length_reported_as_expected_sparsity
 test_hard_fail_gate_sources_exist_and_fail_closed_when_missing

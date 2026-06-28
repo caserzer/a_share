@@ -74,6 +74,7 @@ REQUIRED_LABEL_COLUMNS = [
     "threshold_id",
     "threshold_return",
     "time_to_threshold_sessions",
+    "available_forward_sessions",
     "path_winner",
     "is_censored",
     "episode_threshold_pos",
@@ -102,6 +103,7 @@ METRIC_FEATURES = [
     "top1_positive_gain_share",
     "top3_positive_gain_share",
     "time_to_threshold_sessions",
+    "time_to_threshold_available_forward_share",
     "pullback_5pct_count",
     "realized_volatility_to_hit",
 ]
@@ -675,6 +677,13 @@ def _metric_row(row: Any, qfq: dict[str, np.ndarray]) -> dict[str, Any]:
     end = int(row.episode_threshold_pos)
     entry_price = float(row.entry_price)
     threshold_return = float(row.threshold_return)
+    available_forward_sessions = float(getattr(row, "available_forward_sessions", np.nan))
+    time_to_threshold_sessions = float(row.time_to_threshold_sessions)
+    time_to_available_forward_share = (
+        float(time_to_threshold_sessions / available_forward_sessions)
+        if np.isfinite(time_to_threshold_sessions) and np.isfinite(available_forward_sessions) and available_forward_sessions > 0
+        else np.nan
+    )
     close = qfq["close"]
     high = qfq["high"]
     dates = qfq["date"]
@@ -695,7 +704,9 @@ def _metric_row(row: Any, qfq: dict[str, np.ndarray]) -> dict[str, Any]:
         "segment_start_pos": start,
         "segment_end_pos": end,
         "entry_price": entry_price,
-        "time_to_threshold_sessions": float(row.time_to_threshold_sessions),
+        "time_to_threshold_sessions": time_to_threshold_sessions,
+        "available_forward_sessions": available_forward_sessions,
+        "time_to_threshold_available_forward_share": time_to_available_forward_share,
         "fast_winner_flag": bool(row.fast_winner_flag),
         "slow_winner_flag": bool(row.slow_winner_flag),
         "entry_volatility_20d": float(row.volatility_20d) if pd.notna(row.volatility_20d) else np.nan,
@@ -913,7 +924,7 @@ def fit_taxonomy_quantiles(episode_metrics: pd.DataFrame) -> tuple[dict[str, flo
         "q_top3_gain_share_70": ("top3_positive_gain_share", 0.70),
         "q_top3_gain_share_85": ("top3_positive_gain_share", 0.85),
         "q_large_up_day_count_70": ("large_up_day_count", 0.70),
-        "q_time_to_threshold_75": ("time_to_threshold_sessions", 0.75),
+        "q_time_to_threshold_available_forward_share_75": ("time_to_threshold_available_forward_share", 0.75),
         "q_pullback_5pct_count_50": ("pullback_5pct_count", 0.50),
         "q_pullback_5pct_count_70": ("pullback_5pct_count", 0.70),
     }
@@ -934,7 +945,7 @@ def fit_taxonomy_quantiles(episode_metrics: pd.DataFrame) -> tuple[dict[str, flo
         "q_top3_gain_share_70",
         "q_top3_gain_share_85",
         "q_large_up_day_count_70",
-        "q_time_to_threshold_75",
+        "q_time_to_threshold_available_forward_share_75",
         "q_pullback_5pct_count_50",
         "q_pullback_5pct_count_70",
     }
@@ -1013,7 +1024,10 @@ def assign_taxonomy(frame: pd.DataFrame, quantiles: dict[str, float], use_entrop
     ]
     data_quality = missing_any(out, hard_required) | out["path_shape_quality"].isin(["invalid_price_path", "invalid_segment_bounds"])
     jump_missing = missing_any(out, ["top1_positive_gain_share", "top3_positive_gain_share", "large_up_day_count"])
-    late_missing = missing_any(out, ["time_to_threshold_sessions", "max_drawdown_before_hit", "underwater_days_share", "path_efficiency"])
+    late_missing = missing_any(
+        out,
+        ["time_to_threshold_available_forward_share", "max_drawdown_before_hit", "underwater_days_share", "path_efficiency"],
+    )
     smooth_missing = missing_any(
         out,
         [
@@ -1029,7 +1043,7 @@ def assign_taxonomy(frame: pd.DataFrame, quantiles: dict[str, float], use_entrop
     slow_missing = missing_any(
         out,
         [
-            "time_to_threshold_sessions",
+            "time_to_threshold_available_forward_share",
             "path_efficiency",
             "max_drawdown_before_hit",
             "underwater_days_share",
@@ -1078,7 +1092,10 @@ def assign_taxonomy(frame: pd.DataFrame, quantiles: dict[str, float], use_entrop
         out["top3_positive_gain_share"], quantiles.get("q_top3_gain_share_70", np.nan)
     )
     smooth_override = high_eff & mild_dd & high_trend & not_high_entropy
-    long_duration = ge(out["time_to_threshold_sessions"], quantiles.get("q_time_to_threshold_75", np.nan))
+    long_duration = ge(
+        out["time_to_threshold_available_forward_share"],
+        quantiles.get("q_time_to_threshold_available_forward_share_75", np.nan),
+    )
     some_pullbacks = ge(out["pullback_5pct_count"], quantiles.get("q_pullback_5pct_count_50", np.nan))
     many_pullbacks = ge(out["pullback_5pct_count"], quantiles.get("q_pullback_5pct_count_70", np.nan))
     jump = high_gain & ~smooth_override
@@ -1202,7 +1219,7 @@ def path_shape_feature_definition_audit() -> pd.DataFrame:
         "top1_positive_gain_share",
         "top3_positive_gain_share",
         "large_up_day_count",
-        "time_to_threshold_sessions",
+        "time_to_threshold_available_forward_share",
         "pullback_5pct_count",
     }
     medoid = set(MEDOID_FEATURES)
@@ -1215,6 +1232,8 @@ def path_shape_feature_definition_audit() -> pd.DataFrame:
         "large_up_day_share",
         "directional_entropy_5state_realized",
         "realized_volatility_to_hit",
+        "time_to_threshold_sessions",
+        "available_forward_sessions",
     }
     definitions = {
         "directional_entropy_5state": "normalized entropy of entry-vol-scaled daily log-return states over large_down/small_down/flat/small_up/large_up",
@@ -1231,11 +1250,21 @@ def path_shape_feature_definition_audit() -> pd.DataFrame:
         "pullback_10pct_count": "running-peak-to-trough pullback events with drawdown <= -10%",
         "pullback_5pct_count": "running-peak-to-trough pullback events with drawdown <= -5%",
         "realized_volatility_to_hit": "sample standard deviation of daily log returns over the segment",
+        "available_forward_sessions": "available future sessions from anchor entry in the upstream 15A path panel; denominator for normalized duration",
         "time_to_threshold_sessions": "first_threshold_hit_pos - entry_pos",
+        "time_to_threshold_available_forward_share": "time_to_threshold_sessions / available_forward_sessions; NaN when denominator is missing or non-positive",
         "top1_positive_gain_share": "largest positive daily log return divided by sum of positive daily log returns",
         "top3_positive_gain_share": "top three positive daily log returns divided by sum of positive daily log returns",
         "trend_line_r2": "OLS R^2 of log(close_t) on segment session index",
         "underwater_days_share": "mean(close_t < running_max_close_t)",
+    }
+    return_basis_map = {
+        "available_forward_sessions": "duration_session_count",
+        "time_to_threshold_sessions": "duration_session_count",
+        "log_time_to_threshold": "duration_log_session_count",
+        "time_to_threshold_available_forward_share": "duration_share",
+        "large_up_day_count": "simple_return_threshold_0p095",
+        "large_up_day_share": "simple_return_threshold_0p095",
     }
     for feature in sorted(taxonomy | medoid | descriptive):
         roles = []
@@ -1250,7 +1279,7 @@ def path_shape_feature_definition_audit() -> pd.DataFrame:
                 "feature_id": feature,
                 "feature_role": ";".join(roles),
                 "feature_definition": definitions.get(feature, ""),
-                "return_basis": "log_return" if feature not in {"large_up_day_count", "large_up_day_share"} else "simple_return_threshold_0p095",
+                "return_basis": return_basis_map.get(feature, "log_return"),
                 "price_basis": "qfq_close",
                 "used_by_taxonomy_predicate": feature in taxonomy,
                 "used_by_medoid": feature in medoid,
@@ -1339,6 +1368,7 @@ def entropy_incrementality_readout(assignments: pd.DataFrame) -> pd.DataFrame:
     rows = []
     features = [
         "time_to_threshold_sessions",
+        "time_to_threshold_available_forward_share",
         "path_efficiency",
         "max_drawdown_before_hit_abs",
         "underwater_days_share",
