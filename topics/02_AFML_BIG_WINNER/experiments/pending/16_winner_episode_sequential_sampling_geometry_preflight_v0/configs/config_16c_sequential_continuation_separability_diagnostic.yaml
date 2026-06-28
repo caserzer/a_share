@@ -1,0 +1,129 @@
+run_id: 16C_sequential_continuation_separability_diagnostic
+experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0
+phase_id: 16C
+
+paths:
+  requirement: requirement_16c_sequential_continuation_separability_diagnostic.md
+  source_plan: research_plan.md
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+  pit_executable_daily: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  pit_membership_daily: data/processed/universe/pit_topn_400_100_membership_daily.csv
+
+  upstream_16a_requirement: requirement_16a_sequential_sampling_geometry_preflight.md
+  upstream_16a_sampling_geometry_decision: outputs/publishable/tables/16A_sequential_sampling_geometry_preflight/sampling_geometry_decision.csv
+  upstream_16a_effective_sample_size_readout: outputs/publishable/tables/16A_sequential_sampling_geometry_preflight/effective_sample_size_readout.csv
+  upstream_16a_horizon_grid_step_readout: outputs/publishable/tables/16A_sequential_sampling_geometry_preflight/horizon_grid_step_readout.csv
+  upstream_16a_episode_cluster_non_overlap_audit: outputs/publishable/tables/16A_sequential_sampling_geometry_preflight/episode_cluster_non_overlap_audit.csv
+  upstream_16a_manifest: outputs/manifests/16A_sequential_sampling_geometry_preflight_manifest.json
+  upstream_16a_episode_interval_panel: outputs/local_cache/16A_sequential_sampling_geometry_preflight/episode_interval_panel.parquet
+  upstream_16a_step_geometry_panel: outputs/local_cache/16A_sequential_sampling_geometry_preflight/step_geometry_panel.parquet
+
+  upstream_16b_requirement: requirement_16b_sequential_continuation_label_design_diagnostic.md
+  upstream_16b_report: outputs/publishable/reports/sequential_continuation_label_design_diagnostic_report.md
+  upstream_16b_input_artifact_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/input_artifact_audit.csv
+  upstream_16b_upstream_16a_authorization_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/upstream_16a_authorization_audit.csv
+  upstream_16b_step_lineage_adapter_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/step_lineage_adapter_audit.csv
+  upstream_16b_step_materialization_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/step_materialization_audit.csv
+  upstream_16b_label_rule_definition_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/label_rule_definition_audit.csv
+  upstream_16b_base_rate_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_base_rate_readout.csv
+  upstream_16b_by_split_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_by_split_readout.csv
+  upstream_16b_by_horizon_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_by_horizon_sensitivity_readout.csv
+  upstream_16b_by_threshold_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_by_threshold_sensitivity_readout.csv
+  upstream_16b_effective_sample_support_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/effective_sample_label_support_readout.csv
+  upstream_16b_known_failed_overlap_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/known_failed_overlap_readout.csv
+  upstream_16b_price_path_completeness_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/price_path_completeness_audit.csv
+  upstream_16b_qfq_price_source_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/qfq_price_source_audit.csv
+  upstream_16b_search_accounting_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/search_accounting_audit.csv
+  upstream_16b_decision: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/sequential_continuation_label_decision.csv
+  upstream_16b_validation_stress_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/validation_stress_readout.csv
+  upstream_16b_label_panel: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_panel_readout.csv
+  upstream_16b_manifest: outputs/manifests/16B_sequential_continuation_label_design_diagnostic_manifest.json
+  upstream_16b_materialized_step_panel: outputs/local_cache/16B_sequential_continuation_label_design_diagnostic/materialized_step_panel.parquet
+  upstream_16b_continuation_label_step_panel: outputs/local_cache/16B_sequential_continuation_label_design_diagnostic/continuation_label_step_panel.parquet
+  upstream_16b_known_failed_overlap_panel: outputs/local_cache/16B_sequential_continuation_label_design_diagnostic/known_failed_overlap_panel.parquet
+
+  upstream_15b_requirement: SOURCE_EP15_ROOT/requirement_15b_winner_path_shape_taxonomy_diagnostic.md
+  upstream_15b_runner: SOURCE_EP15_ROOT/src/run_15b_winner_path_shape_taxonomy_diagnostic.py
+  upstream_15b_input_artifact_audit: SOURCE_EP15_ROOT/outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/input_artifact_audit.csv
+  upstream_15b_path_shape_feature_definition_audit: SOURCE_EP15_ROOT/outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/path_shape_feature_definition_audit.csv
+  upstream_15b_path_shape_taxonomy_rule_audit: SOURCE_EP15_ROOT/outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/path_shape_taxonomy_rule_audit.csv
+  upstream_15b_path_shape_taxonomy_readout: SOURCE_EP15_ROOT/outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/path_shape_taxonomy_readout.csv
+  upstream_15b_representative_anchor_audit: SOURCE_EP15_ROOT/outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/representative_anchor_audit.csv
+  upstream_15b_split_overlap_audit: SOURCE_EP15_ROOT/outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/split_overlap_audit.csv
+  upstream_15b_membership_audit: SOURCE_EP15_ROOT/outputs/publishable/tables/15B_winner_path_shape_taxonomy_diagnostic/winner_episode_cluster_membership_audit.csv
+  upstream_15b_manifest: SOURCE_EP15_ROOT/outputs/manifests/15B_winner_path_shape_taxonomy_diagnostic_manifest.json
+  upstream_15b_taxonomy_assignment_panel: SOURCE_EP15_ROOT/outputs/local_cache/15B_winner_path_shape_taxonomy_diagnostic/taxonomy_assignment_panel.parquet
+  upstream_15b_anchor_path_shape_feature_panel: SOURCE_EP15_ROOT/outputs/local_cache/15B_winner_path_shape_taxonomy_diagnostic/anchor_path_shape_feature_panel.parquet
+
+  upstream_15c2_known_failed_morphology_overlap_readout: SOURCE_EP15_ROOT/outputs/publishable/tables/15C2_winner_soft_shape_membership_diagnostic/known_failed_morphology_overlap_readout.csv
+  upstream_15c2_anchor_soft_membership_panel: SOURCE_EP15_ROOT/outputs/publishable/tables/15C2_winner_soft_shape_membership_diagnostic/anchor_soft_membership_panel.csv
+
+separability:
+  selected_threshold_id: up50pct
+  primary_horizon_sessions: 20
+  primary_label_id: continuation_survival_h20_no_deep_drawdown
+  next_allowed_requirement: requirement_16d_sequential_continuation_policy_preflight.md
+  upstream_16b_required_decision: 16B_continuation_label_ready_for_separability_diagnostic
+  upstream_16b_required_next_allowed: requirement_16c_sequential_continuation_separability_diagnostic.md
+  board_bucket_allowed_values: [chinext, main_board]
+  known_failed_families: [choppy_reversal_winner, late_rescue_winner, jump_repricing_winner, unclassified_mixed_path]
+  known_failed_anchor_share_threshold: 0.50
+  known_failed_aggregate_count_tolerance: 0
+  hard_projection_anchor_coverage_min: 0.95
+  soft_membership_high_threshold: 0.30
+  soft_overlap_coverage_caveat_min: 0.95
+  feature_missing_rate_max: 0.05
+  pit_missing_rate_max: 0.05
+  cv_n_splits: 5
+  cv_min_positive_n: 50
+  cv_min_negative_n: 50
+  cv_min_episode_cluster_n: 20
+  cv_min_valid_fold_n: 4
+  purge_sessions: 20
+  bootstrap_replicates: 500
+  random_state: 1616
+  max_publishable_score_sample_rows: 5000
+
+power_gates:
+  train_binary_step_n_min: 5000
+  train_positive_n_min: 500
+  train_negative_n_min: 500
+  train_episode_cluster_n_min: 200
+  robustness_binary_step_n_min: 500
+  robustness_positive_n_min: 100
+  robustness_negative_n_min: 100
+  robustness_episode_cluster_n_min: 100
+  primary_model_feature_n_min: 12
+  train_feature_complete_rate_min: 0.95
+  robustness_feature_complete_rate_min: 0.95
+
+separability_gates:
+  grouped_cv_median_roc_auc_min: 0.55
+  grouped_cv_median_pr_auc_lift_min: 0.02
+  grouped_cv_positive_auc_fold_share_min: 0.60
+  purged_cv_median_roc_auc_min: 0.53
+  purged_cv_positive_auc_fold_share_min: 0.60
+  robustness_roc_auc_min: 0.55
+  robustness_pr_auc_lift_min: 0.02
+  robustness_bootstrap_auc_ci_low_min: 0.50
+  non_known_failed_train_binary_step_n_min: 1000
+  non_known_failed_train_positive_n_min: 200
+  non_known_failed_train_negative_n_min: 100
+  non_known_failed_robustness_binary_step_n_min: 200
+  non_known_failed_robustness_positive_n_min: 50
+  non_known_failed_robustness_negative_n_min: 30
+  non_known_failed_robustness_roc_auc_min: 0.52
+  validation_binary_step_n_min: 100
+  validation_positive_n_min: 30
+  validation_negative_n_min: 30
+
+model_registry:
+  primary_model_id: ridge_logistic_bar_state_v1
+  arms:
+    - intercept_only_baseline
+    - ridge_logistic_bar_state_v1
+    - single_depth2_tree_bar_state_v1
+    - univariate_feature_rank_readout
+  allow_hyperparameter_grid: false
+  allow_model_family_grid: false
+  allow_feature_selection_grid: false

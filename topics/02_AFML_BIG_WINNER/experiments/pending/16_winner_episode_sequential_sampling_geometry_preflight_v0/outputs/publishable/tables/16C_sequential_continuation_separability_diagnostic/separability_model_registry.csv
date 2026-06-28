@@ -1,0 +1,4 @@
+model_id,model_family,model_role,hyperparameters,used_for_primary_decision
+intercept_only_baseline,constant_intercept,baseline,positive_rate_train_only,False
+ridge_logistic_bar_state_v1,logistic_regression,primary_diagnostic,penalty=l2;C=1.0;class_weight=balanced;solver=liblinear;max_iter=1000;random_state=1616,True
+single_depth2_tree_bar_state_v1,decision_tree_classifier,secondary_low_capacity_readout,"max_depth=2;min_samples_leaf=max(50,ceil(0.02*train_binary_n));class_weight=balanced;random_state=1616",False
