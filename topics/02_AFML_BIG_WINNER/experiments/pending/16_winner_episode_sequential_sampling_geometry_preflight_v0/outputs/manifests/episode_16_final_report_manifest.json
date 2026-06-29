@@ -1,0 +1,46 @@
+{
+  "artifact_id": "episode_16_final_report",
+  "episode_id": "16_winner_episode_sequential_sampling_geometry_preflight_v0",
+  "closure_state": "EP16_closed_no_next_requirement",
+  "closure_date": "2026-06-29",
+  "generated_at": "2026-06-29T22:06:18+08:00",
+  "report_path": "outputs/publishable/reports/episode_16_final_report.md",
+  "report_sha256": "30614aeed40d65c29bcc21820956133227e13dce4aa2924f9fde454dcd206ab9",
+  "report_line_count": 306,
+  "next_allowed_requirement": "none",
+  "continuation_as_action_mainline_closed": true,
+  "payoff_aligned_label_redo_authorized": false,
+  "chained_action_transition_freeze_authorized": false,
+  "entry_policy_authorized": false,
+  "exit_policy_authorized": false,
+  "holding_policy_authorized": false,
+  "portfolio_backtest_authorized": false,
+  "model_deployment_authorized": false,
+  "production_signal_authorized": false,
+  "live_trading_authorized": false,
+  "source_manifest_hashes": {
+    "16A_sequential_sampling_geometry_preflight_manifest": "1648de2d45b7229733f7920d11ba6552d93a7a446521cb9bee80300f8d143b05",
+    "16B_sequential_continuation_label_design_diagnostic_manifest": "dd3cd7e717901c46d482d06b08a6ad515cb3bb5b91606d1df241a41488263ecd",
+    "16C_sequential_continuation_separability_diagnostic_manifest": "fdf564a7f159fe2311d0397fa479f378d3de8bec585e173c7584f8a821209a4a",
+    "16D_sequential_continuation_policy_preflight_manifest": "88c2ee6d4f1aea310c9b1135b049d4fa984d781f699d245fc46b27fcb0e40aa9",
+    "16E_sequential_continuation_utility_diagnostic_manifest": "bb94b4703c9b6937bab9d3c71d6f3163b730c49aeeb298131acd1ead86c4b62e",
+    "16E_postmortem_continuation_utility_failure_decomposition_manifest": "861cb9745dcd0ea7c42b0c7dc800a0ea48b63eaabf5c575ab089b9881d0232f9",
+    "16X_payoff_aligned_continuation_label_power_precheck_manifest": "bb326f190cfb4ffe523c490b4f48c71caf41b4b75360e5f66e1b65932fcb108c"
+  },
+  "source_decision_states": {
+    "16A": "16A_sampling_geometry_ready_for_sequential_label_design",
+    "16B": "16B_continuation_label_ready_for_separability_diagnostic",
+    "16C": "16C_sequential_continuation_separability_ready_for_policy_preflight",
+    "16D": "16D_policy_preflight_ready_for_utility_diagnostic",
+    "16E": "16E_utility_diagnostic_not_supported",
+    "16E_postmortem": "16E_postmortem_mainline_closed_no_path_supported",
+    "16X": "16X_payoff_precheck_not_supported"
+  },
+  "closure_basis": [
+    "16E primary return utility gate failed at 50bps with robustness full-denominator mean incremental return = -0.005529.",
+    "16E-postmortem directionality gate failed with robustness payoff monotonicity Spearman = 0.030303.",
+    "16E-postmortem selected no A/B/C support path and next_allowed_requirement = none.",
+    "16X payoff separability gate failed with robustness payoff rank IC = 0.051877, payoff monotonicity Spearman = 0.163636, and payoff-minus-survival rank IC margin = -0.000723.",
+    "16X next_allowed_requirement = none and payoff_aligned_label_redo_authorized = false."
+  ]
+}

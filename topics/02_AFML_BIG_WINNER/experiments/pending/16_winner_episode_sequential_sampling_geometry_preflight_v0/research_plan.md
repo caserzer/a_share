@@ -6,10 +6,21 @@ Episode 16 是 Episode 15（path-defined winner label diagnostic）之后的范�
 
 Episode 16 的第一步**不是**直接做序贯 entry，而是先做采样几何 preflight，因为 Episode 15 已经证明 anchor 不是独立样本单元。
 
-**当前进度（2026-06-29）：** 16A / 16B / 16C / 16D 四个 phase 均已在磁盘上完成（report + tables + manifest 齐备），最新已落地裁决为
-`16D_policy_preflight_ready_for_utility_diagnostic`。**当前研究前沿是 16E**（`requirement_16e_sequential_continuation_utility_diagnostic.md`，尚未创建）。下文 §2 各 phase 的"本轮 / 已完成 / 下一步"标注以此为准。
+**当前进度（2026-06-29）：** 16A / 16B / 16C / 16D / 16E、诊断 phase **16E-postmortem** 与
+restart precheck **16X** 均已在磁盘上完成（report + tables + manifest 齐备）。
 
-**路径约定：** 旧 requirement 中出现的绝对 `REPO_ROOT` 只记录作者环境来源；后续 requirement 应使用 repo-relative path 或 resolver alias，不得把 `/home/xiaolv/code/a_share` 当作可移植路径假设。
+- 16E 已落地裁决 `16E_utility_diagnostic_not_supported`（`utility_interpretation = drawdown_reduction_only_return_not_supported`），单步 h20 utility 未过 primary return utility gate，**16F 未被授权**。
+- 16E-postmortem 已落地裁决 **`16E_postmortem_mainline_closed_no_path_supported`**（`next_allowed = none`，`continuation_as_action_mainline_closed = true`，所有 path/authorization 均 false）。`directionality_gate = fail`：train score-decile payoff Spearman = 0.9030（单调），robustness = 0.0303（非单调）。血缘干净（1,812 行 panel replay 全过，max abs_diff 2.84e-14，no-new-computation pass）。预注册的 A/B/C 三条"在现有 survival score 上修补"的路径全部被否决。
+- **根因（postmortem 定量证据）：** robustness 上 `base_rate_positive` 随 score 单调升（D1 0.426 → D10 0.871），但 `mean_continue_return_h20` 在 D5 见顶（5.64%）后回落到 D10 的 3.23% —— 即 16D 的 **survival/0-1 分类概率与 realized payoff magnitude 在 OOS 上解耦**。label 目标（survival 0/1）与决策需要的目标（payoff/utility 排序）是两个不同的量。
+- 16X 已落地裁决 **`16X_payoff_precheck_not_supported`**（`next_allowed = none`，`payoff_aligned_label_redo_authorized = false`，`continuation_as_action_mainline_closed = true`）。16X 的 lineage / feature contract / power / search accounting 全过，但 payoff separability gate 失败：robustness payoff probe rank IC = 0.051877（低于 0.06），decile monotonicity Spearman = 0.163636（非单调），payoff-vs-survival margin = -0.000723（payoff 探针未优于 survival 探针）。
+
+**当前下一步：** 不写 16F，不写 16B2，不启动 A/B/C 或完整 label 重做链。16X 已经证明，在现有
+16C frozen t0 feature contract 下，单纯把 target 换成 realized payoff-severity 仍没有形成可确认的
+robustness payoff rank-separability。continuation-as-action 主线保持关闭；后续应回到 topic 级 research
+direction（entry alpha、更上游 payoff state、或非 continuation-as-action 的研究方向）。
+下文 §2 各 phase 的标注以此为准。
+
+**路径约定：** 旧 requirement 中出现的绝对 `REPO_ROOT` 只记录作者环境来源；后续 requirement 应使用 repo-relative path 或 resolver alias，不得把某台作者机器的 checkout 根路径当作可移植路径假设。
 
 
 ## 1. 从 Episode 15 继承的判断
@@ -93,7 +104,7 @@ Episode 16 的第一步**不是**直接做序贯 entry，而是先做采样几�
 5. robustness defense rate 只有 21.21%，低于 train 的 30.00%，必须作为 coverage/capacity caveat。
 ```
 
-### Phase 16E: Sequential Continuation Utility Diagnostic（本轮 requirement / 下一步）
+### Phase 16E: Sequential Continuation Utility Diagnostic（已完成）
 
 ```text
 前提：16D decision = 16D_policy_preflight_ready_for_utility_diagnostic。
@@ -107,6 +118,23 @@ Episode 16 的第一步**不是**直接做序贯 entry，而是先做采样几�
 必须继承：up50pct、h20、non-overlap full-horizon step、train-only preprocessing、
           train-frozen bottom-30% threshold、known-failed context caveat、neutral denominator caveat。
 授权：若通过，只能授权 16F chained action transition freeze；不得直接授权完整 entry / exit / holding strategy。
+```
+
+16E 的关键证据：
+
+```text
+1. decision = 16E_utility_diagnostic_not_supported；
+2. primary 50bps full-denominator mean incremental return：
+   train = -0.002316，robustness = -0.005529；
+3. drawdown avoidance gate 通过：
+   defended-negative drawdown avoided mean train = 0.166858，robustness = 0.164024；
+4. positive sacrifice 压过 avoided negative utility：
+   robustness defended_positive incremental sum = -32.499665，
+   defended_negative incremental sum = +15.693211；
+5. continued negative leakage 仍重：
+   robustness residual loss share = 1.640967；
+6. non-known-failed context utility 也失败；
+7. 16E 不授权 16F / chained simulation / entry / exit / holding / deployment。
 ```
 
 16E 的 primary readout 应至少包括（前两项为并列首位裁决量：utility 净值由
@@ -133,6 +161,83 @@ Episode 16 的第一步**不是**直接做序贯 entry，而是先做采样几�
    不得默认归零收益、零成本或随机归类）；
 8. all / late_rescue / non_late_rescue / known_failed / non_known_failed 分层 utility；
 9. train / robustness / validation stress readout，primary gate 仍以 robustness 为主。
+```
+
+### Phase 16E-postmortem: Continuation Utility Failure Decomposition（已完成）
+
+```text
+裁决（已落地）：16E_postmortem_mainline_closed_no_path_supported；next_allowed = none；
+  continuation_as_action_mainline_closed = true；selected_path_id = none；所有 path/authorization 均 false。
+关键结果：directionality_gate = fail（train Spearman 0.9030 单调 / robustness Spearman 0.0303 非单调）；
+  thick_tail_mismatch = true（但被 directionality 前置门否决）；efficiency_above_one = false；
+  partial_exposure_feasibility_hint = false；血缘干净（1,812 行 replay 全过，no-new-computation pass）。
+根因：robustness 上分类概率（base_rate_positive D1 0.426 → D10 0.871）与 realized payoff
+  （mean_continue_return D5 峰值 5.64% → D10 3.23%）解耦 —— survival 0/1 label 目标 ≠ payoff 排序目标。
+含义：A/B/C 三条"在现有 survival score 上修补"的路径全部被否决，主线关闭。
+```
+
+```text
+前提：16E decision = 16E_utility_diagnostic_not_supported（仅解释 not_supported，其他裁决不适用）。
+目标：在零新 forward-return / cost / drawdown / refit 计算、不改 threshold(0.457071)、不重选 action semantics 的前提下，
+      只读分解 16E utility panel，回答 not_supported 是"可修复的 classify-then-bolt-on 目标函数 / action 映射错配"
+      还是"信号本身无方向性 utility"的根本失败。
+核心诊断：
+  PM-Q1 六格 incremental 对账（失败算术归因）；
+  PM-Q2 defended_positive vs all_positive 的 upside 分位对比（厚尾错配）；
+  PM-Q3 16E panel 既有 `score` 列的 labelable-row 十分位 mean continue return 单调性
+        （Spearman + monotone/non_monotone/inverted flag）；
+  PM-Q4 loss-avoidance efficiency by score bucket；
+  PM-Q5 drawdown 残值 feasibility hint（只读，禁止 partial-exposure utility 重算）。
+裁决与授权（预注册 A>B>C 优先级，至多授权一条）：
+  路径 A: requirement_16d_prime_utility_weighted_continuation_objective.md
+  路径 B: requirement_16e_overlay_risk_budget_continuation_readout.md
+  路径 C: requirement_16d_meta_continuation_participation_filter.md
+  无路径支持: next_allowed = none，continuation_as_action_mainline_closed = true。
+纪律：绝不计算新 return / cost / drawdown；绝不 refit / 改 threshold / 加 action semantics；
+      绝不授权 16F / chained simulation / entry / exit / holding / portfolio / deployment / live trading。
+```
+
+### Phase 16X: Payoff-aligned Continuation Label Power Precheck（已完成）
+
+```text
+裁决（已落地）：16X_payoff_precheck_not_supported；next_allowed = none；
+  payoff_aligned_label_redo_authorized = false；continuation_as_action_mainline_closed = true。
+关键结果：feature_contract_gate = pass；payoff_target_lineage_gate = pass；power_gate = pass；
+  search_accounting_gate = pass；robustness payoff probe rank IC = 0.051877；
+  survival probe robustness rank IC = 0.052600；payoff-survival margin = -0.000723；
+  robustness payoff decile monotonicity Spearman = 0.163636；cluster-bootstrap CI = [0.007706, 0.097324]。
+含义：train/CV 上 payoff 探针有排序能力（CV median rank IC = 0.176200），但 robustness 上排序弱、
+  不单调、且不优于 survival 探针；不授权 payoff-aligned label 重做链。
+
+前提：16E-postmortem decision = 16E_postmortem_mainline_closed_no_path_supported
+      （仅在主线被明确关闭后才有资格运行；其他裁决均 fail closed）。
+定位：topic-level research direction restart 的单一前置闸门（power precheck），不是 postmortem
+      next_allowed continuation，不是 label 重做、不是建模部署、不是 policy。
+      用最小成本判断 postmortem 暴露的根因（survival 分类概率与 payoff magnitude 在 OOS 解耦）
+      是否可以通过"换目标函数到 payoff-severity"修复，从而值得投入完整重链。
+目标：在不重算价格 / return / cost / drawdown、不 refit 16C model、
+      不改 16C feature contract / threshold(up50pct) / horizon(20) 的前提下，
+      仅从 16C frozen feature panel 既有列（step_end_price_ratio_minus_one_for_label_rule）
+      纯算术派生 payoff-severity target，并且只用 16C `t0_feature_contract.csv`
+      中 `allowed_primary_model_feature == true` 的白名单特征训练固定规格的 survival 探针与 payoff 探针。
+样本纪律：primary probe universe 固定为 binary rows（`is_binary_target == true`，
+      由 continuation_* label columns 派生的 label_class in {positive, negative}），以复用 16C train binary fold assignment；
+      neutral rows 只做 stress/readout，不参与 probe fitting、robustness gate 或授权裁决。
+核心诊断（primary split = robustness）：
+  X-Q1 payoff target 血缘（既有列派生，未重算价格）；
+  X-Q2 survival-vs-payoff 解耦在 feature 层的独立复验；
+  X-Q3 payoff separability power：robustness rank IC + decile payoff monotonicity，
+        且 payoff 探针须显著超过 survival 探针（margin ≥ +0.03）；
+  X-Q4 功效：cluster-bootstrap rank IC CI 是否排除 0，effective sample 是否充分；
+  X-Q5 是否授权 payoff-aligned label 重做链。
+裁决与授权：
+  通过: next_allowed = requirement_16b2_payoff_aligned_continuation_label_design_diagnostic.md；
+  不通过(not_supported): next_allowed = none，主线保持关闭，回到 topic 级 research direction；
+  功效不足(low_power)/lineage/leakage: 对应 blocked 裁决，next_allowed = none。
+纪律：绝不重算价格 / return / cost / drawdown；绝不 refit 16C model；绝不定义 policy / utility / action；
+      绝不用 validation 选择、不用 robustness 调参；
+      绝不授权 16D+ / chained / entry / exit / holding / portfolio / deployment / live trading；
+      至多授权一个 payoff-aligned label 重做链的起点 requirement。
 ```
 
 ### Phase 16F: Chained Action Transition Freeze

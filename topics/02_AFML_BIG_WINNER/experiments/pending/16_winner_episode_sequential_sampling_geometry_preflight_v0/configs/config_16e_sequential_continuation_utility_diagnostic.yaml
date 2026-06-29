@@ -1,0 +1,90 @@
+run_id: 16E_sequential_continuation_utility_diagnostic
+experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0
+phase_id: 16E
+
+paths:
+  requirement: requirement_16e_sequential_continuation_utility_diagnostic.md
+  source_plan: research_plan.md
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+
+  upstream_16d_config: configs/config_16d_sequential_continuation_policy_preflight.yaml
+  upstream_16d_runner: src/run_16d_sequential_continuation_policy_preflight.py
+  upstream_16d_decision: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/sequential_continuation_policy_preflight_decision.csv
+  upstream_16d_upstream_16c_authorization_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/upstream_16c_authorization_audit.csv
+  upstream_16d_score_rebuild_lineage_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/score_rebuild_lineage_audit.csv
+  upstream_16d_feature_contract_replay_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/feature_contract_replay_audit.csv
+  upstream_16d_policy_candidate_registry: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_candidate_registry.csv
+  upstream_16d_policy_threshold_freeze_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_threshold_freeze_audit.csv
+  upstream_16d_policy_action_binding_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_action_binding_audit.csv
+  upstream_16d_policy_confusion_readout: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_confusion_readout.csv
+  upstream_16d_policy_tradeoff_frontier_readout: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_tradeoff_frontier_readout.csv
+  upstream_16d_known_failed_context_rebuild_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/known_failed_context_rebuild_audit.csv
+  upstream_16d_policy_context_stratified_readout: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_context_stratified_readout.csv
+  upstream_16d_neutral_policy_handling_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/neutral_policy_handling_audit.csv
+  upstream_16d_policy_stability_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_stability_audit.csv
+  upstream_16d_search_accounting_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/search_accounting_audit.csv
+  upstream_16d_manifest: outputs/manifests/16D_sequential_continuation_policy_preflight_manifest.json
+  upstream_16d_policy_action_panel: outputs/local_cache/16D_sequential_continuation_policy_preflight/policy_action_panel.parquet
+
+  upstream_16b_decision: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/sequential_continuation_label_decision.csv
+  upstream_16b_base_rate_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_base_rate_readout.csv
+  upstream_16b_qfq_price_source_audit: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/qfq_price_source_audit.csv
+  upstream_16c_decision: outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/sequential_continuation_separability_decision.csv
+  upstream_16c_oos_readout: outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/oos_separability_readout.csv
+
+policy:
+  selected_threshold_id: up50pct
+  primary_horizon_sessions: 20
+  primary_label_id: continuation_survival_h20_no_deep_drawdown
+  primary_model_id: ridge_logistic_bar_state_v1
+  primary_policy_id: defense_bottom_30pct_continuation_score_v1
+  required_16d_decision: 16D_policy_preflight_ready_for_utility_diagnostic
+  required_16d_next_allowed: requirement_16e_sequential_continuation_utility_diagnostic.md
+  next_allowed_requirement: requirement_16f_chained_action_transition_freeze.md
+  max_publishable_utility_panel_sample_rows: 5000
+
+action_semantics:
+  primary_action_semantics_id: full_avoidance_cash_h20_close_to_close_v1
+  decision_time: step_start_date close
+  baseline_action: blind_continue_next_h20
+  continue_exposure: 1.0
+  defend_exposure: 0.0
+  defend_cash_return_h20: 0.0
+  round_trip_defense_cost_bps_grid: [0, 25, 50, 100]
+  primary_round_trip_defense_cost_bps: 50
+  delay_stress_id: one_session_delay_close_to_close_v1
+  validation_used_for_action_semantics_selection: false
+  robustness_used_for_action_semantics_selection: false
+  return_metric_used_for_action_semantics_selection: false
+  cost_metric_used_for_action_semantics_selection: false
+
+power_gates:
+  train_labelable_step_n_min: 10000
+  train_defended_labelable_step_n_min: 3000
+  train_defended_positive_n_min: 1000
+  train_defended_negative_n_min: 1000
+  train_defended_neutral_n_min: 300
+  train_episode_cluster_n_min: 200
+  robustness_labelable_step_n_min: 1000
+  robustness_defended_labelable_step_n_min: 250
+  robustness_defended_positive_n_min: 100
+  robustness_defended_negative_n_min: 100
+  robustness_defended_neutral_n_min: 30
+  robustness_episode_cluster_n_min: 100
+  validation_labelable_step_n_min: 300
+  validation_defended_labelable_step_n_min: 30
+
+context_gates:
+  non_known_failed_train_labelable_step_n_min: 1000
+  non_known_failed_train_defended_labelable_step_n_min: 200
+  non_known_failed_robustness_labelable_step_n_min: 300
+  non_known_failed_robustness_defended_labelable_step_n_min: 50
+
+utility_gates:
+  defended_negative_drawdown_avoided_abs_mean_min: 0.08
+  primary_cost_bps: 50
+  zero_cost_bps: 0
+
+price_validation:
+  close_abs_tolerance: 0.000001
+  max_drawdown_abs_tolerance: 0.000001

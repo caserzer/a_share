@@ -243,6 +243,17 @@ experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/
 experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/src/run_16d_sequential_continuation_policy_preflight.py
 ```
 
+The rebuild path must be side-effect isolated:
+
+```text
+16E may import 16D helper functions and rebuild the panel in memory.
+16E may write the rebuilt primary action panel only under
+  outputs/local_cache/16E_sequential_continuation_utility_diagnostic/
+16E must not invoke 16D full mode in a way that rewrites 16D publishable tables,
+  reports, local caches, or manifests.
+If the only available replay path would mutate 16D artifacts, 16E must fail closed.
+```
+
 If cache exists, it may be used only after proving:
 
 ```text
@@ -464,22 +475,28 @@ continued_neutral
 For each split and context stratum, output per cell:
 
 ```text
+split_bucket
+context_stratum
+cost_bps
+cell_id
+candidate_action
+label_class
 cell_step_n
 continue_return_sum
 continue_return_mean
 continue_max_drawdown_mean
-policy_net_return_sum_0bps
-policy_net_return_sum_25bps
-policy_net_return_sum_50bps
-policy_net_return_sum_100bps
-incremental_return_sum_0bps
-incremental_return_sum_25bps
-incremental_return_sum_50bps
-incremental_return_sum_100bps
-incremental_return_mean_50bps
+policy_net_return_sum
+policy_net_return_mean
+incremental_return_sum
+incremental_return_mean
 drawdown_avoided_abs_sum
 drawdown_avoided_abs_mean
 ```
+
+`six_cell_utility_reconciliation.csv` must use this long schema, with one row
+per `(split_bucket, context_stratum, cost_bps, cell_id)`. Do not emit separate
+`_0bps`, `_25bps`, `_50bps`, or `_100bps` metric columns in this table; the
+`cost_bps` column is the sole cost dimension.
 
 The following identity must hold within tolerance independently for each
 `(split_bucket, context_stratum, cost_bps)`:
@@ -515,16 +532,23 @@ neutral rows enter six-cell reconciliation as defended_neutral or continued_neut
 Required neutral readouts:
 
 ```text
+split_bucket
+cost_bps
 neutral_step_n
 neutral_defended_n
 neutral_continued_n
 neutral_continue_return_mean
-neutral_policy_net_return_mean_50bps
-neutral_incremental_return_sum_50bps
-neutral_incremental_return_mean_50bps
+neutral_policy_net_return_mean
+neutral_incremental_return_sum
+neutral_incremental_return_mean
 neutral_drawdown_avoided_abs_mean
+neutral_utility_gate
 neutral_utility_caveat
 ```
+
+`neutral_utility_readout.csv` must also use a long `cost_bps` schema. The
+report may highlight the primary 50 bps row, but the table schema must not mix
+primary-cost suffix columns with cost-grid rows.
 
 If neutral rows are dropped from primary full-denominator utility or mapped to binary labels:
 
@@ -571,7 +595,7 @@ upstream_16d_authorization_gate = pass
 full_action_panel_rebuild_gate = pass
 utility_price_path_gate = pass
 action_semantics_gate = pass
-utility_binding_gate = pass
+policy_utility_binding_gate = pass
 six_cell_reconciliation_gate = pass
 neutral_utility_gate = pass
 context_utility_rebuild_gate = pass
@@ -624,6 +648,11 @@ validation_stress_low_power_caveat = true
 ```
 
 but do not block primary decision.
+
+Validation power columns are excluded from `primary_power_gate`,
+`context_power_gate`, and the final blocking decision. They may only set
+`validation_stress_low_power_caveat = true` unless a separate lineage failure is
+discovered.
 
 ### 11.3 Primary Return Utility Gates
 
@@ -885,17 +914,49 @@ primary_horizon_sessions
 primary_model_id
 primary_policy_id
 train_binary_step_n
+train_positive_n
+train_negative_n
 train_defended_binary_step_n
 train_defended_negative_n
+train_defense_negative_capture_rate
 train_positive_sacrifice_rate
+train_continue_negative_leakage_rate
 robustness_binary_step_n
+robustness_positive_n
+robustness_negative_n
 robustness_defended_binary_step_n
 robustness_defended_negative_n
+robustness_defense_negative_capture_rate
+robustness_defense_precision_lift_vs_binary_negative_base
 robustness_positive_sacrifice_rate
 robustness_continue_negative_leakage_rate
+non_known_failed_robustness_binary_step_n
+non_known_failed_robustness_negative_n
+non_known_failed_robustness_defended_negative_n
 non_known_failed_robustness_defense_precision_lift
 soft_overlap_partial_coverage_caveat
 known_failed_context_exposure_caveat
+entry_policy_authorized
+exit_policy_authorized
+holding_policy_authorized
+return_backtest_authorized
+cost_model_authorized
+model_deployment_authorized
+production_signal_authorized
+input_artifact_gate
+upstream_16c_authorization_gate
+upstream_16b_label_rebuild_gate
+score_rebuild_lineage_gate
+feature_contract_replay_gate
+score_orientation_gate
+threshold_freeze_gate
+neutral_handling_gate
+policy_action_binding_gate
+known_failed_context_rebuild_gate
+search_accounting_gate
+power_gate
+primary_policy_usefulness_gate
+context_independence_gate
 authorization_status
 blocking_reason
 ```
@@ -1021,6 +1082,7 @@ Same core utility columns as `utility_by_split_readout.csv`, plus:
 ```text
 context_stratum
 valid_context_power
+context_utility_rebuild_gate
 context_utility_status
 context_caveat
 ```
@@ -1237,7 +1299,8 @@ elif any hard lineage gate fails:
   decision_state = 16E_utility_diagnostic_blocked_by_input_or_lineage_failure
   next_allowed_requirement = none
 
-elif any primary or context power gate fails:
+elif any train/robustness primary power gate fails
+     or any non-known-failed context power gate fails:
   decision_state = 16E_utility_diagnostic_low_power
   next_allowed_requirement = none
 

@@ -1,0 +1,77 @@
+run_id: 16E_postmortem_continuation_utility_failure_decomposition
+experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0
+phase_id: 16E_postmortem
+
+paths:
+  requirement: requirement_16e_postmortem_continuation_utility_failure_decomposition.md
+  source_plan: research_plan.md
+
+  upstream_16e_decision: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/sequential_continuation_utility_decision.csv
+  upstream_16e_input_artifact_audit: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/input_artifact_audit.csv
+  upstream_16e_upstream_16d_authorization_audit: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/upstream_16d_authorization_audit.csv
+  upstream_16e_full_action_panel_rebuild_audit: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/full_action_panel_rebuild_audit.csv
+  upstream_16e_single_step_action_semantics_audit: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/single_step_action_semantics_audit.csv
+  upstream_16e_utility_price_path_audit: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/utility_price_path_audit.csv
+  upstream_16e_policy_utility_binding_audit: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/policy_utility_binding_audit.csv
+  upstream_16e_six_cell_utility_reconciliation: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/six_cell_utility_reconciliation.csv
+  upstream_16e_utility_by_split_readout: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/utility_by_split_readout.csv
+  upstream_16e_utility_by_context_readout: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/utility_by_context_readout.csv
+  upstream_16e_positive_sacrifice_utility_readout: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/positive_sacrifice_utility_readout.csv
+  upstream_16e_negative_avoidance_utility_readout: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/negative_avoidance_utility_readout.csv
+  upstream_16e_continued_negative_leakage_utility_readout: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/continued_negative_leakage_utility_readout.csv
+  upstream_16e_neutral_utility_readout: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/neutral_utility_readout.csv
+  upstream_16e_search_accounting_audit: outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/search_accounting_audit.csv
+  upstream_16e_manifest: outputs/manifests/16E_sequential_continuation_utility_diagnostic_manifest.json
+  upstream_16e_utility_panel: outputs/local_cache/16E_sequential_continuation_utility_diagnostic/utility_panel.parquet
+
+  upstream_16d_decision: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/sequential_continuation_policy_preflight_decision.csv
+  upstream_16d_policy_threshold_freeze_audit: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_threshold_freeze_audit.csv
+  upstream_16d_policy_confusion_readout: outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_confusion_readout.csv
+
+expected_16e:
+  decision_state: 16E_utility_diagnostic_not_supported
+  next_allowed_requirement: none
+  utility_interpretation: drawdown_reduction_only_return_not_supported
+  primary_label_id: continuation_survival_h20_no_deep_drawdown
+  selected_threshold_id: up50pct
+  primary_horizon_sessions: 20
+  primary_model_id: ridge_logistic_bar_state_v1
+  primary_policy_id: defense_bottom_30pct_continuation_score_v1
+  primary_action_semantics_id: full_avoidance_cash_h20_close_to_close_v1
+  primary_round_trip_defense_cost_bps: 50
+  threshold_value: 0.457071
+  primary_return_utility_gate: fail
+  drawdown_avoidance_gate: pass
+  delay_stress_gate: fail
+  context_power_gate: pass
+  context_utility_gate: fail
+  six_cell_reconciliation_gate: pass
+  search_accounting_gate: pass
+
+diagnostic:
+  primary_cost_bps: 50
+  epsilon: 0.000000000001
+  replay_tolerance: 0.000000001
+  score_decile_count: 10
+  candidate_defend_region_deciles: [1, 2, 3]
+  monotone_spearman_min: 0.6
+  non_monotone_abs_spearman_max: 0.3
+  inverted_spearman_max: -0.6
+  robustness_unstable_spearman_min: 0.3
+  defended_positive_upside_mean_ratio_min: 0.80
+  defended_positive_upside_q75_ratio_min: 0.80
+  loss_avoidance_efficiency_min: 1.0
+  defended_negative_drawdown_median_min: 0.10
+  defended_positive_upside_median_max: 0.08
+  drawdown_to_upside_median_ratio_min: 1.50
+
+power_gates:
+  train_binary_step_n_min: 10000
+  train_defended_positive_n_min: 1000
+  train_defended_negative_n_min: 1000
+  robustness_binary_step_n_min: 1000
+  robustness_defended_positive_n_min: 100
+  robustness_defended_negative_n_min: 100
+  min_rows_per_score_decile_train: 200
+  min_rows_per_score_decile_robustness: 30
+  validation_binary_step_n_min: 300

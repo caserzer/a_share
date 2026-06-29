@@ -1,0 +1,84 @@
+run_id: 16X_payoff_aligned_continuation_label_power_precheck
+experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0
+phase_id: 16X
+
+paths:
+  requirement: requirement_16x_payoff_aligned_continuation_label_power_precheck.md
+  source_plan: research_plan.md
+
+  upstream_16e_postmortem_decision: outputs/publishable/tables/16E_postmortem_continuation_utility_failure_decomposition/continuation_utility_failure_postmortem_decision.csv
+  upstream_16e_postmortem_score_bucket_monotonicity_readout: outputs/publishable/tables/16E_postmortem_continuation_utility_failure_decomposition/score_bucket_monotonicity_readout.csv
+  upstream_16e_postmortem_manifest: outputs/manifests/16E_postmortem_continuation_utility_failure_decomposition_manifest.json
+
+  upstream_16c_decision: outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/sequential_continuation_separability_decision.csv
+  upstream_16c_oos_separability_readout: outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/oos_separability_readout.csv
+  upstream_16c_t0_feature_contract: outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_contract.csv
+  upstream_16c_t0_feature_panel: outputs/local_cache/16C_sequential_continuation_separability_diagnostic/t0_feature_panel.parquet
+  upstream_16c_separability_score_panel: outputs/local_cache/16C_sequential_continuation_separability_diagnostic/separability_score_panel.parquet
+  upstream_16c_fold_assignment_panel: outputs/local_cache/16C_sequential_continuation_separability_diagnostic/fold_assignment_panel.parquet
+
+  upstream_16b_decision: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/sequential_continuation_label_decision.csv
+  upstream_16b_base_rate_readout: outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_base_rate_readout.csv
+
+expected_postmortem:
+  decision_state: 16E_postmortem_mainline_closed_no_path_supported
+  next_allowed_requirement: none
+  continuation_as_action_mainline_closed: true
+  selected_path_id: none
+  directionality_gate: fail
+  train_monotonicity_spearman: 0.903030
+  robustness_monotonicity_spearman: 0.030303
+  robustness_non_monotone_flag: true
+  thick_tail_mismatch_flag: true
+  no_new_computation_gate: pass
+  tolerance: 0.000001
+
+expected_16c:
+  decision_state: 16C_sequential_continuation_separability_ready_for_policy_preflight
+  primary_model_id: ridge_logistic_bar_state_v1
+  primary_model_feature_n: 27
+
+expected_16b:
+  primary_label_id: continuation_survival_h20_no_deep_drawdown
+  selected_threshold_id: up50pct
+  primary_horizon_sessions: 20
+
+target:
+  payoff_target_id: realized_h20_payoff_severity_v1
+  payoff_ordinal_target_id: realized_h20_payoff_tercile_v1
+  payoff_base_column: step_end_price_ratio_minus_one_for_label_rule
+  close_ratio_tolerance: 0.0000000001
+  primary_probe_universe: binary_positive_negative_rows_only
+
+probe:
+  survival_probe_id: survival_logistic_probe_v1
+  payoff_probe_id: payoff_rank_probe_v1
+  survival_family: ridge_logistic
+  payoff_family: ridge_regression
+  logistic_c: 1.0
+  ridge_alpha: 1.0
+  random_seed: 20260629
+  train_cv_fold_column: episode_cluster_grouped_cv_fold
+  cv_min_valid_fold_n: 5
+  preprocessing: train_median_impute_then_winsorized_robust_scale
+
+bootstrap:
+  cluster_key: episode_cluster_id
+  resample_n: 2000
+  ci_level: 0.95
+  random_seed: 20260629
+  min_valid_resample_rate: 0.95
+
+power_gates:
+  train_primary_probe_step_n_min: 10000
+  train_episode_cluster_n_min: 200
+  robustness_primary_probe_step_n_min: 1000
+  robustness_episode_cluster_n_min: 100
+  robustness_payoff_finite_rate_min: 0.99
+  validation_primary_probe_step_n_min: 300
+
+separability_gates:
+  robustness_payoff_probe_rank_ic_spearman_min: 0.06
+  payoff_decile_monotonicity_spearman_min: 0.6
+  payoff_minus_survival_rank_ic_margin_min: 0.03
+  cv_payoff_rank_ic_median_min: 0.06
