@@ -1,0 +1,128 @@
+run_id: 17C_oracle_robustness_stress
+experiment_id: 17_oracle_action_value_upper_bound_diagnostic
+phase_id: 17C
+
+paths:
+  requirement: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/requirement_17c_oracle_robustness_stress.md
+  research_plan: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/research_plan.md
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+
+  seventeen_b_input_gate_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/17b_input_gate_audit.csv
+  seventeen_b_contract_validation_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/17a_contract_validation_audit.csv
+  seventeen_b_row_replay_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_row_replay_audit.csv
+  seventeen_b_ladder_summary: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_ladder_summary.csv
+  seventeen_b_six_cell_decomposition: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_six_cell_decomposition.csv
+  seventeen_b_action_intensity_frontier: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_action_intensity_frontier.csv
+  seventeen_b_neutral_stress: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_neutral_stress.csv
+  seventeen_b_o2_drawdown_threshold_replay: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_o2_drawdown_threshold_replay.csv
+  seventeen_b_o5_action_selection_proof: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_o5_action_selection_proof.csv
+  seventeen_b_high_upside_threshold_freeze: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_high_upside_threshold_freeze.csv
+  seventeen_b_ladder_decision: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_ladder_decision.csv
+  seventeen_b_search_accounting_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/search_accounting_audit.csv
+  seventeen_b_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/17B_oracle_ladder_replay_manifest.json
+  seventeen_b_engine_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/oracle_ladder_replay_engine_manifest.json
+  seventeen_b_input_artifact_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/input_artifact_manifest_17b.json
+  seventeen_b_row_level_panel: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/local_cache/17B_oracle_ladder_replay/oracle_ladder_panel.parquet
+
+  seventeen_a_action_contract: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/oracle_action_contract.md
+  seventeen_a_denominator_contract: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/oracle_denominator_contract.md
+  seventeen_a_delayed_materialization_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/delayed_materialization_audit.csv
+  seventeen_a_capacity_reconstruction_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/capacity_reconstruction_audit.csv
+  seventeen_a_replay_engine_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/oracle_replay_engine_manifest.json
+
+expected_denominator:
+  train:
+    labelable_step_n: 20245
+    binary_step_n: 14962
+    neutral_step_n: 5283
+    positive_n: 10078
+    negative_n: 4884
+  robustness:
+    labelable_step_n: 2496
+    binary_step_n: 1872
+    neutral_step_n: 624
+    positive_n: 1346
+    negative_n: 526
+  validation:
+    labelable_step_n: 664
+    binary_step_n: 505
+    neutral_step_n: 159
+    positive_n: 325
+    negative_n: 180
+
+decision:
+  primary_decision_split: robustness
+  primary_cost_bps: 50
+  primary_q_defend: 0.0
+  primary_candidate_variants:
+    - O1_negative_primary
+    - O2_dd_10pct_primary
+    - O4_label_positive_primary
+    - O5_perfect_utility_primary
+  label_or_path_variants:
+    - O1_negative_primary
+    - O2_dd_10pct_primary
+    - O4_label_positive_primary
+  next_allowed_requirement: requirement_17d_oracle_diagnosis_report.md
+
+materiality:
+  robustness_mean_incremental_floor: 0.0025
+  robustness_trimmed_mean_floor: 0.0
+  cluster_bootstrap_ci_low_floor: 0.0
+  topk_removed_mean_floor: 0.0
+  matched_base_min_pass_share: 0.75
+  matched_min_bucket_step_n: 20
+  delayed_mean_incremental_floor: 0.0025
+  capacity_mean_incremental_floor: 0.0025
+
+stats:
+  trim_fraction_each_tail: 0.01
+  winsor_fraction_each_tail: 0.01
+
+bootstrap:
+  iterations: 1000
+  ci_alpha: 0.05
+  random_seed: 20260630
+  min_cluster_n_primary: 20
+  primary_required_families:
+    - episode_cluster_id
+    - instrument
+    - calendar_month
+  readout_only_families:
+    - calendar_quarter
+
+topk:
+  removal_families:
+    - remove_top_1_instrument
+    - remove_top_3_instruments
+    - remove_top_5_instruments
+    - remove_top_1pct_episodes
+
+matched_base:
+  hard_required_families:
+    calendar_month:
+      min_evaluable_bucket_n: 6
+    calendar_quarter:
+      min_evaluable_bucket_n: 4
+    instrument_board_bucket:
+      min_evaluable_bucket_n: 2
+  readout_only_families:
+    - known_failed_context_bucket
+    - market_regime_bucket
+
+delayed:
+  k_sessions: [3, 5, 10]
+  delayed_action_semantics: within_original_h20_switch_v1
+  cost_bps: 50
+  q_defend: 0.0
+  q_continue: 1.0
+  holding_cost: 0.0
+
+capacity:
+  capacity_cap_id: appendix_only_inherited_from_17a
+  max_active_positions:
+  max_gross_exposure:
+  max_per_name_exposure:
+  max_turnover_per_day:
+  max_board_concentration:
+  capacity_selection_sort_key: drawdown_abs_for_reporting_desc

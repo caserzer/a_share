@@ -1,0 +1,55 @@
+{
+  "action_contract_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/17_oracle_action_value_upper_bound_diagnostic/oracle_action_contract.md",
+  "action_contract_sha256": "396aed709644fd676394281595c1716cb3e87a8dc6ccb536346d8f11f6978fc4",
+  "capacity_reconstruction_gate": "appendix_only",
+  "cost_grid_bps": [
+    0,
+    25,
+    50,
+    100
+  ],
+  "delayed_action_semantics": "within_original_h20_switch_v1",
+  "delayed_k_sessions": [
+    3,
+    5,
+    10
+  ],
+  "denominator_contract_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/17_oracle_action_value_upper_bound_diagnostic/oracle_denominator_contract.md",
+  "denominator_contract_sha256": "18ff78b77ee0312ec4be6b29d3712fe5d3cf480776396a97162ea722c3b34a9e",
+  "ep16_utility_replay_gate": "pass",
+  "learned_score_reference_gate": "pass",
+  "o6_status_for_17b": "appendix_only_nonblocking",
+  "oracle_denominator_binding_hash": "2a1b537772dd15cdfcb1994a807a01b4ca065595d13829771991b2d1cb8657ac",
+  "price_path_replay_gate": "pass",
+  "primary_action_semantics_id": "full_avoidance_cash_h20_close_to_close_v1",
+  "primary_denominator_counts": {
+    "robustness": {
+      "binary_step_n": 1872,
+      "labelable_step_n": 2496,
+      "negative_n": 526,
+      "neutral_step_n": 624,
+      "positive_n": 1346
+    },
+    "train": {
+      "binary_step_n": 14962,
+      "labelable_step_n": 20245,
+      "negative_n": 4884,
+      "neutral_step_n": 5283,
+      "positive_n": 10078
+    },
+    "validation": {
+      "binary_step_n": 505,
+      "labelable_step_n": 664,
+      "negative_n": 180,
+      "neutral_step_n": 159,
+      "positive_n": 325
+    }
+  },
+  "primary_round_trip_defense_cost_bps": 50,
+  "qfq_price_source": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq",
+  "qfq_price_source_hash_or_snapshot_id": "directory_not_hashed",
+  "replay_engine_id": "oracle_replay_contract_preflight_v1",
+  "replay_engine_version": "1",
+  "search_accounting_gate": "pass",
+  "six_cell_sanity_gate": "pass"
+}

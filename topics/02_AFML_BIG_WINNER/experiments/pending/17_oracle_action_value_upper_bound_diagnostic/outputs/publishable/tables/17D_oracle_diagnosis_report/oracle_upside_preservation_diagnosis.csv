@@ -1,0 +1,5 @@
+oracle_variant_id,threshold_id,train_quantile,train_absolute_payoff_cutoff,defended_step_n,defended_rate,mean_incremental_return,topk_removed_mean_min,bootstrap_ci_low_min,topk_gate,bootstrap_gate,overdefense_flag,payoff_preservation_support_gate,interpretation
+O4_label_positive_primary,label_positive_primary,,,526.0,0.280982905982906,0.0246811054592491,0.0219532246671135,0.0151430343397461,pass,pass,True,pass,payoff_preservation_positive
+O4_high_upside_top30_stress,high_upside_top30_stress,0.7,0.0596330275229357,1644.0,0.6586538461538461,0.0221233568732035,0.0197306089766156,0.0134325200518954,pass,pass,True,pass,payoff_preservation_positive
+O4_high_upside_top20_stress,high_upside_top20_stress,0.8,0.1012285086722715,1910.0,0.7652243589743589,0.0131576759237319,0.0110830496894125,0.0035809576149638,pass,pass,True,pass,payoff_preservation_positive
+O4_high_upside_top10_stress,high_upside_top10_stress,0.9,0.1721071844362347,2207.0,0.8842147435897436,-0.0032990494023749,-0.0050467007760296,-0.0164397146766146,fail,fail,True,pass,payoff_preservation_failed_or_overdefended

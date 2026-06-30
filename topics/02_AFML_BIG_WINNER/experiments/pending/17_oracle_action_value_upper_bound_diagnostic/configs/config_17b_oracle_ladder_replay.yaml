@@ -1,0 +1,101 @@
+run_id: 17B_oracle_ladder_replay
+experiment_id: 17_oracle_action_value_upper_bound_diagnostic
+phase_id: 17B
+
+paths:
+  requirement: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/requirement_17b_oracle_ladder_replay.md
+  research_plan: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/research_plan.md
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+
+  seventeen_a_decision: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/oracle_replay_contract_decision.csv
+  seventeen_a_denominator_lineage_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/denominator_lineage_audit.csv
+  seventeen_a_oracle_denominator_binding: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/oracle_denominator_binding.csv
+  seventeen_a_action_semantics_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/action_semantics_audit.csv
+  seventeen_a_replay_price_path_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/replay_price_path_audit.csv
+  seventeen_a_delayed_materialization_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/delayed_materialization_audit.csv
+  seventeen_a_input_artifact_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17A_oracle_replay_contract_preflight/input_artifact_audit.csv
+  seventeen_a_denominator_contract: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/oracle_denominator_contract.md
+  seventeen_a_action_contract: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/oracle_action_contract.md
+  seventeen_a_replay_engine_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/oracle_replay_engine_manifest.json
+  seventeen_a_input_artifact_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/input_artifact_manifest.json
+
+  upstream_16e_utility_panel: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/local_cache/16E_sequential_continuation_utility_diagnostic/utility_panel.parquet
+
+policy:
+  selected_threshold_id: up50pct
+  primary_horizon_sessions: 20
+  primary_label_id: continuation_survival_h20_no_deep_drawdown
+  primary_model_id: ridge_logistic_bar_state_v1
+  primary_policy_id: defense_bottom_30pct_continuation_score_v1
+  next_allowed_requirement: requirement_17c_oracle_robustness_stress.md
+
+expected_denominator:
+  train:
+    labelable_step_n: 20245
+    binary_step_n: 14962
+    neutral_step_n: 5283
+    positive_n: 10078
+    negative_n: 4884
+  robustness:
+    labelable_step_n: 2496
+    binary_step_n: 1872
+    neutral_step_n: 624
+    positive_n: 1346
+    negative_n: 526
+  validation:
+    labelable_step_n: 664
+    binary_step_n: 505
+    neutral_step_n: 159
+    positive_n: 325
+    negative_n: 180
+
+source_panel:
+  expected_raw_rows: 93620
+  expected_primary_rows: 23405
+  cost_tier_count: 4
+  primary_source_cost_bps: 50
+
+action_semantics:
+  q_continue: 1.0
+  q_defend_grid: [0.0, 0.25, 0.5]
+  primary_q_defend: 0.0
+  cost_grid_bps: [0, 25, 50, 100]
+  primary_cost_bps: 50
+  cash_return: 0.0
+  holding_cost: 0.0
+
+oracle_variants:
+  o2_drawdown_thresholds:
+    O2_dd_10pct_primary: -0.10
+    O2_dd_08pct_stress: -0.08
+    O2_dd_12pct_stress: -0.12
+    O2_dd_15pct_stress: -0.15
+    O2_dd_20pct_stress: -0.20
+  o4_high_upside_train_quantiles:
+    O4_high_upside_top30_stress: 0.70
+    O4_high_upside_top20_stress: 0.80
+    O4_high_upside_top10_stress: 0.90
+
+decision:
+  primary_decision_split: robustness
+  primary_ladder_metric: trimmed_mean_incremental_return
+  primary_ladder_metric_floor: 0.0
+  primary_ladder_materiality_metric: mean_incremental_return
+  primary_ladder_materiality_floor: 0.0025
+  primary_ladder_cost_bps: 50
+  primary_ladder_q_defend: 0.0
+  primary_ladder_candidate_variants:
+    - O1_negative_primary
+    - O2_dd_10pct_primary
+    - O4_label_positive_primary
+    - O5_perfect_utility_primary
+
+stats:
+  trim_fraction_each_tail: 0.01
+  winsor_fraction_each_tail: 0.01
+
+tolerances:
+  qfq_close_abs_tolerance: 0.000000001
+  return_abs_tolerance: 0.000000001
+  drawdown_abs_tolerance: 0.000000001
+  count_abs_tolerance: 0

@@ -1,0 +1,20 @@
+{
+  "bootstrap_cluster_sampling_rule": "sample clusters with replacement using frozen per-group deterministic seed",
+  "matched_base_bucket_derivation": {
+    "calendar_month": "YYYY-MM from step_start_date",
+    "calendar_quarter": "YYYYQn from step_start_date",
+    "instrument_board_bucket": "instrument prefix SH60/SH68/SZ00/SZ30"
+  },
+  "o6_capacity_formula_or_status": "appendix_only_nonblocking",
+  "o7_delayed_formula": "prefix + (1+prefix) * q_remaining - cost_if_defend; baseline original H20 blind continue",
+  "o7_delayed_gap_retention": "gap = delayed_mean - O5_t0_mean; retention = delayed_mean / O5_t0_mean",
+  "search_accounting_constants": {
+    "no_model_training": true,
+    "no_validation_selection": true
+  },
+  "topk_removal_denominator_rule": "remaining_mean_incremental_return = remaining_sum_incremental_return / original_observed_step_n",
+  "trim_winsor_definitions": {
+    "trim_fraction_each_tail": 0.01,
+    "winsor_fraction_each_tail": 0.01
+  }
+}

@@ -1,0 +1,179 @@
+run_id: 17A_oracle_replay_contract_preflight
+experiment_id: 17_oracle_action_value_upper_bound_diagnostic
+phase_id: 17A
+
+paths:
+  requirement: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/requirement_17a_oracle_replay_contract_preflight.md
+  research_plan: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/research_plan.md
+  research_conclusions: research_conclusions.md
+  stock_daily_qfq_dir: data/raw/akshare/day/qfq
+
+  upstream_16b_decision: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/sequential_continuation_label_decision.csv
+  upstream_16b_base_rate_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_base_rate_readout.csv
+  upstream_16b_step_materialization_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/step_materialization_audit.csv
+  upstream_16b_qfq_price_source_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/qfq_price_source_audit.csv
+  upstream_16b_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16B_sequential_continuation_label_design_diagnostic_manifest.json
+
+  upstream_16d_decision: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16D_sequential_continuation_policy_preflight/sequential_continuation_policy_preflight_decision.csv
+  upstream_16d_policy_threshold_freeze_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_threshold_freeze_audit.csv
+  upstream_16d_policy_action_binding_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_action_binding_audit.csv
+  upstream_16d_policy_confusion_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_confusion_readout.csv
+  upstream_16d_policy_context_stratified_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16D_sequential_continuation_policy_preflight/policy_context_stratified_readout.csv
+  upstream_16d_known_failed_context_rebuild_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16D_sequential_continuation_policy_preflight/known_failed_context_rebuild_audit.csv
+  upstream_16d_search_accounting_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16D_sequential_continuation_policy_preflight/search_accounting_audit.csv
+  upstream_16d_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16D_sequential_continuation_policy_preflight_manifest.json
+  upstream_16d_policy_action_panel: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/local_cache/16D_sequential_continuation_policy_preflight/policy_action_panel.parquet
+
+  upstream_16e_decision: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/sequential_continuation_utility_decision.csv
+  upstream_16e_single_step_action_semantics_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/single_step_action_semantics_audit.csv
+  upstream_16e_utility_price_path_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/utility_price_path_audit.csv
+  upstream_16e_policy_utility_binding_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/policy_utility_binding_audit.csv
+  upstream_16e_six_cell_utility_reconciliation: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/six_cell_utility_reconciliation.csv
+  upstream_16e_utility_by_split_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/utility_by_split_readout.csv
+  upstream_16e_negative_avoidance_utility_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/negative_avoidance_utility_readout.csv
+  upstream_16e_search_accounting_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/search_accounting_audit.csv
+  upstream_16e_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16E_sequential_continuation_utility_diagnostic_manifest.json
+  upstream_16e_utility_panel: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/local_cache/16E_sequential_continuation_utility_diagnostic/utility_panel.parquet
+
+  upstream_16e_postmortem_decision: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_postmortem_continuation_utility_failure_decomposition/continuation_utility_failure_postmortem_decision.csv
+  upstream_16e_postmortem_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16E_postmortem_continuation_utility_failure_decomposition_manifest.json
+
+  upstream_16x_decision: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/payoff_aligned_label_power_precheck_decision.csv
+  upstream_16x_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16X_payoff_aligned_continuation_label_power_precheck_manifest.json
+
+policy:
+  selected_threshold_id: up50pct
+  primary_horizon_sessions: 20
+  primary_label_id: continuation_survival_h20_no_deep_drawdown
+  primary_model_id: ridge_logistic_bar_state_v1
+  primary_policy_id: defense_bottom_30pct_continuation_score_v1
+  threshold_value: 0.4570714890970447
+  threshold_abs_tolerance: 0.000000000001
+  next_allowed_requirement: requirement_17b_oracle_ladder_replay.md
+
+expected_denominator:
+  train:
+    labelable_step_n: 20245
+    binary_step_n: 14962
+    neutral_step_n: 5283
+    positive_n: 10078
+    negative_n: 4884
+  robustness:
+    labelable_step_n: 2496
+    binary_step_n: 1872
+    neutral_step_n: 624
+    positive_n: 1346
+    negative_n: 526
+  validation:
+    labelable_step_n: 664
+    binary_step_n: 505
+    neutral_step_n: 159
+    positive_n: 325
+    negative_n: 180
+
+expected_16d_reference:
+  train:
+    binary_step_n: 14962
+    positive_n: 10078
+    negative_n: 4884
+    defended_binary_step_n: 4489
+    defended_negative_n: 2299
+    defense_negative_capture_rate: 0.47072072072072074
+    positive_sacrifice_rate: 0.21730502083746775
+    continue_negative_leakage_rate: 0.5292792792792793
+  robustness:
+    binary_step_n: 1872
+    positive_n: 1346
+    negative_n: 526
+    defended_binary_step_n: 397
+    defended_negative_n: 196
+    defense_negative_capture_rate: 0.3726235741444867
+    defense_precision_lift_vs_binary_negative_base: 0.21271986479795046
+    positive_sacrifice_rate: 0.14933135215453194
+    continue_negative_leakage_rate: 0.6273764258555133
+  validation:
+    binary_step_n: 505
+    positive_n: 325
+    negative_n: 180
+    defended_binary_step_n: 158
+    defended_negative_n: 81
+    defense_negative_capture_rate: 0.45
+    defense_precision_lift_vs_binary_negative_base: 0.1562225842837448
+    positive_sacrifice_rate: 0.23692307692307693
+    continue_negative_leakage_rate: 0.55
+
+expected_16e_sanity:
+  primary_round_trip_defense_cost_bps: 50
+  robustness_full_denominator_mean_incremental_return_50bps: -0.005529136777913869
+  robustness_defended_negative_drawdown_avoided_abs_mean: 0.164024392171124
+  utility_mean_abs_tolerance: 0.000000001
+  drawdown_abs_tolerance: 0.000000001
+  split_counts:
+    train:
+      labelable_step_n: 20245
+      defended_labelable_step_n: 5584
+      defended_positive_n: 2190
+      defended_negative_n: 2299
+      defended_neutral_n: 1095
+    robustness:
+      labelable_step_n: 2496
+      defended_labelable_step_n: 486
+      defended_positive_n: 201
+      defended_negative_n: 196
+      defended_neutral_n: 89
+    validation:
+      labelable_step_n: 664
+      defended_labelable_step_n: 183
+      defended_positive_n: 77
+      defended_negative_n: 81
+      defended_neutral_n: 25
+
+action_semantics:
+  baseline_action: blind_continue_h20
+  primary_action_semantics_id: full_avoidance_cash_h20_close_to_close_v1
+  round_trip_defense_cost_bps_grid: [0, 25, 50, 100]
+  primary_round_trip_defense_cost_bps: 50
+  cash_return: 0.0
+  holding_cost: 0.0
+  validation_used_for_action_selection: false
+  robustness_used_for_action_selection: false
+  return_metric_used_for_action_selection: false
+  cost_selected_by_oos_result: false
+  action_families:
+    - action_family_id: blind_continue
+      q_continue: 1.0
+      q_defend: 1.0
+    - action_family_id: full_defend_exit_cash
+      q_continue: 1.0
+      q_defend: 0.0
+    - action_family_id: partial_defend_50pct
+      q_continue: 1.0
+      q_defend: 0.5
+    - action_family_id: partial_defend_25pct
+      q_continue: 1.0
+      q_defend: 0.25
+    - action_family_id: delayed_decision_k
+      q_continue: 1.0
+      q_defend: 0.0
+    - action_family_id: learned_score_reference
+      q_continue: 1.0
+      q_defend: 0.0
+
+delayed_action:
+  delayed_action_semantics: within_original_h20_switch_v1
+  delayed_k_sessions: [3, 5, 10]
+  restart_h20_at_t0_plus_k: false
+  partial_tail_fill_used: false
+
+capacity:
+  force_appendix_only: true
+  capacity_cap_config_frozen: true
+  turnover_cost_config_frozen: true
+  max_active_positions: 50
+  max_gross_exposure: 1.0
+  max_per_name_exposure: 0.05
+
+tolerances:
+  count_abs_tolerance: 0
+  rate_abs_tolerance: 0.000000001
+  sum_abs_tolerance: 0.000000001

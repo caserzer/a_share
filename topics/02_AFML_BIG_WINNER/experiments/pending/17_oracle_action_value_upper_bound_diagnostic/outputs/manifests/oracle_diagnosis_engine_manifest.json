@@ -1,0 +1,16 @@
+{
+  "formulas": {
+    "O2 threshold value decay": "threshold mean minus O2_dd_08pct_stress mean",
+    "O4 overdefense flag": "top10 high-upside fails while top30/top20 pass",
+    "O5 headroom gaps": "O5 mean minus best O1/O2/O4 mean",
+    "O5 upper-bound gate": "O5 primary support + mean >= materiality floor + bootstrap/topk positive",
+    "capacity execution block gate": "capacity fail only if capacity reconstruction is evaluable and constraint fails",
+    "contract validation gate": "pass iff no 17d_contract_validation_audit row has validation_status == fail",
+    "current-feature gap gate": "16D ready + 16E return fail/drawdown pass + 16E six-cell pass + 16X payoff separability fail",
+    "delayed support gate": "robustness and validation best delayed rows pass topk/bootstrap/matched, gap floor, and retention floor",
+    "final decision priority": "binding Section 7 priority order",
+    "label/path support gate": "any O1/O2/O4 primary_support_gate passes"
+  },
+  "phase_id": "17D",
+  "run_id": "17D_oracle_diagnosis_report"
+}

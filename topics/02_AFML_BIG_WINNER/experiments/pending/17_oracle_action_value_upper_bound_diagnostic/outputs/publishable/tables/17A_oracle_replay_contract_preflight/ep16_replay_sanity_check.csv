@@ -1,0 +1,13 @@
+sanity_check_id,split_bucket,cost_bps,expected_value,observed_value,abs_diff,tolerance,source_table,sanity_status,blocking_reason
+16d_threshold_value,all,,0.4570714890970447,0.4570714890970447,0.0,1e-12,policy_threshold_freeze_audit.csv,pass,
+16d_binary_confusion_counts,train,,0.0,0.0,0.0,0.0,policy_confusion_readout.csv,pass,
+16e_labelable_denominator_counts,train,50.0,20245.0,20245.0,0.0,0.0,utility_by_split_readout.csv,pass,
+16d_binary_confusion_counts,robustness,,0.0,0.0,0.0,0.0,policy_confusion_readout.csv,pass,
+16e_labelable_denominator_counts,robustness,50.0,2496.0,2496.0,0.0,0.0,utility_by_split_readout.csv,pass,
+16d_binary_confusion_counts,validation,,0.0,0.0,0.0,0.0,policy_confusion_readout.csv,pass,
+16e_labelable_denominator_counts,validation,50.0,664.0,664.0,0.0,0.0,utility_by_split_readout.csv,pass,
+16e_primary_50bps_robustness_mean_incremental_return,robustness,50.0,-0.005529136777913869,-0.0055291367779138,6.938893903907228e-17,1e-09,utility_by_split_readout.csv,pass,
+16e_primary_robustness_defended_negative_drawdown_avoided_mean,robustness,50.0,0.164024392171124,0.164024392171124,0.0,1e-09,negative_avoidance_utility_readout.csv,pass,
+16e_six_cell_incremental_sum_identity,train,50.0,0.0,7.105427357601002e-15,7.105427357601002e-15,1e-09,six_cell_utility_reconciliation.csv,pass,
+16e_six_cell_incremental_sum_identity,robustness,50.0,0.0,0.0,0.0,1e-09,six_cell_utility_reconciliation.csv,pass,
+16e_six_cell_incremental_sum_identity,validation,50.0,0.0,2.6645352591003757e-15,2.6645352591003757e-15,1e-09,six_cell_utility_reconciliation.csv,pass,

@@ -1,0 +1,5 @@
+oracle_variant_id,oracle_family,split_bucket,cost_bps,q_defend,observed_step_n,defended_rate,mean_incremental_return,trimmed_mean_incremental_return,bootstrap_ci_low_min,topk_removed_mean_min,matched_base_pass_share_min,o5_gap_vs_variant_mean,support_gate,interpretation_tag
+O5_perfect_utility_primary,O5,robustness,50,0.0,2496.0,0.4230769230769231,0.0294674283651707,0.0275943673077863,0.0216611512316187,0.0269013599521258,1.0,0.0,pass,perfect_utility_upper_bound
+O1_negative_primary,O1,robustness,50,0.0,1872.0,0.280982905982906,0.0246811054592491,0.024747045815724,0.0148459546837011,0.0219532246671135,1.0,0.004786322905921601,pass,label_negative_support
+O2_dd_10pct_primary,O2,robustness,50,0.0,2496.0,0.2107371794871795,0.0185108290944368,0.0182199628099478,0.0113682244275859,0.0164649185003351,1.0,0.010956599270733898,pass,drawdown_path_risk_support
+O4_label_positive_primary,O4,robustness,50,0.0,1872.0,0.280982905982906,0.0246811054592491,0.024747045815724,0.0151430343397461,0.0219532246671135,1.0,0.004786322905921601,pass,payoff_preservation_support

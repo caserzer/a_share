@@ -1,0 +1,10 @@
+oracle_id,oracle_name,primary_denominator_type,expected_primary_row_count_train,expected_primary_row_count_robustness,expected_primary_row_count_validation,neutral_stress_required,appendix_only_allowed,skip_is_blocking,binding_status,blocking_reason
+O0,No Oracle Baseline,labelable_full,20245,2496,664,False,False,True,pass,
+O1,Perfect Negative Oracle,binary_primary,14962,1872,505,True,False,True,pass,
+O2,Perfect Deep Drawdown Oracle,labelable_full,20245,2496,664,False,False,True,pass,
+O3,Perfect False-repair Oracle,appendix_only_if_join_incomplete,20245,2496,664,False,True,False,pass,
+O4,Positive Preservation Oracle,binary_primary,14962,1872,505,True,False,True,pass,
+O5,Perfect Utility Oracle,labelable_full,20245,2496,664,False,False,True,pass,
+O6,Capacity-constrained Utility Oracle,labelable_full_if_capacity_gate_passes,20245,2496,664,False,True,False,pass,
+O7,Delayed Utility Oracle,labelable_full,20245,2496,664,False,False,True,pass,
+L0,16D Learned-score Reference,binary_fit_labelable_replay,14962,1872,505,False,False,True,pass,

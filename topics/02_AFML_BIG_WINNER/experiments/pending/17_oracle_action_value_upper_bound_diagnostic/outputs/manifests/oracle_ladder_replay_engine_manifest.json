@@ -1,0 +1,270 @@
+{
+  "action_intensity_grid": [
+    0.0,
+    0.25,
+    0.5
+  ],
+  "cost_grid": [
+    0,
+    25,
+    50,
+    100
+  ],
+  "denominator_binding": {
+    "O0": "labelable_full",
+    "O1": "binary_primary",
+    "O2": "labelable_full",
+    "O3": "skipped_nonblocking",
+    "O4": "binary_primary",
+    "O5": "labelable_full"
+  },
+  "drawdown_formula": "min(qfq_close[start:end]/qfq_close[start]-1)",
+  "drawdown_sign_convention": "signed nonpositive; positive abs fields never compared to O2 thresholds",
+  "high_upside_threshold_source": "train_only",
+  "o5_action_selection_formula_by_cost_intensity": "defend if defend_net_return(q_defend,cost_bps) > continue_net_return",
+  "oracle_definitions": [
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O0",
+      "oracle_name": "No Oracle Baseline",
+      "oracle_variant_id": "O0_blind_continue_primary",
+      "oracle_variant_name": "Blind continue all",
+      "primary_variant": true,
+      "rule": "continue_all"
+    },
+    {
+      "denominator_type": "binary_primary",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O1",
+      "oracle_name": "Perfect Negative Oracle",
+      "oracle_variant_id": "O1_negative_primary",
+      "oracle_variant_name": "Label negative primary",
+      "primary_variant": true,
+      "rule": "negative_defend"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.1,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_10pct_primary",
+      "oracle_variant_name": "Signed drawdown <= -10%",
+      "primary_variant": true,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "binary_primary",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_label_positive_primary",
+      "oracle_variant_name": "Label positive primary",
+      "primary_variant": true,
+      "rule": "positive_continue"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O5",
+      "oracle_name": "Perfect Utility Oracle",
+      "oracle_variant_id": "O5_perfect_utility_primary",
+      "oracle_variant_name": "Perfect utility primary",
+      "primary_variant": true,
+      "rule": "perfect_utility"
+    }
+  ],
+  "oracle_variant_definitions": [
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O0",
+      "oracle_name": "No Oracle Baseline",
+      "oracle_variant_id": "O0_blind_continue_primary",
+      "oracle_variant_name": "Blind continue all",
+      "primary_variant": true,
+      "rule": "continue_all"
+    },
+    {
+      "denominator_type": "binary_primary",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O1",
+      "oracle_name": "Perfect Negative Oracle",
+      "oracle_variant_id": "O1_negative_primary",
+      "oracle_variant_name": "Label negative primary",
+      "primary_variant": true,
+      "rule": "negative_defend"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.1,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_10pct_primary",
+      "oracle_variant_name": "Signed drawdown <= -10%",
+      "primary_variant": true,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.08,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_08pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -8%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.12,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_12pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -12%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.15,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_15pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -15%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.2,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_20pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -20%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "binary_primary",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_label_positive_primary",
+      "oracle_variant_name": "Label positive primary",
+      "primary_variant": true,
+      "rule": "positive_continue"
+    },
+    {
+      "denominator_type": "labelable_high_upside_stress",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": 0.059633027522935755,
+      "high_upside_threshold_id": "high_upside_top30_stress",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_high_upside_top30_stress",
+      "oracle_variant_name": "high_upside_top30_stress",
+      "primary_variant": false,
+      "rule": "high_upside_continue"
+    },
+    {
+      "denominator_type": "labelable_high_upside_stress",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": 0.10122850867227151,
+      "high_upside_threshold_id": "high_upside_top20_stress",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_high_upside_top20_stress",
+      "oracle_variant_name": "high_upside_top20_stress",
+      "primary_variant": false,
+      "rule": "high_upside_continue"
+    },
+    {
+      "denominator_type": "labelable_high_upside_stress",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": 0.17210718443623474,
+      "high_upside_threshold_id": "high_upside_top10_stress",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_high_upside_top10_stress",
+      "oracle_variant_name": "high_upside_top10_stress",
+      "primary_variant": false,
+      "rule": "high_upside_continue"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O5",
+      "oracle_name": "Perfect Utility Oracle",
+      "oracle_variant_id": "O5_perfect_utility_primary",
+      "oracle_variant_name": "Perfect utility primary",
+      "primary_variant": true,
+      "rule": "perfect_utility"
+    }
+  ],
+  "primary_ladder_gate_constants": {
+    "primary_decision_split": "robustness",
+    "primary_ladder_candidate_variants": [
+      "O1_negative_primary",
+      "O2_dd_10pct_primary",
+      "O4_label_positive_primary",
+      "O5_perfect_utility_primary"
+    ],
+    "primary_ladder_cost_bps": 50,
+    "primary_ladder_materiality_floor": 0.0025,
+    "primary_ladder_materiality_metric": "mean_incremental_return",
+    "primary_ladder_metric": "trimmed_mean_incremental_return",
+    "primary_ladder_metric_floor": 0.0,
+    "primary_ladder_q_defend": 0.0
+  },
+  "qfq_replay_tolerance": {
+    "count_abs_tolerance": 0,
+    "drawdown_abs_tolerance": 1e-09,
+    "qfq_close_abs_tolerance": 1e-09,
+    "return_abs_tolerance": 1e-09
+  },
+  "return_formula": "baseline=forward_return_h20; defend=q_defend*forward_return_h20-cost_bps/10000; incremental=policy-baseline",
+  "row_key": [
+    "step_id",
+    "label_id",
+    "threshold_id",
+    "instrument",
+    "episode_cluster_id",
+    "horizon_sessions",
+    "step_index",
+    "step_start_date",
+    "step_end_date"
+  ],
+  "trim_winsor_definitions": {
+    "trim_fraction_each_tail": 0.01,
+    "winsor_fraction_each_tail": 0.01
+  }
+}

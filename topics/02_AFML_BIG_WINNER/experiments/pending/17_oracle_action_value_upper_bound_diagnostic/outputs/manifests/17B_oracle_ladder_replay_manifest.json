@@ -1,0 +1,316 @@
+{
+  "canonical_field_mapping": {
+    "drawdown_avoided_abs": {
+      "rule": "positive reporting field only, never used for O2 threshold comparison",
+      "source": "drawdown_avoided_abs"
+    },
+    "forward_return_h20": {
+      "rule": "recompute from qfq close-to-close, then reconcile to source",
+      "source": "continue_return_h20"
+    },
+    "qfq_path_status": {
+      "rule": "canonical status for 17B qfq replay",
+      "source": "utility_price_status"
+    },
+    "realized_h20_payoff": {
+      "rule": "alias of forward_return_h20",
+      "source": "continue_return_h20"
+    },
+    "signed_max_drawdown_h20": {
+      "rule": "recompute as signed negative qfq path drawdown",
+      "source": "continue_max_drawdown_h20"
+    }
+  },
+  "config_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/17_oracle_action_value_upper_bound_diagnostic/configs/config_17b_oracle_ladder_replay.yaml",
+  "config_sha256": "bcd50b7dbde5f70c1e9cf1e4a2bcbd9ce8c8f3aa51ffbe91f4aed98cb938b4fb",
+  "cost_grid": [
+    0,
+    25,
+    50,
+    100
+  ],
+  "created_at_utc": "2026-06-30T10:33:47.948089+00:00",
+  "decision_state": "EP17B_oracle_ladder_ready_for_robustness",
+  "drawdown_sign_convention": "signed_max_drawdown_h20 <= 0; O2 compares signed drawdown to negative thresholds",
+  "entry_policy_authorized": false,
+  "exit_policy_authorized": false,
+  "experiment_id": "17_oracle_action_value_upper_bound_diagnostic",
+  "git_commit_if_available": "",
+  "holding_policy_authorized": false,
+  "input_artifact_hashes": {
+    "requirement": "0fade15bbc86f8303691752d5792139fdc8e27513d8b40b6618ac6f82ab1db0e",
+    "research_plan": "6ca172e3c2587e2042b3a914537208e45523ec53e9d0c139ab4bcd139a8259b7",
+    "seventeen_a_action_contract": "396aed709644fd676394281595c1716cb3e87a8dc6ccb536346d8f11f6978fc4",
+    "seventeen_a_action_semantics_audit": "507f5a5dd643971fe500d5d8983cf63675ebfb5352605673cceee6072210274e",
+    "seventeen_a_decision": "c40481003bf970f9742cf7daa8cc475ea1f15d1cf2a8497caaa86b8dd020daa8",
+    "seventeen_a_delayed_materialization_audit": "188990c5ecb939fe537b94ace664a9c046318e7061aaef236b51c3cf2b34ef16",
+    "seventeen_a_denominator_contract": "18ff78b77ee0312ec4be6b29d3712fe5d3cf480776396a97162ea722c3b34a9e",
+    "seventeen_a_denominator_lineage_audit": "0e59cd6064c5dc3e8b41c234a7f196e145954a20279263f995bd69cef887e64f",
+    "seventeen_a_input_artifact_audit": "155ab967ddf7abec88ddfeb6da7c2dc7eb0b133e7d7531327375feb6c8063e71",
+    "seventeen_a_input_artifact_manifest": "85b8e1835f61873c80c79bcff642aa58f9f607936e6b91d9e5aa4ea3e6616052",
+    "seventeen_a_oracle_denominator_binding": "2a1b537772dd15cdfcb1994a807a01b4ca065595d13829771991b2d1cb8657ac",
+    "seventeen_a_replay_engine_manifest": "0773a263e786e361a6bc282be7b4f9b490ccbaeeb76a1a59e3f1313f1a057f58",
+    "seventeen_a_replay_price_path_audit": "cf5bc94198475f958576936501e048430ee895226c8a57f38e717e0c1efb8f32",
+    "upstream_16e_utility_panel": "c17ac602e3ae4b7c2c2d70d2d7178091782a978983d192c89b908c8a96362713"
+  },
+  "live_trading_authorized": false,
+  "model_deployment_authorized": false,
+  "next_allowed_requirement": "requirement_17c_oracle_robustness_stress.md",
+  "o2_drawdown_variant_grid": {
+    "O2_dd_08pct_stress": -0.08,
+    "O2_dd_10pct_primary": -0.1,
+    "O2_dd_12pct_stress": -0.12,
+    "O2_dd_15pct_stress": -0.15,
+    "O2_dd_20pct_stress": -0.2
+  },
+  "o3_status": "skipped_nonblocking",
+  "o4_high_upside_variant_grid": [
+    {
+      "blocking_reason": "",
+      "oracle_variant_id": "O4_high_upside_top30_stress",
+      "robustness_applied_cutoff": 0.059633027522935755,
+      "split_local_recompute_used": false,
+      "threshold_freeze_gate": "pass",
+      "threshold_id": "high_upside_top30_stress",
+      "train_absolute_payoff_cutoff": 0.059633027522935755,
+      "train_quantile": 0.7,
+      "train_row_count": 20245,
+      "validation_applied_cutoff": 0.059633027522935755
+    },
+    {
+      "blocking_reason": "",
+      "oracle_variant_id": "O4_high_upside_top20_stress",
+      "robustness_applied_cutoff": 0.10122850867227151,
+      "split_local_recompute_used": false,
+      "threshold_freeze_gate": "pass",
+      "threshold_id": "high_upside_top20_stress",
+      "train_absolute_payoff_cutoff": 0.10122850867227151,
+      "train_quantile": 0.8,
+      "train_row_count": 20245,
+      "validation_applied_cutoff": 0.10122850867227151
+    },
+    {
+      "blocking_reason": "",
+      "oracle_variant_id": "O4_high_upside_top10_stress",
+      "robustness_applied_cutoff": 0.17210718443623474,
+      "split_local_recompute_used": false,
+      "threshold_freeze_gate": "pass",
+      "threshold_id": "high_upside_top10_stress",
+      "train_absolute_payoff_cutoff": 0.17210718443623474,
+      "train_quantile": 0.9,
+      "train_row_count": 20245,
+      "validation_applied_cutoff": 0.17210718443623474
+    }
+  ],
+  "o5_action_recomputed_per_cost_intensity": true,
+  "o6_status_inherited": "appendix_only_nonblocking",
+  "oracle_variant_definitions": [
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O0",
+      "oracle_name": "No Oracle Baseline",
+      "oracle_variant_id": "O0_blind_continue_primary",
+      "oracle_variant_name": "Blind continue all",
+      "primary_variant": true,
+      "rule": "continue_all"
+    },
+    {
+      "denominator_type": "binary_primary",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O1",
+      "oracle_name": "Perfect Negative Oracle",
+      "oracle_variant_id": "O1_negative_primary",
+      "oracle_variant_name": "Label negative primary",
+      "primary_variant": true,
+      "rule": "negative_defend"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.1,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_10pct_primary",
+      "oracle_variant_name": "Signed drawdown <= -10%",
+      "primary_variant": true,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.08,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_08pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -8%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.12,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_12pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -12%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.15,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_15pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -15%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": -0.2,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O2",
+      "oracle_name": "Perfect Deep Drawdown Oracle",
+      "oracle_variant_id": "O2_dd_20pct_stress",
+      "oracle_variant_name": "Signed drawdown <= -20%",
+      "primary_variant": false,
+      "rule": "drawdown_threshold"
+    },
+    {
+      "denominator_type": "binary_primary",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_label_positive_primary",
+      "oracle_variant_name": "Label positive primary",
+      "primary_variant": true,
+      "rule": "positive_continue"
+    },
+    {
+      "denominator_type": "labelable_high_upside_stress",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": 0.059633027522935755,
+      "high_upside_threshold_id": "high_upside_top30_stress",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_high_upside_top30_stress",
+      "oracle_variant_name": "high_upside_top30_stress",
+      "primary_variant": false,
+      "rule": "high_upside_continue"
+    },
+    {
+      "denominator_type": "labelable_high_upside_stress",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": 0.10122850867227151,
+      "high_upside_threshold_id": "high_upside_top20_stress",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_high_upside_top20_stress",
+      "oracle_variant_name": "high_upside_top20_stress",
+      "primary_variant": false,
+      "rule": "high_upside_continue"
+    },
+    {
+      "denominator_type": "labelable_high_upside_stress",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": 0.17210718443623474,
+      "high_upside_threshold_id": "high_upside_top10_stress",
+      "oracle_id": "O4",
+      "oracle_name": "Positive Preservation Oracle",
+      "oracle_variant_id": "O4_high_upside_top10_stress",
+      "oracle_variant_name": "high_upside_top10_stress",
+      "primary_variant": false,
+      "rule": "high_upside_continue"
+    },
+    {
+      "denominator_type": "labelable_full",
+      "drawdown_threshold": null,
+      "high_upside_cutoff": null,
+      "high_upside_threshold_id": "",
+      "oracle_id": "O5",
+      "oracle_name": "Perfect Utility Oracle",
+      "oracle_variant_id": "O5_perfect_utility_primary",
+      "oracle_variant_name": "Perfect utility primary",
+      "primary_variant": true,
+      "rule": "perfect_utility"
+    }
+  ],
+  "output_hashes": {
+    "action_intensity_frontier": "cb8ada660cd0e8f36f25413ddde978e7526936679581fb4418abe212b8b4d520",
+    "decision": "7d3493c4a05975caae392993b59ae4e770e2057deba6af4471dbb403e098d0a5",
+    "high_upside_threshold_freeze": "0ab46b8f5044126bf17456702f8eb9c94d93f3d1ab5f2f96b89c05b52a78c5f2",
+    "input_gate_audit": "8dd675653114c8c4fcfee89f46d595d25f3c1de9b4d982ff9c3e0a7c8bbc8759",
+    "ladder_net_utility_figure": "1b7a78c4719d46b455d97b3e2561598eb3e9f3c25834ef314abf2f9404f197e5",
+    "ladder_summary": "d7a9f8ad465cd0b9908348af35a964dc17c7d571be983ac1fce618a7c3475d97",
+    "neutral_stress": "60932f4d84f5b2705db8b597aafde9f3b4edf776fe8c833469d21e46a4fda330",
+    "o2_drawdown_threshold_replay": "d9b56f0bf7d84a8700959ef2e1b5550f6aa8e5f44c61febacdc14ad3514753e6",
+    "o5_action_selection_proof": "4ca16a5ba518b5e9a62cfaa02f2eaa92681b6f0ebf53fad6176701087c8f8e4f",
+    "report": "b9735433e62ee7fa1089799541ca997a4d867a55a9c553beb683a02449779eab",
+    "row_replay_audit": "59f6142a8415b8cfe898348e146c637d47775456a9d9f3011703bd8a2a991c54",
+    "sacrifice_vs_avoidance_figure": "4435d3efa8526fc47e5a9247f571e4163992d1936b04c85458e6bb6a432d7a8d",
+    "search_accounting_audit": "c427c4eea7340661fc3e6ebcdde8e4bd0e7f3237772f42c221977c10cab933d8",
+    "seventeen_a_contract_validation_audit": "4ca5e315a3186bf8978c5182a6c0d6938fa3ba7db532f2b69ce595b823fe55b4",
+    "six_cell_decomposition": "cd27a9a371d95a9fcd84ed104f73d08077fb660990424d361abbd71d20edc180"
+  },
+  "phase_id": "17B",
+  "portfolio_backtest_authorized": false,
+  "primary_cost_bps": 50,
+  "primary_ladder_candidate_variants": [
+    "O1_negative_primary",
+    "O2_dd_10pct_primary",
+    "O4_label_positive_primary",
+    "O5_perfect_utility_primary"
+  ],
+  "primary_ladder_cost_bps": 50,
+  "primary_ladder_materiality_floor": 0.0025,
+  "primary_ladder_materiality_metric": "mean_incremental_return",
+  "primary_ladder_metric": "trimmed_mean_incremental_return",
+  "primary_ladder_metric_floor": 0.0,
+  "primary_q_defend": 0.0,
+  "production_signal_authorized": false,
+  "python_version": "3.12.4",
+  "q_defend_grid": [
+    0.0,
+    0.25,
+    0.5
+  ],
+  "requirement_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/17_oracle_action_value_upper_bound_diagnostic/requirement_17b_oracle_ladder_replay.md",
+  "requirement_sha256": "0fade15bbc86f8303691752d5792139fdc8e27513d8b40b6618ac6f82ab1db0e",
+  "row_counts": {
+    "action_intensity_frontier": 396,
+    "decision": 1,
+    "high_upside_threshold_freeze": 3,
+    "input_gate_audit": 15,
+    "ladder_net_utility_figure": 97,
+    "ladder_summary": 432,
+    "neutral_stress": 72,
+    "o2_drawdown_threshold_replay": 15,
+    "o5_action_selection_proof": 36,
+    "oracle_ladder_panel": 3224736,
+    "row_replay_audit": 6,
+    "sacrifice_vs_avoidance_figure": 165,
+    "search_accounting_audit": 1,
+    "seventeen_a_contract_validation_audit": 141,
+    "six_cell_decomposition": 1911
+  },
+  "run_id": "17B_oracle_ladder_replay",
+  "runner_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/17_oracle_action_value_upper_bound_diagnostic/src/run_17b_oracle_ladder_replay.py",
+  "test_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/17_oracle_action_value_upper_bound_diagnostic/tests/test_17b_oracle_ladder_replay.py",
+  "trim_fraction_each_tail": 0.01,
+  "winsor_fraction_each_tail": 0.01
+}

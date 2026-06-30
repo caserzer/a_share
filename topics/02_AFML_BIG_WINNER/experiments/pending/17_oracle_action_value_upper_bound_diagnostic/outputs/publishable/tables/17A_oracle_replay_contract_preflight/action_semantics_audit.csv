@@ -1,0 +1,7 @@
+action_family_id,baseline_action,q_continue,q_defend,round_trip_defense_cost_bps_grid,primary_round_trip_defense_cost_bps,cost_selected_by_oos_result,cash_return,holding_cost,validation_used_for_action_selection,robustness_used_for_action_selection,return_metric_used_for_action_selection,action_semantics_gate,blocking_reason
+blind_continue,blind_continue_h20,1.0,1.0,"0,25,50,100",50,False,0.0,0.0,False,False,False,pass,
+full_defend_exit_cash,blind_continue_h20,1.0,0.0,"0,25,50,100",50,False,0.0,0.0,False,False,False,pass,
+partial_defend_50pct,blind_continue_h20,1.0,0.5,"0,25,50,100",50,False,0.0,0.0,False,False,False,pass,
+partial_defend_25pct,blind_continue_h20,1.0,0.25,"0,25,50,100",50,False,0.0,0.0,False,False,False,pass,
+delayed_decision_k,blind_continue_h20,1.0,0.0,"0,25,50,100",50,False,0.0,0.0,False,False,False,pass,
+learned_score_reference,blind_continue_h20,1.0,0.0,"0,25,50,100",50,False,0.0,0.0,False,False,False,pass,
