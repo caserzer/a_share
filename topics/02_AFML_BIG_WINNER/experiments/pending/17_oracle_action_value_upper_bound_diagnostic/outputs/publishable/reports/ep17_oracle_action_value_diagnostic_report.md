@@ -93,7 +93,11 @@ best_label_path_mean = 2.4681%
 o5_vs_best_label_path_gap = 0.4786 percentage point
 ```
 
-这个 gap 的含义是：O1/O4 这种 label-level oracle 已经解释了 O5 大部分 value，但 O5 仍保留约 **47.86 bps** 的额外完美选择空间。下一阶段不应直接追逐 O5，而应研究能否用可观测 payoff-state representation 缩小 O5 与 O4/O1 的差距。
+这个 gap 的含义是：O1/O4 这种 label-level oracle 已经解释了 O5 大部分 value，但 O5 仍保留约 **47.86 bps** 的额外完美选择空间。
+
+需要明确的是，这里是 mixed-denominator orientation：O5 primary 使用 `labelable_full` denominator，O1/O4 primary 使用 `binary_primary` denominator。因此该 gap 只能作为 EP18 研究方向的上游定位，不能直接作为 18D learned-score oracle-gap target。18D 必须在 aligned denominator 上重新计算 learned score 与 O4/O5 的 gap。
+
+下一阶段不应直接追逐 O5，而应研究能否用可观测 payoff-state representation 缩小 aligned-denominator oracle gap。
 
 ## 5. Label / Path / Payoff Oracle 支撑
 
@@ -237,7 +241,40 @@ requirement_18_payoff_state_representation_research.md
 4. delayed k=3 可以作为 timing sensitivity readout，但必须保留 validation dominance gate，不能只凭 robustness split 通过。
 5. 任何后续研究仍必须保持 no entry/exit/holding/portfolio backtest/deployment/live trading authorization，直到非 oracle observed-state policy 通过独立 utility gate。
 
-## 13. 明确不授权事项
+## 13. Search Accounting 与授权边界
+
+17D 的 search accounting 机器表为：
+
+```text
+search_accounting_gate = pass
+no_model_training = true
+no_model_refit = true
+no_survival_threshold_tuning = true
+no_validation_selection = true
+no_robustness_tuning = true
+no_feature_selection = true
+no_payoff_label_redesign = true
+no_oracle_threshold_tuning = true
+no_decision_threshold_tuning = true
+```
+
+这意味着 17D 只是 readout-only decision-tree layer。它没有重新训练模型、没有重新选择 survival/payoff/oracle 阈值、没有用 robustness 或 validation 调参，也没有做 feature selection 或 payoff label redesign。
+
+授权边界同样由机器表固定：
+
+```text
+no_entry_policy_authorized = true
+no_exit_policy_authorized = true
+no_holding_policy_authorized = true
+no_portfolio_backtest_authorized = true
+no_model_deployment_authorized = true
+no_production_signal_authorized = true
+no_live_trading_authorized = true
+```
+
+所以 `oracle_payoff_state_research_allowed` 只允许进入下一步研究需求，不允许把 oracle 读数解释成可部署策略。
+
+## 14. 明确不授权事项
 
 本报告不授权：
 
