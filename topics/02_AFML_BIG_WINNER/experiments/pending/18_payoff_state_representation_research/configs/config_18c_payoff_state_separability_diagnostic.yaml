@@ -1,0 +1,172 @@
+run_id: 18C_payoff_state_separability_diagnostic
+experiment_id: 18_payoff_state_representation_research
+phase_id: 18C
+
+paths:
+  research_plan: experiments/pending/18_payoff_state_representation_research/research_plan.md
+  umbrella_requirement: experiments/pending/18_payoff_state_representation_research/requirement_18_payoff_state_representation_research.md
+  requirement_18a: experiments/pending/18_payoff_state_representation_research/requirement_18a_payoff_state_contract_preflight.md
+  requirement_18b: experiments/pending/18_payoff_state_representation_research/requirement_18b_payoff_state_feature_matrix_audit.md
+  requirement_18c: experiments/pending/18_payoff_state_representation_research/requirement_18c_payoff_state_separability_diagnostic.md
+
+  eighteen_b_matrix: experiments/pending/18_payoff_state_representation_research/outputs/local_cache/18B_payoff_state_feature_matrix_audit/payoff_state_feature_matrix.parquet
+  eighteen_b_decision: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/payoff_state_feature_matrix_decision.csv
+  eighteen_b_schema: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/payoff_state_feature_matrix_schema.csv
+  eighteen_b_feature_target_binding_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/feature_target_binding_audit.csv
+  eighteen_b_feature_missingness_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/feature_missingness_audit.csv
+  eighteen_b_matrix_row_completeness_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/matrix_row_completeness_audit.csv
+  eighteen_b_feature_lineage_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/feature_lineage_audit.csv
+  eighteen_b_feature_family_coverage: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/feature_family_coverage.csv
+  eighteen_b_train_only_preprocessing_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/train_only_preprocessing_audit.csv
+  eighteen_b_forbidden_feature_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/forbidden_feature_audit.csv
+  eighteen_b_search_accounting_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18B_payoff_state_feature_matrix_audit/search_accounting_audit.csv
+  eighteen_b_report: experiments/pending/18_payoff_state_representation_research/outputs/publishable/reports/payoff_state_feature_matrix_audit_report.md
+  eighteen_b_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18B_payoff_state_feature_matrix_audit_manifest.json
+  eighteen_b_matrix_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/payoff_state_feature_matrix_manifest.json
+  eighteen_b_input_artifact_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/input_artifact_manifest_18b.json
+
+  eighteen_a_target_contract_doc: experiments/pending/18_payoff_state_representation_research/outputs/publishable/payoff_state_target_contract.md
+  eighteen_a_decision: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_state_contract_decision.csv
+  eighteen_a_target_definition_registry: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_definition_registry.csv
+  eighteen_a_target_denominator_reconciliation: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_denominator_reconciliation.csv
+  eighteen_a_payoff_cutoff_freeze: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_cutoff_freeze.csv
+  eighteen_a_neutral_preservation_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/neutral_preservation_audit.csv
+  eighteen_a_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18A_payoff_state_contract_preflight_manifest.json
+  eighteen_a_target_contract_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/payoff_state_target_contract_manifest.json
+
+  sixteen_x_survival_vs_payoff_rank_ic: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/survival_vs_payoff_rank_ic_readout.csv
+  sixteen_x_payoff_decile_monotonicity: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/payoff_decile_monotonicity_readout.csv
+  sixteen_x_cluster_bootstrap_rank_ic: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/cluster_bootstrap_rank_ic_readout.csv
+  sixteen_x_decision: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/payoff_aligned_label_power_precheck_decision.csv
+  sixteen_x_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16X_payoff_aligned_continuation_label_power_precheck_manifest.json
+
+  sixteen_c_grouped_cv_separability: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/grouped_cv_separability_readout.csv
+  sixteen_c_oos_separability: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/oos_separability_readout.csv
+  sixteen_c_model_registry: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/separability_model_registry.csv
+  sixteen_c_decision: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/sequential_continuation_separability_decision.csv
+  sixteen_c_t0_feature_contract: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_contract.csv
+  sixteen_c_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16C_sequential_continuation_separability_diagnostic_manifest.json
+
+required_artifacts:
+  research_plan: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  umbrella_requirement: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18}
+  requirement_18a: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  requirement_18b: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  requirement_18c: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_b_matrix: {role: eighteen_b_handoff_matrix, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_decision: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_schema: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_feature_target_binding_audit: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_feature_missingness_audit: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_matrix_row_completeness_audit: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_feature_lineage_audit: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_feature_family_coverage: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_train_only_preprocessing_audit: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_forbidden_feature_audit: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_search_accounting_audit: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_report: {role: eighteen_b_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_manifest: {role: eighteen_b_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_matrix_manifest: {role: eighteen_b_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_b_input_artifact_manifest: {role: eighteen_b_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_a_target_contract_doc: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_decision: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_definition_registry: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_denominator_reconciliation: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_payoff_cutoff_freeze: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_neutral_preservation_audit: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_contract_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  sixteen_x_survival_vs_payoff_rank_ic: {role: sixteen_x_external_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+  sixteen_x_payoff_decile_monotonicity: {role: sixteen_x_external_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+  sixteen_x_cluster_bootstrap_rank_ic: {role: sixteen_x_external_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+  sixteen_x_decision: {role: sixteen_x_external_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+  sixteen_x_manifest: {role: sixteen_x_external_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+  sixteen_c_grouped_cv_separability: {role: sixteen_c_appendix_binary_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_oos_separability: {role: sixteen_c_appendix_binary_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_model_registry: {role: sixteen_c_appendix_binary_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_decision: {role: sixteen_c_appendix_binary_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_t0_feature_contract: {role: sixteen_c_appendix_binary_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_manifest: {role: sixteen_c_appendix_binary_context, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+
+split_column: cluster_split_bucket
+primary_identity_key_columns: [step_id, label_id]
+full_lineage_key_columns: [step_id, label_id, threshold_id, horizon_sessions, instrument, episode_cluster_id, step_index, step_start_date, step_end_date]
+
+expected:
+  upstream_18b_decision_state: 18B_payoff_state_feature_matrix_ready
+  upstream_18b_next_allowed_requirement: requirement_18c_payoff_state_separability_diagnostic.md
+  next_allowed_requirement: requirement_18d_payoff_state_oracle_gap_bridge.md
+  total_labelable_step_n: 23405
+  denominators:
+    train: {labelable_step_n: 20245, neutral_step_n: 5283}
+    robustness: {labelable_step_n: 2496, neutral_step_n: 624, episode_cluster_n_min: 30}
+    validation: {labelable_step_n: 664, neutral_step_n: 159, episode_cluster_n_min: 30}
+  target_lineage_hash: 602ad3986a32d8634cb0948181be74c15a70cb50122d994d3ae7f253acbcc3d3
+  rank_ic_materiality_floor: 0.08
+  monotonicity_floor: 0.60
+  volatility_rank_ic_margin_floor: 0.005
+  f4_removal_retention_floor: 0.50
+  binary_blocked_classification_min_roc_auc: 0.55
+  binary_blocked_classification_min_precision_lift: 0.02
+  bootstrap_resample_n: 2000
+  bootstrap_random_seed: 20260629
+  bootstrap_ci_level: 0.95
+  top30_cutoff: 0.0596330275229357
+  top20_cutoff: 0.1012285086722715
+  top10_cutoff: 0.1721071844362347
+  sixteen_x:
+    payoff_probe_id: payoff_rank_probe_v1
+    robustness_payoff_rank_ic: 0.05187674283077765
+    robustness_decile_monotonicity_spearman: 0.16363636363636364
+    robustness_cluster_bootstrap_rank_ic_ci_low: 0.007705547248002782
+
+ordinal_mapping:
+  state_0_below_top30_payoff: 0
+  state_1_top30_to_top20_payoff: 1
+  state_2_top20_to_top10_payoff: 2
+  state_3_top10_extreme_payoff: 3
+
+model_ready_features:
+  - mr_ret_5d
+  - mr_ret_10d
+  - mr_ret_20d
+  - mr_ma_5_20_spread
+  - mr_ma_20_60_spread
+  - mr_distance_to_20d_high
+  - mr_distance_to_60d_high
+  - mr_turnover_rate_20d_mean
+  - mr_turnover_rate_60d_mean
+  - mr_turnover_rate_20d_zscore
+  - mr_volume_20d_zscore
+  - mr_money_20d_zscore
+  - mr_board_rank_pct
+  - mr_board_rank_by_market_cap
+  - mr_volatility_20d
+  - mr_volatility_60d
+  - mr_max_drawdown_20d
+  - mr_max_drawdown_60d
+  - mr_intraday_range_20d_mean
+  - mr_board_bucket_chinext
+  - mr_board_bucket_main_board
+  - mr_log_total_market_cap_cny
+  - mr_tradability_status_ok
+
+feature_family_map:
+  F1: [mr_ret_5d, mr_ret_10d, mr_ret_20d, mr_ma_5_20_spread, mr_ma_20_60_spread, mr_distance_to_20d_high, mr_distance_to_60d_high]
+  F2: [mr_turnover_rate_20d_mean, mr_turnover_rate_60d_mean, mr_turnover_rate_20d_zscore, mr_volume_20d_zscore, mr_money_20d_zscore]
+  F3: [mr_board_rank_pct, mr_board_rank_by_market_cap]
+  F4: [mr_volatility_20d, mr_volatility_60d, mr_max_drawdown_20d, mr_max_drawdown_60d, mr_intraday_range_20d_mean]
+  F5: [mr_board_bucket_chinext, mr_board_bucket_main_board, mr_log_total_market_cap_cny, mr_tradability_status_ok]
+
+models:
+  ridge_payoff_rank_h20_v1: {family: ridge_regression, target_column: y_payoff_h20, alpha: 10.0, fit_intercept: true, used_for_primary_decision: true}
+  elastic_net_payoff_rank_h20_v1: {family: elastic_net_regression, target_column: y_payoff_h20, alpha: 0.0005, l1_ratio: 0.10, fit_intercept: true, max_iter: 10000, random_state: 1818, used_for_primary_decision: false}
+  ridge_ordinal_payoff_state_v1: {family: ridge_regression_on_ordinal_state, target_column: payoff_ordinal_state_int, alpha: 10.0, fit_intercept: true, used_for_primary_decision: false}
+  shallow_tree_payoff_depth2_v1: {family: decision_tree_regressor, target_column: y_payoff_h20, max_depth: 2, min_samples_leaf_floor: 50, min_samples_leaf_train_fraction: 0.02, random_state: 1818, used_for_primary_decision: false}
+  ridge_logistic_top30_sanity_v1: {family: logistic_regression_l2, target_column: top30_yes_no, penalty: l2, C: 1.0, class_weight: balanced, solver: liblinear, max_iter: 1000, random_state: 1818, used_for_primary_decision: false}
+  ridge_logistic_top20_sanity_v1: {family: logistic_regression_l2, target_column: top20_yes_no, penalty: l2, C: 1.0, class_weight: balanced, solver: liblinear, max_iter: 1000, random_state: 1818, used_for_primary_decision: false}
+
+cv:
+  scheme: episode_cluster_grouped_cv
+  fold_n: 5
+  fold_seed: 1818

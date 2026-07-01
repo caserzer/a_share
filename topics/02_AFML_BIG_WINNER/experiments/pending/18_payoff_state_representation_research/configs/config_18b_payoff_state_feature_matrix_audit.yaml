@@ -1,0 +1,190 @@
+run_id: 18B_payoff_state_feature_matrix_audit
+experiment_id: 18_payoff_state_representation_research
+phase_id: 18B
+
+paths:
+  research_plan: experiments/pending/18_payoff_state_representation_research/research_plan.md
+  umbrella_requirement: experiments/pending/18_payoff_state_representation_research/requirement_18_payoff_state_representation_research.md
+  requirement_18a: experiments/pending/18_payoff_state_representation_research/requirement_18a_payoff_state_contract_preflight.md
+  requirement_18b: experiments/pending/18_payoff_state_representation_research/requirement_18b_payoff_state_feature_matrix_audit.md
+
+  eighteen_a_target_contract_doc: experiments/pending/18_payoff_state_representation_research/outputs/publishable/payoff_state_target_contract.md
+  eighteen_a_feature_contract_doc: experiments/pending/18_payoff_state_representation_research/outputs/publishable/payoff_state_feature_contract.md
+  eighteen_a_report: experiments/pending/18_payoff_state_representation_research/outputs/publishable/reports/payoff_state_contract_preflight_report.md
+  eighteen_a_decision: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_state_contract_decision.csv
+  eighteen_a_target_denominator_reconciliation: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_denominator_reconciliation.csv
+  eighteen_a_oracle_reference_denominator_map: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/oracle_reference_denominator_map.csv
+  eighteen_a_o5_incremental_definition_replay: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/o5_incremental_definition_replay.csv
+  eighteen_a_payoff_cutoff_freeze: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_cutoff_freeze.csv
+  eighteen_a_target_definition_registry: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_definition_registry.csv
+  eighteen_a_target_distribution_readout: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_distribution_readout.csv
+  eighteen_a_path_risk_target_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/path_risk_target_audit.csv
+  eighteen_a_neutral_preservation_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/neutral_preservation_audit.csv
+  eighteen_a_feature_source_inventory: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/feature_source_inventory.csv
+  eighteen_a_leakage_forbidden_column_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/leakage_forbidden_column_audit.csv
+  eighteen_a_search_accounting_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/search_accounting_audit.csv
+  eighteen_a_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18A_payoff_state_contract_preflight_manifest.json
+  eighteen_a_input_artifact_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/input_artifact_manifest_18a.json
+  eighteen_a_target_contract_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/payoff_state_target_contract_manifest.json
+
+  sixteen_c_t0_feature_panel: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/local_cache/16C_sequential_continuation_separability_diagnostic/t0_feature_panel.parquet
+  sixteen_c_t0_feature_contract: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_contract.csv
+  sixteen_c_t0_feature_lineage_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_lineage_audit.csv
+  sixteen_c_t0_feature_leakage_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_leakage_audit.csv
+  sixteen_c_t0_feature_coverage_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_coverage_audit.csv
+  sixteen_c_manifest: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/manifests/16C_sequential_continuation_separability_diagnostic_manifest.json
+  sixteen_b_label_panel_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_panel_readout.csv
+
+required_artifacts:
+  research_plan: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  umbrella_requirement: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  requirement_18a: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  requirement_18b: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18B}
+  eighteen_a_target_contract_doc: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_feature_contract_doc: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_report: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_decision: {role: eighteen_a_decision, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_denominator_reconciliation: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_oracle_reference_denominator_map: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_o5_incremental_definition_replay: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_payoff_cutoff_freeze: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_definition_registry: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_distribution_readout: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_path_risk_target_audit: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_neutral_preservation_audit: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_feature_source_inventory: {role: eighteen_a_feature_source_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_leakage_forbidden_column_audit: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_search_accounting_audit: {role: eighteen_a_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_input_artifact_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_contract_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  sixteen_c_t0_feature_panel: {role: primary_row_level_feature_source, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C, source_kind: validated_local_cache}
+  sixteen_c_t0_feature_contract: {role: sixteen_c_feature_contract, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_t0_feature_lineage_audit: {role: sixteen_c_feature_contract, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_t0_feature_leakage_audit: {role: sixteen_c_feature_contract, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_t0_feature_coverage_audit: {role: sixteen_c_feature_contract, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_manifest: {role: sixteen_c_manifest, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_b_label_panel_readout: {role: primary_row_level_target_source, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16B, source_kind: publishable_full_panel}
+
+target_filter:
+  label_id: continuation_survival_h20_no_deep_drawdown
+  threshold_id: up50pct
+  horizon_sessions: 20
+  label_rule_status: pass
+  split_column: cluster_split_bucket
+  payoff_column: step_end_price_ratio_minus_one_for_label_rule
+  signed_drawdown_column: max_drawdown_from_step_start
+
+expected:
+  upstream_18a_decision_state: 18A_payoff_state_contract_ready
+  upstream_18a_next_allowed_requirement: requirement_18b_payoff_state_feature_matrix_audit.md
+  next_allowed_requirement: requirement_18c_payoff_state_separability_diagnostic.md
+  primary_threshold_id: up50pct
+  primary_horizon_sessions: 20
+  primary_sampling_unit: full_horizon_nonoverlap_step
+  primary_denominator: labelable_full
+  primary_cost_bps: 50
+  primary_q_defend: 0.0
+  validation_role: stress_readout_only
+  total_labelable_step_n: 23405
+  total_binary_step_n: 17339
+  total_neutral_step_n: 6066
+  denominators:
+    train: {labelable_step_n: 20245, binary_step_n: 14962, neutral_step_n: 5283}
+    robustness: {labelable_step_n: 2496, binary_step_n: 1872, neutral_step_n: 624}
+    validation: {labelable_step_n: 664, binary_step_n: 505, neutral_step_n: 159}
+  cutoffs:
+    top30_cutoff: 0.0596330275229357
+    top20_cutoff: 0.1012285086722715
+    top10_cutoff: 0.1721071844362347
+  finite_rate_min: 0.99
+  matrix_row_complete_rate_min: 0.99
+
+identity_key_columns:
+  - step_id
+  - label_id
+  - threshold_id
+  - horizon_sessions
+  - instrument
+  - episode_cluster_id
+  - step_index
+  - step_start_date
+  - step_end_date
+
+split_column: cluster_split_bucket
+
+feature_families:
+  F1:
+    name: continuation strength / repair persistence
+    features:
+      - ret_5d
+      - ret_10d
+      - ret_20d
+      - ma_5_20_spread
+      - ma_20_60_spread
+      - distance_to_20d_high
+      - distance_to_60d_high
+  F2:
+    name: participation / sponsorship
+    features:
+      - turnover_rate_20d_mean
+      - turnover_rate_60d_mean
+      - turnover_rate_20d_zscore
+      - volume_20d_zscore
+      - money_20d_zscore
+  F3:
+    name: cross-sectional leadership
+    features:
+      - board_rank_pct
+      - board_rank_by_market_cap
+  F4:
+    name: path-risk decoupling
+    features:
+      - volatility_20d
+      - volatility_60d
+      - max_drawdown_20d
+      - max_drawdown_60d
+      - intraday_range_20d_mean
+  F5:
+    name: regime / board / market context
+    features:
+      - board_bucket_chinext
+      - board_bucket_main_board
+      - log_total_market_cap_cny
+      - tradability_status_ok
+
+binary_features:
+  - board_bucket_chinext
+  - board_bucket_main_board
+  - tradability_status_ok
+
+forbidden_model_feature_columns:
+  - step_id
+  - instrument
+  - episode_cluster_id
+  - cluster_split_bucket
+  - step_start_date
+  - step_end_date
+  - label_class
+  - continuation_positive
+  - continuation_negative
+  - continuation_neutral
+  - y_payoff_h20
+  - y_signed_max_drawdown_h20
+  - continue_value
+  - defend_value
+  - continue_advantage
+  - defend_advantage
+  - o5_incremental
+  - payoff_ordinal_state
+  - risk_state_dd08
+  - risk_state_dd10
+  - risk_state_dd12
+  - binary_positive_negative
+  - top30_yes_no
+  - top20_yes_no
+  - drawdown_dd10_yes_no
+  - oracle_reference_id
+  - oracle_action
+
+model_ready_prefix: mr_

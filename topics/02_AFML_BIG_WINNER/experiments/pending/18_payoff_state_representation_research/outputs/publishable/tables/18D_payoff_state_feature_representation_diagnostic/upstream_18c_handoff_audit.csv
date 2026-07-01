@@ -1,0 +1,12 @@
+source_table,source_model_id,source_split_bucket,source_metric,expected_value,observed_value,tolerance,handoff_status,blocking_reason
+payoff_state_separability_decision.csv,,,decision_state,18C_payoff_state_signal_weak_or_nonmonotone,18C_payoff_state_signal_weak_or_nonmonotone,0.0,pass,
+payoff_state_separability_decision.csv,,,next_allowed_requirement,none,none,0.0,pass,
+18C_manifest,,,decision_state,18C_payoff_state_signal_weak_or_nonmonotone,18C_payoff_state_signal_weak_or_nonmonotone,0.0,pass,
+18C_manifest,,,next_allowed_requirement,none,none,0.0,pass,
+config_18c_expected_block,,,legacy_config_expected_next_status,audit_only_not_authoritative,audit_only_not_authoritative,0.0,pass,
+config_18c_expected_block,,,legacy_config_expected_next_mismatch,true,true,0.0,pass,
+payoff_state_oos_rank_readout.csv,ridge_payoff_rank_h20_v1,robustness,robustness_rank_ic,0.064397895867,0.0643978958666759,1e-09,pass,
+payoff_state_oos_rank_readout.csv,elastic_net_payoff_rank_h20_v1,robustness,robustness_rank_ic,0.063310254141,0.0633102541409457,1e-09,pass,
+payoff_state_oos_rank_readout.csv,shallow_tree_payoff_depth2_v1,robustness,robustness_rank_ic,0.076791687716,0.0767916877162269,1e-09,pass,
+payoff_state_oos_rank_readout.csv,ridge_ordinal_payoff_state_v1,robustness,robustness_rank_ic,-0.015911419271,-0.0159114192712978,1e-09,pass,
+payoff_state_oos_rank_readout.csv,volatility20d_defense_baseline,robustness,robustness_rank_ic,0.064771549906,0.0647715499061047,1e-09,pass,

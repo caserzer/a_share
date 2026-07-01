@@ -1,0 +1,6 @@
+current_family_id,current_feature_ids,existing_signal_role,represented_information,missing_payoff_information,evidence_metric,evidence_value,gap_status,candidate_family_mapping
+F1,mr_ret_5d|mr_ret_10d|mr_ret_20d|mr_ma_5_20_spread|mr_ma_20_60_spread|mr_distance_to_20d_high|mr_distance_to_60d_high,current repair level,short return and distance to highs,episode-internal repair path morphology,18C_report,weak_rank_ic,missing_shape,M1
+F2,mr_turnover_rate_20d_mean|mr_turnover_rate_60d_mean|mr_turnover_rate_20d_zscore|mr_volume_20d_zscore|mr_money_20d_zscore,participation level,volume and money level z-scores,signed inflow/outflow dynamics,18C_coefficients,primary_dependency,dynamic_pressure_missing,M2
+F3,mr_board_rank_pct|mr_board_rank_by_market_cap,cross-sectional rank,board rank context,payoff asymmetry and path shape,18C_coefficients,limited_support,context_not_shape,M3
+F4,mr_volatility_20d|mr_volatility_60d|mr_max_drawdown_20d|mr_max_drawdown_60d|mr_intraday_range_20d_mean,risk state,low volatility tilt,vol-adjusted repair quality,18C_baseline,risk_ceiling,orthogonal_shape_missing,M1|M3
+F5,board dummies|market cap|tradability,static context,board and size,regime only if new PIT context exists,18C_topk,near_zero,defer,M4

@@ -1,0 +1,8 @@
+feature_family_id,feature_family_name,expected_feature_n,observed_raw_feature_n,observed_model_ready_feature_n,pit_available_status,t0_available_status,raw_feature_missing_n,model_ready_feature_missing_n,primary_allowed,appendix_only,feature_family_coverage_gate,blocking_reason
+F1,continuation strength / repair persistence,7,7,7,pass,pass,0,0,True,False,pass,
+F2,participation / sponsorship,5,5,5,pass,pass,0,0,True,False,pass,
+F3,cross-sectional leadership,2,2,2,pass,pass,0,0,True,False,pass,
+F4,path-risk decoupling,5,5,5,pass,pass,0,0,True,False,pass,
+F5,regime / board / market context,4,4,4,pass,pass,0,0,True,False,pass,
+F6,delayed observed-state appendix,0,0,0,appendix_only,not_t0_available,0,0,False,True,pass,
+F7,external feature families,0,0,0,unavailable,unavailable,0,0,False,False,pass,

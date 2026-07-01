@@ -174,7 +174,7 @@ All failures are fail-closed and must map to a specific 18A blocking decision.
 
 ## 5. Required Input Artifacts
 
-All inputs must be recorded in `input_artifact_audit.csv` and `input_artifact_manifest.json` with:
+All inputs must be recorded in `input_artifact_audit.csv` and `input_artifact_manifest_18a.json` with:
 
 ```text
 artifact_key
@@ -283,6 +283,14 @@ local_cache_used = true
 cache_hash_validated = true
 cache_schema_validated = true
 cache_key_reconciliation_gate = pass
+```
+
+For validated local caches:
+
+```text
+cache_hash_validated = true means the local cache file sha256 is computed and recorded.
+If an upstream manifest hash exists for that exact cache role, it must match.
+If no upstream manifest hash exists for that exact cache role, cache_hash_manifest_status = not_available_nonblocking and row count, schema, and row-key reconciliation against publishable artifacts must pass.
 ```
 
 If neither publishable nor validated local row-level sources can support target construction:
@@ -662,6 +670,63 @@ outputs/publishable/tables/18A_payoff_state_contract_preflight/feature_source_in
 outputs/publishable/tables/18A_payoff_state_contract_preflight/leakage_forbidden_column_audit.csv
 outputs/publishable/tables/18A_payoff_state_contract_preflight/search_accounting_audit.csv
 outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_state_contract_decision.csv
+```
+
+Minimum table schemas:
+
+```text
+target_denominator_reconciliation.csv:
+  split_bucket, labelable_step_n, binary_step_n, neutral_step_n,
+  expected_labelable_step_n, expected_binary_step_n, expected_neutral_step_n,
+  denominator_reconciliation_gate, blocking_reason
+
+o5_incremental_definition_replay.csv:
+  split_bucket, cost_bps, q_defend, observed_step_n, defended_step_n,
+  aggregate_o5_incremental_replay, source_mean_incremental_return,
+  max_abs_diff, formula_mismatch_n, o5_incremental_definition_replay_gate,
+  blocking_reason
+
+payoff_cutoff_freeze.csv:
+  threshold_id, oracle_variant_id, train_quantile, train_absolute_payoff_cutoff,
+  train_row_count, robustness_applied_cutoff, validation_applied_cutoff,
+  split_local_recompute_used, y_payoff_lineage_hash, train_frozen_cutoff_gate,
+  blocking_reason
+
+target_definition_registry.csv:
+  target_id, target_family, definition, source_artifact, source_column,
+  denominator_type, sign_convention, lineage_hash, primary_allowed,
+  binary_metric_used_as_primary_gate, target_lineage_gate, blocking_reason
+
+target_distribution_readout.csv:
+  split_bucket, target_id, state_id, row_count, row_share,
+  mean_y_payoff_h20, median_y_payoff_h20, min_y_payoff_h20, max_y_payoff_h20
+
+path_risk_target_audit.csv:
+  split_bucket, target_id, signed_drawdown_threshold, observed_step_n,
+  predicate_true_n, predicate_true_rate, signed_max_drawdown_min,
+  signed_max_drawdown_max, positive_abs_drawdown_used_for_threshold,
+  path_risk_sign_convention_gate, blocking_reason
+
+neutral_preservation_audit.csv:
+  split_bucket, labelable_step_n, neutral_step_n,
+  neutral_preserved_in_labelable_full, neutral_reclassified_as_positive_or_negative,
+  neutral_preservation_gate, blocking_reason
+
+leakage_forbidden_column_audit.csv:
+  forbidden_column_family, forbidden_column_pattern, found_in_primary_feature_source,
+  primary_feature_allowed, leakage_forbidden_column_gate, blocking_reason
+
+payoff_state_contract_decision.csv:
+  decision_state, next_allowed_requirement, all_hard_gates_pass,
+  upstream_authorization_gate, input_artifact_gate, denominator_reconciliation_gate,
+  target_lineage_gate, oracle_reference_denominator_gate,
+  o5_incremental_definition_replay_gate, train_frozen_cutoff_gate,
+  neutral_preservation_gate, path_risk_sign_convention_gate,
+  feature_source_pit_gate, leakage_forbidden_column_gate,
+  search_accounting_gate, entry_policy_authorized, exit_policy_authorized,
+  holding_policy_authorized, portfolio_backtest_authorized,
+  model_deployment_authorized, production_signal_authorized,
+  live_trading_authorized, blocking_reason
 ```
 
 Required manifests:

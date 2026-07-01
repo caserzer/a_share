@@ -37,6 +37,43 @@ EP17 已经给出三条关键事实：
 
 因此 EP18 的研究方向不是 binary classification，而是 payoff-state representation：用连续或 ordinal 的方式刻画未来 h20 payoff / action value，并检验这种表征是否能在 robustness split 上稳定排序收益幅度。
 
+## 0.1 Current EP18 Status After 18C
+
+18A/18B/18C 已经完成到低容量 separability diagnostic。18C 的实际结论是：
+
+```text
+decision_state = 18C_payoff_state_signal_weak_or_nonmonotone
+next_allowed_requirement = none
+all_hard_gates_pass = false
+```
+
+关键读数：
+
+```text
+robustness_payoff_rank_ic = 0.064398
+rank_ic_materiality_floor = 0.080000
+robustness_decile_payoff_monotonicity_spearman = 0.612121
+robustness_cluster_bootstrap_rank_ic_ci_low = 0.020608
+rank_ic_vs_volatility20d_delta = -0.000374
+baseline_improvement_required_delta = +0.005000
+```
+
+解释：
+
+```text
+current F1-F5 feature set has weak positive payoff-ranking information
+current F1-F5 feature set is not strong enough for a deferred oracle-gap bridge
+current signal is participation-heavy and too concentrated in F2 features
+current failure is not primarily risk-only, because F4 removal retention > 1
+```
+
+Therefore the next EP18 step is not learned-score oracle bridge. The next step is feature representation diagnostic:
+
+```text
+next_research_direction = payoff-state feature representation diagnostic
+do_not_start = learned payoff-state utility bridge / oracle-gap bridge
+```
+
 ## 1. Non-negotiable Scope
 
 EP18 不做：
@@ -64,7 +101,8 @@ EP18 允许做：
 构造 payoff/action-value continuous and ordinal targets
 构造 feature matrix
 做低容量 separability diagnostic
-做 learned-score vs O4/O5 oracle gap bridge
+做 feature representation diagnostic
+在 representation 支持后再做 learned-score vs O4/O5 oracle gap bridge
 ```
 
 所有正向结论最多授权下一步 research requirement，例如 payoff-state policy preflight；不得直接授权策略或回测。
@@ -175,7 +213,7 @@ O2 drawdown primary = labelable_full reference
 EP18 learned payoff-state scores = labelable_full primary evaluation
 ```
 
-Therefore EP18D oracle-gap bridge must report at least two aligned comparisons:
+Therefore the deferred oracle-gap bridge must report at least two aligned comparisons:
 
 ```text
 1. labelable_full bridge:
@@ -194,7 +232,7 @@ EP17D's `o5_vs_best_label_path_gap = 0.004786322905921601` is inherited as a mix
 17D mixed gap = O5 labelable_full mean - O4 binary_primary mean
 ```
 
-EP18D must recompute learned-score oracle gaps on aligned denominators. It must not use the 17D mixed gap as the learned-score headroom target.
+The deferred oracle-gap bridge must recompute learned-score oracle gaps on aligned denominators. It must not use the 17D mixed gap as the learned-score headroom target.
 
 ## 5. Target Contract
 
@@ -250,7 +288,7 @@ o5_incremental      -> positive part of defend_advantage under frozen action sem
 
 Aggregate O5 incremental is the mean over the full `labelable_full` denominator. Non-defended rows contribute zero and must not be dropped.
 
-If learned-score utility bridge uses a different baseline than O5, EP18D must fail closed with `18D_oracle_gap_contract_blocked`.
+If learned-score utility bridge uses a different baseline than O5, the deferred oracle bridge must fail closed with `18F_oracle_gap_contract_blocked`.
 
 ### 5.3 Ordinal Payoff-state Target
 
@@ -551,13 +589,15 @@ cluster_bootstrap_rank_ic_ci_low
 top-k removal sensitivity
 ```
 
-Minimum expected improvement over 16X:
+Materiality and baseline gates:
 
 ```text
-robustness_payoff_rank_ic > 0.051877 + 0.030000
+robustness_payoff_rank_ic >= 0.080000
 robustness_decile_monotonicity_spearman >= 0.600000
 cluster_bootstrap_ci_low > 0
+primary_rank_ic - volatility20d_defense_rank_ic > 0.005000
 payoff score must not rely on split-local threshold recomputation
+16X payoff probe is external coarse context only, not a hard baseline gate
 ```
 
 Binary metrics:
@@ -596,9 +636,163 @@ Possible decisions:
 18C_risk_only_no_payoff_state
 ```
 
-Only `18C_payoff_state_separability_supported` may authorize EP18D.
+Only `18C_payoff_state_separability_supported` may authorize the deferred oracle bridge. The actual 18C state `18C_payoff_state_signal_weak_or_nonmonotone` does not authorize that bridge; it redirects the research plan to EP18D feature representation diagnostic.
 
-### EP18D: Learned Payoff-state Utility Bridge and Oracle Gap
+18C actual result:
+
+```text
+decision_state = 18C_payoff_state_signal_weak_or_nonmonotone
+next_allowed_requirement = none
+rank_ic_support_gate = fail
+baseline_improvement_gate = fail
+monotonicity_support_gate = pass
+bucket_lift_gate = pass
+bootstrap_ci_gate = pass
+risk_only_gate = pass
+```
+
+Interpretation:
+
+```text
+current feature representation is insufficient for oracle-gap bridge
+weak signal is present, but not strong enough and not better than same-denominator volatility baseline
+capacity-vs-representation is thin-margin: depth-2 tree IC is close to the 0.080 floor
+do not weaken gates, switch to binary primary target, or start utility bridge
+```
+
+The next research phase should be a feature representation diagnostic, not the oracle-gap bridge.
+
+### EP18D: Payoff-state Feature Representation Diagnostic
+
+Goal:
+
+```text
+diagnose why the current PIT-valid t0 feature representation is too weak for broad payoff-state ranking
+identify missing observable state dimensions before refreshing 18B/18C
+```
+
+Primary questions:
+
+```text
+Q1. Which payoff morphology information is missing from current F1-F5?
+Q2. Is the current weak signal mostly participation/sponsorship rather than payoff-state shape?
+Q3. Which candidate feature families can be PIT-valid and t0-available?
+Q4. Can candidate features be justified by lineage before any target-correlation selection?
+Q5. Which feature families should be added to a refreshed feature matrix for a new separability run?
+```
+
+Candidate representation families to audit:
+
+```text
+M1 episode-local morphology:
+   low reclaim quality, high reclaim quality, distance from episode low/high,
+   repair slope, drawdown recovery shape, close location in recent range,
+   path entropy, transition entropy, repair path efficiency
+
+M2 supply and pressure:
+   turnover compression/expansion, volume dry-up after low, money-flow persistence,
+   signed money-flow inflow/outflow proxy, positive/negative money-flow share,
+   price-flow divergence, abnormal participation decay, high-volume failure bars
+
+M3 payoff asymmetry context:
+   upside room proxy, downside crowding proxy, recent failed breakout count,
+   volatility-adjusted repair strength, upside/downside path entropy imbalance
+
+M4 regime and cross-sectional context:
+   board-relative leadership drift, industry/market context if PIT-valid,
+   largecap/smallcap regime interaction, market beta state if available
+
+M5 episode position and maturity:
+   bars since episode low, bars since reclaim, episode age, local trend phase,
+   non-overlap step position diagnostics
+```
+
+Required diagnostics:
+
+```text
+capacity_vs_representation_readout.csv
+capacity threshold sensitivity and bounded depth<=4 train-only probe
+candidate_feature_inventory.csv
+candidate_feature_lineage_audit.csv
+candidate_feature_pit_availability_audit.csv
+current_feature_gap_decomposition.csv
+payoff_morphology_proxy_readout.csv
+feature_family_candidate_prioritization.csv
+representation_refresh_decision.csv
+payoff_state_feature_representation_diagnostic_report.md
+```
+
+Allowed positive output:
+
+```text
+decision_state = 18D_feature_representation_refresh_supported
+next_allowed_requirement = requirement_18e_payoff_state_feature_matrix_refresh.md
+```
+
+Allowed blocked outputs:
+
+```text
+18D_feature_representation_contract_blocked
+18D_no_pit_valid_candidate_features_found
+18D_candidate_features_delayed_or_leaky
+18D_representation_gap_diagnostic_only
+```
+
+EP18D must not train the final payoff separability model and must not authorize policy, backtest, deployment, production signal, or trading. Its role is to define a better feature representation contract for a refreshed 18B/18C-style cycle.
+
+### EP18E: Payoff-state Feature Matrix Refresh
+
+Goal:
+
+```text
+materialize the feature-family recommendations from EP18D into a refreshed
+PIT-valid, t0-available feature matrix contract before rerunning separability
+```
+
+EP18E may start only after EP18D emits:
+
+```text
+decision_state = 18D_feature_representation_refresh_supported
+next_allowed_requirement = requirement_18e_payoff_state_feature_matrix_refresh.md
+```
+
+EP18E must not train a final payoff separability model and must not run a utility bridge. It should refresh source lineage, feature formulas, train-only preprocessing, PIT/t0 availability, and matrix schema for the prioritized families from EP18D.
+
+Primary diagnostics:
+
+```text
+refreshed candidate source audit
+refreshed candidate feature formula registry
+refreshed feature lineage/PIT/t0 audit
+train-only preprocessing contract
+refreshed feature matrix schema
+neutral-preserving target alignment
+search accounting for no robustness/validation feature selection
+```
+
+EP18E remains a representation-construction step. It does not authorize entry, exit, holding, portfolio backtest, deployment, production signal, or live trading.
+
+Required outputs:
+
+```text
+tables/refreshed_feature_source_audit.csv
+tables/refreshed_feature_formula_registry.csv
+tables/refreshed_feature_lineage_audit.csv
+tables/refreshed_feature_matrix_schema.csv
+tables/refreshed_feature_matrix_decision.csv
+reports/payoff_state_feature_matrix_refresh_report.md
+```
+
+Possible decisions:
+
+```text
+18E_payoff_state_feature_matrix_refresh_supported
+18E_feature_matrix_refresh_contract_blocked
+18E_no_refresh_candidate_family_supported
+18E_feature_matrix_refresh_diagnostic_only
+```
+
+### EP18F: Deferred Learned Payoff-state Utility Bridge and Oracle Gap
 
 Goal:
 
@@ -607,7 +801,14 @@ compare learned payoff-state score to EP17 O4/O5 oracle headroom
 without claiming an entry/exit/holding strategy
 ```
 
-EP18D may use train-frozen score operating points only. It must not tune thresholds on robustness or validation.
+EP18F may start only after a future separability diagnostic on the refreshed
+feature matrix emits:
+
+```text
+decision_state = 18C_payoff_state_separability_supported
+```
+
+EP18F may use train-frozen score operating points only. It must not tune thresholds on robustness or validation.
 
 Primary diagnostics:
 
@@ -641,15 +842,15 @@ reports/payoff_state_oracle_gap_bridge_report.md
 Possible decisions:
 
 ```text
-18D_payoff_state_policy_preflight_allowed
-18D_payoff_state_representation_diagnostic_only
-18D_utility_bridge_not_supported
-18D_oracle_gap_contract_blocked
-18D_oracle_gap_not_reduced
-18D_over_narrow_winner_bridge_blocked
+18F_payoff_state_policy_preflight_allowed
+18F_payoff_state_representation_diagnostic_only
+18F_utility_bridge_not_supported
+18F_oracle_gap_contract_blocked
+18F_oracle_gap_not_reduced
+18F_over_narrow_winner_bridge_blocked
 ```
 
-If `18D_payoff_state_policy_preflight_allowed`, next allowed requirement may be:
+If `18F_payoff_state_policy_preflight_allowed`, next allowed requirement may be:
 
 ```text
 requirement_19_payoff_state_policy_preflight.md
@@ -664,7 +865,9 @@ This still does not authorize entry, exit, holding, portfolio backtest, deployme
 EP18 support requires all of:
 
 ```text
-payoff ranking improves over 16X baseline
+payoff ranking clears 0.080000 materiality floor
+payoff ranking improves over same-denominator volatility20d baseline by > 0.005000
+16X remains external coarse context only
 decile payoff curve is monotone enough in robustness
 top30/top20 payoff-state readouts are positive
 top10 is treated as over-narrow stress, not selected as primary
@@ -674,7 +877,7 @@ neutral contribution is explicitly reconciled
 validation does not hard reverse
 ```
 
-EP18 should be expected to fail cleanly if current observable feature families cannot beat 16X. This is a valid research outcome, not an implementation failure. The plan explicitly treats the following as acceptable terminal diagnostics:
+EP18 should be expected to fail cleanly if current observable feature families cannot clear materiality or same-denominator baseline gates. This is a valid research outcome, not an implementation failure. The plan explicitly treats the following as acceptable terminal diagnostics:
 
 ```text
 18C_current_features_reconfirmed_insufficient
@@ -682,11 +885,13 @@ EP18 should be expected to fail cleanly if current observable feature families c
 18C_binary_only_not_supported
 18C_over_narrow_winner_target_blocked
 18C_risk_only_no_payoff_state
-18D_payoff_state_representation_diagnostic_only
-18D_utility_bridge_not_supported
-18D_oracle_gap_contract_blocked
-18D_oracle_gap_not_reduced
-18D_over_narrow_winner_bridge_blocked
+18D_representation_gap_diagnostic_only
+18E_feature_matrix_refresh_diagnostic_only
+18F_payoff_state_representation_diagnostic_only
+18F_utility_bridge_not_supported
+18F_oracle_gap_contract_blocked
+18F_oracle_gap_not_reduced
+18F_over_narrow_winner_bridge_blocked
 ```
 
 No runner may weaken gates, add robustness-tuned features, or switch to a binary primary target merely to avoid these decisions.
@@ -713,10 +918,10 @@ If top10-like target looks good in train but fails robustness during EP18C:
 decision_state = 18C_over_narrow_winner_target_blocked
 ```
 
-If a learned utility bridge in EP18D relies on an over-narrow top10-like operating point and causes large positive sacrifice:
+If a learned utility bridge in EP18F relies on an over-narrow top10-like operating point and causes large positive sacrifice:
 
 ```text
-decision_state = 18D_over_narrow_winner_bridge_blocked
+decision_state = 18F_over_narrow_winner_bridge_blocked
 ```
 
 Interpretation:
@@ -770,22 +975,28 @@ configs/
   config_18a_payoff_state_contract_preflight.yaml
   config_18b_payoff_state_feature_matrix_audit.yaml
   config_18c_payoff_state_separability_diagnostic.yaml
-  config_18d_payoff_state_oracle_gap_bridge.yaml
+  config_18d_payoff_state_feature_representation_diagnostic.yaml
+  config_18e_payoff_state_feature_matrix_refresh.yaml
+  config_18f_payoff_state_oracle_gap_bridge.yaml
 
 requirement_18_payoff_state_representation_research.md
 requirement_18a_payoff_state_contract_preflight.md
 requirement_18b_payoff_state_feature_matrix_audit.md
 requirement_18c_payoff_state_separability_diagnostic.md
-requirement_18d_payoff_state_oracle_gap_bridge.md
+requirement_18d_payoff_state_feature_representation_diagnostic.md
+requirement_18e_payoff_state_feature_matrix_refresh.md
+requirement_18f_payoff_state_oracle_gap_bridge.md
 
 outputs/publishable/reports/
   payoff_state_contract_preflight_report.md
   payoff_state_feature_matrix_audit_report.md
   payoff_state_separability_diagnostic_report.md
+  payoff_state_feature_representation_diagnostic_report.md
+  payoff_state_feature_matrix_refresh_report.md
   payoff_state_oracle_gap_bridge_report.md
 ```
 
-`requirement_18_payoff_state_representation_research.md` is the top-level requirement name authorized by EP17D. The `18a/18b/18c/18d` requirement files are phase decompositions under that umbrella. Any handoff check from EP17D should look for the top-level requirement first, then phase-specific requirements once EP18A begins.
+`requirement_18_payoff_state_representation_research.md` is the top-level requirement name authorized by EP17D. The `18a/18b/18c/18d/18e/18f` requirement files are phase decompositions under that umbrella. Any handoff check from EP17D should look for the top-level requirement first, then phase-specific requirements once EP18A begins.
 
 ## 11. Final Research Direction
 
@@ -813,5 +1024,6 @@ continuous / ordinal payoff-state representation
 wide top30/top20 payoff-positive state
 neutral-aware full-denominator utility
 path-risk as auxiliary context
-strict OOS payoff ranking and oracle-gap bridge
+feature representation diagnostic after weak separability
+strict OOS payoff ranking before oracle-gap bridge
 ```

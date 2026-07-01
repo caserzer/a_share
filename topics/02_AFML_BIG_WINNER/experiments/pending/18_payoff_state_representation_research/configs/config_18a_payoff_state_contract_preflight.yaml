@@ -1,0 +1,127 @@
+run_id: 18A_payoff_state_contract_preflight
+experiment_id: 18_payoff_state_representation_research
+phase_id: 18A
+
+paths:
+  research_plan: experiments/pending/18_payoff_state_representation_research/research_plan.md
+  umbrella_requirement: experiments/pending/18_payoff_state_representation_research/requirement_18_payoff_state_representation_research.md
+  requirement: experiments/pending/18_payoff_state_representation_research/requirement_18a_payoff_state_contract_preflight.md
+
+  seventeen_d_decision: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_diagnosis_decision.csv
+  seventeen_d_decision_tree: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_diagnosis_decision_tree.csv
+  seventeen_d_value_source_attribution: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_value_source_attribution.csv
+  seventeen_d_upside_preservation_diagnosis: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_upside_preservation_diagnosis.csv
+  seventeen_d_path_risk_threshold_diagnosis: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_path_risk_threshold_diagnosis.csv
+  seventeen_d_learned_model_gap_bridge: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_learned_model_gap_bridge.csv
+  seventeen_d_search_accounting_audit: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/search_accounting_audit.csv
+  seventeen_d_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/17D_oracle_diagnosis_report_manifest.json
+  seventeen_d_engine_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/oracle_diagnosis_engine_manifest.json
+
+  seventeen_b_ladder_summary: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_ladder_summary.csv
+  seventeen_b_high_upside_threshold_freeze: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_high_upside_threshold_freeze.csv
+  seventeen_b_o5_action_selection_proof: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_o5_action_selection_proof.csv
+  seventeen_b_o2_drawdown_threshold_replay: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_o2_drawdown_threshold_replay.csv
+  seventeen_b_neutral_stress: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_neutral_stress.csv
+  seventeen_b_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/17B_oracle_ladder_replay_manifest.json
+  seventeen_b_engine_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/oracle_ladder_replay_engine_manifest.json
+
+  sixteen_b_base_rate_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_base_rate_readout.csv
+  sixteen_b_label_panel_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16B_sequential_continuation_label_design_diagnostic/continuation_label_panel_readout.csv
+  sixteen_c_t0_feature_contract: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_contract.csv
+  sixteen_c_t0_feature_lineage_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_lineage_audit.csv
+  sixteen_c_t0_feature_leakage_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16C_sequential_continuation_separability_diagnostic/t0_feature_leakage_audit.csv
+  sixteen_e_utility_by_split_readout: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/utility_by_split_readout.csv
+  sixteen_e_six_cell_utility_reconciliation: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16E_sequential_continuation_utility_diagnostic/six_cell_utility_reconciliation.csv
+  sixteen_x_payoff_target_lineage_audit: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/payoff_target_lineage_audit.csv
+  sixteen_x_survival_vs_payoff_rank_ic: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/survival_vs_payoff_rank_ic_readout.csv
+  sixteen_x_payoff_decile_monotonicity: experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/tables/16X_payoff_aligned_continuation_label_power_precheck/payoff_decile_monotonicity_readout.csv
+
+required_artifacts:
+  research_plan: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  umbrella_requirement: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  requirement: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  seventeen_d_decision: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_decision_tree: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_value_source_attribution: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_upside_preservation_diagnosis: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_path_risk_threshold_diagnosis: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_learned_model_gap_bridge: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_search_accounting_audit: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_manifest: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_engine_manifest: {role: ep17d_decision_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_b_ladder_summary: {role: ep17b_oracle_semantics_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_high_upside_threshold_freeze: {role: ep17b_oracle_semantics_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_o5_action_selection_proof: {role: ep17b_oracle_semantics_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_o2_drawdown_threshold_replay: {role: ep17b_oracle_semantics_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_neutral_stress: {role: ep17b_oracle_semantics_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_manifest: {role: ep17b_oracle_semantics_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_engine_manifest: {role: ep17b_oracle_semantics_input, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  sixteen_b_base_rate_readout: {role: ep16_denominator_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16B}
+  sixteen_b_label_panel_readout: {role: full_row_level_target_source, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16B, source_kind: publishable_full_panel}
+  sixteen_c_t0_feature_contract: {role: ep16_feature_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_t0_feature_lineage_audit: {role: ep16_feature_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_c_t0_feature_leakage_audit: {role: ep16_feature_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16C}
+  sixteen_e_utility_by_split_readout: {role: ep16_utility_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16E}
+  sixteen_e_six_cell_utility_reconciliation: {role: ep16_utility_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16E}
+  sixteen_x_payoff_target_lineage_audit: {role: ep16_payoff_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+  sixteen_x_survival_vs_payoff_rank_ic: {role: ep16_payoff_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+  sixteen_x_payoff_decile_monotonicity: {role: ep16_payoff_reference, source_experiment_id: 16_winner_episode_sequential_sampling_geometry_preflight_v0, source_phase_id: 16X}
+
+target_filter:
+  label_id: continuation_survival_h20_no_deep_drawdown
+  threshold_id: up50pct
+  horizon_sessions: 20
+  split_column: cluster_split_bucket
+  payoff_column: step_end_price_ratio_minus_one_for_label_rule
+  signed_drawdown_column: max_drawdown_from_step_start
+
+expected:
+  final_decision_state: oracle_payoff_state_research_allowed
+  recommended_next_requirement: requirement_18_payoff_state_representation_research.md
+  next_allowed_requirement: requirement_18b_payoff_state_feature_matrix_audit.md
+  primary_threshold_id: up50pct
+  primary_horizon_sessions: 20
+  primary_sampling_unit: full_horizon_nonoverlap_step
+  primary_denominator: labelable_full
+  primary_cost_bps: 50
+  primary_q_defend: 0.0
+  primary_split_for_later_gates: robustness
+  validation_role: stress_readout_only
+  total_labelable_step_n: 23405
+  total_binary_step_n: 17339
+  total_neutral_step_n: 6066
+  denominators:
+    train: {labelable_step_n: 20245, binary_step_n: 14962, neutral_step_n: 5283}
+    robustness: {labelable_step_n: 2496, binary_step_n: 1872, neutral_step_n: 624}
+    validation: {labelable_step_n: 664, binary_step_n: 505, neutral_step_n: 159}
+  oracle_references:
+    O5_perfect_utility_primary: {denominator_type: labelable_full, observed_step_n: 2496, mean_incremental_return: 0.0294674283651707}
+    O2_dd_10pct_primary: {denominator_type: labelable_full, observed_step_n: 2496, mean_incremental_return: 0.0185108290944368, signed_drawdown_threshold: -0.10}
+    O4_label_positive_primary: {denominator_type: binary_primary, observed_step_n: 1872, mean_incremental_return: 0.0246811054592491}
+  mixed_o5_vs_best_label_path_gap: 0.004786322905921601
+  cutoffs:
+    high_upside_top30_stress: {oracle_variant_id: O4_high_upside_top30_stress, train_quantile: 0.7, train_absolute_payoff_cutoff: 0.0596330275229357}
+    high_upside_top20_stress: {oracle_variant_id: O4_high_upside_top20_stress, train_quantile: 0.8, train_absolute_payoff_cutoff: 0.1012285086722715}
+    high_upside_top10_stress: {oracle_variant_id: O4_high_upside_top10_stress, train_quantile: 0.9, train_absolute_payoff_cutoff: 0.1721071844362347}
+  sixteen_x_baselines:
+    robustness_payoff_rank_ic_baseline: 0.051877
+    payoff_minus_survival_margin: -0.000723
+    robustness_payoff_decile_monotonicity_baseline: 0.163636
+
+tolerances:
+  cutoff_abs_diff_max: 1.0e-12
+  oracle_mean_abs_diff_max: 1.0e-12
+  o5_aggregate_abs_diff_max: 1.0e-9
+
+forbidden_columns:
+  - {family: future_payoff, pattern: future payoff}
+  - {family: step_end_price, pattern: step_end price}
+  - {family: step_end_return, pattern: step_end return}
+  - {family: future_drawdown, pattern: future drawdown}
+  - {family: oracle_action, pattern: oracle action}
+  - {family: future_oracle_label, pattern: O1/O2/O4/O5 future labels}
+  - {family: label_class, pattern: label_class if used as model feature}
+  - {family: split_id, pattern: split id}
+  - {family: instrument_id, pattern: instrument id as raw model feature}
+  - {family: episode_cluster_id, pattern: episode cluster id as raw model feature}
+  - {family: validation_robustness_outcome, pattern: validation / robustness outcome-derived columns}

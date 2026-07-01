@@ -1,0 +1,17 @@
+candidate_family_id,candidate_feature_id,source_artifact_alias,source_pos_max_minus_step_start_pos,source_date_max_minus_step_start_date,uses_future_h20_path,uses_step_end_outcome,uses_oracle_label,uses_payoff_target,uses_binary_target,pit_valid_status,t0_available_status,candidate_primary_allowed_after_lineage,candidate_appendix_only,lineage_before_correlation_gate,blocking_reason
+M1,m1_return_sign_entropy_trailing20,pit_price_path_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M1,m1_path_transition_entropy_episode,pit_price_path_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M1,m1_repair_path_efficiency_episode,pit_price_path_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M1,m1_close_location_episode_range,episode_geometry_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M3,m3_upside_room_to_episode_high,episode_geometry_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M3,m3_downside_crowding_to_episode_low,episode_geometry_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M3,m3_vol_adjusted_repair_strength,pit_price_path_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M5,m5_bars_since_episode_low,episode_geometry_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M5,m5_episode_age_to_t0,episode_geometry_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M5,m5_lifecycle_progress_to_t0,episode_geometry_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M5,m5_bars_since_reclaim,episode_geometry_panel,0,0,False,False,False,False,False,appendix_only,blocked,False,True,pass,candidate_finite_rate_below_floor
+M2,m2_net_signed_money_flow_trailing20,pit_money_flow_proxy_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M2,m2_positive_money_flow_share_trailing20,pit_money_flow_proxy_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M2,m2_money_flow_persistence_trailing20,pit_money_flow_proxy_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M2,m2_turnover_compression_20_vs_60,pit_money_flow_proxy_panel,0,0,False,False,False,False,False,pass,pass,True,False,pass,
+M4,m4_regime_context_deferred,market_or_regime_context_panel,0,0,False,False,False,False,False,appendix_only,delayed_appendix_only,False,True,pass,m4_deferred_by_default
