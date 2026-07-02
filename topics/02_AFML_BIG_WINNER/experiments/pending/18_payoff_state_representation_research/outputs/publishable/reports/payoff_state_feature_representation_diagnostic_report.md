@@ -1,382 +1,358 @@
-# Payoff-state Feature Representation Diagnostic Report
+# 18D Payoff-state Feature Representation Diagnostic Report
 
-## 一、结论
+## 结论摘要
 
-18D 的结论是：
+18D 的诊断结论是：
 
-```text
-decision_state = 18D_feature_representation_refresh_supported
-next_allowed_requirement = requirement_18e_payoff_state_feature_matrix_refresh.md
-all_hard_gates_pass = true
-recommended_refresh_family_ids = M1|M3|M5|M2
-deferred_family_ids = M4
-```
+- `decision_state = 18D_feature_representation_refresh_supported`
+- `next_allowed_requirement = requirement_18e_payoff_state_feature_matrix_refresh.md`
+- `all_hard_gates_pass = True`
+- 推荐进入 18E 刷新的候选族为 `M1|M3|M5|M2`
+- 暂缓或仅 appendix 的候选族为 `M4`
 
-这不是一个“可以训练最终 payoff separability model”的结论。它只说明：在
-18C 的 F1-F5 低容量 separability 失败之后，18D 找到了若干 PIT-valid、
-t0-available、且在 train-prior residual readout 中仍含有 payoff 信息的表征族，
-因此下一步应进入 18E 的 feature matrix refresh。
-
-18D 不授权 entry / exit / holding policy，不授权 portfolio backtest，不授权模型部署、
+这仍然是 feature representation 诊断，不是 policy 结论。18D 不授权 entry
+policy、exit policy、holding policy、portfolio backtest、model deployment、
 production signal 或 live trading。
 
-## 二、最重要发现
+核心判断：18C 的失败更像是当前 23 个 feature 对 payoff-state 的表达能力不足，而不是
+简单换一个略高容量模型就能解决。18D 因此支持进入 18E，补充 payoff-state
+形态、相对位置、非对称空间和二阶 money-flow proxy 特征。
 
-### 1. 18C 的问题更像“表征缺口”，但仍有 thin-margin caveat
+## 关键发现与洞察
 
-18C 的主模型 `ridge_payoff_rank_h20_v1` 在 robustness split 上的 rank IC 是
-`0.064398`，低于 materiality floor `0.080000`。18C 最强的辅助模型是
-`shallow_tree_payoff_depth2_v1`，robustness rank IC 为 `0.076792`，距离 floor
-只差 `0.003208`。
+1. 18C 的 primary robustness rank IC 只有 `0.064398`，低于 `0.08`
+   materiality floor。当前特征上最好的辅助模型是
+   `shallow_tree_payoff_depth2_v1`，robustness rank IC 为 `0.076792`，
+   比 primary ridge 高 `0.012394`，仍低于 `0.015` 的 capacity delta threshold。
+   这说明容量提升没有形成可靠 rescue，只能给出 `thin_margin_caveat`。
 
-这意味着 18C 的容量/表征判断不能写成“容量完全排除”。18D 因此补跑了
-depth<=4 的 train-only grouped-CV capacity probe：
+2. bounded train-only grouped CV probe 也没有救回当前特征。depth-3 decision tree
+   grouped CV rank IC 为 `0.008962`，比 primary CV rank IC 低 `0.004714`；
+   depth-4 为 `0.007576`，更弱。现有 feature 的问题更像 representation
+   bottleneck，而不是模型容量太低。
 
-| model_id | train grouped-CV rank IC | vs primary CV delta | capacity caveat |
-|:--|--:|--:|:--|
-| ridge_payoff_rank_h20_v1 | 0.013675 | 0.000000 | false |
-| decision_tree_depth3_grouped_cv_probe_v1 | 0.008962 | -0.004714 | false |
-| decision_tree_depth4_grouped_cv_probe_v1 | 0.007576 | -0.006099 | false |
+3. `M1` 是最强候选族。它有 11 个候选、11 个 primary allowed、8 个
+   train-prior orthogonal payoff candidates，去重后 priority score 为 `0.343334`。
+   证据集中在 episode 内部修复路径、回撤/回补位置、失败修复次数和 path entropy，
+   正好对应 18C 当前 return/high-distance 特征缺失的 path morphology。
 
-结果很关键：中等容量的 depth-3 / depth-4 树没有把现有 23 个 F1-F5 特征救起来，
-反而低于 primary ridge 的 train grouped-CV IC。因此 18D 的判断是：
+4. `M5` 的 t0 已知位置特征也有实质信息。它有 9 个候选，其中 7 个 primary allowed、
+   6 个 orthogonal candidates，去重后 score 为 `0.223796`。但 `M5` 里有两个
+   appendix-only 风险点：`m5_lifecycle_progress_to_t0` 使用完整 episode boundary，
+   明确 look-ahead blocked；`m5_bars_since_reclaim` finite rate 只有 `79.5386%`，
+   低于 primary 可用性要求。
 
-```text
-capacity_margin_status = thin_margin_caveat
-capacity_conclusion_scope = low_capacity_representation_gap_with_capacity_caveat
-capacity_bottleneck_flag = false
-representation_bottleneck_flag = true
-```
+5. `M3` 支持 payoff asymmetry，但有效信息主要来自 upside room 和 range position。
+   `M3` 有 8 个候选、8 个 primary allowed、5 个 orthogonal candidates，
+   score 为 `0.196162`。其中 `m3_upside_room_to_episode_high` 的 residual rank IC
+   为 `0.069110`，是所有候选里最强的单项 train-prior residual evidence。
 
-解释：18D 支持“低容量表征不足”这个方向，但报告必须保留 thin-margin 诚实性。
-如果未来引入更强模型，仍需要单独 capacity accounting；本次不能把复杂模型直接
-升级为主线。
+6. `M2` 的二阶 money-flow proxy 值得加入，但应作为 proxy 而不是订单流事实。
+   `M2` 有 12 个候选、全部 primary allowed，其中 7 个在
+   `f2_extended_participation_money` 控制集下仍保留 orthogonal evidence，score 为
+   `0.164602`。最强项是 `m2_money_flow_reversal_accel_5v20`，residual rank IC
+   为 `-0.042115`。这支持加入二阶资金压力、反转加速度、集中度和价量背离 persistence。
 
-### 2. 当前 F1-F5 缺的不是更多同类 level 特征，而是 episode 内形态、位置和不对称性
+7. `M4` 没有通过刷新门。它只有 1 个 deferred row，0 个 primary allowed，
+   score 为 `0.000000`，blocking reason 为
+   `no_orthogonal_train_prior_or_deferred`。除非 18E 之前有新的 PIT regime/context
+   数据，否则不应把 M4 当作主刷新方向。
 
-18D 的 feature gap decomposition 显示：
+## 决策门与授权边界
 
-| current family | 已表达的信息 | 缺失的信息 | 对应候选族 |
-|:--|:--|:--|:--|
-| F1 | 短期收益、均线差、距 20/60 日高点 | episode 内修复路径质量、path entropy、range location | M1 |
-| F2 | volume / money / turnover 的 level 或 z-score | signed inflow/outflow、参与度动态、压力变化 | M2 |
-| F3 | board rank / market cap context | payoff asymmetry 与 path shape | M3 |
-| F4 | 波动、回撤、intraday range | vol-adjusted repair quality，而不是单纯低波动 | M1/M3 |
-| F5 | board dummy、market cap、tradability | 新 PIT regime context 才可能有增量 | M4 |
-
-这解释了为什么 18C 的 ridge score 会卡在 `0.064398`：它已经捕捉到一些低波动、
-参与度和短期修复信号，但没有表达 payoff-state 最核心的“路径形态”和“上行空间
-/下行拥挤的不对称”。
-
-### 3. M5 是最强 refresh 候选，M1/M3 提供核心形态和不对称补充，M2 有边际价值
-
-18D 只允许 train rows 设置 `orthogonal_payoff_candidate = true`；robustness 和
-validation 只作为 diagnostic readout。按 train-prior residual rank IC 排序，最强证据如下：
-
-| family | feature | raw IC | residual IC | residual retention | 判断 |
-|:--|:--|--:|--:|--:|:--|
-| M5 | lifecycle progress to t0 | 0.166948 | 0.168810 | 1.011151 | 强，主推 |
-| M3 | upside room to episode high | 0.067410 | 0.069110 | 1.025216 | 强，主推 |
-| M5 | episode age to t0 | 0.059512 | 0.058699 | 0.986345 | 强，主推 |
-| M1 | close location in episode range | -0.055572 | -0.051236 | 0.921982 | 强，主推 |
-| M5 | bars since reclaim | 0.041452 | 0.028186 | 0.679968 | 有信号，但覆盖不足，appendix |
-| M2 | money-flow persistence trailing20 | 0.014162 | 0.022856 | 1.613934 | 有增量 |
-| M2 | turnover compression 20 vs 60 | -0.046154 | -0.021641 | 0.468879 | 有增量 |
-| M2 | net signed money-flow trailing20 | -0.054852 | -0.021293 | 0.388198 | 有增量 |
-| M1 | path transition entropy episode | 0.039028 | 0.020017 | 0.512887 | 有增量 |
-| M2 | positive money-flow share trailing20 | -0.055115 | -0.018870 | 0.342373 | 有增量 |
-| M5 | bars since episode low | 0.017869 | 0.014731 | 0.824385 | 有增量 |
-| M1 | repair path efficiency episode | -0.021805 | -0.012967 | 0.594664 | 有增量 |
-
-这里的 residual IC 是在 train split 上先对 `mr_volatility_20d` 和
-`mr_volume_20d_zscore` 做线性残差化后的 rank IC；M2 还额外控制
-`mr_turnover_rate_20d_zscore` 和 `mr_money_20d_zscore`。因此这些特征不是简单
-重复 18C 已经看到的 volatility/participation ceiling。
-
-## 三、候选族逐项解读
-
-### M5 episode position and maturity：优先级最高
-
-M5 的证据最强：
-
-```text
-candidate_feature_n = 4
-primary_allowed_candidate_n = 3
-orthogonal_payoff_candidate_n = 4
-candidate_priority_score = 0.270425
-recommended_for_refresh = true
-```
-
-最强特征是 `m5_lifecycle_progress_to_t0`，train residual IC = `0.168810`。它在
-robustness 和 validation 也维持很强的 diagnostic readout：
-
-| split | raw IC | residual IC | role |
-|:--|--:|--:|:--|
-| train | 0.166948 | 0.168810 | train_priority_prior |
-| robustness | 0.246793 | 0.247604 | diagnostic only |
-| validation | 0.255555 | 0.253393 | diagnostic only |
-
-AFML 解释：episode 的位置/成熟度本身就是 payoff-state 的状态变量。当前样本不是
-孤立 bar，而是 winner episode 内的 sequential step；同样的短期动量或低波动，
-出现在 episode 早段、中段、末段，其后续 payoff 分布不同。18C 的 F1-F5 没有显式
-表达这一点。
-
-注意 `m5_bars_since_reclaim` 虽有 train residual IC `0.028186`，但因为 finite rate
-只有 `0.795386`，低于 `candidate_min_finite_rate = 0.80`，被放入 appendix。它有
-研究价值，但不应直接进入 18E 主矩阵，除非 18E 明确修复 reclaim 可得性或改变其
-缺失处理契约。
-
-### M3 payoff asymmetry context：直接补 payoff-state 核心缺口
-
-M3 的 family 结果：
-
-```text
-candidate_feature_n = 3
-primary_allowed_candidate_n = 3
-orthogonal_payoff_candidate_n = 1
-candidate_priority_score = 0.086515
-recommended_for_refresh = true
-```
-
-唯一通过 train-prior orthogonality 的 M3 特征是
-`m3_upside_room_to_episode_high`：
-
-| split | raw IC | residual IC | role |
-|:--|--:|--:|:--|
-| train | 0.067410 | 0.069110 | train_priority_prior |
-| robustness | 0.141261 | 0.155106 | diagnostic only |
-| validation | 0.040571 | 0.044871 | diagnostic only |
-
-这个结果符合 18D 的研究预期：payoff-state 的关键不是“当前看起来强不强”，而是
-从 t0 看，结构性上行空间是否仍然存在。当前 F1-F5 没有直接表达 upside room，
-因此 M3 应进入 18E refresh。
-
-M3 里另外两个候选没有过 train-prior floor：
-
-| feature | train residual IC | 判断 |
-|:--|--:|:--|
-| downside crowding to episode low | -0.009496 | 低于 0.010 floor，appendix/readout |
-| vol-adjusted repair strength | -0.007908 | 低于 0.010 floor，appendix/readout |
-
-含义：上行空间 proxy 比下行拥挤或简单 vol-adjusted repair strength 更接近当前
-payoff-state 缺口。18E 应优先把 upside room 放入主矩阵，再考虑更精细的不对称组合。
-
-### M1 episode-local morphology：有效，但不是所有 entropy 都有用
-
-M1 的 family 结果：
-
-```text
-candidate_feature_n = 4
-primary_allowed_candidate_n = 4
-orthogonal_payoff_candidate_n = 3
-candidate_priority_score = 0.087094
-recommended_for_refresh = true
-```
-
-有效的 M1 特征包括：
-
-| feature | train raw IC | train residual IC | 判断 |
-|:--|--:|--:|:--|
-| close location in episode range | -0.055572 | -0.051236 | 强，主推 |
-| path transition entropy episode | 0.039028 | 0.020017 | 有增量 |
-| repair path efficiency episode | -0.021805 | -0.012967 | 有增量 |
-
-但 `m1_return_sign_entropy_trailing20` 没通过 orthogonality：
-
-```text
-raw IC = 0.014655
-residual IC = 0.002874
-residual_retention = 0.196097
-orthogonal_payoff_candidate = false
-```
-
-这说明“加 entropy”本身不是答案。简单 trailing return sign entropy 大部分信息被
-volatility/participation 控制项吸收；真正更有用的是 episode 内路径转换结构、
-close 在 episode range 的位置，以及从 episode low 修复到 t0 的路径效率。
-
-一个重要细节是 `close_location_episode_range` 的 residual IC 为负。这个方向不是
-坏事，含义是：在当前 episode 定义下，t0 越靠近 episode 内高位，后续 h20 payoff
-反而可能越受挤压；更靠近 range 中低位但已修复的状态可能保留更高的剩余 payoff
-空间。这和 M3 的 upside room 结果一致。
-
-### M2 supply and pressure dynamics：应作为次优先级进入 refresh
-
-M2 的 family 结果：
-
-```text
-candidate_feature_n = 4
-primary_allowed_candidate_n = 4
-orthogonal_payoff_candidate_n = 4
-candidate_priority_score = 0.084660
-recommended_for_refresh = true
-```
-
-M2 的所有候选都通过了 train-prior orthogonality：
-
-| feature | train raw IC | train residual IC | residual retention |
-|:--|--:|--:|--:|
-| money-flow persistence trailing20 | 0.014162 | 0.022856 | 1.613934 |
-| turnover compression 20 vs 60 | -0.046154 | -0.021641 | 0.468879 |
-| net signed money-flow trailing20 | -0.054852 | -0.021293 | 0.388198 |
-| positive money-flow share trailing20 | -0.055115 | -0.018870 | 0.342373 |
-
-但 M2 的解释要谨慎：它和 18C 当前唯一较有效的 F2 participation 家族同源，所以更
-可能提供边际增量，而不是主导性新表征。18E 中 M2 应作为 secondary refresh family，
-并继续保留 F2-extended residualization 检查，防止把旧的 volume/money z-score
-重新包装成“新特征”。
-
-### M4 regime and cross-sectional context：继续暂缓
-
-M4 结果：
-
-```text
-candidate_feature_n = 1
-primary_allowed_candidate_n = 0
-orthogonal_payoff_candidate_n = 0
-recommended_for_refresh = false
-blocking_reason = no_orthogonal_train_prior_or_deferred
-```
-
-M4 没有被否定为永远无用；它只是没有在 18D 里证明有足够新 PIT context，可进入
-18E 主矩阵。考虑到 18C 中 F5 基本没有贡献，除非后续能提供新的 PIT-valid
-industry / breadth / regime 数据，否则 M4 的性价比低于 M1/M3/M5/M2。
-
-## 四、输入覆盖和 lineage 质量
-
-18D 的输入审计全部通过。关键数据源包括：
-
-| source | evidence |
+| gate | status |
 |:--|:--|
-| 18B feature matrix | 23,405 rows，75 columns |
-| 18C score panel | 23,405 rows，61 columns |
-| qfq daily path source | 4,597 instrument CSVs |
-| 16B label step panel | 504,580 rows |
-| 16B materialized step panel | 504,580 rows |
-| 16A episode interval panel | 2,867 rows |
-| EP02 aligned context panels | 可用，但 M4 默认 appendix/deferred |
+| upstream_18c_contract_gate | pass |
+| input_artifact_gate | pass |
+| capacity_vs_representation_gate | pass |
+| candidate_inventory_completeness_gate | pass |
+| candidate_lineage_gate | pass |
+| pit_t0_availability_gate | pass |
+| orthogonal_payoff_information_gate | pass |
+| feature_family_prioritization_gate | pass |
+| search_accounting_gate | pass |
 
-候选 feature panel 的 row denominator 仍是 18B/18C 的 `labelable_full`：
+| authorization | value |
+|:--|:--|
+| entry_policy_authorized | False |
+| exit_policy_authorized | False |
+| holding_policy_authorized | False |
+| portfolio_backtest_authorized | False |
+| model_deployment_authorized | False |
+| production_signal_authorized | False |
+| live_trading_authorized | False |
 
-| split | row_n |
-|:--|--:|
-| train | 20,245 |
-| robustness | 2,496 |
-| validation | 664 |
-| total | 23,405 |
+18D 的下一步只允许生成或细化
+`requirement_18e_payoff_state_feature_matrix_refresh.md`。它不能直接进入交易规则、
+组合回测或上线信号。
 
-qfq 路径覆盖：
+## 18C 证据回放：容量不足还是表达不足
 
-| qfq_path_status | row_n | share |
-|:--|--:|--:|
-| pass | 22,508 | 96.17% |
-| insufficient_pre_t0_path | 897 | 3.83% |
+| metric | value | interpretation |
+|:--|--:|:--|
+| primary_ridge_robustness_rank_ic | 0.064398 | 18C primary 排序证据偏弱，低于 0.08 materiality floor |
+| max_aux_existing_feature_rank_ic | 0.076792 | 现有特征上最好的辅助模型仍未越过 0.08 |
+| max_aux_minus_primary_rank_ic | 0.012394 | 小于 0.015 capacity delta threshold |
+| max_train_grouped_cv_probe_rank_ic | 0.008962 | bounded train-only probe 未显示容量 rescue |
+| max_train_grouped_cv_probe_minus_primary_cv_rank_ic | -0.004714 | probe 比 primary CV 更弱 |
+| max_aux_margin_to_floor | 0.003208 | 最好辅助模型距离 materiality floor 很近但仍不足 |
+| max_aux_margin_to_capacity_delta_threshold | 0.002606 | 距离 capacity delta threshold 也很近，结论带 caveat |
 
-主要候选特征 finite rate：
+capacity conclusion 为
+`low_capacity_representation_gap_with_capacity_caveat`，capacity_margin_status 为
+`thin_margin_caveat`。这不是说容量因素被完全排除，而是说在当前 evidence 下，
+下一步更合理的是刷新 feature representation，而不是继续在同一组 23 个 feature
+上调模型。
 
-| feature | finite_rate |
-|:--|--:|
-| close_location_episode_range | 0.961675 |
-| upside_room_to_episode_high | 0.961675 |
-| downside_crowding_to_episode_low | 0.961675 |
-| lifecycle_progress_to_t0 | 0.961675 |
-| money-flow trailing20 proxies | 0.961675 |
-| path_transition_entropy_episode | 0.906174 |
-| repair_path_efficiency_episode | 0.937877 |
-| bars_since_reclaim | 0.795386 |
+## 当前 Feature Gap 分解
 
-因此 18D 的 lineage 结论是：M1/M2/M3 的主要候选和 M5 的 3 个主候选都满足
-PIT/t0 和 finite-rate 要求；`bars_since_reclaim` 因覆盖略低，保留为 appendix。
+| current family | represented information | missing payoff information | mapped candidate family | insight |
+|:--|:--|:--|:--|:--|
+| F1 | short return、MA spread、distance to highs | episode-internal repair path morphology | M1 | 当前只知道“涨跌和离高点距离”，缺少修复路径形状 |
+| F2 | turnover、volume、money level z-score | signed inflow/outflow dynamics | M2 | 当前参与度特征多为水平值，缺少资金压力的方向、二阶变化和 persistence |
+| F3 | board rank context | payoff asymmetry and path shape | M3 | 板块排名是 context，不等于上涨空间、下跌拥挤度或突破失败压力 |
+| F4 | volatility、drawdown、intraday range | vol-adjusted repair quality | M1/M3 | 风险特征提供 ceiling，但不能表达修复质量和非对称空间 |
+| F5 | board dummies、market cap、tradability | regime only if new PIT context exists | M4 | 静态 context 在 18C 证据弱，暂不作为主刷新方向 |
 
-## 五、robustness / validation 只作为读数，不作为选择依据
+## 候选清单与 PIT/Lineage
 
-18D 的 search accounting 全部通过：
+候选清单完整性通过：
 
-```text
-no_feature_selection_from_target_correlation_before_lineage = true
-no_feature_selection_from_robustness = true
-no_feature_selection_from_validation = true
-no_final_model_training = true
-binary_metric_not_primary_gate = true
-neutral_rows_not_dropped = true
-delayed_features_not_primary = true
-```
+- expected_candidate_feature_n = `41`
+- observed_candidate_feature_n = `41`
+- missing_candidate_feature_n = `0`
+- extra_candidate_feature_n = `0`
 
-这点很重要。报告中的 robustness / validation residual IC 可以帮助判断方向是否荒谬，
-但不能反过来决定推荐。比如：
+| family | candidate_n | primary_allowed_after_lineage | appendix_only | finite value range | future dependency rows | decision |
+|:--|--:|--:|--:|:--|--:|:--|
+| M1 | 11 | 11 | 0 | 21209 to 22508 / 23405 | 0 | primary allowed |
+| M2 | 12 | 12 | 0 | 22508 to 22508 / 23405 | 0 | primary allowed |
+| M3 | 8 | 8 | 0 | 21209 to 22508 / 23405 | 0 | primary allowed |
+| M5 | 9 | 7 | 2 | 0 to 22508 / 23405 | 23405 | partial primary, partial appendix |
+| M4 | 1 | 0 | 1 | 0 to 0 / 23405 | 0 | deferred |
 
-| feature | train residual IC | robustness residual IC | validation residual IC |
-|:--|--:|--:|--:|
-| lifecycle_progress_to_t0 | 0.168810 | 0.247604 | 0.253393 |
-| upside_room_to_episode_high | 0.069110 | 0.155106 | 0.044871 |
-| close_location_episode_range | -0.051236 | -0.058752 | 0.006834 |
-| path_transition_entropy_episode | 0.020017 | 0.014680 | 0.087402 |
-| money-flow persistence trailing20 | 0.022856 | 0.004974 | -0.037340 |
-| net signed money-flow trailing20 | -0.021293 | 0.003457 | -0.071009 |
+被阻断或 appendix-only 的关键 rows：
 
-从解释上看，M5 和 M3 的部分特征在 robustness/validation 上也有方向性支持；
-M2 的 OOS 表现更不稳定，因此更应作为 secondary family，而不是 primary thesis。
-但最终推荐仍只基于 lineage + train-prior orthogonality。
+| family | candidate_feature_id | finite rows | finite rate | blocking_reason | interpretation |
+|:--|:--|--:|--:|:--|:--|
+| M5 | m5_lifecycle_progress_to_t0 | 0 | 0.000000 | full_episode_boundary_after_t0 | 依赖完整 episode 结束边界，t0 不可知，不能进入 primary |
+| M5 | m5_bars_since_reclaim | 18616 | 0.795386 | candidate_finite_rate_below_floor | t0 可知但覆盖率不足，只能 appendix |
+| M4 | m4_regime_context_deferred | 0 | 0.000000 | m4_deferred_by_default | 没有新增 PIT context 证据，默认 deferred |
 
-## 六、对 18E 的具体建议
+最重要的 look-ahead 结论：`m5_lifecycle_progress_to_t0` 明确使用
+`uses_full_episode_boundary_after_t0 = True`，并且
+`future_source_dependency_row_n = 23405`、
+`future_normalizer_dependency_row_n = 23405`。因此它不能进入 18E 的 primary feature
+matrix，除非后续能提供单独的 t0-frozen endpoint proof。
 
-18E 应该刷新 feature matrix，而不是直接做 oracle-gap bridge。建议的 feature
-优先级如下：
+## Family Prioritization
 
-1. M5 episode position/maturity：优先加入 `lifecycle_progress_to_t0`、
-   `episode_age_to_t0`、`bars_since_episode_low`。
-2. M3 payoff asymmetry：优先加入 `upside_room_to_episode_high`。
-3. M1 episode-local morphology：加入 `close_location_episode_range`、
-   `path_transition_entropy_episode`、`repair_path_efficiency_episode`。
-4. M2 supply/pressure dynamics：加入 money-flow persistence、turnover compression、
-   net signed money-flow、positive money-flow share，但保持 F2-extended residualization
-   审计。
-5. M4 regime/context：暂缓，除非 18E 明确引入新的 PIT-valid regime / breadth /
-   industry context，并证明不是 18B F5 的重复。
+| family | planned priority | adjusted priority | candidates | primary allowed | orthogonal candidates | appendix-only | dedup groups | raw score | dedup score | recommendation |
+|:--|:--|:--|--:|--:|--:|--:|--:|--:|--:|:--|
+| M1 | high | recommended | 11 | 11 | 8 | 0 | 10 | 0.401751 | 0.343334 | primary_refresh_candidate |
+| M3 | high | recommended | 8 | 8 | 5 | 0 | 7 | 0.223063 | 0.196162 | primary_refresh_candidate |
+| M5 | high_medium | recommended | 9 | 7 | 6 | 2 | 9 | 0.260208 | 0.223796 | primary_refresh_candidate |
+| M2 | medium | recommended | 12 | 12 | 7 | 0 | 12 | 0.194750 | 0.164602 | primary_refresh_candidate |
+| M4 | low | deferred | 1 | 0 | 0 | 1 | 1 | 0.000000 | 0.000000 | appendix_or_deferred |
 
-18E 的主矩阵不应纳入 `bars_since_reclaim`，除非先解决 reclaim 可得性问题；当前它的
-finite rate 为 `0.795386`，略低于 18D 的 `0.80` floor。
+priority score 使用 train-prior residual rank IC，且只使用 dedup-group representative。
+robustness 和 validation rows 只做诊断，不参与推荐选择。这个设计可以降低
+target readout 后选择候选的风险。
 
-## 七、AFML 解释
+分数排序和研究优先级并不完全相同：按 dedup score，M5 高于 M3；但 18D 的
+recommended_refresh_family_ids 仍为 `M1|M3|M5|M2`，因为 M3 对应 18C 明确缺失的
+payoff asymmetry/path shape，而 M5 是位置诊断补充。18E 可以按这个集合刷新，
+但建模时应继续检查 M3/M5 的共线性和边际贡献。
 
-18D 的结果把 18C 的失败原因拆得更清楚：
+## M1：Episode 内部修复形态
 
-当前 F1-F5 不是完全没有 payoff signal，而是 signal 表达得太粗。18C 的 ridge score
-主要围绕短期修复、参与度、低波动和静态 context；这些可以产生弱排序，但无法稳定
-表达 payoff-state 的结构性差异。
+M1 是最强 evidence family。它补充的是 18C 当前 F1 缺失的“怎么修复”，而不是简单的
+“当前涨了多少”。
 
-18D 找到的强证据集中在三类：
+| candidate_feature_id | residual IC | raw IC | residual retention | orthogonal |
+|:--|--:|--:|--:|:--|
+| m1_pullback_from_episode_high_t0 | -0.065799 | -0.067410 | 0.976099 | True |
+| m1_episode_drawdown_pre_t0 | -0.057684 | -0.049975 | 1.154242 | True |
+| m1_close_location_trailing60_range | -0.054793 | -0.056170 | 0.975500 | True |
+| m1_close_location_episode_range | -0.051236 | -0.055572 | 0.921982 | True |
+| m1_failed_repair_count_low_to_t0 | 0.041929 | 0.034560 | 1.213217 | True |
+| m1_up_down_run_imbalance_20 | -0.038909 | -0.042683 | 0.911573 | True |
+| m1_path_transition_entropy_episode | 0.020017 | 0.039028 | 0.512887 | True |
+| m1_repair_path_efficiency_episode | -0.012967 | -0.021805 | 0.594664 | True |
 
-```text
-episode 内位置：当前 step 在 winner episode 生命周期里的位置
-结构性上行空间：t0 到 episode 高位/剩余空间的关系
-修复路径形态：close 在 range 中的位置、路径转换熵、修复效率
-```
+洞察：
 
-这些更接近 AFML 里的 state representation，而不是单纯 predictor stacking。
-因此下一步不是放宽 18C 门槛，也不是把 binary target 切回主线，而是构造一个新的
-payoff-state feature matrix，再重新做 separability diagnostic。
+- `pullback_from_episode_high_t0`、`episode_drawdown_pre_t0` 和 close-location
+  相关特征的残差 IC 最大，说明 payoff-state ranking 对“修复后所处位置”和“前期回撤
+  形状”敏感。
+- `failed_repair_count_low_to_t0` 和 `path_transition_entropy_episode` 提供的是
+  路径质量信息，不是单点价格位置。它们对 18C 当前 F1 特征是有意义的补充。
+- `m1_close_location_episode_range` 与 `m1_episode_recovery_ratio_to_high_t0`
+  被归入同一 range-location alias group，score 使用代表项，避免重复计分。
 
-## 八、边界
+## M3：Payoff Asymmetry 与突破压力
 
-18D 只支持：
+M3 的有效证据主要集中在 upside room、range position 和 failed breakout。它解释的是
+同样的 t0 位置下，上方空间、下方拥挤和突破失败压力是否改变 payoff-state ranking。
 
-```text
-next_allowed_requirement = requirement_18e_payoff_state_feature_matrix_refresh.md
-```
+| candidate_feature_id | residual IC | raw IC | residual retention | orthogonal |
+|:--|--:|--:|--:|:--|
+| m3_upside_room_to_episode_high | 0.069110 | 0.067410 | 1.025216 | True |
+| m3_asymmetric_range_position_t0 | -0.051236 | -0.055572 | 0.921982 | True |
+| m3_failed_breakout_count_pre_t0 | 0.046902 | 0.042062 | 1.115063 | True |
+| m3_upside_downside_room_ratio_t0 | 0.017580 | 0.055090 | 0.319119 | True |
+| m3_upper_shadow_pressure_share_20 | 0.011333 | 0.010360 | 1.093966 | True |
 
-18D 不支持：
+洞察：
 
-```text
-entry_policy
-exit_policy
-holding_policy
-portfolio_backtest
-model_deployment
-production_signal
-live_trading
-oracle-gap bridge
-```
+- `m3_upside_room_to_episode_high` 是单项最强 residual evidence，支持把“距离 episode
+  high 的上行空间”纳入 18E。
+- `m3_upside_downside_room_ratio_t0` 的 raw IC 为 `0.055090`，但 residual IC 降到
+  `0.017580`，说明一部分信息已经被 volatility/participation 或其他 path 变量解释。
+  18E 中它适合作为补充，而不是核心单项。
+- downside 相关的两个特征被归为同一 group，且没有成为 orthogonal candidate。下行拥挤
+  可能仍可保留为 appendix/diagnostic，但不应成为主刷新权重来源。
 
-只有当未来 refreshed feature matrix 在新的 separability diagnostic 中真正通过
-rank IC、monotonicity、baseline、bootstrap 和 search-accounting gates，才可以重新
-讨论 oracle-gap bridge。
+## M5：t0 已知的位置与年龄诊断
+
+M5 的核心价值是把 episode 位置和年龄显式化。它不是完整生命周期进度预测，因为完整
+episode 结束边界在 t0 不可知。
+
+| candidate_feature_id | residual IC | raw IC | residual retention | orthogonal |
+|:--|--:|--:|--:|:--|
+| m5_episode_age_to_t0 | 0.058699 | 0.059512 | 0.986345 | True |
+| m5_nonoverlap_step_index_to_t0 | 0.058699 | 0.059512 | 0.986345 | True |
+| m5_bars_since_episode_high_t0 | 0.041233 | 0.047833 | 0.862010 | True |
+| m5_low_to_t0_age_ratio | -0.039523 | -0.038397 | 1.029324 | True |
+| m5_bars_since_episode_low | 0.014731 | 0.017869 | 0.824385 | True |
+| m5_high_to_t0_age_ratio | 0.010911 | 0.018614 | 0.586188 | True |
+
+洞察：
+
+- `m5_episode_age_to_t0` 与 `m5_nonoverlap_step_index_to_t0` 的 evidence 完全相同
+  或高度接近。虽然它们在 declared dedup group 中是分开的，18E 仍应检查矩阵 rank、
+  VIF 或相关性，必要时只保留一个。
+- `bars_since_episode_high_t0` 和 `low_to_t0_age_ratio` 表明 payoff state 与
+  “高点/低点到 t0 的相对时间结构”有关。这类变量是 t0-known，可以进入 primary。
+- `m5_lifecycle_progress_to_t0` 不可进入 primary。它的名称看似是 t0 progress，但计算
+  依赖 full episode boundary，因此是 look-ahead risk。
+
+## M2：二阶 Money-flow Proxy
+
+M2 使用的是 signed daily money-flow proxies，不是真实 order flow。18D 只把它作为
+participation 和 pressure 的 proxy 来使用。
+
+推荐 M2 时使用的控制集是 `f2_extended_participation_money`，不是
+`base_vol_participation`。在 train split 中：
+
+| control set | rows | recommendation eligible | orthogonal candidates | abs residual IC sum |
+|:--|--:|--:|--:|--:|
+| base_vol_participation | 12 | 0 | 0 | 0.262130 |
+| f2_extended_participation_money | 12 | 12 | 7 | 0.194750 |
+
+这意味着 M2 的 evidence 必须在控制现有 F2 participation/money 特征后仍存在，才允许
+影响推荐。
+
+| candidate_feature_id | residual IC | raw IC | residual retention | orthogonal |
+|:--|--:|--:|--:|:--|
+| m2_money_flow_reversal_accel_5v20 | -0.042115 | -0.045837 | 0.918788 | True |
+| m2_flow_concentration_top3_share_20 | -0.024602 | -0.032066 | 0.767244 | True |
+| m2_money_flow_persistence_trailing20 | 0.022790 | 0.014097 | 1.616672 | True |
+| m2_turnover_compression_20_vs_60 | -0.021641 | -0.046154 | 0.468879 | True |
+| m2_net_signed_money_flow_trailing20 | -0.021293 | -0.054852 | 0.388198 | True |
+| m2_positive_money_flow_share_trailing20 | -0.018870 | -0.055115 | 0.342373 | True |
+| m2_flow_price_divergence_persistence_20 | -0.013291 | -0.008913 | 1.491182 | True |
+
+洞察：
+
+- 最强项是 `money_flow_reversal_accel_5v20`，它是二阶变化项，符合“资金压力拐点”
+  比单纯 money level 更接近 payoff-state morphology 的直觉。
+- `flow_concentration_top3_share_20` 和 `flow_price_divergence_persistence_20`
+  补充的是集中冲击和价量背离持续性，不应与当前 F2 money z-score 混为一类。
+- `net_signed_money_flow_trailing20` raw IC 较强但 residual retention 只有 `0.388198`，
+  表明相当一部分信息已被现有 participation/money 控制解释。18E 应保留但降低
+  解释强度，不应把它当成独立主因。
+
+## De-dup 与候选选择纪律
+
+18D 的 score 使用 dedup-group representative，避免因为同一概念的别名重复提高 family
+score。主要非 singleton group：
+
+| family | dedup group | candidate ids | candidate_n | implication |
+|:--|:--|:--|--:|:--|
+| M1 | m1_range_location_group | `m1_close_location_episode_range`, `m1_episode_recovery_ratio_to_high_t0` | 2 | 两者表达 range/recovery 位置，score 只按代表项计 |
+| M3 | m3_downside_room_group | `m3_downside_crowding_to_episode_low`, `m3_downside_room_to_episode_low_t0` | 2 | downside room 信息重叠，未形成 primary orthogonal candidate |
+
+其他 M2、M5 以及多数 M1/M3 候选为 singleton group。即使如此，18E 仍需要在 feature
+matrix 刷新后做相关性和稳定性检查，尤其是 `m5_episode_age_to_t0` 与
+`m5_nonoverlap_step_index_to_t0`。
+
+## Missingness 与 Split 证据口径
+
+train-prior rows 是唯一可影响推荐的证据；robustness 和 validation rows 只用于诊断。
+
+| family | train eligible rows | train missing min | train missing median | train missing max | orthogonal candidates |
+|:--|--:|--:|--:|--:|--:|
+| M1 | 11 | 0.032205 | 0.032205 | 0.083428 | 8 |
+| M2 | 12 | 0.032205 | 0.032205 | 0.032205 | 7 |
+| M3 | 8 | 0.032205 | 0.032205 | 0.083428 | 5 |
+| M5 | 9 | 0.032205 | 0.032205 | 1.000000 | 6 |
+| M4 | 1 | 1.000000 | 1.000000 | 1.000000 | 0 |
+
+M1/M3 的 max missingness 为 `0.083428`，来自 episode path 需要低点到 t0 路径的候选。
+M2 的 missingness 更稳定，全部为 `0.032205`。M5 的 max missingness 为 `1.000000`，
+对应 `m5_lifecycle_progress_to_t0` 的完整 episode boundary block。
+
+## 18E 刷新建议
+
+18E 应按以下边界刷新 feature matrix：
+
+1. Primary include:
+   `M1`, `M3`, `M5` 中通过 lineage/PIT 的 t0-known features，以及 `M2` 中通过
+   `f2_extended_participation_money` residualization 的二阶 money-flow proxy features。
+
+2. Primary exclude:
+   `m5_lifecycle_progress_to_t0`，因为它使用 full episode boundary after t0；
+   `m5_bars_since_reclaim`，因为 finite rate 只有 `79.5386%`；
+   `M4`，因为没有 primary PIT evidence。
+
+3. M2 需要明确命名为 proxy feature family。报告和 requirement 中应避免把它写成真实
+   order-flow 或逐笔资金流。
+
+4. 18E 应继续复核共线性和 alias risk。重点检查 M1 range-location group、
+   M3 downside group、M5 age/index pair，以及 M2 trailing/acceleration/curvature
+   之间的相关性。
+
+5. 18E 仍不能直接选择交易阈值或 policy。它的目标是生成 refresh 后的 feature matrix，
+   再交给后续 separability 或 utility gate 验证。
+
+## 数据来源与审计
+
+| source_artifact_alias | resolved_source_status | artifact_n |
+|:--|:--|--:|
+| eighteen_a_handoff | pass | 4 |
+| eighteen_c_handoff | pass | 13 |
+| ep18_current_feature_matrix | pass | 5 |
+| ep18_matrix_row_keys | pass | 1 |
+| ep18_planning | pass | 2 |
+| episode_geometry_panel | pass | 6 |
+| market_or_regime_context_panel | pass | 2 |
+| pit_money_flow_proxy_panel | pass | 1 |
+| pit_price_path_panel | pass | 1 |
+| pre_t0_supply_zone_panel | pass | 2 |
+
+Search accounting 共 20 项检查全部 pass，关键约束包括：
+
+- no_feature_selection_from_target_correlation_before_lineage = True
+- no_candidate_added_after_target_readout = True
+- no_candidate_removed_after_target_readout = True
+- no_feature_selection_from_robustness = True
+- no_feature_selection_from_validation = True
+- no_final_model_training = True
+- delayed_features_not_primary = True
+- no_entry_policy_authorized = True
+- no_portfolio_backtest_authorized = True
+- no_live_trading_authorized = True
+
+因此，本报告的 publishable 结论只支持 feature representation refresh，不支持任何
+交易或部署动作。

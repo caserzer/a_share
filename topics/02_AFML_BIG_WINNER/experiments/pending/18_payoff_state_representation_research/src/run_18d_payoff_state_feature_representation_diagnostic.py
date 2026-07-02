@@ -45,12 +45,110 @@ HARD_GATES = (
     "upstream_18c_contract_gate",
     "input_artifact_gate",
     "capacity_vs_representation_gate",
+    "candidate_inventory_completeness_gate",
     "candidate_lineage_gate",
     "pit_t0_availability_gate",
     "orthogonal_payoff_information_gate",
     "feature_family_prioritization_gate",
     "search_accounting_gate",
 )
+BASE_RESIDUALIZATION_ID = "base_vol_participation"
+BASE_RESIDUALIZATION_ROLE = "standard_orthogonality_readout"
+M2_EXT_RESIDUALIZATION_ID = "f2_extended_participation_money"
+M2_EXT_RESIDUALIZATION_ROLE = "m2_recommendation_gate"
+BASE_COVARIATES = ["mr_volatility_20d", "mr_volume_20d_zscore"]
+M2_EXT_COVARIATES = [
+    "mr_volatility_20d",
+    "mr_volume_20d_zscore",
+    "mr_turnover_rate_20d_zscore",
+    "mr_money_20d_zscore",
+]
+
+
+def candidate_definitions() -> list[dict[str, Any]]:
+    rows = [
+        ("M1", "m1_return_sign_entropy_trailing20", "return sign entropy trailing 20", "return_sign_entropy_trailing20", "pit_price_path_panel", "qfq close", "high", "m1_return_sign_entropy_trailing20"),
+        ("M1", "m1_path_transition_entropy_episode", "path transition entropy episode low to t0", "path_transition_entropy_episode_low_to_t0", "pit_price_path_panel", "qfq close", "high", "m1_path_transition_entropy_episode"),
+        ("M1", "m1_repair_path_efficiency_episode", "episode repair path efficiency", "repair_path_efficiency_episode_low_to_t0", "pit_price_path_panel", "qfq close", "high", "m1_repair_path_efficiency_episode"),
+        ("M1", "m1_close_location_episode_range", "close location in episode range", "(close_t0-low_t0)/(high_t0-low_t0)", "episode_geometry_panel", "qfq high low close", "high", "m1_range_location_group"),
+        ("M1", "m1_episode_drawdown_pre_t0", "episode drawdown before t0", "min(low/running_max(close)-1)", "pit_price_path_panel", "qfq low close", "high", "m1_episode_drawdown_pre_t0"),
+        ("M1", "m1_episode_recovery_ratio_to_high_t0", "episode recovery ratio to pre-t0 high", "(close_t0-low_t0)/(high_t0-low_t0)", "episode_geometry_panel", "qfq high low close", "high", "m1_range_location_group"),
+        ("M1", "m1_pullback_from_episode_high_t0", "pullback from pre-t0 episode high", "close_t0/high_t0-1", "episode_geometry_panel", "qfq high close", "high", "m1_pullback_from_episode_high_t0"),
+        ("M1", "m1_close_location_trailing60_range", "close location in trailing 60 range", "(close_t0-low_60)/(high_60-low_60)", "pit_price_path_panel", "qfq high low close", "high", "m1_close_location_trailing60_range"),
+        ("M1", "m1_path_linearity_r2_low_to_t0", "path linearity R2 from episode low to t0", "R2(close~position) over episode low to t0", "pit_price_path_panel", "qfq close", "high", "m1_path_linearity_r2_low_to_t0"),
+        ("M1", "m1_up_down_run_imbalance_20", "up down run imbalance trailing 20", "longest_up_run_20-longest_down_run_20", "pit_price_path_panel", "qfq close", "high", "m1_up_down_run_imbalance_20"),
+        ("M1", "m1_failed_repair_count_low_to_t0", "failed repair count from episode low to t0", "count pre-t0 failed repair local highs", "pit_price_path_panel", "qfq close", "high", "m1_failed_repair_count_low_to_t0"),
+        ("M3", "m3_upside_room_to_episode_high", "upside room to pre-t0 episode high", "(episode_high-close_t0)/close_t0", "episode_geometry_panel", "qfq high close", "high", "m3_upside_room_to_episode_high"),
+        ("M3", "m3_downside_crowding_to_episode_low", "downside crowding to episode low", "(close_t0-episode_low)/close_t0", "episode_geometry_panel", "qfq low close", "high", "m3_downside_room_group"),
+        ("M3", "m3_vol_adjusted_repair_strength", "volatility adjusted repair strength", "repair_return/volatility_20d", "pit_price_path_panel", "qfq close and volatility_20d", "high", "m3_vol_adjusted_repair_strength"),
+        ("M3", "m3_downside_room_to_episode_low_t0", "downside room to episode low t0", "(close_t0-episode_low)/close_t0", "episode_geometry_panel", "qfq low close", "high", "m3_downside_room_group"),
+        ("M3", "m3_upside_downside_room_ratio_t0", "upside downside room ratio t0", "(episode_high-close_t0)/(close_t0-episode_low)", "episode_geometry_panel", "qfq high low close", "high", "m3_upside_downside_room_ratio_t0"),
+        ("M3", "m3_asymmetric_range_position_t0", "asymmetric range position t0", "2*(close_t0-low_t0)/(high_t0-low_t0)-1", "episode_geometry_panel", "qfq high low close", "high", "m1_m3_range_position_related_group"),
+        ("M3", "m3_failed_breakout_count_pre_t0", "failed breakout count before t0", "count pre-t0 new highs with failed follow-through", "pit_price_path_panel", "qfq high low close", "high", "m3_failed_breakout_count_pre_t0"),
+        ("M3", "m3_upper_shadow_pressure_share_20", "upper shadow pressure share trailing 20", "mean(upper_shadow/range) over valid candles", "pit_price_path_panel", "qfq open high low close", "high", "m3_upper_shadow_pressure_share_20"),
+        ("M5", "m5_bars_since_episode_low", "bars since episode low", "step_start_pos-episode_low_pos_t0", "episode_geometry_panel", "position index", "high_medium", "m5_bars_since_episode_low"),
+        ("M5", "m5_bars_since_episode_high_t0", "bars since episode high t0", "step_start_pos-episode_high_pos_t0", "episode_geometry_panel", "position index", "high_medium", "m5_bars_since_episode_high_t0"),
+        ("M5", "m5_episode_age_to_t0", "episode age at t0", "step_start_pos-cluster_start_pos", "episode_geometry_panel", "position index", "high_medium", "m5_episode_age_to_t0"),
+        ("M5", "m5_nonoverlap_step_index_to_t0", "nonoverlap step index to t0", "floor((step_start_pos-cluster_start_pos)/horizon_sessions)", "episode_geometry_panel", "position index", "high_medium", "m5_nonoverlap_step_index_to_t0"),
+        ("M5", "m5_low_to_t0_age_ratio", "low to t0 age ratio", "(step_start_pos-low_pos_t0)/max(age,1)", "episode_geometry_panel", "position index", "high_medium", "m5_low_to_t0_age_ratio"),
+        ("M5", "m5_high_to_t0_age_ratio", "high to t0 age ratio", "(step_start_pos-high_pos_t0)/max(age,1)", "episode_geometry_panel", "position index", "high_medium", "m5_high_to_t0_age_ratio"),
+        ("M5", "m5_low_before_high_t0", "low before high t0", "episode_low_pos_t0 < episode_high_pos_t0", "episode_geometry_panel", "position index", "high_medium", "m5_low_before_high_t0"),
+        ("M5", "m5_bars_since_reclaim", "bars since deterministic ma60 reclaim", "step_start_pos-reclaim_pos_t0", "episode_geometry_panel", "qfq close ma60", "high_medium", "m5_bars_since_reclaim"),
+        ("M5", "m5_lifecycle_progress_to_t0", "lifecycle progress at t0", "(step_start_pos-cluster_start)/(cluster_end-cluster_start)", "episode_geometry_panel", "position index", "high_medium", "m5_lifecycle_progress_to_t0"),
+        ("M2", "m2_net_signed_money_flow_trailing20", "net signed money flow trailing 20", "sum(signed_money_proxy)/sum(abs(amount))", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_net_signed_money_flow_trailing20"),
+        ("M2", "m2_positive_money_flow_share_trailing20", "positive money flow share trailing 20", "sum(amount where ret>0)/sum(amount)", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_positive_money_flow_share_trailing20"),
+        ("M2", "m2_money_flow_persistence_trailing20", "money flow sign persistence trailing 20", "mean(sign(flow_t)==sign(flow_t-1))", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_money_flow_persistence_trailing20"),
+        ("M2", "m2_turnover_compression_20_vs_60", "turnover compression 20 versus 60", "mean(turnover_20)/mean(turnover_60)", "pit_money_flow_proxy_panel", "turnover_rate", "medium", "m2_turnover_compression_20_vs_60"),
+        ("M2", "m2_net_signed_money_flow_accel_5v20", "net signed money flow acceleration 5 versus 20", "net_signed_money_flow_5-net_signed_money_flow_20", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_net_signed_money_flow_accel_5v20"),
+        ("M2", "m2_positive_money_flow_share_accel_5v20", "positive money flow share acceleration 5 versus 20", "positive_money_flow_share_5-positive_money_flow_share_20", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_positive_money_flow_share_accel_5v20"),
+        ("M2", "m2_money_flow_reversal_accel_5v20", "money flow reversal acceleration 5 versus 20", "reversal_rate_5-reversal_rate_20", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_money_flow_reversal_accel_5v20"),
+        ("M2", "m2_net_signed_money_flow_curvature_5_10_20", "net signed money flow curvature 5 10 20", "flow_5-2*flow_10+flow_20", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_net_signed_money_flow_curvature_5_10_20"),
+        ("M2", "m2_flow_price_divergence_persistence_20", "flow price divergence persistence trailing 20", "mean(sign(ret_5)!=sign(flow_5))", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_flow_price_divergence_persistence_20"),
+        ("M2", "m2_high_amount_negative_bar_share_20", "high amount negative bar share trailing 20", "share(ret<0 and amount>=trailing60 amount p80)", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_high_amount_negative_bar_share_20"),
+        ("M2", "m2_signed_flow_volatility_20", "signed flow volatility trailing 20", "std(signed_flow/abs(amount))", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_signed_flow_volatility_20"),
+        ("M2", "m2_flow_concentration_top3_share_20", "flow concentration top3 share trailing 20", "top3 abs(flow)/sum abs(flow)", "pit_money_flow_proxy_panel", "qfq close money", "medium", "m2_flow_concentration_top3_share_20"),
+        ("M4", "m4_regime_context_deferred", "regime context deferred", "requires new PIT context", "market_or_regime_context_panel", "context panel", "low", "m4_regime_context_deferred"),
+    ]
+    alias_of = {
+        "m1_episode_recovery_ratio_to_high_t0": "m1_close_location_episode_range",
+        "m3_downside_room_to_episode_low_t0": "m3_downside_crowding_to_episode_low",
+    }
+    overlap = {
+        "m1_close_location_episode_range": "m1_m3_range_position_related_group",
+        "m1_episode_recovery_ratio_to_high_t0": "m1_m3_range_position_related_group",
+        "m3_asymmetric_range_position_t0": "m1_m3_range_position_related_group",
+    }
+    out: list[dict[str, Any]] = []
+    for family, fid, name, formula, source, cols, priority, dedup in rows:
+        is_m4 = family == "M4"
+        is_lifecycle = fid == "m5_lifecycle_progress_to_t0"
+        out.append(
+            {
+                "candidate_family_id": family,
+                "candidate_feature_id": fid,
+                "candidate_feature_name": name,
+                "candidate_feature_definition": name,
+                "candidate_feature_formula": formula,
+                "candidate_primary_dedup_group_id": dedup,
+                "candidate_overlap_group_ids": overlap.get(fid, ""),
+                "candidate_alias_of": alias_of.get(fid, ""),
+                "candidate_priority_before_evidence": priority,
+                "source_artifact_alias": source,
+                "source_columns": cols,
+                "expected_availability": "appendix_or_deferred" if is_m4 else "blocked_until_t0_endpoint_proof" if is_lifecycle else "primary",
+                "primary_candidate_allowed_before_lineage": (not is_m4) and (not is_lifecycle),
+                "appendix_only_if_delayed": True,
+                "extra_feature_role": "",
+                "candidate_inventory_expected": True,
+                "candidate_inventory_completeness_gate": "pass",
+                "t0_frozen_endpoint_proof_status": "missing_or_not_proven" if is_lifecycle else "not_required",
+                "notes": "predeclared_lineage_before_correlation",
+            }
+        )
+    return out
+
+
+EXPECTED_CANDIDATE_FEATURE_IDS = tuple(row["candidate_feature_id"] for row in candidate_definitions())
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -585,57 +683,82 @@ def build_capacity_vs_representation_readout(config: dict[str, Any], matrix: pd.
 
 
 def candidate_inventory(config: dict[str, Any]) -> pd.DataFrame:
-    candidates = [
-        ("M1", "m1_return_sign_entropy_trailing20", "return sign entropy trailing 20", "return_sign_entropy_w", "pit_price_path_panel", "qfq close", "high"),
-        ("M1", "m1_path_transition_entropy_episode", "path transition entropy episode low to t0", "path_transition_entropy_w", "pit_price_path_panel", "qfq close", "high"),
-        ("M1", "m1_repair_path_efficiency_episode", "episode repair path efficiency", "repair_path_efficiency_w", "pit_price_path_panel", "qfq close", "high"),
-        ("M1", "m1_close_location_episode_range", "close location in episode range", "(close_t0-low)/(high-low)", "episode_geometry_panel", "qfq high low close", "high"),
-        ("M3", "m3_upside_room_to_episode_high", "upside room to pre-t0 episode high", "(episode_high-close_t0)/close_t0", "episode_geometry_panel", "qfq high close", "high"),
-        ("M3", "m3_downside_crowding_to_episode_low", "downside crowding to episode low", "(close_t0-episode_low)/close_t0", "episode_geometry_panel", "qfq low close", "high"),
-        ("M3", "m3_vol_adjusted_repair_strength", "volatility adjusted repair strength", "repair_return/volatility_20d", "pit_price_path_panel", "qfq close and volatility_20d", "high"),
-        ("M5", "m5_bars_since_episode_low", "bars since episode low", "step_start_pos-episode_low_pos_t0", "episode_geometry_panel", "position index", "high_medium"),
-        ("M5", "m5_episode_age_to_t0", "episode age at t0", "step_start_pos-cluster_start_pos", "episode_geometry_panel", "position index", "high_medium"),
-        ("M5", "m5_lifecycle_progress_to_t0", "lifecycle progress at t0", "(step_start_pos-cluster_start)/(cluster_end-cluster_start)", "episode_geometry_panel", "position index", "high_medium"),
-        ("M5", "m5_bars_since_reclaim", "bars since deterministic ma60 reclaim", "step_start_pos-reclaim_pos_t0", "episode_geometry_panel", "qfq close ma60", "high_medium"),
-        ("M2", "m2_net_signed_money_flow_trailing20", "net signed money flow trailing 20", "sum(amount*sign(ret))/sum(abs(amount))", "pit_money_flow_proxy_panel", "qfq close money", "medium"),
-        ("M2", "m2_positive_money_flow_share_trailing20", "positive money flow share trailing 20", "sum(amount where ret>0)/sum(amount)", "pit_money_flow_proxy_panel", "qfq close money", "medium"),
-        ("M2", "m2_money_flow_persistence_trailing20", "money flow sign persistence trailing 20", "mean(sign(flow_t)==sign(flow_t-1))", "pit_money_flow_proxy_panel", "qfq close money", "medium"),
-        ("M2", "m2_turnover_compression_20_vs_60", "turnover compression 20 versus 60", "mean(turnover_20)/mean(turnover_60)", "pit_money_flow_proxy_panel", "turnover_rate", "medium"),
-        ("M4", "m4_regime_context_deferred", "regime context deferred", "requires new PIT context", "market_or_regime_context_panel", "context panel", "low"),
-    ]
-    rows = []
-    for family, feature_id, name, formula, source, cols, priority in candidates:
-        rows.append(
-            {
-                "candidate_family_id": family,
-                "candidate_feature_id": feature_id,
-                "candidate_feature_name": name,
-                "candidate_feature_definition": name,
-                "candidate_feature_formula": formula,
-                "candidate_priority_before_evidence": priority,
-                "source_artifact_alias": source,
-                "source_columns": cols,
-                "expected_availability": "primary" if family != "M4" else "appendix_or_deferred",
-                "primary_candidate_allowed_before_lineage": family != "M4",
-                "appendix_only_if_delayed": True,
-                "notes": "predeclared_lineage_before_correlation",
-            }
+    expected_n = int(config.get("expected", {}).get("total_required_candidate_feature_n", len(EXPECTED_CANDIDATE_FEATURE_IDS)))
+    frame = pd.DataFrame(candidate_definitions())
+    summary = candidate_inventory_summary(frame, expected_n)
+    frame["candidate_inventory_completeness_gate"] = summary["candidate_inventory_completeness_gate"]
+    return frame
+
+
+def candidate_inventory_summary(inventory: pd.DataFrame, expected_n: int | None = None) -> dict[str, Any]:
+    expected = set(EXPECTED_CANDIDATE_FEATURE_IDS)
+    observed = set(inventory["candidate_feature_id"].astype(str)) if "candidate_feature_id" in inventory else set()
+    extra_ids = sorted(observed - expected)
+    extra_blocking = []
+    if extra_ids and "extra_feature_role" in inventory:
+        extra_rows = inventory.loc[inventory["candidate_feature_id"].astype(str).isin(extra_ids)]
+        extra_blocking = sorted(
+            fid
+            for fid, role in zip(extra_rows["candidate_feature_id"].astype(str), extra_rows["extra_feature_role"].astype(str), strict=False)
+            if role != "appendix_only_exploratory"
         )
-    return pd.DataFrame(rows)
+    elif extra_ids:
+        extra_blocking = extra_ids
+    formula_missing = 0
+    if {"candidate_family_id", "candidate_feature_formula"}.issubset(inventory.columns):
+        formula_missing = int(
+            inventory.loc[~inventory["candidate_family_id"].eq("M4"), "candidate_feature_formula"]
+            .fillna("")
+            .astype(str)
+            .str.strip()
+            .eq("")
+            .sum()
+        )
+    duplicate_n = int(inventory["candidate_feature_id"].duplicated().sum()) if "candidate_feature_id" in inventory else 0
+    missing_ids = sorted(expected - observed)
+    expected_count = int(expected_n if expected_n is not None else len(expected))
+    gate = (
+        "pass"
+        if not missing_ids
+        and not extra_blocking
+        and duplicate_n == 0
+        and formula_missing == 0
+        and len(observed & expected) == expected_count
+        else "fail"
+    )
+    return {
+        "candidate_inventory_completeness_gate": gate,
+        "candidate_inventory_expected_feature_n": expected_count,
+        "candidate_inventory_observed_feature_n": int(len(observed & expected)),
+        "candidate_inventory_missing_feature_n": int(len(missing_ids)),
+        "candidate_inventory_extra_feature_n": int(len(extra_blocking)),
+        "candidate_inventory_duplicate_feature_id_n": duplicate_n,
+        "candidate_inventory_formula_missing_n": formula_missing,
+        "candidate_inventory_missing_feature_ids": "|".join(missing_ids),
+        "candidate_inventory_extra_feature_ids": "|".join(extra_blocking),
+    }
 
 
 def normalize_qfq(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path)
     df = df.sort_values("date").reset_index(drop=True)
-    for col in ["open", "high", "low", "close", "volume", "money", "amount", "turnover_rate"]:
+    if "qfq_close" in df.columns and "close" not in df.columns:
+        df["close"] = df["qfq_close"]
+    for col in ["open", "high", "low", "close", "volume", "money", "amount", "turnover_value", "turnover_rate"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
     df["date"] = df["date"].astype(str)
-    if "money" not in df.columns:
+    if "amount_proxy" not in df.columns:
         if "amount" in df.columns:
-            df["money"] = df["amount"]
+            df["amount_proxy"] = df["amount"]
+        elif "money" in df.columns:
+            df["amount_proxy"] = df["money"]
+        elif "turnover_value" in df.columns:
+            df["amount_proxy"] = df["turnover_value"]
         else:
-            df["money"] = df["volume"] * df["close"]
+            df["amount_proxy"] = df["volume"] * df["close"]
+    if "money" not in df.columns:
+        df["money"] = df["amount_proxy"]
     if "turnover_rate" not in df.columns:
         df["turnover_rate"] = np.nan
     df["ma60"] = df["close"].rolling(60, min_periods=60).mean()
@@ -668,10 +791,95 @@ def window_bounds(window_id: str, step_pos: int, low_pos: int, first_valid: int 
     raise ValueError(f"Unknown window_id: {window_id}")
 
 
+def safe_div(numerator: float, denominator: float, eps: float) -> float:
+    if not np.isfinite(numerator) or not np.isfinite(denominator) or denominator <= eps:
+        return np.nan
+    return float(numerator / denominator)
+
+
+def linear_r2(values: np.ndarray, eps: float) -> float:
+    values = values.astype(float)
+    valid = np.isfinite(values)
+    if int(valid.sum()) < 5:
+        return np.nan
+    y = values[valid]
+    if float(np.nanvar(y)) <= eps:
+        return np.nan
+    x = np.arange(len(values), dtype=float)[valid]
+    coef = np.polyfit(x, y, 1)
+    pred = coef[0] * x + coef[1]
+    sst = float(((y - y.mean()) ** 2).sum())
+    if sst <= eps:
+        return np.nan
+    return float(1.0 - ((y - pred) ** 2).sum() / sst)
+
+
+def longest_run(signs: np.ndarray, positive: bool) -> int:
+    target = signs > 0 if positive else signs < 0
+    best = 0
+    cur = 0
+    for flag in target:
+        if bool(flag):
+            cur += 1
+            best = max(best, cur)
+        else:
+            cur = 0
+    return best
+
+
+def signed_flow_arrays(window: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    close = window["close"].to_numpy(dtype=float)
+    amount = window["amount_proxy"].to_numpy(dtype=float)
+    diff = np.diff(close, prepend=np.nan)
+    sign = np.sign(diff)
+    sign[~np.isfinite(sign)] = np.nan
+    signed = amount * sign
+    return amount, sign, signed
+
+
+def money_flow_stats(window: pd.DataFrame, eps: float, required_n: int) -> dict[str, float]:
+    if len(window) < required_n:
+        return {"net": np.nan, "positive_share": np.nan, "reversal_rate": np.nan}
+    amount, sign, signed = signed_flow_arrays(window)
+    valid = np.isfinite(amount) & (amount > eps) & np.isfinite(sign)
+    valid[0] = False
+    denom_abs = float(np.abs(amount[valid]).sum())
+    denom_total = float(amount[valid].sum())
+    signs = np.sign(signed[valid])
+    return {
+        "net": safe_div(float(signed[valid].sum()), denom_abs, eps),
+        "positive_share": safe_div(float(amount[valid & (sign > 0)].sum()), denom_total, eps),
+        "reversal_rate": float(np.mean(signs[1:] != signs[:-1])) if len(signs) >= 2 else np.nan,
+    }
+
+
+def count_failed_repairs(close: np.ndarray, low_pos: int, cluster_start: int, step_pos: int) -> int:
+    count = 0
+    for pos in range(low_pos + 3, step_pos - 4):
+        rel = pos - cluster_start
+        if rel - 3 < 0 or rel + 5 >= len(close):
+            continue
+        if close[rel] > np.nanmax(close[rel - 3 : rel]) and np.nanmin(close[rel + 1 : rel + 6]) / close[rel] - 1.0 <= -0.05 and np.nanmax(close[rel + 1 : rel + 6]) <= close[rel]:
+            count += 1
+    return count
+
+
+def count_failed_breakouts(high: np.ndarray, low: np.ndarray, close: np.ndarray, cluster_start: int, step_pos: int) -> int:
+    count = 0
+    for pos in range(cluster_start + 1, step_pos - 4):
+        rel = pos - cluster_start
+        if rel + 5 >= len(high):
+            continue
+        if high[rel] >= np.nanmax(high[:rel]) and np.nanmin(close[rel + 1 : rel + 6]) < low[rel]:
+            count += 1
+    return count
+
+
 def derive_row_features(row: pd.Series, qfq: pd.DataFrame, config: dict[str, Any]) -> dict[str, Any]:
     params = config["entropy_params"]
     money_params = config["money_flow_proxy_params"]
     eps = float(params["probability_epsilon"])
+    denom_eps = float(money_params["denominator_epsilon"])
     flat = float(params["return_state_flat_abs_return_max"])
     min_n = int(params["min_observation_n"])
     out: dict[str, Any] = {}
@@ -691,6 +899,7 @@ def derive_row_features(row: pd.Series, qfq: pd.DataFrame, config: dict[str, Any
     low_price = float(qfq["low"].iloc[low_pos])
     low_close = float(qfq["close"].iloc[low_pos])
     high_price = float(qfq["high"].iloc[high_pos])
+    age = max(step_pos - cluster_start, 0)
     out.update(
         {
             "episode_low_pos_t0": low_pos,
@@ -704,17 +913,32 @@ def derive_row_features(row: pd.Series, qfq: pd.DataFrame, config: dict[str, Any
         }
     )
     denom = high_price - low_price
-    out["m1_close_location_episode_range"] = (close_t0 - low_price) / denom if denom > 0 else np.nan
+    out["m1_close_location_episode_range"] = safe_div(close_t0 - low_price, denom, denom_eps)
+    running_max = seg["close"].cummax().to_numpy(dtype=float)
+    valid_running = np.isfinite(running_max) & (running_max > denom_eps)
+    out["m1_episode_drawdown_pre_t0"] = float(np.nanmin(seg["low"].to_numpy(dtype=float)[valid_running] / running_max[valid_running] - 1.0)) if valid_running.any() else np.nan
+    out["m1_episode_recovery_ratio_to_high_t0"] = safe_div(close_t0 - low_price, denom, denom_eps)
+    out["m1_pullback_from_episode_high_t0"] = safe_div(close_t0, high_price, denom_eps) - 1.0 if high_price > denom_eps else np.nan
     path = qfq["close"].iloc[low_pos : step_pos + 1].to_numpy(dtype=float)
-    out["m1_repair_path_efficiency_episode"] = abs(close_t0 - low_close) / np.abs(np.diff(path)).sum() if len(path) >= 2 and np.abs(np.diff(path)).sum() > 0 else np.nan
-    out["m3_upside_room_to_episode_high"] = (high_price - close_t0) / close_t0 if close_t0 > 0 else np.nan
-    out["m3_downside_crowding_to_episode_low"] = (close_t0 - low_price) / close_t0 if close_t0 > 0 else np.nan
+    out["m1_repair_path_efficiency_episode"] = safe_div(abs(close_t0 - low_close), float(np.abs(np.diff(path)).sum()) if len(path) >= 2 else np.nan, denom_eps)
+    out["m1_path_linearity_r2_low_to_t0"] = linear_r2(path, denom_eps)
+    out["m3_upside_room_to_episode_high"] = safe_div(high_price - close_t0, close_t0, denom_eps)
+    out["m3_downside_crowding_to_episode_low"] = safe_div(close_t0 - low_price, close_t0, denom_eps)
+    out["m3_downside_room_to_episode_low_t0"] = safe_div(close_t0 - low_price, close_t0, denom_eps)
+    out["m3_upside_downside_room_ratio_t0"] = safe_div(high_price - close_t0, close_t0 - low_price, denom_eps)
+    out["m3_asymmetric_range_position_t0"] = 2.0 * safe_div(close_t0 - low_price, denom, denom_eps) - 1.0 if denom > denom_eps else np.nan
     vol = metric_float(row.get("volatility_20d"), np.nan)
     repair_return = close_t0 / low_close - 1.0 if low_close > 0 else np.nan
     out["m3_vol_adjusted_repair_strength"] = repair_return / vol if np.isfinite(vol) and vol > 0 else np.nan
     out["m5_bars_since_episode_low"] = step_pos - low_pos
+    out["m5_bars_since_episode_high_t0"] = step_pos - high_pos
     out["m5_episode_age_to_t0"] = step_pos - cluster_start
-    out["m5_lifecycle_progress_to_t0"] = (step_pos - cluster_start) / (cluster_end - cluster_start) if cluster_end > cluster_start else np.nan
+    horizon = metric_float(row.get("horizon_sessions"), np.nan)
+    out["m5_nonoverlap_step_index_to_t0"] = math.floor(age / horizon) if np.isfinite(horizon) and horizon > 0 else np.nan
+    out["m5_low_to_t0_age_ratio"] = (step_pos - low_pos) / max(age, 1)
+    out["m5_high_to_t0_age_ratio"] = (step_pos - high_pos) / max(age, 1)
+    out["m5_low_before_high_t0"] = float(low_pos < high_pos)
+    out["m5_lifecycle_progress_to_t0"] = np.nan if cluster_end > step_pos else safe_div(step_pos - cluster_start, cluster_end - cluster_start, denom_eps)
     reclaim = np.nan
     for pos in range(max(low_pos + 1, 1), step_pos + 1):
         ma_prev = qfq["ma60"].iloc[pos - 1]
@@ -734,26 +958,63 @@ def derive_row_features(row: pd.Series, qfq: pd.DataFrame, config: dict[str, Any
         states = state_sequence(w20["close"].to_numpy(dtype=float), flat)
         counts = np.array([(states == 0).sum(), (states == 1).sum(), (states == 2).sum()])
         out["m1_return_sign_entropy_trailing20"] = entropy_from_counts(counts, eps)[1]
-        amount = w20["money"].to_numpy(dtype=float)
-        close = w20["close"].to_numpy(dtype=float)
-        ret_sign = np.sign(np.diff(close, prepend=np.nan))
-        valid = np.isfinite(amount) & np.isfinite(ret_sign)
-        valid[0] = False
-        denom_money = np.abs(amount[valid]).sum() + float(money_params["denominator_epsilon"])
-        signed = amount[valid] * ret_sign[valid]
-        out["m2_net_signed_money_flow_trailing20"] = signed.sum() / denom_money if denom_money > 0 else np.nan
-        total_money = amount[valid & (amount > 0)].sum() + float(money_params["denominator_epsilon"])
-        out["m2_positive_money_flow_share_trailing20"] = amount[valid & (ret_sign > 0)].sum() / total_money if total_money > 0 else np.nan
-        signs = np.sign(signed)
-        out["m2_money_flow_persistence_trailing20"] = float(np.mean(signs[1:] == signs[:-1])) if len(signs) >= 2 else np.nan
+        run_signs = np.sign(np.diff(w20["close"].to_numpy(dtype=float)))
+        out["m1_up_down_run_imbalance_20"] = longest_run(run_signs, True) - longest_run(run_signs, False)
+        candle_range = (w20["high"] - w20["low"]).astype(float)
+        valid_candle = np.isfinite(candle_range) & (candle_range > denom_eps)
+        upper_shadow = (w20["high"] - np.maximum(w20["open"], w20["close"])).astype(float)
+        out["m3_upper_shadow_pressure_share_20"] = float((upper_shadow.loc[valid_candle] / candle_range.loc[valid_candle]).mean()) if int(valid_candle.sum()) >= 5 else np.nan
+    if len(w20) >= 20:
+        mf20 = money_flow_stats(w20, denom_eps, 20)
+        out["m2_net_signed_money_flow_trailing20"] = mf20["net"]
+        out["m2_positive_money_flow_share_trailing20"] = mf20["positive_share"]
+        amount20, sign20, signed20 = signed_flow_arrays(w20)
+        valid20 = np.isfinite(amount20) & (amount20 > denom_eps) & np.isfinite(sign20)
+        valid20[0] = False
+        signs20 = np.sign(signed20[valid20])
+        out["m2_money_flow_persistence_trailing20"] = float(np.mean(signs20[1:] == signs20[:-1])) if len(signs20) >= 2 else np.nan
+        out["m2_money_flow_reversal_accel_5v20"] = np.nan
+        out["m2_flow_price_divergence_persistence_20"] = np.nan
+        out["m2_signed_flow_volatility_20"] = float(np.nanstd(signed20[valid20] / np.abs(amount20[valid20]))) if int(valid20.sum()) >= 5 else np.nan
+        abs_signed = np.abs(signed20[valid20])
+        out["m2_flow_concentration_top3_share_20"] = safe_div(float(np.sort(abs_signed)[-3:].sum()), float(abs_signed.sum()), denom_eps) if len(abs_signed) >= 3 else np.nan
     wep = close_window("episode_low_to_t0")
     if len(wep) >= min_n:
         states = state_sequence(wep["close"].to_numpy(dtype=float), flat)
         trans = states[:-1] * 3 + states[1:] if len(states) >= 2 else np.array([], dtype=int)
         counts = np.array([(trans == i).sum() for i in range(9)])
         out["m1_path_transition_entropy_episode"] = entropy_from_counts(counts, eps)[1] if counts.sum() > 0 else np.nan
+        close_seg = seg["close"].to_numpy(dtype=float)
+        high_seg = seg["high"].to_numpy(dtype=float)
+        low_seg = seg["low"].to_numpy(dtype=float)
+        out["m1_failed_repair_count_low_to_t0"] = float(count_failed_repairs(close_seg, low_pos, cluster_start, step_pos))
+        out["m3_failed_breakout_count_pre_t0"] = float(count_failed_breakouts(high_seg, low_seg, close_seg, cluster_start, step_pos))
     w60 = close_window("trailing_60")
-    if len(w60) >= min_n and np.isfinite(w60["turnover_rate"]).any():
+    if len(w60) >= 60:
+        range60 = float(w60["high"].max() - w60["low"].min())
+        out["m1_close_location_trailing60_range"] = safe_div(close_t0 - float(w60["low"].min()), range60, denom_eps)
+        mf5 = money_flow_stats(w20.tail(5), denom_eps, 5) if len(w20) >= 20 else {"net": np.nan, "positive_share": np.nan, "reversal_rate": np.nan}
+        mf10 = money_flow_stats(w20.tail(10), denom_eps, 10) if len(w20) >= 20 else {"net": np.nan, "positive_share": np.nan, "reversal_rate": np.nan}
+        mf20 = money_flow_stats(w20, denom_eps, 20) if len(w20) >= 20 else {"net": np.nan, "positive_share": np.nan, "reversal_rate": np.nan}
+        out["m2_net_signed_money_flow_accel_5v20"] = mf5["net"] - mf20["net"] if np.isfinite(mf5["net"]) and np.isfinite(mf20["net"]) else np.nan
+        out["m2_positive_money_flow_share_accel_5v20"] = mf5["positive_share"] - mf20["positive_share"] if np.isfinite(mf5["positive_share"]) and np.isfinite(mf20["positive_share"]) else np.nan
+        out["m2_money_flow_reversal_accel_5v20"] = mf5["reversal_rate"] - mf20["reversal_rate"] if np.isfinite(mf5["reversal_rate"]) and np.isfinite(mf20["reversal_rate"]) else np.nan
+        out["m2_net_signed_money_flow_curvature_5_10_20"] = mf5["net"] - 2.0 * mf10["net"] + mf20["net"] if np.isfinite(mf5["net"]) and np.isfinite(mf10["net"]) and np.isfinite(mf20["net"]) else np.nan
+        div_flags = []
+        for end in range(4, len(w20)):
+            sub = w20.iloc[end - 4 : end + 1]
+            ret5 = metric_float(sub["close"].iloc[-1] / sub["close"].iloc[0] - 1.0, np.nan) if sub["close"].iloc[0] > denom_eps else np.nan
+            flow5 = money_flow_stats(sub, denom_eps, 5)["net"]
+            if np.isfinite(ret5) and np.isfinite(flow5):
+                div_flags.append(np.sign(ret5) != np.sign(flow5))
+        out["m2_flow_price_divergence_persistence_20"] = float(np.mean(div_flags)) if div_flags else np.nan
+        p80 = float(np.nanpercentile(w60["amount_proxy"].to_numpy(dtype=float), 80))
+        close20 = w20["close"].to_numpy(dtype=float)
+        ret20 = np.diff(close20, prepend=np.nan)
+        amount20 = w20["amount_proxy"].to_numpy(dtype=float)
+        valid_amount20 = np.isfinite(amount20) & (amount20 > denom_eps)
+        out["m2_high_amount_negative_bar_share_20"] = safe_div(float(((ret20 < 0) & (amount20 >= p80) & valid_amount20).sum()), float(valid_amount20.sum()), denom_eps)
+    if len(w60) >= 60 and np.isfinite(w60["turnover_rate"]).any():
         last20 = w60.tail(20)["turnover_rate"].astype(float)
         base60 = w60["turnover_rate"].astype(float)
         denom_turn = base60.mean()
@@ -806,37 +1067,69 @@ def build_lineage_and_pit(config: dict[str, Any], inventory: pd.DataFrame, featu
     rows_lineage = []
     rows_pit = []
     min_finite = float(config["expected"]["candidate_min_finite_rate"])
-    qfq_ok = feature_panel["qfq_path_status"].eq("pass").mean() >= min_finite
+    qfq_ok = feature_panel["qfq_path_status"].fillna("").eq("pass").mean() >= min_finite
+    row_n = len(feature_panel)
+    qfq_pass_n = int(feature_panel["qfq_path_status"].fillna("").eq("pass").sum())
     for _, inv in inventory.iterrows():
         fid = inv["candidate_feature_id"]
         family = inv["candidate_family_id"]
         finite_rate = 0.0 if fid not in feature_panel else float(pd.to_numeric(feature_panel[fid], errors="coerce").notna().mean())
         is_deferred = family == "M4"
+        is_lifecycle = fid == "m5_lifecycle_progress_to_t0"
         source_blocked = not qfq_ok and family in {"M1", "M2", "M3", "M5"}
         enough = finite_rate >= min_finite
-        primary = (not is_deferred) and (not source_blocked) and enough
+        future_mask = feature_panel["cluster_end_pos"].gt(feature_panel["step_start_pos"]) if is_lifecycle else pd.Series(False, index=feature_panel.index)
+        future_source_dependency_row_n = int(future_mask.sum())
+        future_normalizer_dependency_row_n = int(future_mask.sum())
+        if is_lifecycle and row_n:
+            max_delta = metric_float((feature_panel["cluster_end_pos"] - feature_panel["step_start_pos"]).max(), np.nan)
+        else:
+            max_delta = 0.0 if row_n else np.nan
+        uses_full_episode_boundary = bool(is_lifecycle and future_source_dependency_row_n > 0)
+        t0_proof = str(inv.get("t0_frozen_endpoint_proof_status", "not_required"))
+        endpoint_blocked = is_lifecycle and t0_proof != "proven"
+        primary = bool((not is_deferred) and (not source_blocked) and enough and (not endpoint_blocked) and future_source_dependency_row_n == 0 and future_normalizer_dependency_row_n == 0)
         appendix = is_deferred or source_blocked or not enough
+        if endpoint_blocked:
+            appendix = True
         reason = ""
         if is_deferred:
             reason = "m4_deferred_by_default"
+        elif endpoint_blocked:
+            reason = "full_episode_boundary_after_t0"
         elif source_blocked:
             reason = "qfq_source_not_sufficiently_available"
         elif not enough:
             reason = "candidate_finite_rate_below_floor"
+        finite_n = 0 if fid not in feature_panel else int(pd.to_numeric(feature_panel[fid], errors="coerce").notna().sum())
+        dependency_n = qfq_pass_n if family in {"M1", "M2", "M3", "M5"} else 0
+        pit_status = "pass" if primary else "appendix_only" if appendix else "blocked"
+        t0_status = "pass" if primary else "delayed_appendix_only" if is_deferred else "blocked"
         rows_lineage.append(
             {
                 "candidate_family_id": family,
                 "candidate_feature_id": fid,
                 "source_artifact_alias": inv["source_artifact_alias"],
-                "source_pos_max_minus_step_start_pos": 0 if primary or appendix else np.nan,
-                "source_date_max_minus_step_start_date": 0 if primary or appendix else np.nan,
+                "lineage_scope": "candidate_row_rollup",
+                "row_n": row_n,
+                "finite_candidate_value_row_n": finite_n,
+                "source_dependency_row_n": dependency_n,
+                "future_source_dependency_row_n": future_source_dependency_row_n,
+                "normalizer_dependency_row_n": dependency_n,
+                "future_normalizer_dependency_row_n": future_normalizer_dependency_row_n,
+                "source_pos_max_minus_step_start_pos": max_delta,
+                "source_date_max_minus_step_start_date": 0,
+                "normalizer_pos_max_minus_step_start_pos": max_delta,
+                "max_source_pos_minus_step_start_pos": max_delta,
+                "max_normalizer_pos_minus_step_start_pos": max_delta,
+                "uses_full_episode_boundary_after_t0": uses_full_episode_boundary,
                 "uses_future_h20_path": False,
                 "uses_step_end_outcome": False,
                 "uses_oracle_label": False,
                 "uses_payoff_target": False,
                 "uses_binary_target": False,
-                "pit_valid_status": "pass" if primary else "appendix_only" if appendix else "blocked",
-                "t0_available_status": "pass" if primary else "delayed_appendix_only" if is_deferred else "blocked",
+                "pit_valid_status": pit_status,
+                "t0_available_status": t0_status,
                 "candidate_primary_allowed_after_lineage": primary,
                 "candidate_appendix_only": appendix,
                 "lineage_before_correlation_gate": "pass",
@@ -852,8 +1145,9 @@ def build_lineage_and_pit(config: dict[str, Any], inventory: pd.DataFrame, featu
                 "source_available_at_t0": primary,
                 "source_max_lag_bars": 0,
                 "delayed_observed_state": is_deferred,
-                "pit_valid_status": "pass" if primary else "appendix_only" if appendix else "blocked",
-                "t0_available_status": "pass" if primary else "delayed_appendix_only" if is_deferred else "blocked",
+                "t0_frozen_endpoint_proof_status": t0_proof,
+                "pit_valid_status": pit_status,
+                "t0_available_status": t0_status,
                 "primary_allowed": primary,
                 "appendix_only": appendix,
                 "blocking_reason": reason,
@@ -861,7 +1155,14 @@ def build_lineage_and_pit(config: dict[str, Any], inventory: pd.DataFrame, featu
         )
     lineage = pd.DataFrame(rows_lineage)
     pit = pd.DataFrame(rows_pit)
-    candidate_lineage_gate = "pass" if lineage["lineage_before_correlation_gate"].eq("pass").all() else "fail"
+    primary_rows = lineage.loc[lineage["candidate_primary_allowed_after_lineage"].astype(bool)]
+    primary_future_ok = True if primary_rows.empty else bool(
+        primary_rows["future_source_dependency_row_n"].eq(0).all()
+        and primary_rows["future_normalizer_dependency_row_n"].eq(0).all()
+        and primary_rows["max_source_pos_minus_step_start_pos"].le(0).all()
+        and primary_rows["max_normalizer_pos_minus_step_start_pos"].le(0).all()
+    )
+    candidate_lineage_gate = "pass" if lineage["lineage_before_correlation_gate"].eq("pass").all() and primary_future_ok else "fail"
     pit_gate = "pass" if lineage["candidate_primary_allowed_after_lineage"].any() else "fail"
     return lineage, pit, candidate_lineage_gate, pit_gate
 
@@ -885,113 +1186,131 @@ def residualize(train: pd.DataFrame, all_frame: pd.DataFrame, feature: str, cova
 
 def build_orthogonal_readouts(config: dict[str, Any], inventory: pd.DataFrame, lineage: pd.DataFrame, feature_panel: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, bool]]:
     rows = []
-    morph_rows = []
     train = feature_panel.loc[feature_panel["cluster_split_bucket"].eq("train")]
     target = config["target_column"]
     roles = {"train": "train_priority_prior", "robustness": "robustness_diagnostic_only", "validation": "validation_diagnostic_only"}
-    train_pass: dict[str, bool] = {}
+    primary_allowed = dict(zip(lineage["candidate_feature_id"], lineage["candidate_primary_allowed_after_lineage"].astype(bool), strict=False))
     for _, inv in inventory.iterrows():
         fid = inv["candidate_feature_id"]
         family = inv["candidate_family_id"]
-        if fid not in feature_panel:
-            train_pass[fid] = False
+        control_sets = [(BASE_RESIDUALIZATION_ID, BASE_RESIDUALIZATION_ROLE, BASE_COVARIATES, family != "M2")]
+        if family == "M2":
+            control_sets.append((M2_EXT_RESIDUALIZATION_ID, M2_EXT_RESIDUALIZATION_ROLE, M2_EXT_COVARIATES, True))
+        for control_id, control_role, covars, eligible_control in control_sets:
+            residual = pd.Series(np.nan, index=feature_panel.index)
+            if fid in feature_panel and set(covars).issubset(feature_panel.columns):
+                residual = residualize(train, feature_panel, fid, covars)
+            train_mask = feature_panel["cluster_split_bucket"].eq("train")
+            raw_train = rank_ic(feature_panel.loc[train_mask, fid], feature_panel.loc[train_mask, target]) if fid in feature_panel else np.nan
+            resid_train = rank_ic(residual.loc[train_mask], feature_panel.loc[train_mask, target])
+            same_train = np.isfinite(raw_train) and np.isfinite(resid_train) and np.sign(raw_train) == np.sign(resid_train)
+            train_ok = bool(
+                primary_allowed.get(fid, False)
+                and eligible_control
+                and np.isfinite(resid_train)
+                and abs(resid_train) >= float(config["expected"]["candidate_train_prior_abs_rank_ic_floor"])
+                and same_train
+            )
             for split in SPLITS:
-                row = {
-                    "candidate_family_id": family,
-                    "candidate_feature_id": fid,
-                    "split_bucket": split,
-                    "raw_candidate_rank_ic": np.nan,
-                    "residual_candidate_rank_ic": np.nan,
-                    "residual_retention": np.nan,
-                    "residualization_fit_split": "train",
-                    "residualization_covariates": "not_applicable",
-                    "residualization_uses_target": False,
-                    "residualization_uses_robustness_rows": False,
-                    "residualization_uses_validation_rows": False,
-                    "residual_rank_ic_same_sign_as_raw": False,
-                    "orthogonal_payoff_candidate": False,
-                    "target_evidence_role": roles[split],
-                    "orthogonality_status": "deferred_or_blocked",
-                }
-                rows.append(row)
-                morph_rows.append(
+                mask = feature_panel["cluster_split_bucket"].eq(split)
+                raw_ic = rank_ic(feature_panel.loc[mask, fid], feature_panel.loc[mask, target]) if fid in feature_panel else np.nan
+                resid_ic = rank_ic(residual.loc[mask], feature_panel.loc[mask, target])
+                same_split = np.isfinite(raw_ic) and np.isfinite(resid_ic) and np.sign(raw_ic) == np.sign(resid_ic)
+                retention = resid_ic / raw_ic if np.isfinite(raw_ic) and abs(raw_ic) > 1e-12 and np.isfinite(resid_ic) else np.nan
+                rows.append(
                     {
                         "candidate_family_id": family,
                         "candidate_feature_id": fid,
-                        "proxy_type": "deferred_context_proxy",
                         "split_bucket": split,
-                        "row_n": int(feature_panel["cluster_split_bucket"].eq(split).sum()),
-                        "source_window_id": "not_applicable",
-                        "formula_params_id": "config_18d_default",
-                        "raw_candidate_rank_ic": np.nan,
-                        "residual_candidate_rank_ic": np.nan,
-                        "residual_retention": np.nan,
-                        "residualization_covariates": "not_applicable",
-                        "residual_rank_ic_same_sign_as_raw": False,
-                        "orthogonal_payoff_candidate": False,
+                        "candidate_primary_dedup_group_id": inv["candidate_primary_dedup_group_id"],
+                        "residualization_control_set_id": control_id,
+                        "residualization_control_set_role": control_role,
+                        "raw_candidate_rank_ic": raw_ic,
+                        "residual_candidate_rank_ic": resid_ic,
+                        "residual_retention": retention,
+                        "residualization_fit_split": "train",
+                        "residualization_covariates": "|".join(covars) if fid in feature_panel else "not_applicable",
+                        "residualization_uses_target": False,
+                        "residualization_uses_robustness_rows": False,
+                        "residualization_uses_validation_rows": False,
+                        "residual_rank_ic_same_sign_as_raw": same_split,
+                        "orthogonal_payoff_candidate": bool(split == "train" and train_ok),
+                        "dedup_group_representative": False,
+                        "recommendation_eligible_residualization": eligible_control,
                         "target_evidence_role": roles[split],
-                        "missingness_rate": 1.0,
-                        "drift_status": "deferred",
-                        "diagnostic_status": "deferred_or_blocked",
+                        "orthogonality_status": "pre_dedup_pass" if split == "train" and train_ok else "diagnostic_only" if split != "train" else "fail",
                     }
                 )
-            continue
-        covars = ["mr_volatility_20d", "mr_volume_20d_zscore"]
-        if family == "M2":
-            covars = ["mr_volatility_20d", "mr_volume_20d_zscore", "mr_turnover_rate_20d_zscore", "mr_money_20d_zscore"]
-        residual = residualize(train, feature_panel, fid, covars)
-        raw_train = rank_ic(feature_panel.loc[feature_panel["cluster_split_bucket"].eq("train"), fid], feature_panel.loc[feature_panel["cluster_split_bucket"].eq("train"), target])
-        resid_train = rank_ic(residual.loc[feature_panel["cluster_split_bucket"].eq("train")], feature_panel.loc[feature_panel["cluster_split_bucket"].eq("train"), target])
-        same = np.isfinite(raw_train) and np.isfinite(resid_train) and np.sign(raw_train) == np.sign(resid_train)
-        train_ok = bool(np.isfinite(resid_train) and abs(resid_train) >= float(config["expected"]["candidate_train_prior_abs_rank_ic_floor"]) and same)
-        train_pass[fid] = train_ok
-        for split in SPLITS:
-            mask = feature_panel["cluster_split_bucket"].eq(split)
-            raw_ic = rank_ic(feature_panel.loc[mask, fid], feature_panel.loc[mask, target])
-            resid_ic = rank_ic(residual.loc[mask], feature_panel.loc[mask, target])
-            same_split = np.isfinite(raw_ic) and np.isfinite(resid_ic) and np.sign(raw_ic) == np.sign(resid_ic)
-            retention = resid_ic / raw_ic if np.isfinite(raw_ic) and abs(raw_ic) > 1e-12 and np.isfinite(resid_ic) else np.nan
-            ortho = bool(split == "train" and train_ok)
-            row = {
-                "candidate_family_id": family,
+    orthogonal = pd.DataFrame(rows)
+    train_candidates = orthogonal.loc[
+        orthogonal["target_evidence_role"].eq("train_priority_prior")
+        & orthogonal["recommendation_eligible_residualization"].astype(bool)
+        & orthogonal["orthogonal_payoff_candidate"].astype(bool)
+    ].copy()
+    representatives: set[tuple[str, str]] = set()
+    for _, group in train_candidates.groupby("candidate_primary_dedup_group_id", dropna=False):
+        ordered = group.assign(abs_residual=group["residual_candidate_rank_ic"].abs()).sort_values(
+            ["abs_residual", "candidate_feature_id", "residualization_control_set_id"],
+            ascending=[False, True, True],
+        )
+        if not ordered.empty:
+            top = ordered.iloc[0]
+            representatives.add((str(top["candidate_feature_id"]), str(top["residualization_control_set_id"])))
+    orthogonal["dedup_group_representative"] = [
+        (str(fid), str(control_id)) in representatives and bool(eligible)
+        for fid, control_id, eligible in zip(
+            orthogonal["candidate_feature_id"],
+            orthogonal["residualization_control_set_id"],
+            orthogonal["recommendation_eligible_residualization"],
+            strict=False,
+        )
+    ]
+    orthogonal["orthogonal_payoff_candidate"] = (
+        orthogonal["orthogonal_payoff_candidate"].astype(bool)
+        & orthogonal["dedup_group_representative"].astype(bool)
+    )
+    orthogonal["orthogonality_status"] = np.where(
+        orthogonal["orthogonal_payoff_candidate"].astype(bool),
+        "pass",
+        np.where(
+            orthogonal["target_evidence_role"].ne("train_priority_prior"),
+            "diagnostic_only",
+            np.where(orthogonal["dedup_group_representative"].astype(bool), "fail", "dedup_non_representative_or_fail"),
+        ),
+    )
+    morph_rows = []
+    for _, row in orthogonal.iterrows():
+        mask = feature_panel["cluster_split_bucket"].eq(row["split_bucket"])
+        fid = row["candidate_feature_id"]
+        morph_rows.append(
+            {
+                "candidate_family_id": row["candidate_family_id"],
                 "candidate_feature_id": fid,
-                "split_bucket": split,
-                "raw_candidate_rank_ic": raw_ic,
-                "residual_candidate_rank_ic": resid_ic,
-                "residual_retention": retention,
-                "residualization_fit_split": "train",
-                "residualization_covariates": "|".join(covars),
-                "residualization_uses_target": False,
-                "residualization_uses_robustness_rows": False,
-                "residualization_uses_validation_rows": False,
-                "residual_rank_ic_same_sign_as_raw": same_split,
-                "orthogonal_payoff_candidate": ortho,
-                "target_evidence_role": roles[split],
-                "orthogonality_status": "pass" if ortho else "diagnostic_only" if split != "train" else "fail",
+                "proxy_type": "deferred_context_proxy" if row["candidate_family_id"] == "M4" else "path_or_pressure_proxy",
+                "split_bucket": row["split_bucket"],
+                "row_n": int(mask.sum()),
+                "source_window_id": "not_applicable" if row["candidate_family_id"] == "M4" else "pre_t0",
+                "formula_params_id": "config_18d_default",
+                "raw_candidate_rank_ic": row["raw_candidate_rank_ic"],
+                "residual_candidate_rank_ic": row["residual_candidate_rank_ic"],
+                "residual_retention": row["residual_retention"],
+                "residualization_control_set_id": row["residualization_control_set_id"],
+                "residualization_control_set_role": row["residualization_control_set_role"],
+                "residualization_covariates": row["residualization_covariates"],
+                "residual_rank_ic_same_sign_as_raw": row["residual_rank_ic_same_sign_as_raw"],
+                "orthogonal_payoff_candidate": row["orthogonal_payoff_candidate"],
+                "recommendation_eligible_residualization": row["recommendation_eligible_residualization"],
+                "target_evidence_role": row["target_evidence_role"],
+                "missingness_rate": feature_missingness(feature_panel.loc[mask], fid),
+                "drift_status": "not_evaluated" if row["split_bucket"] == "train" else "diagnostic_only",
+                "diagnostic_status": "pass" if fid in feature_panel else "deferred_or_blocked",
             }
-            rows.append(row)
-            morph_rows.append(
-                {
-                    "candidate_family_id": family,
-                    "candidate_feature_id": fid,
-                    "proxy_type": "path_or_pressure_proxy",
-                    "split_bucket": split,
-                    "row_n": int(mask.sum()),
-                    "source_window_id": "pre_t0",
-                    "formula_params_id": "config_18d_default",
-                    "raw_candidate_rank_ic": raw_ic,
-                    "residual_candidate_rank_ic": resid_ic,
-                    "residual_retention": retention,
-                    "residualization_covariates": "|".join(covars),
-                    "residual_rank_ic_same_sign_as_raw": same_split,
-                    "orthogonal_payoff_candidate": ortho,
-                    "target_evidence_role": roles[split],
-                    "missingness_rate": feature_missingness(feature_panel.loc[mask], fid),
-                    "drift_status": "not_evaluated" if split == "train" else "diagnostic_only",
-                    "diagnostic_status": "pass" if fid in feature_panel else "blocked",
-                }
-            )
-    return pd.DataFrame(rows), pd.DataFrame(morph_rows), train_pass
+        )
+    train_pass = {
+        fid: bool(group["orthogonal_payoff_candidate"].any())
+        for fid, group in orthogonal.loc[orthogonal["target_evidence_role"].eq("train_priority_prior")].groupby("candidate_feature_id")
+    }
+    return orthogonal, pd.DataFrame(morph_rows), train_pass
 
 
 def build_gap_decomposition() -> pd.DataFrame:
@@ -1010,7 +1329,10 @@ def build_prioritization(config: dict[str, Any], inventory: pd.DataFrame, lineag
     recommended: list[str] = []
     deferred: list[str] = []
     appendix: list[str] = []
-    train_orth = orthogonal.loc[orthogonal["target_evidence_role"].eq("train_priority_prior")]
+    train_orth = orthogonal.loc[
+        orthogonal["target_evidence_role"].eq("train_priority_prior")
+        & orthogonal["recommendation_eligible_residualization"].astype(bool)
+    ].copy()
     for family, meta in config["candidate_families"].items():
         fam_inv = inventory.loc[inventory["candidate_family_id"].eq(family)]
         fam_lineage = lineage.loc[lineage["candidate_family_id"].eq(family)]
@@ -1018,7 +1340,11 @@ def build_prioritization(config: dict[str, Any], inventory: pd.DataFrame, lineag
         primary_n = int(fam_lineage["candidate_primary_allowed_after_lineage"].sum()) if not fam_lineage.empty else 0
         orth_n = int(fam_orth["orthogonal_payoff_candidate"].sum()) if not fam_orth.empty else 0
         delayed_n = int(fam_lineage["candidate_appendix_only"].sum()) if not fam_lineage.empty else 0
-        score = float(fam_orth["residual_candidate_rank_ic"].abs().fillna(0).sum()) if not fam_orth.empty else 0.0
+        rep_orth = fam_orth.loc[fam_orth["dedup_group_representative"].astype(bool)]
+        raw_score = float(fam_orth["residual_candidate_rank_ic"].abs().fillna(0).sum()) if not fam_orth.empty else 0.0
+        score = float(rep_orth["residual_candidate_rank_ic"].abs().fillna(0).sum()) if not rep_orth.empty else 0.0
+        rep_ids = "|".join(sorted(rep_orth["candidate_feature_id"].astype(str).unique()))
+        dedup_group_n = int(fam_inv["candidate_primary_dedup_group_id"].nunique()) if "candidate_primary_dedup_group_id" in fam_inv else 0
         recommend = family in {"M1", "M3", "M5"} and primary_n > 0 and orth_n > 0
         if family == "M2":
             recommend = primary_n > 0 and orth_n > 0
@@ -1040,7 +1366,11 @@ def build_prioritization(config: dict[str, Any], inventory: pd.DataFrame, lineag
                 "primary_allowed_candidate_n": primary_n,
                 "orthogonal_payoff_candidate_n": orth_n,
                 "delayed_appendix_candidate_n": delayed_n,
+                "dedup_group_n": dedup_group_n,
+                "dedup_group_representative_candidate_ids": rep_ids,
+                "raw_candidate_priority_score": raw_score,
                 "candidate_priority_score": score,
+                "priority_score_method": "dedup_representative_abs_train_residual_ic",
                 "priority_source": "lineage_then_train_prior_only",
                 "recommended_for_refresh": recommend,
                 "recommendation_role": "primary_refresh_candidate" if recommend else "appendix_or_deferred",
@@ -1054,6 +1384,9 @@ def build_prioritization(config: dict[str, Any], inventory: pd.DataFrame, lineag
 def build_search_accounting_audit() -> tuple[pd.DataFrame, str]:
     checks = {
         "no_feature_selection_from_target_correlation_before_lineage": True,
+        "no_candidate_added_after_target_readout": True,
+        "no_candidate_removed_after_target_readout": True,
+        "candidate_inventory_completeness_verified_before_target_readout": True,
         "no_feature_selection_from_robustness": True,
         "no_feature_selection_from_validation": True,
         "no_final_model_training": True,
@@ -1083,6 +1416,8 @@ def decision_from_gates(gates: dict[str, str], capacity_summary: dict[str, Any],
         state = "18D_input_artifact_blocked"
     elif bool(capacity_summary["capacity_bottleneck_flag"]):
         state = "18D_capacity_bottleneck_on_existing_features"
+    elif gates["candidate_inventory_completeness_gate"] != "pass":
+        state = "18D_feature_representation_contract_blocked"
     elif gates["candidate_lineage_gate"] != "pass":
         state = "18D_feature_representation_contract_blocked"
     elif gates["pit_t0_availability_gate"] != "pass":
@@ -1122,9 +1457,31 @@ def markdown_table(frame: pd.DataFrame, max_rows: int = 40) -> str:
 def build_report(artifacts: dict[str, Any]) -> str:
     d = artifacts["decision"].iloc[0]
     cap = artifacts["capacity_summary"]
+    inv_summary = artifacts["inventory_summary"]
+    inventory = artifacts["inventory"]
     prio = artifacts["prioritization"]
-    top_train = artifacts["orthogonal"].loc[artifacts["orthogonal"]["target_evidence_role"].eq("train_priority_prior")].copy()
+    lineage = artifacts["lineage"]
+    gap = artifacts["gap"]
+    top_train = artifacts["orthogonal"].loc[
+        artifacts["orthogonal"]["target_evidence_role"].eq("train_priority_prior")
+        & artifacts["orthogonal"]["recommendation_eligible_residualization"].astype(bool)
+    ].copy()
     top_train = top_train.sort_values("residual_candidate_rank_ic", key=lambda s: s.abs(), ascending=False)
+    future_lineage = lineage.loc[
+        lineage["future_source_dependency_row_n"].gt(0)
+        | lineage["future_normalizer_dependency_row_n"].gt(0)
+        | lineage["uses_full_episode_boundary_after_t0"].astype(bool)
+    ]
+    dedup_summary = inventory.groupby(["candidate_family_id", "candidate_primary_dedup_group_id"], dropna=False).agg(
+        candidate_feature_ids=("candidate_feature_id", lambda s: "|".join(s.astype(str))),
+        candidate_n=("candidate_feature_id", "size"),
+    ).reset_index()
+    recommended = prio.loc[prio["recommended_for_refresh"].astype(bool)]
+    deferred = prio.loc[~prio["recommended_for_refresh"].astype(bool)]
+    m1_train = top_train.loc[top_train["candidate_family_id"].eq("M1")]
+    m3_train = top_train.loc[top_train["candidate_family_id"].eq("M3")]
+    m5_train = top_train.loc[top_train["candidate_family_id"].eq("M5")]
+    m2_train = top_train.loc[top_train["candidate_family_id"].eq("M2")]
     return f"""# Payoff-state Feature Representation Diagnostic Report
 
 ## Decision
@@ -1133,6 +1490,14 @@ decision_state = {d["decision_state"]}
 next_allowed_requirement = {d["next_allowed_requirement"]}
 
 18D is diagnostic-only. It does not train a final separability model and does not authorize policy, backtest, deployment, production signal, or trading.
+
+## 18C Evidence Summary
+
+18C failed closed with weak positive payoff-state ranking evidence. The replayed
+primary robustness rank IC is {cap["primary_ridge_robustness_rank_ic"]:.6f};
+the best auxiliary current-feature robustness rank IC is
+{cap["max_aux_existing_feature_rank_ic"]:.6f}. This authorizes a representation
+diagnostic only, not policy, backtest, deployment, production signal, or trading.
 
 ## Capacity Versus Representation
 
@@ -1147,15 +1512,91 @@ next_allowed_requirement = {d["next_allowed_requirement"]}
 capacity_margin_status = {cap["capacity_margin_status"]}
 capacity_conclusion_scope = {cap["capacity_conclusion_scope"]}
 
+The capacity conclusion remains a bounded diagnostic. It does not claim capacity
+is fully ruled out; it says the current low-capacity evidence points to a feature
+representation bottleneck unless future medium-capacity probes show material
+rescue.
+
+## Current Feature Gap Decomposition
+
+{markdown_table(gap)}
+
+## Candidate Inventory
+
+candidate_inventory_completeness_gate = {inv_summary["candidate_inventory_completeness_gate"]}
+expected_candidate_feature_n = {inv_summary["candidate_inventory_expected_feature_n"]}
+observed_candidate_feature_n = {inv_summary["candidate_inventory_observed_feature_n"]}
+missing_candidate_feature_n = {inv_summary["candidate_inventory_missing_feature_n"]}
+extra_candidate_feature_n = {inv_summary["candidate_inventory_extra_feature_n"]}
+
 ## Feature Family Prioritization
 
 {markdown_table(prio)}
 
+## Candidate De-duplication
+
+Candidate family scores use train-prior residual IC from dedup-group
+representatives only. Raw scores remain reported separately to show how much
+correlated alias evidence was removed.
+
+{markdown_table(dedup_summary, 50)}
+
+## Lineage And T0 Availability
+
+Lineage is rolled up from candidate-row dependencies. Any finite primary value
+using a source or normalizer after step_start_pos is blocked before target
+readout.
+
+{markdown_table(future_lineage[["candidate_family_id", "candidate_feature_id", "future_source_dependency_row_n", "future_normalizer_dependency_row_n", "uses_full_episode_boundary_after_t0", "candidate_primary_allowed_after_lineage", "blocking_reason"]], 20)}
+
+## M1 Expanded Morphology
+
+M1 covers pre-t0 repair shape: path entropy, repair path efficiency,
+drawdown/recovery, run imbalance, failed repair count, and close-location
+features. All M1 target evidence below is train-prior only.
+
+{markdown_table(m1_train[["candidate_feature_id", "residualization_control_set_id", "residual_candidate_rank_ic", "dedup_group_representative", "orthogonal_payoff_candidate"]], 20)}
+
+## M3 Expanded Asymmetry
+
+M3 covers upside/downside room, asymmetric range position, failed breakout count,
+upper-shadow pressure, and volatility-adjusted repair strength using pre-t0
+high/low/candle paths.
+
+{markdown_table(m3_train[["candidate_feature_id", "residualization_control_set_id", "residual_candidate_rank_ic", "dedup_group_representative", "orthogonal_payoff_candidate"]], 20)}
+
+## M5 Position Diagnostics
+
+M5 uses only t0-known position and age features. Full-episode lifecycle progress
+is present as a required inventory row but blocked because completed
+cluster_end_pos is future episode geometry unless a separate t0-frozen endpoint
+proof exists.
+
+{markdown_table(m5_train[["candidate_feature_id", "residualization_control_set_id", "residual_candidate_rank_ic", "dedup_group_representative", "orthogonal_payoff_candidate"]], 20)}
+
 ## Orthogonal Train-prior Evidence
 
-Only train-prior residual rank IC can affect recommendation. Robustness and validation rows are diagnostic-only.
+Only train-prior residual rank IC can affect recommendation. Robustness and validation rows are diagnostic-only. For M2, base_vol_participation is diagnostic-only and f2_extended_participation_money is the recommendation gate.
 
-{markdown_table(top_train[["candidate_family_id", "candidate_feature_id", "raw_candidate_rank_ic", "residual_candidate_rank_ic", "orthogonal_payoff_candidate"]], 20)}
+{markdown_table(top_train[["candidate_family_id", "candidate_feature_id", "residualization_control_set_id", "raw_candidate_rank_ic", "residual_candidate_rank_ic", "dedup_group_representative", "orthogonal_payoff_candidate"]], 30)}
+
+## Money-flow Proxy Diagnostics
+
+M2 uses signed daily money-flow proxies, not true order flow. Second-order
+features cover acceleration, curvature, reversal acceleration, divergence
+persistence, high-amount negative bars, signed-flow volatility, and flow
+concentration. M2 recommendation and score use only the
+f2_extended_participation_money train-prior residualization.
+
+{markdown_table(m2_train[["candidate_feature_id", "residualization_control_set_id", "residual_candidate_rank_ic", "dedup_group_representative", "orthogonal_payoff_candidate"]], 30)}
+
+## Recommended Families
+
+{markdown_table(recommended[["candidate_family_id", "candidate_priority_score", "recommended_for_refresh", "recommendation_role"]])}
+
+## Deferred And Appendix-only Families
+
+{markdown_table(deferred[["candidate_family_id", "blocking_reason", "recommendation_role"]])}
 
 ## Input Sources
 
@@ -1173,6 +1614,7 @@ def build_all_outputs(config: dict[str, Any], resolved: dict[str, Path], input_a
     matrix = model_ready_matrix(config, tables["eighteen_b_matrix"])
     capacity, capacity_summary = build_capacity_vs_representation_readout(config, matrix, tables)
     inventory = candidate_inventory(config)
+    inventory_summary = candidate_inventory_summary(inventory, int(config["expected"]["total_required_candidate_feature_n"]))
     feature_panel = build_candidate_feature_panel(config, resolved, tables)
     lineage, pit, lineage_gate, pit_gate = build_lineage_and_pit(config, inventory, feature_panel)
     orthogonal, morphology, _ = build_orthogonal_readouts(config, inventory, lineage, feature_panel)
@@ -1186,6 +1628,7 @@ def build_all_outputs(config: dict[str, Any], resolved: dict[str, Path], input_a
         "upstream_18c_contract_gate": upstream_gate,
         "input_artifact_gate": input_gate,
         "capacity_vs_representation_gate": capacity_gate,
+        "candidate_inventory_completeness_gate": inventory_summary["candidate_inventory_completeness_gate"],
         "candidate_lineage_gate": lineage_gate,
         "pit_t0_availability_gate": pit_gate,
         "orthogonal_payoff_information_gate": orthogonal_gate,
@@ -1200,6 +1643,7 @@ def build_all_outputs(config: dict[str, Any], resolved: dict[str, Path], input_a
         "capacity": capacity,
         "capacity_summary": capacity_summary,
         "inventory": inventory,
+        "inventory_summary": inventory_summary,
         "feature_panel": feature_panel,
         "lineage": lineage,
         "pit": pit,
@@ -1258,6 +1702,7 @@ def write_manifests(config_path: Path, config: dict[str, Any], resolved: dict[st
         "representation_refresh_decision",
     ]
     decision = artifacts["decision"].iloc[0]
+    inv_summary = artifacts["inventory_summary"]
     manifest = {
         "run_id": RUN_ID,
         "experiment_id": EXPERIMENT_ID,
@@ -1275,6 +1720,11 @@ def write_manifests(config_path: Path, config: dict[str, Any], resolved: dict[st
         "next_allowed_requirement": decision["next_allowed_requirement"],
         "all_hard_gates_pass": bool(decision["all_hard_gates_pass"]),
         "upstream_18c_decision_state": config["expected"]["upstream_18c_decision_state"],
+        "candidate_inventory_completeness_gate": inv_summary["candidate_inventory_completeness_gate"],
+        "candidate_inventory_expected_feature_n": inv_summary["candidate_inventory_expected_feature_n"],
+        "candidate_inventory_observed_feature_n": inv_summary["candidate_inventory_observed_feature_n"],
+        "candidate_inventory_missing_feature_n": inv_summary["candidate_inventory_missing_feature_n"],
+        "candidate_inventory_extra_feature_n": inv_summary["candidate_inventory_extra_feature_n"],
         "capacity_bottleneck_flag": bool(artifacts["capacity_summary"]["capacity_bottleneck_flag"]),
         "representation_bottleneck_flag": bool(artifacts["capacity_summary"]["representation_bottleneck_flag"]),
         "recommended_refresh_family_ids": decision["recommended_refresh_family_ids"],
