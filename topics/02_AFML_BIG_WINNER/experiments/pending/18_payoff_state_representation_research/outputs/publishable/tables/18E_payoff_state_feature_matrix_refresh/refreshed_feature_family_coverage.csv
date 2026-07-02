@@ -1,0 +1,11 @@
+feature_family_id,family_role,expected_primary_feature_n,observed_primary_feature_n,observed_model_ready_feature_n,finite_train_rate_min,finite_all_rate_min,family_coverage_status,blocking_reason
+F1,existing_18b_retained,7,7,7,1.0,1.0,pass,
+F2,existing_18b_retained,5,5,5,1.0,1.0,pass,
+F3,existing_18b_retained,2,2,2,1.0,1.0,pass,
+F4,existing_18b_retained,5,5,5,1.0,1.0,pass,
+F5,existing_18b_retained,4,4,4,1.0,1.0,pass,
+M1,primary_refresh,8,8,8,0.9165719930847123,0.9061738944669943,pass,
+M3,primary_refresh,5,5,5,0.9165719930847123,0.9061738944669943,pass,
+M5,primary_refresh,6,6,6,0.9677945171647321,0.9616748558000427,pass,
+M2,primary_refresh,7,7,7,0.9677945171647321,0.9616748558000427,pass,
+M4,deferred,0,0,0,,,pass,m4_deferred_by_default
