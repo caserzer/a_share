@@ -1,0 +1,95 @@
+run_id: 18C_refresh_payoff_state_separability_diagnostic
+experiment_id: 18_payoff_state_representation_research
+phase_id: 18C
+scope_id: refreshed_matrix_rerun
+
+paths:
+  research_plan: experiments/pending/18_payoff_state_representation_research/research_plan.md
+  umbrella_requirement: experiments/pending/18_payoff_state_representation_research/requirement_18_payoff_state_representation_research.md
+  requirement_18c_base: experiments/pending/18_payoff_state_representation_research/requirement_18c_payoff_state_separability_diagnostic.md
+  requirement_18c_refresh: experiments/pending/18_payoff_state_representation_research/requirement_18c_refresh_payoff_state_separability_diagnostic.md
+  requirement_18e: experiments/pending/18_payoff_state_representation_research/requirement_18e_payoff_state_feature_matrix_refresh.md
+
+  eighteen_e_refreshed_matrix: experiments/pending/18_payoff_state_representation_research/outputs/local_cache/18E_payoff_state_feature_matrix_refresh/refreshed_payoff_state_feature_matrix.parquet
+  eighteen_e_decision: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_matrix_decision.csv
+  eighteen_e_schema: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_matrix_schema.csv
+  eighteen_e_family_coverage: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_family_coverage.csv
+  eighteen_e_lineage_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_lineage_audit.csv
+  eighteen_e_target_binding_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_target_binding_audit.csv
+  eighteen_e_missingness_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_missingness_audit.csv
+  eighteen_e_pit_availability_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_pit_availability_audit.csv
+  eighteen_e_preprocessing_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/train_only_preprocessing_audit.csv
+  eighteen_e_forbidden_feature_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/forbidden_feature_audit.csv
+  eighteen_e_search_accounting: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/search_accounting_audit.csv
+  eighteen_e_report: experiments/pending/18_payoff_state_representation_research/outputs/publishable/reports/payoff_state_feature_matrix_refresh_report.md
+  eighteen_e_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18E_payoff_state_feature_matrix_refresh_manifest.json
+  refreshed_matrix_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/refreshed_payoff_state_feature_matrix_manifest.json
+  eighteen_e_input_artifact_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/input_artifact_manifest_18e.json
+
+  eighteen_a_target_contract_doc: experiments/pending/18_payoff_state_representation_research/outputs/publishable/payoff_state_target_contract.md
+  eighteen_a_target_definition_registry: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_definition_registry.csv
+  eighteen_a_target_denominator_reconciliation: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_denominator_reconciliation.csv
+  eighteen_a_payoff_cutoff_freeze: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_cutoff_freeze.csv
+  eighteen_a_neutral_preservation_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/neutral_preservation_audit.csv
+  eighteen_a_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18A_payoff_state_contract_preflight_manifest.json
+  eighteen_a_target_contract_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/payoff_state_target_contract_manifest.json
+
+required_artifacts:
+  research_plan: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18}
+  umbrella_requirement: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18}
+  requirement_18c_base: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  requirement_18c_refresh: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  requirement_18e: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_refreshed_matrix: {role: eighteen_e_handoff_matrix, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_decision: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_schema: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_family_coverage: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_lineage_audit: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_target_binding_audit: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_missingness_audit: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_pit_availability_audit: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_preprocessing_audit: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_forbidden_feature_audit: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_search_accounting: {role: eighteen_e_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_report: {role: eighteen_e_handoff_report, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_manifest: {role: eighteen_e_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  refreshed_matrix_manifest: {role: eighteen_e_matrix_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_input_artifact_manifest: {role: eighteen_e_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_a_target_contract_doc: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_definition_registry: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_denominator_reconciliation: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_payoff_cutoff_freeze: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_neutral_preservation_audit: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_contract_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+
+expected:
+  upstream_18e_decision_state: 18E_payoff_state_feature_matrix_refresh_supported
+  upstream_18e_next_allowed_requirement: requirement_18c_payoff_state_separability_diagnostic.md
+  upstream_18e_next_allowed_requirement_scope: refreshed_matrix_rerun
+  positive_next_allowed_requirement: requirement_18f_payoff_state_oracle_gap_bridge.md
+  positive_next_allowed_requirement_scope: refreshed_matrix_oracle_gap_bridge
+  matrix_row_n: 23405
+  train_row_n: 20245
+  robustness_row_n: 2496
+  validation_row_n: 664
+  neutral_row_n: 6066
+  primary_model_ready_feature_n: 49
+  existing_18b_model_ready_feature_n: 23
+  refresh_model_ready_feature_n: 26
+  target_column_n: 19
+  matrix_sha256: 03d409f73836413adc9f3bd7f3827d072c68ea4b259ffb8c221570bd882641fc
+  schema_sha256: 56429807004c0d3ad69101c87d1f125b4c8e33713d702f53f251002fea235a26
+  rank_ic_materiality_floor: 0.08
+  monotonicity_floor: 0.60
+  volatility_rank_ic_margin_floor: 0.005
+  f4_removal_retention_floor: 0.50
+  bootstrap_resample_n: 2000
+  bootstrap_random_seed: 20260629
+  top30_cutoff: 0.0596330275229357
+  top20_cutoff: 0.1012285086722715
+  top10_cutoff: 0.1721071844362347
+  missing_matrix_regeneration_command: python experiments/pending/18_payoff_state_representation_research/src/run_18e_payoff_state_feature_matrix_refresh.py --mode full
+
+split_column: cluster_split_bucket
+identity_key_columns: [step_id, label_id, threshold_id, horizon_sessions, instrument, episode_cluster_id, step_index, step_start_date, step_end_date]

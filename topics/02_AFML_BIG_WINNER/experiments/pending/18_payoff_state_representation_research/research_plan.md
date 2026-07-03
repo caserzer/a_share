@@ -37,9 +37,11 @@ EP17 已经给出三条关键事实：
 
 因此 EP18 的研究方向不是 binary classification，而是 payoff-state representation：用连续或 ordinal 的方式刻画未来 h20 payoff / action value，并检验这种表征是否能在 robustness split 上稳定排序收益幅度。
 
-## 0.1 Current EP18 Status After 18C
+## 0.1 Current EP18 Status After 18E
 
-18A/18B/18C 已经完成到低容量 separability diagnostic。18C 的实际结论是：
+18A/18B/18C/18D/18E 已完成到 refreshed feature matrix construction。当前可执行的下一步不是 EP18F oracle-gap bridge，而是使用 18E 产物重跑 refreshed 18C-style separability diagnostic。
+
+18C 原始低容量 separability diagnostic 的实际结论是：
 
 ```text
 decision_state = 18C_payoff_state_signal_weak_or_nonmonotone
@@ -67,11 +69,38 @@ current signal is participation-heavy and too concentrated in F2 features
 current failure is not primarily risk-only, because F4 removal retention > 1
 ```
 
-Therefore the next EP18 step is not learned-score oracle bridge. The next step is feature representation diagnostic:
+18D/18E 已完成 feature representation refresh path。最新 18E report 的裁决是：
 
 ```text
-next_research_direction = payoff-state feature representation diagnostic
-do_not_start = learned payoff-state utility bridge / oracle-gap bridge
+decision_state = 18E_payoff_state_feature_matrix_refresh_supported
+next_allowed_requirement = requirement_18c_payoff_state_separability_diagnostic.md
+next_allowed_requirement_scope = refreshed_matrix_rerun
+all_policy_authorizations = false
+```
+
+18E refreshed matrix 关键读数：
+
+```text
+refreshed_matrix_row_n = 23405
+neutral_row_n = 6066
+neutral_rows_dropped = false
+primary_raw_feature_n = 49
+primary_model_ready_feature_n = 49
+retained_existing_family_features = F1:7, F2:5, F3:2, F4:5, F5:4
+primary_refresh_family_features = M1:8, M3:5, M5:6, M2:7
+deferred_family_ids = M4
+train_only_preprocessing_feature_n = 49
+forbidden_gate_fail_n = 0
+search_accounting_gate = pass
+```
+
+Interpretation:
+
+```text
+the representation bottleneck has been addressed only at matrix-contract level
+18E has not measured refreshed OOS payoff separability
+the refreshed 49-feature matrix may be used only for a refreshed 18C rerun
+EP18F remains blocked until refreshed 18C emits 18C_payoff_state_separability_supported
 ```
 
 ## 1. Non-negotiable Scope
@@ -102,7 +131,8 @@ EP18 允许做：
 构造 feature matrix
 做低容量 separability diagnostic
 做 feature representation diagnostic
-在 representation 支持后再做 learned-score vs O4/O5 oracle gap bridge
+在 feature matrix refresh 支持后重跑 refreshed 18C separability diagnostic
+仅在 refreshed separability 支持后再做 learned-score vs O4/O5 oracle gap bridge
 ```
 
 所有正向结论最多授权下一步 research requirement，例如 payoff-state policy preflight；不得直接授权策略或回测。
@@ -548,7 +578,7 @@ Possible decisions:
 18B_target_binding_blocked
 ```
 
-Only `18B_payoff_state_feature_matrix_ready` may authorize EP18C.
+Only `18B_payoff_state_feature_matrix_ready` may authorize the initial EP18C run. After 18E, only `18E_payoff_state_feature_matrix_refresh_supported` with `next_allowed_requirement_scope = refreshed_matrix_rerun` may authorize a refreshed EP18C rerun.
 
 ### EP18C: Low-capacity Payoff-state Separability Diagnostic
 
@@ -557,6 +587,15 @@ Goal:
 ```text
 test whether PIT-valid t0 features can rank payoff / continue_advantage out-of-sample
 ```
+
+EP18C has two valid scopes:
+
+```text
+initial_scope = original_18B_matrix
+refreshed_scope = 18E_refreshed_matrix_rerun
+```
+
+The initial EP18C scope already failed support with `18C_payoff_state_signal_weak_or_nonmonotone`. After 18E, EP18C may be rerun only under `next_allowed_requirement_scope = refreshed_matrix_rerun`, using the 18E refreshed matrix and preserving all original 18C gates.
 
 Primary model family should be low-capacity:
 
@@ -660,7 +699,7 @@ capacity-vs-representation is thin-margin: depth-2 tree IC is close to the 0.080
 do not weaken gates, switch to binary primary target, or start utility bridge
 ```
 
-The next research phase should be a feature representation diagnostic, not the oracle-gap bridge.
+This initial 18C result redirected the plan to EP18D feature representation diagnostic. EP18D and EP18E have now completed that refresh path; the next research phase is a refreshed 18C separability rerun on the 18E matrix, not the oracle-gap bridge.
 
 ### EP18D: Payoff-state Feature Representation Diagnostic
 
@@ -729,6 +768,25 @@ decision_state = 18D_feature_representation_refresh_supported
 next_allowed_requirement = requirement_18e_payoff_state_feature_matrix_refresh.md
 ```
 
+Actual 18D result:
+
+```text
+decision_state = 18D_feature_representation_refresh_supported
+next_allowed_requirement = requirement_18e_payoff_state_feature_matrix_refresh.md
+all_hard_gates_pass = true
+recommended_refresh_family_ids = M1|M3|M5|M2
+deferred_family_ids = M4
+```
+
+18D interpretation:
+
+```text
+18C failure is more consistent with representation bottleneck than simple capacity rescue
+M1 episode-local morphology is the strongest recommended refresh family
+M3 payoff asymmetry, M5 t0-known episode position, and M2 money-flow proxy are also supported
+M4 regime/context stays deferred unless new PIT context evidence appears
+```
+
 Allowed blocked outputs:
 
 ```text
@@ -791,6 +849,42 @@ Possible decisions:
 18E_no_refresh_candidate_family_supported
 18E_feature_matrix_refresh_diagnostic_only
 ```
+
+Actual 18E result:
+
+```text
+decision_state = 18E_payoff_state_feature_matrix_refresh_supported
+next_allowed_requirement = requirement_18c_payoff_state_separability_diagnostic.md
+next_allowed_requirement_scope = refreshed_matrix_rerun
+```
+
+18E refreshed matrix contract:
+
+```text
+input_rows = 23405
+neutral_rows = 6066
+neutral_rows_dropped = false
+identity_key_join_used = true
+split_mismatch_n = 0
+primary_raw_features = 49
+primary_model_ready_features = 49
+existing_18B_features_retained = 23
+new_primary_refresh_features = 26
+primary_refresh_family_ids = M1|M3|M5|M2
+deferred_family_ids = M4
+```
+
+Authorized 18E handoff artifacts:
+
+```text
+outputs/local_cache/18E_payoff_state_feature_matrix_refresh/refreshed_payoff_state_feature_matrix.parquet
+outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_matrix_schema.csv
+outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_matrix_decision.csv
+outputs/manifests/18E_payoff_state_feature_matrix_refresh_manifest.json
+outputs/manifests/refreshed_payoff_state_feature_matrix_manifest.json
+```
+
+18E does not authorize EP18F. It only authorizes a refreshed 18C-style separability diagnostic to decide whether the new matrix clears rank IC, monotonicity, volatility-baseline, bootstrap, top-k, and search-accounting gates.
 
 ### EP18F: Deferred Learned Payoff-state Utility Bridge and Oracle Gap
 
@@ -877,7 +971,7 @@ neutral contribution is explicitly reconciled
 validation does not hard reverse
 ```
 
-EP18 should be expected to fail cleanly if current observable feature families cannot clear materiality or same-denominator baseline gates. This is a valid research outcome, not an implementation failure. The plan explicitly treats the following as acceptable terminal diagnostics:
+EP18 should be expected to fail cleanly if current or refreshed observable feature families cannot clear materiality or same-denominator baseline gates. This is a valid research outcome, not an implementation failure. The plan explicitly treats the following as acceptable terminal diagnostics:
 
 ```text
 18C_current_features_reconfirmed_insufficient
@@ -975,6 +1069,7 @@ configs/
   config_18a_payoff_state_contract_preflight.yaml
   config_18b_payoff_state_feature_matrix_audit.yaml
   config_18c_payoff_state_separability_diagnostic.yaml
+  config_18c_refresh_payoff_state_separability_diagnostic.yaml
   config_18d_payoff_state_feature_representation_diagnostic.yaml
   config_18e_payoff_state_feature_matrix_refresh.yaml
   config_18f_payoff_state_oracle_gap_bridge.yaml
@@ -983,6 +1078,7 @@ requirement_18_payoff_state_representation_research.md
 requirement_18a_payoff_state_contract_preflight.md
 requirement_18b_payoff_state_feature_matrix_audit.md
 requirement_18c_payoff_state_separability_diagnostic.md
+requirement_18c_refresh_payoff_state_separability_diagnostic.md
 requirement_18d_payoff_state_feature_representation_diagnostic.md
 requirement_18e_payoff_state_feature_matrix_refresh.md
 requirement_18f_payoff_state_oracle_gap_bridge.md
@@ -991,9 +1087,19 @@ outputs/publishable/reports/
   payoff_state_contract_preflight_report.md
   payoff_state_feature_matrix_audit_report.md
   payoff_state_separability_diagnostic_report.md
+  payoff_state_separability_refresh_report.md
   payoff_state_feature_representation_diagnostic_report.md
   payoff_state_feature_matrix_refresh_report.md
   payoff_state_oracle_gap_bridge_report.md
+
+outputs/local_cache/18E_payoff_state_feature_matrix_refresh/
+  refreshed_payoff_state_feature_matrix.parquet
+
+outputs/manifests/
+  18C_refresh_payoff_state_separability_diagnostic_manifest.json
+  18E_payoff_state_feature_matrix_refresh_manifest.json
+  refreshed_payoff_state_score_panel_manifest.json
+  refreshed_payoff_state_feature_matrix_manifest.json
 ```
 
 `requirement_18_payoff_state_representation_research.md` is the top-level requirement name authorized by EP17D. The `18a/18b/18c/18d/18e/18f` requirement files are phase decompositions under that umbrella. Any handoff check from EP17D should look for the top-level requirement first, then phase-specific requirements once EP18A begins.
@@ -1024,6 +1130,6 @@ continuous / ordinal payoff-state representation
 wide top30/top20 payoff-positive state
 neutral-aware full-denominator utility
 path-risk as auxiliary context
-feature representation diagnostic after weak separability
-strict OOS payoff ranking before oracle-gap bridge
+refreshed 18C separability rerun after 18E matrix support
+strict OOS payoff ranking before any oracle-gap bridge
 ```
