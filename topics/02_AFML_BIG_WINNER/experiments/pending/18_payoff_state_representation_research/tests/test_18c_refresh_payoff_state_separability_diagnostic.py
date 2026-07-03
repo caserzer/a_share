@@ -5,6 +5,8 @@ import importlib.util
 import sys
 from pathlib import Path
 
+import pandas as pd
+
 
 ROOT = Path(__file__).resolve().parents[6]
 EXP = ROOT / "topics/02_AFML_BIG_WINNER/experiments/pending/18_payoff_state_representation_research"
@@ -84,6 +86,74 @@ def test_18c_refresh_family_removal_sensitivity_schema_is_explicit():
     assert required.issubset(set(family.columns))
 
     requirement_text = REQ.read_text(encoding="utf-8")
-    assert "### 9.1 `family_removal_sensitivity.csv`" in requirement_text
+    assert "### 9.2 `family_removal_sensitivity.csv`" in requirement_text
     assert "family_M1_removed" in requirement_text
     assert "family_M5_removed" in requirement_text
+
+
+def test_18c_refresh_uses_actual_18e_handoff_schemas_not_old_aliases():
+    config = r.load_config(CONFIG)
+    lineage = r.required_columns_for_key(config, "eighteen_e_lineage_audit")
+    binding = r.required_columns_for_key(config, "eighteen_e_target_binding_audit")
+    pit = r.required_columns_for_key(config, "eighteen_e_pit_availability_audit")
+    assert {"candidate_family_id", "candidate_feature_id", "lineage_before_correlation_gate"}.issubset(lineage)
+    assert {"refreshed_matrix_row_n", "refreshed_identity_key_n", "target_binding_gate"}.issubset(binding)
+    assert {"candidate_family_id", "candidate_feature_id", "t0_available_status"}.issubset(pit)
+    assert "feature_lineage_gate" not in lineage
+    assert "bound_matrix_row_n" not in binding
+    assert "pit_t0_availability_gate" not in pit
+
+
+def test_18c_refresh_score_panel_and_search_accounting_contracts_are_explicit():
+    result = context()
+    outputs = r.output_paths()
+    score = pd.read_parquet(outputs["score_panel"])
+    assert set(r.SCORE_PANEL_COLUMNS).issubset(set(score.columns))
+    assert "run_id" in result["search_accounting"].columns
+    assert "scope_id" in result["search_accounting"].columns
+    assert result["search_accounting"].iloc[0]["run_id"] == r.RUN_ID
+    assert result["search_accounting"].iloc[0]["scope_id"] == "refreshed_matrix_rerun"
+
+
+def test_18c_refresh_positive_decision_routes_to_18f_when_all_gates_pass():
+    config = r.prepared_model_config(r.load_config(CONFIG), r.resolve_paths(r.load_config(CONFIG)))
+    gates = {gate: "pass" for gate in r.HARD_GATES}
+    oos = pd.DataFrame(
+        [
+            {
+                "split_bucket": "robustness",
+                "model_id": r.PRIMARY_MODEL_ID,
+                "row_n": 2496,
+                "episode_cluster_n": 204,
+                "rank_ic_spearman": 0.10,
+                "continue_advantage_replay_abs_diff": 0.0,
+            },
+            {
+                "split_bucket": "validation",
+                "model_id": r.PRIMARY_MODEL_ID,
+                "row_n": 664,
+                "episode_cluster_n": 41,
+                "rank_ic_spearman": 0.09,
+                "continue_advantage_replay_abs_diff": 0.0,
+            },
+        ]
+    )
+    deciles = pd.DataFrame(
+        [
+            {
+                "split_bucket": "robustness",
+                "model_id": r.PRIMARY_MODEL_ID,
+                "decile_payoff_monotonicity_spearman": 0.70,
+                "top3_minus_bottom3_payoff_gap": 0.01,
+            }
+        ]
+    )
+    bucket = pd.DataFrame([{"split_bucket": "robustness", "bucket_lift": 1.1}])
+    bootstrap = pd.DataFrame([{"cluster_bootstrap_rank_ic_ci_low": 0.01}])
+    baseline = pd.DataFrame([{"comparison_id": "payoff_rank_ic_vs_volatility20d", "delta_vs_baseline": 0.006}])
+    family = pd.DataFrame([{"split_bucket": "robustness", "sensitivity_id": "family_F4_removed", "rank_ic_retention_rate": 0.7}])
+    binary = pd.DataFrame([{"split_bucket": "robustness", "roc_auc": 0.50, "precision_lift": 0.0}])
+    decision = r.build_refreshed_decision(config, gates, oos, deciles, bucket, bootstrap, baseline, family, binary, "scored").iloc[0]
+    assert decision["decision_state"] == "18C_payoff_state_separability_supported"
+    assert decision["next_allowed_requirement"] == "requirement_18f_payoff_state_oracle_gap_bridge.md"
+    assert decision["next_allowed_requirement_scope"] == "refreshed_matrix_oracle_gap_bridge"

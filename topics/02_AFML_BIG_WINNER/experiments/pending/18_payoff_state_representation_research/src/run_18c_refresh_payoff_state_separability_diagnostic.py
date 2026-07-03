@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import platform
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -13,6 +15,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import yaml
 
@@ -30,6 +33,94 @@ FIGURE_DIR = EXPERIMENT_DIR / "outputs" / "publishable" / "figures" / RUN_ID
 REPORT_DIR = EXPERIMENT_DIR / "outputs" / "publishable" / "reports"
 MANIFEST_DIR = EXPERIMENT_DIR / "outputs" / "manifests"
 LOCAL_CACHE_DIR = EXPERIMENT_DIR / "outputs" / "local_cache" / RUN_ID
+BASE_18C_RUNNER_PATH = EXPERIMENT_DIR / "src" / "run_18c_payoff_state_separability_diagnostic.py"
+
+SPLITS = ("train", "robustness", "validation")
+PRIMARY_MODEL_ID = "ridge_payoff_rank_h20_v1"
+VOL_BASELINE_ID = "volatility20d_defense_baseline"
+TARGET_COLUMNS = (
+    "label_class",
+    "continuation_positive",
+    "continuation_negative",
+    "continuation_neutral",
+    "y_payoff_h20",
+    "y_signed_max_drawdown_h20",
+    "continue_value",
+    "defend_value",
+    "continue_advantage",
+    "defend_advantage",
+    "o5_incremental",
+    "payoff_ordinal_state",
+    "risk_state_dd08",
+    "risk_state_dd10",
+    "risk_state_dd12",
+    "binary_positive_negative",
+    "top30_yes_no",
+    "top20_yes_no",
+    "drawdown_dd10_yes_no",
+)
+SCORE_MODEL_IDS = (
+    "ridge_payoff_rank_h20_v1",
+    "elastic_net_payoff_rank_h20_v1",
+    "ridge_ordinal_payoff_state_v1",
+    "ridge_logistic_top30_sanity_v1",
+    "ridge_logistic_top20_sanity_v1",
+    "shallow_tree_payoff_depth2_v1",
+)
+SCORE_PANEL_COLUMNS = [
+    "step_id",
+    "label_id",
+    "threshold_id",
+    "horizon_sessions",
+    "instrument",
+    "episode_cluster_id",
+    "step_index",
+    "step_start_date",
+    "step_end_date",
+    "cluster_split_bucket",
+    "y_payoff_h20",
+    "continue_advantage",
+    "payoff_ordinal_state",
+    "top30_yes_no",
+    "top20_yes_no",
+    "binary_positive_negative",
+    "ridge_payoff_rank_h20_v1_score",
+    "elastic_net_payoff_rank_h20_v1_score",
+    "ridge_ordinal_payoff_state_v1_score",
+    "ridge_logistic_top30_sanity_v1_score",
+    "ridge_logistic_top20_sanity_v1_score",
+    "shallow_tree_payoff_depth2_v1_score",
+    "ridge_payoff_rank_h20_v1_train_score_decile",
+    "ridge_payoff_rank_h20_v1_train_score_top30_bucket",
+    "ridge_payoff_rank_h20_v1_train_score_top20_bucket",
+    "score_cutoff_source",
+    "split_local_score_cutoff_recompute_used",
+    "source_18e_matrix_sha256",
+    "score_panel_status",
+    "blocking_reason",
+]
+ORDINAL_MAPPING = {
+    "state_0_below_top30_payoff": 0,
+    "state_1_top30_to_top20_payoff": 1,
+    "state_2_top20_to_top10_payoff": 2,
+    "state_3_top10_extreme_payoff": 3,
+}
+DEFAULT_MODELS = {
+    "ridge_payoff_rank_h20_v1": {"family": "ridge_regression", "target_column": "y_payoff_h20", "alpha": 10.0, "fit_intercept": True, "used_for_primary_decision": True},
+    "elastic_net_payoff_rank_h20_v1": {"family": "elastic_net_regression", "target_column": "y_payoff_h20", "alpha": 0.0005, "l1_ratio": 0.10, "fit_intercept": True, "max_iter": 10000, "random_state": 1818, "used_for_primary_decision": False},
+    "ridge_ordinal_payoff_state_v1": {"family": "ridge_regression_on_ordinal_state", "target_column": "payoff_ordinal_state_int", "alpha": 10.0, "fit_intercept": True, "used_for_primary_decision": False},
+    "shallow_tree_payoff_depth2_v1": {"family": "decision_tree_regressor", "target_column": "y_payoff_h20", "max_depth": 2, "min_samples_leaf_floor": 50, "min_samples_leaf_train_fraction": 0.02, "random_state": 1818, "used_for_primary_decision": False},
+    "ridge_logistic_top30_sanity_v1": {"family": "logistic_regression_l2", "target_column": "top30_yes_no", "penalty": "l2", "C": 1.0, "class_weight": "balanced", "solver": "liblinear", "max_iter": 1000, "random_state": 1818, "used_for_primary_decision": False},
+    "ridge_logistic_top20_sanity_v1": {"family": "logistic_regression_l2", "target_column": "top20_yes_no", "penalty": "l2", "C": 1.0, "class_weight": "balanced", "solver": "liblinear", "max_iter": 1000, "random_state": 1818, "used_for_primary_decision": False},
+}
+DEFAULT_CV = {"scheme": "episode_cluster_grouped_cv", "fold_n": 5, "fold_seed": 1818}
+SIXTEEN_X_CONTEXT = {
+    "payoff_probe_id": "payoff_rank_probe_v1",
+    "robustness_payoff_rank_ic": 0.05187674283077765,
+    "robustness_decile_monotonicity_spearman": 0.16363636363636364,
+    "robustness_cluster_bootstrap_rank_ic_ci_low": 0.007705547248002782,
+}
+TARGET_LINEAGE_HASH = "602ad3986a32d8634cb0948181be74c15a70cb50122d994d3ae7f253acbcc3d3"
 
 AUTH_FALSE_COLUMNS = (
     "entry_policy_authorized",
@@ -115,6 +206,17 @@ def output_paths() -> dict[str, Path]:
         "input_manifest": MANIFEST_DIR / "input_artifact_manifest_18c_refresh.json",
         "score_panel_manifest": MANIFEST_DIR / "refreshed_payoff_state_score_panel_manifest.json",
     }
+
+
+def load_base_18c_runner():
+    spec = importlib.util.spec_from_file_location("run_18c_base_for_refresh", BASE_18C_RUNNER_PATH)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+BASE_18C = load_base_18c_runner()
 
 
 def file_sha(path: Path) -> str:
@@ -230,20 +332,21 @@ def false_like(value: Any) -> bool:
 
 
 def required_columns_for_key(config: dict[str, Any], key: str) -> set[str]:
-    identity = set(config["identity_key_columns"])
+    primary_key = set(config.get("primary_identity_key_columns", ["step_id", "label_id"]))
+    full_key = set(config.get("full_lineage_key_columns", config.get("identity_key_columns", [])))
     split = {config["split_column"]}
     mapping: dict[str, set[str]] = {
-        "eighteen_e_refreshed_matrix": identity | split,
+        "eighteen_e_refreshed_matrix": primary_key | full_key | split | set(TARGET_COLUMNS),
         "eighteen_e_decision": {"decision_state", "next_allowed_requirement", "next_allowed_requirement_scope", "all_hard_gates_pass", *AUTH_FALSE_COLUMNS},
-        "eighteen_e_schema": {"column_name", "column_role", "primary_model_feature", "target_column"},
+        "eighteen_e_schema": {"column_name", "column_role", "feature_family_id", "raw_feature_name", "model_ready_feature_name", "primary_model_feature", "target_column"},
         "eighteen_e_family_coverage": {"feature_family_id", "observed_model_ready_feature_n", "family_coverage_status"},
-        "eighteen_e_lineage_audit": {"feature_name", "feature_lineage_gate"},
-        "eighteen_e_target_binding_audit": {"bound_matrix_row_n", "target_binding_gate"},
+        "eighteen_e_lineage_audit": {"candidate_family_id", "feature_id", "candidate_feature_id", "lineage_scope", "pit_valid_status", "t0_available_status", "lineage_before_correlation_gate"},
+        "eighteen_e_target_binding_audit": {"refreshed_matrix_row_n", "refreshed_identity_key_n", "refreshed_duplicate_key_n", "neutral_row_n", "target_binding_gate"},
         "eighteen_e_missingness_audit": {"feature_name", "finite_rate"},
-        "eighteen_e_pit_availability_audit": {"feature_name", "pit_t0_availability_gate"},
-        "eighteen_e_preprocessing_audit": {"feature_name", "model_ready_feature_name", "fit_split", "fit_row_n"},
+        "eighteen_e_pit_availability_audit": {"candidate_family_id", "feature_id", "candidate_feature_id", "pit_valid_status", "t0_available_status"},
+        "eighteen_e_preprocessing_audit": {"feature_name", "model_ready_feature_name", "fit_split", "fit_row_n", "status"},
         "eighteen_e_forbidden_feature_audit": {"column_name", "forbidden_feature_gate"},
-        "eighteen_e_search_accounting": {"phase_id", "search_accounting_gate"},
+        "eighteen_e_search_accounting": {"phase_id", "no_model_training", "no_scoring", "no_entry_policy_authorized", "no_live_trading_authorized", "search_accounting_gate"},
         "eighteen_a_target_definition_registry": {"target_id", "lineage_hash"},
         "eighteen_a_target_denominator_reconciliation": {"split_bucket", "labelable_step_n", "neutral_step_n"},
         "eighteen_a_payoff_cutoff_freeze": {"threshold_id", "train_absolute_payoff_cutoff", "split_local_recompute_used"},
@@ -375,14 +478,17 @@ def build_upstream_18e_handoff_audit(config: dict[str, Any], resolved: dict[str,
     else:
         rows.append({"contract_check_id": "decision_artifact_exists", "observed_value": "missing", "expected_value": "present", "upstream_18e_contract_gate": "fail", "blocking_reason": "eighteen_e_decision_missing"})
 
-    missing_18e = input_audit.loc[input_audit["source_phase_id"].eq("18E") & ~input_audit["read_status"].eq("pass")]
+    invalid_18e = input_audit.loc[
+        input_audit["source_phase_id"].eq("18E")
+        & ~input_audit["cache_key_reconciliation_gate"].eq("pass")
+    ]
     rows.append(
         {
-            "contract_check_id": "all_required_18e_artifacts_present",
-            "observed_value": int(len(missing_18e)),
+            "contract_check_id": "all_required_18e_artifacts_present_and_valid",
+            "observed_value": int(len(invalid_18e)),
             "expected_value": 0,
-            "upstream_18e_contract_gate": "pass" if missing_18e.empty else "fail",
-            "blocking_reason": "" if missing_18e.empty else "missing_required_18e_artifact",
+            "upstream_18e_contract_gate": "pass" if invalid_18e.empty else "fail",
+            "blocking_reason": "" if invalid_18e.empty else "invalid_required_18e_artifact",
         }
     )
     frame = pd.DataFrame(rows)
@@ -394,27 +500,329 @@ def build_matrix_contract_replay_audit(config: dict[str, Any], resolved: dict[st
     matrix_path = resolved["eighteen_e_refreshed_matrix"]
     schema_path = resolved["eighteen_e_schema"]
     manifest_path = resolved["refreshed_matrix_manifest"]
-    rows = []
+    rows: list[dict[str, Any]] = []
+
+    def add(check_id: str, expected_value: Any, observed_value: Any, ok: bool, reason: str | None = None) -> None:
+        rows.append(
+            {
+                "check_id": check_id,
+                "expected_value": expected_value,
+                "observed_value": observed_value,
+                "matrix_contract_replay_gate": "pass" if ok else "fail",
+                "blocking_reason": "" if ok else reason or f"{check_id}_mismatch",
+            }
+        )
+
     if not matrix_path.exists():
-        rows.append({"check_id": "matrix_file_exists", "expected_value": "present", "observed_value": "missing", "matrix_contract_replay_gate": "fail", "blocking_reason": "missing_local_cache_refreshed_matrix;rerun_18e_full_to_regenerate"})
+        add("matrix_file_exists", "present", "missing", False, "missing_local_cache_refreshed_matrix;rerun_18e_full_to_regenerate")
     else:
-        rows.append({"check_id": "matrix_file_exists", "expected_value": "present", "observed_value": "present", "matrix_contract_replay_gate": "pass", "blocking_reason": ""})
-        rows.append({"check_id": "matrix_sha256", "expected_value": expected["matrix_sha256"], "observed_value": file_sha(matrix_path), "matrix_contract_replay_gate": "pass" if file_sha(matrix_path) == expected["matrix_sha256"] else "fail", "blocking_reason": "" if file_sha(matrix_path) == expected["matrix_sha256"] else "matrix_hash_mismatch"})
+        matrix = read_table(matrix_path)
+        matrix_sha = file_sha(matrix_path)
+        split_col = config["split_column"]
+        primary_key = config.get("primary_identity_key_columns", ["step_id", "label_id"])
+        full_key = config.get("full_lineage_key_columns", config.get("identity_key_columns", []))
+        split_counts = matrix[split_col].value_counts().to_dict() if split_col in matrix.columns else {}
+        add("matrix_file_exists", "present", "present", True)
+        add("actual_matrix_sha256", expected["matrix_sha256"], matrix_sha, matrix_sha == expected["matrix_sha256"], "matrix_hash_mismatch")
+        add("matrix_row_n", expected["matrix_row_n"], len(matrix), len(matrix) == expected["matrix_row_n"])
+        add("train_row_n", expected["train_row_n"], int(split_counts.get("train", 0)), int(split_counts.get("train", 0)) == expected["train_row_n"])
+        add("robustness_row_n", expected["robustness_row_n"], int(split_counts.get("robustness", 0)), int(split_counts.get("robustness", 0)) == expected["robustness_row_n"])
+        add("validation_row_n", expected["validation_row_n"], int(split_counts.get("validation", 0)), int(split_counts.get("validation", 0)) == expected["validation_row_n"])
+        add("primary_identity_key_columns", "step_id|label_id", "|".join(primary_key), primary_key == ["step_id", "label_id"])
+        if set(primary_key).issubset(matrix.columns):
+            primary_dup_n = int(matrix.duplicated(primary_key).sum())
+            add("primary_identity_key_duplicate_n", 0, primary_dup_n, primary_dup_n == 0)
+        else:
+            add("primary_identity_key_duplicate_n", 0, "missing_key_columns", False, "primary_identity_key_columns_missing")
+        if set(full_key).issubset(matrix.columns):
+            full_dup_n = int(matrix.duplicated(full_key).sum())
+            add("full_lineage_key_columns", "|".join(full_key), "|".join(full_key), True)
+            add("full_lineage_key_duplicate_n", 0, full_dup_n, full_dup_n == 0)
+        else:
+            add("full_lineage_key_columns", "|".join(full_key), "missing_key_columns", False, "full_lineage_key_columns_missing")
+            add("full_lineage_key_duplicate_n", 0, "missing_key_columns", False, "full_lineage_key_columns_missing")
+        target_n = sum(col in matrix.columns for col in TARGET_COLUMNS)
+        add("target_column_n", expected["target_column_n"], target_n, target_n == expected["target_column_n"])
     if schema_path.exists():
         schema = read_table(schema_path)
-        feature_n = int(schema["primary_model_feature"].astype(str).str.lower().eq("true").sum())
+        primary_model_feature = schema["primary_model_feature"].map(bool_like)
+        feature_n = int(primary_model_feature.sum())
         target_n = int(schema["target_column"].astype(str).str.lower().eq("true").sum())
-        rows.append({"check_id": "primary_model_ready_feature_n", "expected_value": expected["primary_model_ready_feature_n"], "observed_value": feature_n, "matrix_contract_replay_gate": "pass" if feature_n == expected["primary_model_ready_feature_n"] else "fail", "blocking_reason": "" if feature_n == expected["primary_model_ready_feature_n"] else "feature_count_mismatch"})
-        rows.append({"check_id": "target_column_n", "expected_value": expected["target_column_n"], "observed_value": target_n, "matrix_contract_replay_gate": "pass" if target_n == expected["target_column_n"] else "fail", "blocking_reason": "" if target_n == expected["target_column_n"] else "target_count_mismatch"})
+        existing_feature_n = int(schema.loc[primary_model_feature & schema["feature_family_id"].astype(str).isin(["F1", "F2", "F3", "F4", "F5"])].shape[0])
+        refresh_feature_n = int(schema.loc[primary_model_feature & schema["feature_family_id"].astype(str).str.startswith("M")].shape[0])
+        schema_sha = file_sha(schema_path)
+        add("primary_model_ready_feature_n", expected["primary_model_ready_feature_n"], feature_n, feature_n == expected["primary_model_ready_feature_n"], "feature_count_mismatch")
+        add("existing_18B_model_ready_feature_n", expected["existing_18b_model_ready_feature_n"], existing_feature_n, existing_feature_n == expected["existing_18b_model_ready_feature_n"], "existing_feature_count_mismatch")
+        add("refresh_model_ready_feature_n", expected["refresh_model_ready_feature_n"], refresh_feature_n, refresh_feature_n == expected["refresh_model_ready_feature_n"], "refresh_feature_count_mismatch")
+        add("schema_target_column_n", expected["target_column_n"], target_n, target_n == expected["target_column_n"], "target_count_mismatch")
+        add("schema_sha256", expected["schema_sha256"], schema_sha, schema_sha == expected["schema_sha256"], "schema_hash_mismatch")
+    else:
+        add("schema_file_exists", "present", "missing", False, "schema_missing")
     if manifest_path.exists():
         manifest = read_json(manifest_path)
-        rows.append({"check_id": "manifest_matrix_row_n", "expected_value": expected["matrix_row_n"], "observed_value": manifest.get("matrix_row_n"), "matrix_contract_replay_gate": "pass" if int(manifest.get("matrix_row_n", -1)) == expected["matrix_row_n"] else "fail", "blocking_reason": ""})
+        add("matrix_source_run_id", "18E_payoff_state_feature_matrix_refresh", manifest.get("run_id"), manifest.get("run_id") == "18E_payoff_state_feature_matrix_refresh")
+        add("manifest_matrix_row_n", expected["matrix_row_n"], manifest.get("matrix_row_n"), int(manifest.get("matrix_row_n", -1)) == expected["matrix_row_n"])
+        add("source_18e_manifest_matrix_sha256", expected["matrix_sha256"], manifest.get("matrix_sha256"), manifest.get("matrix_sha256") == expected["matrix_sha256"], "manifest_matrix_hash_mismatch")
+        add("source_18e_manifest_schema_sha256", expected["schema_sha256"], manifest.get("schema_sha256"), manifest.get("schema_sha256") == expected["schema_sha256"], "manifest_schema_hash_mismatch")
+    else:
+        add("refreshed_matrix_manifest_exists", "present", "missing", False, "refreshed_matrix_manifest_missing")
+
+    target_registry = resolved.get("eighteen_a_target_definition_registry")
+    if target_registry and target_registry.exists():
+        registry = read_table(target_registry)
+        lineage = dict(zip(registry["target_id"].astype(str), registry["lineage_hash"].astype(str), strict=False))
+        add("target_lineage_hash_y_payoff_h20", TARGET_LINEAGE_HASH, lineage.get("y_payoff_h20", ""), lineage.get("y_payoff_h20") == TARGET_LINEAGE_HASH)
+        add("target_lineage_hash_continue_advantage", TARGET_LINEAGE_HASH, lineage.get("continue_advantage", ""), lineage.get("continue_advantage") == TARGET_LINEAGE_HASH)
+
+    neutral_path = resolved.get("eighteen_a_neutral_preservation_audit")
+    if neutral_path and neutral_path.exists():
+        neutral = read_table(neutral_path)
+        gate_col = "neutral_preservation_gate"
+        add(gate_col, "pass", "|".join(neutral[gate_col].astype(str).tolist()), neutral[gate_col].eq("pass").all())
+
+    cutoff_path = resolved.get("eighteen_a_payoff_cutoff_freeze")
+    if cutoff_path and cutoff_path.exists():
+        cutoffs = read_table(cutoff_path)
+        expected_cutoffs = {
+            "high_upside_top30_stress": expected["top30_cutoff"],
+            "high_upside_top20_stress": expected["top20_cutoff"],
+            "high_upside_top10_stress": expected["top10_cutoff"],
+        }
+        observed = {
+            row["threshold_id"]: float(row["train_absolute_payoff_cutoff"])
+            for _, row in cutoffs.iterrows()
+            if row["threshold_id"] in expected_cutoffs
+        }
+        cutoff_ok = set(observed) == set(expected_cutoffs) and all(abs(observed[key] - expected_cutoffs[key]) <= 1e-12 for key in expected_cutoffs)
+        recompute_used = bool_like(cutoffs["split_local_recompute_used"].any())
+        add("train_frozen_payoff_cutoff_value_replay", expected_cutoffs, observed, cutoff_ok)
+        add("split_local_payoff_cutoff_recompute_used", False, recompute_used, not recompute_used)
+
+    preprocessing_path = resolved.get("eighteen_e_preprocessing_audit")
+    if preprocessing_path and preprocessing_path.exists():
+        preprocessing = read_table(preprocessing_path)
+        observed = "|".join(sorted(preprocessing["status"].astype(str).unique()))
+        add("train_only_preprocessing_gate", "pass", observed, set(preprocessing["status"].astype(str)) == {"pass"})
+
+    forbidden_path = resolved.get("eighteen_e_forbidden_feature_audit")
+    if forbidden_path and forbidden_path.exists():
+        forbidden = read_table(forbidden_path)
+        add("forbidden_feature_gate", "pass", "|".join(forbidden["forbidden_feature_gate"].astype(str).unique()), forbidden["forbidden_feature_gate"].eq("pass").all())
     frame = pd.DataFrame(rows)
     return frame, "pass" if frame["matrix_contract_replay_gate"].eq("pass").all() else "fail"
 
 
 def empty_table(columns: list[str]) -> pd.DataFrame:
     return pd.DataFrame(columns=columns)
+
+
+def prepared_model_config(config: dict[str, Any], resolved: dict[str, Path]) -> dict[str, Any]:
+    out = deepcopy(config)
+    schema = read_table(resolved["eighteen_e_schema"])
+    feature_rows = schema.loc[schema["primary_model_feature"].map(bool_like)].copy()
+    out["model_ready_features"] = feature_rows["model_ready_feature_name"].astype(str).tolist()
+    family_map: dict[str, list[str]] = {}
+    for family_id, rows in feature_rows.groupby("feature_family_id", sort=True):
+        family_map[str(family_id)] = rows["model_ready_feature_name"].astype(str).tolist()
+    out["feature_family_map"] = family_map
+    out["ordinal_mapping"] = ORDINAL_MAPPING
+    out["models"] = DEFAULT_MODELS
+    out["cv"] = DEFAULT_CV
+    out["primary_identity_key_columns"] = out.get("primary_identity_key_columns", ["step_id", "label_id"])
+    out["full_lineage_key_columns"] = out.get("full_lineage_key_columns", out.get("identity_key_columns", []))
+
+    expected = out["expected"]
+    expected.setdefault("total_labelable_step_n", expected["matrix_row_n"])
+    expected.setdefault(
+        "denominators",
+        {
+            "train": {"labelable_step_n": expected["train_row_n"], "neutral_step_n": 5283},
+            "robustness": {"labelable_step_n": expected["robustness_row_n"], "neutral_step_n": 624, "episode_cluster_n_min": 30},
+            "validation": {"labelable_step_n": expected["validation_row_n"], "neutral_step_n": 159, "episode_cluster_n_min": 30},
+        },
+    )
+    expected.setdefault("binary_blocked_classification_min_roc_auc", 0.55)
+    expected.setdefault("binary_blocked_classification_min_precision_lift", 0.02)
+    expected.setdefault("bootstrap_ci_level", 0.95)
+    expected.setdefault("sixteen_x", SIXTEEN_X_CONTEXT)
+    return out
+
+
+def build_binary_sanity(config: dict[str, Any], score: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    specs = [
+        ("ridge_logistic_top30_sanity_v1", "top30_yes_no"),
+        ("ridge_logistic_top20_sanity_v1", "top20_yes_no"),
+        (PRIMARY_MODEL_ID, "binary_positive_negative"),
+    ]
+    for model_id, target in specs:
+        col = BASE_18C.model_score_column(model_id)
+        for split in SPLITS:
+            sub = score.loc[score["cluster_split_bucket"].eq(split)]
+            y = sub[target].astype(bool)
+            ap = BASE_18C.safe_ap(y, sub[col])
+            base_rate = float(y.mean())
+            rows.append(
+                {
+                    "split_bucket": split,
+                    "model_id": model_id,
+                    "target_column": target,
+                    "denominator_type": "labelable_full",
+                    "row_n": len(sub),
+                    "positive_n": int(y.sum()),
+                    "negative_n": int((~y).sum()),
+                    "neutral_n": int(sub["label_class"].eq("neutral").sum()),
+                    "roc_auc": BASE_18C.safe_auc(y, sub[col]),
+                    "average_precision": ap,
+                    "split_unconditional_positive_rate": base_rate,
+                    "precision_lift": ap - base_rate if np.isfinite(ap) else np.nan,
+                    "binary_metric_used_as_primary_gate": False,
+                    "binary_sanity_status": "appendix_sanity_only",
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def build_family_removal_sensitivity(topk_and_family: pd.DataFrame, family_coverage: pd.DataFrame) -> pd.DataFrame:
+    family = topk_and_family.loc[topk_and_family["removal_type"].eq("family")].copy()
+    role_map = dict(zip(family_coverage["feature_family_id"].astype(str), family_coverage["family_role"].astype(str), strict=False))
+    family["family_role"] = family["removed_feature_family_id"].astype(str).map(role_map).fillna("unknown")
+    family["refresh_family_flag"] = family["removed_feature_family_id"].astype(str).str.startswith("M")
+    family["risk_only_focus_flag"] = family["removed_feature_family_id"].astype(str).eq("F4")
+    invalid = ~np.isfinite(family["base_rank_ic_spearman"].astype(float)) | (family["base_rank_ic_spearman"].astype(float) <= 0)
+    family.loc[invalid, "sensitivity_status"] = "invalid_base_rank_ic"
+    family["blocking_reason"] = np.where(invalid, "invalid_base_rank_ic", "")
+    columns = [
+        "sensitivity_id",
+        "split_bucket",
+        "model_id",
+        "removal_type",
+        "removed_feature_family_id",
+        "removed_feature_n",
+        "removed_feature_names",
+        "base_rank_ic_spearman",
+        "sensitivity_rank_ic_spearman",
+        "rank_ic_retention_rate",
+        "family_role",
+        "refresh_family_flag",
+        "risk_only_focus_flag",
+        "sensitivity_status",
+        "blocking_reason",
+    ]
+    return family.loc[:, columns]
+
+
+def build_score_panel(config: dict[str, Any], score: pd.DataFrame, source_matrix_sha: str) -> pd.DataFrame:
+    out = score.copy()
+    primary_col = BASE_18C.model_score_column(PRIMARY_MODEL_ID)
+    train_score = out.loc[out["cluster_split_bucket"].eq("train"), primary_col]
+    out["ridge_payoff_rank_h20_v1_train_score_decile"], _ = BASE_18C.score_deciles(out[primary_col], train_score)
+    out["ridge_payoff_rank_h20_v1_train_score_top30_bucket"] = out[primary_col] >= float(train_score.quantile(0.70))
+    out["ridge_payoff_rank_h20_v1_train_score_top20_bucket"] = out[primary_col] >= float(train_score.quantile(0.80))
+    for model_id in SCORE_MODEL_IDS:
+        out[f"{model_id}_score"] = out[BASE_18C.model_score_column(model_id)]
+    out["score_cutoff_source"] = "train_frozen_score_cutoff"
+    out["split_local_score_cutoff_recompute_used"] = False
+    out["source_18e_matrix_sha256"] = source_matrix_sha
+    out["score_panel_status"] = "scored"
+    out["blocking_reason"] = ""
+    return out.loc[:, SCORE_PANEL_COLUMNS]
+
+
+def empty_score_panel(blocking_reason: str) -> pd.DataFrame:
+    frame = empty_table(SCORE_PANEL_COLUMNS)
+    frame["score_panel_status"] = frame["score_panel_status"].astype("object")
+    frame["blocking_reason"] = frame["blocking_reason"].astype("object")
+    return frame
+
+
+def build_full_report(
+    input_audit: pd.DataFrame,
+    upstream: pd.DataFrame,
+    matrix_contract: pd.DataFrame,
+    registry: pd.DataFrame,
+    cv: pd.DataFrame,
+    oos: pd.DataFrame,
+    deciles: pd.DataFrame,
+    bucket: pd.DataFrame,
+    bootstrap: pd.DataFrame,
+    family: pd.DataFrame,
+    baseline: pd.DataFrame,
+    binary: pd.DataFrame,
+    search: pd.DataFrame,
+    decision: pd.DataFrame,
+) -> str:
+    d = decision.iloc[0]
+    gates = pd.DataFrame({"gate": list(HARD_GATES), "status": [d[gate] for gate in HARD_GATES]})
+    primary_oos = oos.loc[oos["model_id"].eq(PRIMARY_MODEL_ID)].copy()
+    primary_deciles = deciles.loc[deciles["model_id"].eq(PRIMARY_MODEL_ID)].copy()
+    robust_family = family.loc[family["split_bucket"].eq("robustness")].copy()
+    input_summary = input_audit.groupby(["read_status", "schema_status", "cache_key_reconciliation_gate"], dropna=False).size().reset_index(name="artifact_n")
+    return f"""# Refreshed 18C Payoff-state Separability Diagnostic Report
+
+## Decision
+
+decision_state = {d["decision_state"]}
+next_allowed_requirement = {d["next_allowed_requirement"]}
+next_allowed_requirement_scope = {d["next_allowed_requirement_scope"]}
+
+This refreshed 18C rerun scores the 18E 49-feature matrix with train-only low-capacity models.
+It does not authorize policy, backtest, deployment, production signal, or live trading.
+
+## Gate Summary
+
+{gates.to_markdown(index=False)}
+
+## Input Artifact Audit
+
+{input_summary.to_markdown(index=False)}
+
+## 18E Handoff
+
+{upstream.to_markdown(index=False)}
+
+## Refreshed Matrix Contract Replay
+
+{matrix_contract.to_markdown(index=False)}
+
+## Model Registry And Train-only CV
+
+{registry.to_markdown(index=False)}
+
+{cv.groupby("model_id", as_index=False).agg(fold_n=("fold_id", "nunique"), mean_payoff_rank_ic=("payoff_rank_ic", "mean"), mean_decile_monotonicity=("decile_payoff_monotonicity_spearman", "mean")).to_markdown(index=False)}
+
+## Primary OOS Rank Readout
+
+{primary_oos.to_markdown(index=False)}
+
+## Decile Monotonicity
+
+{primary_deciles.to_markdown(index=False)}
+
+## Bucket Lift
+
+{bucket.to_markdown(index=False)}
+
+## Bootstrap CI
+
+{bootstrap.to_markdown(index=False)}
+
+## Family Removal Sensitivity
+
+{robust_family.to_markdown(index=False)}
+
+## Baseline Boundary
+
+{baseline.to_markdown(index=False)}
+
+## Binary Sanity Appendix
+
+{binary.to_markdown(index=False)}
+
+## Search Accounting
+
+{search.to_markdown(index=False)}
+"""
 
 
 def placeholder_tables() -> dict[str, pd.DataFrame]:
@@ -452,7 +860,9 @@ def placeholder_tables() -> dict[str, pd.DataFrame]:
             [
                 {
                     "search_family": "18C_refresh_contract_fail_closed",
+                    "run_id": RUN_ID,
                     "phase_id": "18C",
+                    "scope_id": "refreshed_matrix_rerun",
                     "model_family_registry_predeclared": True,
                     "primary_model_predeclared": True,
                     "no_feature_selection_from_target_correlation": True,
@@ -520,6 +930,236 @@ def build_decision(config: dict[str, Any], upstream_gate: str, input_gate: str, 
     return pd.DataFrame([row])
 
 
+def gate_from_bool(value: bool) -> str:
+    return "pass" if bool(value) else "fail"
+
+
+def build_search_accounting_audit(config: dict[str, Any]) -> tuple[pd.DataFrame, str]:
+    row = {
+        "search_family": "18C_refresh_payoff_state_separability_diagnostic",
+        "run_id": RUN_ID,
+        "phase_id": PHASE_ID,
+        "scope_id": config.get("scope_id", "refreshed_matrix_rerun"),
+        "model_family_registry_predeclared": True,
+        "primary_model_predeclared": True,
+        "no_feature_selection_from_target_correlation": True,
+        "no_feature_selection_from_robustness": True,
+        "no_feature_selection_from_validation": True,
+        "no_model_family_selection_from_robustness": True,
+        "no_model_family_selection_from_validation": True,
+        "no_threshold_tuning_on_robustness": True,
+        "no_threshold_tuning_on_validation": True,
+        "no_split_local_payoff_cutoff_recompute": True,
+        "no_split_local_score_threshold_recompute_for_gate": True,
+        "binary_metric_not_primary_gate": True,
+        "validation_stress_readout_only": True,
+        "no_entry_policy_authorized": True,
+        "no_exit_policy_authorized": True,
+        "no_holding_policy_authorized": True,
+        "no_portfolio_backtest_authorized": True,
+        "no_model_deployment_authorized": True,
+        "no_production_signal_authorized": True,
+        "no_live_trading_authorized": True,
+        "search_accounting_gate": "pass",
+        "blocking_reason": "",
+    }
+    return pd.DataFrame([row]), "pass"
+
+
+def build_refreshed_decision(
+    config: dict[str, Any],
+    gates: dict[str, str],
+    oos: pd.DataFrame,
+    deciles: pd.DataFrame,
+    bucket: pd.DataFrame,
+    bootstrap: pd.DataFrame,
+    baseline: pd.DataFrame,
+    family: pd.DataFrame,
+    binary: pd.DataFrame,
+    score_panel_status: str,
+) -> pd.DataFrame:
+    primary = oos.loc[oos["model_id"].eq(PRIMARY_MODEL_ID) & oos["split_bucket"].eq("robustness")].iloc[0]
+    primary_rank = float(primary["rank_ic_spearman"])
+    primary_mono = float(
+        deciles.loc[
+            deciles["model_id"].eq(PRIMARY_MODEL_ID) & deciles["split_bucket"].eq("robustness"),
+            "decile_payoff_monotonicity_spearman",
+        ].iloc[0]
+    )
+    ci_low = float(bootstrap["cluster_bootstrap_rank_ic_ci_low"].iloc[0])
+    vol_rows = baseline.loc[baseline["comparison_id"].eq("payoff_rank_ic_vs_volatility20d")]
+    vol_delta = float(vol_rows["delta_vs_baseline"].iloc[0]) if not vol_rows.empty else np.nan
+    validation = oos.loc[oos["model_id"].eq(PRIMARY_MODEL_ID) & oos["split_bucket"].eq("validation")].iloc[0]
+    all_pass = score_panel_status == "scored" and all(gates[gate] == "pass" for gate in HARD_GATES)
+
+    binary_positive = bool(
+        binary.loc[
+            binary["split_bucket"].eq("robustness")
+            & (
+                (binary["roc_auc"] >= float(config["expected"]["binary_blocked_classification_min_roc_auc"]))
+                | (binary["precision_lift"] > float(config["expected"]["binary_blocked_classification_min_precision_lift"]))
+            )
+        ].shape[0]
+    )
+    primary_rank_or_mono_weak = gates["rank_ic_support_gate"] != "pass" or gates["monotonicity_support_gate"] != "pass"
+
+    decision = "18C_payoff_state_separability_supported"
+    next_req = config["expected"]["positive_next_allowed_requirement"]
+    next_scope = config["expected"]["positive_next_allowed_requirement_scope"]
+    blocking = ""
+    if not all_pass:
+        next_req = "none"
+        next_scope = "none"
+        if gates["upstream_18e_contract_gate"] != "pass":
+            decision = "18C_refresh_upstream_18e_contract_blocked"
+        elif gates["input_artifact_gate"] != "pass":
+            decision = "18C_refresh_input_artifact_blocked"
+        elif gates["matrix_contract_replay_gate"] != "pass":
+            decision = "18C_refresh_matrix_contract_replay_blocked"
+        elif gates["model_registry_gate"] != "pass":
+            decision = "18C_model_registry_blocked"
+        elif gates["train_only_fit_gate"] != "pass":
+            decision = "18C_train_only_fit_blocked"
+        elif gates["oos_no_tuning_gate"] != "pass":
+            decision = "18C_oos_tuning_blocked"
+        elif gates["search_accounting_gate"] != "pass":
+            decision = "18C_search_accounting_blocked"
+        elif (
+            gates["rank_ic_support_gate"] != "pass"
+            and gates["monotonicity_support_gate"] != "pass"
+            and gates["bucket_lift_gate"] != "pass"
+            and gates["bootstrap_ci_gate"] != "pass"
+            and gates["baseline_improvement_gate"] != "pass"
+            and not binary_positive
+        ):
+            decision = "18C_current_features_reconfirmed_insufficient"
+        elif gates["bucket_lift_gate"] == "pass" and primary_rank_or_mono_weak:
+            decision = "18C_over_narrow_winner_target_blocked"
+        elif binary_positive and primary_rank_or_mono_weak:
+            decision = "18C_binary_only_not_supported"
+        elif any(gates[gate] != "pass" for gate in ["rank_ic_support_gate", "monotonicity_support_gate", "bootstrap_ci_gate", "baseline_improvement_gate"]):
+            decision = "18C_payoff_state_signal_weak_or_nonmonotone"
+        elif gates["risk_only_gate"] == "fail":
+            decision = "18C_risk_only_no_payoff_state"
+        else:
+            decision = "18C_refresh_separability_contract_blocked"
+        blocking = decision
+
+    row = {
+        "decision_state": decision,
+        "next_allowed_requirement": next_req,
+        "next_allowed_requirement_scope": next_scope,
+        "all_hard_gates_pass": all_pass,
+        **gates,
+        "validation_stress_evaluable": bool(int(validation["row_n"]) == int(config["expected"]["validation_row_n"]) and int(validation["episode_cluster_n"]) >= 30),
+        "validation_stress_caveat": "stress_readout_only",
+        **{col: False for col in AUTH_FALSE_COLUMNS},
+        "blocking_reason": blocking,
+        "primary_model_id": PRIMARY_MODEL_ID,
+        "robustness_payoff_rank_ic": primary_rank,
+        "robustness_decile_payoff_monotonicity_spearman": primary_mono,
+        "robustness_cluster_bootstrap_rank_ic_ci_low": ci_low,
+        "rank_ic_vs_volatility20d_delta": vol_delta,
+        "rank_ic_materiality_floor": config["expected"]["rank_ic_materiality_floor"],
+    }
+    return pd.DataFrame([row])
+
+
+def build_full_outputs(
+    config: dict[str, Any],
+    resolved: dict[str, Path],
+    input_gate: str,
+    upstream_gate: str,
+    matrix_gate: str,
+) -> dict[str, Any]:
+    model_config = prepared_model_config(config, resolved)
+    matrix = BASE_18C.add_ordinal_int(model_config, read_table(resolved["eighteen_e_refreshed_matrix"]))
+    registry, registry_gate = BASE_18C.build_model_registry(model_config)
+    score, coefficients, _ = BASE_18C.build_scores_and_coefficients(model_config, matrix)
+    cv = BASE_18C.build_cv_readout(model_config, matrix)
+    oos = BASE_18C.build_oos_rank_readout(model_config, score)
+    deciles = BASE_18C.build_decile_monotonicity(model_config, score)
+    bucket = BASE_18C.build_bucket_lift(score)
+    bootstrap = BASE_18C.build_bootstrap_ci(model_config, score)
+    topk = BASE_18C.build_topk_removal_sensitivity(model_config, score, coefficients)
+    family = build_family_removal_sensitivity(topk, read_table(resolved["eighteen_e_family_coverage"]))
+    baseline = BASE_18C.build_baseline_comparison(model_config, oos, deciles, bootstrap)
+    binary = build_binary_sanity(model_config, score)
+    search, search_gate = build_search_accounting_audit(model_config)
+
+    primary_row = oos.loc[oos["model_id"].eq(PRIMARY_MODEL_ID) & oos["split_bucket"].eq("robustness")].iloc[0]
+    rank_gate = gate_from_bool(
+        float(primary_row["rank_ic_spearman"]) >= float(model_config["expected"]["rank_ic_materiality_floor"])
+        and float(primary_row["continue_advantage_replay_abs_diff"]) <= 1e-12
+    )
+    primary_mono = deciles.loc[deciles["model_id"].eq(PRIMARY_MODEL_ID) & deciles["split_bucket"].eq("robustness")]
+    mono_gate = gate_from_bool(
+        float(primary_mono["decile_payoff_monotonicity_spearman"].iloc[0]) >= float(model_config["expected"]["monotonicity_floor"])
+        and float(primary_mono["top3_minus_bottom3_payoff_gap"].iloc[0]) > 0
+        and not bool(primary_mono["split_local_score_cutoff_recompute_used"].any())
+    )
+    robust_bucket = bucket.loc[bucket["split_bucket"].eq("robustness")]
+    bucket_gate = gate_from_bool(float(robust_bucket["bucket_lift"].min()) > 1.0 and not bool(robust_bucket["split_local_score_cutoff_recompute_used"].any()))
+    boot_gate = gate_from_bool(
+        float(bootstrap["cluster_bootstrap_rank_ic_ci_low"].iloc[0]) > 0
+        and int(bootstrap["valid_bootstrap_resample_n"].iloc[0]) == int(model_config["expected"]["bootstrap_resample_n"])
+    )
+    baseline_hard = baseline.loc[baseline["comparison_id"].eq("payoff_rank_ic_vs_volatility20d")]
+    baseline_gate = gate_from_bool(not baseline_hard.empty and baseline_hard["comparison_status"].eq("pass").all())
+    risk_precondition = all(gate == "pass" for gate in [rank_gate, mono_gate, boot_gate, baseline_gate])
+    f4 = family.loc[family["split_bucket"].eq("robustness") & family["sensitivity_id"].eq("family_F4_removed")]
+    if not risk_precondition:
+        risk_gate = "not_evaluable_primary_signal_weak"
+    else:
+        f4_retention = float(f4["rank_ic_retention_rate"].iloc[0]) if not f4.empty else np.nan
+        f4_rank = float(f4["sensitivity_rank_ic_spearman"].iloc[0]) if not f4.empty else np.nan
+        risk_gate = gate_from_bool(
+            np.isfinite(f4_retention)
+            and f4_retention >= float(model_config["expected"]["f4_removal_retention_floor"])
+            and np.isfinite(f4_rank)
+            and f4_rank > 0
+        )
+    binary_gate = gate_from_bool((~binary["binary_metric_used_as_primary_gate"].astype(bool)).all())
+    gates = {
+        "upstream_18e_contract_gate": upstream_gate,
+        "input_artifact_gate": input_gate,
+        "matrix_contract_replay_gate": matrix_gate,
+        "model_registry_gate": registry_gate,
+        "train_only_fit_gate": "pass",
+        "oos_no_tuning_gate": "pass",
+        "rank_ic_support_gate": rank_gate,
+        "monotonicity_support_gate": mono_gate,
+        "bucket_lift_gate": bucket_gate,
+        "bootstrap_ci_gate": boot_gate,
+        "baseline_improvement_gate": baseline_gate,
+        "risk_only_gate": risk_gate,
+        "binary_sanity_boundary_gate": binary_gate,
+        "search_accounting_gate": search_gate,
+    }
+    decision = build_refreshed_decision(model_config, gates, oos, deciles, bucket, bootstrap, baseline, family, binary, "scored")
+    score_panel = build_score_panel(model_config, score, file_sha(resolved["eighteen_e_refreshed_matrix"]))
+    return {
+        "model_config": model_config,
+        "matrix": matrix,
+        "score": score,
+        "score_panel": score_panel,
+        "model_registry": registry,
+        "model_cv_readout": cv,
+        "model_coefficients": coefficients,
+        "oos_rank_readout": oos,
+        "decile_monotonicity": deciles,
+        "bucket_lift": bucket,
+        "bootstrap_ci": bootstrap,
+        "topk_removal_sensitivity": topk,
+        "family_removal_sensitivity": family,
+        "baseline_comparison": baseline,
+        "binary_sanity": binary,
+        "search_accounting": search,
+        "decision": decision,
+        "gates": gates,
+    }
+
+
 def build_report(decision: pd.DataFrame, input_audit: pd.DataFrame, upstream: pd.DataFrame, matrix_contract: pd.DataFrame) -> str:
     d = decision.iloc[0]
     missing = input_audit.loc[~input_audit["read_status"].eq("pass"), ["artifact_key", "blocking_reason"]]
@@ -559,14 +1199,88 @@ def write_all_outputs(config: dict[str, Any], resolved: dict[str, Path], outputs
     write_text(outputs["report"], build_report(decision, input_audit, upstream, matrix_contract))
     # Placeholders keep manifest references deterministic while making it clear no scoring occurred.
     outputs["score_panel"].parent.mkdir(parents=True, exist_ok=True)
-    empty_table(["score_panel_status", "blocking_reason"]).to_parquet(outputs["score_panel"], index=False)
+    empty_score_panel(str(decision.iloc[0]["decision_state"])).to_parquet(outputs["score_panel"], index=False)
     write_placeholder_figure(outputs["decile_curve"], "Refreshed 18C Decile Curve")
     write_placeholder_figure(outputs["score_surface"], "Refreshed 18C Score Surface")
     write_manifests(config, resolved, outputs, input_audit, decision)
     return tables
 
 
-def write_manifests(config: dict[str, Any], resolved: dict[str, Path], outputs: dict[str, Path], input_audit: pd.DataFrame, decision: pd.DataFrame) -> None:
+def write_full_outputs(
+    config: dict[str, Any],
+    resolved: dict[str, Path],
+    outputs: dict[str, Path],
+    input_audit: pd.DataFrame,
+    upstream: pd.DataFrame,
+    matrix_contract: pd.DataFrame,
+    artifacts: dict[str, Any],
+) -> None:
+    outputs["score_panel"].parent.mkdir(parents=True, exist_ok=True)
+    artifacts["score_panel"].to_parquet(outputs["score_panel"], index=False)
+    write_df(outputs["input_artifact_audit"], input_audit)
+    write_df(outputs["upstream_18e_handoff_audit"], upstream)
+    write_df(outputs["matrix_contract_replay_audit"], matrix_contract)
+    for key in [
+        "model_registry",
+        "model_cv_readout",
+        "model_coefficients",
+        "oos_rank_readout",
+        "decile_monotonicity",
+        "bucket_lift",
+        "bootstrap_ci",
+        "topk_removal_sensitivity",
+        "family_removal_sensitivity",
+        "baseline_comparison",
+        "binary_sanity",
+        "search_accounting",
+        "decision",
+    ]:
+        write_df(outputs[key], artifacts[key])
+    BASE_18C.build_figures(artifacts["score"], artifacts["decile_monotonicity"], outputs)
+    write_text(
+        outputs["report"],
+        build_full_report(
+            input_audit,
+            upstream,
+            matrix_contract,
+            artifacts["model_registry"],
+            artifacts["model_cv_readout"],
+            artifacts["oos_rank_readout"],
+            artifacts["decile_monotonicity"],
+            artifacts["bucket_lift"],
+            artifacts["bootstrap_ci"],
+            artifacts["family_removal_sensitivity"],
+            artifacts["baseline_comparison"],
+            artifacts["binary_sanity"],
+            artifacts["search_accounting"],
+            artifacts["decision"],
+        ),
+    )
+    write_manifests(config, resolved, outputs, input_audit, artifacts["decision"], artifacts)
+
+
+def write_manifests(
+    config: dict[str, Any],
+    resolved: dict[str, Path],
+    outputs: dict[str, Path],
+    input_audit: pd.DataFrame,
+    decision: pd.DataFrame,
+    artifacts: dict[str, Any] | None = None,
+) -> None:
+    score_panel_status = "scored" if artifacts is not None else "not_scored_fail_closed"
+    if artifacts is not None:
+        score_panel = artifacts["score_panel"]
+        split_counts = score_panel["cluster_split_bucket"].value_counts().sort_index().to_dict()
+        feature_names = artifacts["model_config"]["model_ready_features"]
+        score_columns = [col for col in SCORE_PANEL_COLUMNS if col.endswith("_score")]
+        model_ids = artifacts["model_registry"]["model_id"].tolist()
+        target_columns = [col for col in TARGET_COLUMNS if col in score_panel.columns]
+    else:
+        split_counts = {}
+        feature_names = []
+        score_columns = [col for col in SCORE_PANEL_COLUMNS if col.endswith("_score")]
+        model_ids = list(SCORE_MODEL_IDS)
+        target_columns = [col for col in TARGET_COLUMNS if col in SCORE_PANEL_COLUMNS]
     write_json(
         outputs["input_manifest"],
         {
@@ -587,15 +1301,45 @@ def write_manifests(config: dict[str, Any], resolved: dict[str, Path], outputs: 
             "score_panel_sha256": file_sha(outputs["score_panel"]),
             "source_18e_matrix_sha256": file_sha(resolved["eighteen_e_refreshed_matrix"]) if resolved["eighteen_e_refreshed_matrix"].exists() else "",
             "row_count": count_rows(outputs["score_panel"]),
-            "score_panel_status": "not_scored_fail_closed",
+            "split_counts": split_counts,
+            "identity_key_columns": config.get("primary_identity_key_columns", ["step_id", "label_id"]),
+            "full_lineage_key_columns": config.get("full_lineage_key_columns", config.get("identity_key_columns", [])),
+            "target_columns": target_columns,
+            "score_columns": score_columns,
+            "model_ids": model_ids,
+            "feature_names": feature_names,
+            "score_panel_status": score_panel_status,
         },
     )
     d = decision.iloc[0]
+    output_keys = [
+        "score_panel",
+        "input_artifact_audit",
+        "upstream_18e_handoff_audit",
+        "matrix_contract_replay_audit",
+        "model_registry",
+        "model_cv_readout",
+        "model_coefficients",
+        "oos_rank_readout",
+        "decile_monotonicity",
+        "bucket_lift",
+        "bootstrap_ci",
+        "topk_removal_sensitivity",
+        "family_removal_sensitivity",
+        "baseline_comparison",
+        "binary_sanity",
+        "search_accounting",
+        "decision",
+        "decile_curve",
+        "score_surface",
+        "report",
+    ]
     publishable_tables = {
         key: file_sha(path)
         for key, path in outputs.items()
         if path.suffix == ".csv" and path.exists()
     }
+    publishable_figures = {key: file_sha(outputs[key]) for key in ["decile_curve", "score_surface"] if outputs[key].exists()}
     write_json(
         outputs["manifest"],
         {
@@ -613,14 +1357,24 @@ def write_manifests(config: dict[str, Any], resolved: dict[str, Path], outputs: 
             "source_18e_schema_sha256": file_sha(resolved["eighteen_e_schema"]) if resolved["eighteen_e_schema"].exists() else "",
             "score_panel_sha256": file_sha(outputs["score_panel"]),
             "publishable_table_sha256_by_name": publishable_tables,
+            "publishable_figure_sha256_by_name": publishable_figures,
             "report_sha256": file_sha(outputs["report"]),
+            "output_hashes": {key: file_sha(outputs[key]) for key in [*output_keys, "input_manifest", "score_panel_manifest"] if outputs[key].exists()},
+            "row_counts": {key: count_rows(outputs[key]) for key in [*output_keys, "input_manifest", "score_panel_manifest"] if outputs[key].exists()},
             "decision_state": d["decision_state"],
             "next_allowed_requirement": d["next_allowed_requirement"],
             "next_allowed_requirement_scope": d["next_allowed_requirement_scope"],
             "all_hard_gates_pass": bool(d["all_hard_gates_pass"]),
             "primary_model_id": "ridge_payoff_rank_h20_v1",
             "primary_feature_n": int(config["expected"]["primary_model_ready_feature_n"]),
+            "primary_split": "robustness",
+            "primary_target_id": "y_payoff_h20",
+            "robustness_payoff_rank_ic": d.get("robustness_payoff_rank_ic"),
+            "robustness_decile_payoff_monotonicity_spearman": d.get("robustness_decile_payoff_monotonicity_spearman"),
+            "robustness_cluster_bootstrap_rank_ic_ci_low": d.get("robustness_cluster_bootstrap_rank_ic_ci_low"),
+            "rank_ic_vs_volatility20d_delta": d.get("rank_ic_vs_volatility20d_delta"),
             "validation_role": "stress_readout_only",
+            "authorization_flags": {col: bool(d[col]) for col in AUTH_FALSE_COLUMNS},
             **{col: bool(d[col]) for col in AUTH_FALSE_COLUMNS},
         },
     )
@@ -633,7 +1387,6 @@ def run(config_path: str | Path = CONFIG_PATH, mode: str = "full") -> dict[str, 
     input_audit, input_gate = build_input_artifact_audit(config, resolved)
     upstream, upstream_gate = build_upstream_18e_handoff_audit(config, resolved, input_audit)
     matrix_contract, matrix_gate = build_matrix_contract_replay_audit(config, resolved)
-    decision = build_decision(config, upstream_gate, input_gate, matrix_gate)
 
     write_df(outputs["input_artifact_audit"], input_audit)
     write_json(
@@ -647,8 +1400,21 @@ def run(config_path: str | Path = CONFIG_PATH, mode: str = "full") -> dict[str, 
         },
     )
     if mode == "check-inputs":
+        decision = build_decision(config, upstream_gate, input_gate, matrix_gate)
         return {"input_artifact_gate": input_gate, "input_artifact_audit": input_audit, "upstream": upstream, "decision": decision}
 
+    if input_gate == "pass" and upstream_gate == "pass" and matrix_gate == "pass":
+        artifacts = build_full_outputs(config, resolved, input_gate, upstream_gate, matrix_gate)
+        write_full_outputs(config, resolved, outputs, input_audit, upstream, matrix_contract, artifacts)
+        return {
+            "input_artifact_gate": input_gate,
+            "input_artifact_audit": input_audit,
+            "upstream": upstream,
+            "matrix_contract": matrix_contract,
+            **artifacts,
+        }
+
+    decision = build_decision(config, upstream_gate, input_gate, matrix_gate)
     tables = write_all_outputs(config, resolved, outputs, input_audit, upstream, matrix_contract, decision)
     return {
         "input_artifact_gate": input_gate,

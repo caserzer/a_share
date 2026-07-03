@@ -92,4 +92,6 @@ expected:
   missing_matrix_regeneration_command: python experiments/pending/18_payoff_state_representation_research/src/run_18e_payoff_state_feature_matrix_refresh.py --mode full
 
 split_column: cluster_split_bucket
+primary_identity_key_columns: [step_id, label_id]
+full_lineage_key_columns: [step_id, label_id, threshold_id, horizon_sessions, instrument, episode_cluster_id, step_index, step_start_date, step_end_date]
 identity_key_columns: [step_id, label_id, threshold_id, horizon_sessions, instrument, episode_cluster_id, step_index, step_start_date, step_end_date]

@@ -122,6 +122,171 @@ experiments/pending/18_payoff_state_representation_research/outputs/manifests/re
 experiments/pending/18_payoff_state_representation_research/outputs/manifests/input_artifact_manifest_18e.json
 ```
 
+Required 18E handoff schema compatibility:
+
+```text
+refreshed_feature_matrix_schema.csv required columns =
+  column_name
+  column_role
+  feature_family_id
+  raw_feature_name
+  model_ready_feature_name
+  source_artifact_alias
+  dtype
+  primary_raw_feature
+  primary_model_feature
+  appendix_only
+  target_column
+  metadata_column
+  forbidden_as_model_feature
+  preprocessing_fit_split
+  preprocessing_param_id
+  blocking_reason
+
+refreshed_feature_family_coverage.csv required columns =
+  feature_family_id
+  family_role
+  expected_primary_feature_n
+  observed_primary_feature_n
+  observed_model_ready_feature_n
+  finite_train_rate_min
+  finite_all_rate_min
+  family_coverage_status
+  blocking_reason
+
+refreshed_feature_lineage_audit.csv required columns =
+  candidate_family_id
+  feature_id
+  candidate_feature_id
+  source_artifact_alias
+  lineage_scope
+  row_n
+  finite_candidate_value_row_n
+  uses_full_episode_boundary_after_t0
+  uses_future_h20_path
+  uses_step_end_outcome
+  uses_oracle_label
+  uses_payoff_target
+  uses_binary_target
+  pit_valid_status
+  t0_available_status
+  candidate_primary_allowed_after_lineage
+  candidate_appendix_only
+  lineage_before_correlation_gate
+  blocking_reason
+
+refreshed_feature_target_binding_audit.csv required columns =
+  binding_check_id
+  existing_18b_row_n
+  refreshed_matrix_row_n
+  existing_identity_key_n
+  refreshed_identity_key_n
+  identity_key_join_used
+  split_join_key_used
+  existing_duplicate_key_n
+  refreshed_duplicate_key_n
+  unmatched_existing_key_n
+  unmatched_refreshed_key_n
+  split_mismatch_n
+  neutral_row_n
+  neutral_rows_dropped
+  target_binding_gate
+  blocking_reason
+
+refreshed_feature_missingness_audit.csv required columns =
+  feature_name
+  feature_family_id
+  split_bucket
+  row_n
+  finite_n
+  missing_n
+  finite_rate
+  expected_min_finite_rate
+  feature_complete_rate_gate
+  blocking_reason
+
+refreshed_feature_pit_availability_audit.csv required columns =
+  candidate_family_id
+  feature_id
+  candidate_feature_id
+  source_artifact_alias
+  pit_valid_status
+  t0_available_status
+  uses_future_h20_path
+  uses_step_end_outcome
+  uses_oracle_label
+  uses_payoff_target
+  uses_binary_target
+  candidate_primary_allowed_after_lineage
+  candidate_appendix_only
+  blocking_reason
+
+train_only_preprocessing_audit.csv required columns =
+  feature_name
+  model_ready_feature_name
+  feature_family_id
+  preprocessing_kind
+  fit_split
+  fit_row_n
+  preprocessing_uses_target_columns
+  preprocessing_uses_robustness_rows
+  preprocessing_uses_validation_rows
+  split_local_imputation_used
+  split_local_scaling_used
+  status
+  blocking_reason
+
+forbidden_feature_audit.csv required columns =
+  forbidden_column_family
+  forbidden_column_pattern
+  column_name
+  present_in_matrix
+  column_role
+  marked_model_ready_feature
+  forbidden_feature_gate
+  blocking_reason
+
+search_accounting_audit.csv required columns =
+  search_family
+  phase_id
+  no_model_training
+  no_model_refit
+  no_scoring
+  no_rank_ic_computed_as_gate
+  no_auc_computed_as_gate
+  no_precision_recall_computed_as_gate
+  no_feature_selection_from_target_correlation
+  no_feature_selection_from_robustness
+  no_feature_selection_from_validation
+  no_threshold_tuning_on_robustness
+  no_threshold_tuning_on_validation
+  binary_metric_not_primary_gate
+  neutral_rows_not_dropped
+  delayed_features_not_primary
+  m4_not_primary
+  oracle_gap_bridge_not_started
+  no_entry_policy_authorized
+  no_exit_policy_authorized
+  no_holding_policy_authorized
+  no_portfolio_backtest_authorized
+  no_model_deployment_authorized
+  no_production_signal_authorized
+  no_live_trading_authorized
+  search_accounting_gate
+  blocking_reason
+```
+
+For 18E lineage and PIT handoff tables, feature identity must use
+`feature_id`/`candidate_feature_id` and must be reconciled to
+`raw_feature_name`/`model_ready_feature_name` through
+`refreshed_feature_matrix_schema.csv`. The refreshed 18C runner must not require
+non-18E aliases such as `feature_name`, `feature_lineage_gate`,
+`pit_t0_availability_gate`, or `bound_matrix_row_n` in those 18E handoff tables.
+The aggregate 18E decision-row gates remain authoritative for aggregate handoff
+status, while row-level lineage and PIT status must be read from
+`lineage_before_correlation_gate`, `pit_valid_status`, and
+`t0_available_status`.
+
 If any required 18E artifact is missing, stale, schema-incompatible, internally
 inconsistent, or not hash-aligned with the 18E manifests:
 
@@ -341,8 +506,10 @@ primary_model_ready_feature_n = 49
 existing_18B_model_ready_feature_n = 23
 refresh_model_ready_feature_n = 26
 target_column_n = 19
-identity_key_columns = step_id|label_id|threshold_id|horizon_sessions|instrument|episode_cluster_id|step_index|step_start_date|step_end_date
-identity_key_duplicate_n = 0
+primary_identity_key_columns = step_id|label_id
+primary_identity_key_duplicate_n = 0
+full_lineage_key_columns = step_id|label_id|threshold_id|horizon_sessions|instrument|episode_cluster_id|step_index|step_start_date|step_end_date
+full_lineage_key_duplicate_n = 0
 matrix_sha256 = 03d409f73836413adc9f3bd7f3827d072c68ea4b259ffb8c221570bd882641fc
 schema_sha256 = 56429807004c0d3ad69101c87d1f125b4c8e33713d702f53f251002fea235a26
 neutral_preservation_gate = pass
@@ -350,6 +517,11 @@ train_only_preprocessing_gate = pass
 forbidden_feature_gate = pass
 split_local_payoff_cutoff_recompute_used = false
 ```
+
+The primary refreshed 18C row identity key remains `step_id|label_id` to preserve
+the 18A/18B target-denominator contract. The full lineage key must also be
+checked as a diagnostic replay of the 18E matrix binding. A duplicate under
+either key fails `matrix_contract_replay_gate`.
 
 If the matrix hash in `refreshed_payoff_state_feature_matrix_manifest.json`
 differs from the actual parquet content hash, the run must fail closed with:
@@ -479,9 +651,23 @@ external_16x_comparison_hard_gate_used = false
 Risk-only gate:
 
 ```text
-primary_rank_ic - volatility20d_defense_rank_ic > 0.005000
-or family_F4_removed_rank_ic_retention_rate >= 0.500000
+risk_only_gate_evaluation_precondition =
+  rank_ic_support_gate = pass
+  and monotonicity_support_gate = pass
+  and bootstrap_ci_gate = pass
+  and baseline_improvement_gate = pass
+family_F4_removed_rank_ic_retention_rate >= 0.500000
+and family_F4_removed_rank_ic_spearman > 0
 ```
+
+The risk-only gate is a payoff-directionality guard, not a second copy of the
+volatility baseline comparison. If the score clears headline rank IC only because
+F4 path-risk features dominate, the refreshed 18C rerun must emit
+`18C_risk_only_no_payoff_state` even when binary or bucket readouts look useful.
+If any risk-only evaluation precondition fails, `risk_only_gate` must be
+`not_evaluable_primary_signal_weak` and must not determine the blocked decision;
+the earlier failing rank, monotonicity, bootstrap, or baseline gate determines
+the decision instead.
 
 Binary sanity boundary gate:
 
@@ -524,6 +710,10 @@ outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/sear
 outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_separability_decision.csv
 ```
 
+All publishable tables must be CSV with LF line endings and deterministic row
+ordering. Required schema changes from the base 18C requirement are additive
+unless explicitly replaced below.
+
 Required figures:
 
 ```text
@@ -545,7 +735,69 @@ outputs/manifests/input_artifact_manifest_18c_refresh.json
 outputs/manifests/refreshed_payoff_state_score_panel_manifest.json
 ```
 
-### 9.1 `family_removal_sensitivity.csv`
+### 9.1 `refreshed_payoff_state_score_panel.parquet`
+
+Required columns:
+
+```text
+step_id
+label_id
+threshold_id
+horizon_sessions
+instrument
+episode_cluster_id
+step_index
+step_start_date
+step_end_date
+cluster_split_bucket
+y_payoff_h20
+continue_advantage
+payoff_ordinal_state
+top30_yes_no
+top20_yes_no
+binary_positive_negative
+ridge_payoff_rank_h20_v1_score
+elastic_net_payoff_rank_h20_v1_score
+ridge_ordinal_payoff_state_v1_score
+ridge_logistic_top30_sanity_v1_score
+ridge_logistic_top20_sanity_v1_score
+shallow_tree_payoff_depth2_v1_score
+ridge_payoff_rank_h20_v1_train_score_decile
+ridge_payoff_rank_h20_v1_train_score_top30_bucket
+ridge_payoff_rank_h20_v1_train_score_top20_bucket
+score_cutoff_source
+split_local_score_cutoff_recompute_used
+source_18e_matrix_sha256
+score_panel_status
+blocking_reason
+```
+
+Required score-panel semantics:
+
+```text
+primary_identity_key_columns = step_id|label_id
+full_lineage_key_columns = step_id|label_id|threshold_id|horizon_sessions|instrument|episode_cluster_id|step_index|step_start_date|step_end_date
+target_columns copied unchanged from 18E matrix where present
+score columns produced by train-fitted models only
+train score decile and top-score bucket assignments use train-frozen score cutoffs
+split_local_score_cutoff_recompute_used = false for every scored row
+source_18e_matrix_sha256 = 03d409f73836413adc9f3bd7f3827d072c68ea4b259ffb8c221570bd882641fc
+score_panel_status in {scored, not_scored_fail_closed}
+if score_panel_status = scored then row_n = 23405
+if score_panel_status = scored then split_counts = train 20245; robustness 2496; validation 664
+if score_panel_status = scored then primary_identity_key_duplicate_n = 0
+if score_panel_status = scored then full_lineage_key_duplicate_n = 0
+if score_panel_status = not_scored_fail_closed then row_n may be 0
+```
+
+If the run fails before model scoring, the score panel may be emitted with
+`score_panel_status = not_scored_fail_closed`, but it must still include the
+required columns and an explicit `blocking_reason`; identity-key uniqueness is
+not evaluated for an empty fail-closed score panel. A positive
+`18C_payoff_state_separability_supported` decision requires
+`score_panel_status = scored` for all 23,405 rows.
+
+### 9.2 `family_removal_sensitivity.csv`
 
 Required columns:
 
@@ -586,10 +838,149 @@ Required semantics:
 ```text
 operation = zero out all coefficient contributions from the family without refitting
 base_model = ridge_payoff_rank_h20_v1
+base_rank_ic_spearman = ridge_payoff_rank_h20_v1 robustness payoff_rank_ic before removal
+sensitivity_rank_ic_spearman = payoff_rank_ic after zeroing the family contribution without refitting
+rank_ic_retention_rate = sensitivity_rank_ic_spearman / base_rank_ic_spearman
+if base_rank_ic_spearman <= 0 or missing then sensitivity_status = invalid_base_rank_ic and risk_only_gate = not_evaluable_primary_signal_weak
 refresh_family_flag = true only for M1/M2/M3/M5 rows
 risk_only_focus_flag = true only for F4 rows
-family_F4_removed robustness retention feeds risk_only_gate
+family_F4_removed robustness retention and sensitivity_rank_ic_spearman feed risk_only_gate
 M1/M2/M3/M5 rows are diagnostic readouts only and must not tune feature selection
+```
+
+### 9.3 `upstream_18e_handoff_audit.csv`
+
+Required columns:
+
+```text
+contract_check_id
+expected_value
+observed_value
+upstream_18e_contract_gate
+blocking_reason
+```
+
+Required checks:
+
+```text
+decision_state = 18E_payoff_state_feature_matrix_refresh_supported
+next_allowed_requirement = requirement_18c_payoff_state_separability_diagnostic.md
+next_allowed_requirement_scope = refreshed_matrix_rerun
+all_hard_gates_pass = true
+upstream_18d_contract_gate = pass
+input_artifact_gate = pass
+feature_family_recommendation_replay_gate = pass
+refreshed_feature_source_gate = pass
+refreshed_feature_formula_gate = pass
+refreshed_feature_lineage_gate = pass
+pit_t0_availability_gate = pass
+target_binding_gate = pass
+feature_matrix_schema_gate = pass
+feature_complete_rate_gate = pass
+feature_family_coverage_gate = pass
+train_only_preprocessing_gate = pass
+forbidden_feature_gate = pass
+search_accounting_gate = pass
+entry_policy_authorized = false
+exit_policy_authorized = false
+holding_policy_authorized = false
+portfolio_backtest_authorized = false
+model_deployment_authorized = false
+production_signal_authorized = false
+live_trading_authorized = false
+```
+
+### 9.4 `refreshed_matrix_contract_replay_audit.csv`
+
+Required columns:
+
+```text
+check_id
+expected_value
+observed_value
+matrix_contract_replay_gate
+blocking_reason
+```
+
+Required checks:
+
+```text
+matrix_source_run_id = 18E_payoff_state_feature_matrix_refresh
+matrix_row_n = 23405
+train_row_n = 20245
+robustness_row_n = 2496
+validation_row_n = 664
+primary_model_ready_feature_n = 49
+existing_18B_model_ready_feature_n = 23
+refresh_model_ready_feature_n = 26
+target_column_n = 19
+primary_identity_key_columns = step_id|label_id
+primary_identity_key_duplicate_n = 0
+full_lineage_key_columns = step_id|label_id|threshold_id|horizon_sessions|instrument|episode_cluster_id|step_index|step_start_date|step_end_date
+full_lineage_key_duplicate_n = 0
+source_18e_manifest_matrix_sha256 = 03d409f73836413adc9f3bd7f3827d072c68ea4b259ffb8c221570bd882641fc
+actual_matrix_sha256 = 03d409f73836413adc9f3bd7f3827d072c68ea4b259ffb8c221570bd882641fc
+schema_sha256 = 56429807004c0d3ad69101c87d1f125b4c8e33713d702f53f251002fea235a26
+target_lineage_hash_y_payoff_h20 = 602ad3986a32d8634cb0948181be74c15a70cb50122d994d3ae7f253acbcc3d3
+target_lineage_hash_continue_advantage = 602ad3986a32d8634cb0948181be74c15a70cb50122d994d3ae7f253acbcc3d3
+neutral_preservation_gate = pass
+train_only_preprocessing_gate = pass
+forbidden_feature_gate = pass
+continue_advantage_affine_replay_max_abs_diff <= 1e-12
+train_frozen_payoff_cutoff_value_replay = pass for top30/top20/top10 values
+split_local_payoff_cutoff_recompute_used = false
+```
+
+### 9.5 `search_accounting_audit.csv`
+
+Required columns:
+
+```text
+search_family
+run_id
+phase_id
+scope_id
+model_family_registry_predeclared
+primary_model_predeclared
+no_feature_selection_from_target_correlation
+no_feature_selection_from_robustness
+no_feature_selection_from_validation
+no_model_family_selection_from_robustness
+no_model_family_selection_from_validation
+no_threshold_tuning_on_robustness
+no_threshold_tuning_on_validation
+no_split_local_payoff_cutoff_recompute
+no_split_local_score_threshold_recompute_for_gate
+binary_metric_not_primary_gate
+validation_stress_readout_only
+no_entry_policy_authorized
+no_exit_policy_authorized
+no_holding_policy_authorized
+no_portfolio_backtest_authorized
+no_model_deployment_authorized
+no_production_signal_authorized
+no_live_trading_authorized
+search_accounting_gate
+blocking_reason
+```
+
+This table audits the refreshed 18C separability rerun itself, not the upstream
+18E matrix-construction search accounting. A positive decision requires all
+boolean no-search/no-policy fields above to be true and
+`search_accounting_gate = pass`.
+
+### 9.6 Positive-path Test Requirements
+
+The refreshed 18C test suite must include at least one controlled positive-path
+fixture or monkeypatch test that proves:
+
+```text
+all hard gates pass -> decision_state = 18C_payoff_state_separability_supported
+positive decision -> next_allowed_requirement = requirement_18f_payoff_state_oracle_gap_bridge.md
+positive decision -> next_allowed_requirement_scope = refreshed_matrix_oracle_gap_bridge
+rank_ic_support_gate, monotonicity_support_gate, bucket_lift_gate, bootstrap_ci_gate, baseline_improvement_gate, risk_only_gate, and search_accounting_gate all feed the positive decision
+each primary gate failure maps to the required blocked decision precedence
+validation_stress_evaluable is reported but cannot select model, features, thresholds, or support gates
 ```
 
 ## 10. Decision Table Contract
@@ -656,11 +1047,11 @@ Decision precedence:
 5. train_only_fit_gate fail -> 18C_train_only_fit_blocked
 6. oos_no_tuning_gate fail -> 18C_oos_tuning_blocked
 7. search_accounting_gate fail -> 18C_search_accounting_blocked
-8. risk_only_gate fail -> 18C_risk_only_no_payoff_state
-9. all primary, bucket-lift, and binary sanity readouts weak -> 18C_current_features_reconfirmed_insufficient
-10. top30/top20 bucket lift passes but continuous rank/monotonicity gates fail -> 18C_over_narrow_winner_target_blocked
-11. binary sanity metrics pass but primary rank/monotonicity gates fail -> 18C_binary_only_not_supported
-12. rank_ic_support_gate fail or monotonicity_support_gate fail or bootstrap_ci_gate fail or baseline_improvement_gate fail -> 18C_payoff_state_signal_weak_or_nonmonotone
+8. all primary, bucket-lift, and binary sanity readouts weak -> 18C_current_features_reconfirmed_insufficient
+9. top30/top20 bucket lift passes but continuous rank/monotonicity gates fail -> 18C_over_narrow_winner_target_blocked
+10. binary sanity metrics pass but primary rank/monotonicity gates fail -> 18C_binary_only_not_supported
+11. rank_ic_support_gate fail or monotonicity_support_gate fail or bootstrap_ci_gate fail or baseline_improvement_gate fail -> 18C_payoff_state_signal_weak_or_nonmonotone
+12. risk_only_gate fail after all risk-only evaluation preconditions pass -> 18C_risk_only_no_payoff_state
 13. otherwise unclassified refresh contract failure -> 18C_refresh_separability_contract_blocked
 ```
 
@@ -691,7 +1082,8 @@ The report must state clearly:
 This is the refreshed 18C rerun on the 18E matrix.
 It does not overwrite or reinterpret the original 18C diagnostic.
 18E provided matrix construction support only, not separability support.
-Only this refreshed rerun can decide whether EP18F is allowed.
+Only this refreshed rerun can decide whether the future EP18F oracle-gap
+requirement may be created and executed.
 No policy, backtest, deployment, production signal, or live trading is authorized.
 ```
 
@@ -749,6 +1141,12 @@ next_allowed_requirement = requirement_18f_payoff_state_oracle_gap_bridge.md
 next_allowed_requirement_scope = refreshed_matrix_oracle_gap_bridge
 all_hard_gates_pass = true
 ```
+
+`requirement_18f_payoff_state_oracle_gap_bridge.md` is a future requirement and
+is not part of this refreshed 18C deliverable. If the file is absent at refreshed
+18C runtime, that absence must not block the refreshed 18C separability decision;
+the positive decision authorizes creating and implementing that next requirement,
+not executing EP18F inside the 18C runner.
 
 EP18F may consume:
 

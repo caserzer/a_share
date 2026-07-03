@@ -1,1 +1,10 @@
 split_bucket,model_id,target_column,denominator_type,row_n,positive_n,negative_n,neutral_n,roc_auc,average_precision,split_unconditional_positive_rate,precision_lift,binary_metric_used_as_primary_gate,binary_sanity_status
+train,ridge_logistic_top30_sanity_v1,top30_yes_no,labelable_full,20245,6075,14170,5283,0.6041243222364526,0.3944955718015789,0.30007409236848603,0.09442147943309287,False,appendix_sanity_only
+robustness,ridge_logistic_top30_sanity_v1,top30_yes_no,labelable_full,2496,852,1644,624,0.5681686428383765,0.4038924287932296,0.34134615384615385,0.06254627494707576,False,appendix_sanity_only
+validation,ridge_logistic_top30_sanity_v1,top30_yes_no,labelable_full,664,212,452,159,0.5753255969277008,0.3982704983576606,0.3192771084337349,0.07899338992392568,False,appendix_sanity_only
+train,ridge_logistic_top20_sanity_v1,top20_yes_no,labelable_full,20245,4049,16196,5283,0.621120329434421,0.2869557596011854,0.2,0.0869557596011854,False,appendix_sanity_only
+robustness,ridge_logistic_top20_sanity_v1,top20_yes_no,labelable_full,2496,586,1910,624,0.5811848900166181,0.29564744379749364,0.23477564102564102,0.06087180277185261,False,appendix_sanity_only
+validation,ridge_logistic_top20_sanity_v1,top20_yes_no,labelable_full,664,145,519,159,0.5760946116537107,0.2759555724956978,0.2183734939759036,0.05758207851979419,False,appendix_sanity_only
+train,ridge_payoff_rank_h20_v1,binary_positive_negative,labelable_full,20245,14962,5283,5283,0.5281899709689178,0.7705875458322797,0.7390466781921462,0.03154086764013353,False,appendix_sanity_only
+robustness,ridge_payoff_rank_h20_v1,binary_positive_negative,labelable_full,2496,1872,624,624,0.5068305870589525,0.7564167024880314,0.75,0.006416702488031389,False,appendix_sanity_only
+validation,ridge_payoff_rank_h20_v1,binary_positive_negative,labelable_full,664,505,159,159,0.5229590883616664,0.7810799924827995,0.7605421686746988,0.020537823808100653,False,appendix_sanity_only
