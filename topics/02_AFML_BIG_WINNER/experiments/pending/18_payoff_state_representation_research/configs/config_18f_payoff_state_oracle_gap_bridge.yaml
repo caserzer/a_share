@@ -1,0 +1,157 @@
+run_id: 18F_payoff_state_oracle_gap_bridge
+experiment_id: 18_payoff_state_representation_research
+phase_id: 18F
+scope_id: refreshed_matrix_oracle_gap_bridge
+
+paths:
+  research_plan: experiments/pending/18_payoff_state_representation_research/research_plan.md
+  umbrella_requirement: experiments/pending/18_payoff_state_representation_research/requirement_18_payoff_state_representation_research.md
+  requirement_18a: experiments/pending/18_payoff_state_representation_research/requirement_18a_payoff_state_contract_preflight.md
+  requirement_18c_refresh: experiments/pending/18_payoff_state_representation_research/requirement_18c_refresh_payoff_state_separability_diagnostic.md
+  requirement_18f: experiments/pending/18_payoff_state_representation_research/requirement_18f_payoff_state_oracle_gap_bridge.md
+
+  eighteen_c_refresh_score_panel: experiments/pending/18_payoff_state_representation_research/outputs/local_cache/18C_refresh_payoff_state_separability_diagnostic/refreshed_payoff_state_score_panel.parquet
+  eighteen_c_refresh_score_panel_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/refreshed_payoff_state_score_panel_manifest.json
+  eighteen_c_refresh_decision: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_separability_decision.csv
+  eighteen_c_refresh_oos_rank_readout: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_oos_rank_readout.csv
+  eighteen_c_refresh_decile_monotonicity: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_decile_monotonicity.csv
+  eighteen_c_refresh_bucket_lift: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_bucket_lift.csv
+  eighteen_c_refresh_bootstrap_ci: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_bootstrap_ci.csv
+  eighteen_c_refresh_model_registry: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_model_registry.csv
+  eighteen_c_refresh_model_coefficients: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/payoff_state_model_coefficients.csv
+  eighteen_c_refresh_topk_sensitivity: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/topk_removal_sensitivity.csv
+  eighteen_c_refresh_family_sensitivity: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/family_removal_sensitivity.csv
+  eighteen_c_refresh_baseline_comparison: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/baseline_comparison_readout.csv
+  eighteen_c_refresh_search_accounting: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18C_refresh_payoff_state_separability_diagnostic/search_accounting_audit.csv
+  eighteen_c_refresh_report: experiments/pending/18_payoff_state_representation_research/outputs/publishable/reports/payoff_state_separability_refresh_report.md
+  eighteen_c_refresh_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18C_refresh_payoff_state_separability_diagnostic_manifest.json
+
+  eighteen_e_refreshed_matrix: experiments/pending/18_payoff_state_representation_research/outputs/local_cache/18E_payoff_state_feature_matrix_refresh/refreshed_payoff_state_feature_matrix.parquet
+  eighteen_e_refreshed_matrix_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/refreshed_payoff_state_feature_matrix_manifest.json
+  eighteen_e_schema: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18E_payoff_state_feature_matrix_refresh/refreshed_feature_matrix_schema.csv
+
+  eighteen_a_target_contract_doc: experiments/pending/18_payoff_state_representation_research/outputs/publishable/payoff_state_target_contract.md
+  eighteen_a_decision: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_state_contract_decision.csv
+  eighteen_a_target_definition_registry: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_definition_registry.csv
+  eighteen_a_target_denominator_reconciliation: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/target_denominator_reconciliation.csv
+  eighteen_a_oracle_reference_denominator_map: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/oracle_reference_denominator_map.csv
+  eighteen_a_o5_incremental_definition_replay: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/o5_incremental_definition_replay.csv
+  eighteen_a_payoff_cutoff_freeze: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/payoff_cutoff_freeze.csv
+  eighteen_a_neutral_preservation_audit: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18A_payoff_state_contract_preflight/neutral_preservation_audit.csv
+  eighteen_a_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18A_payoff_state_contract_preflight_manifest.json
+  eighteen_a_target_contract_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/payoff_state_target_contract_manifest.json
+
+  seventeen_d_decision: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_diagnosis_decision.csv
+  seventeen_d_oracle_value_source_attribution: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_value_source_attribution.csv
+  seventeen_d_oracle_learned_model_gap_bridge: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/oracle_learned_model_gap_bridge.csv
+  seventeen_d_search_accounting: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17D_oracle_diagnosis_report/search_accounting_audit.csv
+  seventeen_d_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/17D_oracle_diagnosis_report_manifest.json
+  seventeen_b_oracle_ladder_summary: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_ladder_summary.csv
+  seventeen_b_o5_action_selection_proof: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_o5_action_selection_proof.csv
+  seventeen_b_o2_drawdown_threshold_replay: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_o2_drawdown_threshold_replay.csv
+  seventeen_b_high_upside_threshold_freeze: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/tables/17B_oracle_ladder_replay/oracle_high_upside_threshold_freeze.csv
+  seventeen_b_manifest: experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/manifests/17B_oracle_ladder_replay_manifest.json
+
+required_artifacts:
+  research_plan: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18}
+  umbrella_requirement: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18}
+  requirement_18a: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  requirement_18c_refresh: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  requirement_18f: {role: ep18_local_planning, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18F}
+  eighteen_c_refresh_score_panel: {role: eighteen_c_refresh_score_panel, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_score_panel_manifest: {role: eighteen_c_refresh_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_decision: {role: eighteen_c_refresh_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_oos_rank_readout: {role: eighteen_c_refresh_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_decile_monotonicity: {role: eighteen_c_refresh_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_bucket_lift: {role: eighteen_c_refresh_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_bootstrap_ci: {role: eighteen_c_refresh_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_model_registry: {role: eighteen_c_refresh_model, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_model_coefficients: {role: eighteen_c_refresh_model, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_topk_sensitivity: {role: eighteen_c_refresh_sensitivity, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_family_sensitivity: {role: eighteen_c_refresh_sensitivity, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_baseline_comparison: {role: eighteen_c_refresh_handoff, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_search_accounting: {role: eighteen_c_refresh_search_accounting, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_report: {role: eighteen_c_refresh_report, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_c_refresh_manifest: {role: eighteen_c_refresh_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18C}
+  eighteen_e_refreshed_matrix: {role: eighteen_e_handoff_matrix, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_refreshed_matrix_manifest: {role: eighteen_e_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_e_schema: {role: eighteen_e_schema, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18E}
+  eighteen_a_target_contract_doc: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_decision: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_definition_registry: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_denominator_reconciliation: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_oracle_reference_denominator_map: {role: eighteen_a_oracle_map, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_o5_incremental_definition_replay: {role: eighteen_a_o5_replay, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_payoff_cutoff_freeze: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_neutral_preservation_audit: {role: eighteen_a_target_contract, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  eighteen_a_target_contract_manifest: {role: eighteen_a_manifest, source_experiment_id: 18_payoff_state_representation_research, source_phase_id: 18A}
+  seventeen_d_decision: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_oracle_value_source_attribution: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_oracle_learned_model_gap_bridge: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_search_accounting: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_d_manifest: {role: ep17_oracle_manifest, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17D}
+  seventeen_b_oracle_ladder_summary: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_o5_action_selection_proof: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_o2_drawdown_threshold_replay: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_high_upside_threshold_freeze: {role: ep17_oracle_reference, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+  seventeen_b_manifest: {role: ep17_oracle_manifest, source_experiment_id: 17_oracle_action_value_upper_bound_diagnostic, source_phase_id: 17B}
+
+split_column: cluster_split_bucket
+primary_identity_key_columns: [step_id, label_id]
+full_lineage_key_columns: [step_id, label_id, threshold_id, horizon_sessions, instrument, episode_cluster_id, step_index, step_start_date, step_end_date]
+
+expected:
+  upstream_18c_decision_state: 18C_payoff_state_separability_supported
+  upstream_18c_next_allowed_requirement: requirement_18f_payoff_state_oracle_gap_bridge.md
+  upstream_18c_next_allowed_requirement_scope: refreshed_matrix_oracle_gap_bridge
+  positive_decision_state: 18F_payoff_state_policy_preflight_allowed
+  positive_next_allowed_requirement: requirement_19_payoff_state_policy_preflight.md
+  positive_next_allowed_requirement_scope: payoff_state_policy_preflight
+  primary_model_id: ridge_payoff_rank_h20_v1
+  primary_feature_n: 49
+  primary_target_id: y_payoff_h20
+  matrix_row_n: 23405
+  train_row_n: 20245
+  robustness_row_n: 2496
+  validation_row_n: 664
+  train_neutral_row_n: 5283
+  robustness_neutral_row_n: 624
+  validation_neutral_row_n: 159
+  score_panel_sha256: a3f431c8b634dcb9d24b31a5ed38574b94e7332672d4861470037837492cfc2c
+  source_18e_matrix_sha256: 03d409f73836413adc9f3bd7f3827d072c68ea4b259ffb8c221570bd882641fc
+  source_18e_schema_sha256: 56429807004c0d3ad69101c87d1f125b4c8e33713d702f53f251002fea235a26
+  robustness_payoff_rank_ic: 0.1253619565871872
+  robustness_decile_payoff_monotonicity_spearman: 0.7333333333333332
+  robustness_cluster_bootstrap_rank_ic_ci_low: 0.08822122710318461
+  rank_ic_vs_volatility20d_delta: 0.06059040668108248
+  o5_mean_incremental_return: 0.0294674283651707
+  o2_mean_incremental_return: 0.0185108290944368
+  o4_binary_primary_mean_incremental_return: 0.0246811054592491
+  o5_tolerance: 1.0e-12
+  o5_identity_tolerance: 1.0e-9
+  utility_decomposition_tolerance: 1.0e-12
+  approximation_ratio_floor: 0.25
+  positive_sacrifice_ratio_ceiling: 1.0
+  top30_payoff_retention_floor: 0.70
+  top20_payoff_retention_floor: 0.80
+  validation_top30_payoff_retention_floor: 0.50
+  validation_top20_payoff_retention_floor: 0.50
+  sensitivity_retention_floor: 0.25
+  bootstrap_resample_n: 2000
+  bootstrap_random_seed: 20260629
+  bootstrap_ci_level: 0.95
+
+operating_points:
+  - {operating_point_id: defend_bottom10_continue_rest, cutoff_quantile: 0.10, action_rule: defend_bottom, decision_role: diagnostic_conservative}
+  - {operating_point_id: defend_bottom20_continue_rest, cutoff_quantile: 0.20, action_rule: defend_bottom, decision_role: diagnostic_conservative}
+  - {operating_point_id: defend_bottom30_continue_rest, cutoff_quantile: 0.30, action_rule: defend_bottom, decision_role: primary}
+  - {operating_point_id: defend_bottom40_continue_rest, cutoff_quantile: 0.40, action_rule: defend_bottom, decision_role: diagnostic_aggressive}
+  - {operating_point_id: defend_bottom50_continue_rest, cutoff_quantile: 0.50, action_rule: defend_bottom, decision_role: diagnostic_aggressive}
+  - {operating_point_id: continue_top30_defend_rest, cutoff_quantile: 0.70, action_rule: continue_top, decision_role: over_narrow_stress}
+  - {operating_point_id: continue_top20_defend_rest, cutoff_quantile: 0.80, action_rule: continue_top, decision_role: over_narrow_stress}
+  - {operating_point_id: continue_top10_defend_rest, cutoff_quantile: 0.90, action_rule: continue_top, decision_role: top10_over_narrow_stress_only}
+
+sensitivity_required_ids:
+  topk: [top1_abs_coefficient_removed, top3_abs_coefficient_removed, top5_abs_coefficient_removed]
+  family: [family_F4_removed, family_M1_removed, family_M2_removed, family_M3_removed, family_M5_removed]

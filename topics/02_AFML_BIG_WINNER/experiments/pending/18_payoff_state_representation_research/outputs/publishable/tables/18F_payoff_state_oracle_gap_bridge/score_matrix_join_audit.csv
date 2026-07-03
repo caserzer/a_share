@@ -1,0 +1,13 @@
+check_id,expected_value,observed_value,score_matrix_join_gate,o5_identity_replay_gate,blocking_reason
+primary_identity_key_columns,step_id|label_id,step_id|label_id,pass,pass,
+full_lineage_key_columns,step_id|label_id|threshold_id|horizon_sessions|instrument|episode_cluster_id|step_index|step_start_date|step_end_date,step_id|label_id|threshold_id|horizon_sessions|instrument|episode_cluster_id|step_index|step_start_date|step_end_date,pass,pass,
+score_panel_to_18e_matrix_join_type,one_to_one,one_to_one,pass,pass,
+primary_identity_score_duplicate_n,0,0,pass,pass,
+primary_identity_matrix_duplicate_n,0,0,pass,pass,
+joined_row_n,23405,23405,pass,pass,
+unmatched_score_panel_row_n,0,0,pass,pass,
+unmatched_matrix_row_n,0,0,pass,pass,
+target_value_mismatch_n,0,0,pass,pass,
+model_ready_feature_mismatch_n,0,0,pass,pass,
+joined_o5_incremental_max_abs_diff,1e-09,0.0,pass,pass,
+joined_o5_incremental_formula_mismatch_n,0,0,pass,pass,
