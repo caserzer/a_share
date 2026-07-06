@@ -475,6 +475,8 @@ Rules:
 7. 19A must freeze the 120-session right-censoring treatment before any enrichment readout.
 8. Default primary treatment: `path_complete_120 = true` is required for candidate rows and all matched baselines; dropped censored rows must be reported by split, calendar month, instrument count and regime bucket.
 9. If a survival-analysis treatment is chosen instead, it must be predeclared in 19A and applied identically to candidate and baseline rows. Censored rows cannot be silently assigned `forward_big_winner_120d = false`.
+10. Recommended fallback trigger: if `path_complete_120_rate < 0.70` in the validation primary denominator, automatically add Kaplan-Meier or IPCW survival-analysis readouts. These are censoring-adjusted diagnostics unless 19A explicitly predeclares them as fallback decision readouts.
+11. If the fallback trigger fires, the final decision must note that high censoring lowers conclusion confidence by at least one level unless effective-sample support remains above the frozen validation minimum.
 ```
 
 ### 4.3 Industry / board / theme data contract
@@ -520,6 +522,20 @@ Public / semi-public source candidates:
    - 优点：数据结构较完整
    - 缺点：积分 / 权限限制，不是纯公开
    - 用途：辅助交叉验证
+```
+
+Recommended EP19A data priority:
+
+```text
+primary supported industry source:
+    CNInfo / 巨潮 and/or 申万一级行业历史变更表, if PIT effective dates can be proven
+
+concept/theme membership:
+    diagnostic-only by default unless daily historical snapshots already exist
+
+execution priority:
+    do not block B1 / B2 / B4 / B5 on concept/theme data infrastructure
+    B3 is the only simple baseline source that depends directly on PIT industry/board breadth
 ```
 
 PIT rules:
@@ -678,6 +694,19 @@ all grid cells must be counted in search accounting
 one_train_selected_cell_per_family_enters_robustness = true by default
 ```
 
+19A may choose a less brittle robustness entry rule:
+
+```text
+recommended alternative:
+    top_2_to_3_train_selected_low_correlation_cells_per_family_enter_robustness
+
+requirements:
+    selected cells must be chosen by train-only or predeclared deterministic ranking
+    low-correlation / non-redundancy rule must be frozen in 19A
+    all tested family-cell pairs must be counted in N_tested_family_cell_pairs
+    correction_scope must expand accordingly
+```
+
 Family-level search accounting:
 
 ```text
@@ -713,6 +742,15 @@ Margin rule:
 
 ```text
 primary_margin_rule must be frozen in 19A before outcome readout.
+recommended default:
+    cluster_bootstrap_SE_p_candidate_50 =
+        cluster bootstrap SE of p_candidate_50 on the primary denominator
+
+    pre_frozen_corrected_margin_ratio =
+        2 × cluster_bootstrap_SE_p_candidate_50 / p_matched_50
+
+    equivalent probability-difference form:
+        p_candidate_50 - p_matched_50 >= 2 × cluster_bootstrap_SE_p_candidate_50
 The margin may combine a fixed effect-size floor and a corrected bootstrap / randomization threshold.
 The null distribution must resample or rerandomize the matched baseline so denominator uncertainty in p_matched_50 is included.
 The margin cannot be tuned after seeing train, robustness or validation results.
@@ -838,10 +876,12 @@ grid_total_cells <= 300
 family selection rule and N_family cap frozen from 19A
 actual N_family_brought_to_robustness frozen before robustness readout
 one_train_selected_cell_per_family_enters_robustness = true by default
+top_2_to_3_low_correlation_cells_per_family allowed if frozen in 19A
 validation must not be used for selection
 robustness must not be used for 19B0 selection
 all train grid cells counted in search accounting
 all families selected for 19B counted in family-level search accounting
+all tested family-cell pairs counted in N_tested_family_cell_pairs when expanded-cell rule is used
 ```
 
 每个 cell 输出：
@@ -931,6 +971,23 @@ and MAE_20_p10 not worse than matched baseline by more than tolerance
 and top-k removal sensitivity pass
 and matched-baseline quality gate pass
 ```
+
+Recommended false-positive burden tolerance:
+
+```text
+mae_abs_worsening =
+    matched_baseline_MAE_20_p10 - candidate_MAE_20_p10
+
+absolute tolerance pass:
+    mae_abs_worsening <= 0.02
+
+or
+
+relative tolerance pass:
+    mae_relative_worsening <= 0.10
+```
+
+19A must freeze which tolerance form is primary before any 19B readout. If both are used, the conjunction/disjunction rule must be predeclared and any pass-on-either logic must be treated as an additional selection opportunity.
 
 `tail_lift_20/30/100` are sensitivity readouts. They cannot substitute for a failed `primary_tail_lift_50` gate.
 
@@ -1193,37 +1250,39 @@ Reports must include:
 8. 120d censoring treatment and calendar coverage audit
 9. split_construction_freeze and purge/embargo audit
 10. candidate density, overlap and effective sample size by split, including validation after censoring
-11. canonicalization_audit
-12. cooldown_audit
-13. industry_data_contract
-14. industry_PIT_audit
-15. theme_snapshot_status
-16. B3 PIT prerequisite status
-17. baseline_matching_spec
-18. baseline_matching_quality_audit
-19. primary baseline gate rule, baseline margin rule and primary_metric freeze
-20. grid_search_manifest
-21. grid_cell_count
-22. train_selected_cell_per_family manifest
-23. robustness_test_manifest and N_tested_family_cell_pairs
-24. family_search_accounting_manifest, N_family cap and actual N_family tested
-25. multiple_testing_correction_status
-26. validation_stress_rule and validation_stress_status
-27. primary_tail_lift_50
-28. sensitivity_tail_lift_curve
-29. CCDF / survival curve
-30. capture_vs_burden
-31. MFE_MAE_scatter
-32. false-positive burden
-33. matched baseline comparison
-34. top-k contribution sensitivity
-35. cluster_bootstrap_CI
-36. critical blocking gate status
-37. replay_path_eligibility_audit
-38. entry-conditioned O5/O2 headroom
-39. CTA-style replay baseline comparison
-40. search accounting and validation non-use
-41. final AFML interpretation
+11. path_complete_120_rate and survival fallback trigger status
+12. canonicalization_audit
+13. cooldown_audit
+14. industry_data_contract
+15. industry_PIT_audit
+16. theme_snapshot_status
+17. B3 PIT prerequisite status
+18. baseline_matching_spec
+19. baseline_matching_quality_audit
+20. primary baseline gate rule, baseline margin rule and primary_metric freeze
+21. false-positive burden tolerance freeze
+22. grid_search_manifest
+23. grid_cell_count
+24. train_selected_cell_per_family manifest
+25. robustness_test_manifest and N_tested_family_cell_pairs
+26. family_search_accounting_manifest, N_family cap and actual N_family tested
+27. multiple_testing_correction_status
+28. validation_stress_rule and validation_stress_status
+29. primary_tail_lift_50
+30. sensitivity_tail_lift_curve
+31. CCDF / survival curve
+32. capture_vs_burden
+33. MFE_MAE_scatter
+34. false-positive burden
+35. matched baseline comparison
+36. top-k contribution sensitivity
+37. cluster_bootstrap_CI
+38. critical blocking gate status
+39. replay_path_eligibility_audit
+40. entry-conditioned O5/O2 headroom
+41. CTA-style replay baseline comparison
+42. search accounting and validation non-use
+43. final AFML interpretation
 ```
 
 ## 9. First Requirement to Generate
@@ -1245,17 +1304,21 @@ baseline budget
 baseline matching method and quality thresholds
 primary metric
 primary margin rule
+margin default / override rationale, including 2 × cluster_bootstrap_SE if used
 primary baseline gate rule
 matched-baseline randomization null for p_matched_50 uncertainty
 train-to-robustness shrinkage / winner's-curse treatment
 120-session censoring treatment
+survival-analysis fallback trigger and method
 minimum effective-sample support after censoring by split
+false-positive burden tolerance form and threshold
 validation stress downgrade/veto rule
 industry/board/theme data status
+PIT industry primary source priority and concept/theme diagnostic-only status
 dedup/cooldown rules
 grid-search search space
 family selection rule and N_family cap
-one train-selected cell per family rule, or expanded tested-cell correction scope
+one train-selected cell per family rule, or top-2-to-3 low-correlation cell rule with expanded tested-cell correction scope
 family-level multiple-testing correction method
 replay path eligibility by replay arm
 ```
