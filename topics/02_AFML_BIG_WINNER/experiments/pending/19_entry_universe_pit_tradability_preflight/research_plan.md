@@ -487,68 +487,71 @@ Data layers:
 
 ```text
 industry_classification:
-    用于 PIT 行业归属、行业相对强弱、行业 breadth。
+    EP19A 不使用外部 PIT 行业分类源；行业相对强弱 / 行业 breadth 不作为本契约的 supported feature。
 
 board_or_style_proxy:
-    用于创业板 / 主板 / 科创板 / 小盘 / 成长等 style fallback。
+    不从 TuShare DC 概念板块推导交易所板块 / style 标签；交易所或规模 style 只能来自
+    security master / market metadata 的独立契约。
 
 concept_or_theme_proxy:
-    用于题材扩散、概念热度、事件驱动 readout。
+    仅使用 TuShare Pro 东方财富概念板块年度快照，作为 annual board/theme bucket。
 ```
 
-Public / semi-public source candidates:
+Frozen EP19A source:
 
 ```text
-1. CNInfo / 巨潮行业分类与行业变更
-   - 优点：有行业分类和变更日期，适合 PIT 行业归属审计
-   - 用途：industry PIT membership, industry-relative return, industry breadth
-
-2. AkShare 东方财富行业板块 / 概念板块
-   - 优点：接口方便，板块 / 概念 / 成份股丰富
-   - 缺点：很多是当前视图，不天然 PIT
-   - 用途：board/theme proxy, daily snapshot required
-
-3. AkShare 同花顺行业 / 概念板块
-   - 优点：题材覆盖较丰富，贴近 A 股主题行情
-   - 缺点：成分定义漂移，必须每日快照
-   - 用途：theme diffusion diagnostic
-
-4. BaoStock
-   - 优点：行情、基础数据较方便
-   - 缺点：题材 / 概念 / 历史成分较弱
-   - 用途：行情备份和基础字段
-
-5. Tushare Pro
-   - 优点：数据结构较完整
-   - 缺点：积分 / 权限限制，不是纯公开
-   - 用途：辅助交叉验证
+Tushare Pro / 东方财富概念板块
+    - 接口：`dc_index`, `dc_member`
+    - `dc_index`：记录源快照交易日的东财概念板块列表。
+    - `dc_member`：记录同一源快照交易日的板块成分股。
+    - 用途：annual board/theme bucket、概念/题材 matched bucket、
+      板块集中度与扩散度 readout。
+    - 边界：这是 vendor-derived concept/theme proxy，不是 PIT 行业分类源。
 ```
 
-Recommended EP19A data priority:
+Frozen annual mapping:
 
 ```text
-primary supported industry source:
-    CNInfo / 巨潮 and/or 申万一级行业历史变更表, if PIT effective dates can be proven
+classification_year < 2025:
+    使用 2025 年首个 A 股交易日的 TuShare DC 东财概念板块快照。
 
-concept/theme membership:
-    diagnostic-only by default unless daily historical snapshots already exist
+classification_year = 2025:
+    使用 2025 年首个 A 股交易日的 TuShare DC 东财概念板块快照。
 
-execution priority:
-    do not block B1 / B2 / B4 / B5 on concept/theme data infrastructure
-    B3 is the only simple baseline source that depends directly on PIT industry/board breadth
+classification_year = 2026:
+    使用 2026 年首个 A 股交易日的 TuShare DC 东财概念板块快照。
+
+Reason:
+    TuShare DC 东财板块在 2025 年之前的首个交易日查询结果缺失；
+    为避免引入当前视图或混用 AkShare/CNInfo/BaoStock，pre-2025 统一使用
+    2025 source snapshot 作为 fixed taxonomy backfill。
 ```
 
 PIT rules:
 
 ```text
-Industry membership must be PIT.
-Concept/theme membership must be daily-snapshotted if used as feature.
-Current membership cannot be used retroactively.
-If only current concept membership is available, it may be used only as diagnostic, not as supported feature.
-Board/style proxies must state whether they are exchange-native, security-master derived, or vendor-derived.
-Any industry/board/theme feature must include source_date, effective_date, snapshot_date and decision_date compatibility.
-If PIT industry membership cannot be proven, industry-dependent features cannot be supported primary features.
-If only current concept/theme membership is available, theme diffusion remains diagnostic-only and cannot support B3 or any primary enrichment claim.
+Every row must retain:
+    classification_year
+    effective_start_date / effective_end_date
+    classification_first_open_trade_date
+    source_snapshot_year
+    source_snapshot_trade_date
+    snapshot_policy
+
+For classification_year < 2025:
+    source_snapshot_year = 2025
+    source_snapshot_trade_date = 2025 first-open trading day
+    snapshot_policy = pre_2025_backfilled_from_2025_snapshot
+
+For classification_year >= 2025:
+    source_snapshot_year = classification_year
+    source_snapshot_trade_date = that year's first-open trading day
+    snapshot_policy = exact_year_first_open_snapshot
+
+Pre-2025 rows are fixed taxonomy backfill, not historical PIT membership evidence.
+No intrayear constituent change is inferred.
+No claim may interpret pre-2025 concept membership as the true membership that existed at the historical decision date.
+This source may support annual matched buckets / diagnostics, but cannot rescue a feature that requires genuine PIT industry membership.
 ```
 
 ## 5. Candidate Generator Sources and Grid-Search Space
