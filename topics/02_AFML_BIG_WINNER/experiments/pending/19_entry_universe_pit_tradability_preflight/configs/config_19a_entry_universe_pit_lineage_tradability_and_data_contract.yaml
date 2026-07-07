@@ -1,0 +1,165 @@
+run_id: 19A_entry_universe_pit_lineage_tradability_and_data_contract
+experiment_id: 19_entry_universe_pit_tradability_preflight
+phase_id: 19A
+
+paths:
+  research_plan: experiments/pending/19_entry_universe_pit_tradability_preflight/research_plan.md
+  requirement: experiments/pending/19_entry_universe_pit_tradability_preflight/requirement_19a_entry_universe_pit_lineage_tradability_and_data_contract.md
+
+  eighteen_f_decision: experiments/pending/18_payoff_state_representation_research/outputs/publishable/tables/18F_payoff_state_oracle_gap_bridge/payoff_state_oracle_gap_bridge_decision.csv
+  eighteen_f_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/18F_payoff_state_oracle_gap_bridge_manifest.json
+  eighteen_f_input_manifest: experiments/pending/18_payoff_state_representation_research/outputs/manifests/input_artifact_manifest_18f.json
+
+  tushare_dc_readme: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/README.md
+  tushare_dc_classification_mapping: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/metadata/classification_year_snapshot_mapping.csv
+  tushare_dc_year_first_trade_dates: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/metadata/year_first_trade_dates.csv
+  tushare_dc_dataset_summary: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/metadata/dataset_summary.csv
+  tushare_dc_run_config: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/metadata/run_config.json
+  tushare_dc_index_combined: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/combined/dc_index_yearly_first_open.csv
+  tushare_dc_member_combined: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/combined/dc_member_yearly_first_open.csv
+
+  akshare_board_full_dump_root: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/akshare_board_full_dump
+
+  ep04_root: experiments/pending/04_high_recall_repair_event_candidate_generator_v0
+  ep04_candidate_instances: experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/publishable/tables/candidate_event_instances.csv
+  ep04_candidate_labels: experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/publishable/tables/candidate_event_label_outcomes.csv
+  ep04_executability_audit: experiments/pending/04_high_recall_repair_event_candidate_generator_v0/outputs/publishable/tables/executability_audit.csv
+
+  ep07_root: experiments/pending/07_topn_multichannel_repair_candidate_generator_v0
+  ep07_candidate_instances: experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_multichannel_candidate_event_instances.csv
+  ep07_candidate_canonical: experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_multichannel_candidate_event_canonical.csv
+  ep07_candidate_labels: experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/local_cache/topn_canonical_event_labels.parquet
+  ep07_execution_label_audit: experiments/pending/07_topn_multichannel_repair_candidate_generator_v0/outputs/publishable/tables/topn_execution_and_label_completeness_audit.csv
+
+  ep13_root: experiments/pending/13_full_pit_native_event_discovery_v0
+  ep13_rule_overlay_event_panel: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13G_event_survival_opportunity_and_defense_overlay_diagnostic/rule_overlay_event_panel.parquet
+  ep13_survival_label_panel: experiments/pending/13_full_pit_native_event_discovery_v0/outputs/local_cache/13G_event_survival_opportunity_and_defense_overlay_diagnostic/survival_opportunity_label_panel.parquet
+
+  ep14_root: experiments/pending/14_full_native_sparse_state_change_event_utility_preflight_v0
+  ep14_sparse_event_panel: experiments/pending/14_full_native_sparse_state_change_event_utility_preflight_v0/outputs/local_cache/14A_full_native_sparse_state_change_event_utility_preflight/sparse_event_panel.parquet
+  ep14_sparse_event_generation_audit: experiments/pending/14_full_native_sparse_state_change_event_utility_preflight_v0/outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/sparse_event_generation_audit.csv
+  ep14_sparse_event_density_audit: experiments/pending/14_full_native_sparse_state_change_event_utility_preflight_v0/outputs/publishable/tables/14A_full_native_sparse_state_change_event_utility_preflight/sparse_event_density_audit.csv
+
+required_artifacts:
+  research_plan: {role: 19a_planning_contract}
+  requirement: {role: 19a_requirement_contract}
+  eighteen_f_decision: {role: upstream_18f_closure}
+  eighteen_f_manifest: {role: upstream_18f_manifest}
+  eighteen_f_input_manifest: {role: upstream_18f_input_manifest}
+  tushare_dc_readme: {role: tushare_dc_contract_doc}
+  tushare_dc_classification_mapping: {role: tushare_dc_mapping}
+  tushare_dc_year_first_trade_dates: {role: tushare_dc_calendar}
+  tushare_dc_dataset_summary: {role: tushare_dc_dataset_summary}
+  tushare_dc_run_config: {role: tushare_dc_run_config}
+  tushare_dc_index_combined: {role: tushare_dc_index_combined}
+  tushare_dc_member_combined: {role: tushare_dc_member_combined}
+  akshare_board_full_dump_root: {role: quarantined_board_dump_inventory}
+  ep04_candidate_instances: {role: optional_candidate_source}
+  ep04_candidate_labels: {role: optional_candidate_label_readout}
+  ep04_executability_audit: {role: optional_candidate_execution_audit}
+  ep07_candidate_canonical: {role: primary_candidate_source}
+  ep07_candidate_labels: {role: primary_candidate_label_readout}
+  ep07_execution_label_audit: {role: primary_candidate_execution_audit}
+  ep13_rule_overlay_event_panel: {role: optional_candidate_source}
+  ep13_survival_label_panel: {role: optional_candidate_label_readout}
+  ep14_sparse_event_panel: {role: optional_candidate_source}
+  ep14_sparse_event_generation_audit: {role: optional_candidate_generation_audit}
+  ep14_sparse_event_density_audit: {role: optional_candidate_density_audit}
+
+primary_candidate_source:
+  source_id: EP07_topn_multichannel_recommended_union
+  source_phase_id: "07"
+  canonical_path_key: ep07_candidate_canonical
+  label_path_key: ep07_candidate_labels
+  decision_date_column: event_t0_date
+  decision_pos_column: event_t0_pos
+  entry_date_column: trade_open_date
+  entry_price_column: trade_open_price
+  split_column: event_split
+  instrument_column: instrument
+  event_id_column: event_id
+  non_executable_column: non_executable_next_open
+  liquidity_column: liquidity_money_20d
+  market_cap_column: total_market_cap_cny
+
+execution:
+  decision_time_bucket: after_close_t
+  entry_price_source: qfq_open_next_tradable_day
+  liquidity_floor_cny: 20000000
+  impact_cost_proxy_warn_bps: 50
+  candidate_budget_cny: 1000000
+  primary_cooldown_window_sessions: 10
+  sensitivity_cooldown_window_sessions: [5, 20]
+
+labels:
+  primary_horizon_sessions: 120
+  primary_big_winner_threshold: 0.50
+  primary_label_requires_path_complete_120: true
+  survival_fallback_trigger_path_complete_120_rate: 0.70
+
+split:
+  split_column: event_split
+  train: train
+  robustness: robustness
+  validation: validation
+  purge_window_sessions: 120
+  embargo_window_sessions: 20
+
+minimum_support:
+  train_primary_denominator_n: 5000
+  robustness_primary_denominator_n: 1000
+  validation_primary_denominator_n: 300
+  train_instrument_n: 100
+  robustness_instrument_n: 50
+  validation_instrument_n: 30
+  primary_path_complete_120_rate: 0.70
+  effective_sample_ratio: 0.30
+
+baseline:
+  primary_baseline_pass_rule: conjunctive_pass_across_all_three_baselines
+  families:
+    - calendar_time_random_same_budget
+    - instrument_matched_random_same_budget
+    - liquidity_size_volatility_matched_same_budget
+  matching_keys:
+    - decision_month
+    - instrument_or_industry_bucket_if_supported
+    - market_cap_bucket_asof_decision_date
+    - rolling_20d_amount_bucket_asof_decision_date
+    - rolling_60d_volatility_bucket_asof_decision_date
+    - recent_20d_return_bucket_asof_decision_date
+  quality_gates:
+    unmatched_candidate_rate_max: 0.05
+    baseline_reuse_rate_max: 0.20
+    max_standardized_mean_difference_after_matching_max: 0.10
+    decision_month_coverage_delta_max: 0.02
+    instrument_coverage_delta_max: 0.05
+
+grid_search:
+  grid_parameter_n_per_family_max: 5
+  grid_total_cells_all_families_max: 300
+  validation_selected_cells: 0
+  family_level_correction: Bonferroni-Sidak
+  cell_level_accounting: all_tried_cells_counted
+  n_family_cap: 10
+  simple_families:
+    B1_near_120d_high_plus_volume_expansion: {parameter_n: 4, grid_cell_n: 36, status: supported_primary_family}
+    B2_relative_strength_breakout: {parameter_n: 4, grid_cell_n: 36, status: supported_primary_family}
+    B3_industry_or_theme_breadth_expansion: {parameter_n: 0, grid_cell_n: 0, status: unsupported_primary_feature}
+    B4_volatility_contraction_then_breakout: {parameter_n: 4, grid_cell_n: 36, status: supported_primary_family}
+    B5_recent_high_close_plus_amount_expansion: {parameter_n: 4, grid_cell_n: 36, status: supported_primary_family}
+    B6_low_drawdown_reclaim_or_ema_reclaim: {parameter_n: 4, grid_cell_n: 36, status: supported_primary_family}
+
+cost_assumptions:
+  cost_schedule_source: frozen_19a_default_contract
+  commission_buy_bps: 2.5
+  commission_sell_bps: 2.5
+  minimum_commission_cny: 5.0
+  stamp_tax_sell_bps_by_effective_date: "2023-08-28:5.0"
+  slippage_bps: 5.0
+  next_open_execution_delay_sessions: 1
+  limit_up_buy_handling: blocked_unfilled
+  limit_up_fill_premium_bps: 0.0
+  limit_down_exit_failure_handling: delayed_to_next_executable_open
+  blocked_fill_opportunity_loss_policy: count_as_unfilled_opportunity_loss
+  cost_assumption_status: frozen
