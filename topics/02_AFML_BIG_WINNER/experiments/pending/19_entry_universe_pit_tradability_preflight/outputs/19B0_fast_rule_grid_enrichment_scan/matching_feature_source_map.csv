@@ -1,0 +1,7 @@
+matching_key,canonical_source_artifact,canonical_source_columns,candidate_policy,baseline_policy,reconstruction_formula,bucket_rule,ep07_direct_field_allowed_for_matching,equivalence_override_allowed,frozen_before_baseline_materialization,blocking_reason
+decision_month,canonical metadata or baseline date,event_t0_date|decision_date,calendar month from decision date,calendar month from decision date,period YYYY-MM,exact month,False,False,True,
+market_cap_bucket_asof_decision_date,pit_topn_400_100_executable_daily.csv,total_market_cap_cny,rebuild from universe file,rebuild from universe file,as-of total market cap,monthly quantile bucket,False,False,True,
+rolling_20d_amount_bucket_asof_decision_date,qfq money,money,rebuild from qfq,rebuild from qfq,rolling 20d mean money,monthly quantile bucket,False,False,True,
+rolling_60d_volatility_bucket_asof_decision_date,qfq close,close,rebuild from qfq,rebuild from qfq,rolling 60d return std,monthly quantile bucket,False,False,True,
+recent_20d_return_bucket_asof_decision_date,qfq close,close,rebuild from qfq,rebuild from qfq,close[t]/close[t-20]-1,monthly quantile bucket,False,False,True,
+instrument_or_industry_bucket_if_supported,instrument only,instrument,instrument only,instrument only,PIT industry disabled,exact instrument,False,False,True,
