@@ -1,0 +1,137 @@
+run_id: 19B_robust_right_tail_enrichment_and_false_positive_burden_readout
+experiment_id: 19_entry_universe_pit_tradability_preflight
+phase_id: 19B
+
+paths:
+  requirement_19b: experiments/pending/19_entry_universe_pit_tradability_preflight/requirement_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.md
+  config_19b: experiments/pending/19_entry_universe_pit_tradability_preflight/configs/config_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.yaml
+
+  nineteen_a_output_root: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract
+  nineteen_a_decision: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/entry_universe_preflight_decision.csv
+  nineteen_a_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/manifest_19a_entry_universe_pit_lineage_tradability_and_data_contract.json
+  nineteen_a_output_hashes: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/output_hashes_19a_entry_universe_pit_lineage_tradability_and_data_contract.json
+  nineteen_a_baseline_budget_freeze: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/baseline_budget_freeze.csv
+  nineteen_a_baseline_matching_spec: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/baseline_matching_spec.csv
+  nineteen_a_primary_metric_and_margin_freeze: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/primary_metric_and_margin_freeze.csv
+  nineteen_a_multiple_testing_correction_freeze: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/multiple_testing_correction_freeze.csv
+  nineteen_a_validation_stress_rule_freeze: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/validation_stress_rule_freeze.csv
+  nineteen_a_split_construction_freeze: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/split_construction_freeze.csv
+
+  nineteen_b0_output_root: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan
+  nineteen_b0_decision: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/entry_universe_19b0_decision.csv
+  nineteen_b0_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/manifest_19b0_fast_rule_grid_enrichment_scan.json
+  nineteen_b0_output_hashes: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/output_hashes_19b0_fast_rule_grid_enrichment_scan.json
+  nineteen_b0_selected_family_cell_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/selected_family_cell_manifest.csv
+  nineteen_b0_robustness_test_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/robustness_test_manifest.csv
+  nineteen_b0_grid_cell_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/grid_cell_manifest.csv
+  nineteen_b0_handoff_contract: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/19B0_handoff_to_19B_contract.md
+
+  topn_executable_universe: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  topn_membership_universe: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  stock_qfq_dir: data/raw/akshare/day/qfq
+  benchmark_daily: data/processed/index/benchmark_indices_daily.csv
+
+selected_cells:
+  - family_id: B2_relative_strength_breakout
+    grid_cell_id: B2-relative-strength-breakout__182b3d0f30f5
+  - family_id: B5_recent_high_close_plus_amount_expansion
+    grid_cell_id: B5-recent-high-close-plus-amount-expansion__25d72c708fc1
+
+split:
+  split_column: event_split
+  robustness: robustness
+  train: train
+  validation: validation
+  train_start: "2024-01-02"
+  train_end: "2025-11-26"
+  robustness_start: "2024-01-02"
+  robustness_end: "2025-11-26"
+
+execution:
+  decision_time_bucket: after_close_t
+  entry_price_source: qfq_open_next_tradable_day
+  liquidity_floor_cny: 20000000
+  primary_cooldown_window_sessions: 10
+
+labels:
+  horizons: [20, 30, 60, 120]
+  primary_horizon_sessions: 120
+  primary_big_winner_threshold: 0.50
+  selected_anchor_type: executable_next_open_anchored
+
+baseline:
+  families:
+    - calendar_time_random_same_budget
+    - instrument_matched_random_same_budget
+    - liquidity_size_volatility_matched_same_budget
+  random_seed: 20260707
+  bucket_count: 5
+  quality_gates:
+    unmatched_candidate_rate_max: 0.05
+    baseline_reuse_rate_max: 0.20
+    max_standardized_mean_difference_after_matching_max: 0.10
+    decision_month_coverage_delta_max: 0.02
+    instrument_coverage_delta_max: 0.05
+
+diagnostic_repair_variants:
+  - repair_variant_id: original_calendar_time_random_same_budget
+    baseline_family: calendar_time_random_same_budget
+    variant_role: primary_original_frozen
+    matching_method: 19B0_frozen_method
+    primary_residual_claim_allowed: true
+    diagnostic_repair_only_flag: false
+  - repair_variant_id: original_instrument_matched_random_same_budget
+    baseline_family: instrument_matched_random_same_budget
+    variant_role: primary_original_frozen
+    matching_method: 19B0_frozen_method
+    primary_residual_claim_allowed: true
+    diagnostic_repair_only_flag: false
+  - repair_variant_id: original_liquidity_size_volatility_matched_same_budget
+    baseline_family: liquidity_size_volatility_matched_same_budget
+    variant_role: primary_original_frozen
+    matching_method: 19B0_frozen_method
+    primary_residual_claim_allowed: true
+    diagnostic_repair_only_flag: false
+  - repair_variant_id: repaired_lsv_return_cem_v1
+    baseline_family: liquidity_size_volatility_recent_return_matched_same_budget
+    variant_role: diagnostic_repair_only
+    matching_method: coarsened_exact_matching
+    primary_residual_claim_allowed: false
+    diagnostic_repair_only_flag: true
+  - repair_variant_id: repaired_lsv_return_nn_caliper_v1
+    baseline_family: liquidity_size_volatility_recent_return_nearest_neighbor_same_budget
+    variant_role: diagnostic_repair_only
+    matching_method: nearest_neighbor_with_frozen_calipers
+    primary_residual_claim_allowed: false
+    diagnostic_repair_only_flag: true
+
+cell_support:
+  cell_primary_denominator_n_min: 300
+  cell_instrument_n_min: 30
+  cell_effective_sample_ratio_min: 0.30
+
+bootstrap:
+  bootstrap_resample_n: 2000
+  bootstrap_seed: 20260707
+  candidate_cluster_key: instrument_month
+  matched_baseline_rerandomization_n: 2000
+  matched_baseline_rerandomization_seed: 20260707
+  positive_exposure_p_value_method: cluster_bootstrap_se_normal_approx_one_sided_candidate_vs_eligible_universe
+  residual_p_value_method: matched_baseline_rerandomization_one_sided_under_original_frozen_matching_protocol
+
+positive_exposure:
+  positive_exposure_absolute_margin_floor_50: 0.02
+  positive_exposure_relative_margin_ratio_floor: 0.20
+
+false_positive_burden:
+  candidate_per_winner_cap: 6.0
+  fast_fail_rate_cap: 0.60
+  false_repair_rate_cap: 0.60
+  mae_abs_worsening_cap: 0.02
+
+topk:
+  max_instrument_winner_share_cap: 0.02
+
+runtime:
+  progress_every_instruments: 250
+  cache_universe_feature_panel: true
