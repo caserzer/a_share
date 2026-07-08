@@ -1,7 +1,9 @@
-stage_name,row_n,instrument_n,decision_month_n,path_complete_120_rate,path_complete_30_rate,matching_fields_available_rate,filtered_out_row_n,blocking_reason
-raw_train_universe,607536,1407,60,1.0,1.0,0.8808877169418767,0,
-entry_anchor_available,607536,1407,60,1.0,1.0,0.8808877169418767,0,
-entry_fill_feasible,607536,1407,60,1.0,1.0,0.8808877169418767,0,
-path_complete_120d,607536,1407,60,1.0,1.0,0.8808877169418767,0,
-matching_fields_available,535171,1103,57,1.0,1.0,1.0,72365,
-baseline_eligible,433131,1010,49,1.0,1.0,1.0,102040,
+stage_name,row_n,instrument_n,decision_month_n,path_complete_120_rate,path_complete_30_rate,matching_fields_available_rate,cooldown_eligible_rate,membership_frozen_before_label_readout,matching_bucket_frozen_before_label_readout,baseline_forward_label_read_after_membership_freeze,filtered_out_row_n,blocking_reason
+raw_train_universe,607536,1407,60,1.0,1.0,0.8808877169418767,0.09484705433093676,True,True,True,0,
+entry_anchor_available,607536,1407,60,1.0,1.0,0.8808877169418767,0.09484705433093676,True,True,True,0,
+entry_fill_feasible,607536,1407,60,1.0,1.0,0.8808877169418767,0.09484705433093676,True,True,True,0,
+cooldown_eligible_under_19a_rule,57623,1407,60,1.0,1.0,0.8650018221890564,1.0,True,True,True,549913,
+matching_fields_available,535171,1103,57,1.0,1.0,1.0,0.09313658625000233,True,True,True,-477548,
+pre_label_baseline_eligible_candidate,40552,999,49,1.0,1.0,1.0,1.0,True,True,True,494619,
+path_complete_120d,607536,1407,60,1.0,1.0,0.8808877169418767,0.09484705433093676,True,True,True,-566984,
+baseline_eligible,40552,999,49,1.0,1.0,1.0,1.0,True,True,True,566984,

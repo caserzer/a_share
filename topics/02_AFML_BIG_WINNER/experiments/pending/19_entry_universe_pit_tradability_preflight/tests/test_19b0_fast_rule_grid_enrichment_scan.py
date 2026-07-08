@@ -54,6 +54,12 @@ def test_19b0_upstream_19a_and_train_only_boundary_are_enforced():
     assert upstream["fact_gate"].eq("pass").all()
     assert upstream["required_fact"].str.startswith("manifest_hash_match:").any()
 
+    metadata = r.load_ep07_metadata(paths)
+    train_keys = set(metadata.loc[metadata["event_split"].eq("train"), "event_id"].astype(str))
+    labels = r.load_ep07_train_label_diagnostics(paths, train_keys)
+    assert set(labels["event_id"].astype(str)) == train_keys
+    assert labels["event_id"].duplicated().sum() == 0
+
     boundary = read_output("train_only_boundary_audit").iloc[0]
     assert bool(boundary["non_train_outcome_columns_loaded"]) is False
     assert int(boundary["non_train_outcome_row_n"]) == 0
@@ -99,6 +105,13 @@ def test_19b0_matching_features_and_baseline_arms_are_explicit():
     assert matching["ep07_direct_field_allowed_for_matching"].eq(False).all()
     assert matching["frozen_before_baseline_materialization"].eq(True).all()
 
+    eligible = read_output("eligible_universe_baseline_audit")
+    assert "cooldown_eligible_under_19a_rule" in set(eligible["stage_name"])
+    assert "pre_label_baseline_eligible_candidate" in set(eligible["stage_name"])
+    assert eligible["membership_frozen_before_label_readout"].eq(True).all()
+    assert eligible["matching_bucket_frozen_before_label_readout"].eq(True).all()
+    assert eligible["baseline_forward_label_read_after_membership_freeze"].eq(True).all()
+
     metric = read_output("train_cell_metric_readout")
     if not metric.empty:
         observed = set(metric["baseline_family"])
@@ -113,9 +126,30 @@ def test_19b0_matching_features_and_baseline_arms_are_explicit():
     if not quality.empty:
         assert quality["unmatched_candidate_rate"].lt(1.0).any()
         assert r.any_cell_with_all_baseline_gate_pass(materialization, "baseline_materialization_gate")
+        assert {
+            "residual_alpha_claim_allowed",
+            "positive_beta_exposure_claim_allowed",
+            "baseline_quality_blocks_residual_alpha_only",
+        }.issubset(set(quality.columns))
+        failed_quality = quality.loc[quality["baseline_matching_quality_gate"].eq("fail")]
+        if not failed_quality.empty:
+            assert failed_quality["residual_alpha_claim_allowed"].eq(False).all()
+            assert failed_quality["baseline_quality_blocks_residual_alpha_only"].eq(True).all()
         decision = read_output("entry_universe_19b0_decision").iloc[0]
-        expected_gate = "pass" if r.any_cell_with_all_baseline_gate_pass(quality, "baseline_matching_quality_gate") else "fail"
-        assert decision["baseline_matching_quality_gate"] == expected_gate
+        assert decision["baseline_matching_quality_audit_gate"] == "pass"
+
+    if not metric.empty:
+        assert {
+            "positive_exposure_score_50",
+            "positive_exposure_train_pass",
+            "selection_track",
+            "promotion_claim_type",
+            "residual_alpha_claim_allowed",
+            "positive_beta_exposure_claim_allowed",
+        }.issubset(set(metric.columns))
+        positive_pass = metric.loc[metric["positive_exposure_train_pass"].eq(True)]
+        if not positive_pass.empty:
+            assert positive_pass["promotion_claim_type"].isin(["positive_beta_exposure_candidate", "residual_alpha_candidate"]).all()
 
 
 def test_19b0_grid_and_denominator_outputs_include_ep07_identity_cell_and_source_maps():
@@ -144,13 +178,26 @@ def test_19b0_decision_manifest_and_policy_authorization():
         "19B0_candidate_family_train_diagnostic",
         "19B0_no_candidate_family_passed",
         "19B0_baseline_materialization_blocked",
+        "19B0_output_contract_blocked",
     }
     failed_gates = [gate for gate in r.CRITICAL_GATES if decision[gate] != "pass"]
     if decision["decision_state"] == "19B0_baseline_materialization_blocked":
-        assert failed_gates == ["baseline_matching_quality_gate"]
-        assert decision["blocking_reason"] == "baseline_matching_quality_gate"
+        assert failed_gates == ["baseline_materialization_gate"]
+        assert decision["blocking_reason"] == "baseline_materialization_gate"
     else:
         assert failed_gates == []
+    assert decision["track_correction_scope_policy"] == "separate_by_promotion_claim_type"
+    assert int(decision["selected_family_cell_pair_n"]) == (
+        int(decision["selected_residual_alpha_cell_pair_n"]) + int(decision["selected_positive_beta_exposure_cell_pair_n"])
+    )
+    selected = read_output("selected_family_cell_manifest")
+    if not selected.empty:
+        assert selected["promotion_claim_type"].isin(["residual_alpha_candidate", "positive_beta_exposure_candidate"]).all()
+        positive = selected.loc[selected["promotion_claim_type"].eq("positive_beta_exposure_candidate")]
+        if not positive.empty:
+            assert positive["residual_alpha_claim_allowed"].eq(False).all()
+            assert positive["max_ep19_terminal_state_if_no_residual_pass"].eq("19_entry_universe_enrichment_only_diagnostic").all()
+            assert positive["ep20_policy_preflight_authorized_if_no_residual_pass"].eq(False).all()
     for column in r.POLICY_AUTH_COLUMNS:
         assert bool(decision[column]) is False
     assert bool(decision["validation_outcome_read"]) is False
@@ -170,3 +217,18 @@ def test_19b0_decision_manifest_and_policy_authorization():
     report = outputs["report"].read_text(encoding="utf-8")
     assert "executable_next_open_anchored" in report
     assert "不授权模型" in report
+    for phrase in [
+        "支持/不支持 Family",
+        "Grid Materialization",
+        "Label Source Map",
+        "Matching Feature Source Map",
+        "Baseline Materialization",
+        "Positive Beta/Exposure Track",
+        "Sensitivity",
+        "Instrument Concentration",
+        "Search Accounting",
+        "19B0 不证明策略有效。",
+        "positive_beta_exposure_candidate without matched-baseline residual pass can only support 19_entry_universe_enrichment_only_diagnostic, not EP20 authorization.",
+    ]:
+        assert phrase in report
+    assert decision["output_contract_gate"] == "pass"

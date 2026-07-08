@@ -56,7 +56,7 @@ CRITICAL_GATES = [
     "family_materialization_gate",
     "primary_denominator_gate",
     "baseline_materialization_gate",
-    "baseline_matching_quality_gate",
+    "baseline_matching_quality_audit_gate",
     "metric_readout_gate",
     "cell_selection_process_gate",
     "search_accounting_gate",
@@ -67,9 +67,10 @@ STATE_GATE_MAP = {
     "19B0_upstream_19a_contract_blocked": ["upstream_19a_contract_gate"],
     "19B0_train_only_boundary_blocked": ["train_only_boundary_gate"],
     "19B0_grid_contract_blocked": ["grid_manifest_gate", "family_materialization_gate"],
-    "19B0_baseline_materialization_blocked": ["baseline_materialization_gate", "baseline_matching_quality_gate"],
+    "19B0_baseline_materialization_blocked": ["baseline_materialization_gate"],
     "19B0_metric_contract_blocked": ["primary_denominator_gate", "metric_readout_gate"],
     "19B0_output_contract_blocked": [
+        "baseline_matching_quality_audit_gate",
         "cell_selection_process_gate",
         "search_accounting_gate",
         "no_policy_authorization_gate",
@@ -417,20 +418,31 @@ def build_upstream_19a_contract_audit(paths: dict[str, Path]) -> tuple[pd.DataFr
 
 
 def build_train_only_boundary_audit(metadata: pd.DataFrame, train_labels: pd.DataFrame) -> pd.DataFrame:
-    train_key_n = int(metadata.loc[metadata["event_split"].eq("train"), "event_id"].nunique())
+    train_keys = set(metadata.loc[metadata["event_split"].eq("train"), "event_id"].astype(str))
+    label_keys = set(train_labels["event_id"].astype(str)) if "event_id" in train_labels else set()
+    duplicate_label_key_n = int(train_labels["event_id"].duplicated().sum()) if "event_id" in train_labels else len(train_labels)
+    key_match = label_keys == train_keys and duplicate_label_key_n == 0
+    missing_n = len(train_keys - label_keys)
+    unexpected_n = len(label_keys - train_keys)
+    blocking_reason = ""
+    if not key_match:
+        blocking_reason = (
+            f"train_label_key_mismatch:missing={missing_n};"
+            f"unexpected={unexpected_n};duplicates={duplicate_label_key_n}"
+        )
     return pd.DataFrame(
         [
             {
                 "candidate_metadata_row_n": len(metadata),
-                "candidate_train_key_row_n": train_key_n,
+                "candidate_train_key_row_n": len(train_keys),
                 "train_label_row_n": len(train_labels),
                 "non_train_outcome_columns_loaded": False,
                 "non_train_outcome_row_n": 0,
                 "robustness_label_value_access_n": 0,
                 "validation_label_value_access_n": 0,
                 "selection_uses_train_only": True,
-                "boundary_gate": pass_fail(len(train_labels) == train_key_n),
-                "blocking_reason": "" if len(train_labels) == train_key_n else "train_label_key_mismatch",
+                "boundary_gate": pass_fail(key_match),
+                "blocking_reason": blocking_reason,
             }
         ]
     )
@@ -438,13 +450,14 @@ def build_train_only_boundary_audit(metadata: pd.DataFrame, train_labels: pd.Dat
 
 def load_ep07_metadata(paths: dict[str, Path]) -> pd.DataFrame:
     metadata = read_table(paths["ep07_candidate_canonical"])
+    metadata["event_id"] = metadata["event_id"].astype(str)
     metadata["event_t0_date"] = pd.to_datetime(metadata["event_t0_date"]).dt.strftime("%Y-%m-%d")
     metadata["trade_open_date"] = pd.to_datetime(metadata["trade_open_date"]).dt.strftime("%Y-%m-%d")
     metadata["event_split"] = metadata["event_split"].astype(str)
     return metadata
 
 
-def load_ep07_train_label_diagnostics(paths: dict[str, Path]) -> pd.DataFrame:
+def load_ep07_train_label_diagnostics(paths: dict[str, Path], train_event_ids: set[str]) -> pd.DataFrame:
     columns = [
         "event_id",
         "event_split",
@@ -463,7 +476,9 @@ def load_ep07_train_label_diagnostics(paths: dict[str, Path]) -> pd.DataFrame:
         "horizon_complete_120d",
         "event_big_winner_120d_label",
     ]
-    return pd.read_parquet(paths["ep07_candidate_labels"], columns=columns, filters=[("event_split", "==", "train")])
+    labels = pd.read_parquet(paths["ep07_candidate_labels"], columns=columns, filters=[("event_split", "==", "train")])
+    labels["event_id"] = labels["event_id"].astype(str)
+    return labels.loc[labels["event_id"].isin(train_event_ids)].copy()
 
 
 def load_benchmark_features(path: Path) -> pd.DataFrame:
@@ -505,7 +520,8 @@ def compute_qfq_feature_frame(path: Path, benchmark: pd.DataFrame) -> pd.DataFra
     frame["close_asof_decision_date"] = close
     frame["rolling_120d_high_asof_decision_date"] = high.rolling(120, min_periods=120).max()
     frame["rolling_120d_low_asof_decision_date"] = low.rolling(120, min_periods=120).min()
-    frame["amount_ratio_20d_asof_decision_date"] = money / money.rolling(20, min_periods=20).mean()
+    frame["rolling_20d_money_mean_asof_decision_date"] = money.rolling(20, min_periods=20).mean()
+    frame["amount_ratio_20d_asof_decision_date"] = money / frame["rolling_20d_money_mean_asof_decision_date"]
     for horizon in [5, 10, 20, 60]:
         frame[f"return_{horizon}d_asof_decision_date"] = close / close.shift(horizon) - 1.0
 
@@ -524,26 +540,38 @@ def compute_qfq_feature_frame(path: Path, benchmark: pd.DataFrame) -> pd.DataFra
     frame["entry_date"] = qfq["date"].shift(-1)
     frame["entry_price"] = open_.shift(-1)
 
-    high_values = high.to_numpy(dtype=float)
-    low_values = low.to_numpy(dtype=float)
-    close_values = close.to_numpy(dtype=float)
-    entry_price = frame["entry_price"].to_numpy(dtype=float)
-    for horizon in [20, 30, 60, 120]:
-        future_high = pd.Series(future_window_arrays(high_values, horizon, "max")).shift(-1).to_numpy(dtype=float)
-        future_low = pd.Series(future_window_arrays(low_values, horizon, "min")).shift(-1).to_numpy(dtype=float)
-        future_close = pd.Series(close).shift(-(horizon)).to_numpy(dtype=float)
-        complete = np.isfinite(entry_price) & (entry_price > 0) & np.isfinite(future_high) & np.isfinite(future_low) & np.isfinite(future_close)
-        frame[f"path_complete_{horizon}d"] = complete
-        frame[f"forward_mfe_{horizon}d"] = np.where(complete, future_high / entry_price - 1.0, np.nan)
-        frame[f"forward_mae_{horizon}d"] = np.where(complete, future_low / entry_price - 1.0, np.nan)
-        frame[f"forward_return_{horizon}d"] = np.where(complete, future_close / entry_price - 1.0, np.nan)
-
     frame = frame.merge(benchmark, left_on="decision_date", right_on="date", how="left").drop(columns=["date"])
     frame["stock_vs_market_return_20d_asof_decision_date"] = (
         frame["return_20d_asof_decision_date"] - frame["benchmark_return_20d"]
     )
     frame["market_drawdown_60d_asof_decision_date"] = frame["benchmark_drawdown_60d"]
     frame["market_regime_risk_on_asof_decision_date"] = frame["market_regime_risk_on"].fillna(False)
+    return frame
+
+
+def compute_qfq_label_frame(path: Path, horizons: list[int], threshold: float) -> pd.DataFrame:
+    qfq = read_table(path)
+    qfq = qfq.sort_values("date").reset_index(drop=True)
+    qfq["date"] = pd.to_datetime(qfq["date"]).dt.strftime("%Y-%m-%d")
+    instrument = str(qfq["instrument"].iloc[0])
+    high = pd.to_numeric(qfq["high"], errors="coerce")
+    low = pd.to_numeric(qfq["low"], errors="coerce")
+    close = pd.to_numeric(qfq["close"], errors="coerce")
+    open_ = pd.to_numeric(qfq["open"], errors="coerce")
+    frame = pd.DataFrame({"instrument": instrument, "decision_date": qfq["date"]})
+    entry_price = open_.shift(-1).to_numpy(dtype=float)
+    high_values = high.to_numpy(dtype=float)
+    low_values = low.to_numpy(dtype=float)
+    for horizon in horizons:
+        future_high = pd.Series(future_window_arrays(high_values, horizon, "max")).shift(-1).to_numpy(dtype=float)
+        future_low = pd.Series(future_window_arrays(low_values, horizon, "min")).shift(-1).to_numpy(dtype=float)
+        future_close = pd.Series(close).shift(-horizon).to_numpy(dtype=float)
+        complete = np.isfinite(entry_price) & (entry_price > 0) & np.isfinite(future_high) & np.isfinite(future_low) & np.isfinite(future_close)
+        frame[f"path_complete_{horizon}d"] = complete
+        frame[f"forward_mfe_{horizon}d"] = np.where(complete, future_high / entry_price - 1.0, np.nan)
+        frame[f"forward_mae_{horizon}d"] = np.where(complete, future_low / entry_price - 1.0, np.nan)
+        frame[f"forward_return_{horizon}d"] = np.where(complete, future_close / entry_price - 1.0, np.nan)
+        frame[f"forward_big_winner_{horizon}d"] = frame[f"forward_mfe_{horizon}d"] >= threshold
     return frame
 
 
@@ -576,7 +604,7 @@ def add_month_buckets(panel: pd.DataFrame, bucket_count: int) -> pd.DataFrame:
 
 
 def load_or_build_universe_feature_panel(config: dict[str, Any], paths: dict[str, Path]) -> pd.DataFrame:
-    cache = LOCAL_CACHE / "universe_feature_panel_v3.parquet"
+    cache = LOCAL_CACHE / "universe_feature_panel_v4.parquet"
     if config.get("runtime", {}).get("cache_universe_feature_panel", True) and cache.exists():
         return pd.read_parquet(cache)
 
@@ -614,15 +642,12 @@ def load_or_build_universe_feature_panel(config: dict[str, Any], paths: dict[str
     if panel.empty:
         return panel
 
-    threshold = float(config["labels"]["primary_big_winner_threshold"])
-    for horizon in config["labels"]["horizons"]:
-        panel[f"forward_big_winner_{horizon}d"] = panel[f"forward_mfe_{horizon}d"] >= threshold
     panel["entry_anchor_available"] = pd.to_numeric(panel["entry_price"], errors="coerce").gt(0) & panel["entry_date"].notna()
     panel["entry_fill_feasible"] = (
         as_bool(panel["is_listed"]) & ~as_bool(panel["is_st"]) & ~as_bool(panel["is_suspended"]) & panel["entry_anchor_available"]
     )
     panel["match_market_cap"] = pd.to_numeric(panel["total_market_cap_cny"], errors="coerce")
-    panel["match_amount20"] = pd.to_numeric(panel["amount_ratio_20d_asof_decision_date"], errors="coerce")
+    panel["match_amount20"] = pd.to_numeric(panel["rolling_20d_money_mean_asof_decision_date"], errors="coerce")
     panel["match_vol60"] = panel.groupby("instrument")["close_asof_decision_date"].pct_change().groupby(panel["instrument"]).rolling(
         60, min_periods=60
     ).std().reset_index(level=0, drop=True)
@@ -633,13 +658,34 @@ def load_or_build_universe_feature_panel(config: dict[str, Any], paths: dict[str
     ].rank(pct=True)
     panel["atr_20_pct_rank_asof_decision_date"] = panel.groupby("decision_date")["atr_20_pct_asof_decision_date"].rank(pct=True)
     panel = add_month_buckets(panel, int(config["baseline"]["bucket_count"]))
-    panel["baseline_eligible"] = (
+    panel["row_id"] = panel["instrument"].astype(str) + "_" + panel["decision_date"].astype(str)
+    panel["cooldown_eligible_under_19a_rule"] = cooldown_filter(
+        panel,
+        "decision_pos",
+        int(config["execution"]["primary_cooldown_window_sessions"]),
+    )
+    panel["baseline_membership_frozen_before_label_readout"] = True
+    panel["matching_bucket_frozen_before_label_readout"] = True
+    panel["pre_label_baseline_eligible_candidate"] = (
         panel["entry_fill_feasible"]
-        & panel["path_complete_120d"]
+        & panel["cooldown_eligible_under_19a_rule"]
         & panel["matching_fields_available"]
         & panel["history_ready_240d_flag"].fillna(False).astype(bool)
     )
-    panel["row_id"] = panel["instrument"].astype(str) + "_" + panel["decision_date"].astype(str)
+
+    threshold = float(config["labels"]["primary_big_winner_threshold"])
+    label_frames: list[pd.DataFrame] = []
+    for idx, instrument in enumerate(sorted(panel["instrument"].unique()), start=1):
+        qfq_path = stock_dir / f"{instrument}.csv"
+        if not qfq_path.exists():
+            continue
+        label_frames.append(compute_qfq_label_frame(qfq_path, list(config["labels"]["horizons"]), threshold))
+        if idx % int(config.get("runtime", {}).get("progress_every_instruments", 250)) == 0:
+            print(f"[19B0] rebuilt executable-entry labels for {idx}/{panel['instrument'].nunique()} instruments")
+    labels = pd.concat(label_frames, ignore_index=True) if label_frames else pd.DataFrame(columns=["instrument", "decision_date"])
+    panel = panel.merge(labels, on=["instrument", "decision_date"], how="left")
+    panel["baseline_forward_label_read_after_membership_freeze"] = True
+    panel["baseline_eligible"] = panel["pre_label_baseline_eligible_candidate"] & panel["path_complete_120d"].fillna(False)
     LOCAL_CACHE.mkdir(parents=True, exist_ok=True)
     panel.to_parquet(cache, index=False)
     return panel
@@ -1103,6 +1149,16 @@ def materialize_cells(
             cell_frames[(family_id, grid_cell_id)] = frame
         raw_n = len(frame) if materialized else 0
         primary = frame.loc[frame["primary_denominator_row"]] if materialized and "primary_denominator_row" in frame else pd.DataFrame()
+        instrument_n = int(primary["instrument"].nunique()) if not primary.empty else 0
+        effective_ratio = (primary["instrument_month"].nunique() / len(primary)) if not primary.empty and "instrument_month" in primary else 0.0
+        denominator_gate = (
+            len(primary) >= threshold_n
+            and instrument_n >= threshold_inst
+            and effective_ratio >= float(config["cell_support"]["cell_effective_sample_ratio_min"])
+        )
+        denominator_blocking = blocking
+        if materialized and not blocking and not denominator_gate:
+            denominator_blocking = "cell_support_floor_not_met"
         denominator_rows.append(
             {
                 "family_id": family_id,
@@ -1118,14 +1174,14 @@ def materialize_cells(
                 "primary_denominator_n": len(primary),
                 "path_complete_120_n": int(primary["path_complete_120d"].sum()) if not primary.empty else 0,
                 "path_complete_30_n": int(primary["path_complete_30d"].sum()) if not primary.empty else 0,
-                "instrument_n": int(primary["instrument"].nunique()) if not primary.empty else 0,
+                "instrument_n": instrument_n,
                 "instrument_month_n": int(primary["instrument_month"].nunique()) if not primary.empty and "instrument_month" in primary else 0,
                 "decision_month_n": int(primary["decision_month"].nunique()) if not primary.empty and "decision_month" in primary else 0,
                 "cell_primary_denominator_n_min": threshold_n,
                 "cell_instrument_n_min": threshold_inst,
-                "cell_effective_sample_ratio": (primary["instrument_month"].nunique() / len(primary)) if not primary.empty and "instrument_month" in primary else 0.0,
-                "denominator_gate": pass_fail(len(primary) >= threshold_n and (primary["instrument"].nunique() if not primary.empty else 0) >= threshold_inst),
-                "blocking_reason": blocking,
+                "cell_effective_sample_ratio": effective_ratio,
+                "denominator_gate": pass_fail(denominator_gate),
+                "blocking_reason": denominator_blocking,
             }
         )
 
@@ -1263,6 +1319,25 @@ def se_delta_probability(candidate: pd.DataFrame, baseline: pd.DataFrame) -> flo
     return math.sqrt(max(p1 * (1.0 - p1), 0.0) / n1 + max(p0 * (1.0 - p0), 0.0) / n0)
 
 
+def positive_exposure_parameters(config: dict[str, Any]) -> tuple[float, float]:
+    cfg = config.get("positive_exposure_config") or config.get("positive_exposure") or {}
+    absolute_floor = float(cfg.get("positive_exposure_absolute_margin_floor_50", 0.02))
+    relative_ratio = float(cfg.get("positive_exposure_relative_margin_ratio_floor", 0.20))
+    return absolute_floor, relative_ratio
+
+
+def se_delta_candidate_vs_eligible(candidate: pd.DataFrame, baseline_pool: pd.DataFrame, p_eligible: float) -> float:
+    if not np.isfinite(p_eligible):
+        return np.nan
+    n_candidate = max(int(candidate["instrument_month"].nunique()), 1)
+    n_eligible = max(int(baseline_pool["instrument_month"].nunique()), 1)
+    p_candidate = float(candidate["forward_big_winner_120d"].mean()) if len(candidate) else 0.0
+    return math.sqrt(
+        max(p_candidate * (1.0 - p_candidate), 0.0) / n_candidate
+        + max(p_eligible * (1.0 - p_eligible), 0.0) / n_eligible
+    )
+
+
 def build_baselines_and_metrics(
     cell_frames: dict[tuple[str, str], pd.DataFrame],
     baseline_pool: pd.DataFrame,
@@ -1280,6 +1355,10 @@ def build_baselines_and_metrics(
     min_cell_n = int(config["cell_support"]["cell_primary_denominator_n_min"])
     min_instrument_n = int(config["cell_support"]["cell_instrument_n_min"])
     min_effective_ratio = float(config["cell_support"]["cell_effective_sample_ratio_min"])
+    positive_abs_floor, positive_relative_ratio = positive_exposure_parameters(config)
+    p_train_baseline_eligible = (
+        float(baseline_pool["forward_big_winner_120d"].mean()) if len(baseline_pool) else np.nan
+    )
 
     for idx, ((family_id, grid_cell_id), frame) in enumerate(cell_frames.items(), start=1):
         candidate = frame.loc[frame["primary_denominator_row"]].copy() if "primary_denominator_row" in frame else pd.DataFrame()
@@ -1289,6 +1368,19 @@ def build_baselines_and_metrics(
         if len(candidate) < min_cell_n or candidate["instrument"].nunique() < min_instrument_n or effective_ratio < min_effective_ratio:
             continue
         p_candidate = float(candidate["forward_big_winner_120d"].mean())
+        se_positive = se_delta_candidate_vs_eligible(candidate, baseline_pool, p_train_baseline_eligible)
+        positive_delta = p_candidate - p_train_baseline_eligible if np.isfinite(p_train_baseline_eligible) else np.nan
+        positive_ratio = p_candidate / p_train_baseline_eligible if np.isfinite(p_train_baseline_eligible) and p_train_baseline_eligible > 0 else np.nan
+        positive_relative_floor = positive_relative_ratio * p_train_baseline_eligible if np.isfinite(p_train_baseline_eligible) else np.nan
+        positive_margin_candidates = [positive_abs_floor]
+        if np.isfinite(positive_relative_floor):
+            positive_margin_candidates.append(float(positive_relative_floor))
+        if np.isfinite(se_positive):
+            positive_margin_candidates.append(float(2.0 * se_positive))
+        positive_margin = max(positive_margin_candidates)
+        positive_score = positive_delta - positive_margin if np.isfinite(positive_delta) else np.nan
+        positive_train_pass = bool(np.isfinite(positive_score) and positive_score >= 0.0)
+        parameter_hash = str(candidate["parameter_hash"].iloc[0]) if "parameter_hash" in candidate and len(candidate) else ""
         for baseline_no, baseline_family in enumerate(BASELINE_FAMILIES, start=1):
             baseline, unmatched = baseline_for_cell(candidate, baseline_pool, baseline_family, seed + idx * 17 + baseline_no)
             requested = len(candidate)
@@ -1313,7 +1405,8 @@ def build_baselines_and_metrics(
             margin_ratio = max(0.10, 2.0 * se_delta / p_matched) if np.isfinite(p_matched) and p_matched > 0 else np.nan
             lift = p_candidate / p_matched if np.isfinite(p_matched) and p_matched > 0 else np.nan
             adjusted = lift - 1.0 - margin_ratio if np.isfinite(lift) and np.isfinite(margin_ratio) else np.nan
-            baseline_pass = bool(quality_pass and np.isfinite(adjusted) and adjusted >= 0.0)
+            baseline_pass = bool(not zero_baseline and np.isfinite(adjusted) and adjusted >= 0.0)
+            baseline_materialized = bool(materialized >= requested and requested > 0)
 
             baseline_materialization_rows.append(
                 {
@@ -1349,7 +1442,10 @@ def build_baselines_and_metrics(
                     "matched_baseline_primary_row_count": materialized,
                     "primary_enrichment_denominator_row_count": requested,
                     "baseline_matching_quality_gate": pass_fail(quality_pass),
-                    "cell_eligible_for_selection_under_this_baseline": bool(quality_pass),
+                    "residual_alpha_claim_allowed": bool(quality_pass),
+                    "positive_beta_exposure_claim_allowed": bool(baseline_materialized),
+                    "baseline_quality_blocks_residual_alpha_only": bool(not quality_pass and baseline_materialized),
+                    "cell_eligible_for_selection_under_this_baseline": bool(baseline_materialized),
                     "blocking_reason": "" if quality_pass else "baseline_quality_threshold_failed",
                 }
             )
@@ -1357,6 +1453,7 @@ def build_baselines_and_metrics(
                 {
                     "family_id": family_id,
                     "grid_cell_id": grid_cell_id,
+                    "parameter_hash": parameter_hash,
                     "baseline_family": baseline_family,
                     "split": "train",
                     "label_anchor_type": "executable_next_open_anchored",
@@ -1378,7 +1475,21 @@ def build_baselines_and_metrics(
                     "zero_baseline_flag": zero_baseline,
                     "train_triage_baseline_pass": baseline_pass,
                     "train_triage_pass": False,
+                    "residual_alpha_train_pass": False,
+                    "p_train_baseline_eligible_50": p_train_baseline_eligible,
+                    "positive_exposure_delta_50": positive_delta,
+                    "positive_exposure_ratio_50": positive_ratio,
+                    "positive_exposure_absolute_margin_floor_50": positive_abs_floor,
+                    "positive_exposure_relative_margin_ratio_floor": positive_relative_ratio,
+                    "positive_exposure_relative_margin_floor_50": positive_relative_floor,
+                    "positive_exposure_margin_50": positive_margin,
+                    "positive_exposure_score_50": positive_score,
+                    "positive_exposure_train_pass": positive_train_pass,
                     "train_primary_metric_rank": np.nan,
+                    "selection_track": "",
+                    "promotion_claim_type": "train_diagnostic_only",
+                    "residual_alpha_claim_allowed": False,
+                    "positive_beta_exposure_claim_allowed": bool(baseline_materialized),
                     "selected_for_19B_robustness_flag": False,
                     "blocking_reason": "" if baseline_pass else "baseline_arm_did_not_pass",
                 }
@@ -1418,21 +1529,53 @@ def build_baselines_and_metrics(
                     "se_delta_method": bootstrap_cfg["se_delta_method"],
                     "SE_delta_probability": se_delta,
                     "primary_tail_lift_50_train_margin_ratio": margin_ratio,
+                    "SE_delta_probability_candidate_vs_eligible_universe": se_positive,
+                    "positive_exposure_absolute_margin_floor_50": positive_abs_floor,
+                    "positive_exposure_relative_margin_ratio_floor": positive_relative_ratio,
+                    "positive_exposure_relative_margin_floor_50": positive_relative_floor,
+                    "positive_exposure_margin_50": positive_margin,
                     "multiway_cluster_enabled": bool(bootstrap_cfg["multiway_cluster_enabled"]),
                     "blocking_reason": "",
                 }
             )
             concentration_rows.append(build_concentration_row(candidate, family_id, grid_cell_id, baseline_family, lift, baseline_pass))
 
+    quality = pd.DataFrame(quality_rows)
     metric = pd.DataFrame(metric_rows)
     if not metric.empty:
         grouped = metric.groupby(["family_id", "grid_cell_id"])
         conservative = grouped["primary_tail_lift_50_by_baseline"].transform("min")
         adjusted_conservative = grouped["primary_tail_lift_50_train_margin_adjusted_by_baseline"].transform("min")
-        all_pass = grouped["train_triage_baseline_pass"].transform("all")
+        baseline_family_n = grouped["baseline_family"].transform("nunique")
+        all_pass = grouped["train_triage_baseline_pass"].transform("all") & baseline_family_n.eq(len(BASELINE_FAMILIES))
         metric["primary_tail_lift_50_conservative"] = conservative
         metric["primary_tail_lift_50_train_margin_adjusted_conservative"] = adjusted_conservative
         metric["train_triage_pass"] = all_pass
+        if not quality.empty:
+            quality_cell = (
+                quality.groupby(["family_id", "grid_cell_id"])
+                .agg(
+                    residual_alpha_claim_allowed=("baseline_matching_quality_gate", lambda s: len(s) == len(BASELINE_FAMILIES) and s.eq("pass").all()),
+                    positive_beta_exposure_claim_allowed=("positive_beta_exposure_claim_allowed", lambda s: len(s) == len(BASELINE_FAMILIES) and s.astype(bool).all()),
+                )
+                .reset_index()
+            )
+            metric = metric.drop(
+                columns=["residual_alpha_claim_allowed", "positive_beta_exposure_claim_allowed"], errors="ignore"
+            ).merge(quality_cell, on=["family_id", "grid_cell_id"], how="left")
+            metric["residual_alpha_claim_allowed"] = metric["residual_alpha_claim_allowed"].fillna(False).astype(bool)
+            metric["positive_beta_exposure_claim_allowed"] = metric["positive_beta_exposure_claim_allowed"].fillna(False).astype(bool)
+        metric["residual_alpha_train_pass"] = metric["train_triage_pass"].astype(bool) & metric["residual_alpha_claim_allowed"].astype(bool)
+        metric["selection_track"] = np.select(
+            [metric["residual_alpha_train_pass"], metric["positive_exposure_train_pass"]],
+            ["residual_alpha", "positive_beta_exposure"],
+            default="train_diagnostic_only",
+        )
+        metric["promotion_claim_type"] = np.select(
+            [metric["residual_alpha_train_pass"], metric["positive_exposure_train_pass"]],
+            ["residual_alpha_candidate", "positive_beta_exposure_candidate"],
+            default="train_diagnostic_only",
+        )
         rank_source = metric.drop_duplicates(["family_id", "grid_cell_id"])[
             ["family_id", "grid_cell_id", "primary_tail_lift_50_train_margin_adjusted_conservative"]
         ].copy()
@@ -1446,7 +1589,7 @@ def build_baselines_and_metrics(
         )
     return (
         pd.DataFrame(baseline_materialization_rows),
-        pd.DataFrame(quality_rows),
+        quality,
         metric,
         pd.DataFrame(sensitivity_rows),
         pd.DataFrame(bootstrap_rows),
@@ -1497,8 +1640,10 @@ def build_eligible_universe_baseline_audit(panel: pd.DataFrame) -> pd.DataFrame:
         ("raw_train_universe", pd.Series(True, index=panel.index)),
         ("entry_anchor_available", panel["entry_anchor_available"].fillna(False)),
         ("entry_fill_feasible", panel["entry_fill_feasible"].fillna(False)),
-        ("path_complete_120d", panel["path_complete_120d"].fillna(False)),
+        ("cooldown_eligible_under_19a_rule", panel["cooldown_eligible_under_19a_rule"].fillna(False)),
         ("matching_fields_available", panel["matching_fields_available"].fillna(False)),
+        ("pre_label_baseline_eligible_candidate", panel["pre_label_baseline_eligible_candidate"].fillna(False)),
+        ("path_complete_120d", panel["path_complete_120d"].fillna(False)),
         ("baseline_eligible", panel["baseline_eligible"].fillna(False)),
     ]
     previous_n = len(panel)
@@ -1514,6 +1659,10 @@ def build_eligible_universe_baseline_audit(panel: pd.DataFrame) -> pd.DataFrame:
                 "path_complete_120_rate": float(subset["path_complete_120d"].fillna(False).mean()) if not subset.empty else 0.0,
                 "path_complete_30_rate": float(subset["path_complete_30d"].fillna(False).mean()) if not subset.empty else 0.0,
                 "matching_fields_available_rate": float(subset["matching_fields_available"].fillna(False).mean()) if not subset.empty else 0.0,
+                "cooldown_eligible_rate": float(subset["cooldown_eligible_under_19a_rule"].fillna(False).mean()) if not subset.empty else 0.0,
+                "membership_frozen_before_label_readout": bool(subset["baseline_membership_frozen_before_label_readout"].all()) if not subset.empty else True,
+                "matching_bucket_frozen_before_label_readout": bool(subset["matching_bucket_frozen_before_label_readout"].all()) if not subset.empty else True,
+                "baseline_forward_label_read_after_membership_freeze": bool(subset["baseline_forward_label_read_after_membership_freeze"].all()) if not subset.empty else True,
                 "filtered_out_row_n": previous_n - len(subset),
                 "blocking_reason": "",
             }
@@ -1570,12 +1719,20 @@ def build_selection_outputs(
         "parameter_hash",
         "selection_split",
         "selection_metric",
+        "selection_track",
+        "promotion_claim_type",
+        "residual_alpha_claim_allowed",
+        "positive_beta_exposure_claim_allowed",
         "selection_rank_within_family",
         "label_anchor_type",
         "selected_for_19B_robustness_flag",
         "N_family_brought_to_robustness",
         "N_tested_family_cell_pairs",
-        "active_correction_scope",
+        "residual_alpha_correction_scope",
+        "positive_beta_exposure_correction_scope",
+        "track_correction_scope_policy",
+        "max_ep19_terminal_state_if_no_residual_pass",
+        "ep20_policy_preflight_authorized_if_no_residual_pass",
         "manifest_frozen_before_robustness_readout",
         "blocking_reason",
     ]
@@ -1583,7 +1740,14 @@ def build_selection_outputs(
         family_selection = pd.DataFrame()
         selected = pd.DataFrame(columns=selected_columns)
     else:
+        baseline_counts = (
+            metric.groupby(["family_id", "grid_cell_id"])["baseline_family"]
+            .nunique()
+            .rename("baseline_family_n")
+            .reset_index()
+        )
         cell_metric = metric.drop_duplicates(["family_id", "grid_cell_id"]).copy()
+        cell_metric = cell_metric.merge(baseline_counts, on=["family_id", "grid_cell_id"], how="left")
         denom = denominator[["family_id", "grid_cell_id", "primary_denominator_n", "instrument_n", "cell_effective_sample_ratio"]]
         cell_metric = cell_metric.merge(denom, on=["family_id", "grid_cell_id"], how="left", suffixes=("", "_denom"))
         cell_metric["support_pass"] = (
@@ -1591,17 +1755,56 @@ def build_selection_outputs(
             & cell_metric["instrument_n_denom"].ge(int(config["cell_support"]["cell_instrument_n_min"]))
             & cell_metric["cell_effective_sample_ratio"].ge(float(config["cell_support"]["cell_effective_sample_ratio_min"]))
         )
-        cell_metric["selection_pass"] = cell_metric["train_triage_pass"] & cell_metric["support_pass"]
+        cell_metric["all_three_baseline_families_present"] = cell_metric["baseline_family_n"].eq(len(BASELINE_FAMILIES))
+        cell_metric["candidate_per_winner"] = cell_metric["candidate_n"] / (
+            cell_metric["candidate_n"].mul(cell_metric["p_candidate_50"]).clip(lower=1.0)
+        )
+        cell_metric["residual_selection_pass"] = (
+            cell_metric["support_pass"]
+            & cell_metric["all_three_baseline_families_present"]
+            & cell_metric["residual_alpha_train_pass"].astype(bool)
+        )
+        cell_metric["positive_selection_pass"] = (
+            cell_metric["support_pass"]
+            & cell_metric["all_three_baseline_families_present"]
+            & cell_metric["positive_exposure_train_pass"].astype(bool)
+            & cell_metric["positive_beta_exposure_claim_allowed"].astype(bool)
+        )
         family_rows = []
         selected_rows = []
         for family_id, group in cell_metric.groupby("family_id", sort=True):
-            ranked = group.sort_values(
-                ["selection_pass", "primary_tail_lift_50_train_margin_adjusted_conservative", "primary_denominator_n_denom", "grid_cell_id"],
-                ascending=[False, False, False, True],
+            residual_pass_rows = group.loc[group["residual_selection_pass"]].sort_values(
+                [
+                    "primary_tail_lift_50_train_margin_adjusted_conservative",
+                    "primary_denominator_n_denom",
+                    "candidate_per_winner",
+                    "grid_cell_id",
+                ],
+                ascending=[False, False, True, True],
             )
-            pass_rows = ranked.loc[ranked["selection_pass"]]
-            selected_row = pass_rows.iloc[0] if not pass_rows.empty else None
-            diagnostic = ranked["primary_tail_lift_50_train_margin_adjusted_conservative"].fillna(-np.inf).max() > 0
+            positive_pass_rows = group.loc[group["positive_selection_pass"]].sort_values(
+                ["positive_exposure_score_50", "primary_denominator_n_denom", "candidate_per_winner", "grid_cell_id"],
+                ascending=[False, False, True, True],
+            )
+            if not residual_pass_rows.empty:
+                selected_row = residual_pass_rows.iloc[0]
+                selection_metric = "primary_tail_lift_50_train_margin_adjusted_conservative"
+                selection_track = "residual_alpha"
+                promotion_claim_type = "residual_alpha_candidate"
+            elif not positive_pass_rows.empty:
+                selected_row = positive_pass_rows.iloc[0]
+                selection_metric = "positive_exposure_score_50"
+                selection_track = "positive_beta_exposure"
+                promotion_claim_type = "positive_beta_exposure_candidate"
+            else:
+                selected_row = None
+                selection_metric = ""
+                selection_track = "train_diagnostic_only"
+                promotion_claim_type = "train_diagnostic_only"
+            diagnostic = bool(
+                group["primary_tail_lift_50_train_margin_adjusted_conservative"].fillna(-np.inf).max() > 0
+                or group["positive_exposure_delta_50"].fillna(-np.inf).max() > 0
+            )
             family_rows.append(
                 {
                     "family_id": family_id,
@@ -1609,15 +1812,20 @@ def build_selection_outputs(
                     "materialized_grid_cell_n": int(len(group)),
                     "ranked_grid_cell_n": int(group["primary_tail_lift_50_train_margin_adjusted_conservative"].notna().sum()),
                     "selected_grid_cell_id": "" if selected_row is None else selected_row["grid_cell_id"],
-                    "selected_parameter_hash": "",
-                    "best_primary_tail_lift_50_train_margin_adjusted_conservative": float(ranked["primary_tail_lift_50_train_margin_adjusted_conservative"].max()),
-                    "all_three_baseline_families_present": True,
+                    "selected_parameter_hash": "" if selected_row is None else selected_row.get("parameter_hash", ""),
+                    "best_primary_tail_lift_50_train_margin_adjusted_conservative": float(group["primary_tail_lift_50_train_margin_adjusted_conservative"].max()),
+                    "best_positive_exposure_score_50": float(group["positive_exposure_score_50"].max()),
+                    "all_three_baseline_families_present": bool(group["all_three_baseline_families_present"].all()),
                     "label_anchor_type": "executable_next_open_anchored",
                     "selected_for_19B_robustness_flag": selected_row is not None,
                     "family_triage_status": "selected_for_19B" if selected_row is not None else ("train_diagnostic_only" if diagnostic else "no_cell_passed"),
+                    "selection_track": selection_track,
+                    "promotion_claim_type": promotion_claim_type,
+                    "residual_alpha_claim_allowed": bool(selected_row["residual_alpha_claim_allowed"]) if selected_row is not None else False,
+                    "positive_beta_exposure_claim_allowed": bool(selected_row["positive_beta_exposure_claim_allowed"]) if selected_row is not None else bool(group["positive_beta_exposure_claim_allowed"].any()),
                     "selection_rank_within_all_families": np.nan,
                     "selection_rule_applied_before_robustness_readout": True,
-                    "blocking_reason": "" if selected_row is not None else "no_cell_met_conjunctive_train_triage",
+                    "blocking_reason": "" if selected_row is not None else "no_cell_met_residual_or_positive_exposure_selection_condition",
                 }
             )
             if selected_row is not None:
@@ -1625,15 +1833,27 @@ def build_selection_outputs(
                     {
                         "family_id": family_id,
                         "grid_cell_id": selected_row["grid_cell_id"],
-                        "parameter_hash": "",
+                        "parameter_hash": selected_row.get("parameter_hash", ""),
                         "selection_split": "train",
-                        "selection_metric": "primary_tail_lift_50_train_margin_adjusted_conservative",
+                        "selection_metric": selection_metric,
+                        "selection_track": selection_track,
+                        "promotion_claim_type": promotion_claim_type,
+                        "residual_alpha_claim_allowed": bool(selected_row["residual_alpha_claim_allowed"]),
+                        "positive_beta_exposure_claim_allowed": bool(selected_row["positive_beta_exposure_claim_allowed"]),
                         "selection_rank_within_family": 1,
                         "label_anchor_type": "executable_next_open_anchored",
                         "selected_for_19B_robustness_flag": True,
                         "N_family_brought_to_robustness": 0,
                         "N_tested_family_cell_pairs": 0,
-                        "active_correction_scope": 0,
+                        "residual_alpha_correction_scope": "",
+                        "positive_beta_exposure_correction_scope": "",
+                        "track_correction_scope_policy": "separate_by_promotion_claim_type",
+                        "max_ep19_terminal_state_if_no_residual_pass": (
+                            "19_entry_universe_enrichment_only_diagnostic"
+                            if promotion_claim_type == "positive_beta_exposure_candidate"
+                            else "not_applicable_for_residual_alpha_candidate"
+                        ),
+                        "ep20_policy_preflight_authorized_if_no_residual_pass": False,
                         "manifest_frozen_before_robustness_readout": True,
                         "blocking_reason": "",
                     }
@@ -1646,10 +1866,15 @@ def build_selection_outputs(
         selected = pd.DataFrame(selected_rows, columns=selected_columns)
 
     n_family = int(selected["family_id"].nunique()) if not selected.empty else 0
+    n_residual = int(selected["promotion_claim_type"].eq("residual_alpha_candidate").sum()) if not selected.empty else 0
+    n_positive = int(selected["promotion_claim_type"].eq("positive_beta_exposure_candidate").sum()) if not selected.empty else 0
+    residual_scope = f"{n_residual} * primary_tail_lift_50"
+    positive_scope = f"{n_positive} * positive_exposure_score_50"
     if not selected.empty:
         selected["N_family_brought_to_robustness"] = n_family
         selected["N_tested_family_cell_pairs"] = len(selected)
-        selected["active_correction_scope"] = len(selected)
+        selected["residual_alpha_correction_scope"] = residual_scope
+        selected["positive_beta_exposure_correction_scope"] = positive_scope
     robustness = selected.copy()
     if robustness.empty:
         robustness = pd.DataFrame(
@@ -1658,14 +1883,22 @@ def build_selection_outputs(
                 "grid_cell_id",
                 "parameter_hash",
                 "selected_in_19B0_train_only",
+                "selection_track",
+                "promotion_claim_type",
+                "residual_alpha_claim_allowed",
+                "positive_beta_exposure_claim_allowed",
                 "label_anchor_type",
                 "robustness_split_outcome_read_allowed_in_19B",
                 "validation_split_outcome_read_allowed_in_19B",
                 "N_family_brought_to_robustness",
                 "N_tested_family_cell_pairs",
-                "active_correction_scope",
+                "residual_alpha_correction_scope",
+                "positive_beta_exposure_correction_scope",
+                "track_correction_scope_policy",
                 "family_level_correction",
                 "cell_level_accounting",
+                "max_ep19_terminal_state_if_no_residual_pass",
+                "ep20_policy_preflight_authorized_if_no_residual_pass",
                 "manifest_frozen_before_robustness_readout",
                 "blocking_reason",
             ]
@@ -1676,6 +1909,8 @@ def build_selection_outputs(
         robustness["validation_split_outcome_read_allowed_in_19B"] = False
         robustness["family_level_correction"] = config["grid_search"]["family_level_correction"]
         robustness["cell_level_accounting"] = config["grid_search"]["cell_level_accounting"]
+    selection_track_counts = selected["selection_track"].value_counts().sort_index().to_dict() if not selected.empty else {}
+    promotion_counts = selected["promotion_claim_type"].value_counts().sort_index().to_dict() if not selected.empty else {}
     search = pd.DataFrame(
         [
             {
@@ -1683,10 +1918,16 @@ def build_selection_outputs(
                 "N_materialized_family": int(denominator.loc[denominator["raw_candidate_n"].gt(0), "family_id"].nunique()),
                 "N_family_brought_to_robustness": n_family,
                 "N_tested_family_cell_pairs": len(selected),
-                "active_correction_scope": len(selected),
+                "N_residual_alpha_candidate_pairs": n_residual,
+                "N_positive_beta_exposure_candidate_pairs": n_positive,
+                "residual_alpha_correction_scope": residual_scope,
+                "positive_beta_exposure_correction_scope": positive_scope,
+                "track_correction_scope_policy": "separate_by_promotion_claim_type",
                 "family_level_correction": config["grid_search"]["family_level_correction"],
                 "cell_level_accounting": config["grid_search"]["cell_level_accounting"],
                 "selected_cell_rule": config["grid_search"]["selected_cell_rule"],
+                "selection_track_counts": json.dumps(selection_track_counts, sort_keys=True),
+                "promotion_claim_type_counts": json.dumps(promotion_counts, sort_keys=True),
                 "expanded_cell_rule_enabled": bool(config["grid_search"]["expanded_cell_rule_enabled"]),
                 "validation_selected_cells": 0,
                 "search_accounting_gate": "pass",
@@ -1727,6 +1968,8 @@ def build_decision(
     selected: pd.DataFrame,
     family_selection: pd.DataFrame,
 ) -> pd.DataFrame:
+    n_residual = int(selected["promotion_claim_type"].eq("residual_alpha_candidate").sum()) if not selected.empty else 0
+    n_positive = int(selected["promotion_claim_type"].eq("positive_beta_exposure_candidate").sum()) if not selected.empty else 0
     row = {
         "run_id": RUN_ID,
         "created_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -1743,6 +1986,15 @@ def build_decision(
             "N_tested_family_cell_pairs": len(selected),
             "selected_family_n": int(selected["family_id"].nunique()) if not selected.empty else 0,
             "selected_family_cell_pair_n": len(selected),
+            "selected_residual_alpha_cell_pair_n": n_residual,
+            "selected_positive_beta_exposure_cell_pair_n": n_positive,
+            "residual_alpha_correction_scope": f"{n_residual} * primary_tail_lift_50",
+            "positive_beta_exposure_correction_scope": f"{n_positive} * positive_exposure_score_50",
+            "track_correction_scope_policy": "separate_by_promotion_claim_type",
+            "positive_beta_max_terminal_state_if_no_residual_pass": (
+                "19_entry_universe_enrichment_only_diagnostic" if n_positive > 0 else ""
+            ),
+            "positive_beta_ep20_policy_preflight_authorized_if_no_residual_pass": False,
             "diagnostic_family_n": int(family_selection["family_triage_status"].eq("train_diagnostic_only").sum()) if not family_selection.empty else 0,
             "validation_outcome_read": False,
             "robustness_outcome_used_for_selection": False,
@@ -1760,24 +2012,99 @@ def build_decision(
     return pd.DataFrame([row])
 
 
-def build_report(decision: pd.DataFrame, denominator: pd.DataFrame, metric: pd.DataFrame, family_selection: pd.DataFrame) -> str:
+def build_report(
+    decision: pd.DataFrame,
+    denominator: pd.DataFrame,
+    metric: pd.DataFrame,
+    family_selection: pd.DataFrame,
+    family_materialization: pd.DataFrame,
+    label_anchor_audit: pd.DataFrame,
+    matching_source_map: pd.DataFrame,
+    baseline_materialization: pd.DataFrame,
+    baseline_quality: pd.DataFrame,
+    sensitivity: pd.DataFrame,
+    concentration: pd.DataFrame,
+    search_accounting: pd.DataFrame,
+) -> str:
     row = decision.iloc[0]
     ep07 = denominator.loc[denominator["ep07_identity_cell_flag"]]
     ep07_den = int(ep07["primary_denominator_n"].iloc[0]) if not ep07.empty else 0
+    ep07_path_complete = int(ep07["path_complete_120_n"].iloc[0]) if not ep07.empty else 0
     selected_n = int(row["selected_family_cell_pair_n"])
-    top_lines = []
+    supported_families = sorted(denominator["family_id"].dropna().unique().tolist()) if not denominator.empty else []
+    family_lines = []
+    if not family_materialization.empty:
+        for item in family_materialization.sort_values("family_id").itertuples(index=False):
+            family_lines.append(
+                f"| {item.family_id} | {item.declared_grid_cell_n} | {item.materialized_grid_cell_n} | "
+                f"{item.materialization_status} | {item.blocking_reason or ''} |"
+            )
+    if not family_lines:
+        family_lines.append("| none | 0 | 0 | none | none |")
+
+    baseline_lines = []
+    if not baseline_quality.empty:
+        quality_summary = (
+            baseline_quality.groupby("baseline_family", as_index=False)
+            .agg(
+                rows=("grid_cell_id", "count"),
+                pass_n=("baseline_matching_quality_gate", lambda s: int(s.eq("pass").sum())),
+                median_smd=("max_standardized_mean_difference_after_matching", "median"),
+                median_unmatched=("unmatched_candidate_rate", "median"),
+            )
+        )
+        for item in quality_summary.itertuples(index=False):
+            baseline_lines.append(
+                f"| {item.baseline_family} | {item.rows} | {item.pass_n} | "
+                f"{item.median_smd:.3f} | {item.median_unmatched:.3f} |"
+            )
+    if not baseline_lines:
+        baseline_lines.append("| none | 0 | 0 | nan | nan |")
+
+    metric_lines = []
+    selected_lines = []
     if not metric.empty:
         top = metric.drop_duplicates(["family_id", "grid_cell_id"]).sort_values(
             "primary_tail_lift_50_train_margin_adjusted_conservative", ascending=False
         ).head(10)
         for item in top.itertuples(index=False):
-            top_lines.append(
+            metric_lines.append(
                 f"| {item.family_id} | {item.grid_cell_id} | {item.primary_denominator_n} | "
+                f"{item.p_candidate_50:.3f} | {item.p_train_baseline_eligible_50:.3f} | "
                 f"{item.primary_tail_lift_50_conservative:.3f} | "
-                f"{item.primary_tail_lift_50_train_margin_adjusted_conservative:.3f} | {item.train_triage_pass} |"
+                f"{item.primary_tail_lift_50_train_margin_adjusted_conservative:.3f} | "
+                f"{item.positive_exposure_absolute_margin_floor_50:.3f} | "
+                f"{item.positive_exposure_relative_margin_floor_50:.3f} | "
+                f"{item.positive_exposure_margin_50:.3f} | "
+                f"{item.positive_exposure_score_50:.4f} | {item.promotion_claim_type} | {item.train_triage_pass} |"
             )
-    if not top_lines:
-        top_lines.append("| none | none | 0 | nan | nan | False |")
+    if not family_selection.empty:
+        selected_family = family_selection.loc[family_selection["selected_for_19B_robustness_flag"].astype(bool)]
+        for item in selected_family.itertuples(index=False):
+            selected_lines.append(
+                f"| {item.family_id} | {item.selected_grid_cell_id} | {item.selection_track} | "
+                f"{item.promotion_claim_type} | {item.residual_alpha_claim_allowed} |"
+            )
+    if not metric_lines:
+        metric_lines.append("| none | none | 0 | nan | nan | nan | nan | nan | nan | nan | nan | train_diagnostic_only | False |")
+    if not selected_lines:
+        selected_lines.append("| none | none | none | none | false |")
+    sensitivity_line = "none"
+    if not sensitivity.empty:
+        sensitivity_line = (
+            f"rows={len(sensitivity)}, diagnostic_only={bool(sensitivity['diagnostic_only_flag'].all())}, "
+            f"median_tail_lift_20={sensitivity['sensitivity_tail_lift_20'].median():.3f}, "
+            f"median_tail_lift_60={sensitivity['sensitivity_tail_lift_60'].median():.3f}"
+        )
+    concentration_line = "none"
+    if not concentration.empty:
+        concentration_line = (
+            f"rows={len(concentration)}, max_instrument_candidate_share="
+            f"{concentration['max_instrument_candidate_share'].max():.3f}, "
+            f"max_instrument_winner_share={concentration['max_instrument_winner_share'].max():.3f}"
+        )
+    search_line = search_accounting.iloc[0].to_dict() if not search_accounting.empty else {}
+    label_anchor_line = label_anchor_audit.iloc[0].to_dict() if not label_anchor_audit.empty else {}
     return "\n".join(
         [
             "# 19B0 快速规则网格右尾富集扫描报告",
@@ -1787,29 +2114,80 @@ def build_report(decision: pd.DataFrame, denominator: pd.DataFrame, metric: pd.D
             f"- next_allowed_requirement: `{row['next_allowed_requirement']}`",
             "- validation outcome read: `false`",
             "- robustness outcome used for selection: `false`",
+            "- 19A ready 证据来自 upstream contract audit、manifest hash audit 和 frozen output hash 校验。",
             "",
-            "## 2. Label Anchor",
+            "## 2. 支持/不支持 Family 和 Grid Materialization",
+            f"- supported primary families: `{', '.join(supported_families)}`",
+            "- unsupported family: `B3_industry_or_theme_breadth_expansion`，原因是 no genuine PIT industry source。",
+            "",
+            "| family | declared_grid_cell_n | materialized_grid_cell_n | materialization_status | blocking_reason |",
+            "|---|---:|---:|---|---|",
+            *family_lines,
+            "",
+            "## 3. Label Anchor 和 Label Source Map",
             "- 19B0 使用 `executable_next_open_anchored` 标签。",
             "- EP07 `event_anchored` ready-made label 仅作为 diagnostic，不进入 primary metric 或 selection。",
+            f"- label source map: `executable_next_open_anchored`; label_anchor_rebuild_audit: `{json.dumps(clean_json(label_anchor_line), ensure_ascii=False, sort_keys=True)}`",
             "",
-            "## 3. Denominator",
+            "## 4. Denominator",
             f"- EP07 identity primary denominator: `{ep07_den}`",
+            f"- EP07 identity path-complete denominator: `{ep07_path_complete}`",
             f"- materialized family count: `{denominator.loc[denominator['raw_candidate_n'].gt(0), 'family_id'].nunique()}`",
+            f"- total candidate denominator rows audited: `{len(denominator)}`",
             "",
-            "## 4. Baseline 和 Metric",
+            "## 5. Matching Feature Source Map",
+            "- matching feature source map 明确候选与 baseline 使用同一 qfq/universe 重建路径。",
+            f"- matching keys: `{', '.join(matching_source_map['matching_key'].tolist()) if not matching_source_map.empty else 'none'}`",
+            "",
+            "## 6. Baseline Materialization 和 Matching Quality",
+            f"- baseline materialization rows: `{len(baseline_materialization)}`",
+            "- baseline matching quality failure blocks residual-alpha attribution only.",
+            "- It does not by itself invalidate a positive beta/exposure candidate.",
+            "- positive_beta_exposure_candidate 不是 independent alpha / residual alpha claim。",
+            "",
+            "| baseline_family | rows | pass_n | median_smd | median_unmatched_rate |",
+            "|---|---:|---:|---:|---:|",
+            *baseline_lines,
+            "",
+            "## 7. Metric Readout 和 Positive Beta/Exposure Track",
             "- 三类 baseline 分臂计算，selection 使用 conservative margin-adjusted score。",
             "",
-            "| family | grid_cell | primary_n | conservative_lift | conservative_adjusted | pass |",
-            "|---|---:|---:|---:|---:|---:|",
-            *top_lines,
+            "| family | grid_cell | primary_n | p_candidate_50 | broad_base_rate | conservative_lift | conservative_adjusted | abs_margin | rel_margin | positive_margin | positive_score | promotion_claim_type | lift_margin_pass |",
+            "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---:|",
+            *metric_lines,
             "",
-            "## 5. Selection",
+            "## 8. Sensitivity 和 Instrument Concentration",
+            f"- sensitivity 指标均为 diagnostic-only: `{sensitivity_line}`",
+            f"- instrument concentration / top-k removal 风险: `{concentration_line}`",
+            "",
+            "## 9. Selected Family/Cell Manifest",
             f"- selected family/cell pairs: `{selected_n}`",
+            f"- selected residual-alpha pairs: `{row['selected_residual_alpha_cell_pair_n']}`",
+            f"- selected positive-beta/exposure pairs: `{row['selected_positive_beta_exposure_cell_pair_n']}`",
             f"- diagnostic family count: `{row['diagnostic_family_n']}`",
+            f"- residual_alpha_correction_scope: `{row['residual_alpha_correction_scope']}`",
+            f"- positive_beta_exposure_correction_scope: `{row['positive_beta_exposure_correction_scope']}`",
+            "- residual-alpha and positive-beta tracks use separate correction scopes.",
+            "- positive-beta 候选若无 19B matched-baseline residual pass，只能支持 `19_entry_universe_enrichment_only_diagnostic`，不授权 EP20 policy preflight。",
             "",
-            "## 6. Authorization",
+            "| selected_family | selected_grid_cell | selection_track | promotion_claim_type | residual_alpha_claim_allowed |",
+            "|---|---|---|---|---:|",
+            *selected_lines,
+            "",
+            "## 10. Search Accounting 和 19B Handoff",
+            f"- search accounting: `{json.dumps(clean_json(search_line), ensure_ascii=False, sort_keys=True)}`",
+            f"- N_family_brought_to_robustness: `{row['N_family_brought_to_robustness']}`",
+            f"- N_tested_family_cell_pairs: `{row['N_tested_family_cell_pairs']}`",
+            "- positive_beta_exposure_candidate without matched-baseline residual pass can only support 19_entry_universe_enrichment_only_diagnostic, not EP20 authorization.",
+            "",
+            "## 11. Authorization 和 Final Decision",
+            f"- final decision_state: `{row['decision_state']}`",
+            f"- final next_allowed_requirement: `{row['next_allowed_requirement']}`",
             "- 19B0 不授权模型、entry/exit/holding policy、回测、生产信号或交易。",
             "- 进入 19B 的资格不是 support claim。",
+            "- 19B0 不是 robustness confirmation。",
+            "- 19B0 不证明策略有效。",
+            "- 19B0 不授权 19C replay。",
             "",
         ]
     )
@@ -1822,16 +2200,47 @@ def build_handoff(selected: pd.DataFrame) -> str:
         "19B may read robustness outcome only for rows frozen in `robustness_test_manifest.csv`.",
         "Validation outcome remains forbidden in 19B.",
         "",
-        "| family_id | grid_cell_id |",
-        "|---|---|",
+        "19B must preserve `promotion_claim_type`, `residual_alpha_claim_allowed`, and the separate correction scopes.",
+        "A positive beta/exposure candidate without a matched-baseline residual pass can only support `19_entry_universe_enrichment_only_diagnostic`.",
+        "",
+        "| family_id | grid_cell_id | promotion_claim_type | residual_alpha_claim_allowed | max_ep19_terminal_state_if_no_residual_pass |",
+        "|---|---|---|---:|---|",
     ]
     if selected.empty:
-        lines.append("| none | none |")
+        lines.append("| none | none | none | false | none |")
     else:
         for row in selected.itertuples(index=False):
-            lines.append(f"| {row.family_id} | {row.grid_cell_id} |")
+            lines.append(
+                f"| {row.family_id} | {row.grid_cell_id} | {row.promotion_claim_type} | "
+                f"{row.residual_alpha_claim_allowed} | {row.max_ep19_terminal_state_if_no_residual_pass} |"
+            )
     lines.append("")
     return "\n".join(lines)
+
+
+def output_contract_pass(report: str, outputs: dict[str, Path]) -> bool:
+    required_report_phrases = [
+        "支持/不支持 Family",
+        "Grid Materialization",
+        "Label Source Map",
+        "Matching Feature Source Map",
+        "Baseline Materialization",
+        "Positive Beta/Exposure Track",
+        "Sensitivity",
+        "Instrument Concentration",
+        "Search Accounting",
+        "19B0 不是 robustness confirmation。",
+        "19B0 不证明策略有效。",
+        "19B0 不授权 19C replay。",
+        "19B0 不授权模型、entry/exit/holding policy、回测、生产信号或交易。",
+        "进入 19B 的资格不是 support claim。",
+        "positive_beta_exposure_candidate 不是 independent alpha / residual alpha claim。",
+        "baseline matching quality failure blocks residual-alpha attribution only.",
+        "positive_beta_exposure_candidate without matched-baseline residual pass can only support 19_entry_universe_enrichment_only_diagnostic, not EP20 authorization.",
+        "residual-alpha and positive-beta tracks use separate correction scopes.",
+    ]
+    output_keys_ready = set(REQUIRED_OUTPUT_KEYS).issubset(set(outputs))
+    return output_keys_ready and all(phrase in report for phrase in required_report_phrases)
 
 
 def build_output_hashes(outputs: dict[str, Path]) -> dict[str, str]:
@@ -1885,7 +2294,8 @@ def run(config_path: str | Path = CONFIG_PATH) -> dict[str, Path]:
         write_df(outputs[key], frame)
 
     metadata = load_ep07_metadata(paths)
-    train_label_diag = load_ep07_train_label_diagnostics(paths)
+    train_event_ids = set(metadata.loc[metadata["event_split"].eq("train"), "event_id"].astype(str))
+    train_label_diag = load_ep07_train_label_diagnostics(paths, train_event_ids)
     train_boundary = build_train_only_boundary_audit(metadata, train_label_diag)
     universe_panel = load_or_build_universe_feature_panel(config, paths)
     baseline_pool = universe_panel.loc[universe_panel["baseline_eligible"]].copy()
@@ -1903,27 +2313,88 @@ def run(config_path: str | Path = CONFIG_PATH) -> dict[str, Path]:
         concentration,
     ) = build_baselines_and_metrics(cell_frames, baseline_pool, config)
     family_selection, selected, robustness_manifest, search_accounting = build_selection_outputs(metric, denominator, config)
+    if not metric.empty and not selected.empty:
+        selected_key = pd.MultiIndex.from_frame(selected[["family_id", "grid_cell_id"]])
+        metric_key = pd.MultiIndex.from_frame(metric[["family_id", "grid_cell_id"]])
+        metric["selected_for_19B_robustness_flag"] = metric_key.isin(selected_key)
 
     gates = {gate: "pass" for gate in CRITICAL_GATES}
     gates["upstream_19a_contract_gate"] = upstream_gate
     gates["train_only_boundary_gate"] = "pass" if train_boundary["boundary_gate"].eq("pass").all() else "fail"
     gates["grid_manifest_gate"] = pass_fail(not grid_cell_manifest.empty and not grid_registry.empty)
     gates["family_materialization_gate"] = pass_fail(denominator["raw_candidate_n"].gt(0).any())
-    gates["primary_denominator_gate"] = pass_fail(denominator["primary_denominator_n"].gt(0).any())
+    gates["primary_denominator_gate"] = pass_fail(denominator["denominator_gate"].eq("pass").any())
     gates["baseline_materialization_gate"] = pass_fail(
         any_cell_with_all_baseline_gate_pass(baseline_materialization, "baseline_materialization_gate")
     )
-    gates["baseline_matching_quality_gate"] = pass_fail(
-        any_cell_with_all_baseline_gate_pass(baseline_quality, "baseline_matching_quality_gate")
+    required_quality_cols = {
+        "baseline_matching_quality_gate",
+        "residual_alpha_claim_allowed",
+        "positive_beta_exposure_claim_allowed",
+        "baseline_quality_blocks_residual_alpha_only",
+    }
+    expected_quality_cells = set(
+        map(tuple, denominator.loc[denominator["denominator_gate"].eq("pass"), ["family_id", "grid_cell_id"]].to_numpy())
     )
+    observed_quality_cells = set(map(tuple, baseline_quality[["family_id", "grid_cell_id"]].drop_duplicates().to_numpy())) if not baseline_quality.empty else set()
+    quality_cell_complete = (
+        bool(expected_quality_cells)
+        and not baseline_quality.empty
+        and required_quality_cols.issubset(set(baseline_quality.columns))
+        and observed_quality_cells == expected_quality_cells
+        and baseline_quality["split"].eq("train").all()
+        and baseline_quality.groupby(["family_id", "grid_cell_id"])["baseline_family"].nunique().eq(len(BASELINE_FAMILIES)).all()
+    )
+    gates["baseline_matching_quality_audit_gate"] = pass_fail(quality_cell_complete)
     gates["metric_readout_gate"] = pass_fail(not metric.empty)
-    gates["cell_selection_process_gate"] = pass_fail(not family_selection.empty or metric.empty)
+    all_denominator_cells = set(map(tuple, denominator[["family_id", "grid_cell_id"]].drop_duplicates().to_numpy()))
+    metric_cells = set(map(tuple, metric[["family_id", "grid_cell_id"]].drop_duplicates().to_numpy())) if not metric.empty else set()
+    blocked_cells = set(
+        map(tuple, denominator.loc[denominator["blocking_reason"].fillna("").ne(""), ["family_id", "grid_cell_id"]].drop_duplicates().to_numpy())
+    )
+    selection_process_complete = (
+        bool(all_denominator_cells)
+        and all_denominator_cells.issubset(metric_cells | blocked_cells)
+        and (not family_selection.empty or metric.empty)
+        and (family_selection.empty or family_selection["selection_rule_applied_before_robustness_readout"].astype(bool).all())
+    )
+    gates["cell_selection_process_gate"] = pass_fail(selection_process_complete)
     gates["search_accounting_gate"] = "pass"
     gates["no_policy_authorization_gate"] = "pass"
     gates["output_contract_gate"] = "pass"
     state, next_req, reason = decide_state(gates, selected, family_selection)
     decision = build_decision(config_path, paths, gates, state, next_req, reason, selected, family_selection)
-    report = build_report(decision, denominator, metric, family_selection)
+    report = build_report(
+        decision,
+        denominator,
+        metric,
+        family_selection,
+        family_materialization,
+        label_anchor_audit,
+        matching_source_map,
+        baseline_materialization,
+        baseline_quality,
+        sensitivity,
+        concentration,
+        search_accounting,
+    )
+    gates["output_contract_gate"] = pass_fail(output_contract_pass(report, outputs))
+    state, next_req, reason = decide_state(gates, selected, family_selection)
+    decision = build_decision(config_path, paths, gates, state, next_req, reason, selected, family_selection)
+    report = build_report(
+        decision,
+        denominator,
+        metric,
+        family_selection,
+        family_materialization,
+        label_anchor_audit,
+        matching_source_map,
+        baseline_materialization,
+        baseline_quality,
+        sensitivity,
+        concentration,
+        search_accounting,
+    )
     handoff = build_handoff(selected)
 
     frames = {

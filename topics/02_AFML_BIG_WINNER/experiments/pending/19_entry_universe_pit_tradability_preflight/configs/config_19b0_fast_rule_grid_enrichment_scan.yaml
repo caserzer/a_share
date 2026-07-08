@@ -87,6 +87,10 @@ bootstrap:
   se_delta_method: analytic_cluster_proxy_for_registered_bootstrap
   multiway_cluster_enabled: false
 
+positive_exposure:
+  positive_exposure_absolute_margin_floor_50: 0.02
+  positive_exposure_relative_margin_ratio_floor: 0.20
+
 runtime:
   progress_every_instruments: 250
   cache_universe_feature_panel: true
