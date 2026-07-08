@@ -1,98 +1,276 @@
 # 19B0 快速规则网格右尾富集扫描报告
 
-## 1. 19A Ready 和 Train-only 边界
-- decision_state: `19B0_candidate_family_eligible_for_19B`
-- next_allowed_requirement: `requirement_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.md`
-- validation outcome read: `false`
-- robustness outcome used for selection: `false`
-- 19A ready 证据来自 upstream contract audit、manifest hash audit 和 frozen output hash 校验。
+## 1. 最终结论
 
-## 2. 支持/不支持 Family 和 Grid Materialization
-- supported primary families: `B1_near_120d_high_plus_volume_expansion, B2_relative_strength_breakout, B4_volatility_contraction_then_breakout, B5_recent_high_close_plus_amount_expansion, B6_low_drawdown_reclaim_or_ema_reclaim, EP07_topn_multichannel_recommended_union`
-- unsupported family: `B3_industry_or_theme_breadth_expansion`，原因是 no genuine PIT industry source。
+19B0 的最终状态是：
 
-| family | declared_grid_cell_n | materialized_grid_cell_n | materialization_status | blocking_reason |
-|---|---:|---:|---|---|
-| B1_near_120d_high_plus_volume_expansion | 36 | 36 | materialized_before_label_readout |  |
-| B2_relative_strength_breakout | 36 | 36 | materialized_before_label_readout |  |
-| B4_volatility_contraction_then_breakout | 36 | 36 | materialized_before_label_readout |  |
-| B5_recent_high_close_plus_amount_expansion | 36 | 36 | materialized_before_label_readout |  |
-| B6_low_drawdown_reclaim_or_ema_reclaim | 36 | 18 | materialized_before_label_readout |  |
-| EP07_topn_multichannel_recommended_union | 1 | 1 | materialized_before_label_readout |  |
+```text
+decision_state = 19B0_candidate_family_eligible_for_19B
+next_allowed_requirement = requirement_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.md
+N_family_brought_to_robustness = 2
+N_tested_family_cell_pairs = 2
+selected_residual_alpha_cell_pair_n = 0
+selected_positive_beta_exposure_cell_pair_n = 2
+```
 
-## 3. Label Anchor 和 Label Source Map
-- 19B0 使用 `executable_next_open_anchored` 标签。
-- EP07 `event_anchored` ready-made label 仅作为 diagnostic，不进入 primary metric 或 selection。
-- label source map: `executable_next_open_anchored`; label_anchor_rebuild_audit: `{"blocking_reason": "", "entry_anchor_available_n": 7328, "event_anchored_diagnostic_available_n": 7320, "event_anchored_vs_executable_big_winner_120d_match_rate": 0.9991803278688525, "executable_entry_path_complete_120_rate": 1.0, "executable_entry_path_complete_20_rate": 1.0, "executable_entry_path_complete_30_rate": 1.0, "executable_entry_path_complete_60_rate": 1.0, "family_id": "EP07_topn_multichannel_recommended_union", "grid_cell_id": "EP07_identity_cell", "ready_made_label_used_for_primary": false, "ready_made_label_used_for_selection": false, "row_n": 7328, "row_scope": "ep07_train_candidate_rows", "split": "train", "trade_open_price_positive_rate": 1.0}`
+进入 19B 的两个 family/cell 是：
 
-## 4. Denominator
-- EP07 identity primary denominator: `5116`
-- EP07 identity path-complete denominator: `5116`
-- materialized family count: `6`
-- total candidate denominator rows audited: `181`
+| family | selected cell | selection track | promotion claim |
+|---|---|---|---|
+| B2_relative_strength_breakout | B2-relative-strength-breakout__182b3d0f30f5 | positive_beta_exposure | positive_beta_exposure_candidate |
+| B5_recent_high_close_plus_amount_expansion | B5-recent-high-close-plus-amount-expansion__25d72c708fc1 | positive_beta_exposure | positive_beta_exposure_candidate |
 
-## 5. Matching Feature Source Map
-- matching feature source map 明确候选与 baseline 使用同一 qfq/universe 重建路径。
-- matching keys: `decision_month, market_cap_bucket_asof_decision_date, rolling_20d_amount_bucket_asof_decision_date, rolling_60d_volatility_bucket_asof_decision_date, recent_20d_return_bucket_asof_decision_date, instrument_or_industry_bucket_if_supported`
+核心判断：
 
-## 6. Baseline Materialization 和 Matching Quality
-- baseline materialization rows: `489`
-- baseline matching quality failure blocks residual-alpha attribution only.
-- It does not by itself invalidate a positive beta/exposure candidate.
-- positive_beta_exposure_candidate 不是 independent alpha / residual alpha claim。
+- B2 是本轮最清晰的右尾暴露水库。候选分母 4,061，`+50/120d` 命中 930，命中率 22.901%，高于同口径 broad baseline 的 16.253%，绝对提升 6.648 pct。
+- B5 是弱很多的第二候选。候选分母 6,503，`+50/120d` 命中 1,319，命中率 20.283%，绝对提升 4.030 pct；但 matched-baseline conservative adjusted lift 为负，说明它更像趋势/流动性状态暴露，而不是可归因 alpha。
+- 本轮没有 residual-alpha candidate。所有 baseline matching quality 都失败，因此不能把 train lift 解释为独立 alpha、规则筛选力或可交易 entry policy。
+- 19B0 只授权进入 19B 做 robustness / false-positive burden readout；不授权 19C replay、EP20 policy preflight、模型训练、回测、生产信号或交易。
 
-| baseline_family | rows | pass_n | median_smd | median_unmatched_rate |
-|---|---:|---:|---:|---:|
-| calendar_time_random_same_budget | 163 | 0 | 0.803 | 0.129 |
-| instrument_matched_random_same_budget | 163 | 0 | 0.897 | 0.024 |
-| liquidity_size_volatility_matched_same_budget | 163 | 0 | 0.374 | 0.296 |
+## 2. Train-only 和授权边界
 
-## 7. Metric Readout 和 Positive Beta/Exposure Track
-- 三类 baseline 分臂计算，selection 使用 conservative margin-adjusted score。
+本轮只读取 train outcome：
 
-| family | grid_cell | primary_n | p_candidate_50 | broad_base_rate | conservative_lift | conservative_adjusted | abs_margin | rel_margin | positive_margin | positive_score | promotion_claim_type | lift_margin_pass |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---:|
-| B2_relative_strength_breakout | B2-relative-strength-breakout__182b3d0f30f5 | 4061 | 0.229 | 0.163 | 1.101 | 0.001 | 0.020 | 0.033 | 0.033 | 0.0340 | positive_beta_exposure_candidate | True |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__3206f2976d28 | 4057 | 0.229 | 0.163 | 1.089 | -0.011 | 0.020 | 0.033 | 0.033 | 0.0339 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__d0f0fb1727c9 | 5927 | 0.225 | 0.163 | 1.081 | -0.019 | 0.020 | 0.033 | 0.033 | 0.0297 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__e7b68ff136d7 | 5923 | 0.225 | 0.163 | 1.081 | -0.019 | 0.020 | 0.033 | 0.033 | 0.0298 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__377c3e689ae8 | 6047 | 0.216 | 0.163 | 1.075 | -0.025 | 0.020 | 0.033 | 0.033 | 0.0213 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__1d4b408e8ccc | 7927 | 0.211 | 0.163 | 1.066 | -0.034 | 0.020 | 0.033 | 0.033 | 0.0158 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__0f91aad80911 | 3463 | 0.222 | 0.163 | 1.064 | -0.036 | 0.020 | 0.033 | 0.033 | 0.0267 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__6cc7775eba3a | 7018 | 0.217 | 0.163 | 1.060 | -0.040 | 0.020 | 0.033 | 0.033 | 0.0215 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__6e8b74238e42 | 5058 | 0.223 | 0.163 | 1.058 | -0.042 | 0.020 | 0.033 | 0.033 | 0.0276 | positive_beta_exposure_candidate | False |
-| B2_relative_strength_breakout | B2-relative-strength-breakout__ff7adaf093c4 | 3570 | 0.221 | 0.163 | 1.055 | -0.045 | 0.020 | 0.033 | 0.033 | 0.0260 | positive_beta_exposure_candidate | False |
+| item | value |
+|---|---|
+| validation outcome read | false |
+| robustness outcome used for selection | false |
+| model training authorized | false |
+| entry / exit / holding policy authorized | false |
+| portfolio backtest authorized | false |
+| model deployment / production signal / live trading authorized | false |
 
-## 8. Sensitivity 和 Instrument Concentration
-- sensitivity 指标均为 diagnostic-only: `rows=489, diagnostic_only=True, median_tail_lift_20=1.401, median_tail_lift_60=1.096`
-- instrument concentration / top-k removal 风险: `rows=489, max_instrument_candidate_share=0.010, max_instrument_winner_share=0.021`
+所有 contract gate 均为 `pass`，但这里有一个容易误读的点：`baseline_matching_quality_audit_gate=pass` 只表示质量审计已生成并进入决策流程，不表示 matched baseline 质量通过。实际 489 条 baseline-family-cell 质量行的 `baseline_matching_quality_gate` 全部为 `fail`，所以 residual-alpha 归因被关闭。
 
-## 9. Selected Family/Cell Manifest
-- selected family/cell pairs: `2`
-- selected residual-alpha pairs: `0`
-- selected positive-beta/exposure pairs: `2`
-- diagnostic family count: `3`
-- residual_alpha_correction_scope: `0 * primary_tail_lift_50`
-- positive_beta_exposure_correction_scope: `2 * positive_exposure_score_50`
-- residual-alpha and positive-beta tracks use separate correction scopes.
-- positive-beta 候选若无 19B matched-baseline residual pass，只能支持 `19_entry_universe_enrichment_only_diagnostic`，不授权 EP20 policy preflight。
+## 3. 数据分母和标签锚点
 
-| selected_family | selected_grid_cell | selection_track | promotion_claim_type | residual_alpha_claim_allowed |
-|---|---|---|---|---:|
-| B2_relative_strength_breakout | B2-relative-strength-breakout__182b3d0f30f5 | positive_beta_exposure | positive_beta_exposure_candidate | False |
-| B5_recent_high_close_plus_amount_expansion | B5-recent-high-close-plus-amount-expansion__25d72c708fc1 | positive_beta_exposure | positive_beta_exposure_candidate | False |
+19B0 使用 `executable_next_open_anchored` 标签，核心标签为：
 
-## 10. Search Accounting 和 19B Handoff
-- search accounting: `{"N_family_brought_to_robustness": 2, "N_materialized_family": 6, "N_positive_beta_exposure_candidate_pairs": 2, "N_residual_alpha_candidate_pairs": 0, "N_supported_primary_family": 6, "N_tested_family_cell_pairs": 2, "blocking_reason": "", "cell_level_accounting": "all_tried_cells_counted", "expanded_cell_rule_enabled": false, "family_level_correction": "Bonferroni-Sidak", "positive_beta_exposure_correction_scope": "2 * positive_exposure_score_50", "promotion_claim_type_counts": "{\"positive_beta_exposure_candidate\": 2}", "residual_alpha_correction_scope": "0 * primary_tail_lift_50", "search_accounting_gate": "pass", "selected_cell_rule": "one_train_selected_cell_per_family_by_default", "selection_track_counts": "{\"positive_beta_exposure\": 2}", "track_correction_scope_policy": "separate_by_promotion_claim_type", "validation_selected_cells": 0}`
-- N_family_brought_to_robustness: `2`
-- N_tested_family_cell_pairs: `2`
-- positive_beta_exposure_candidate without matched-baseline residual pass can only support 19_entry_universe_enrichment_only_diagnostic, not EP20 authorization.
+```text
+forward_big_winner_120d = max(high[entry_open:entry_open+120d]) / executable_next_open - 1 >= 0.50
+```
 
-## 11. Authorization 和 Final Decision
-- final decision_state: `19B0_candidate_family_eligible_for_19B`
-- final next_allowed_requirement: `requirement_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.md`
-- 19B0 不授权模型、entry/exit/holding policy、回测、生产信号或交易。
-- 进入 19B 的资格不是 support claim。
-- 19B0 不是 robustness confirmation。
-- 19B0 不证明策略有效。
-- 19B0 不授权 19C replay。
+EP07 ready-made `event_anchored` label 只作为 diagnostic，不进入 primary metric 或 selection。
+
+| audit item | value |
+|---|---:|
+| EP07 train candidate rows | 7,328 |
+| executable entry anchor available | 7,328 |
+| executable path complete 20/30/60/120d rate | 100.000% |
+| event-anchored diagnostic available rows | 7,320 |
+| event-anchored vs executable `+50/120d` match rate | 99.918% |
+| ready-made label used for primary / selection | false / false |
+
+baseline eligible universe 是本轮所有 positive exposure 判断的 broad denominator：
+
+| stage | rows | instruments | months | matching fields available | cooldown eligible | frozen before label |
+|---|---:|---:|---:|---:|---:|---|
+| raw_train_universe | 607,536 | 1,407 | 60 | 88.089% | 9.485% | true |
+| cooldown_eligible_under_19a_rule | 57,623 | 1,407 | 60 | 86.500% | 100.000% | true |
+| matching_fields_available | 535,171 | 1,103 | 57 | 100.000% | 9.314% | true |
+| pre_label_baseline_eligible_candidate | 40,552 | 999 | 49 | 100.000% | 100.000% | true |
+| baseline_eligible | 40,552 | 999 | 49 | 100.000% | 100.000% | true |
+
+同口径 broad baseline 的 `+50/120d` base rate 为 16.253%，对应 6,591 个 positive rows。B2/B5 的 positive exposure 结论都必须相对这个分母理解，而不是相对原始 607,536 行 train universe 理解。
+
+## 4. Family 和 Grid 物化
+
+B3 `industry_or_theme_breadth_expansion` 未进入本轮扫描，因为没有 genuine PIT industry source。其余 family 的物化情况如下：
+
+| family | declared cells | materialized cells | missing cells | dependent feature missing | status |
+|---|---:|---:|---:|---:|---|
+| B1_near_120d_high_plus_volume_expansion | 36 | 36 | 0 | 0 | materialized_before_label_readout |
+| B2_relative_strength_breakout | 36 | 36 | 0 | 0 | materialized_before_label_readout |
+| B4_volatility_contraction_then_breakout | 36 | 36 | 0 | 0 | materialized_before_label_readout |
+| B5_recent_high_close_plus_amount_expansion | 36 | 36 | 0 | 0 | materialized_before_label_readout |
+| B6_low_drawdown_reclaim_or_ema_reclaim | 36 | 18 | 18 | 18 | materialized_before_label_readout |
+| EP07_topn_multichannel_recommended_union | 1 | 1 | 0 | 0 | materialized_before_label_readout |
+
+解释：
+
+- B1/B2/B4/B5 完整物化，说明本轮不是因为候选规则无法生成而通过 B2/B5。
+- B6 只有 18/36 个 cell 进入 readout，缺失来自 `early_no_false_repair_10d_required=true` 分支；该特征只能 EP07-direct 使用，不能在全 baseline eligible universe 上重建。
+- 实际 metric/baseline readout 覆盖 163 个 materialized cells 和 489 个 baseline-family-cell rows。
+- registry、matching bucket、membership 都在 label readout 前冻结，当前输出没有 label leakage 证据。
+
+## 5. Baseline Matching Quality
+
+三类 same-budget baseline 都成功物化，但质量全部失败：
+
+| baseline family | rows | pass_n | median unmatched | max unmatched | median max SMD | max SMD | median month delta | median instrument delta |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| calendar_time_random_same_budget | 163 | 0 | 12.869% | 24.234% | 0.803 | 1.275 | 2.331% | 0.327% |
+| instrument_matched_random_same_budget | 163 | 0 | 2.410% | 5.590% | 0.897 | 1.246 | 3.558% | 0.077% |
+| liquidity_size_volatility_matched_same_budget | 163 | 0 | 29.594% | 36.527% | 0.374 | 0.731 | 2.331% | 0.255% |
+
+质量失败来源：
+
+| rule | threshold | fail_n / rows | interpretation |
+|---|---:|---:|---|
+| unmatched_candidate_rate | > 5% | 329 / 489 | common support 不足，尤其 LSV arm |
+| baseline_reuse_rate | > 20% | 17 / 489 | 不是主问题，但 LSV 尾部有复用压力 |
+| max_standardized_mean_difference_after_matching | > 0.10 | 488 / 489 | 主要阻断项，covariate balance 基本未达标 |
+| decision_month_coverage_delta | > 2% | 432 / 489 | 时间覆盖仍有偏差 |
+| instrument_coverage_delta | > 5% | 0 / 489 | instrument 覆盖不是本轮主问题 |
+
+洞察：
+
+- `instrument_matched` 能把 unmatched rate 压低，但 SMD 和 month delta 仍差，说明只按股票匹配不能消除强势状态暴露。
+- `liquidity_size_volatility_matched` 的 SMD 明显更低，方向更接近正确控制，但 unmatched rate 高，说明 candidate cell 的 common support 变窄。
+- 因为所有 quality row 均 fail，19B0 只能选择 positive beta/exposure candidate，不能发出 residual-alpha claim。
+
+## 6. Family 排序和选择
+
+Family-level selection audit：
+
+| family | materialized cells | best positive exposure score | best residual adjusted lift | status | selected for 19B | reason |
+|---|---:|---:|---:|---|---|---|
+| B2_relative_strength_breakout | 36 | 0.033969 | 0.000592 | selected_for_19B | true | positive exposure 最强，且唯一 train triage pass |
+| B5_recent_high_close_plus_amount_expansion | 36 | 0.007791 | -0.070336 | selected_for_19B | true | positive exposure 通过，但 matched-baseline adjusted 不足 |
+| EP07_topn_multichannel_recommended_union | 1 | -0.028698 | -0.094090 | train_diagnostic_only | false | no_cell_met_residual_or_positive_exposure_selection_condition |
+| B6_low_drawdown_reclaim_or_ema_reclaim | 18 | -0.011956 | -0.100883 | train_diagnostic_only | false | no_cell_met_residual_or_positive_exposure_selection_condition |
+| B1_near_120d_high_plus_volume_expansion | 36 | -0.019209 | -0.105794 | train_diagnostic_only | false | no_cell_met_residual_or_positive_exposure_selection_condition |
+| B4_volatility_contraction_then_breakout | 36 | -0.069996 | -0.309239 | no_cell_passed | false | no_cell_met_residual_or_positive_exposure_selection_condition |
+
+Family distribution 支持这个排序：
+
+| family | cells | median candidate_n | median p50 | max p50 | median positive score | max positive score | positive-pass cells | residual-pass cells |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| B2_relative_strength_breakout | 36 | 5,801 | 21.628% | 22.901% | 0.021238 | 0.033969 | 32 | 0 |
+| B5_recent_high_close_plus_amount_expansion | 36 | 5,319 | 18.566% | 20.283% | -0.009381 | 0.007791 | 10 | 0 |
+| B6_low_drawdown_reclaim_or_ema_reclaim | 18 | 21,120 | 17.181% | 18.308% | -0.023229 | -0.011956 | 0 | 0 |
+| EP07_topn_multichannel_recommended_union | 1 | 5,116 | 16.634% | 16.634% | -0.028698 | -0.028698 | 0 | 0 |
+| B1_near_120d_high_plus_volume_expansion | 36 | 4,438 | 16.443% | 17.583% | -0.030613 | -0.019209 | 0 | 0 |
+| B4_volatility_contraction_then_breakout | 36 | 7,664 | 10.425% | 12.504% | -0.090788 | -0.069996 | 0 | 0 |
+
+解释：
+
+- B2 不是单个偶然 cell：36 个 cell 中 32 个 positive exposure pass，family 中位 p50 达 21.628%，显著高于 broad baseline 16.253%。
+- B5 有 10 个 positive exposure pass，但 family 中位 positive score 为负，说明只有部分强 trend/amount 参数组合有右尾富集。
+- B1、B6、EP07 接近 broad baseline 或略高，但没有跨过 positive exposure margin；B4 整体低于 broad baseline，不应作为 19B 主候选。
+
+## 7. Selected Cell 明细
+
+两个 selected cells 的参数和核心 readout：
+
+| family | selected parameter | primary_n | p_candidate_50 | broad base | delta | ratio | positive margin | positive score | conservative lift | adjusted lift | train triage pass |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| B2_relative_strength_breakout | `stock_vs_market_20d>=0.15; return_60d_rank_pct>=0.90; close_to_ema60>=0.00; market_regime=all` | 4,061 | 22.901% | 16.253% | 6.648 pct | 1.409 | 3.251 pct | 3.397 pct | 1.1006 | 0.0006 | true |
+| B5_recent_high_close_plus_amount_expansion | `return_10d>=0.10; close_position_120d>=0.70; amount_ratio_20d>=1.20; quality_amount=false_or_missing_allowed` | 6,503 | 20.283% | 16.253% | 4.030 pct | 1.248 | 3.251 pct | 0.779 pct | 1.0297 | -0.0703 | false |
+
+B2 的结论更强：
+
+- 它同时通过 positive exposure train pass 和 train triage pass。
+- conservative lift 刚刚高于 1.10，adjusted lift 只有 0.0006，余量很薄。
+- 这意味着 B2 有进入 19B 的价值，但 19B 必须重点验证这个边际优势是否在 robustness split、false-positive burden 和 baseline repair 下保持。
+
+B5 的结论更弱：
+
+- 它通过的是 broad-baseline positive exposure，不是 matched-baseline train triage。
+- conservative lift 只有 1.0297，adjusted lift 为 -0.0703。
+- B5 可以作为 19B 的弱候选或对照型趋势状态，但不应在报告语言里被写成“稳定 alpha”。
+
+## 8. Selected Cell 的 Baseline Arm 明细
+
+| family | baseline | p_matched_50 | lift | adjusted lift | arm triage pass | unmatched | max SMD | quality gate |
+|---|---|---:|---:|---:|---|---:|---:|---|
+| B2 | calendar_time_random_same_budget | 16.326% | 1.4027 | 0.2873 | true | 11.204% | 1.186 | fail |
+| B2 | instrument_matched_random_same_budget | 20.808% | 1.1006 | 0.0006 | true | 5.590% | 1.108 | fail |
+| B2 | liquidity_size_volatility_matched_same_budget | 20.044% | 1.1425 | 0.0425 | true | 32.258% | 0.593 | fail |
+| B5 | calendar_time_random_same_budget | 15.870% | 1.2781 | 0.1781 | true | 7.289% | 0.899 | fail |
+| B5 | instrument_matched_random_same_budget | 19.007% | 1.0672 | -0.0328 | false | 2.876% | 0.929 | fail |
+| B5 | liquidity_size_volatility_matched_same_budget | 19.699% | 1.0297 | -0.0703 | false | 27.449% | 0.389 | fail |
+
+这张表解释了为什么 B2/B5 都只能是 positive exposure candidate：
+
+- B2 在三个 baseline arm 上的 lift 都为正，但质量 fail 全部来自匹配平衡不足；它最像“高动量/高横截面排名状态”的右尾暴露。
+- B5 只有 calendar arm 的 triage pass 较强，instrument 和 LSV arm 都不足；它的 right-tail readout 对 baseline 定义更敏感。
+- LSV arm 对两者的 SMD 更低，但 unmatched 很高，显示 common support 是下一轮需要解决的结构性问题。
+
+## 9. Sensitivity 和风险读数
+
+Sensitivity 指标全部是 diagnostic-only，不参与 selection 和授权。
+
+| family | 20d p50 | 30d p50 | 60d p50 | 120d p50 | fast fail | MAE20 p10 | MFE120 p90 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| B2 selected cell | 4.260% | 6.575% | 12.903% | 22.901% | 55.799% | -24.461% | 78.553% |
+| B5 selected cell | 3.552% | 5.628% | 11.672% | 20.283% | 48.408% | -22.844% | 73.694% |
+
+Tail lift 随 horizon 拉长后的 baseline-arm 读数：
+
+| family | baseline | lift 20d | lift 30d | lift 60d | lift 120d |
+|---|---|---:|---:|---:|---:|
+| B2 | calendar | 3.7609 | 2.2437 | 1.7467 | 1.4027 |
+| B2 | instrument | 2.0353 | 1.6584 | 1.2243 | 1.1006 |
+| B2 | LSV | 1.6019 | 1.4278 | 1.1802 | 1.1425 |
+| B5 | calendar | 2.2000 | 1.8300 | 1.5060 | 1.2781 |
+| B5 | instrument | 2.3814 | 1.7596 | 1.2735 | 1.0672 |
+| B5 | LSV | 1.3916 | 1.2323 | 1.1211 | 1.0297 |
+
+洞察：
+
+- 两个 selected cells 在 20d/30d 的短 horizon lift 更高，120d lift 明显收敛，说明它们更像强趋势状态下的右尾机会池，而不是长期稳定的独立 alpha。
+- fast fail 接近 48%-56%，且 MAE20 p10 接近 -23% 到 -24%，提示候选集合内存在很重的早期反向风险；19B 必须同时读 false-positive burden，不能只看 `+50` 命中。
+- B2 的 120d lift 在 LSV arm 下仍有 1.1425，而 B5 只剩 1.0297；这进一步支持“B2 是主候选，B5 是弱候选/对照”的解释。
+
+## 10. Instrument Concentration
+
+| family | max candidate share | max winner share | top1 removed lift range | top3 removed lift range | top1/top3 pass pattern |
+|---|---:|---:|---:|---:|---|
+| B2 selected cell | 0.566% | 1.183% | 1.0961 - 1.3971 | 1.0966 - 1.3976 | all arms pass |
+| B5 selected cell | 0.431% | 0.910% | 1.0247 - 1.2720 | 1.0213 - 1.2677 | only calendar arm pass |
+
+解释：
+
+- B2/B5 的 winner share 都低于 1.2%，没有明显由单一股票驱动的集中度问题。
+- B2 移除 top1/top3 instrument 后仍在三个 baseline arm 上保留 pass pattern，说明不是单票贡献。
+- B5 移除 top instruments 后在 instrument/LSV arm 仍不通过，进一步说明它的优势更薄。
+
+## 11. 研究洞察
+
+第一，当前 `+50/120d` 右尾标签最偏好的不是泛化的近高点或放量，而是相对强势和横截面强势。B2 的 selected cell 要求 `stock_vs_market_20d >= 0.15` 且 `return_60d_rank_pct >= 0.90`，并且不需要 `risk_on` 过滤；这说明右尾富集主要来自个股相对市场的强势状态，而不是只来自大盘环境。
+
+第二，B5 的“近期高位收盘 + 10d 强涨 + 成交额扩张”确实有 positive exposure，但它对 baseline arm 很敏感。它可以作为 B2 的趋势确认或替代 exposure family 进入 19B，但不应承担独立发现的主结论。
+
+第三，baseline repair 的优先级非常明确：不是先修 instrument coverage，也不是先修 baseline reuse，而是同时修 `max_SMD` 与 `unmatched_candidate_rate`。LSV arm 证明状态匹配方向有效，但 common support 代价过高；instrument arm 证明支持域好，但状态平衡不够。
+
+第四，B1/B4/B6/EP07 当前更适合作为 diagnostic。B4 的 p50 family distribution 明显低于 broad baseline，B1/B6/EP07 也没有跨过 positive exposure margin；若后续继续投入，应先有新的经济假设或 feature 变体，而不是直接扩大 19B robustness 预算。
+
+第五，即使 19B 证明 B2/B5 的 exposure persistence，只要 matched-baseline residual pass 仍不存在，EP19 的最高终态仍只能是：
+
+```text
+19_entry_universe_enrichment_only_diagnostic
+```
+
+这意味着它可以告诉我们“哪里更容易出现右尾机会”，但不能直接变成交易策略、entry policy 或 EP20 preflight 输入。
+
+## 12. 19B Handoff
+
+Search accounting：
+
+| item | value |
+|---|---|
+| N_supported_primary_family | 6 |
+| N_materialized_family | 6 |
+| N_family_brought_to_robustness | 2 |
+| N_tested_family_cell_pairs | 2 |
+| N_residual_alpha_candidate_pairs | 0 |
+| N_positive_beta_exposure_candidate_pairs | 2 |
+| residual_alpha_correction_scope | `0 * primary_tail_lift_50` |
+| positive_beta_exposure_correction_scope | `2 * positive_exposure_score_50` |
+| track_correction_scope_policy | `separate_by_promotion_claim_type` |
+| family_level_correction | `Bonferroni-Sidak` |
+| cell_level_accounting | `all_tried_cells_counted` |
+
+19B 应该重点回答三件事：
+
+1. B2 的 3.397 pct positive exposure score 是否在 robustness split 上仍成立。
+2. B5 的弱 positive exposure 是否只是 train-only 状态偏差，还是有稳定右尾机会池价值。
+3. baseline repair 后，B2/B5 是否仍只表现为 beta/exposure，还是能出现可防御的 residual-alpha readout。
+
+Final authorization：
+
+- 允许进入 `requirement_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.md`。
+- 不允许 19C replay。
+- 不允许 EP20 policy preflight。
+- 不允许模型、entry/exit/holding policy、组合回测、生产信号或交易。
