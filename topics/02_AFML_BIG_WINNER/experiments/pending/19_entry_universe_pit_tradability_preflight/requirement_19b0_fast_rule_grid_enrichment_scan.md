@@ -17,6 +17,43 @@ next_allowed_requirement = requirement_19b_robust_right_tail_enrichment_and_fals
 该正向结论只表示：预注册 family/cell 在 train 上达到进入 19B 的候选资格。
 它不是 alpha 支持、不是策略可用、不是 robustness 通过，也不能授权 19C replay。
 
+19B0 允许两类 train-only 候选进入 19B，但必须明确标注 `promotion_claim_type`：
+
+```text
+residual_alpha_candidate:
+    matched baseline quality 通过；19B0 只允许声明 train residual-lift
+    candidate，仍不声明 out-of-sample alpha。
+
+positive_beta_exposure_candidate:
+    matched baseline quality 可失败；19B0 只允许声明该 family/cell 在 train
+    中捕捉到正向右尾暴露或参与状态，不允许声明独立 alpha / residual edge。
+
+train_diagnostic_only:
+    有描述性读数，但未满足任何进入 19B 的 train-only promotion track。
+```
+
+因此，`max_standardized_mean_difference_after_matching` 或其他 matching quality
+失败只能阻断 residual-alpha 归因声明；它不得自动阻断一个明确标注为
+`positive_beta_exposure_candidate` 的 19B robustness 候选。
+
+但 `positive_beta_exposure_candidate` 有严格下游授权上限，必须与
+research_plan Q7 保持一致：
+
+```text
+If promotion_claim_type = positive_beta_exposure_candidate
+and 19B does not separately obtain a matched-baseline residual pass:
+    max_ep19_terminal_state = 19_entry_universe_enrichment_only_diagnostic
+    ep20_policy_preflight_authorized = false
+    entry_policy_preflight_authorized = false
+    19_entry_universe_pit_tradability_and_enrichment_supported is forbidden
+
+19B must preserve residual_alpha_claim_allowed = false and must not relabel
+positive beta/exposure persistence as residual alpha.
+```
+
+换言之，positive-beta 轨道只能区分“没有右尾水库”和“存在暴露型右尾水库”；
+它不能成为绕过 matched-baseline residual gate 的 alpha 授权后门。
+
 允许的 19B0 决策状态：
 
 ```text
@@ -123,10 +160,12 @@ Q1. 在 19A 冻结的 primary_enrichment_denominator 上，哪些预注册
     simple rule family/cell 在 train split 上显示右尾富集？
 
 Q2. 这些 train-only 读数是否超过冻结的最低 train triage 门槛，并足以进入
-    19B 的 robustness confirmation？
+    19B 的 robustness confirmation？进入 19B 的 track 必须区分
+    residual_alpha_candidate 和 positive_beta_exposure_candidate。
 
 Q3. matched baseline 是否可以在 train split 上按 19A 冻结规则物化，并产出
-    质量审计？
+    质量审计？matching quality 只决定 residual-alpha 归因是否允许，不决定
+    正向 beta/exposure 候选是否必然失效。
 
 Q4. 进入 19B 的 family/cell 数量、correction scope 和 robustness_test_manifest
     是否已经在读取 robustness outcome 之前冻结？
@@ -153,7 +192,8 @@ Q4. 进入 19B 的 family/cell 数量、correction scope 和 robustness_test_man
 4. 物化 train split 的预注册 simple rule grid cell。
 5. 按 19A 冻结规则构造 train-only same-budget baseline。
 6. 计算 train-only primary_tail_lift_50 和 sensitivity readouts。
-7. 对每个 family 选择默认 1 个 train-selected cell 进入 19B。
+7. 对每个 family 选择默认 1 个 train-selected cell 进入 19B，并冻结其
+   `promotion_claim_type`。
 8. 冻结 19B 使用的 selected family/cell manifest、N_family_brought_to_robustness、
    N_tested_family_cell_pairs 和 active correction scope。
 9. 输出机器可读 audit、manifest 和中文报告。
@@ -172,6 +212,8 @@ Q4. 进入 19B 的 family/cell 数量、correction scope 和 robustness_test_man
 8. 不得授权 entry/exit/holding policy、backtest、portfolio simulation、
    production signal 或 live trading。
 9. 不得在任何 19B0 dataframe / output / temp artifact 中物化非 train split 的 outcome 字段值。
+10. 不得把 matching quality 失败的 positive beta/exposure 候选解释为
+    independent alpha、residual alpha 或因果归因。
 ```
 
 ## 5. 输入合同
@@ -911,8 +953,31 @@ instrument_coverage_delta <= 0.05
 matched_baseline_primary_row_count >= primary_enrichment_denominator_row_count
 ```
 
-如果任一进入选择候选的 cell 无法通过 matching quality gate，该 cell 不得进入 19B。
-如果所有 cell 都无法物化 baseline，19B0 必须停止：
+Matching quality 的语义必须拆分：
+
+```text
+if baseline_matching_quality_gate = pass:
+    residual_alpha_claim_allowed = true
+    positive_beta_exposure_claim_allowed = true
+
+if baseline_matching_quality_gate = fail:
+    residual_alpha_claim_allowed = false
+    positive_beta_exposure_claim_allowed may remain true
+    baseline_quality_blocks_residual_alpha_only = true
+```
+
+因此，任一 cell 若无法通过 matching quality gate，该 cell 不得以
+`residual_alpha_candidate` 进入 19B；但如果它满足第 10 节的
+positive beta/exposure selection 条件，可以以
+`positive_beta_exposure_candidate` 进入 19B。报告和 manifest 必须明确写出：
+
+```text
+SMD / matching-quality failure blocks residual alpha attribution only.
+It does not by itself invalidate a positive beta/exposure candidate.
+```
+
+如果 baseline row 无法按 same-budget 规则物化，则该 cell 不能计算 matched-baseline
+readout，必须降级或阻断。若所有 cell 都无法物化 baseline，19B0 必须停止：
 
 ```text
 decision_state = 19B0_baseline_materialization_blocked
@@ -949,6 +1014,67 @@ liquidity_size_volatility_matched_same_budget
 The primary pass rule is conjunctive across all three baseline families, matching
 the 19A frozen `primary_baseline_pass_rule`.
 
+Residual-alpha track uses matched-baseline lift and requires matching quality
+pass. Positive beta/exposure track uses broad eligible-universe enrichment and
+does not require covariate balance against matched baseline.
+
+Positive beta/exposure metrics:
+
+```text
+p_train_baseline_eligible_50 =
+    mean(executable-entry forward_big_winner_120d |
+         train baseline_eligible_universe)
+
+positive_exposure_delta_50 =
+    p_candidate_50 - p_train_baseline_eligible_50
+
+positive_exposure_ratio_50 =
+    p_candidate_50 / p_train_baseline_eligible_50
+
+positive_exposure_absolute_margin_floor_50 =
+    0.02
+
+positive_exposure_relative_margin_ratio_floor =
+    config.positive_exposure_relative_margin_ratio_floor
+    default 0.20
+
+positive_exposure_relative_margin_floor_50 =
+    positive_exposure_relative_margin_ratio_floor
+    * p_train_baseline_eligible_50
+
+positive_exposure_margin_50 =
+    max(positive_exposure_absolute_margin_floor_50,
+        positive_exposure_relative_margin_floor_50,
+        2 * SE_delta_probability_candidate_vs_eligible_universe)
+
+positive_exposure_score_50 =
+    positive_exposure_delta_50 - positive_exposure_margin_50
+
+positive_exposure_train_pass =
+    positive_exposure_score_50 >= 0
+```
+
+其中：
+
+```text
+SE_delta_probability_candidate_vs_eligible_universe =
+    sqrt(p_candidate * (1 - p_candidate) / N_candidate_cluster
+         + p_train_baseline_eligible_50 * (1 - p_train_baseline_eligible_50)
+           / N_eligible_universe_cluster)
+
+cluster_key = instrument_month
+```
+
+`positive_exposure_train_pass` 只说明该 rule 在 train 中选中了比 broad
+baseline-eligible universe 更高右尾概率的状态；它不说明该状态在控制近期收益、
+流动性、波动、市值或股票身份之后仍有 residual alpha。
+
+`positive_exposure_absolute_margin_floor_50 = 0.02` 是绝对概率点；
+`positive_exposure_relative_margin_ratio_floor` 是相对宽基基率的比例下限。
+报告必须同时披露 `p_train_baseline_eligible_50`、绝对 margin、相对 margin 和
+最终采用的 `positive_exposure_margin_50`，防止在低基率或高基率场景下误读
+positive-beta 晋升强度。
+
 Zero-baseline 规则：
 
 ```text
@@ -970,6 +1096,15 @@ train_triage_baseline_pass[baseline_family] =
 
 train_triage_pass =
     all(train_triage_baseline_pass across the three baseline families)
+```
+
+Residual-alpha track pass:
+
+```text
+residual_alpha_train_pass =
+    train_triage_pass = true
+    and baseline_matching_quality_gate = pass
+    and residual_alpha_claim_allowed = true
 ```
 
 19B0 是 train-only 快速扫描，不执行完整 2000 次 candidate bootstrap +
@@ -1003,6 +1138,10 @@ bootstrap_config:
     matched_baseline_rerandomization_seed = 20260707
     se_delta_method = analytic_cluster_proxy_for_registered_bootstrap
     multiway_cluster_enabled = false
+
+positive_exposure_config:
+    positive_exposure_absolute_margin_floor_50 = 0.02
+    positive_exposure_relative_margin_ratio_floor = 0.20
 ```
 
 敏感指标：
@@ -1032,8 +1171,25 @@ matched_baseline_delta
 
 ```text
 每个 supported primary family 至多选择 1 个 train cell 进入 19B。
-selection_metric = primary_tail_lift_50_train_margin_adjusted_conservative
+selection_track = residual_alpha first, otherwise positive_beta_exposure
 tie_breaker = larger primary_denominator_n, then lower candidate_per_winner, then grid_cell_id lexicographic
+```
+
+Selection track precedence:
+
+```text
+1. 如果 family 内存在 residual_alpha_train_pass = true 的 cell：
+       选择 residual_alpha track 中
+       primary_tail_lift_50_train_margin_adjusted_conservative 最高的 cell。
+
+2. 如果 family 内不存在 residual_alpha pass，但存在
+   positive_exposure_train_pass = true 的 cell：
+       选择 positive_beta_exposure track 中
+       positive_exposure_score_50 最高的 cell。
+
+3. 如果两个 track 都没有 pass，但存在正向读数：
+       family_triage_status = train_diagnostic_only
+       selected_for_19B_robustness_flag = false
 ```
 
 默认 ranking score：
@@ -1049,15 +1205,43 @@ primary_tail_lift_50_train_margin_adjusted_conservative =
         across the three baseline families)
 ```
 
-选择条件：
+Residual-alpha 选择条件：
 
 ```text
-train_triage_pass = true
+selection_track = residual_alpha
+promotion_claim_type = residual_alpha_candidate
+residual_alpha_train_pass = true
 baseline_matching_quality_gate = pass
 all_three_baseline_families_present = true
 primary_denominator_n >= cell_primary_denominator_n_min
 instrument_n >= cell_instrument_n_min
 cell_effective_sample_ratio >= cell_effective_sample_ratio_min
+```
+
+Positive beta/exposure 选择条件：
+
+```text
+selection_track = positive_beta_exposure
+promotion_claim_type = positive_beta_exposure_candidate
+positive_exposure_train_pass = true
+baseline_materialization_gate = pass
+all_three_baseline_families_present = true
+baseline_matching_quality_audit_available = true
+residual_alpha_claim_allowed may be false
+primary_denominator_n >= cell_primary_denominator_n_min
+instrument_n >= cell_instrument_n_min
+cell_effective_sample_ratio >= cell_effective_sample_ratio_min
+```
+
+Positive beta/exposure 候选进入 19B 时，handoff 必须明确：
+
+```text
+residual_alpha_claim_allowed = false when baseline_matching_quality_gate = fail
+19B robustness target = exposure stability / right-tail reservoir persistence
+not residual-alpha confirmation
+if no matched-baseline residual pass is obtained in 19B:
+    max_ep19_terminal_state = 19_entry_universe_enrichment_only_diagnostic
+    ep20_policy_preflight_authorized = false
 ```
 
 默认 cell-level floor：
@@ -1123,10 +1307,20 @@ robustness_test_manifest.csv
 ```text
 N_family_brought_to_robustness
 N_tested_family_cell_pairs
-active_correction_scope
+N_residual_alpha_candidate_pairs
+N_positive_beta_exposure_candidate_pairs
+residual_alpha_correction_scope
+positive_beta_exposure_correction_scope
+track_correction_scope_policy
 family_level_correction
 cell_level_accounting
 selected_cell_rule
+selection_track
+promotion_claim_type
+residual_alpha_claim_allowed
+positive_beta_exposure_claim_allowed
+max_ep19_terminal_state_if_no_residual_pass
+ep20_policy_preflight_authorized_if_no_residual_pass = false
 validation_selected_cells = 0
 ```
 
@@ -1135,15 +1329,28 @@ validation_selected_cells = 0
 ```text
 selected_cell_rule = one_train_selected_cell_per_family_by_default
 N_tested_family_cell_pairs = N_family_brought_to_robustness
-active_correction_scope = N_family_brought_to_robustness * primary_metric
+track_correction_scope_policy = separate_by_promotion_claim_type
+residual_alpha_correction_scope =
+    N_residual_alpha_candidate_pairs * primary_tail_lift_50
+positive_beta_exposure_correction_scope =
+    N_positive_beta_exposure_candidate_pairs * positive_exposure_score_50
 ```
+
+`residual_alpha_correction_scope` 和 `positive_beta_exposure_correction_scope`
+不得合并成一个 pooled `primary_metric` correction scope。两条 track 的 null
+不同：residual-alpha 的 null 是 matched baseline，positive-beta/exposure 的 null
+是 broad baseline-eligible universe。positive-beta family 继续进入 19B 不得稀释
+residual-alpha 候选的 multiple-testing correction。
 
 如果未来启用 top-2/top-3 low-correlation cell promotion，必须在 19B0 config 中
 预先声明，并将：
 
 ```text
 N_tested_family_cell_pairs = selected_family_cell_pair_count
-active_correction_scope = N_tested_family_cell_pairs * primary_metric
+residual_alpha_correction_scope =
+    N_residual_alpha_candidate_pairs * primary_tail_lift_50
+positive_beta_exposure_correction_scope =
+    N_positive_beta_exposure_candidate_pairs * positive_exposure_score_50
 expanded_cell_rule_enabled = true
 ```
 
@@ -1435,6 +1642,9 @@ instrument_coverage_delta
 matched_baseline_primary_row_count
 primary_enrichment_denominator_row_count
 baseline_matching_quality_gate
+residual_alpha_claim_allowed
+positive_beta_exposure_claim_allowed
+baseline_quality_blocks_residual_alpha_only
 cell_eligible_for_selection_under_this_baseline
 blocking_reason
 ```
@@ -1465,14 +1675,37 @@ primary_tail_lift_50_train_margin_adjusted_conservative
 zero_baseline_flag
 train_triage_baseline_pass
 train_triage_pass
+residual_alpha_train_pass
+p_train_baseline_eligible_50
+positive_exposure_delta_50
+positive_exposure_ratio_50
+positive_exposure_absolute_margin_floor_50
+positive_exposure_relative_margin_ratio_floor
+positive_exposure_relative_margin_floor_50
+positive_exposure_margin_50
+positive_exposure_score_50
+positive_exposure_train_pass
 train_primary_metric_rank
+selection_track
+promotion_claim_type
+residual_alpha_claim_allowed
+positive_beta_exposure_claim_allowed
 selected_for_19B_robustness_flag
 blocking_reason
 ```
 
 There must be one `train_cell_metric_readout.csv` row per
 `family_id / grid_cell_id / baseline_family`. `train_triage_pass` may be true
-only if all three baseline-family rows pass for that cell.
+only if all three baseline-family rows pass for that cell. `residual_alpha_train_pass`
+may be true only when `train_triage_pass = true` and `baseline_matching_quality_gate = pass`.
+`positive_exposure_train_pass` may be true even when matching quality fails, but
+then `promotion_claim_type` must not be `residual_alpha_candidate`.
+
+The `positive_exposure_*` fields are cell-level metrics keyed by
+`family_id / grid_cell_id`; they are repeated across the three `baseline_family`
+rows only for row-shape compatibility. They must not be interpreted as
+baseline-family-specific arms, and ranking/correction for the positive-beta
+track must deduplicate them at cell level before counting tests.
 
 ### 13.15 `train_cell_sensitivity_readout.csv`
 
@@ -1515,6 +1748,11 @@ matched_baseline_rerandomization_seed
 se_delta_method
 SE_delta_probability
 primary_tail_lift_50_train_margin_ratio
+SE_delta_probability_candidate_vs_eligible_universe
+positive_exposure_absolute_margin_floor_50
+positive_exposure_relative_margin_ratio_floor
+positive_exposure_relative_margin_floor_50
+positive_exposure_margin_50
 multiway_cluster_enabled
 blocking_reason
 ```
@@ -1546,10 +1784,15 @@ ranked_grid_cell_n
 selected_grid_cell_id
 selected_parameter_hash
 best_primary_tail_lift_50_train_margin_adjusted_conservative
+best_positive_exposure_score_50
 all_three_baseline_families_present
 label_anchor_type = executable_next_open_anchored
 selected_for_19B_robustness_flag
 family_triage_status
+selection_track
+promotion_claim_type
+residual_alpha_claim_allowed
+positive_beta_exposure_claim_allowed
 selection_rank_within_all_families
 selection_rule_applied_before_robustness_readout
 blocking_reason
@@ -1563,12 +1806,20 @@ grid_cell_id
 parameter_hash
 selection_split = train
 selection_metric
+selection_track
+promotion_claim_type
+residual_alpha_claim_allowed
+positive_beta_exposure_claim_allowed
 selection_rank_within_family
 label_anchor_type = executable_next_open_anchored
 selected_for_19B_robustness_flag
 N_family_brought_to_robustness
 N_tested_family_cell_pairs
-active_correction_scope
+residual_alpha_correction_scope
+positive_beta_exposure_correction_scope
+track_correction_scope_policy
+max_ep19_terminal_state_if_no_residual_pass
+ep20_policy_preflight_authorized_if_no_residual_pass
 manifest_frozen_before_robustness_readout = true
 blocking_reason
 ```
@@ -1580,14 +1831,22 @@ family_id
 grid_cell_id
 parameter_hash
 selected_in_19B0_train_only
+selection_track
+promotion_claim_type
+residual_alpha_claim_allowed
+positive_beta_exposure_claim_allowed
 label_anchor_type = executable_next_open_anchored
 robustness_split_outcome_read_allowed_in_19B = true
 validation_split_outcome_read_allowed_in_19B = false
 N_family_brought_to_robustness
 N_tested_family_cell_pairs
-active_correction_scope
+residual_alpha_correction_scope
+positive_beta_exposure_correction_scope
+track_correction_scope_policy
 family_level_correction
 cell_level_accounting
+max_ep19_terminal_state_if_no_residual_pass
+ep20_policy_preflight_authorized_if_no_residual_pass
 manifest_frozen_before_robustness_readout = true
 blocking_reason
 ```
@@ -1599,10 +1858,16 @@ N_supported_primary_family
 N_materialized_family
 N_family_brought_to_robustness
 N_tested_family_cell_pairs
-active_correction_scope
+N_residual_alpha_candidate_pairs
+N_positive_beta_exposure_candidate_pairs
+residual_alpha_correction_scope
+positive_beta_exposure_correction_scope
+track_correction_scope_policy
 family_level_correction
 cell_level_accounting
 selected_cell_rule
+selection_track_counts
+promotion_claim_type_counts
 expanded_cell_rule_enabled
 validation_selected_cells
 search_accounting_gate
@@ -1620,7 +1885,7 @@ grid_manifest_gate
 family_materialization_gate
 primary_denominator_gate
 baseline_materialization_gate
-baseline_matching_quality_gate
+baseline_matching_quality_audit_gate
 metric_readout_gate
 cell_selection_process_gate
 search_accounting_gate
@@ -1643,18 +1908,23 @@ Gate 到 fail-closed state 的映射：
 
 19B0_baseline_materialization_blocked:
     baseline_materialization_gate
-    baseline_matching_quality_gate
 
 19B0_metric_contract_blocked:
     primary_denominator_gate
     metric_readout_gate
 
 19B0_output_contract_blocked:
+    baseline_matching_quality_audit_gate
     cell_selection_process_gate
     search_accounting_gate
     no_policy_authorization_gate
     output_contract_gate
 ```
+
+`baseline_matching_quality_audit_gate` 只检查 matching quality audit 是否完整、
+train-only、可复现并覆盖所有已物化 cell。它不得因为某个 cell 的
+`baseline_matching_quality_gate = fail` 而失败。cell-level
+`baseline_matching_quality_gate` 只决定 `residual_alpha_claim_allowed`。
 
 如果多个 gate 失败，决策行必须选择上述顺序中最早的 blocking state，并在
 `blocking_reason` 中列出所有 failed gates。
@@ -1697,7 +1967,7 @@ grid_manifest_gate
 family_materialization_gate
 primary_denominator_gate
 baseline_materialization_gate
-baseline_matching_quality_gate
+baseline_matching_quality_audit_gate
 metric_readout_gate
 cell_selection_process_gate
 search_accounting_gate
@@ -1707,6 +1977,13 @@ N_family_brought_to_robustness
 N_tested_family_cell_pairs
 selected_family_n
 selected_family_cell_pair_n
+selected_residual_alpha_cell_pair_n
+selected_positive_beta_exposure_cell_pair_n
+residual_alpha_correction_scope
+positive_beta_exposure_correction_scope
+track_correction_scope_policy
+positive_beta_max_terminal_state_if_no_residual_pass
+positive_beta_ep20_policy_preflight_authorized_if_no_residual_pass
 diagnostic_family_n
 validation_outcome_read
 robustness_outcome_used_for_selection
@@ -1739,13 +2016,20 @@ blocking_reason
 7. matching feature source map，明确候选与 baseline 使用同一 qfq/universe
    重建路径。
 8. 三类 baseline 的物化和 matching quality。
-9. 三类 baseline 分臂的 primary_tail_lift_50、conjunctive pass 和
-   conservative margin-adjusted 排名。
-10. sensitivity 指标，明确 diagnostic-only。
-11. instrument concentration / top-k removal 风险。
-12. selected family/cell manifest。
-13. search accounting、N_family_brought_to_robustness、correction scope。
-14. 最终 decision_state 和 next_allowed_requirement。
+9. 三类 baseline 分臂的 primary_tail_lift_50、conjunctive pass、
+   conservative margin-adjusted 排名，以及它们是否只支持 residual-alpha
+   attribution。
+10. positive beta/exposure track 的 p_candidate_50、broad eligible-universe
+    base rate、absolute margin floor、relative base-rate margin floor、
+    positive_exposure_margin_50、positive_exposure_score_50 和
+    promotion_claim_type。
+11. sensitivity 指标，明确 diagnostic-only。
+12. instrument concentration / top-k removal 风险。
+13. selected family/cell manifest。
+14. search accounting、N_family_brought_to_robustness、分轨 correction scope。
+15. positive-beta 候选若无 19B matched-baseline residual pass 时的
+    enrichment_only_diagnostic 授权上限。
+16. 最终 decision_state 和 next_allowed_requirement。
 ```
 
 报告必须明确写出：
@@ -1756,6 +2040,11 @@ blocking_reason
 19B0 不授权 19C replay。
 19B0 不授权模型、entry/exit/holding policy、回测、生产信号或交易。
 进入 19B 的资格不是 support claim。
+positive_beta_exposure_candidate 不是 independent alpha / residual alpha claim。
+baseline matching quality failure blocks residual-alpha attribution only.
+positive_beta_exposure_candidate without matched-baseline residual pass can only
+support 19_entry_universe_enrichment_only_diagnostic, not EP20 authorization.
+residual-alpha and positive-beta tracks use separate correction scopes.
 ```
 
 ## 17. 验证命令
@@ -1808,10 +2097,22 @@ python -m ruff check \
 [ ] EP07 identity cell 的 source contract 不误用 19A grid_search_manifest。
 [ ] EP07 identity family 的 train denominator 单独披露。
 [ ] 三类 baseline materialization、matching quality 和分臂 metric readout 可审计。
+[ ] baseline matching quality fail 不会自动阻断 positive beta/exposure promotion，
+    但必须阻断 residual-alpha attribution claim。
 [ ] forward_big_winner_30d、path_complete_30d 和 sensitivity_tail_lift_30 已定义。
 [ ] bootstrap/rerandomization seed、resample count 和 cluster key 已冻结。
 [ ] 不使用未声明重建路径的 100d label。
-[ ] primary_tail_lift_50 和 margin 规则沿用 19A，并对三类 baseline 执行 conjunctive pass。
+[ ] residual-alpha track 的 primary_tail_lift_50 和 margin 规则沿用 19A，
+    并对三类 baseline 执行 conjunctive pass。
+[ ] positive beta/exposure track 使用 broad eligible-universe base rate 和
+    positive_exposure_score_50，不声明 residual alpha。
+[ ] positive beta/exposure margin 同时包含 SE、0.02 绝对概率点下限和
+    config 冻结的相对基率下限，并在报告中披露量纲。
+[ ] residual-alpha 和 positive-beta/exposure 使用分轨 multiple-testing
+    correction scope，不把两类 null 合并到同一个 primary_metric scope。
+[ ] positive_beta_exposure_candidate 若在 19B 未另行取得 matched-baseline
+    residual pass，最多只能支持 19_entry_universe_enrichment_only_diagnostic，
+    不授权 EP20 或 entry policy preflight。
 [ ] 每个 family 的 selected cell 规则固定为 train-only。
 [ ] selected=0 的 diagnostic/no-pass 状态是合法非正向结论，不被误报为 gate failure。
 [ ] robustness_test_manifest 在 19B 前冻结。
