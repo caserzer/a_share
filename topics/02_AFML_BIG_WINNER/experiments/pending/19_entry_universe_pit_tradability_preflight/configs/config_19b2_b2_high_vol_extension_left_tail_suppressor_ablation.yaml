@@ -1,0 +1,131 @@
+run_id: 19B2_b2_high_vol_extension_left_tail_suppressor_ablation
+experiment_id: 19_entry_universe_pit_tradability_preflight
+phase_id: 19B2
+
+input_paths:
+  nineteen_b_decision: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/entry_universe_19b_decision.csv
+  nineteen_b_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/manifest_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.json
+  nineteen_b_output_hashes: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/output_hashes_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.json
+  nineteen_b_handoff_contract: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/19B_handoff_contract.md
+  nineteen_b_robustness_candidate_row_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/robustness_candidate_row_manifest.csv
+  nineteen_b_robustness_outcome_boundary_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/robustness_outcome_boundary_audit.csv
+  nineteen_b_robustness_metric_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/robustness_metric_readout.csv
+  nineteen_b_false_positive_burden_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/false_positive_burden_readout.csv
+  nineteen_b_mfe_mae_joint_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/mfe_mae_joint_readout.csv
+  nineteen_b_robustness_baseline_quality_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/robustness_baseline_quality_audit.csv
+  nineteen_b_topk_concentration_sensitivity: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/topk_concentration_sensitivity.csv
+  nineteen_b_upstream_19a_contract_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/upstream_19a_contract_audit.csv
+  nineteen_b_upstream_19b0_contract_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/upstream_19b0_contract_audit.csv
+  nineteen_b1_decision: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/entry_universe_19b1_decision.csv
+  nineteen_b1_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/manifest_19b1_t0_left_right_tail_separability_readout.json
+  nineteen_b1_output_hashes: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/output_hashes_19b1_t0_left_right_tail_separability_readout.json
+  nineteen_b1_handoff_contract: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/19B1_handoff_contract.md
+  nineteen_b1_outcome_left_right_overlap_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/outcome_left_right_overlap_readout.csv
+  nineteen_b1_univariate_feature_separability_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/t0_univariate_feature_separability_readout.csv
+  nineteen_b1_feature_source_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/t0_feature_source_audit.csv
+  nineteen_b1_feature_join_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/t0_feature_join_audit.csv
+  nineteen_b1_feature_matrix_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/t0_feature_matrix_manifest.csv
+  nineteen_b1_stability_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout/t0_separability_stability_readout.csv
+  simple_rule_feature_source_map: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/simple_rule_feature_source_map.csv
+  matching_feature_source_map: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/matching_feature_source_map.csv
+  topn_executable_universe: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  stock_qfq_dir: data/raw/akshare/day/qfq
+  benchmark_daily: data/processed/index/benchmark_indices_daily.csv
+
+output:
+  output_root: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B2_b2_high_vol_extension_left_tail_suppressor_ablation
+  output_root_may_be_created: true
+  output_root_parent_must_exist: true
+
+primary_scope:
+  family_id: B2_relative_strength_breakout
+  grid_cell_id: B2-relative-strength-breakout__182b3d0f30f5
+  split: robustness
+  row_scope: candidate_primary_denominator
+
+feature_contract:
+  primary_suppressor_feature_whitelist:
+    - match_vol60
+    - atr_20_pct_asof_decision_date
+    - return_60d_asof_decision_date
+    - close_to_ema60_asof_decision_date
+  rank_scope: executable_universe_same_decision_date
+  rank_pct_method: average_rank_pct_ascending
+  high_value_means_higher_left_tail_risk: true
+  forbidden_feature_prefixes:
+    - forward_mfe_
+    - forward_mae_
+    - forward_return_
+    - forward_big_winner_
+  forbidden_label_columns:
+    - MFE_120
+    - MAE_20
+    - right_tail_event_50
+    - left_tail_event_10
+    - left_tail_event_20
+    - right_clean
+    - left_bad
+    - both
+    - neither
+
+score_contract:
+  q_vol60: rank_pct(match_vol60)
+  q_atr20: rank_pct(atr_20_pct_asof_decision_date)
+  q_ret60: rank_pct(return_60d_asof_decision_date)
+  q_ema60_dist: rank_pct(close_to_ema60_asof_decision_date)
+  vol_block: max(q_vol60, q_atr20)
+  extension_block: max(q_ret60, q_ema60_dist)
+  tail_risk_score: vol_block * extension_block
+  basis_risk_score: q_ema60_dist * max(q_atr20, q_vol60)
+  vol_expansion_rank_spread: q_atr20 - q_vol60
+  atr20_over_vol60: atr_20_pct_asof_decision_date / max(match_vol60, epsilon)
+  candidate_vol_block_rank_pct: rank_pct(vol_block within B2 primary candidate rows)
+  candidate_extension_block_rank_pct: rank_pct(extension_block within B2 primary candidate rows)
+  candidate_q_atr20_rank_pct: rank_pct(q_atr20 within B2 primary candidate rows)
+  candidate_q_ema60_dist_rank_pct: rank_pct(q_ema60_dist within B2 primary candidate rows)
+  candidate_q_vol60_rank_pct: rank_pct(q_vol60 within B2 primary candidate rows)
+  candidate_q_ret60_rank_pct: rank_pct(q_ret60 within B2 primary candidate rows)
+  epsilon: 1.0e-12
+
+grid_contract:
+  primary_tail_risk_top_pct: [0.10, 0.15, 0.20, 0.25, 0.30]
+  single_feature_top_pct: [0.10, 0.20, 0.30]
+  logical_interaction_threshold_pairs:
+    - vol80_extension80
+    - vol70_extension85
+    - vol85_extension70
+    - atr80_ema80
+    - vol60_80_ret60_80
+  basis_risk_top_pct: [0.10, 0.15, 0.20, 0.25, 0.30]
+  volatility_contraction_top_pct: [0.20]
+
+thresholds:
+  right_tail_event_50: 0.50
+  left_tail_event_10: -0.10
+  left_tail_event_20: -0.20
+
+support:
+  candidate_n_min: 300
+  instrument_n_min: 30
+  right_clean_n_min: 50
+  left_bad_n_min: 50
+  kept_candidate_n_min: 300
+  kept_right_tail_event_50_n_min: 50
+  rank_cross_section_min_n: 30
+
+primary_success_thresholds:
+  left_bad_removed_per_right_clean_removed_min: 2.0
+  MAE_20_p10_improvement_vs_S0_min: 0.01
+  p_candidate_50_after_min: 0.24
+  right_clean_kept_rate_min: 0.70
+  interaction_vs_single_feature_efficiency_lift_min: 0.10
+  interaction_efficiency_lift_ci_low_min: 0.00
+
+bootstrap:
+  bootstrap_resample_n: 2000
+  bootstrap_seed: 20260709
+  cluster_key: instrument_id
+
+runtime:
+  cache_universe_feature_panel: true
+  progress_every_instruments: 250

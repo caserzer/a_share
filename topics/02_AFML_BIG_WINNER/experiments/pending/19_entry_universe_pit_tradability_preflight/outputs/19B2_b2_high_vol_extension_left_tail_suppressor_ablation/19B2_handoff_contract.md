@@ -1,0 +1,17 @@
+# 19B2 Handoff Contract
+
+decision_state = 19B2_suppressor_improves_burden_but_not_interaction_supported_diagnostic
+next_allowed_requirement = none
+validation_outcome_read = false
+19C_replay_authorized = false
+EP20_policy_preflight_authorized = false
+model_training_authorized = false
+entry_policy_authorized = false
+exit_policy_authorized = false
+holding_policy_authorized = false
+portfolio_backtest_authorized = false
+model_deployment_authorized = false
+production_signal_authorized = false
+live_trading_authorized = false
+max_ep19_terminal_state = 19_entry_universe_enrichment_only_diagnostic
+non_executable_research_suggestion = new_pre_registered_high_risk_bucket_diagnostic_requirement
