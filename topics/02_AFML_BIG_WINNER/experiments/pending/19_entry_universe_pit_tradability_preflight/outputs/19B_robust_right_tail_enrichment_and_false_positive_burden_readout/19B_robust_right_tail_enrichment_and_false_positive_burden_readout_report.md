@@ -138,7 +138,7 @@ Bootstrap 读出：
 
 ## 7. 图表解读
 
-四张图均为 1440x1216 PNG，并进入 output hashes。
+五张图均为 1440x1216 PNG，并进入 output hashes。其中前四张是 19B required figures；第 5 张是新增的 B2 右尾/左尾同步读图，用于直接回应右尾富集是否伴随左尾放大的问题。
 
 ### 7.1 `figures/tail_lift_curve.png`
 
@@ -201,6 +201,26 @@ B2 在 +50% 处仍有 28.03% winner capture，但同时 71.97% 是 non-winner，
 - B5 candidate 的 MFE mean 与 eligible sample 几乎相同，但 MAE 明显更差，说明 B5 更像噪声/波动放大，而不是稳定右尾水库。
 - matched diagnostic sample 的 +50 winner_rate 更高，但因为 baseline quality fail，它只能提示“当前 matching 口径不可信”，不能反向证明 candidate 无效，也不能正向支持 residual alpha。
 
+### 7.5 `figures/b2_right_left_tail_lift_balance.png`
+
+这张新增图只看 B2，并把右尾 enrichment 与左尾 burden 放在同一坐标体系里。口径为 `candidate_primary_denominator` vs 等量抽样的 `eligible_universe_baseline_sample`，与 §7.4 的散点图一致；因此它是 diagnostic visual，不替代 §2 的全量 eligible-universe positive-exposure gate。
+
+| threshold \|x\| | right-tail lift: `MFE_120 >= +x` | left-tail burden lift: `MAE_20 <= -x` |
+|---:|---:|---:|
+| 5% | 1.00 | 1.48 |
+| 10% | 1.01 | 2.39 |
+| 15% | 1.00 | 3.96 |
+| 20% | 1.04 | 5.59 |
+| 30% | 1.15 | 8.86 |
+| 50% | 1.25 | n/a |
+| 100% | 1.51 | n/a |
+
+读法：
+
+- B2 的右尾 lift 主要出现在更高 MFE threshold：+50% 右尾在等量 eligible sample 口径下为 1.25x，+100% 为 1.51x。
+- 但左尾负担在更低 threshold 已经显著放大：-10% MAE event 为 2.39x，-20% 为 5.59x，-30% 为 8.86x。
+- 所以 B2 不是“只抬右尾”的 filter，而是同时抬高右尾和左尾；并且左尾 burden lift 的幅度更大。这正是 §5 false-positive burden gate 阻断 B2 的可视化版本。
+
 ## 8. Findings 与研究判断
 
 1. B2 是一个可继续研究的 morphology/participation filter 候选，但不是可推进 validation replay 的 alpha。它有稳健 eligible-universe 右尾 exposure，但没有通过 false-positive burden 与 top-k gate。
@@ -225,10 +245,12 @@ B2 在 +50% 处仍有 28.03% winner capture，但同时 71.97% 是 non-winner，
 - `ccdf_survival_curve_readout.csv`
 - `capture_vs_burden_readout.csv`
 - `mfe_mae_joint_readout.csv`
+- `b2_right_left_tail_lift_balance_readout.csv`
 
-Required figures：
+Figures：
 
 - `figures/tail_lift_curve.png`
 - `figures/ccdf_survival_curve.png`
 - `figures/capture_vs_burden.png`
 - `figures/mfe_mae_joint_scatter.png`
+- `figures/b2_right_left_tail_lift_balance.png`
