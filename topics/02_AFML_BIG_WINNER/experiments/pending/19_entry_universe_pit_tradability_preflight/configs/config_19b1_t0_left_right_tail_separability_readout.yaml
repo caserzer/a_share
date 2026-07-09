@@ -1,0 +1,117 @@
+run_id: 19B1_t0_left_right_tail_separability_readout
+experiment_id: 19_entry_universe_pit_tradability_preflight
+phase_id: 19B1
+
+input_paths:
+  nineteen_b_output_root: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout
+  nineteen_b_decision: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/entry_universe_19b_decision.csv
+  nineteen_b_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/manifest_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.json
+  nineteen_b_output_hashes: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/output_hashes_19b_robust_right_tail_enrichment_and_false_positive_burden_readout.json
+  nineteen_b_handoff_contract: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/19B_handoff_contract.md
+  upstream_19a_contract_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/upstream_19a_contract_audit.csv
+  upstream_19b0_contract_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/upstream_19b0_contract_audit.csv
+  robustness_candidate_row_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/robustness_candidate_row_manifest.csv
+  robustness_outcome_boundary_audit: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/robustness_outcome_boundary_audit.csv
+  robustness_metric_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/robustness_metric_readout.csv
+  false_positive_burden_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/false_positive_burden_readout.csv
+  mfe_mae_joint_readout: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B_robust_right_tail_enrichment_and_false_positive_burden_readout/mfe_mae_joint_readout.csv
+  simple_rule_feature_source_map: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/simple_rule_feature_source_map.csv
+  matching_feature_source_map: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/matching_feature_source_map.csv
+  topn_executable_universe: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  stock_qfq_dir: data/raw/akshare/day/qfq
+  benchmark_daily: data/processed/index/benchmark_indices_daily.csv
+
+output:
+  output_root: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B1_t0_left_right_tail_separability_readout
+  output_root_may_be_created: true
+  output_root_parent_must_exist: true
+
+primary_scope:
+  family_id: B2_relative_strength_breakout
+  grid_cell_id: B2-relative-strength-breakout__182b3d0f30f5
+  split: robustness
+  row_scope: candidate_primary_denominator
+
+feature_contract:
+  primary_t0_feature_whitelist:
+    - return_5d_asof_decision_date
+    - return_10d_asof_decision_date
+    - return_20d_asof_decision_date
+    - return_60d_asof_decision_date
+    - stock_vs_market_return_20d_asof_decision_date
+    - return_60d_cross_section_rank_pct_asof_decision_date
+    - close_to_ema60_asof_decision_date
+    - amount_ratio_20d_asof_decision_date
+    - rolling_20d_money_mean_asof_decision_date
+    - atr_20_pct_asof_decision_date
+    - atr_20_pct_rank_asof_decision_date
+    - intraday_range_pct_asof_decision_date
+    - close_position_in_120d_range_asof_decision_date
+    - market_regime_risk_on_asof_decision_date
+    - market_drawdown_60d_asof_decision_date
+    - match_market_cap
+    - match_amount20
+    - match_vol60
+    - match_return20
+  accounting_only_columns:
+    - decision_month
+    - instrument_month
+    - instrument_id
+    - row_key
+    - family_id
+    - grid_cell_id
+    - split
+    - row_scope
+  exploratory_features_allowed: true
+
+thresholds:
+  right_tail_event_50: 0.50
+  left_tail_event_10: -0.10
+  left_tail_event_20: -0.20
+
+support:
+  candidate_n_min: 300
+  instrument_n_min: 30
+  right_clean_n_min: 50
+  left_bad_n_min: 50
+  per_feature_left_bad_nonmissing_n_min: 50
+  per_feature_right_clean_nonmissing_n_min: 50
+  per_feature_max_group_missing_rate: 0.20
+  per_feature_max_missing_rate_delta_abs: 0.10
+
+bootstrap:
+  bootstrap_resample_n: 2000
+  bootstrap_seed: 20260709
+  cluster_key: instrument_id
+  leave_one_month_min_effective_fold_n_for_reporting: 6
+  leave_one_month_out_required_for_stability_gate: false
+  stability_bootstrap_direction_stable_rate_min: 0.70
+
+diagnostic_probe:
+  multivariate_enabled: false
+  logistic_regularization_C: 1.0
+  rank_bin_count: 10
+  decision_stump_max_depth: 1
+  crossfit_cluster_key: instrument_id
+  random_seed: 20260709
+
+split:
+  train_start: "2024-01-02"
+  train_end: "2025-11-26"
+  robustness_start: "2024-01-02"
+  robustness_end: "2025-11-26"
+
+execution:
+  primary_cooldown_window_sessions: 10
+  liquidity_floor_cny: 20000000
+
+labels:
+  horizons: [20, 30, 60, 120]
+  primary_big_winner_threshold: 0.50
+
+baseline:
+  bucket_count: 5
+
+runtime:
+  cache_universe_feature_panel: true
+  progress_every_instruments: 250
