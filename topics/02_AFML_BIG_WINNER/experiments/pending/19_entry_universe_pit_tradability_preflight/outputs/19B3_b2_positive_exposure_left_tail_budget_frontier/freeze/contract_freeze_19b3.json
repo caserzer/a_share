@@ -1,0 +1,32 @@
+{
+  "arm_ids": [
+    "R0_S0_UNTRIMMED",
+    "R1_ATR20_TOP10_TRIM",
+    "R2_VOL60_TOP30_TRIM",
+    "R3_CONTINUOUS_VOL_BUDGET",
+    "P0_R2_SAME_DAY_RANDOM_TRIM"
+  ],
+  "candidate_thresholds": {
+    "R1_ATR20_TOP10_TRIM": NaN,
+    "R2_VOL60_TOP30_TRIM": NaN
+  },
+  "config_blocking_reasons": [],
+  "created_at": "2026-07-10T03:59:15.923965Z",
+  "critical_gates": {
+    "config_contract_gate": "pass",
+    "human_restart_lineage_gate": "pass",
+    "input_artifact_gate": "pass",
+    "outcome_access_gate": "pass",
+    "search_accounting_gate": "pass",
+    "spent_design_arm_role_gate": "pass",
+    "upstream_contract_gate": "pass",
+    "validation_support_floor_feasibility_gate": "pass"
+  },
+  "forbidden_outcome_column_read_n": 0,
+  "forward_outcome_read": false,
+  "preoutcome_cache_forbidden_column_n": 0,
+  "primary_arm_id": "R2_VOL60_TOP30_TRIM",
+  "qfq_input_inventory_hash": "43dffff915324e78d202c3a9eff2985de134cdd1111d0b8c4d16b370ae4d3ce1",
+  "run_id": "19B3_b2_positive_exposure_left_tail_budget_frontier",
+  "validation_outcome_read": false
+}

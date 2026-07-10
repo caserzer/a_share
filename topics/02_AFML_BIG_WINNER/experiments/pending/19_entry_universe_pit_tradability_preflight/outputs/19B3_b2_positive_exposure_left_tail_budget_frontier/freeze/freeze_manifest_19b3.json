@@ -1,0 +1,66 @@
+{
+  "config_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/19_entry_universe_pit_tradability_preflight/configs/config_19b3_b2_positive_exposure_left_tail_budget_frontier.yaml",
+  "config_file_hash": "ec42b10d50e6ffaf735f5062c95ba8b66cb6f93fe9445b00f09fa8ab381092f0",
+  "critical_gates": {
+    "config_contract_gate": "pass",
+    "human_restart_lineage_gate": "pass",
+    "input_artifact_gate": "pass",
+    "outcome_access_gate": "pass",
+    "search_accounting_gate": "pass",
+    "spent_design_arm_role_gate": "pass",
+    "upstream_contract_gate": "pass",
+    "validation_support_floor_feasibility_gate": "pass"
+  },
+  "forward_evaluability_state": "not_evaluable",
+  "human_restart_authorization_hash": "8cae4feb0b86d4737fc10e11e7fdf3d62a86013c30751553a177590c64724c23",
+  "outcome_access_summary": {
+    "forward_outcome_read_n": 0,
+    "validation_outcome_read_n": 0
+  },
+  "output_hashes": {
+    "freeze/b2_arm_registry.csv": "51e33b11f765d07b65f820cb91bf313f74ebafdb11110a34ee36a555b11742af",
+    "freeze/contract_freeze_19b3.json": "10d638c46f02edc8796694855afb3691cb572b5f79ed41887b2ec180bfbbc5ca",
+    "freeze/data_coverage_and_forward_support_audit.csv": "61f2d1d0a4d362da882a9791dd738fc85a6c0701a637602c05a1c8417402ad28",
+    "freeze/forward_arm_weight_manifest.csv": "5e2bb5f8be3c092c9089a7b7f7b1c91feb5b66f0857fdf66bfd96883876566ba",
+    "freeze/forward_candidate_preoutcome_manifest.csv": "a46fd46fb9ed11852860ba46c357a1e7676b24e6b49484c7368ed753bf09428f",
+    "freeze/forward_eligible_preoutcome_manifest.csv": "3d1d029f4f755f8f8fea7a7ad9ffd0ab22083f84270a761e78a2266420de2454",
+    "freeze/human_restart_authorization.json": "8cae4feb0b86d4737fc10e11e7fdf3d62a86013c30751553a177590c64724c23",
+    "freeze/input_artifact_audit.csv": "18e46f4a5d48f2f62f7b0ccc893cc7293173c05b8f83814034b6920ccaab1022",
+    "freeze/outcome_access_audit.csv": "300eda313952e35b63532804a4db48f5a40957c3835187c5de9697889e7d7e45",
+    "freeze/p0_permutation_assignment_hashes.csv": "cce509a086399dbe24be875a85e34b3578611142725d1564d0bf9cfeac5272e3",
+    "freeze/resolved_config.yaml": "fe733c85d1b32ce7288e23a86a42dd200140edadb5a7ee9c9b0d9a83e1d1bd03",
+    "freeze/search_accounting_audit.csv": "8c3e7d6534094b904dc06348035308265ddad0327dae8f5cdbde213b07821bdd",
+    "freeze/source_artifact_hash_audit.csv": "8f77be249c0ebe1f624bd09280d2159c1984c614df594255d25724ffc9dd80b7",
+    "freeze/spent_design_arm_role_audit.csv": "0867bfd30e2a578df4ce9e4eb323b537b9c5a557a0063379d0e4c1290d35c3d4",
+    "freeze/upstream_contract_audit.csv": "1bd964530ce5fcbb588b9dfaf58818f9f97405101355ab180f5574c2b651ce15"
+  },
+  "pipeline_dry_run_only": true,
+  "primary_arm_id": "R2_VOL60_TOP30_TRIM",
+  "required_outputs": [
+    "freeze/resolved_config.yaml",
+    "freeze/human_restart_authorization.json",
+    "freeze/contract_freeze_19b3.json",
+    "freeze/source_artifact_hash_audit.csv",
+    "freeze/input_artifact_audit.csv",
+    "freeze/upstream_contract_audit.csv",
+    "freeze/spent_design_arm_role_audit.csv",
+    "freeze/data_coverage_and_forward_support_audit.csv",
+    "freeze/search_accounting_audit.csv",
+    "freeze/forward_candidate_preoutcome_manifest.csv",
+    "freeze/forward_eligible_preoutcome_manifest.csv",
+    "freeze/forward_arm_weight_manifest.csv",
+    "freeze/p0_permutation_assignment_hashes.csv",
+    "freeze/b2_arm_registry.csv",
+    "freeze/outcome_access_audit.csv"
+  ],
+  "requirement_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/19_entry_universe_pit_tradability_preflight/requirement_19b3_b2_positive_exposure_left_tail_budget_frontier.md",
+  "requirement_file_hash": "ae4e6db942a668f848654f51c67380dc3aa65187481d077300827ba2d094d53f",
+  "run_id": "19B3_b2_positive_exposure_left_tail_budget_frontier",
+  "runner_file_hash": "4c636a272437624150546ccb07586044e6bdb9e4aa853ce5ca5c53104bdf02b5",
+  "source_artifact_hashes": {
+    "qfq_input_inventory_hash": "43dffff915324e78d202c3a9eff2985de134cdd1111d0b8c4d16b370ae4d3ce1"
+  },
+  "stage": "freeze",
+  "stage_completed_at": "2026-07-10T03:59:15.924130Z",
+  "stage_started_at": "2026-07-10T03:58:59.329576Z"
+}

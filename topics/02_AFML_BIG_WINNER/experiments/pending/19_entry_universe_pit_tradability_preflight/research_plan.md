@@ -1515,6 +1515,11 @@ subject to:
     effective_exposure_n / concentration / capacity gates pass
 ```
 
+`positive_exposure_ratio_50_after` 的 primary denominator 固定为按 arm 当日 gross exposure
+calendar-matched 的 eligible universe。为与 19B 的历史 `p_eligible_universe_50` 口径桥接，19B3
+必须同时输出同日期 unweighted eligible comparator 和两套 ratio；`>= 1.20` 只作用于新的
+arm-calendar-matched primary ratio，不把分母变化误写成 exposure 改善。
+
 Primary left-tail metric：
 
 ```text
@@ -1570,12 +1575,13 @@ cooldown       = frozen 19A/19B0 convention
 ```text
 R0 = S0 untrimmed B2
 R1 = A_ATR20_top10 mild hard trim comparator
-R2 = A_VOL60_top30 aggressive hard trim comparator
-R3 = one frozen continuous volatility-budget arm
-P0 = same-budget random trim / random weight placebo
+R2 = A_VOL60_top30，唯一 promotion-eligible primary arm
+R3 = one frozen continuous volatility-budget diagnostic challenger
+P0 = R2 same-day same-budget random-trim placebo
 ```
 
-R3 只允许一个在 outcome readout 前冻结的单调 weight map。计划级默认形式为：
+R3 只保留一个在 outcome readout 前冻结的单调 weight map，用于解释 hard trim 与 smooth
+budget 的差异，不得替代 failed R2。计划级固定形式为：
 
 ```text
 raw_weight_i = median_vol60_asof_t0 / max(vol60_i_asof_t0, epsilon)
@@ -1586,11 +1592,45 @@ weight_i = clip(raw_weight_i, 0.25, 1.00)
 requirement 中冻结。不得在 forward OOS 或 validation stress 上选择 percentile、weight floor、函数形式
 或 risk target。
 
+把 R2 升为 primary 的依据只来自 spent robustness design audit，不是 support。按正式口径
+（先做同日 executable-universe vol rank，再在 B2 candidate 上取 p70）复算：
+
+| arm | right-tail capture | ES10 | MAE20 p10 | P(MAE20 <= -20%) |
+|---|---:|---:|---:|---:|
+| `R0` | 1.000 | 0.2951 | -0.2288 | 0.1476 |
+| `R1` | 0.906 | 0.2794 | -0.2173 | 0.1278 |
+| `R2` | 0.646 | 0.2607 | -0.1999 | 0.0998 |
+| `R3` | 0.580 | 0.2746 | -0.2139 | 0.1175 |
+
+```text
+R2 ES10 improvement vs R0          = +0.0343
+R2 MAE20 p10 improvement vs R0     = +0.0289
+R2 P(MAE20 <= -20%) relative drop  = 32.35%
+R2 same-day same-budget placebo p  = 0.00050
+R2 ES10 bootstrap 95% CI           = [0.0211, 0.0472]
+R2 ES10 improvement vs R1          = +0.0187
+R2-vs-R1 ES10 bootstrap 95% CI     = [0.0090, 0.0294]
+
+R3 right-tail capture              = 0.580 < 0.60
+R3 ES10 improvement vs R2          = -0.0139
+```
+
+为评估是否值得按 reviewer 建议重新参数化 R3，spent design 上还做了一个明确记账的 feasibility
+screen：`gamma ∈ {0.5,1,1.5,2,3,4}`、`floor ∈ {0,0.05,0.10,0.15,0.20,0.25}`，
+weight=`clip((median_vol60/vol60)^gamma, floor, 1)`，共 36 个 design-only variants。
+同时满足 `capture>=0.60`、`MAE p10 improvement>=0.03`、`ES10 improvement vs R2>=0.01`
+的 variant 数为 0。该 screen 不进入 forward arms，也不产生 multiplicity-adjusted support；它只用于
+关闭“继续调 continuous curve 救活 R3”的设计自由度。
+
+该 audit 只决定 forward OOS 前的 arm 角色：R2 是当前可证伪的 simple incumbent，R3 是解释性
+challenger。它不得写成 R2 support，也不得用于降低冻结的 3pp MAE effect floor。
+
 19B3 的 primary question 是：
 
 ```text
 能否在至少保留 60% 的 +50% right-tail events、且 p50 exposure ratio 仍 >= 1.20 的条件下，
-把 B2 的 left-tail ES / MAE frontier 明显推过当前 A_VOL60_top30 incumbent？
+让 frozen A_VOL60_top30（R2）在新的 forward OOS 上相对 S0/R1 复现有经济量级且 CI 稳健的
+left-tail ES / MAE 改善；同时验证 smooth R3 是否继续落后于 hard-trim frontier？
 ```
 
 ### 12.5 Split 与 validation stress contract
@@ -1625,15 +1665,37 @@ decision_state = 19B3_forward_oos_underpowered_not_pass
 ```
 
 不得读取 validation 来补样本或救活 forward OOS failure。
+Requirement 必须在 outcome read 前增加 evaluability preflight，至少输出：
+
+```text
+max_label_complete_decision_date
+effective_forward_start
+earliest_forward_decision_date
+earliest_single_row_label_complete_date
+earliest_evaluable_forward_month
+minimum_additional_exchange_sessions_for_first_label_complete
+forward_preoutcome_evaluability_gate
+pipeline_dry_run_only
+```
+
+若 preoutcome evaluability gate 不通过，只允许验证 pipeline/lineage/leakage boundary，
+`forward_outcome_read = false`，不得把 underpowered 写成 R2/R3 科学结论，也不得用估算的未来日期
+冒充已观察到的 `earliest_evaluable_forward_month`。
 
 Validation stress 的唯一用途：
 
 ```text
-1. 在 forward OOS primary decision 完成后，对完全相同的 frozen arms / metrics / thresholds 做压力测试；
-2. 不选择 arm，不改 weight，不改阈值，不改 horizon，不改 baseline，不改 risk target；
-3. stress pass 只能维持 forward OOS 已有结论，不能创建或升级 support；
-4. stress fail 必须降级或否决；
-5. stress underpowered 按 frozen rule 输出 underpowered_not_pass，不得解释为通过。
+1. 在 forward OOS primary decision 完成后，对完全相同的 frozen arms、metric definitions、
+   weight formulas、horizon、baseline 和 risk target 做压力测试；
+2. Validation 使用 requirement 在 outcome read 前单独冻结的 directional veto floors；这些 floors
+   不等于 forward effect-size support thresholds，也不得在 validation outcome 后修改；
+3. 不选择 arm，不改 weight formula，不改 percentile/clip/epsilon，不改 horizon，不改 baseline，
+   不改 risk target；
+4. stress pass 只能维持 forward OOS 已有结论，不能创建或升级 support；
+5. stress fail 必须降级或否决；
+6. stress underpowered 按 frozen rule 输出 underpowered_not_pass，不得解释为通过；
+7. purge/embargo 后 `decision_month_n_min = 6`；不得设置高于固定 validation 窗口可达到
+   上限的 support floor。
 ```
 
 ### 12.6 19B3 decision states
@@ -1652,7 +1714,7 @@ Validation stress 的唯一用途：
     -> 左尾下降主要靠过度牺牲右尾；该 arm 不支持继续。
 
 19B3_no_incremental_left_tail_improvement
-    -> 未推过 A_VOL60_top30 frontier；关闭当前静态 T0 suppressor 扩展。
+    -> R2 未能相对 S0/R1 复现预注册 left-tail effect；关闭当前静态 T0 suppressor 扩展。
 
 19B3_forward_oos_underpowered_not_pass
     -> forward support 不足；validation stress 不得替代。
@@ -1701,10 +1763,12 @@ pre-registered replay requirement。19B3/19B4 不直接进入原 19C，也不授
 
 ```text
 保留：frozen B2 sleeve 作为 positive-exposure candidate；优先研究 left-tail budget。
-主攻：simple volatility risk budget；hard trim 与一个 continuous weighting arm。
-最低对照：S0、A_ATR20_top10、A_VOL60_top30、same-budget placebo。
+主攻：R2 A_VOL60_top30 hard trim 的独立 forward OOS 复现。
+解释：R3 continuous weighting 只作 diagnostic challenger，不得替代 failed R2。
+最低对照：S0、A_ATR20_top10、R3、R2 same-day same-budget placebo。
 右尾预算：positive exposure ratio >= 1.20，+50% winner capture retention >= 0.60。
 压力测试：validation 只允许 downgrade/veto，绝不用于 selection、confirmation 或 support。
+可评价性：preoutcome evaluability 不通过时只作 pipeline dry-run，不读取 forward outcomes。
 停止：继续扩大 high-vol×extension 交互 grid、在 validation 上选 arm、把 MFE rate 当可实现收益。
 升级：只有新的 forward OOS 先通过，且 validation stress 不降级，才允许生成 path-aware containment requirement。
 ```

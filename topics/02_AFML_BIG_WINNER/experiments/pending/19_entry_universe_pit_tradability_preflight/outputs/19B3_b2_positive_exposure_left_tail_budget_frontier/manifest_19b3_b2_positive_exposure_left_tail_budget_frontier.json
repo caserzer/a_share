@@ -1,0 +1,58 @@
+{
+  "authorization_state": {
+    "19C_replay_authorized": false,
+    "EP20_policy_preflight_authorized": false,
+    "entry_policy_authorized": false,
+    "exit_policy_authorized": false,
+    "holding_policy_authorized": false,
+    "live_trading_authorized": false,
+    "model_deployment_authorized": false,
+    "model_training_authorized": false,
+    "portfolio_backtest_authorized": false,
+    "production_signal_authorized": false
+  },
+  "config_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/19_entry_universe_pit_tradability_preflight/configs/config_19b3_b2_positive_exposure_left_tail_budget_frontier.yaml",
+  "config_file_hash": "ec42b10d50e6ffaf735f5062c95ba8b66cb6f93fe9445b00f09fa8ab381092f0",
+  "created_at": "2026-07-10T03:59:16.953655Z",
+  "decision_state": "19B3_forward_oos_underpowered_not_pass",
+  "forward_bundle_hash": "d533b9ae163cdd69b5a060857ec4e19b3cd48fcda7bba6a71401cf83c91b040e",
+  "forward_evaluability_state": "not_evaluable",
+  "freeze_bundle_hash": "051574045bc47f98bbc0090c1703d4d8ba601388e532ac6c905577949ebf1c93",
+  "human_restart_authorization_hash": "8cae4feb0b86d4737fc10e11e7fdf3d62a86013c30751553a177590c64724c23",
+  "numpy_version": "1.26.2",
+  "outcome_access_summary": {
+    "forward_outcome_read_n": 0,
+    "validation_outcome_read_n": 0
+  },
+  "output_hashes": {
+    "19B3_b2_positive_exposure_left_tail_budget_frontier_report.md": "2e1d06d9a68c3a4f6df461962d84b1715eafa9edd54ccb764899e50fb814db86",
+    "19B3_handoff_contract.md": "d2869371cee9bb2aa7513615772e34281c4f571aa09a0a731ec9ef3def0daee9",
+    "entry_universe_19b3_decision.csv": "ce3c87de32d4a768bea567ba9cfc2283c3ca046172e122fb7f4e53806e4ee390",
+    "outcome_access_audit.csv": "300eda313952e35b63532804a4db48f5a40957c3835187c5de9697889e7d7e45"
+  },
+  "pandas_version": "2.3.1",
+  "primary_arm_id": "R2_VOL60_TOP30_TRIM",
+  "python_version": "3.12.4",
+  "required_outputs": [
+    "entry_universe_19b3_decision.csv",
+    "outcome_access_audit.csv",
+    "19B3_b2_positive_exposure_left_tail_budget_frontier_report.md",
+    "19B3_handoff_contract.md"
+  ],
+  "requirement_file": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/19_entry_universe_pit_tradability_preflight/requirement_19b3_b2_positive_exposure_left_tail_budget_frontier.md",
+  "requirement_file_hash": "ae4e6db942a668f848654f51c67380dc3aa65187481d077300827ba2d094d53f",
+  "run_id": "19B3_b2_positive_exposure_left_tail_budget_frontier",
+  "runner_file_hash": "4c636a272437624150546ccb07586044e6bdb9e4aa853ce5ca5c53104bdf02b5",
+  "source_artifact_hashes": {
+    "qfq_input_inventory_hash": "43dffff915324e78d202c3a9eff2985de134cdd1111d0b8c4d16b370ae4d3ce1"
+  },
+  "stage_completed_at": "2026-07-10T03:59:16.953876Z",
+  "stage_execution_order": [
+    "freeze",
+    "forward",
+    "finalize"
+  ],
+  "stage_started_at": "2026-07-10T03:59:16.945448Z",
+  "validation_preoutcome_freeze_bundle_hash": "",
+  "validation_stress_bundle_hash": ""
+}
