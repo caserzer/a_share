@@ -1,0 +1,296 @@
+run_id: 20A_paper_lineage_data_and_replication_contract
+experiment_id: 20_ohlcv_positive_beta_exposure_research
+phase_id: 20A
+contract_version: 20A_v2
+
+paper_material_waiver:
+  authorized: true
+  authorized_by: workspace_user
+  authorized_at: '2026-07-10T23:00:00+08:00'
+  waived_source_ids:
+    - trend_china_full_working_paper
+    - ma_portfolio_timing_full_paper
+  reason: human_formula_review_completed_but_two_remote_full_text_files_are_temporarily_not_cached
+  local_full_text_claim_allowed_for_waived_sources: false
+  waiver_changes_formula_or_economic_gate: false
+
+paths:
+  research_plan: experiments/pending/20_ohlcv_positive_beta_exposure_research/research_plan.md
+  requirement: experiments/pending/20_ohlcv_positive_beta_exposure_research/requirement_20a_paper_lineage_data_and_replication_contract.md
+  project_universe: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  qfq_root: data/raw/akshare/day/qfq
+  raw_ohlcv_root: data/raw/akshare/day/raw
+  benchmark: data/processed/index/benchmark_indices_daily.csv
+  trading_calendar: data/raw/akshare/status/trading_calendar.csv
+  security_master: data/raw/akshare/status/instrument_metadata_target_universe.csv
+  sh_name_history_root: data/raw/akshare/status/sh_name_history
+  paper_cache_root: experiments/pending/20_ohlcv_positive_beta_exposure_research/references/papers
+  market_rule_registry: experiments/pending/20_ohlcv_positive_beta_exposure_research/references/market_rules/a_share_price_limit_rules_v1.csv
+  ep19_cost: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/replay_cost_assumption_freeze.csv
+  ep19_execution: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/entry_execution_convention_audit.csv
+  ep19_b2_selected_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/selected_family_cell_manifest.csv
+  ep19_b2_grid_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/grid_cell_manifest.csv
+  ep19_b2_feature_map: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/simple_rule_feature_source_map.csv
+  ep19_b2_output_hashes: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B0_fast_rule_grid_enrichment_scan/output_hashes_19b0_fast_rule_grid_enrichment_scan.json
+  ep19_b2_budget_registry: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19B3_b2_positive_exposure_left_tail_budget_frontier/freeze/b2_arm_registry.csv
+  ep19_board_index: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/by_year/2025/dc_index_2025_20250102_概念板块.csv
+  ep19_board_member: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/by_year/2025/dc_member_2025_20250102.csv
+  ep19_board_readme: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/README.md
+  ep19_board_mapping: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/metadata/classification_year_snapshot_mapping.csv
+  ep19_board_summary: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/metadata/dataset_summary.csv
+
+output:
+  output_root: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract
+
+objective:
+  primary_objective: deployable_positive_beta
+  incremental_alpha_required: false
+  historical_sample_role: design_contaminated_historical
+  historical_support_claim_allowed: false
+  support_source: post_contract_freeze_forward_only
+
+optional_exact_sources:
+  wide_pit_market_cap_files: []
+  pit_earnings_to_price_files: []
+  historical_pit_industry_files: []
+  risk_free_return_files: []
+  china_ch3_factor_files: []
+  corporate_action_factor_vintage_files: []
+
+paper_sources:
+  - source_id: trend_china_full_working_paper
+    family_id: TrendPV
+    url: https://acfr.aut.ac.nz/__data/assets/pdf_file/0014/324113/Y-Liu-New-TrendChina_12_1_WithAppendix.pdf
+    allowed_domains: [acfr.aut.ac.nz]
+    expected_content: pdf
+    core: true
+  - source_id: trend_china_internet_appendix
+    family_id: TrendPV
+    url: https://guofuzhou.github.io/TrendChina_Appendix.pdf
+    allowed_domains: [guofuzhou.github.io]
+    expected_content: pdf
+    core: true
+  - source_id: residual_momentum_full_paper
+    family_id: ResidualMomentum
+    url: https://repub.eur.nl/pub/22252/ResidualMomentum-2011.pdf
+    allowed_domains: [repub.eur.nl]
+    expected_content: pdf
+    core: true
+  - source_id: china_anomalies_full_paper
+    family_id: ChinaAnomalies
+    url: https://pure.eur.nl/ws/files/58642799/Anomalies_in_the_China_A_share_market.pdf
+    allowed_domains: [pure.eur.nl]
+    expected_content: pdf
+    core: true
+  - source_id: china_size_value_full_paper
+    family_id: ChinaSizeValue
+    url: https://faculty.wharton.upenn.edu/wp-content/uploads/2018/03/Size-and-Value-in-China.pdf
+    allowed_domains: [faculty.wharton.upenn.edu]
+    expected_content: pdf
+    core: true
+  - source_id: china_size_value_appendix
+    family_id: ChinaSizeValue
+    url: https://finance.wharton.upenn.edu/~stambaug/size_value_china_appendix_2_rev.pdf
+    allowed_domains: [finance.wharton.upenn.edu]
+    expected_content: pdf
+    core: true
+  - source_id: fip_full_working_paper
+    family_id: FIP
+    url: https://business.uq.edu.au/sites/default/files/events/files/mitch-warachka-paper.pdf
+    allowed_domains: [business.uq.edu.au]
+    expected_content: pdf
+    core: true
+  - source_id: china_low_vol_full_article
+    family_id: LowVol
+    url: https://link.springer.com/article/10.1057/s41260-021-00218-0
+    download_url: https://link.springer.com/content/pdf/10.1057/s41260-021-00218-0.pdf
+    allowed_domains: [link.springer.com]
+    expected_content: pdf
+    core: true
+  - source_id: ma_portfolio_timing_full_paper
+    family_id: MAOverlay
+    url: https://www.nowandfutures.com/large/TA_profitability_ssrn-id1656460.pdf
+    allowed_domains: [www.nowandfutures.com]
+    expected_content: pdf
+    core: true
+  - source_id: ohlcv_cnn_full_paper
+    family_id: CNN
+    url: https://economics.yale.edu/sites/default/files/2023-11/The%20Journal%20of%20Finance%20-%202023%20-%20JIANG%20-%20Re%25E2%2580%2590%20Imag%20in%20ing%20Price%20Trends_0.pdf
+    allowed_domains: [economics.yale.edu]
+    expected_content: pdf
+    core: true
+  - source_id: technical_fdr_accepted_manuscript
+    family_id: TechnicalFDR
+    url: https://archive-ouverte.unige.ch/unige:79889
+    allowed_domains: [archive-ouverte.unige.ch]
+    expected_content: html
+    core: true
+
+formula_rows:
+  - formula_id: TMOM_12_1
+    family_id: TotalMomentum
+    arm_id: C1_TMOM_12_1
+    source_id: residual_momentum_full_paper
+    paper_section_or_equation: p11-p12 portfolio definition
+    formula_text: cumulative total return over the 11 months preceding the latest completed month; latest month excluded
+    input_fields: monthly_total_return
+    lag_rule: latest completed month excluded
+    warmup_rule: 12 complete calendar months
+    weighting_rule: equal-weight project top decile
+  - formula_id: TRENDPV_SIGNALS
+    family_id: TrendPV
+    arm_id: C2_TRENDPV_RAW_ADAPTATION
+    source_id: trend_china_full_working_paper
+    paper_section_or_equation: equations 1-4, pp5-6
+    formula_text: MP_L=mean(close,L)/close_t and MV_L=mean(volume,L)/volume_t for L=3,5,10,20,50,100,200,300,400
+    input_fields: qfq_close|normalized_volume_shares
+    lag_rule: decision month-end only
+    warmup_rule: 400 sessions
+    weighting_rule: equal-weight project top decile
+  - formula_id: TRENDPV_MONTHLY_CS_REG
+    family_id: TrendPV
+    arm_id: C2_TRENDPV_RAW_ADAPTATION
+    source_id: trend_china_full_working_paper
+    paper_section_or_equation: equations 5-7, p6
+    formula_text: monthly predictive cross-section regression with EMA forecast coefficient lambda=0.02
+    input_fields: monthly_total_return|TrendPV_signals
+    lag_rule: only coefficients estimated through decision month
+    warmup_rule: 400 sessions plus coefficient initialization
+    weighting_rule: OLS cross-section; top-decile long-only project adaptation
+  - formula_id: TRENDPV_FULL_FACTOR
+    family_id: TrendPV
+    arm_id: P2_TREND_FULL_EXACT
+    source_id: trend_china_full_working_paper
+    paper_section_or_equation: section 2.2, pp6-7
+    formula_text: exclude smallest 30 percent; independent Size 2 x EP 3 x Trend 3; VW high trend six minus low trend six
+    input_fields: PIT_market_cap|PIT_EP|trend_score|monthly_total_return
+    lag_rule: paper PIT timing
+    warmup_rule: 400 sessions plus coefficient initialization
+    weighting_rule: value weighted paper factor
+  - formula_id: RESMOM_EXACT_CH3
+    family_id: ResidualMomentum
+    arm_id: P3_RESMOM_CH3_EXACT
+    source_id: residual_momentum_full_paper
+    paper_section_or_equation: equation 1 and pp11-12
+    formula_text: 36-month market/size/value regression; 12-1 residual return standardized by residual volatility
+    input_fields: monthly_excess_return|CH3_factors
+    lag_rule: paper 12-1
+    warmup_rule: paper-defined 36-month regression
+    weighting_rule: paper deciles
+  - formula_id: RESMOM_R2_MARKET_ONLY_ADAPTATION
+    family_id: ResidualMomentum
+    arm_id: C3A_RESMOM_R2_MARKET_ONLY
+    source_id: residual_momentum_full_paper
+    paper_section_or_equation: project adaptation of equation 1 and pp11-12
+    formula_text: sequential one-step 36-month stock-on-CSI300 residual; score mean/std over exact 11 residual months with latest month skipped
+    input_fields: stock_monthly_total_return|CSI300_monthly_total_return
+    lag_rule: rolling regressions use s-36 through s-1 only
+    warmup_rule: 47 complete prior months
+    weighting_rule: equal-weight project top decile
+  - formula_id: RESMOM_R3_BOARD_ADAPTATION
+    family_id: ResidualMomentum
+    arm_id: C3_RESMOM_R3_BOARD_ADAPTATION
+    source_id: residual_momentum_full_paper
+    paper_section_or_equation: project two-stage adaptation of equation 1 and industry robustness
+    formula_text: R2 market residual first; monthly cross-sectional ridge with alpha=1.0 on lagged log market cap and static 2025 board multi-hot; 11-month mean/std score
+    input_fields: R2_market_residual|lagged_market_cap|board_multi_hot
+    lag_rule: market regression s-36:s-1; size as of s-1
+    warmup_rule: 47 complete prior months
+    weighting_rule: equal-weight project top decile
+  - formula_id: LOWVOL_36M
+    family_id: LowVol
+    arm_id: C4_LOWVOL
+    source_id: china_low_vol_full_article
+    paper_section_or_equation: methodology low-volatility ranking
+    formula_text: standard deviation of preceding 36 complete monthly total returns
+    input_fields: monthly_total_return
+    lag_rule: through latest completed month
+    warmup_rule: 36 complete months
+    weighting_rule: equal-weight lowest project decile
+  - formula_id: FIP_ID
+    family_id: FIP
+    arm_id: D1_FIP_INCREMENT
+    source_id: fip_full_working_paper
+    paper_section_or_equation: information discreteness definition
+    formula_text: ID=sign(PRET)*(percent negative-return days - percent positive-return days)
+    input_fields: daily_return|PRET_12_1
+    lag_rule: latest completed month excluded
+    warmup_rule: 12 months plus daily sign coverage
+    weighting_rule: diagnostic challenger only
+  - formula_id: MA20_OVERLAY
+    family_id: MAOverlay
+    arm_id: E2_MA20_OVERLAY
+    source_id: ma_portfolio_timing_full_paper
+    paper_section_or_equation: moving-average portfolio timing rule
+    formula_text: hold sleeve only when prior sleeve close exceeds prior MA20; otherwise cash
+    input_fields: sleeve_daily_NAV
+    lag_rule: prior close and prior MA20
+    warmup_rule: 20 sessions
+    weighting_rule: portfolio overlay only
+  - formula_id: CNN_MAIN_DEFERRED
+    family_id: CNN
+    arm_id: F1_CNN_ORACLE
+    source_id: ohlcv_cnn_full_paper
+    paper_section_or_equation: image construction and prediction setup
+    formula_text: 20-session 60x64 OHLC+MA20 image with bottom-20-percent volume panel and next-20-session sign label
+    input_fields: OHLCV|MA20
+    lag_rule: strict time split
+    warmup_rule: 20 sessions plus calendar support gate
+    weighting_rule: oracle diagnostic only
+
+project_contract:
+  project_universe_unique_instrument_min: 1700
+  project_universe_date_min_max: '2017-01-31'
+  project_monthly_eligible_median_min: 350
+  project_market_cap_nonmissing_rate_min: 0.95
+  qfq_file_n_min: 4500
+  qfq_overlap_rate_min: 0.98
+  board_overlap_rate_min: 0.80
+  board_column_n_min: 50
+  project_post_warmup_month_n_min: 60
+  paper_post_warmup_month_n_min: 120
+  project_monthly_eligible_p10_min: 300
+
+economic_risk:
+  reference_portfolio_notional_cny: 10000000
+  diagnostic_notional_grid_cny: [1000000, 10000000, 100000000]
+  cash_hurdle_monthly: 0.0
+  monthly_ES10_loss_cap: 0.15
+  monthly_p10_return_floor: -0.12
+  max_drawdown_cap: 0.35
+  single_instrument_weight_cap: 0.10
+  top10_instrument_weight_cap: 0.50
+  minimum_effective_holdings: 20
+  maximum_ADV_participation_rate: 0.01
+  ADV_window_sessions: 20
+  break_even_cost_multiple_min: 1.25
+
+power:
+  test_direction: one_sided_positive
+  familywise_alpha: 0.05
+  holm_worst_case_alpha: 0.025
+  target_power: 0.80
+  economic_effect_monthly: 0.02
+  long_run_monthly_volatility: 0.08
+  interim_month_floor: 6
+  minimum_evidence_month_floor: 12
+  confirmatory_month_floor: 126
+
+cnn_support:
+  train_calendar_month_n_min: 72
+  validation_calendar_month_n_min: 18
+  frozen_test_calendar_month_n_min: 24
+  train_unique_instrument_n_min: 1500
+  train_image_n_min: 300000
+  validation_image_n_min: 60000
+  frozen_test_image_n_min: 80000
+  distinct_market_regime_n_min: 3
+
+authorizations:
+  next_allowed_requirement: requirement_20b_trendpv_residual_momentum_design_and_replication_diagnostic.md
+  next_requirement_generation_authorized: true
+  next_requirement_execution_authorized: false
+  policy_training_authorized: false
+  policy_replay_authorized: false
+  portfolio_optimization_authorized: false
+  deployment_authorized: false

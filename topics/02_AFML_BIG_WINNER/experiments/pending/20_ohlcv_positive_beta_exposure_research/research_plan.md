@@ -8,7 +8,7 @@
 >
 > Supersedes draft ID：`20_ohlcv_directional_alpha_replication`
 >
-> 上游结论：Episode 19 已结题；B2 保留为冻结的、已知可增加大赢家暴露的正 beta incumbent。
+> 上游结论：Episode 19 已结题；B2 日频事件证据保留为已知可增加大赢家暴露的冻结 reference，不直接等同于 EP20 月末 arm。
 >
 > 重启性质：`topic_level_human_restart`
 >
@@ -26,7 +26,8 @@ EP20：     frozen signal -> fixed-horizon realized return -> holdable positive-
 ```
 
 主问题是：**主要由 PIT OHLCV 构造、且有论文依据的信号，能否在本项目 A 股可执行股票池中形成一个全资金、成本后
-预期收益为正、右尾/大赢家暴露为正、左尾与回撤在冻结预算内的可持有 sleeve？**
+预期收益为正、左尾与回撤在冻结预算内的可持有 sleeve？**右尾/大赢家暴露继续披露，但只作 secondary bridge，
+不作为正 beta 的必要条件。
 
 ### 目标决断：追求正 beta，不要求 alpha
 
@@ -34,13 +35,25 @@ EP20 的 primary objective 是 `deployable_positive_beta`，不是“风险调�
 市场 beta、波动率、size、board 或流动性暴露解释，只要这些暴露是事前透明、可以持有、成本后仍有正收益，并满足
 左尾/回撤/容量预算，就可以通过。Scale matching、within-vol sort 和横截面回归保留为**收益来源分解**，不再是淘汰门。
 
-因此 B2 不再是 negative control，而是：
+因此 B2 不再是 negative control，但必须区分原始日频证据与 EP20 月频适配：
 
 ```text
-arm_role = frozen_positive_beta_incumbent
-known_property = about +33% big-winner exposure before matched attribution
-alpha_claim = false
-promotion_condition = fixed-return, cost, left-tail, drawdown and capacity gates pass
+EP19_B2_DAILY_EVENT_REFERENCE:
+    role = frozen_design_contaminated_reference_not_project_arm
+    grid_cell = B2-relative-strength-breakout__182b3d0f30f5
+    known_property = about +33% big-winner exposure before matched attribution
+    frequency = daily event stream with 10-session instrument cooldown
+    alpha_claim = false
+
+C5_EP19_B2_MONTH_END_ADAPTATION:
+    role = project comparator; no transfer of EP19 effect size
+    formula = frozen B2 thresholds evaluated only at the scheduled month-end decision
+
+C5R2_EP19_B2_MONTH_END_VOL60_TRIM:
+    role = project risk-controlled comparator; no transfer of 19B3 effect size
+    formula = within the same month-end, compute executable-universe q_vol60 and B2-candidate causal p70
+    cross-date_or_forward-batch_threshold_estimation = false
+    unallocated_weight = cash
 ```
 
 若新候选在 matching 后仍有增量，额外标记为 `positive_beta_with_incremental_alpha`；但没有该增量不会自动失败。
@@ -72,15 +85,17 @@ qfq 价格文件接近全市场，但宽截面 PIT 总股本/市值和 E/P 当�
 诊断，EP20 的有效目标仍是项目正 beta 适配。
 
 换用 1-month primary label 带来一个现实优势：每个 forward decision month 约一个月后即可完成标签。若约在
-2026-08 freeze，6 个完整月可在 2027 年初形成 interim readout，12 个独立月最快约在 2027 年中至第三季度形成
-positive-beta support；明显快于 19B3 的 120-session 主标签。
+2026-08 freeze，6 个完整 decision months 可在 2027 年初形成 interim readout，12 个完整 decision months 最快约在 2027 年中至第三季度形成
+minimum directional evidence，但不是 confirmatory support。20A 的 ex-ante MDE/power 合同以月度经济效应 2%、设计
+long-run 波动率 8%、Holm worst-case alpha 2.5%、power 80% 冻结确认性下限为 126 个完整 decision-month evidence units；
+若约 2026-08 freeze，确认性日历下限约为 **2037 Q1**。
 
 EP20 的成功不是“某个 top bucket 的 MFE 更高”，而是同时满足：
 
 ```text
 positive fixed-return exposure
 + long-only full-capital economic value
-+ positive exposure and transparent risk-source attribution
++ transparent risk-source attribution
 + frozen left-tail / drawdown budget
 + cost/capacity feasibility
 + cross-time and cross-sectional stability
@@ -109,17 +124,20 @@ lower left tail != better full-capital return
 
 ### 1.2 EP20 的估计对象
 
-主估计对象从 barrier/path label 改为固定收益：
+主估计对象从 barrier/path label 改为固定月度组合收益：
 
 ```text
-Y_primary(i,t) = executable total return from next eligible open after decision t
-                 to next scheduled rebalance open
+Y_primary_sleeve(t) = stateful month-end NAV_t / stateful month-end NAV_(t-1) - 1
 
-Y_attribution(i,t) = Y_primary(i,t)
-                     - contemporaneous benchmark/cash return over the same interval
+portfolio_state = one continuous no-injection ledger per arm;
+                  blocked exits remain marked and consume capital;
+                  new buys can use only released cash
+
+Y_attribution_sleeve(t) = Y_primary_sleeve(t)
+                          - contemporaneous benchmark/cash return over the same calendar month
 ```
 
-`Y_primary` 的成本后、cash-inclusive、full-capital 结果决定正 beta 是否可持有；`Y_attribution`、factor alpha 与
+`Y_primary_sleeve` 的成本后、cash-inclusive、full-capital 结果决定正 beta 是否可持有；`Y_attribution_sleeve`、factor alpha 与
 matched lift 只解释收益来自哪里。它们可以提升证据等级，但不是 primary pass 的必要条件。
 
 必须同时报告：
@@ -140,8 +158,9 @@ MFE/MAE、`+50%`、`+100%` 和 first-hit ordering 降级为解释性 path diagno
 
 ```text
 positive_beta_sleeve = net full-capital expected return above frozen cash hurdle
-                       + positive right-tail / winner exposure
                        + acceptable left-tail, drawdown, turnover and capacity
+
+right_tail_bridge    = disclosed secondary winner exposure; not required for beta support
 
 market_beta          = regression exposure to the market factor
 incremental_alpha    = return increment that remains after frozen risk/scale attribution
@@ -181,7 +200,7 @@ incremental_alpha    = return increment that remains after frozen risk/scale att
 | Low Vol | Blitz, Hanauer & van Vliet (2021) | A 股低波动因子 | `risk_scale_comparator_and_overlay` |
 | MA timing | Han, Yang & Zhou (2013) | 对波动率组合做组合层择时 | `portfolio_risk_overlay_only` |
 | OHLCV CNN | Jiang, Kelly & Xiu (2023) | 价格图像预测未来收益 | `representation_oracle_only` |
-| EP19 B2 | EP19 本地冻结证据 | 高波动、双尾、约 +33% 大赢家暴露 | `frozen_positive_beta_incumbent` |
+| EP19 B2 daily reference | EP19 本地冻结证据 | 高波动、双尾、约 +33% 大赢家暴露 | `design_contaminated_reference_not_project_arm` |
 | 大规模技术规则 | Bajgrowicz & Scaillet (2012) | 7,846 条规则的数据窥探检验 | `negative_governance_evidence` |
 
 ### 2.3 不允许的角色漂移
@@ -321,6 +340,11 @@ R2 = market_only_residual_momentum_adaptation
 R3 = market_plus_size_plus_ep19_2025_board_proxy_adaptation
 ```
 
+- R2 固定为 sequential one-step adaptation：每月只用此前 36 个完整月估计个股总收益对截距与 CSI300 总收益的回归，
+  月末形成当月 market residual；formation month 再以 12-1 的 11 个 residual months 形成均值/波动 score。它不依赖
+  risk-free，因此 exact risk-free/CH-3 缺失不阻断该 fallback。
+- R3 必须先执行与 R2 相同的 market-residual stage，再逐月将该 residual 对滞后 size 与 EP19-2025 multi-hot board
+  exposures 做横截面 ridge residualization；不能用“股票收益减去当月 CSI300 常数”冒充 market control。
 - 只有本地 PIT market/size/value factor 完整、无 future accounting information 时，R1 才可标为 exact。
 - R2/R3 必须带 `_adaptation` 后缀。它们可以作为本项目的正 beta 候选独立进入 frozen forward，但永远不能将失败或
   不可评价的 R1 升级为“exact replication 通过”。
@@ -359,6 +383,10 @@ tushare_dc_yearly_board_snapshot/by_year/2025/dc_member_2025_20250102.csv
    合并和共线性处理；不得事后选择最有利的“主行业”；
 5. 必须同时报告不使用 board proxy 的 R2，区分 market-only 与 board-controlled adaptation；
 6. 任何使用该 proxy 的产物都带 `industry_semantics=ep19_2025_static_concept_board_proxy`。
+
+该 snapshot 在同一 contract version 内不得刷新。每个 forward month 必须报告 `board_snapshot_age_months`；如果未来换用
+新 snapshot，必须升级 contract version 并重启 cohort，禁止把两个 snapshot version 的月份合并为同一个 confirmatory
+sample。由于确认性时间下限约到 2037 Q1，R2 market-only 必须贯穿全期作为 staleness comparator。
 
 这项代理解决的是项目 exposure attribution 和 forward 控制问题，不改变宽截面 PIT E/P/market-cap 缺失导致 exact
 Trend/CH-3 replication 不可得的事实。
@@ -540,7 +568,8 @@ paper_return_semantics:
     paper-defined month-end close-to-close / total return，diagnostic only
 
 project_return_semantics:
-    decision at close -> next eligible open entry -> next rebalance eligible open exit
+    decision at month-end close -> next-open stateful rebalance -> continuous calendar-month NAV return
+    blocked exits remain marked and consume capital; no monthly capital reset
     with suspension, limit, cost and cash handling，primary economic estimand
 ```
 
@@ -601,6 +630,10 @@ project_return_semantics:
 9. exact / adapted / unavailable 的机械分类；
 10. `ep20a_data_replication_go_no_go.csv` 与各路线最高证据等级。
 
+20A v2 记录一次人工 material waiver：Trend China 主文与 MA timing 主文因远端 403/522 暂未缓存，但人工公式核验已完成。
+Waiver 不得写成 acquisition success、不得声称存在本地 full-text/hash，也不得提高 exact replication claim；其 ID 必须在
+config、source manifest 和 human authorization 三方一致。
+
 20A 输出后必须再次人工批准，才可读取历史 outcome 运行 20B。
 
 ### Stage 20B：Paper-grounded historical design / replication diagnostic
@@ -637,25 +670,27 @@ C1 = total momentum top bucket
 C2 = TrendPV top bucket
 C3 = residual momentum top bucket
 C4 = Low Vol top bucket comparator
-C5 = frozen EP19 B2 positive-beta incumbent
+C5 = EP19 B2 rule month-end project adaptation
+C5R2 = C5 with same-date causal VOL60 top30 trim comparator
 ```
 
 每个 active arm 同时报告：
 
 - 等权 active-position return；
-- 按当月可投资资金归一后的 full-capital return；
+- continuous stateful full-capital NAV return，不重置每月资本；
 - 缺少信号/不可交易时持有 cash 的 return；
 - gross 与 net return；
 - absolute net return 与 frozen cash hurdle 的差；
 - top bucket、top-minus-middle、top-minus-bottom；
 - 右尾/大赢家 exposure、左尾/回撤预算；
-- 相对 C0、total momentum 与 EP19 B2 的 paired difference（attribution，不是 alpha 必要门）。
+- 相对 C0、total momentum 与 C5 month-end adaptation 的 paired difference（attribution，不是 alpha 必要门）；EP19 daily B2
+  只并列展示历史 reference，不做伪 paired comparison。
 
 不得只展示 long-short，因为 A 股 short leg 未必可执行；不得只展示 active-position mean，因为低覆盖 arm 会虚增收益。
 
 ### Stage 20D：FIP incremental test
 
-只有 C2、C3 或 C5 至少一个满足 historical beta-design gate，才允许 20D。FIP 固定为在形成期收益与 volatility 匹配后的
+只有 C2、C3、C5 或 C5R2 至少一个满足 historical beta-design gate，才允许 20D。FIP 固定为在形成期收益与 volatility 匹配后的
 二分/三分 challenger，不另开大网格。
 
 核心估计：
@@ -710,13 +745,14 @@ first_exchange_session_strictly_after_preoutcome_contract_freeze
 - freeze 后形成的 decision months；
 - primary 1-month label 完整；
 - 同一股票跨月相关性用 instrument/block cluster 处理；
-- 至少 6 个独立月份才允许 evaluability readout；
-- 至少 12 个独立月份才允许 positive-beta support claim；
-- 最终数量门还须由 20A 的 minimum detectable effect / power audit 冻结；
+- 至少 6 个完整 decision months 才允许 evaluability readout；
+- 至少 12 个完整 decision months 才允许 minimum directional evidence，不允许 confirmatory support claim；
+- confirmatory support 至少需要 20A ex-ante MDE/power 冻结的 126 个完整 decision-month evidence units；
 - 6–11 个月只能标为 `forward_interim_not_support`。
 
-若约在 2026-08 完成 freeze，预计 2027 年初形成 6-month interim，2027 年中至第三季度才可能形成第一个 12-month
-support readout；实际日期以每个 decision month 的 label-complete audit 为准。
+若约在 2026-08 完成 freeze，预计 2027 年初形成 6-month interim，2027 年中至第三季度形成第一个 12-month
+minimum-evidence readout；它不是 confirmatory support。126 个完整 decision months 的确认性日历下限约为 **2037 Q1**。
+实际日期以每个 decision month 的 label-complete audit 为准。
 
 若以后要把候选重新桥接到 120-session Big Winner，则另等完整 120-session path；不能用 1-month forward pass 代替。
 
@@ -731,14 +767,15 @@ support readout；实际日期以每个 decision month 的 label-complete audit 
 
 ### 6.1 Primary horizon 与标签
 
-主频率固定为月度，主持有期固定为一个月。Decision 在月末最后一个可用 close 形成，项目主执行语义为下一可交易日
-open 建仓、下一月预定 rebalance 的可交易 open 平仓/换仓。
+主频率固定为月度，primary return 固定为连续 stateful NAV 的 calendar-month return。Decision 在月末最后一个可用 close
+形成，下一交易日 open 发起调仓；无法卖出的旧仓继续占用实际资本，新买入只能使用已释放现金。每个 arm 只有一条初始
+1000 万 NAV ledger，禁止每月重置资金或为 blocked exit 额外注资。
 
 辅助 horizon 只允许：
 
 ```text
 5 sessions   = short diagnostic
-20 sessions  = primary approximation / calendar QA
+20 sessions  = stock-level diagnostic / calendar QA, not the portfolio primary
 60 sessions  = persistence diagnostic
 120 sessions = Big Winner bridge diagnostic
 ```
@@ -752,8 +789,8 @@ open 建仓、下一月预定 rebalance 的可交易 open 平仓/换仓。
 ```text
 1. cash-inclusive full-capital net return and CI
 2. net return minus frozen cash hurdle
-3. positive-month rate and cumulative NAV
-4. right-tail / big-winner exposure and capture
+3. cumulative NAV；positive-month rate 仅作 diagnostic
+4. one-month upper-tail contribution；120-session big-winner exposure 仅作 secondary bridge
 5. p10 / ES10 / max drawdown vs frozen budget
 6. turnover, capacity and effective holdings
 ```
@@ -799,29 +836,36 @@ beta_source.liquidity
 incremental_alpha_after_attribution
 ```
 
-如果 matching 后效应消失，但 absolute net return、正 exposure、左尾/回撤、成本和容量通过，则结论为
+如果 matching 后效应消失，但 absolute net return 为正且左尾/回撤、成本和容量通过，则结论为
 `positive_beta_supported_scale_explained`；如果 matching 后仍有增量，则升级描述为
 `positive_beta_supported_with_incremental_alpha`。只有来源暴露导致冻结风险预算或容量失败，才淘汰 sleeve。
 
 ### 6.4 置信区间与相关性
 
-- 月度组合收益使用 Newey–West，lag 在 requirement 中按 holding overlap 冻结；
+- 月度组合收益同时报告 nominal 95% CI、Holm-adjusted one-sided HAC p-value 与每 arm 的 one-sided 97.5% Bonferroni
+  simultaneous lower bound；只有后两者进入 confirmatory primary gate；
+- primary stateful monthly return 的 serial dependence 使用 requirement 冻结的机械 Newey–West lag rule；
 - 股票级差分使用 decision-month block × instrument cluster bootstrap；
 - 同一 decision month 的全截面不能被当作独立时间证据；
-- overlapping holding portfolios 必须按论文公式构造并正确调整相关性；
+- paper-diagnostic overlapping holding portfolios 必须按论文公式构造并正确调整相关性；project primary 不使用重叠 cohort；
 - 报告 point estimate、95% CI、effective months 和 effective holdings，不只报告 t 值。
 - 所有 2017–2026-05 历史 CI 都标 `design_only_not_support`；统计显著性不能消除 topic-level outcome consumption。
 
 ### 6.5 多重检验
 
-Project primary family 只包含两个预注册候选：
+Project primary family 始终包含两个候选；residual primary 只按 pre-outcome board-data availability 确定：
 
 ```text
-F_primary = {raw_TrendPV_project_adaptation,
-             market_size_EP19_2025_board_proxy_residual_adaptation}
+if board_proxy_gate passes:
+    residual_primary = market_size_EP19_2025_board_proxy_residual_adaptation
+else:
+    residual_primary = market_only_residual_momentum_adaptation
+
+F_primary = {raw_TrendPV_project_adaptation, residual_primary}
 ```
 
-Market-only residual、Total Momentum、Low Vol 和 EP19 B2 是冻结 comparator。Paper-exact arms 只回答 replication，
+未被选为 primary 的 residual arm、Total Momentum、Low Vol、B2 month-end adaptation 和其 causal VOL60 trim 是冻结 comparator。
+Paper-exact arms 只回答 replication，
 不得升级失败的 project primary；project adaptation 也不得升级 exact claim。FIP 是有序增量检验，CNN 是独立 oracle
 family。Primary family 使用 Holm correction。所有运行过的窗口、定义、修复版都登记，不能把失败 arms 从 family 中删除。
 
@@ -835,6 +879,11 @@ family。Primary family 使用 Holm correction。所有运行过的窗口、定�
 - ADV participation cap；
 - 最小持仓数与单名权重 cap；
 - value/equal weight 的容量差异。
+
+20A 还必须冻结同一套 stateful accounting 公式：ADV 使用订单日前 20 个 exchange-open sessions 的 raw amount 均值，
+上市后缺 bar 的 session 按 0；realized/attempted
+one-way turnover 分开；blocked exit 继续占用 NAV；break-even multiple 用 gross mean 超过 cash hurdle 的部分除以实际
+transaction-cost return。不得每月重置 1000 万 reference capital。
 
 每张 gross 表旁必须有相同口径 net 表。若只在 gross 成立，结论为 `gross_only_not_economic`。
 
@@ -866,13 +915,13 @@ TrendPV/residual 至少需要：
 
 ```text
 cash-inclusive net full-capital point estimate above frozen cash hurdle
-right-tail / winner exposure positive
 left-tail and drawdown within frozen design budget
 turnover and coverage mechanically evaluable
 effect present in more than one time fold
 ```
 
-Scale-matched lift 只记录 attribution，不决定本门。这只是允许冻结候选等待 forward 的 design gate，不是 support claim。
+Right-tail/winner exposure 与 scale-matched lift 都只记录 attribution/bridge，不决定本门。这只是允许冻结候选等待 forward
+的 design gate，不是 support claim。
 
 ### 7.3 Economic gate
 
@@ -889,10 +938,9 @@ effective holdings and concentration pass
 ### 7.4 True-forward gate
 
 ```text
-forward support floor met
+complete decision-month evidence unit n >= frozen confirmatory power floor (126 in 20A v2)
 primary cash-inclusive net return CI lower bound above frozen beta floor
 direction holds in both early/late forward blocks when evaluable
-right-tail / winner exposure gate passes
 left-tail budget passes
 scale/risk-source attribution is complete and disclosed
 no outcome-access or immutable-bundle violation
@@ -963,8 +1011,12 @@ daily_ohlcv_directional_information_not_supported
 forward_interim_not_support
     -> 只有 6–11 个完整 forward months；只报告，不作 support。
 
+forward_minimum_directional_evidence_not_confirmatory
+    -> 12–125 个完整 forward months；可以报告 point-estimate 方向，但不能作确认性 support。
+
 deployable_positive_beta_candidate_supported
-    -> fixed-return、positive exposure、risk budget、economic、stability、concentration、true-forward 全部通过；
+    -> 至少 126 个完整 decision-month evidence units，且 fixed-return CI、risk budget、economic、stability、concentration、
+       true-forward 全部通过；
        允许人工发起新的 policy/portfolio requirement。
 ```
 
