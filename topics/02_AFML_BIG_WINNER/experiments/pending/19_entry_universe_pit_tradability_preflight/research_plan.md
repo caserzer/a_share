@@ -1,7 +1,14 @@
-# EP19 Research Plan: Entry-Universe PIT Tradability and Right-Tail Enrichment Preflight
+# EP19 Research Plan: Entry-Universe PIT Tradability, Positive Exposure and Left-Tail Budget Preflight
 
 创建日期：2026-07-03
-更新日期：2026-07-06
+更新日期：2026-07-10
+
+> 2026-07-10 更新说明：Section 0–10 保留为原始预注册计划，Section 11 记录 19A–19B2
+> 的执行结果，Section 12 记录 outcome readout 后形成的 human research restart：把 B2 视为
+> `positive-exposure beta sleeve` 候选，并把下一主问题改为“在冻结右尾预算下优先压低左尾”。
+> Section 12 不追溯改写 Section 0–10 的 gate 或 EP19 已有裁决；任何新正向支持必须来自新的
+> pre-registered requirement 和未消费的 forward OOS。现有 `validation` 始终是一次性压力测试集，
+> 只能维持、降级或否决已有支持，不能用于选择、调参或产生正向支持。
 
 ## 0. 实验定位
 
@@ -1356,3 +1363,348 @@ The central test is not whether a model can predict `winner_120`, but whether a 
 EP19 does not authorize policy.
 
 It only decides whether there is a PIT, fill-feasible, enrichment-supported entry universe worth taking into EP20.
+
+## 11. 执行日志：19A → 19B2（2026-07-10 记录）
+
+本节记录已经运行的相位结果。19B0 是 train-only 选型；19B 在冻结 robustness split 上读取结果，
+因此 B2 的 positive-exposure component 是相对 train 选型的 held-out/OOS robustness 证据。随后
+19B1/19B2 复用同一已消费 robustness outcome 做 post-hoc diagnostic，不能为新 suppressor、weighting
+或 holdability arm 提供独立确认。`validation` outcome 仍未读取，并保持 stress-test-only。
+
+治理最高终态仍是 `19_entry_universe_enrichment_only_diagnostic`；未授权 replay / policy / trading。
+
+### 11.1 相位结果
+
+```text
+19A  entry universe / PIT / tradability / data contract 冻结通过。
+19B0 fast rule-grid 扫描：B2、B5 两个 family 进入 19B robustness。
+19B  robust right-tail enrichment + false-positive burden：
+        decision_state = 19B_false_positive_burden_blocked
+        positive_exposure_robustness_gate = pass
+        matched_baseline_residual_gate = fail
+        max_ep19_terminal_state_if_no_residual_pass = 19_entry_universe_enrichment_only_diagnostic
+19B1 T0 左/右尾可区分性诊断：
+        decision_state = 19B1_t0_left_right_tail_separable_diagnostic
+        四分组（B2, candidate_primary_denominator, n=1552, instrument=524）：
+            right_clean = 290, left_bad = 614, both = 145, neither = 503
+        4 个 T0 特征 separability_pass 且 direction_for_left_bad = positive、
+        cluster_bootstrap_direction_stable_rate = 1.0：
+            match_vol60, atr_20_pct, return_60d, close_to_ema60
+19B2 B2 high-vol×extension 左尾 suppressor 消融：
+        decision_state = 19B2_suppressor_improves_burden_but_not_interaction_supported_diagnostic
+        blocking_reason = interaction_superiority_gate_failed
+```
+
+### 11.2 19B2 关键读数
+
+```text
+best primary interaction variant = B_vol60_80_ret60_80
+    left_bad_removed_per_right_clean_removed = 3.30
+    right_clean_kept_rate = 0.897
+    MAE_20_p10_improvement_vs_S0 = 0.0128 (bootstrap CI_low > 0)
+最强预算匹配单因子 = A_ATR20_top10
+    efficiency = 4.50 (bootstrap CI_low = 2.89)
+    right_clean_kept = 0.931, p_candidate_50_after = 0.283 > S0
+结论：
+    1. 简单 ATR20 top10 左尾修剪，在同预算下压过所有乘法交互 suppressor。
+    2. tail_risk_score 是 two-tailed amplifier：high-vol×extension 同时抬高左尾风险与右尾机会。
+    3. T0 静态 suppressor 只能小幅、CI 可支撑地减负，不能把左尾修到"可用"。
+```
+
+### 11.3 Post-hoc T0 selection diagnostic 的边界
+
+```text
+19B1 的正式 primary comparison 是 left_bad vs right_clean，不是 right_clean vs rest。
+基于 19B2 四个风险特征及其 rank 的 right_clean-vs-rest 读数只属于 post-hoc exploratory；
+它没有独立 artifact、预注册 gate 或未消费 split 支持，不能据此声明“T0 entry 已被否定”。
+
+当前可保留的边界是：
+    1. match_vol60 / ATR20 / return60 / EMA60 distance 对左尾风险有方向稳定的解释力；
+    2. 同一高风险区也包含大量 right_clean / both，静态 T0 risk feature 不是干净 winner selector；
+    3. 这不阻止对冻结 B2 sleeve 做简单 trim / weighting，但禁止把 post-hoc AUC 当 policy 证据；
+    4. winner-conditional 的 right_clean-vs-both 只能生成 path/holdability 假设，不能用于 T0 membership。
+```
+
+## 12. Human Research Restart：B2 正向暴露的左尾预算（2026-07-10）
+
+本节是读取 19B/19B1/19B2 outcome 后形成的新研究方向。它只生成下一份预注册 requirement 的
+假设，不追溯改变 19B 的 `false_positive_burden_blocked` 裁决。
+
+### 12.1 研究目标与术语边界
+
+```text
+研究对象 = frozen B2 positive-exposure beta sleeve
+核心目标 = 在冻结右尾牺牲预算下，优先压低左尾风险
+非目标   = 证明 matched-baseline residual alpha
+非目标   = 在 B2 内训练复杂 winner selector
+```
+
+这里的 `positive-exposure beta sleeve` 是 operational research label，表示 B2 相对 eligible universe
+存在稳定的 candidate-conditioned right-tail exposure；它不是资产定价 beta 的正式估计。
+
+19B robustness 已支持以下 component：
+
+```text
+p_candidate_50                 = 0.2803
+p_eligible_universe_50         = 0.2104
+positive_exposure_delta_50     = +0.0698
+positive_exposure_ratio_50     = 1.3319
+positive_exposure_p_value_50   = 1.14e-07
+positive_exposure_robustness_pass = true
+```
+
+但 B2 的完整 cell gate 没有通过：
+
+```text
+false_positive_burden_gate     = fail
+topk_positive_exposure_gate    = fail
+cell_positive_exposure_gate    = false
+cell_decision_state            = false_positive_burden_blocked
+```
+
+`matched_baseline_residual_gate = fail` 不能解释为“纯 beta、alpha=0”。所有 frozen/repair matching
+arm 的 quality 都失败，因此 residual attribution 是 unresolved。Matched/factor baseline 可继续作为
+风险归因和 cheap-replication comparator，但不再是本分支左尾预算的 primary success gate。
+
+### 12.2 当前左尾事实与已知 frontier
+
+B2 S0 的核心问题不是右尾不足，而是左尾过厚：
+
+```text
+candidate_n                    = 1552
+right_tail_event_50_n          = 435
+p_candidate_50                = 0.2803
+P(MAE_20 <= -10%)             = 0.4890
+P(MAE_20 <= -20%)             = 0.1476
+MAE_20_p10                    = -0.2288
+eligible_universe_MAE_20_p10  = -0.1361
+MAE_20_p10 worsening          = 0.0927
+```
+
+19B2 已知静态 T0 frontier：
+
+| arm | candidate removed | +50% winner retention | p50 after | P(MAE20 <= -10%) | MAE20 p10 |
+|---|---:|---:|---:|---:|---:|
+| `S0` | 0.0% | 100.0% | 28.0% | 48.9% | -22.9% |
+| `A_ATR20_top10` | 10.2% | 90.6% | 28.3% | 46.5% | -21.7% |
+| `S4_tail_risk_top25` | 25.0% | 69.7% | 26.0% | 43.8% | -20.6% |
+| `A_VOL60_top30` | 30.3% | 64.6% | 26.0% | 42.4% | -20.0% |
+
+现有证据的机械含义：
+
+```text
+1. A_ATR20_top10 是 mild-trim diagnostic comparator，不是已验证风控 policy。
+2. 允许牺牲更多右尾时，A_VOL60_top30 是当前最强 aggressive static comparator。
+3. high-vol / extension 是 two-tailed amplifier；硬删除会同时损失右尾。
+4. 即使删除约 30% 候选，左尾仍远未回到可持有区间；继续扩大同类交互 grid 的价值有限。
+5. D 类 volatility-contraction arm 提高 p50 但恶化 MAE，只能作为 beta-amplification diagnostic，
+   不得混入 left-tail suppressor 主线。
+```
+
+### 12.3 新的 constrained objective
+
+下一阶段不再最大化 winner precision，而是最小化左尾损失，并把右尾写成不可突破的预算：
+
+```text
+minimize:
+    weighted_left_tail_ES10_of_loss_minus_MAE20
+
+subject to:
+    positive_exposure_ratio_50_after >= 1.20
+    right_tail_event_50_capture_retention >= 0.60
+    effective_exposure_n / concentration / capacity gates pass
+```
+
+Primary left-tail metric：
+
+```text
+left_tail_ES10 = mean(-MAE_20 | -MAE_20 is in worst 10%)
+```
+
+Required guardrails：
+
+```text
+MAE_20_p10
+P(MAE_20 <= -10%)
+P(MAE_20 <= -20%)
+P(MAE_20 <= -30%)
+right_tail_event_50_capture_retention
+positive_exposure_ratio_50_after
+top_tail_payoff_contribution_retention
+effective_exposure_n
+instrument / instrument-month / decision-month concentration
+```
+
+Proposed research-effect floor，必须在下一 requirement 中于任何新 outcome readout 前冻结：
+
+```text
+MAE_20_p10_improvement_vs_S0 >= 0.03
+and cluster_bootstrap_MAE_improvement_CI_low > 0
+and P(MAE_20 <= -20%) relative reduction vs S0 >= 0.30
+and positive_exposure_ratio_50_after >= 1.20
+and right_tail_event_50_capture_retention >= 0.60
+```
+
+这些是研究推进门，不是交易授权。只要靠继续缩小样本或整体缩小仓位即可机械通过的 metric 必须禁止。
+
+### 12.4 Phase 19B3：B2 Positive-Exposure Left-Tail Budget Frontier
+
+建议下一具体 artifact：
+
+```text
+requirement_19b3_b2_positive_exposure_left_tail_budget_frontier.md
+```
+
+19B3 只允许一个 frozen B2 cell：
+
+```text
+family_id      = B2_relative_strength_breakout
+grid_cell_id   = B2-relative-strength-breakout__182b3d0f30f5
+parameter_hash = 182b3d0f30f5c407544f209b2597ca6959a1ad8e8f94d6957345c7931da6e1a2
+entry anchor   = next executable open
+cooldown       = frozen 19A/19B0 convention
+```
+
+预注册 arms 应保持极小：
+
+```text
+R0 = S0 untrimmed B2
+R1 = A_ATR20_top10 mild hard trim comparator
+R2 = A_VOL60_top30 aggressive hard trim comparator
+R3 = one frozen continuous volatility-budget arm
+P0 = same-budget random trim / random weight placebo
+```
+
+R3 只允许一个在 outcome readout 前冻结的单调 weight map。计划级默认形式为：
+
+```text
+raw_weight_i = median_vol60_asof_t0 / max(vol60_i_asof_t0, epsilon)
+weight_i = clip(raw_weight_i, 0.25, 1.00)
+```
+
+最终公式、normalization、cash treatment、same-day competition、weight cap 和 effective-n floor 必须在
+requirement 中冻结。不得在 forward OOS 或 validation stress 上选择 percentile、weight floor、函数形式
+或 risk target。
+
+19B3 的 primary question 是：
+
+```text
+能否在至少保留 60% 的 +50% right-tail events、且 p50 exposure ratio 仍 >= 1.20 的条件下，
+把 B2 的 left-tail ES / MAE frontier 明显推过当前 A_VOL60_top30 incumbent？
+```
+
+### 12.5 Split 与 validation stress contract
+
+三个已有 split 的状态必须明确区分：
+
+```text
+train       = 2018-01-18 .. 2021-12-31
+              已用于 19B0 selection；spent/discovery-only
+
+robustness  = 2024-01-02 .. 2025-11-26
+              已用于 19B OOS robustness，并被 19B1/19B2 用于 post-hoc diagnostics；
+              spent/design-only for 19B3
+
+validation  = 2022-01-04 .. 2023-12-29
+              sealed stress-test-only；不是 selection、confirmation 或 support split
+```
+
+19B3 新正向支持只能来自：
+
+```text
+forward_oos:
+    decision_date > 2025-11-26
+    120-session label/path complete
+    frozen B2 membership, arm definitions and output manifest before outcome read
+```
+
+若 forward OOS 样本或 path support 不足：
+
+```text
+decision_state = 19B3_forward_oos_underpowered_not_pass
+```
+
+不得读取 validation 来补样本或救活 forward OOS failure。
+
+Validation stress 的唯一用途：
+
+```text
+1. 在 forward OOS primary decision 完成后，对完全相同的 frozen arms / metrics / thresholds 做压力测试；
+2. 不选择 arm，不改 weight，不改阈值，不改 horizon，不改 baseline，不改 risk target；
+3. stress pass 只能维持 forward OOS 已有结论，不能创建或升级 support；
+4. stress fail 必须降级或否决；
+5. stress underpowered 按 frozen rule 输出 underpowered_not_pass，不得解释为通过。
+```
+
+### 12.6 19B3 decision states
+
+```text
+19B3_positive_exposure_left_tail_budget_supported
+    -> forward OOS 通过 left-tail reduction + right-tail budget + support gates；
+       validation stress 未触发 downgrade；
+       最多允许生成 path-aware containment requirement，不授权 policy。
+
+19B3_left_tail_reduction_supported_but_absolute_burden_high
+    -> 相对 S0 / incumbent 的改善可复现，但绝对左尾仍不可持有；
+       只允许进入 path-order / stop / delayed-entry diagnostic。
+
+19B3_right_tail_budget_failed
+    -> 左尾下降主要靠过度牺牲右尾；该 arm 不支持继续。
+
+19B3_no_incremental_left_tail_improvement
+    -> 未推过 A_VOL60_top30 frontier；关闭当前静态 T0 suppressor 扩展。
+
+19B3_forward_oos_underpowered_not_pass
+    -> forward support 不足；validation stress 不得替代。
+
+19B3_validation_stress_failed_diagnostic
+    -> forward OOS 正读数在 stress set 崩溃；降级，不授权下一阶段。
+
+19B3_validation_stress_underpowered_not_pass
+    -> stress 不能确认稳定性；不得标记 supported。
+```
+
+### 12.7 后续 path-aware containment（只在 19B3 允许时）
+
+如果 19B3 只能得到 `left_tail_reduction_supported_but_absolute_burden_high`，下一步不是扩大 T0 model，
+而是新开：
+
+```text
+requirement_19b4_b2_path_aware_left_tail_containment.md
+```
+
+19B4 必须先补齐顺序标签：
+
+```text
+first_hit_MAE_10_date / pos
+first_hit_MAE_20_date / pos
+first_hit_MFE_50_date / pos
+recovery_date / pos
+```
+
+当前 `both = (MFE_120 >= 50%) and (MAE_20 <= -10%)` 不包含事件顺序，不能直接解释为
+“先深回撤再成为赢家”或“必然被震出”。只有 first-hit ordering 完整后，才能计算 stop-hit、shake-out、
+recovery 和 right-tail retention。
+
+19B4 最多比较一个 frozen hard-stop arm 与一个 frozen delayed-confirmation arm。若采用 delayed entry：
+
+```text
+entry price / date / fill feasibility 必须重算；
+MFE / MAE / winner / path outcome 必须从新 entry anchor 重算；
+禁止沿用原 signal-date outcome window。
+```
+
+任何 after-cost holdability、target-vol sizing、portfolio NAV、MDD 或 production policy 仍需再开独立
+pre-registered replay requirement。19B3/19B4 不直接进入原 19C，也不授权交易。
+
+### 12.8 当前研究建议摘要
+
+```text
+保留：frozen B2 sleeve 作为 positive-exposure candidate；优先研究 left-tail budget。
+主攻：simple volatility risk budget；hard trim 与一个 continuous weighting arm。
+最低对照：S0、A_ATR20_top10、A_VOL60_top30、same-budget placebo。
+右尾预算：positive exposure ratio >= 1.20，+50% winner capture retention >= 0.60。
+压力测试：validation 只允许 downgrade/veto，绝不用于 selection、confirmation 或 support。
+停止：继续扩大 high-vol×extension 交互 grid、在 validation 上选 arm、把 MFE rate 当可实现收益。
+升级：只有新的 forward OOS 先通过，且 validation stress 不降级，才允许生成 path-aware containment requirement。
+```
