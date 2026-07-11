@@ -47,13 +47,13 @@ EP19 2025 concept-board proxy 在 2025 年以前是 retrospective look-ahead sen
 ```text
 experiment_id = 20_ohlcv_positive_beta_exposure_research
 phase_id = 20B
-run_id = 20B_trendpv_residual_momentum_design_and_replication_diagnostic
-contract_version = 20B_v1
+run_id = 20B_trendpv_residual_momentum_design_and_replication_diagnostic_v5
+contract_version = 20B_v5
 requirement_file = requirement_20b_trendpv_residual_momentum_design_and_replication_diagnostic.md
 config_file = configs/config_20b_trendpv_residual_momentum_design_and_replication_diagnostic.yaml
 runner_file = src/run_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py
 test_file = tests/test_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py
-output_root = outputs/20B_trendpv_residual_momentum_design_and_replication_diagnostic
+output_root = outputs/20B_trendpv_residual_momentum_design_and_replication_diagnostic_v5
 ```
 
 唯一上游 authority：
@@ -193,31 +193,55 @@ historical_outcome_execution_authorized = false
 
 20B preflight 必须显式记录以下上游 metadata/role resolutions；不得静默继承：
 
-### 4.1 R2 universe-role inconsistency
+### 4.1 R2 formula-registry metadata inconsistencies
 
-20A `paper_formula_registry.csv` 的 `RESMOM_R2_MARKET_ONLY_ADAPTATION` 行把 `universe_rule` 写为 `U_paper`，但以下
-冻结 authority 一致指向 project adaptation：
+20A `paper_formula_registry.csv` 的 `RESMOM_R2_MARKET_ONLY_ADAPTATION` 行同时存在三项错误 metadata：
+
+```text
+universe_rule = U_paper
+replication_role = paper_exact_or_diagnostic
+promotion_eligible = true
+```
+
+但以下冻结 authority 一致指向不可晋升的 project adaptation comparator：
 
 ```text
 20A decision.R2_market_adaptation_reachable = true
-20A arm_role_registry.C3A_RESMOM_R2_MARKET_ONLY = fallback residual project arm
+20A arm_role_registry.C3A_RESMOM_R2_MARKET_ONLY.arm_role = comparator
+20A arm_role_registry.C3A_RESMOM_R2_MARKET_ONLY.promotion_eligible = false
 research_plan R2 = market_only_residual_momentum_adaptation
 U_paper paper_exact_allowed = false
 ```
 
-20B resolution：
+Authority precedence 冻结为：
 
 ```text
-P4 decision denominator = U_project
-P4 time-series lookback may use the instrument's causal qfq history before it entered U_project
-P4 replication_role = project_adaptation
-P4 exact_replication_claim_allowed = false
+20A decision + arm_role_registry + research_plan
+    > paper_formula_registry 的上述三个已知错误 metadata fields
+```
+
+20B 必须分别物化三个 resolution rows，不得合并成一句叙事：
+
+```text
+R2_UNIVERSE_RULE:
+    observed_value = U_paper
+    resolved_value = U_project
+    P4 time-series lookback may use the instrument's causal qfq history before it entered U_project
+
+R2_REPLICATION_ROLE:
+    observed_value = paper_exact_or_diagnostic
+    resolved_value = project_adaptation
+    P4 exact_replication_claim_allowed = false
+
+R2_PROMOTION_ELIGIBILITY:
+    observed_value = true
+    resolved_value = false
 ```
 
 ### 4.2 R2 arm-promotion 与 residual-family bridge role
 
-20A 冻结 `C3A_RESMOM_R2_MARKET_ONLY` 为 comparator 且 `promotion_eligible=false`；20B 不得把 P4/R2 静默升级为
-primary arm。与此同时，P4 是历史期唯一不依赖 2025 static-board look-ahead 的 residual-family 方向诊断，因此允许它判断
+按上述 authority resolution，`C3A_RESMOM_R2_MARKET_ONLY` 冻结为 comparator 且 `promotion_eligible=false`；20B 不得把
+P4/R2 静默升级为 primary arm。与此同时，P4 是历史期唯一不依赖 2025 static-board look-ahead 的 residual-family 方向诊断，因此允许它判断
 是否值得生成 20C 去测试 **20A 已冻结的 R3 residual primary**。
 
 冻结为两个不同字段：
@@ -269,6 +293,8 @@ status
 ```text
 outcome_used_for_resolution = false
 R2_universe_resolution_gate = pass
+R2_replication_role_resolution_gate = pass
+R2_promotion_eligibility_resolution_gate = pass
 R2_family_bridge_role_resolution_gate = pass
 TrendPV_warmup_resolution_gate = pass
 ```
@@ -397,6 +423,22 @@ exact_replication_claim_allowed = false
 
 ### 6.1 Fixed semantic tracks
 
+每个 arm 的 `signal_semantic_track` 值冻结如下；未列出的 arm-track 组合一律禁止：
+
+| arm_id | allowed `signal_semantic_track` | gate role |
+|---|---|---|
+| `P0_TOTAL_MOMENTUM_12_1` | `project_return_history_primary` | comparator only |
+| `P1_TRENDPV_RAW_ADAPTATION` | `paper_fill_sensitivity` | auxiliary formula/sort diagnostic only |
+| `P1_TRENDPV_RAW_ADAPTATION` | `project_strict_primary` | P1 primary gates |
+| `P2_TREND_FULL_EXACT` | `not_applicable_registered_not_run` | none |
+| `P3_RESMOM_CH3_EXACT` | `not_applicable_registered_not_run` | none |
+| `P4_RESMOM_R2_MARKET_ONLY_ADAPTATION` | `project_sequential_market_residual_primary` | P4 primary gates / family bridge |
+| `P5_RESMOM_R3_BOARD_ADAPTATION` | `full_history_retrospective_proxy` | auxiliary diagnostic only |
+| `P6_LOWVOL_36M_COMPARATOR` | `project_monthly_volatility_primary` | comparator only |
+
+P0/P4/P5/P6 的 signal formation 一律使用 `project_conservative_primary` resolved formation-month return；
+`paper_qfq_complete_case_sensitivity` 只是一条 next-month return readout，不得反向生成这些 arms 的 signal。
+
 P1 固定两条 semantics track，不视为可择优 arms：
 
 ```text
@@ -442,6 +484,31 @@ fully_post_snapshot_score:
 
 不得按 outcome 选择 track 或 scope。
 
+Primary 1-month output matrix 冻结为：每个 runnable `arm_id × allowed signal_semantic_track` 必须并行输出
+`paper_qfq_complete_case_sensitivity` 与 `project_conservative_primary` 两种 return semantics。唯一 gate mapping 为：
+
+```text
+P1 primary paper-sort / positive-exposure:
+    signal_semantic_track = project_strict_primary
+    return_semantics = project_conservative_primary
+
+P4 primary paper-sort / positive-exposure:
+    signal_semantic_track = project_sequential_market_residual_primary
+    return_semantics = project_conservative_primary
+
+P1 paper-fill sort diagnostic:
+    signal_semantic_track = paper_fill_sensitivity
+    return_semantics = paper_qfq_complete_case_sensitivity
+
+P5 retrospective sort diagnostic:
+    signal_semantic_track = full_history_retrospective_proxy
+    scope aggregation = all three mutually exclusive registered P5_date_scope values
+    return_semantics = project_conservative_primary
+```
+
+Residual 3/6/12-month overlapping appendix 只允许 P4/P5 各自上述唯一 signal track，且只允许
+`return_semantics=project_conservative_primary`。
+
 Required output：
 
 ```text
@@ -485,6 +552,35 @@ history_ready rule is arm-specific, not silently inherited from generic 240d fla
 - paper-fill sensitivity 可保留并按 Section 6.1 填充；
 - project-strict primary 必须排除当前月末 suspended/missing-current-bar 名称；
 - denominator、signal eligible 与 bucket eligible 三个 N 必须分开报告。
+
+### 7.2.1 Arm-specific pre-membership history rule
+
+当前 decision month 是否属于 U_project 与 formation lookback 是否可使用 instrument 加入 U_project 前的 causal history 是
+两个不同条件。规则冻结如下，禁止实现自行选择 survivorship-style membership intersection：
+
+| arm | decision/fit population membership | causal history before U_project entry |
+|---|---|---|
+| P0 | decision `t` denominator 只要求 `i in U_project(t)` | `t-11...t-1` qfq return history allowed |
+| P1 signal row | decision `t` denominator 只要求 `i in U_project(t)` | daily qfq price/volume history for all L allowed |
+| P1 coefficient fit | row population 必须是 Section 8.3 冻结的 `U_project(m-1)` | predictor daily lookback before that membership allowed; response row仍按 frozen m-1 population |
+| P4 | decision `t` denominator 只要求 `i in U_project(t)` | 36m regression 与 11 residual score history allowed，沿用 R2 resolution |
+| P5 | decision `t` denominator 要求 `i in U_project(t)`；每个 R3 ridge row 另要求 `i in U_project(s-1)` | R2 base history可沿用 P4；不得为未进入 `U_project(s-1)` 的 instrument 回填 R3 ridge residual |
+| P6 | decision `t` denominator 只要求 `i in U_project(t)` | `t-35...t` qfq return history allowed |
+
+所有 allowed pre-entry history 仍必须满足：instrument 当时已上市、原始 bar/return 的 availability 不晚于对应 predictor as-of、
+不得使用退市后伪 bar、不得用未来 membership/status 修补历史。P5 score 必须拥有 `t-11...t-1` 恰好 11 个按上述
+`U_project(s-1)` 规则真实生成的 R3 residual；不能只因 decision t 已进入 U_project 而反向补造历史 R3 rows。
+
+`preoutcome/universe_and_denominator_freeze.csv` 必须逐 arm 保存：
+
+```text
+decision_membership_rule
+fit_population_membership_rule
+pre_membership_history_allowed
+pre_membership_history_scope
+listing_and_availability_guard
+history_ready_formula
+```
 
 ### 7.3 Monthly price/return 与 outcome-resolution tracks
 
@@ -543,6 +639,9 @@ zero current volume -> TrendPV volume signal missing
 ```
 
 ### 7.5 Stable keys
+
+所有 output schema 中的 `semantic_track` 列均是 `signal_semantic_track` 的固定短名；二者必须逐值相等，不得把
+`return_semantics` 或 `P5_date_scope` 编入该字符串。
 
 ```text
 daily key = (instrument, date)
@@ -780,8 +879,42 @@ formation_contains_pre_snapshot_residual(i,t) = any(board_known_by_predictor_aso
 fully_post_snapshot_score(i,t) = not formation_contains_pre_snapshot_residual(i,t)
 ```
 
-必须输出 `P5_minus_P4` score/return difference，但只作 board-attribution diagnostic。P5 historical result 不得改变
-20A preoutcome-selected residual primary，也不得独自授权 20C。
+必须输出 `P5_minus_P4` score/return difference，但只作 board-attribution diagnostic。配对口径冻结如下：
+
+```text
+score pair key = (instrument_id, decision_date)
+score pair population = rows where both P4 and P5 signal_eligible=true on the same decision date
+score pair source = distinct monthly feature rows before bucket_count expansion;
+                    duplicated assignment rows for k=5/10 must have identical raw_signal and collapse to one pair
+score_delta = P5_R3_score - P4_R2_score
+P5_date_scope = P5 row's mechanically assigned scope
+no union-population mean substitution
+
+return pair base key =
+    (decision_date, return_semantics, weighting, bucket_count, series_role, bucket_id_if_applicable)
+P4 semantic_track = project_sequential_market_residual_primary
+P5 semantic_track = full_history_retrospective_proxy
+allowed series_role = bucket_return for every bucket_id,
+                      favorable_minus_unfavorable,
+                      favorable_minus_middle
+return_pair_evaluable = both P4 and P5 source series are evaluable on the same decision date
+return_delta = P5_return_or_spread - P4_return_or_spread only when return_pair_evaluable=true
+one side missing/nonfinite -> pair not evaluable; delta missing; never substitute an unpaired month
+```
+
+Full/early/late 与 P5 scope summaries 必须只从上述 paired monthly rows 聚合：
+
+```text
+paired_mean_delta = mean(monthly return_delta over paired evaluable months)
+difference_of_unpaired_arm_means_allowed = false
+fold_boundary = P4_PRIMARY_CALENDAR frozen boundary
+P5 scope summary values = pre_snapshot_decision_retrospective,
+                          mixed_post_snapshot_decision,
+                          fully_post_snapshot_score
+```
+
+`historical/p4_p5_board_attribution_readout.csv` 的 schema 见 Section 15.7。P5 historical result 不得改变 20A
+preoutcome-selected residual primary，也不得独自授权 20C。
 
 ### 8.7 P3 exact CH-3 residual route
 
@@ -877,13 +1010,58 @@ Residual paper sensitivity 可另外输出 3/6/12-month overlapping holding retu
 ```text
 cohort_formation_date = decision month t
 cohort_active_evaluation_months = t+1, ..., t+H
-within_cohort instrument weights = frozen EW or VW weights at formation t; no constituent replacement
+within_cohort initial instrument weights = frozen EW or VW target weights at formation t
+within_cohort accounting = buy-and-hold drift; no rebalance and no constituent replacement during H months
 portfolio evaluation month q starts only when exactly H registered cohorts are active
-capital weight per active cohort = 1/H
+cross-cohort capital allocation = rebalance the H observable active cohort sleeves to 1/H at each evaluation-month start
 monthly overlapping return(q,H) = sum(active cohort capital weight * resolved cohort monthly return in q)
 return_semantics = project_conservative_primary
 unknown bridge in any positive-weight active cohort -> q,H portfolio month not evaluable
 ```
+
+每个 cohort 在 formation 时以 unit NAV `1.0` 初始化。对 instrument `i` 和 evaluation month `q`：
+
+```text
+cohort_cash_start(first month) = max(0, 1 - sum(formation_target_weight))
+sum(formation_target_weight) > 1 + 1e-12 -> fail closed
+cohort_cash is carried unchanged at gross return 0; no later external cash injection
+cohort_cash_end(q) = cohort_cash_start(q); next month cohort_cash_start = prior cohort_cash_end
+position_value_start(i,q) = prior observable position_value_end; first month = formation_target_weight
+cohort_NAV_start(first month) = 1.0
+cohort_NAV_start(later month) = prior observable cohort_NAV_end
+cohort_NAV_start(q) = sum(position_value_start(i,q)) + cohort_cash_start(q)
+instrument_weight_start(i,q) = position_value_start(i,q) / cohort_NAV_start(q)
+position_value_end(i,q) = position_value_start(i,q) * (1 + resolved_monthly_return(i,q))
+cohort_NAV_end(q) = sum(position_value_end(i,q)) + cohort_cash_start(q)
+cohort_gross_return(q) = cohort_NAV_end(q) / cohort_NAV_start(q) - 1
+cohort_NAV_start <= 0 -> current and all later cohort months not evaluable
+```
+
+无风险现金 gross return 固定为 0。状态转换冻结如下：
+
+```text
+valid_mark or suspension_carry_mark:
+    update position value normally; carry mark with return 0 when start/end marked close is unchanged.
+
+delisting_minus_one:
+    apply -1 exactly once in the first terminal-resolution month;
+    position_value_end becomes 0;
+    later cohort months use cohort-only outcome_resolution=post_terminal_zero_value,
+    resolved_monthly_return=0, and keep that instrument at zero value and zero contribution;
+    never apply -1 again and never redistribute its lost capital.
+
+unknown_bridge:
+    affected cohort month is not evaluable;
+    cohort NAV state is not observable after that month;
+    that cohort and every later active month of the same cohort are not evaluable;
+    no zero-return or carry imputation.
+```
+
+`capital weight per active cohort=1/H` 是跨 cohort 的月初诊断性再平衡；within-cohort 仍是 buy-and-hold drift。该 appendix
+不声称可执行交易、成本后组合或 stateful 20C NAV。
+
+`post_terminal_zero_value` 只允许出现在 overlapping cohort table；不得写回 primary 1-month outcome resolution audit，也不得
+计入 `valid_mark/suspension_carry/delisting_minus_one` 数量。
 
 不得把 close-to-close `H` 月累计收益直接当作 overlapping monthly portfolio return。Required sealed evidence：
 
@@ -899,8 +1077,9 @@ row key：
  cohort_formation_date, evaluation_month, instrument_id)
 ```
 
-至少包含 `cohort_age_month`、`within_cohort_target_weight`、`cohort_capital_weight`、`resolved_monthly_return`、
-`outcome_resolution` 和 `portfolio_month_evaluable`。
+至少包含 `cohort_age_month`、`within_cohort_target_weight`、`position_value_start`、`instrument_weight_start`、
+`position_value_end`、`cohort_NAV_start`、`cohort_NAV_end`、`cohort_gross_return`、`cohort_capital_weight`、
+`resolved_monthly_return`、`outcome_resolution`、`cohort_state_observable` 和 `portfolio_month_evaluable`。
 
 TrendPV、TMOM、LowVol 不新增 horizon scan。
 
@@ -910,8 +1089,27 @@ TrendPV、TMOM、LowVol 不新增 horizon scan。
 
 ### 10.1 Arm-specific 与 common decision months
 
-每个 arm 必须先按 outcome-free 的理论 readiness calendar 冻结时间折；另外冻结 P1 project-strict 与 P4 的
-common-month calendar：
+每个 runnable arm 必须先按 outcome-free 的理论 readiness calendar 冻结时间折；另外冻结 P1 project-strict 与 P4 的
+common-month calendar。用于 gate 或 comparator diagnostic fold 的 calendar IDs 固定为：
+
+```text
+P1_PROJECT_STRICT_CALENDAR
+P1_PAPER_FILL_CALENDAR
+P4_PRIMARY_CALENDAR
+P5_FULL_HISTORY_RETROSPECTIVE_CALENDAR
+P0_COMPARATOR_CALENDAR
+P6_COMPARATOR_CALENDAR
+P1_P4_COMMON_CALENDAR
+```
+
+P1 paper-fill 必须逐字复用 `P1_PROJECT_STRICT_CALENDAR` 的 scheduled months、early/late boundary 与 48/24 floors；
+实际 carry availability 只能改变固定 fold 内的 `evaluable`，不得重切 fold。P5 full-history retrospective 必须逐字复用
+`P4_PRIMARY_CALENDAR` 的 scheduled months、early/late boundary 与 60/30 floors；实际 ridge/board availability 同样只能
+改变固定 fold 内的 `evaluable`。
+
+P0/P6 各自按其 11/36-month theoretical readiness 冻结 scheduled months 和 early/late boundary，但
+`minimum_arm_month_n`、`minimum_fold_month_n` 为空且 `threshold_source=descriptive_comparator_no_gate`；这些 folds 只用于
+完整披露，不进入 terminal state 或 20C gate。
 
 ```text
 scheduled_arm_months = calendar months where fixed warm-up/lookback is theoretically complete and next-month label window exists
@@ -924,6 +1122,8 @@ P1_minimum_arm_month_n = 48
 P1_minimum_fold_month_n = 24
 P4_minimum_arm_month_n = 60
 P4_minimum_fold_month_n = 30
+P5_full_history_minimum_arm_month_n = 60
+P5_full_history_minimum_fold_month_n = 30
 minimum_common_month_n = 48
 minimum_common_fold_month_n = 24
 ```
@@ -935,7 +1135,8 @@ support。该值来自 outcome-free calendar feasibility，不来自 return、sp
 历史较短而同步降门。按修正后的 decision-month `12-1 = t-11...t-1`，P4 理论最早 decision 约为 2021-01、截至
 2026-04 理论上限约 64 个月；preoutcome 必须从实际 calendar 重算并禁止复用旧 `t-12...t-2` 的 63-month schedule。
 
-`preoutcome/statistical_and_fold_freeze.csv` 必须为 P1、P4 和 common calendar 分别保存：
+`preoutcome/statistical_and_fold_freeze.csv` 必须为上述七个 calendar IDs 分别保存；其中 P1 paper-fill 与 P5
+full-history rows 还必须保存其复用的 boundary source：
 
 ```text
 arm_or_calendar_id
@@ -949,6 +1150,7 @@ early_start
 early_end
 late_start
 late_end
+boundary_source_calendar_id
 threshold_source
 outcome_used_for_threshold
 ```
@@ -968,6 +1170,7 @@ Fold boundary 只能由 dates 与理论 formula readiness 决定，不能由 rea
 
 ```text
 month_n
+gap_month_n
 mean_monthly_return
 median_monthly_return
 monthly_volatility
@@ -980,11 +1183,43 @@ p50
 p90
 ES10_loss
 max_drawdown_of_compounded_gross_series
-Newey_West_lag = max(1, floor(4*(month_n/100)^(2/9)))
+Newey_West_lag = min(month_n - 1, max(1, floor(4*(month_n/100)^(2/9))))
 HAC_t_stat
 HAC_two_sided_p_value
 nominal_95pct_CI
 ```
+
+统计实现冻结如下：
+
+```text
+observation_order = evaluation/decision month ascending
+observation_set = only bucket/portfolio months with evaluable=true; never impute a missing month as zero
+gap_month_n = registered scheduled months minus evaluable months; always report
+monthly_volatility = sample_std(monthly_return, ddof=1); month_n < 2 -> missing
+positive_month_rate = count(return > 0) / month_n; exact zero is nonpositive
+quantile_method = linear, identical to numpy.quantile(..., method="linear")
+ES10_loss = -mean(the worst max(1, ceil(0.10 * month_n)) monthly returns after ascending sort)
+annualized_sharpe = missing when monthly_volatility is zero/nonfinite
+```
+
+HAC 只对按月排序的可评价 return 序列做 intercept-only mean test，不允许由库默认值决定：
+
+```text
+L_raw = max(1, floor(4*(month_n/100)^(2/9)))
+Newey_West_lag = min(month_n - 1, L_raw)
+gamma_h = sum((r_t-mean_r)*(r_(t-h)-mean_r) for t=h+1..n) / month_n
+Bartlett_weight_h = 1 - h/(Newey_West_lag+1)
+variance_of_mean = (gamma_0 + 2*sum(Bartlett_weight_h*gamma_h)) / month_n
+finite_sample_correction = none
+HAC_t_stat = mean_r / sqrt(variance_of_mean)
+HAC_two_sided_p_value = 2 * (1 - standard_normal_cdf(abs(HAC_t_stat)))
+nominal_95pct_CI = mean_r +/- 1.959963984540054 * sqrt(variance_of_mean)
+month_n < 2 or variance_of_mean <= 0/nonfinite -> HAC fields missing with reason
+```
+
+Drawdown 冻结为：按可评价月份顺序，从 wealth 1.0 开始复利 `wealth_t=wealth_(t-1)*(1+r_t)`，
+`max_drawdown=max_t(1-wealth_t/running_max_wealth_through_t)`；不可评价月份不补零但计入 `gap_month_n`，
+任一 `r_t < -1` 必须 fail closed。
 
 所有 CI/p-value 标记：
 
@@ -1005,13 +1240,28 @@ favorable_extreme_minus_unfavorable_extreme
 favorable_extreme_minus_middle
 ```
 
+`middle` 定义固定为：quintile 取 bucket 3；decile 取 bucket 5 与 6 return 的简单算术平均，不按 bucket N 二次加权。
+Spearman 使用 bucket id 与 bucket return 的 average-rank Pearson correlation；任一必要 bucket missing 或全部 bucket return
+相同则该月 Spearman 为空，不得填 0。汇总必须同时保存：
+
+```text
+raw_mean_bucket_spearman = mean of monthly raw Spearman values
+favorable_aligned_mean_bucket_spearman =
+    -raw_mean_bucket_spearman for P6_LOWVOL_36M_COMPARATOR
+    raw_mean_bucket_spearman for every other runnable arm
+```
+
+原始月表永远保留未翻转的 `Spearman(bucket_id, bucket_return)`；报告的 favorable-direction 比较只能使用 aligned 字段，
+不得覆盖 raw 字段。
+
 汇总：
 
 ```text
 mean spread
 median spread
 positive spread month rate
-mean bucket-return Spearman
+raw mean bucket-return Spearman
+favorable-aligned mean bucket-return Spearman
 full-sample bucket means
 ```
 
@@ -1024,6 +1274,11 @@ top3_abs_month_contribution
 leave_one_month_out_mean_min
 leave_one_instrument_out sensitivity for bucket-level pooled stock returns
 ```
+
+`sum(abs(spread_m)) == 0` 时 contribution fields 为空并记录 `all_spreads_zero`。LOMO 逐一删除一个原本可评价月份后重算
+full-sample mean，不得改变其余月份。LOIO 只在原本可评价月份内，从 sealed assignment 删除该 instrument 的已分配 rows，
+不得重排 bucket；在受影响 bucket 内仅为该 sensitivity 重新归一化其余原始 weights，再重算月 spread 与 full-sample mean。
+删除 unknown-bridge row 不得把原本不可评价月份变为可评价。必须输出 LOIO min/max、相对原 full-sample mean 的最大绝对偏移和对应 instrument。
 
 这些是 fragility diagnostics；不得删除支配月份/股票后重报“修复结果”。
 
@@ -1052,6 +1307,19 @@ reason = sample/universe/data/return semantics differ
 ### 11.1 Formula materialization gates
 
 ```text
+P0_formula_integrity_gate =
+    exact t-11...t-1 formation months pass
+    and exactly 11 project_conservative_primary resolved formation returns pass
+    and no future return or membership leakage
+
+P0_metric_completeness_gate =
+    at least one 1-month EW decile project_conservative_primary bucket month is evaluable
+    and full-sample favorable/unfavorable/spread metrics are finite
+
+P0_materialization_gate =
+    P0_formula_integrity_gate
+    and P0_metric_completeness_gate
+
 P1_formula_integrity_gate =
     exact windows and units pass
     and causal m-1 coefficient-fit population pass
@@ -1106,11 +1374,29 @@ P5_fully_post_snapshot_materialization_gate =
     P5_materialization_gate
     and fully_post_snapshot_score_month_n > 0
     and all included score formation residuals have board_known_by_predictor_asof == true
+
+P6_formula_integrity_gate =
+    exact 36 complete monthly project_conservative_primary formation returns through t pass
+    and sample_std ddof=1 pass
+    and no future return or membership leakage
+
+P6_metric_completeness_gate =
+    at least one 1-month EW decile project_conservative_primary bucket month is evaluable
+    and full-sample favorable/unfavorable/spread metrics are finite
+
+P6_materialization_gate =
+    P6_formula_integrity_gate
+    and P6_metric_completeness_gate
 ```
+
+P0/P6 是 comparator-only，故不设置可改变 terminal state 或 20C authorization 的 early/late sample floor；其
+materialization gate 只表示公式与至少一个 descriptive full-sample readout 可物化。实际支持月份数和 early/late readout
+仍须完整披露。
 
 ### 11.2 Paper-sort morphology gates
 
-只使用 1-month EW high-minus-low、project-strict signal semantics 与 `project_conservative_primary` return semantics：
+Primary gates 只使用 1-month EW high-minus-low 与 `project_conservative_primary` return semantics；P1/P4 的 exact
+signal track 由 Section 6.1 gate mapping 固定。两个 auxiliary gates 使用 Section 6.1 各自冻结的 track/return mapping：
 
 ```text
 P1_paper_sort_direction_gate =
@@ -1127,21 +1413,21 @@ P4_paper_sort_direction_gate =
 
 P1_paper_fill_sort_diagnostic_gate =
     P1_paper_fill_formula_integrity_gate
-    and paper_fill_evaluable_month_n >= 48
-    and paper_fill_early_month_n >= 24
-    and paper_fill_late_month_n >= 24
-    and paper_fill_mean_spread_full > 0
-    and paper_fill_mean_spread_early > 0
-    and paper_fill_mean_spread_late > 0
+    and P1_paper_fill_evaluable_month_n >= 48
+    and P1_paper_fill_early_month_n >= 24
+    and P1_paper_fill_late_month_n >= 24
+    and P1_paper_fill_mean_spread_full > 0
+    and P1_paper_fill_mean_spread_early > 0
+    and P1_paper_fill_mean_spread_late > 0
 
 P5_retrospective_sort_diagnostic_gate =
     P5_materialization_gate
-    and retrospective_evaluable_month_n >= 60
-    and retrospective_early_month_n >= 30
-    and retrospective_late_month_n >= 30
-    and retrospective_mean_spread_full > 0
-    and retrospective_mean_spread_early > 0
-    and retrospective_mean_spread_late > 0
+    and P5_full_history_retrospective_evaluable_month_n >= 60
+    and P5_full_history_retrospective_early_month_n >= 30
+    and P5_full_history_retrospective_late_month_n >= 30
+    and P5_full_history_retrospective_mean_spread_full > 0
+    and P5_full_history_retrospective_mean_spread_early > 0
+    and P5_full_history_retrospective_mean_spread_late > 0
 ```
 
 前两个 primary gate 与后两个 auxiliary diagnostic gate 都只判断 paper-style cross-sectional ranking morphology。它们不是
@@ -1150,8 +1436,8 @@ beta 候选。任何 auxiliary full/early/late metric missing/nonfinite 时，�
 
 ### 11.3 Positive-exposure design gates
 
-只使用 1-month EW favorable extreme bucket 的**绝对** gross return、project-strict signal semantics 与
-`project_conservative_primary` return semantics：
+只使用 1-month EW favorable extreme bucket 的**绝对** gross return 与 `project_conservative_primary` return semantics；
+P1 必须使用 `project_strict_primary`，P4 必须使用 `project_sequential_market_residual_primary`：
 
 ```text
 P1_positive_exposure_design_gate =
@@ -1179,6 +1465,9 @@ P5、P0、P6、paper-fill track、VW 或 residual multi-horizon sensitivities �
 ```text
 20C_requirement_generation_authorized =
     upstream_20a_integrity_gate == pass
+    and R2_universe_resolution_gate == pass
+    and R2_replication_role_resolution_gate == pass
+    and R2_promotion_eligibility_resolution_gate == pass
     and R2_family_bridge_role_resolution_gate == pass
     and preoutcome_manifest_hash_gate == pass
     and historical_run_authorization_gate == pass
@@ -1255,7 +1544,8 @@ Material waiver 边界：
     outcome firewall has not failed, but any required upstream/preoutcome/historical/final manifest or hash fails.
 
 20B_upstream_contract_blocked:
-    hashes pass, but required 20A decision, lineage, R2 universe resolution, P4 family-bridge role resolution or Trend warm-up resolution fails.
+    hashes pass, but required 20A decision, lineage, any R2 universe/replication-role/promotion resolution,
+    P4 family-bridge role resolution or Trend warm-up resolution fails.
 
 20B_preoutcome_registry_inconsistent:
     upstream passes, but any frozen arm/formula/calendar/universe/fit-population/bucket/statistical registry is incomplete or inconsistent.
@@ -1356,6 +1646,39 @@ Priority 6/7 是**全局**失败态；`partial_formula_failure`、`partial_metri
 `P1_partial_underpowered`、`P4_partial_underpowered` 与 `partial_underpowered` 必须作为 decision flags 同时报告。只要另一 arm 完整，状态判断继续到
 8–11，不得被局部失败提前截断。State 8 优先于 9–11；state 9 只有在 state 8 不成立时才可使用。
 
+### 13.1 Stage-terminal artifact lifecycle
+
+并非所有 terminal state 都允许伪造一个完整 final bundle。状态与合法产物冻结如下：
+
+```text
+states 1-4 triggered before a valid preoutcome seal:
+    write failure/preoutcome_stage_terminal.json outside any sealed bundle;
+    do not create historical or final bundle.
+
+state 5 after a valid preoutcome seal but before outcome access:
+    write failure/historical_run_not_authorized.json outside the sealed preoutcome bundle;
+    do not create historical or final bundle.
+
+state 1 or 2 triggered during historical run/seal:
+    preserve the valid sealed preoutcome bundle;
+    write failure/historical_stage_terminal.json outside sealed bundles;
+    do not publish a historical or final bundle.
+
+state 2 triggered during final seal:
+    preserve valid sealed preoutcome and historical bundles;
+    write failure/final_seal_failure.json;
+    do not publish the candidate final bundle.
+
+states 6-11:
+    require valid sealed preoutcome and historical bundles;
+    publish the complete final decision/report/manifests.
+```
+
+每个 stage-terminal JSON 至少包含 `run_id, contract_version, decision_state, stage, triggered_at_utc, passed_gates,
+failed_gates, blocking_reasons, available_sealed_bundle_hashes, historical_sample_role,
+historical_support_claim_allowed, exact_replication_reachable`。它是该 stage 的唯一合法 terminal record，但不是有效 final result
+bundle。不得为了满足 final decision schema 而合成不存在的 historical hash 或空 historical tables。
+
 所有 terminal state 都必须同时包含：
 
 ```text
@@ -1367,6 +1690,10 @@ exact_replication_reachable = false
 ---
 
 ## 14. Required artifacts
+
+以下 artifact lists 是**成功到达对应 stage**时的完整集合。Section 13.1 提前终止时，只要求已经合法密封的上游 bundle
+与对应 `failure/*.json`；不得为满足清单而创建伪空下游 bundle。Section 14.4 的 failure/missing rows 规则仅适用于已经合法
+进入 historical run 的注册 arms，不覆盖 preflight/authorization 阶段终止。
 
 ### 14.1 Preoutcome bundle
 
@@ -1450,21 +1777,40 @@ run_id
 arm_id
 semantic_track
 decision_date
+primary_bucket_count
 denominator_n
 signal_eligible_n
 decile_eligible_n
 next_month_complete_n
 project_label_resolved_n
 project_unknown_bridge_n
-coverage_rate
+signal_coverage_rate
+decile_coverage_rate
+paper_next_month_complete_rate
+project_label_resolution_rate
 coefficient_complete
 warmup_complete
 lookahead_proxy_scope
+P5_date_scope
 board_snapshot_age_month_n
 formation_contains_pre_snapshot_residual
 evaluable
 missing_reason
 ```
+
+本表固定为 `primary_bucket_count=10`；quintile 支持从 assignment table 复算，不复用 decile 字段。Rate 公式固定为：
+
+```text
+signal_coverage_rate = signal_eligible_n / denominator_n
+decile_eligible_n = signal_eligible_n when the registered decile N/bucket floors pass, else 0
+decile_coverage_rate = decile_eligible_n / denominator_n
+paper_next_month_complete_rate = next_month_complete_n / decile_eligible_n
+project_label_resolution_rate = project_label_resolved_n / decile_eligible_n
+```
+
+任何分母为 0 时对应 rate 为空并记录 `zero_denominator`，不得填 0。`next_month_complete_n` 只计
+`paper_qfq_complete_case_sensitivity` complete rows；`project_label_resolved_n` 只计 project resolution 为
+`valid_mark/suspension_carry_mark/delisting_minus_one` 的 rows；`project_unknown_bridge_n` 单独计数且不得混入 resolved N。
 
 ### 15.2 `instrument_month_signal_bucket_assignment.parquet`
 
@@ -1499,6 +1845,7 @@ project_resolved_next_month_return
 outcome_resolution
 project_bucket_month_evaluable
 lookahead_proxy_scope
+P5_date_scope
 board_snapshot_date
 board_snapshot_age_month_n
 board_known_by_predictor_asof
@@ -1506,6 +1853,9 @@ formation_contains_pre_snapshot_residual
 historical_sample_role
 input_snapshot_hash
 ```
+
+对 P5 rows，`P5_date_scope` 必须取 Section 6.1 三个互斥值之一，且与 `lookahead_proxy_scope` 的机械分类完全一致；
+其他 arms 的 `P5_date_scope` 为空。不得从 report 文本反推 scope。
 
 不适用的 component 为空，不得填 0。该表 row key 为
 `(instrument_id, decision_date, arm_id, semantic_track, bucket_count)`，必须唯一；所有 primary 1-month summary 必须仅由本
@@ -1535,15 +1885,26 @@ evaluation_month
 cohort_age_month
 instrument_id
 within_cohort_target_weight
+position_value_start
+instrument_weight_start
+position_value_end
+cohort_NAV_start
+cohort_NAV_end
+cohort_gross_return
+cohort_cash_start
+cohort_cash_end
 cohort_capital_weight
 resolved_monthly_return
 outcome_resolution
+cohort_state_observable
 portfolio_month_evaluable
 input_snapshot_hash
 ```
 
 只允许 `holding_month_n in {3,6,12}`；每个 evaluable evaluation month 必须恰有 H 个 active cohorts，且每个 cohort 的
-`cohort_capital_weight=1/H`。本表不得进入任何 gate。
+`cohort_capital_weight=1/H`。同一 cohort-evaluation month 的 `cohort_NAV_*` 与 `cohort_gross_return` 必须在其 instrument rows
+重复为完全相同值；instrument rows 汇总必须精确复算 cohort NAV。`delisting_minus_one` 的同一 instrument-cohort 计数不得
+超过 1；一旦 `cohort_state_observable=false`，该 cohort 后续月份不得恢复为 true。本表不得进入任何 gate。
 
 `residual_overlapping_portfolio_returns.csv.gz` 是上述 cohort table 的唯一月度汇总，至少包含：
 
@@ -1557,12 +1918,15 @@ bucket_role
 holding_month_n
 evaluation_month
 active_cohort_n
+observable_active_cohort_n
+unknown_state_cohort_n
 portfolio_month_evaluable
 gross_overlapping_monthly_return
 inference_role
 ```
 
-硬约束：`active_cohort_n == holding_month_n` 才可评价，`inference_role=appendix_design_only_not_gate`。
+硬约束：`active_cohort_n == holding_month_n` 且 `observable_active_cohort_n == holding_month_n` 才可评价；
+`unknown_state_cohort_n = active_cohort_n - observable_active_cohort_n`，`inference_role=appendix_design_only_not_gate`。
 
 ### 15.4 `monthly_bucket_returns.csv.gz`
 
@@ -1610,7 +1974,8 @@ unfavorable_extreme_mean
 favorable_minus_unfavorable_mean
 favorable_minus_middle_mean
 spread_positive_month_rate
-mean_bucket_spearman
+raw_mean_bucket_spearman
+favorable_aligned_mean_bucket_spearman
 HAC_t_stat
 HAC_p_value
 inference_role
@@ -1618,7 +1983,127 @@ paper_sort_direction_gate
 positive_exposure_design_gate
 ```
 
-### 15.6 Decision schema
+### 15.6 `arm_summary_statistics.csv`
+
+固定列顺序：
+
+```text
+run_id
+arm_id
+semantic_track
+return_semantics
+weighting
+bucket_count
+bucket_id
+bucket_role
+holding_month_n
+month_scope
+series_role
+registered_month_n
+month_n
+gap_month_n
+mean_monthly_return
+median_monthly_return
+monthly_volatility
+annualized_mean
+annualized_volatility
+annualized_sharpe
+positive_month_rate
+p10
+p50
+p90
+ES10_loss
+max_drawdown_of_compounded_gross_series
+Newey_West_lag
+HAC_t_stat
+HAC_two_sided_p_value
+nominal_95pct_CI_lower
+nominal_95pct_CI_upper
+inference_role
+missing_reason
+```
+
+Allowed `series_role`：
+
+```text
+bucket_return:
+    bucket_id and bucket_role required;
+    source is monthly_bucket_returns for H=1 or residual_overlapping_portfolio_returns for H in {3,6,12}.
+
+favorable_minus_unfavorable:
+    bucket_id/bucket_role empty;
+    source is paired favorable and unfavorable bucket return in the same evaluable month.
+
+favorable_minus_middle:
+    bucket_id/bucket_role empty;
+    middle definition follows Section 10.3.
+```
+
+Allowed `month_scope` 是 `full/early/late`，以及仅 P5 允许的三个 registered P5 date scopes。Early/late 使用 Section 10.1
+preoutcome-frozen boundary；P5 date-scope row 仍不得重新切 early/late。Stable key：
+
+```text
+(arm_id, semantic_track, return_semantics, weighting, bucket_count, bucket_id,
+ holding_month_n, month_scope, series_role)
+```
+
+所有 Section 10.2 statistics 必须从该 key 唯一定位；不得把 bucket return、spread 或 overlapping series 压进同一个无
+`series_role` 的 summary row。
+
+### 15.7 `p4_p5_board_attribution_readout.csv`
+
+固定 union schema：
+
+```text
+run_id
+record_type
+instrument_id
+decision_date
+P5_date_scope
+month_scope
+return_semantics
+weighting
+bucket_count
+series_role
+bucket_id
+P4_value
+P5_value
+P5_minus_P4_value
+pair_evaluable
+paired_month_n
+P4_paired_mean
+P5_paired_mean
+paired_mean_delta
+missing_reason
+input_snapshot_hash
+```
+
+Record types 与 stable keys：
+
+```text
+score_instrument_pair:
+    key = (record_type, instrument_id, decision_date)
+    P4_value/P5_value are raw R2/R3 scores; P5_minus_P4_value is score_delta
+    P5_date_scope required; month_scope/return/weighting/bucket/summary fields empty
+    pair_evaluable=true by construction
+
+return_month_pair:
+    key = (record_type, decision_date, return_semantics, weighting, bucket_count, series_role, bucket_id)
+    P4_value/P5_value are same-month bucket return or spread
+    P5_minus_P4_value is return_delta; P5_date_scope required; month_scope and summary fields empty
+
+return_scope_summary:
+    key = (record_type, month_scope, P5_date_scope, return_semantics, weighting, bucket_count, series_role, bucket_id)
+    source rows are return_month_pair with pair_evaluable=true in the exact frozen scope
+    paired_month_n and paired means required; paired_mean_delta = mean(monthly P5_minus_P4_value)
+    decision_date/instrument_id/P4_value/P5_value/P5_minus_P4_value empty
+```
+
+`return_scope_summary` 的 `month_scope` 只允许 `full/early/late` 或 `P5_date_scope`；当按 P5 scope 汇总时，
+`P5_date_scope` 必填且 `month_scope=P5_date_scope`。任何 source pair missing 时只能减少 paired N 并披露 missing reason，不能
+回填 unpaired arm mean。
+
+### 15.8 Decision schema
 
 单行至少包含：
 
@@ -1630,6 +2115,8 @@ primary_objective
 incremental_alpha_required
 upstream_20a_integrity_gate
 R2_universe_resolution_gate
+R2_replication_role_resolution_gate
+R2_promotion_eligibility_resolution_gate
 TrendPV_warmup_resolution_gate
 R2_family_bridge_role_resolution_gate
 preoutcome_manifest_hash_gate
@@ -1637,6 +2124,8 @@ historical_run_authorization_gate
 outcome_firewall_gate
 historical_manifest_hash_gate
 final_manifest_hash_gate
+P0_formula_integrity_gate
+P0_metric_completeness_gate
 P0_materialization_gate
 P1_formula_integrity_gate
 P1_paper_fill_formula_integrity_gate
@@ -1651,15 +2140,22 @@ P4_direction_metric_completeness_gate
 P4_materialization_gate
 P5_materialization_gate
 P5_fully_post_snapshot_materialization_gate
+P6_formula_integrity_gate
+P6_metric_completeness_gate
 P6_materialization_gate
 P1_project_strict_evaluable_month_n
+P1_paper_fill_evaluable_month_n
 P4_evaluable_month_n
-P5_retrospective_evaluable_month_n
+P5_full_history_retrospective_evaluable_month_n
 P5_fully_post_snapshot_score_month_n
 P1_early_month_n
 P1_late_month_n
+P1_paper_fill_early_month_n
+P1_paper_fill_late_month_n
 P4_early_month_n
 P4_late_month_n
+P5_full_history_retrospective_early_month_n
+P5_full_history_retrospective_late_month_n
 P1_paper_sort_direction_gate
 P4_paper_sort_direction_gate
 P1_paper_fill_sort_diagnostic_gate
@@ -1670,6 +2166,12 @@ P1_mean_spread_late
 P4_mean_spread_full
 P4_mean_spread_early
 P4_mean_spread_late
+P1_paper_fill_mean_spread_full
+P1_paper_fill_mean_spread_early
+P1_paper_fill_mean_spread_late
+P5_full_history_retrospective_mean_spread_full
+P5_full_history_retrospective_mean_spread_early
+P5_full_history_retrospective_mean_spread_late
 P1_favorable_extreme_mean_full
 P1_favorable_extreme_mean_early
 P1_favorable_extreme_mean_late
@@ -1718,6 +2220,9 @@ blocking_reasons
 ```text
 residual_primary_arm_frozen = C3_RESMOM_R3_BOARD_ADAPTATION
 residual_primary_changed_by_20B = false
+R2_universe_resolution_gate = pass
+R2_replication_role_resolution_gate = pass
+R2_promotion_eligibility_resolution_gate = pass
 P4_arm_promotion_eligible = false
 P4_residual_family_bridge_authorizer = true
 P4_pass_does_not_change_residual_primary = true
@@ -1769,7 +2274,7 @@ rename 到 immutable output path。Final decision 可以预写 `final_manifest_h
 
 ```text
 do not publish or mutate the candidate sealed decision
-write failure/final_seal_failure.json outside the sealed bundle
+write the stage-specific failure/*.json required by Section 13.1 outside sealed bundles
 failure record contains decision_state=20B_manifest_or_hash_blocked, stage, path, expected_hash, observed_hash
 failure record is operational evidence, not a valid final result bundle
 ```
@@ -1792,16 +2297,18 @@ finalize_outcome_recompute_count = 0
 1. 一页 decision summary；
 2. 正 beta、非 alpha 目标；
 3. 20A bundle/hash 与 authorization lineage；
-4. R2 universe、P4 family-bridge role 与 Trend warm-up metadata resolution；
+4. R2 universe/replication-role/promotion、P4 family-bridge role 与 Trend warm-up metadata resolution；
 5. P2/P3 exact registered-not-run 表；
-6. P0/P1/P4/P5/P6 实际支持月份、股票数与 missingness；
+6. P0/P1/P4/P5/P6 实际支持月份、股票数、逐一定义的 coverage rates 与 missingness；
 7. Trend 18 signals、OLS coefficient path、38-month burn-in 与 price/volume component；
 8. 月末决策 `12-1=t-11...t-1`、R2 sequential 36m regression与 residual score；
-9. R3 two-stage ridge、board age、retrospective/mixed/fully-post-snapshot 三类 scope；
+9. R3 two-stage ridge、board age、retrospective/mixed/fully-post-snapshot 三类 scope，以及 common-row/common-month
+   `P5_minus_P4` paired attribution；
 10. paper complete-case 与 project-conservative outcome resolution、停牌/退市/未知桥数量；
 11. EW/VW decile/quintile morphology、favorable bucket 绝对 gross return、monotonicity 与 1-month spread；
-12. 3/6/12 residual overlapping-cohort appendix 与不可用于 gate 的边界；
-13. arm-specific 48/24 与 60/30 样本门、early/late、dominance、HAC design-only diagnostics；
+12. 3/6/12 residual overlapping-cohort buy-and-hold NAV、跨 cohort 1/H allocation、一次性 delisting terminal state 与不可用于 gate 的边界；
+13. P1/P4 primary、P1 paper-fill、P5 full-history retrospective 与 comparator calendars、48/24 与 60/30 样本门、
+    early/late、dominance、HAC design-only diagnostics；
 14. 文献统计量与本地数值不可直接比较的原因；
 15. P1/P4 paper-sort gates、positive-exposure design gates、P4 family bridge 与 20C generation authorization；
 16. outcome access、outcome resolution 和 manifest 证据；
@@ -1828,13 +2335,14 @@ deployable strategy
 3. 未签 historical authorization 时，历史 outcome 读取在文件 open 前失败；
 4. forward/post-seal date 进入历史 run 时 fail closed；
 5. EP19 outcome/report 不在 whitelist；
-6. R2 `U_paper` inconsistency 被解析为 U_project adaptation，P4 只获 family-bridge authorization 且 promotion 恒 false；
+6. R2 formula registry 的 `U_paper / paper_exact_or_diagnostic / promotion=true` 三项冲突逐字段解析为
+   `U_project / project_adaptation / promotion=false`，P4 只获 family-bridge authorization；
 7. Trend support 不复用错误的 97 months，按 400 sessions + 38 coefficients 重算；
 8. Trend 9 个固定窗口和 18 predictors 完整；
 9. Trend OLS 用 t-1 signal 解释 t return，fit population 只由 t-1 已知成员/eligibility 选择，score t 只预测 t+1；
 10. OLS float64、predictor order、rcond、rank rule 可复算；
 11. EMA lambda=0.02、首个 state、逐 complete-month update、38-month first-score 与 staleness 可复算；
-12. paper-fill 与 project-strict tracks 不混 denominator；
+12. 每个 runnable arm 的 allowed semantic tracks、pre-membership history rule 与 gate mapping exact-set 一致，paper-fill 与 project-strict 不混 denominator；
 13. hands/shares volume normalization、zero-volume 和 missing rule；
 14. P2/P3 必须 registered-not-run 且 row_n=0；
 15. P4 逐月 36m regression 不含当月，不能等价为减 market constant，且 float64/rcond/rank 可复算；
@@ -1842,25 +2350,32 @@ deployable strategy
 17. P5 必须复用 P4 residual 后再做 size/board ridge；
 18. R3 predictor order、z-score ddof、constant rule、solver、alpha=1.0 与 float64 可复算；
 19. P5 retrospective/mixed/fully-post-snapshot scope 按全部 11 个 residual months 判定；
-20. P4 comparator 无论 P5 结果如何都保留；P4 pass 不改变 frozen R3 primary；
-21. P6 固定 36m；
+20. P4 comparator 无论 P5 结果如何都保留；P4 pass 不改变 frozen R3 primary；P5-minus-P4 只用 common
+    instrument-month score pairs 与 same-month return pairs，不允许 unpaired mean difference；
+21. P0/P6 formula-integrity、metric-completeness 与 materialization gates 可复算，P6 固定 36m；
 22. bucket exact-count、tie、ex-ante EW/VW target weights 可复算；
 23. paper complete-case 不能进入 gate；project conservative 不得删除 incomplete row 后重权重；
 24. suspension carry、delisting -1、unknown bridge whole bucket-month unavailable 与 20A 一致；
-25. 3/6/12 residual sensitivity 使用恰好 H 个 active cohorts、1/H capital weight，且不进入 gate；
-26. P1 `48/24`、P4 `60/30` 与 common `48/24` 门以及 early/late boundary 在 outcome read 前冻结；
-27. HAC lag、dominance、LOMO 指标可复算且都是 design-only；
+25. 3/6/12 residual sensitivity 使用恰好 H 个 active cohorts、跨 cohort 1/H capital weight、within-cohort buy-and-hold
+    drift；只有 H 个 observable active cohorts 时 portfolio month 才可评价；delisting -1 只发生一次，unknown bridge 后
+    cohort state 不得恢复，且全部不进入 gate；
+26. P1 project-strict、P1 paper-fill、P4、P5 full-history retrospective 与 common calendars 在 outcome read 前冻结，
+    paper-fill/P5 分别逐字复用 P1/P4 boundary；
+27. coverage-rate denominators、arm-summary series keys、raw/aligned Spearman、quantile/ES10、HAC Bartlett estimator、
+    drawdown gap rule、dominance、LOMO 与 LOIO 指标可复算且都是 design-only；
 28. 任何显著性不能产生 support；
-29. paper-sort gate 与 positive-exposure gate 分离，后者只用 EW 1m project-strict + project-conservative return；
+29. paper-sort gate 与 positive-exposure gate 分离，后者只用 P1 `project_strict_primary` 或 P4
+    `project_sequential_market_residual_primary` 的 EW 1m + project-conservative return；
 30. P5、paper-fill、VW、P0/P6 不能独自授权 20C；
 31. P4 只能通过 family-bridge field 参与 20C generation，不要求 high-minus-low 为正；
-32. instrument-month 表复算全部 primary 1m；cohort 表与 overlapping portfolio return 表复算 3/6/12；
+32. instrument-month 表复算全部 primary 1m；cohort NAV 表与 overlapping portfolio return 表复算 3/6/12；
+    p4_p5 attribution 表逐行复算 score pairs、return pairs 与 paired scope summaries；
 33. terminal truth table 对正、零、负、missing 穷尽且 8–11 恰一为 true；
 34. global/partial formula、metric-materialization 与 underpowered 状态不互相遮蔽；
 35. residual primary 不因 20B outcome 改变；
 36. exact flags 恒 false；
 37. 20C 只可生成 requirement，execution 恒 false；
-38. preoutcome/historical/final manifests 各自防覆盖、hash 双向一致；
+38. preoutcome/historical/final manifests 各自防覆盖、hash 双向一致；states 1–5 的 stage-terminal artifacts 不伪造下游 bundle；
 39. finalize raw read count=0；
 40. report 所有数字来自 sealed tables；
 41. 全部 policy/replay/optimization/deployment authorization 为 false。
@@ -1868,19 +2383,19 @@ deployable strategy
 推荐命令仅用于未来获明确实施授权后：
 
 ```bash
-python experiments/pending/20_ohlcv_positive_beta_exposure_research/src/run_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py \
-  --config experiments/pending/20_ohlcv_positive_beta_exposure_research/configs/config_20b_trendpv_residual_momentum_design_and_replication_diagnostic.yaml \
+python topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/src/run_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py \
+  --config topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/configs/config_20b_trendpv_residual_momentum_design_and_replication_diagnostic.yaml \
   --stage preflight
 
-python experiments/pending/20_ohlcv_positive_beta_exposure_research/src/run_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py \
-  --config experiments/pending/20_ohlcv_positive_beta_exposure_research/configs/config_20b_trendpv_residual_momentum_design_and_replication_diagnostic.yaml \
+python topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/src/run_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py \
+  --config topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/configs/config_20b_trendpv_residual_momentum_design_and_replication_diagnostic.yaml \
   --stage run-historical
 
-python experiments/pending/20_ohlcv_positive_beta_exposure_research/src/run_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py \
-  --config experiments/pending/20_ohlcv_positive_beta_exposure_research/configs/config_20b_trendpv_residual_momentum_design_and_replication_diagnostic.yaml \
+python topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/src/run_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py \
+  --config topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/configs/config_20b_trendpv_residual_momentum_design_and_replication_diagnostic.yaml \
   --stage finalize
 
-python -m pytest experiments/pending/20_ohlcv_positive_beta_exposure_research/tests/test_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py -q
+python -m pytest topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/tests/test_20b_trendpv_residual_momentum_design_and_replication_diagnostic.py -q
 ```
 
 ---
@@ -1929,9 +2444,10 @@ python -m pytest experiments/pending/20_ohlcv_positive_beta_exposure_research/te
 [ ] 20A immutable bundle/hash/authorization 被唯一绑定。
 [ ] implementation 与 historical execution 仍为 false，等待用户明确授权。
 [ ] 目标是正 beta；alpha/scale independence 均非门。
-[ ] R2 universe、P4 family-bridge role 和 Trend warm-up metadata 已显式 resolution。
+[ ] R2 universe/replication-role/promotion 三项冲突、P4 family-bridge role 和 Trend warm-up metadata 已逐字段 resolution。
 [ ] P2/P3 exact routes 注册但禁止运行。
 [ ] P0/P1/P4/P5/P6 formulas、timing、missing、warm-up 完整；P0/P4/P5 的 12-1 均为 `t-11...t-1`。
+[ ] P0/P1/P4/P5/P6 的 decision membership、fit-population membership 与 pre-entry causal history 使用边界逐 arm 冻结。
 [ ] Trend 400 sessions + 38 coefficient months，而不是 20A planning 97-month estimate。
 [ ] R3 是 two-stage market residual then size/board ridge。
 [ ] P5 retrospective/mixed/fully-post-snapshot scopes 按全部 11 个 formation residual months 判定。
@@ -1939,17 +2455,22 @@ python -m pytest experiments/pending/20_ohlcv_positive_beta_exposure_research/te
 [ ] positive-exposure primary outcome 是 1-month project-conservative gross bucket return；不是 stateful deployable return。
 [ ] paper complete-case return 只作 diagnostic；停牌、退市、未知估值桥不静默删除并重权重。
 [ ] EW/VW、decile/quintile 和 paper holding sensitivity 分工明确。
+[ ] 所有 runnable arms 的 signal semantic tracks、return-semantics output matrix 与唯一 gate mapping 已冻结。
 [ ] 所有历史 evidence 标 design_contaminated_historical / not support。
 [ ] Trend coefficient fit rows 按 m-1 已知成员冻结；R3 membership/size rows 按 s-1 已知信息冻结，board knowledge 单独标记。
 [ ] OLS/EMA/Ridge 的 dtype、排序、rcond/rank、z-score ddof、solver 与 seed/update path 完整冻结。
-[ ] P1 使用预注册 `48/24` 低功效设计门；P4 保持 `60/30`；局部 underpower 不遮蔽另一 arm。
+[ ] P1 使用预注册 `48/24` 低功效设计门；P4 保持 `60/30`；P1 paper-fill/P5 retrospective folds 分别复用 P1/P4 boundary；局部 underpower 不遮蔽另一 arm。
+[ ] P0/P6 materialization gates 与 quantile/ES10/HAC/drawdown/dominance/LOMO/LOIO 口径可机械复算。
 [ ] paper-sort gate 与 positive-exposure gate 分离；20C 不要求 high-minus-low 为正。
-[ ] 20C gate 只用 P1/P4 project-strict EW 1m + project-conservative favorable bucket 绝对 gross return。
+[ ] 20C gate 只用 P1 `project_strict_primary` / P4 `project_sequential_market_residual_primary` 的 EW 1m + project-conservative favorable bucket 绝对 gross return。
 [ ] P4 只能授权 residual-family bridge，arm promotion 恒 false，R3 primary 不变。
-[ ] instrument-month 表复算 primary 1m；overlapping-cohort 与 portfolio-return 表复算 3/6/12 appendix。
+[ ] P5-minus-P4 只使用 common instrument-month score pairs 与 same-month return pairs，scope summary 不使用 unpaired means。
+[ ] instrument-month 表复算 primary 1m；buy-and-hold cohort NAV 与 portfolio-return 表复算 3/6/12 appendix，delisting terminal loss 不重复。
+[ ] support coverage rates、arm-summary series keys 与 raw/favorable-aligned Spearman 字段均有唯一 machine-readable 语义。
 [ ] terminal truth table 对正/零/负/missing 穷尽，8–11 恰一为 true。
 [ ] 20B 不改变 20A residual primary。
 [ ] 20C 最多只获 requirement-generation authorization。
 [ ] outcome firewall、stage seals 与 finalize-only-from-sealed-artifacts 完整。
+[ ] states 1–5 使用 stage-terminal failure artifact，不伪造不存在的 historical/final bundle。
 [ ] 中文报告禁止 replication passed / OOS confirmed / deployable 等越权措辞。
 ```
