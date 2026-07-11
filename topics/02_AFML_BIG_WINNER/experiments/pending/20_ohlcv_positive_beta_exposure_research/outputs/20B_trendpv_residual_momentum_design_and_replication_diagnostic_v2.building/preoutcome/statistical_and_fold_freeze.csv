@@ -1,0 +1,8 @@
+arm_or_calendar_id,first_formula_ready_month,last_label_complete_decision_month,theoretical_max_month_n,observed_nonoutcome_ready_month_n,minimum_arm_month_n,minimum_fold_month_n,early_start,early_end,late_start,late_end,boundary_source_calendar_id,threshold_source,outcome_used_for_threshold
+P1_PROJECT_STRICT_CALENDAR,2021-10,2026-04,55,55,48,24,2021-10,2023-12,2024-01,2026-04,outcome_free_calendar_feasibility,outcome_free_calendar_feasibility,False
+P1_PAPER_FILL_CALENDAR,2021-10,2026-04,55,55,48,24,2021-10,2023-12,2024-01,2026-04,reuse_P1_PROJECT_STRICT_CALENDAR,reuse_P1_PROJECT_STRICT_CALENDAR,False
+P4_PRIMARY_CALENDAR,1994-11,2026-04,378,378,60,30,1994-11,2010-07,2010-08,2026-04,fixed_36_plus_11_history,fixed_36_plus_11_history,False
+P5_FULL_HISTORY_RETROSPECTIVE_CALENDAR,1994-11,2026-04,378,378,60,30,1994-11,2010-07,2010-08,2026-04,reuse_P4_PRIMARY_CALENDAR,reuse_P4_PRIMARY_CALENDAR,False
+P0_COMPARATOR_CALENDAR,1991-11,2026-04,414,414,,,1991-11,2009-01,2009-02,2026-04,descriptive_comparator_no_gate,descriptive_comparator_no_gate,False
+P6_COMPARATOR_CALENDAR,1993-11,2026-04,390,390,,,1993-11,2010-01,2010-02,2026-04,descriptive_comparator_no_gate,descriptive_comparator_no_gate,False
+P1_P4_COMMON_CALENDAR,2021-10,2026-04,55,55,48,24,2021-10,2023-12,2024-01,2026-04,intersection_preoutcome,intersection_preoutcome,False

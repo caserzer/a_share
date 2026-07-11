@@ -1,0 +1,14 @@
+{
+  "run_id": "20B_trendpv_residual_momentum_design_and_replication_diagnostic_v2",
+  "contract_version": "20B_v2",
+  "decision_state": "20B_preoutcome_registry_inconsistent",
+  "stage": "preflight",
+  "triggered_at_utc": "2026-07-11T09:18:00.865537Z",
+  "passed_gates": ["upstream_20a_integrity_gate", "outcome_firewall_gate", "preoutcome_manifest_hash_gate"],
+  "failed_gates": ["statistical_and_fold_freeze_consistency_gate"],
+  "blocking_reasons": ["P4 calendar was incorrectly derived from the exchange-calendar origin instead of the frozen local formula-readiness boundary near 2021-01; early fold would be mechanically outside U_project support"],
+  "available_sealed_bundle_hashes": {"preoutcome_bundle_hash": "b9ab5cacf47f80bb8a0ffc36789f2203464277a19b542c2d9ff1abc32d038577"},
+  "historical_sample_role": "design_contaminated_historical",
+  "historical_support_claim_allowed": false,
+  "exact_replication_reachable": false
+}

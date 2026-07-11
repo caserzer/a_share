@@ -1,0 +1,71 @@
+authorization:
+  authorization_source: user_message_impl_it_skip_manual_authorization_direct_run
+  authorization_type: 20B_historical_design_outcome_read
+  direct_run_authorized: true
+  reviewer: workspace_user
+boundary:
+  board_snapshot_date: '2025-01-02'
+  history_date_max: '2026-05-29'
+contract_version: 20B_v3
+experiment_id: 20_ohlcv_positive_beta_exposure_research
+objective:
+  historical_sample_role: design_contaminated_historical
+  historical_support_claim_allowed: false
+  incremental_alpha_required: false
+  primary_objective: deployable_positive_beta
+output:
+  output_root: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_trendpv_residual_momentum_design_and_replication_diagnostic_v3
+paths:
+  benchmark: data/processed/index/benchmark_indices_daily.csv
+  board_member: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/by_year/2025/dc_member_2025_20250102.csv
+  project_universe: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  qfq_root: data/raw/akshare/day/qfq
+  requirement: experiments/pending/20_ohlcv_positive_beta_exposure_research/requirement_20b_trendpv_residual_momentum_design_and_replication_diagnostic.md
+  research_plan: experiments/pending/20_ohlcv_positive_beta_exposure_research/research_plan.md
+  security_master: data/raw/akshare/status/instrument_metadata_target_universe.csv
+  trading_calendar: data/raw/akshare/status/trading_calendar.csv
+  upstream_root: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract
+phase_id: 20B
+residual:
+  board_minimum_overlap_n: 10
+  holding_months:
+  - 3
+  - 6
+  - 12
+  regression_months: 36
+  ridge_alpha: 1.0
+  ridge_minimum_complete_cross_section_n: 100
+  score_months: 11
+run_id: 20B_trendpv_residual_momentum_design_and_replication_diagnostic_v3
+sample_floors:
+  P1_fold: 24
+  P1_total: 48
+  P4_fold: 30
+  P4_total: 60
+  common_fold: 24
+  common_total: 48
+sorting:
+  bucket_counts:
+  - 5
+  - 10
+  minimum_bucket_n: 10
+  minimum_signal_eligible_n_for_decile: 100
+  primary_bucket_count: 10
+  weightings:
+  - EW
+  - VW
+trendpv:
+  coefficient_burn_in: 38
+  lambda: 0.02
+  minimum_complete_cross_section_n: 190
+  rcond: 1.0e-12
+  windows:
+  - 3
+  - 5
+  - 10
+  - 20
+  - 50
+  - 100
+  - 200
+  - 300
+  - 400

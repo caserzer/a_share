@@ -1,0 +1,6 @@
+arm_id,decision_membership_rule,fit_population_membership_rule,pre_membership_history_allowed,pre_membership_history_scope,history_ready_formula,listing_and_availability_guard
+P0_TOTAL_MOMENTUM_12_1,U_project(t),not_applicable,True,t-11...t-1,11 monthly returns,listed_then; availability<=predictor_asof; no future status repair
+P1_TRENDPV_RAW_ADAPTATION,U_project(t),U_project(m-1) for coefficient fit,True,daily L history,400 sessions + 38 coefficients,listed_then; availability<=predictor_asof; no future status repair
+P4_RESMOM_R2_MARKET_ONLY_ADAPTATION,U_project(t),not_applicable,True,36m regression + 11 residuals,47 monthly returns,listed_then; availability<=predictor_asof; no future status repair
+P5_RESMOM_R3_BOARD_ADAPTATION,U_project(t),U_project(s-1) for ridge,False,R2 base only,11 actual R3 residuals,listed_then; availability<=predictor_asof; no future status repair
+P6_LOWVOL_36M_COMPARATOR,U_project(t),not_applicable,True,t-35...t,36 monthly returns,listed_then; availability<=predictor_asof; no future status repair
