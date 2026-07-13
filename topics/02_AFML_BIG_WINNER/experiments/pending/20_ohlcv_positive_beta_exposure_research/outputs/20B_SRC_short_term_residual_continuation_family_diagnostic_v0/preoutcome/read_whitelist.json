@@ -1,0 +1,127 @@
+{
+  "records": [
+    {
+      "allowed_dataset_roles": [
+        "requirement",
+        "research_plan",
+        "sealed_upstream_metadata",
+        "cost_authority",
+        "project_universe_inventory",
+        "qfq_inventory_identity_schema",
+        "benchmark_identity_schema",
+        "trading_calendar",
+        "security_master_schema",
+        "config"
+      ],
+      "allowed_path_patterns": [
+        "topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/requirement_20b_src_short_term_residual_continuation_family_diagnostic.md",
+        "topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/research_plan.md",
+        "topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract",
+        "topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_trendpv_residual_momentum_design_and_replication_diagnostic_v5",
+        "topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq",
+        "topics/02_AFML_BIG_WINNER/data/processed/index/benchmark_indices_daily.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/trading_calendar.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv",
+        "topics/02_AFML_BIG_WINNER/experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/replay_cost_assumption_freeze.csv"
+      ],
+      "forbidden_column_patterns": [
+        "forward_*",
+        "future_return*",
+        "MFE*",
+        "MAE*",
+        "winner*",
+        "strategy_NAV",
+        "strategy_PnL"
+      ],
+      "future_row_contribution_allowed": false,
+      "raw_qfq_full_file_read_allowed": false,
+      "stable_object_hash": "7c1591d1ce79202d34b4d64dfe764c29a7d80d7918cab01664d7fac7a8a03ac1",
+      "stage": "preflight"
+    },
+    {
+      "allowed_dataset_roles": [
+        "sealed_preoutcome",
+        "signal_authorization",
+        "project_universe",
+        "qfq_raw",
+        "benchmark",
+        "trading_calendar",
+        "security_master_identity_delisting"
+      ],
+      "allowed_path_patterns": [
+        "preoutcome/*",
+        "authorizations/signal_materialization_authorization.json",
+        "topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq/*.csv",
+        "topics/02_AFML_BIG_WINNER/data/processed/index/benchmark_indices_daily.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/trading_calendar.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv"
+      ],
+      "forbidden_column_patterns": [
+        "forward_*",
+        "label_*",
+        "outcome_*",
+        "MFE*",
+        "MAE*",
+        "winner*"
+      ],
+      "future_row_contribution_allowed": false,
+      "raw_qfq_full_file_read_allowed": true,
+      "stable_object_hash": "72f21774313bd28934766aafa8473e4c56e84dfef31685cad37da5bcd78cb295",
+      "stage": "signal-materialization"
+    },
+    {
+      "allowed_dataset_roles": [
+        "sealed_preoutcome",
+        "sealed_signal",
+        "outcome_authorization",
+        "qfq_raw",
+        "trading_calendar",
+        "security_master_identity_delisting"
+      ],
+      "allowed_path_patterns": [
+        "preoutcome/*",
+        "signal/*",
+        "authorizations/outcome_materialization_authorization.json",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq/*.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/trading_calendar.csv",
+        "topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv"
+      ],
+      "forbidden_column_patterns": [
+        "unregistered_horizon",
+        "strategy_NAV",
+        "strategy_PnL"
+      ],
+      "future_row_contribution_allowed": false,
+      "raw_qfq_full_file_read_allowed": true,
+      "stable_object_hash": "20cadf12bbafb5ed8fccf76476aae59dd79b825dd9eda6a466b0deb40dcdfa68",
+      "stage": "outcome-materialization"
+    },
+    {
+      "allowed_dataset_roles": [
+        "sealed_preoutcome",
+        "sealed_signal",
+        "sealed_historical",
+        "verified_authorizations"
+      ],
+      "allowed_path_patterns": [
+        "preoutcome/*",
+        "signal/*",
+        "historical/*",
+        "authorizations/*.json"
+      ],
+      "forbidden_column_patterns": [
+        "raw_qfq",
+        "raw_universe",
+        "raw_benchmark",
+        "raw_calendar",
+        "raw_security_master"
+      ],
+      "future_row_contribution_allowed": false,
+      "raw_qfq_full_file_read_allowed": false,
+      "stable_object_hash": "b8d3714d6a62da11ff5578c936ad96fe6619ea5d4603a1084c09cac198f8362b",
+      "stage": "finalize"
+    }
+  ]
+}

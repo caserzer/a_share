@@ -1,0 +1,87 @@
+{
+  "artifacts": [
+    {
+      "file_path": "20B_SRC_short_term_residual_continuation_family_decision.csv",
+      "file_size": 3231,
+      "row_count": 1,
+      "schema_hash": "702a18759e0caa34ef572a3e98be339848e6ecdda679e35b88bf0ad1f68bf7e1",
+      "sha256": "b531326fea2815d35d8e9d708f67a10268f7861f1b772a460771c9ac204f3708"
+    },
+    {
+      "file_path": "20B_SRC_short_term_residual_continuation_family_diagnostic_report.md",
+      "file_size": 7162,
+      "row_count": null,
+      "schema_hash": null,
+      "sha256": "d7c21156e306ce6c2f58b8643b69f6942783a952899ddecea5d5424889b0007c"
+    }
+  ],
+  "authorization_file_hashes": {
+    "outcome": "c7593d70d104a2cfdbf3e73be2212b3ce1ca535b34e9021f3ec80ebce0c6077c",
+    "signal": "55361db9d781407201286ceeebfe37b911dee0e9858b9c84c6682c1783331a7a"
+  },
+  "authorization_records": {
+    "outcome": {
+      "allowed_read_scope": "20cadf12bbafb5ed8fccf76476aae59dd79b825dd9eda6a466b0deb40dcdfa68",
+      "authorization_record_sha256": "da3cd95c8da1e12510365c7f495135125f0431e1ce320de6e414cc81b9c37ab8",
+      "authorization_source": "user_message_direct_authorization_2026_07_13",
+      "authorization_stage": "outcome-materialization",
+      "authorized_at_utc": "2026-07-13T09:01:23.434934Z",
+      "authorized_by": "workspace_user",
+      "bound_contract_version": "20B_SRC_v0",
+      "bound_input_bundle_hash": "cd6d108a0c6990e5759ab25880dc62033dd1cd76a8c57b76b7e31e4f8d97958c",
+      "bound_run_id": "20B_SRC_short_term_residual_continuation_family_diagnostic_v0"
+    },
+    "signal": {
+      "allowed_read_scope": "72f21774313bd28934766aafa8473e4c56e84dfef31685cad37da5bcd78cb295",
+      "authorization_record_sha256": "168b0ed6b3da7e40b2085d5befb5ddd00667d5edf665cd141e16028a84f00d5a",
+      "authorization_source": "user_message_direct_authorization_2026_07_13",
+      "authorization_stage": "signal-materialization",
+      "authorized_at_utc": "2026-07-13T08:46:43.849890Z",
+      "authorized_by": "workspace_user",
+      "bound_contract_version": "20B_SRC_v0",
+      "bound_input_bundle_hash": "0f2741d10ea9c3283a304b7a5b838f0f00db48e053b4454a39557f3e146cead7",
+      "bound_run_id": "20B_SRC_short_term_residual_continuation_family_diagnostic_v0"
+    }
+  },
+  "authorization_semantic_hashes": {
+    "outcome": "da3cd95c8da1e12510365c7f495135125f0431e1ce320de6e414cc81b9c37ab8",
+    "signal": "168b0ed6b3da7e40b2085d5befb5ddd00667d5edf665cd141e16028a84f00d5a"
+  },
+  "config_sha256": "30d04dd55e4841a2a082d8286443af5dfaca3d872ab15ebfdbe71c77f000ed5f",
+  "contract_version": "20B_SRC_v0",
+  "created_at_utc": "2026-07-13T09:31:26.182278Z",
+  "history_date_max": "2026-05-29",
+  "history_date_min": "2017-01-03",
+  "input_file_set_hashes": {
+    "benchmark": "94725d3d7e8c54e973f625a4f8463ebe3251acd9191b8ab53b6b09a06379c31e",
+    "project_universe": "909b6f573c60bc95fef601f56724eabcc78867cc01fd9fd70a2d830447d972df",
+    "qfq_root": "f539f1d9aa0530024f6392a5ce7a60c0c9a929bc609b633d1d3e22861f64fc8e",
+    "requirement": "9f871be802d44bfa3a1911b24fe751bec9d0630a94640a0a64d4b32a22c607a6",
+    "research_plan": "e4aa9bd56f317f421a21491ba2e85e7dad7b91c57c63c968d6968f6e621887cf",
+    "security_master": "ac968991215e197e9ff2cc913263118b816e6c6a2e496267d336b274eb30b1a9",
+    "trading_calendar": "ceb78826638a7fada9e419c988d6c9472aae2108de608caf01f55a10c4e16017",
+    "upstream_ep19_cost_freeze": "ba9fd820691e933a7cc99554b917c1b6a14d192b20261abb842d810bf78f45e3"
+  },
+  "output_hashes": {
+    "20B_SRC_short_term_residual_continuation_family_decision.csv": "b531326fea2815d35d8e9d708f67a10268f7861f1b772a460771c9ac204f3708",
+    "20B_SRC_short_term_residual_continuation_family_diagnostic_report.md": "d7c21156e306ce6c2f58b8643b69f6942783a952899ddecea5d5424889b0007c"
+  },
+  "registered_arm_horizon_rows": 84,
+  "requirement_sha256": "6b935f30cf57fa6730cbf7f63576c08f62ae9dbbc76d4e53fc7ece247acd1625",
+  "run_id": "20B_SRC_short_term_residual_continuation_family_diagnostic_v0",
+  "runtime_versions": {
+    "numpy": "1.26.2",
+    "pandas": "2.3.1",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "pyarrow": "19.0.1",
+    "python": "3.12.4",
+    "scipy": "1.13.1"
+  },
+  "stage": "final",
+  "terminal_state": "20B_SRC_not_identified_design_only",
+  "upstream_bundle_hashes": {
+    "historical": "8ac871e63e4b1a01ed407627e3c5c74942bd78ebb88dc6b648aabff087261f90",
+    "preoutcome": "0f2741d10ea9c3283a304b7a5b838f0f00db48e053b4454a39557f3e146cead7",
+    "signal": "cd6d108a0c6990e5759ab25880dc62033dd1cd76a8c57b76b7e31e4f8d97958c"
+  }
+}

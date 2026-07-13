@@ -1,0 +1,107 @@
+{
+  "artifacts": [
+    {
+      "file_path": "daily_market_residual_panel.parquet",
+      "file_size": 412623016,
+      "row_count": 3656484,
+      "schema_hash": "47fb06e50287eedffb28388f0854212892323e5df85995e0e28819e292f16aac",
+      "sha256": "e21cfd38f89cbe0c3d2d8b318a15341c9d44d5558989b6ad31ccf3299540465e"
+    },
+    {
+      "file_path": "daily_return_resolution_audit.csv.gz",
+      "file_size": 231398966,
+      "row_count": 4114924,
+      "schema_hash": "85f95eae169571eb92a9c3c8f63077bf6ba867a5daddc94a20ffe6b78730771d",
+      "sha256": "aca3560117de6c5edd1a18fef2862c73e598d52d2f12d0a0e99d0d738755a3c1"
+    },
+    {
+      "file_path": "rolling_market_model_audit.csv.gz",
+      "file_size": 243804896,
+      "row_count": 3656484,
+      "schema_hash": "5cac6e155b289e73bbb8cdfebe90c4ed005e32250d0b7d88ee47bcf2378c60dd",
+      "sha256": "f045a08050ab4758f53af9f580ba1585174a0adb6f0867746b0a26351e23810d"
+    },
+    {
+      "file_path": "signal_access_audit.csv",
+      "file_size": 2352,
+      "row_count": 7,
+      "schema_hash": "70b7af29454b64085a00020ae8fcb3e93d6f6bc2f3b349f970703696b21321dd",
+      "sha256": "5181f14593aa8863b7eeb0ae0a0d912d75711831978b674f08aa99d0dadae319"
+    },
+    {
+      "file_path": "signal_coverage_audit.csv",
+      "file_size": 197946,
+      "row_count": 2400,
+      "schema_hash": "157553969608ae98845637234838e276f6b895bfede6e865c05afa3859a39326",
+      "sha256": "6c095f06e54720fe62b3d0d8662dd68b25d9df241aa5148daf53933a5227e0ae"
+    },
+    {
+      "file_path": "weekly_bucket_assignment.parquet",
+      "file_size": 32163913,
+      "row_count": 2400000,
+      "schema_hash": "333acf16fef1afffe971c990e0e6b4b4bf6d661d35b610dbbe42313fca4a1e3f",
+      "sha256": "93ff387db8ebda03969549d0db2c9580b79862ecf3649d136ec74e2c0739df2f"
+    },
+    {
+      "file_path": "weekly_signal_panel.parquet",
+      "file_size": 53449951,
+      "row_count": 1200000,
+      "schema_hash": "5e020010f00e6adf960b57460053c85fc80550c1020b4de47cdc66b1a52e2eb4",
+      "sha256": "2da5aa5ab826eefe2d55f4f2945e6776eab43a681dfe44df576bd71ed55074e1"
+    }
+  ],
+  "authorization_file_sha256": "55361db9d781407201286ceeebfe37b911dee0e9858b9c84c6682c1783331a7a",
+  "authorization_record": {
+    "allowed_read_scope": "72f21774313bd28934766aafa8473e4c56e84dfef31685cad37da5bcd78cb295",
+    "authorization_record_sha256": "168b0ed6b3da7e40b2085d5befb5ddd00667d5edf665cd141e16028a84f00d5a",
+    "authorization_source": "user_message_direct_authorization_2026_07_13",
+    "authorization_stage": "signal-materialization",
+    "authorized_at_utc": "2026-07-13T08:46:43.849890Z",
+    "authorized_by": "workspace_user",
+    "bound_contract_version": "20B_SRC_v0",
+    "bound_input_bundle_hash": "0f2741d10ea9c3283a304b7a5b838f0f00db48e053b4454a39557f3e146cead7",
+    "bound_run_id": "20B_SRC_short_term_residual_continuation_family_diagnostic_v0"
+  },
+  "authorization_record_sha256": "168b0ed6b3da7e40b2085d5befb5ddd00667d5edf665cd141e16028a84f00d5a",
+  "config_sha256": "30d04dd55e4841a2a082d8286443af5dfaca3d872ab15ebfdbe71c77f000ed5f",
+  "contract_version": "20B_SRC_v0",
+  "created_at_utc": "2026-07-13T09:01:07.922659Z",
+  "future_rows_contributed_to_signal": 0,
+  "history_date_max": "2026-05-29",
+  "history_date_min": "2017-01-03",
+  "input_file_set_hashes": {
+    "benchmark": "94725d3d7e8c54e973f625a4f8463ebe3251acd9191b8ab53b6b09a06379c31e",
+    "project_universe": "909b6f573c60bc95fef601f56724eabcc78867cc01fd9fd70a2d830447d972df",
+    "qfq_root": "f539f1d9aa0530024f6392a5ce7a60c0c9a929bc609b633d1d3e22861f64fc8e",
+    "requirement": "9f871be802d44bfa3a1911b24fe751bec9d0630a94640a0a64d4b32a22c607a6",
+    "research_plan": "e4aa9bd56f317f421a21491ba2e85e7dad7b91c57c63c968d6968f6e621887cf",
+    "security_master": "ac968991215e197e9ff2cc913263118b816e6c6a2e496267d336b274eb30b1a9",
+    "trading_calendar": "ceb78826638a7fada9e419c988d6c9472aae2108de608caf01f55a10c4e16017",
+    "upstream_ep19_cost_freeze": "ba9fd820691e933a7cc99554b917c1b6a14d192b20261abb842d810bf78f45e3"
+  },
+  "outcome_role_table_access_count": 0,
+  "output_hashes": {
+    "daily_market_residual_panel.parquet": "e21cfd38f89cbe0c3d2d8b318a15341c9d44d5558989b6ad31ccf3299540465e",
+    "daily_return_resolution_audit.csv.gz": "aca3560117de6c5edd1a18fef2862c73e598d52d2f12d0a0e99d0d738755a3c1",
+    "rolling_market_model_audit.csv.gz": "f045a08050ab4758f53af9f580ba1585174a0adb6f0867746b0a26351e23810d",
+    "signal_access_audit.csv": "5181f14593aa8863b7eeb0ae0a0d912d75711831978b674f08aa99d0dadae319",
+    "signal_coverage_audit.csv": "6c095f06e54720fe62b3d0d8662dd68b25d9df241aa5148daf53933a5227e0ae",
+    "weekly_bucket_assignment.parquet": "93ff387db8ebda03969549d0db2c9580b79862ecf3649d136ec74e2c0739df2f",
+    "weekly_signal_panel.parquet": "2da5aa5ab826eefe2d55f4f2945e6776eab43a681dfe44df576bd71ed55074e1"
+  },
+  "registered_arm_horizon_rows": 84,
+  "requirement_sha256": "6b935f30cf57fa6730cbf7f63576c08f62ae9dbbc76d4e53fc7ece247acd1625",
+  "run_id": "20B_SRC_short_term_residual_continuation_family_diagnostic_v0",
+  "runtime_versions": {
+    "numpy": "1.26.2",
+    "pandas": "2.3.1",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "pyarrow": "19.0.1",
+    "python": "3.12.4",
+    "scipy": "1.13.1"
+  },
+  "stage": "signal",
+  "upstream_bundle_hashes": {
+    "preoutcome": "0f2741d10ea9c3283a304b7a5b838f0f00db48e053b4454a39557f3e146cead7"
+  }
+}

@@ -1,0 +1,123 @@
+run_id: 20B_SRC_short_term_residual_continuation_family_diagnostic_v0
+experiment_id: 20_ohlcv_positive_beta_exposure_research
+phase_id: 20B_SRC
+contract_version: 20B_SRC_v0
+
+paths:
+  requirement: experiments/pending/20_ohlcv_positive_beta_exposure_research/requirement_20b_src_short_term_residual_continuation_family_diagnostic.md
+  research_plan: experiments/pending/20_ohlcv_positive_beta_exposure_research/research_plan.md
+  upstream_20a_root: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract
+  upstream_20b_root: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_trendpv_residual_momentum_design_and_replication_diagnostic_v5
+  project_universe: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  qfq_root: data/raw/akshare/day/qfq
+  benchmark: data/processed/index/benchmark_indices_daily.csv
+  trading_calendar: data/raw/akshare/status/trading_calendar.csv
+  security_master: data/raw/akshare/status/instrument_metadata_target_universe.csv
+  upstream_ep19_cost_freeze: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/replay_cost_assumption_freeze.csv
+  output_root: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_SRC_short_term_residual_continuation_family_diagnostic_v0
+
+boundary:
+  history_date_min: '2017-01-03'
+  history_date_max: '2026-05-29'
+  same_contract_future_data_refresh_allowed: false
+
+calendar:
+  decision_frequency: weekly
+  week_definition: ISO_week
+
+residual:
+  estimation_calendar_sessions: 252
+  minimum_paired_observation: 200
+  benchmark_alias: csi300
+  benchmark_instrument: SH000300
+  rcond: 1.0e-12
+  residual_model_id: rolling_252d_sequential_market_residual_adaptation
+
+formation: [5, 10]
+holding: [5, 10]
+
+sorting:
+  bucket_counts: [5, 10]
+  primary_bucket_count: 10
+  minimum_signal_eligible_n_for_decile: 100
+  minimum_bucket_n: 10
+  weightings: [EW, VW]
+
+inference:
+  hac_lag_weeks: 4
+  block_length_weeks: 13
+  bootstrap_repetitions: 5000
+  bootstrap_seed: 20020
+  minimum_finite_bootstrap_repetitions: 4500
+
+style:
+  warning_minimum_finite_week_n: 52
+  jaccard_common_population_minimum_n: 100
+  scale_spearman_threshold: 0.70
+  lowvol_jaccard_threshold: 0.60
+  size_spearman_threshold: 0.70
+
+tradability:
+  assumption: all_registered_denominator_rows_tradable
+  daily_suspension_source_required: false
+  suspension_carry_allowed: false
+  missing_qfq_mark_policy: unknown_data_gap_fail_closed
+
+residualization_value:
+  minimum_paired_favorable_delta_bps_per_session: 1.0
+  favorable_nondegradation_tolerance_bps_per_session: -0.5
+  minimum_paired_spread_delta_bps_per_session: 1.0
+  maximum_paired_volatility_ratio: 0.95
+  maximum_paired_ES10_loss_ratio: 0.95
+
+cost_proxy:
+  source_contract: 20A_v2
+  break_even_one_way_cost_multiple_floor: 1.25
+  commission_buy_bps: 2.5
+  commission_sell_bps: 2.5
+  minimum_commission_cny: 5.0
+  minimum_commission_included: false
+  slippage_buy_bps: 5.0
+  slippage_sell_bps: 5.0
+  stamp_tax_proxy_bps: 5.0
+  stamp_tax_proxy_mode: current_5bps_applied_uniformly_to_history
+  historical_stamp_tax_schedule_replication: false
+  transfer_fee_mode: verified_effective_date_schedule
+  transfer_fee_schedule:
+    - {effective_start_date: '1990-12-19', effective_end_date: '2022-04-28', buy_bps: 0.2, sell_bps: 0.2}
+    - {effective_start_date: '2022-04-29', effective_end_date: null, buy_bps: 0.1, sell_bps: 0.1}
+
+sample_floors:
+  full_project_evaluable_week_n: 156
+  early_project_evaluable_week_n: 78
+  late_project_evaluable_week_n: 78
+  full_distinct_calendar_month_n: 36
+  full_distinct_calendar_year_n: 4
+  median_weekly_signal_coverage: 0.70
+  minimum_weekly_signal_eligible_n: 100
+  paired_full_week_n: 156
+  paired_early_week_n: 78
+  paired_late_week_n: 78
+
+authorization:
+  implementation_authorized: true
+  implementation_authorized_by: workspace_user
+  implementation_authorization_source: user_message_implement_it_then_direct_authorization
+  signal_authorization_relative_path: authorizations/signal_materialization_authorization.json
+  outcome_authorization_relative_path: authorizations/outcome_materialization_authorization.json
+
+serialization:
+  json_allow_nan: false
+  csv_float_format: '%.12g'
+  parquet_engine: pyarrow
+  parquet_compression: zstd
+  gzip_compresslevel: 9
+  gzip_mtime: 0
+
+expected_upstream:
+  20a_contract_version: 20A_v2
+  20a_freeze_bundle_hash: da5902ac7a987ec061cdffc33e8735ad34c22f1ae771a43540fe005fd77acb05
+  20b_contract_version: 20B_v5
+  20b_historical_bundle_hash: bac77bc13efcd7b75df5b18f44940bcc24e57589e62dde593bd0ef748705426f
+  20a_price_limit_rule_registry_sha256: d9fcdb64142a261bfe785f834067874281f8242d508ec02d1ddd6cf7f55c980b
+  20a_linked_ep19_cost_freeze_sha256: 2b164c5aff823b1ebddb679a93936dc3a637b4252ca10c8d4252d92e3bfee7ac
