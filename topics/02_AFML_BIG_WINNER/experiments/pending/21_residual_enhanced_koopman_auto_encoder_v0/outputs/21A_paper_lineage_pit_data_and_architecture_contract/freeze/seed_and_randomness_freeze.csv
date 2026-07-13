@@ -1,0 +1,25 @@
+model_seed,stream_name,derived_seed_or_rule,batch_order_invariant,status
+20260713,dataloader_seed,20260750,false,pass
+20260713,diffusion_train_noise_seed,20260802,true,pass
+20260713,gumbel_seed,20260784,true,pass
+20260713,inference_draw_seed,uint64_prefix(SHA256(run_id|arm_id|model_seed|instrument|decision_date|draw_id)) mod 2^63,true,pass
+20260713,numpy_seed,20260724,true,pass
+20260713,python_seed,20260713,true,pass
+20260713,torch_seed,20260736,true,pass
+20260713,weight_init_seed,20260766,true,pass
+20260714,dataloader_seed,20260751,false,pass
+20260714,diffusion_train_noise_seed,20260803,true,pass
+20260714,gumbel_seed,20260785,true,pass
+20260714,inference_draw_seed,uint64_prefix(SHA256(run_id|arm_id|model_seed|instrument|decision_date|draw_id)) mod 2^63,true,pass
+20260714,numpy_seed,20260725,true,pass
+20260714,python_seed,20260714,true,pass
+20260714,torch_seed,20260737,true,pass
+20260714,weight_init_seed,20260767,true,pass
+20260715,dataloader_seed,20260752,false,pass
+20260715,diffusion_train_noise_seed,20260804,true,pass
+20260715,gumbel_seed,20260786,true,pass
+20260715,inference_draw_seed,uint64_prefix(SHA256(run_id|arm_id|model_seed|instrument|decision_date|draw_id)) mod 2^63,true,pass
+20260715,numpy_seed,20260726,true,pass
+20260715,python_seed,20260715,true,pass
+20260715,torch_seed,20260738,true,pass
+20260715,weight_init_seed,20260768,true,pass

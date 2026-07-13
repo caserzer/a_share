@@ -1,0 +1,4 @@
+label_id,formula,role,materialized_in_21a,selection_allowed,status
+Y_rank_primary,qfq_close(t+1)/qfq_close(t)-1,future_primary_rank_contract_only,false,false,pass
+Y_qlib_gap_diagnostic,qfq_close(t+2)/qfq_close(t+1)-1,diagnostic_contract_only,false,false,pass
+Y_exec_1d,qfq_open(next_session_after_entry)/qfq_open(entry_session)-1,execution_contract_only,false,false,pass

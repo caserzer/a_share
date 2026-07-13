@@ -1,0 +1,12 @@
+qlib_field,local_source,source_scale,transform,availability_time,route_id,unit_gate,status
+$close,qfq.close,CNY,identity,decision_close_t,ALPHA158_NO_VWAP_REGISTERED_ADAPTATION,pass,pass
+$high,qfq.high,CNY,identity,decision_close_t,ALPHA158_NO_VWAP_REGISTERED_ADAPTATION,pass,pass
+$low,qfq.low,CNY,identity,decision_close_t,ALPHA158_NO_VWAP_REGISTERED_ADAPTATION,pass,pass
+$open,qfq.open,CNY,identity,decision_close_t,ALPHA158_NO_VWAP_REGISTERED_ADAPTATION,pass,pass
+$volume,raw.volume,shares,hands_to_shares_exactly_once_if_needed,decision_close_t,ALPHA158_NO_VWAP_REGISTERED_ADAPTATION,pass,pass
+$close,qfq.close,CNY,identity,decision_close_t,ALPHA158_QFQ_VWAP_FULL,pass,pass
+$high,qfq.high,CNY,identity,decision_close_t,ALPHA158_QFQ_VWAP_FULL,pass,pass
+$low,qfq.low,CNY,identity,decision_close_t,ALPHA158_QFQ_VWAP_FULL,pass,pass
+$open,qfq.open,CNY,identity,decision_close_t,ALPHA158_QFQ_VWAP_FULL,pass,pass
+$volume,raw.volume,shares,hands_to_shares_exactly_once_if_needed,decision_close_t,ALPHA158_QFQ_VWAP_FULL,pass,pass
+$vwap,raw.money/raw.volume*qfq_raw_factor,CNY,qfq_vwap_candidate,decision_close_t,ALPHA158_QFQ_VWAP_FULL,pass,pass

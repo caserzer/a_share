@@ -1,0 +1,6 @@
+check_id,scope,observed_value,required_value,status,blocking_reason
+U01,membership,true,true,pass,
+U02,membership,1018000,1018500,fail,membership_integrity_failure
+U03,timing,1018000,1018500,fail,usable_trade_date_not_next_session
+U04,denominator,1018500,1018500,pass,
+U05,universe_source,membership_file_only,no_current_constituent_backfill,pass,

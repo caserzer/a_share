@@ -1,0 +1,11 @@
+arm_id,loss_terms,target_id,score_tensor,score_index,draw_n,aggregation,status
+M0_HASH_NULL_SCORE,none,none,none,decision_state,1,identity,pass
+M1_LIGHTGBM_ALPHA158,regression_l2,Y_rank_primary_raw(t),tabular,decision_state,1,identity,pass
+M2_RETURN_LSTM,L_forecast_direct,Y_rank_primary_raw(t),direct,decision_state,1,identity,pass
+M3_GATED_DUAL_PATH_LSTM,L_forecast_direct,Y_rank_primary_raw(t),direct,decision_state,1,identity,pass
+A0_VANILLA_AUTOENCODER,L_A0_source_rec+L_forecast_direct,Y_rank_primary_raw(t),direct,decision_state,1,identity,pass
+K1_SINGLE_KOOPMAN_AE,L_rec+L_koop,Y_rank_primary_raw(t),decoded,last_shifted_scalar,1,identity,pass
+K1C_STATE_INDEPENDENT_MULTI_OPERATOR_CONTROL,L_rec+L_koop,Y_rank_primary_raw(t),decoded,last_shifted_scalar,1,identity,pass
+K2_ADAPTIVE_KOOPMAN_AE,L_rec+L_koop,Y_rank_primary_raw(t),decoded,last_shifted_scalar,1,identity,pass
+R1_AKS_MLP_RESIDUAL,L_rec_mlp+L_koop+L_residual_mlp,Y_rank_primary_raw(t),decoded,last_shifted_scalar,1,identity,pass
+R2_REAKA_DIFFUSION,L_rec+L_koop+L_diff,Y_rank_primary_raw(t),eight_draw_mean,last_shifted_scalar,8,arithmetic_mean,pass

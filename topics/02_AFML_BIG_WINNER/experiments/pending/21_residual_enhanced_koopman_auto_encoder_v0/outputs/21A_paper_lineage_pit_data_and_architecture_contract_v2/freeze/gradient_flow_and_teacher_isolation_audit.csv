@@ -1,0 +1,13 @@
+test_id,expected,observed,max_abs_delta,status,blocking_reason
+source_encoder_receives_gradient_from_L_rec,>0,14.134389400482178,0,pass,
+source_encoder_receives_gradient_from_L_koop,>0,0.08376886695623398,0,pass,
+teacher_shared_encoder_receives_gradient_from_L_koop,>0,0.10957976407371461,0,pass,
+selector_receives_no_direct_teacher_input,0.0,0,0,pass,
+residual_condition_receives_no_teacher_value,0.0,0,0,pass,
+inference_signature_has_no_teacher_tensor,no_teacher,"(y_source: 'Any', x_source: 'Any', model_seed: 'int', row_keys: 'Sequence[tuple[str, str]]', draws: 'int' = 8, run_id: 'str' = '21A_paper_lineage_pit_data_and_architecture_contract', arm_id: 'str' = 'R2_REAKA_DIFFUSION', return_draws: 'bool' = False) -> 'Any'",0,pass,
+teacher_perturbation_does_not_change_fixed_source_inference_score,0.0,0.0,0,pass,
+all_T_transitions_contribute_to_L_koop,10,10,0,pass,
+loss_mean_invariant_to_exact_batch_duplication,<=1e-7,0.0,0,pass,
+score_index_is_last_shifted_scalar,[256],[256],0,pass,
+train_and_inference_score_shape_match,[256],[256],0,pass,
+NaN_and_inf_fail_closed,true,true,0,pass,

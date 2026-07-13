@@ -1,0 +1,371 @@
+identity:
+  run_id: 21A_paper_lineage_pit_data_and_architecture_contract
+  experiment_id: 21_residual_enhanced_koopman_auto_encoder_v0
+  phase_id: 21A
+  contract_version: 21A_v1
+  episode_id: 21_residual_enhanced_koopman_auto_encoder_v0
+  authorization_recorded_date: '2026-07-13'
+  restart_type: topic_level_human_restart_for_architecture_diagnostic
+  authorization_type: human_topic_restart_for_architecture_diagnostic
+  authorization_source: workspace_user_request
+  upstream_automatic_authorization: false
+  primary_claim_ceiling: paper_architecture_grounded_project_adaptation
+  historical_sample_role: design_contaminated_historical
+  historical_support_claim_allowed: false
+  support_source: post_final_candidate_seal_forward_only
+paths:
+  research_plan: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/research_plan.md
+  requirement: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/requirement_21a_paper_lineage_pit_data_and_architecture_contract.md
+  config: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21a_paper_lineage_pit_data_and_architecture_contract.yaml
+  runner: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21a_paper_lineage_pit_data_and_architecture_contract.py
+  test: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/tests/test_21a_paper_lineage_pit_data_and_architecture_contract.py
+  paper: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/paper/Residual-Enhanced_Adaptive_Koopman_Autoencoder_A_Deep_Latent_Dynamics_Model_for_Stock_Prediction.pdf
+  reference_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21a
+  membership: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  executable_universe: data/processed/universe/pit_topn_400_100_executable_daily.csv
+  universe_intervals: data/processed/universe/pit_topn_400_100_intervals.csv
+  qfq_root: data/raw/akshare/day/qfq
+  raw_ohlcv_root: data/raw/akshare/day/raw
+  benchmark: data/processed/index/benchmark_indices_daily.csv
+  trading_calendar: data/raw/akshare/status/trading_calendar.csv
+  security_master: data/raw/akshare/status/instrument_metadata_target_universe.csv
+  name_history_root: data/raw/akshare/status/sh_name_history
+  ep19_execution: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/entry_execution_convention_audit.csv
+  ep19_cost: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/replay_cost_assumption_freeze.csv
+  ep19_censor: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/censoring_treatment_freeze.csv
+  ep19_decision: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/entry_universe_preflight_decision.csv
+  ep19_manifest: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/manifest_19a_entry_universe_pit_lineage_tradability_and_data_contract.json
+  ep19_hashes: experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/19A_entry_universe_pit_lineage_tradability_and_data_contract/output_hashes_19a_entry_universe_pit_lineage_tradability_and_data_contract.json
+  ep20_decision: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/20A_preoutcome_contract_decision.csv
+  ep20_qfq_audit: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/freeze/qfq_schema_unit_and_coverage_audit.csv
+  ep20_execution_audit: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/freeze/execution_and_cost_inheritance_audit.csv
+  ep20_fill_rule: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/freeze/execution_fill_and_exit_rule_freeze.csv
+  ep20_label_rule: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/freeze/label_completion_and_censoring_rule_freeze.csv
+  ep20_cost_capacity: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/freeze/turnover_cost_capacity_formula_freeze.csv
+  ep20_nav: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/freeze/stateful_portfolio_accounting_and_nav_freeze.csv
+  ep20_price_limit: experiments/pending/20_ohlcv_positive_beta_exposure_research/references/market_rules/a_share_price_limit_rules_v1.csv
+  ep20_manifest: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/manifest_20a_paper_lineage_data_and_replication_contract.json
+  ep20_hashes: experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract/output_hashes_20a_paper_lineage_data_and_replication_contract.json
+  pyproject: pyproject.toml
+  requirements: requirements.txt
+  uv_lock: uv.lock
+source_allowlist:
+  acquisition_sources:
+  - source_id: local_vor_pdf
+    url: local://paper
+    allowed_domains: []
+    source_role: version_of_record
+    expected_content: pdf
+  - source_id: doi_resolver
+    url: https://doi.org/10.1109/ICASSP55912.2026.11465125
+    allowed_domains:
+    - doi.org
+    - ieeexplore.ieee.org
+    source_role: doi_identity
+    expected_content: html
+  - source_id: ieee_xplore
+    url: https://ieeexplore.ieee.org/document/11465125
+    allowed_domains:
+    - ieeexplore.ieee.org
+    source_role: publisher_identity
+    expected_content: html
+  - source_id: official_conference_program
+    url: https://www.cmsworkshops.com/ICASSP2026/view_paper.php?PaperNum=6131
+    allowed_domains:
+    - www.cmsworkshops.com
+    source_role: conference_identity
+    expected_content: html
+  official_code_candidate_urls: []
+  official_appendix_candidate_urls: []
+  extra_input_allowlist: []
+input_hash_expectations:
+  research_plan_sha256: cb3e45f874df5c632950a2586e45a4465e36b3e6c5d5cc65c0f7ff3118784c95
+  paper_sha256: 1041d8693c5ef80fcafc613d77f09bf3ec2a2df673f468785255da27d7d9a472
+  paper_page_count: 5
+  pyproject_sha256_before: c6362216fda3f4741abe896e57d04b1d823b29fc8d015f260922f020b41fdc71
+  requirements_sha256_before: 9ebe795329363d23241e4eadeb62f1b12aca3ce55cd327baed3a0618239c616d
+  uv_lock_sha256_before: c082833af9dda1e7930814a9fecc1da96e37e22e1973fa21d8743bf78a227025
+paper_contract:
+  source_id: reaka_icassp_2026_vor
+  title: 'Residual-Enhanced Adaptive Koopman Autoencoder: A Deep Latent Dynamics Model
+    for Stock Prediction'
+  authors:
+  - Lei Liao
+  - Yang Zhang
+  - Jun Wang
+  - Jinghua Tan
+  - Yinchao Liao
+  venue: 2026 IEEE International Conference on Acoustics, Speech and Signal Processing
+  publication_year: 2026
+  doi: 10.1109/ICASSP55912.2026.11465125
+  required_formula_ids:
+  - P01_INPUT_RETURN_AND_FEATURE_SEQUENCES
+  - P02_DUAL_LSTM_ENCODERS
+  - P03_SIGMOID_FEATURE_GATE
+  - P04_LATENT_FUSION_Z_AND_Z_PLUS
+  - P05_OPERATOR_CODEBOOK
+  - P06_GUMBEL_SOFTMAX_SELECTOR
+  - P07_SELECTED_KOOPMAN_PROPAGATION
+  - P08_LATENT_RESIDUAL
+  - P09_CONDITIONAL_DDPM_FORWARD_NOISE
+  - P10_DDPM_EPSILON_LOSS
+  - P11_REVERSE_RESIDUAL_SAMPLE
+  - P12_RESIDUAL_ENHANCED_LATENT
+  - P13_RETURN_DECODER
+  - P14_L_REC_L_KOOP_L_DIFF
+  - P15_T10_LOOKBACK
+  - P16_RANKIC_AND_RANKICIR
+  - P17_TOPK30_DIAGNOSTIC
+  - A01_FULL_T_SHIFTED_SEQUENCE_INDEXING
+  - A02_FINAL_STEP_SCORE_INDEX
+  - A03_MEAN_LOSS_REDUCTION_AXES
+  - A04_TEACHER_GRADIENT_AND_INFERENCE_ISOLATION
+  - A05_EIGHT_DRAW_POINT_PREDICTION_MEAN
+  - A06_PROJECT_PIT_UNIVERSE_AND_TIMING
+  exact_replication_reachable: false
+  paper_result_reproduced_claim_allowed: false
+  CSI300_result_reproduced_claim_allowed: false
+  REAKA_profitability_confirmed_claim_allowed: false
+feature_contract:
+  pyqlib_version: 0.9.7
+  canonical_feature_count: 158
+  full_route_id: ALPHA158_QFQ_VWAP_FULL
+  no_vwap_route_id: ALPHA158_NO_VWAP_REGISTERED_ADAPTATION
+  factor_relative_tolerance: 0.0001
+  factor_cross_field_pass_rate_min: 0.995
+  vwap_inside_range_rate_min: 0.995
+  qfq_raw_key_overlap_rate_min: 0.99
+  vwap_auditable_row_rate_global_min: 0.95
+  vwap_auditable_row_rate_board_year_min: 0.9
+  board_year_base_rows_min: 100
+  factor_jump_abs_log_threshold: 0.0001
+  factor_jump_radius_sessions: 60
+  normalization:
+    center: train_median
+    scale: train_iqr_div_1_349
+    scale_floor: 1.0e-12
+    clip:
+    - -10.0
+    - 10.0
+    invalid_fill: train_median
+    constant_column_value: 0.0
+    missing_indicator_direct_input: false
+universe_contract:
+  minimum_primary_cross_section_n: 100
+  minimum_complete_train_decision_days: 750
+  minimum_complete_validation_decision_days: 200
+  minimum_holdout_calendar_days_for_future_readout: 400
+  lookback_sessions: 10
+  trailing_history_sessions: 240
+architecture:
+  lookback_T: 10
+  latent_dim: 64
+  lstm_layers: 1
+  n_operator: 4
+  selector_activation: leaky_relu
+  selector_negative_slope: 0.01
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_train_mode: soft
+  gumbel_inference_mode: hard_argmax
+  diffusion_steps: 20
+  beta_start: 0.0001
+  beta_end: 0.02
+  inference_residual_draws: 8
+  precision: fp32
+  amp: false
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 1.0e-05
+  gradient_clip_norm: 1.0
+  max_epochs: 100
+  early_stopping_patience: 10
+  batch_size_candidates:
+  - 256
+  - 128
+  - 64
+  - 32
+  - 16
+  minimum_batch_size: 16
+  gpu_peak_memory_fraction_cap: 0.9
+  r1_hidden_width_candidates:
+  - 128
+  - 160
+  - 192
+  - 224
+  - 256
+  m1_lightgbm:
+    objective: regression_l2
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: -1
+    min_data_in_leaf: 20
+    feature_fraction: 1.0
+    bagging_fraction: 1.0
+    lambda_l1: 0.0
+    lambda_l2: 0.0
+    max_boosting_rounds: 100
+    early_stopping_rounds: 10
+    deterministic: true
+    force_col_wise: true
+    num_threads: 1
+    verbosity: -1
+arms:
+  mandatory_ids:
+  - M0_HASH_NULL_SCORE
+  - M1_LIGHTGBM_ALPHA158
+  - M2_RETURN_LSTM
+  - M3_GATED_DUAL_PATH_LSTM
+  - A0_VANILLA_AUTOENCODER
+  - K1_SINGLE_KOOPMAN_AE
+  - K1C_STATE_INDEPENDENT_MULTI_OPERATOR_CONTROL
+  - K2_ADAPTIVE_KOOPMAN_AE
+  - R1_AKS_MLP_RESIDUAL
+  - R2_REAKA_DIFFUSION
+  primary_R2_config_n: 1
+  scheduled_R2_sensitivity_ids:
+  - S01
+  - S02
+  - S03
+  - S04
+  - S05
+  - S06
+  non_primary_diagnostic_adaptation_ids:
+  - LAST_TRANSITION_ONLY_ADAPTATION
+  - TARGET_ENCODER_STOP_GRADIENT
+  - TARGET_CS_NORMALIZATION
+  - FACTOR_JUMP_WINDOW_QUARANTINE
+  model_seeds:
+  - 20260713
+  - 20260714
+  - 20260715
+  bootstrap_seed: 20260713
+  best_seed_primary_allowed: false
+split:
+  train_nominal:
+  - '2018-01-02'
+  - '2022-12-30'
+  validation_nominal:
+  - '2023-01-03'
+  - '2023-12-29'
+  historical_design_holdout_nominal:
+  - '2024-01-02'
+  - '2026-05-29'
+  validation_early_end: '2023-06-30'
+  purge_sessions: 12
+  purge_side: earlier_split_tail
+  random_row_split_allowed: false
+  historical_holdout_unseal_count: 1
+  post_unseal_retrain_allowed: false
+dependencies:
+  python: '>=3.10,<3.13'
+  pyqlib: ==0.9.7
+  lightgbm: ==4.6.0
+  torch: ==2.8.0
+  numpy: '>=1.26,<2.0'
+  pandas: '>=2.2,<3.0'
+  environment_bootstrap: uv sync --frozen --extra reaka --extra dev
+  stage_interpreter: .venv/bin/python
+  runner_package_manager_calls_allowed: false
+  deterministic_algorithms: true
+  cublas_workspace_config: :4096:8
+metrics:
+  rank_method: average
+  rankic_implementation: float64_average_rank_pearson
+  minimum_cross_section_n: 100
+  rankicir_ddof: 1
+  validation_full_complete_days_min: 200
+  validation_early_complete_days_min: 80
+  validation_late_complete_days_min: 80
+  historical_representation_complete_days_min: 252
+  historical_economic_complete_days_min: 252
+  forward_evaluable_complete_days_min: 60
+  forward_confirmatory_complete_days: 291
+  familywise_alpha: 0.05
+  bootstrap_repetitions: 5000
+  stationary_bootstrap_mean_block_length_sessions: 20
+  contrasts:
+    C0:
+      left: K1
+      right: M3
+      margin: 0.0
+    C1:
+      left: R2
+      right: M3
+      margin: 0.005
+    C2a:
+      left: K2
+      right: K1
+      margin: 0.0
+    C2b:
+      left: K2
+      right: K1C
+      margin: 0.0
+    C3a:
+      left: R1
+      right: K2
+      margin: 0.0
+    C3b:
+      left: R2
+      right: K2
+      margin: 0.0
+    C4:
+      left: R2
+      right: R1
+      margin: 0.0
+execution:
+  decision_time: after_close_t
+  entry_attempt: next_executable_exchange_open_exactly_once
+  TopK: 30
+  target_weight: equal_weight
+  initial_AUM_cny: 10000000
+  portfolio_ledger: continuous_no_injection_stateful_NAV
+  blocked_buy: unfilled_allocation_remains_cash
+  blocked_exit: position_retained_marked_consumes_capital
+  active_weight_rescaling: false
+  commission_buy_bps: 2.5
+  commission_sell_bps: 2.5
+  minimum_commission_cny: 5.0
+  slippage_bps: 5.0
+  ADV_window_sessions: 20
+  maximum_ADV_participation_rate: 0.01
+  maximum_drawdown_cap: 0.35
+  daily_ES10_loss_cap: 0.03
+  minimum_effective_holdings_p10: 20
+  single_instrument_weight_cap: 0.1
+  top10_instrument_weight_cap: 0.5
+forward:
+  comparators:
+  - R2_REAKA_DIFFUSION
+  - M1_LIGHTGBM_ALPHA158
+  - M3_GATED_DUAL_PATH_LSTM
+  refit_arms:
+  - R2_REAKA_DIFFUSION
+  - M1_LIGHTGBM_ALPHA158
+  - M3_GATED_DUAL_PATH_LSTM
+  refit_early_stopping: false
+  transform_refit_count: 1
+  start_after_final_candidate_seal: true
+  rolling_retrain_first_cohort: false
+  normalizer_refresh_first_cohort: false
+  comparator_replacement_first_cohort: false
+  minimum_cohort_complete_days: 291
+  forward_module_attribution_authorized: false
+gates:
+  critical_status_values:
+  - pass
+  - fail
+  success_state: 21A_preoutcome_architecture_contract_ready
+  next_allowed_requirement: requirement_21b_alpha158_sequence_baseline_benchmark.md
+  next_requirement_generation_authorized: true
+  next_requirement_execution_authorized: false
+  outcome_model_training_authorized: false
+  historical_holdout_readout_authorized: false
+  policy_training_authorized: false
+  portfolio_optimization_authorized: false
+  deployment_authorized: false
+output:
+  output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21A_paper_lineage_pit_data_and_architecture_contract
+  schema_version: 21A_schema_v1
+  sort_contract_version: 21A_sort_v1
+  cache_published: false
