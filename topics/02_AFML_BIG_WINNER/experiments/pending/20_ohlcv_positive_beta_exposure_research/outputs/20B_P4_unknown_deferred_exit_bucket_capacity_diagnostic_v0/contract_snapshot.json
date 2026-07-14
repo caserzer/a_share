@@ -1,0 +1,31 @@
+{
+  "capacity_set": [
+    5,
+    10,
+    20,
+    30,
+    40,
+    50
+  ],
+  "contract_version": "20B_P4_CAP_v0",
+  "created_at_utc": "2026-07-14T03:10:34.633463Z",
+  "deferred_exit_bridge": {
+    "adjustment": "qfq",
+    "endpoint": "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get",
+    "frequency": "day",
+    "max_attempts": 5,
+    "mixed_provider_bridge_sensitivity": true,
+    "provider": "tencent_ifzq_qfq",
+    "timeout_seconds": 30
+  },
+  "early_end": "2023-08",
+  "historical_support_claim_allowed": false,
+  "late_start": "2023-09",
+  "primary_weighting": "EW",
+  "run_id": "20B_P4_unknown_deferred_exit_bucket_capacity_diagnostic_v0",
+  "unknown_policy": {
+    "bottom": "delete_and_renormalize_comparator_only",
+    "middle": "ignore_not_held",
+    "top": "retain_weight_and_exit_first_mark_in_t_plus_2"
+  }
+}
