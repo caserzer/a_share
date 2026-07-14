@@ -1,0 +1,13 @@
+challenger_scored_model_id,baseline_scored_model_id,split_scope,metric_id,common_month_n,block_length,candidate_block_start_n,blocks_per_replicate,seed,requested_replicate_n,finite_replicate_n,quantile_method,p05,p50,p95,two_sided_CI_level,CI_lower_gt_zero,status,exclusion_reason
+S0_SELECTED_FULL,B0_P4_RAW_RANK,robustness_full,aggregate_bucket_mean_spearman,21,3,19,7,20260714,5000,5000,linear,-1.4303030303,-0.569696969697,0.690909090909,0.9,False,pass,
+S0_SELECTED_FULL,B0_P4_RAW_RANK,robustness_full,adjacent_order_rate,21,3,19,7,20260714,5000,5000,linear,-0.333333333333,-0.111111111111,0.111111111111,0.9,False,pass,
+S0_SELECTED_FULL,B0_P4_RAW_RANK,robustness_full,mean_security_rank_ic,21,3,19,7,20260714,5000,5000,linear,-0.0405836722354,0.0559086734981,0.14589359663,0.9,False,pass,
+S0_SELECTED_FULL,B0_P4_RAW_RANK,robustness_full,D10_minus_D1,21,3,19,7,20260714,5000,5000,linear,-0.0598907852778,-0.0197333560425,0.0141938903784,0.9,False,pass,
+A1_P4_PATH_ONLY,B0_P4_RAW_RANK,robustness_full,aggregate_bucket_mean_spearman,21,3,19,7,20260714,5000,5000,linear,-0.375757575758,0.0606060606061,0.533333333333,0.9,False,pass,
+A1_P4_PATH_ONLY,B0_P4_RAW_RANK,robustness_full,adjacent_order_rate,21,3,19,7,20260714,5000,5000,linear,-0.222222222222,0,0.222222222222,0.9,False,pass,
+A1_P4_PATH_ONLY,B0_P4_RAW_RANK,robustness_full,mean_security_rank_ic,21,3,19,7,20260714,5000,5000,linear,-0.00731732705178,0.0185505869132,0.049237847241,0.9,False,pass,
+A1_P4_PATH_ONLY,B0_P4_RAW_RANK,robustness_full,D10_minus_D1,21,3,19,7,20260714,5000,5000,linear,-0.012951083754,-0.00132241430334,0.0117597211873,0.9,False,pass,
+A2_CROSS_SIGNALS_WITHOUT_P4,B0_P4_RAW_RANK,robustness_full,aggregate_bucket_mean_spearman,21,3,19,7,20260714,5000,5000,linear,-1.66060606061,-0.812121212121,0.8,0.9,False,pass,
+A2_CROSS_SIGNALS_WITHOUT_P4,B0_P4_RAW_RANK,robustness_full,adjacent_order_rate,21,3,19,7,20260714,5000,5000,linear,-0.333333333333,-0.111111111111,0.222222222222,0.9,False,pass,
+A2_CROSS_SIGNALS_WITHOUT_P4,B0_P4_RAW_RANK,robustness_full,mean_security_rank_ic,21,3,19,7,20260714,5000,5000,linear,-0.0670187484116,0.056704777814,0.168804944071,0.9,False,pass,
+A2_CROSS_SIGNALS_WITHOUT_P4,B0_P4_RAW_RANK,robustness_full,D10_minus_D1,21,3,19,7,20260714,5000,5000,linear,-0.0610114576947,-0.0162187242363,0.0243612988648,0.9,False,pass,

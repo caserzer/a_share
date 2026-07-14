@@ -1,0 +1,131 @@
+identity:
+  run_id: 21B_alpha158_sequence_baseline_benchmark
+  requirement_version: 21B_v4
+  requirement_sha256: 9053c13ca0f23156a675ea55167c81501a8d08279417a77ecdd46420580fac7d
+  claim_ceiling: validation_only_baseline_information_diagnostic
+
+paths:
+  requirement: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/requirement_21b_alpha158_sequence_baseline_benchmark.md
+  research_plan: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/research_plan.md
+  authorization: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21b/execution_authorization.json
+  approved_21a_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21A_paper_lineage_pit_data_and_architecture_contract_v2
+  feature_cache_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/.cache/21a_alpha158_feature_only
+  membership: data/processed/universe/pit_topn_400_100_membership_daily.csv
+  qfq_root: data/raw/akshare/day/qfq
+  trading_calendar: data/raw/akshare/status/trading_calendar.csv
+  instrument_metadata: data/raw/akshare/status/instrument_metadata_target_universe.csv
+  name_history_root: data/raw/akshare/status/sh_name_history
+  pyproject: pyproject.toml
+  requirements: requirements.txt
+  uv_lock: uv.lock
+
+upstream:
+  contract_version: 21A_v2
+  decision_state: 21A_preoutcome_architecture_contract_ready
+  freeze_bundle_hash: 0c6fb85a08315a5b1bd0b7621a4a7e4d36790d201eb83f8cca35f50d460cac16
+  decision_sha256: 2dad2db00fca650f2b602331e15a783d8982daf272f59c717589a7c1096e9338
+  manifest_sha256: 98f24dad24ca73b27edf58c0469db20182daab50b047da5556884fdd9df3c934
+  output_hashes_sha256: edb5aaee713342169d84ddf78bcd1b5423f2bb9e4c4b8b20eed9308c4a29c961
+  feature_cache_content_hash: 95839cfcbb28c7b83620936ec6beab38ff14adb182c8ce8dba4eaaebdcbfdee2
+  feature_expression_sha256: da50206946efd49cf7103a56561b7a5702503c18f70b4d8c5f48e8c1e9592188
+  split_hash: ecff4e1b86c0383d593cef355770e14a6f54305006da33c0b789699064c067fa
+  normalization_contract_hash: b924004891f52ab38329221d34f006ef31ea77b59f01b8187e62d894ceeb9be4
+  qfq_root_hash: 3be5179aa1250bfe8f7a91c7bae0552a35466aefa52b692538c953aa5a475714
+  membership_sha256: 982cc6930b27c4b255f019af5180ef835667280b841154af8c2ca9b0138a863b
+  trading_calendar_sha256: 1d5ff82a6718fc4e19b95c98456813043b30aeaa1b452d591376b1d427c2b60d
+  instrument_metadata_sha256: 3175ae478bbfe9729d2b45cc0c8ca373fe903ee8d9acc9a96fed111441452601
+  pyproject_sha256: cd2d0cff7728be686b59ca14b63c35d6050af6b5ff3a2305fa2e50e606d8dd66
+  requirements_sha256: f5be199c2d2bfef623f8781b2dc71047f8a05ef3d6348d43dfc40478e07b7af1
+  uv_lock_sha256: 95b1c429f48b9ef1e950d1639334cdcc8633cb1536213e4f236b15e7b00b4e60
+
+data:
+  feature_route_id: ALPHA158_NO_VWAP_REGISTERED_ADAPTATION
+  feature_count: 157
+  lookback_sessions: 10
+  minimum_cross_section_n: 100
+  train_start: '2018-01-02'
+  train_end: '2022-12-14'
+  validation_start: '2023-01-03'
+  validation_end: '2023-12-13'
+  validation_early_end: '2023-06-30'
+  max_allowed_outcome_source_date: '2023-12-14'
+  minimum_complete_days:
+    validation_full: 200
+    validation_early: 80
+    validation_late: 80
+
+training:
+  precision: fp32
+  device: cuda
+  expected_device_name: NVIDIA GeForce RTX 4070 SUPER
+  batch_size: 256
+  oom_batch_ladder: [256, 128, 64, 32, 16]
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  gradient_clip_norm: 1.0
+  max_epochs: 100
+  early_stopping_patience: 10
+  early_stopping_min_delta: 0.0
+  latent_dim: 64
+  model_seeds: [20260713, 20260714, 20260715]
+  dataloader_seed_offset: 37
+  weight_init_seed_offset: 53
+  lightgbm:
+    objective: regression_l2
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: -1
+    min_data_in_leaf: 20
+    feature_fraction: 1.0
+    bagging_fraction: 1.0
+    lambda_l1: 0.0
+    lambda_l2: 0.0
+    max_boosting_rounds: 100
+    early_stopping_rounds: 10
+    deterministic: true
+    force_col_wise: true
+    num_threads: 1
+    verbosity: -1
+    bin_construct_sample_cnt: 200000
+    max_bin: 255
+
+gates:
+  positive_late_seed_n: 2
+  positive_late_lomo_n: 5
+  late_lomo_total_n: 6
+  max_late_month_abs_contribution_share: 0.50
+  m0_bootstrap_replicates: 10000
+  m0_expected_block_length: 20
+  m0_ci_percentiles: [0.5, 99.5]
+
+artifact_profiles:
+  - profile_id: P0_PREFLIGHT_BLOCKED
+    required_groups: [common_final, preflight, search_manifest]
+    forbidden_groups: [materialized_success, checkpoints, predictions, readouts]
+    conditional_path_rules: []
+  - profile_id: P1_MATERIALIZATION_BLOCKED
+    required_groups: [common_final, preflight, search_manifest, materialization_failure]
+    forbidden_groups: [materialized_success, checkpoints, predictions, readouts]
+    conditional_path_rules: []
+  - profile_id: P2_SELECTION_BLOCKED
+    required_groups: [common_final, preflight, materialized_success, training_audits]
+    forbidden_groups: [pre_gate_seal, late_predictions, eligibility, pre_holdout_seal, readouts]
+    conditional_path_rules: [completed_learned_job_exact_checkpoint_subset]
+  - profile_id: P3_GATE_READOUT_BLOCKED
+    required_groups: [common_final, preflight, materialized_success, training_audits, checkpoints, pre_gate_seal]
+    forbidden_groups: [late_predictions, eligibility, pre_holdout_seal, combined_predictions, readouts]
+    conditional_path_rules: []
+  - profile_id: P4_FINALIZE_BLOCKED
+    required_groups: [common_final, preflight, materialized_success, training_audits, checkpoints, pre_gate_seal, late_predictions, eligibility, pre_holdout_seal, combined_predictions, finalize_failure]
+    forbidden_groups: [readouts, materialization_failure]
+    conditional_path_rules: []
+  - profile_id: P5_FULL_FINALIZED
+    required_groups: [full_success]
+    forbidden_groups: [materialization_failure, finalize_failure]
+    conditional_path_rules: []
+
+output:
+  canonical_output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v4
+  semantic_canonicalization_version: 21B_semantic_v4
+  report_language: zh-CN

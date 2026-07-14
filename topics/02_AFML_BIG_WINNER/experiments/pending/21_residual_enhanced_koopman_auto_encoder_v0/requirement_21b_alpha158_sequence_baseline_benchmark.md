@@ -10,7 +10,7 @@
 >
 > Run ID：`21B_alpha158_sequence_baseline_benchmark`
 >
-> Requirement version：`21B_v3`
+> Requirement version：`21B_v4`
 >
 > 上游研究计划：`research_plan.md`
 >
@@ -40,7 +40,7 @@ A0_VANILLA_AUTOENCODER
 operator、residual module、TopK 或成本参数。Validation 结果只是复杂架构的 futility screen，不是历史支持、可信 OOS support 或
 deployment evidence。
 
-为避免把同一 validation 信息同时用于 checkpoint 选择和 continuation gate，21B_v3 固定：
+为避免把同一 validation 信息同时用于 checkpoint 选择和 continuation gate，21B_v4 固定：
 
 ```text
 provisional_candidate_selection_fold = validation_early
@@ -110,11 +110,27 @@ config_file = configs/config_21b_alpha158_sequence_baseline_benchmark.yaml
 runner_file = src/run_21b_alpha158_sequence_baseline_benchmark.py
 test_file = tests/test_21b_alpha158_sequence_baseline_benchmark.py
 authorization_file = references/21b/execution_authorization.json
-output_root = outputs/21B_alpha158_sequence_baseline_benchmark_v3
+canonical_output_root = outputs/21B_alpha158_sequence_baseline_benchmark_v4
+preauthorization_audit_root = outputs/21B_alpha158_sequence_baseline_benchmark_v4_preauthorization_audits
 ```
 
-Output root 必须显式包含 requirement version；禁止把 v3 写入未版本化 root、v1/v2 root 或 `latest` alias。未来任何 material
-requirement change 必须使用新的 versioned root，旧 root 永不覆盖。
+Canonical output root 必须显式包含 requirement version；禁止把 v4 写入未版本化 root、v1/v2/v3 root 或 `latest` alias。未来任何
+material requirement change 必须使用新的 versioned root，旧 root 永不覆盖。
+
+缺失或无效 human authorization 的 preflight 失败不得占用 canonical output root。该类 P0 audit 的落盘位置固定为：
+
+```text
+authorization_observation = "MISSING" if authorization path does not exist
+                            else lowercase_sha256(full authorization file bytes)
+preauthorization_audit_id = first_16_hex(
+  SHA256(UTF8(requirement_sha256 + "|" + authorization_observation))
+)
+preauthorization_audit_path = preauthorization_audit_root + "/" + preauthorization_audit_id
+```
+
+该 path 仍是 immutable P0 sealed bundle；同一 observation 重试只能验证已有 bundle，禁止覆盖。授权文件随后变为合格时，正式 run
+写入尚未创建的 canonical output root，不受既有 preauthorization audit 阻断。若 authorization 已 pass 后再因 upstream/hash/compute
+问题形成 P0-P4，则该 version 已被消费；修复 material input 或 contract 后必须升级 version，不能覆盖失败证据。
 
 工作目录固定为：
 
@@ -142,7 +158,8 @@ finalize
   optimizer、backward、boosting continuation；
 - `finalize`：只读本 run 已密封的 artifacts，计算 validation readout、gates、decision、中文报告和 output hashes；不得重训；
 - stage 不得隐式执行 `pip install`、`uv add`、`uv lock`、`uv sync`；环境 bootstrap 只能在 stage 外显式执行；
-- 同一 `run_id + requirement_version` 的 sealed stage 不得覆盖。Material input 或 requirement 改变必须升级版本并保留旧 bundle。
+- 同一 canonical `run_id + requirement_version` 的 sealed stage 不得覆盖；同一 preauthorization audit path 也不得覆盖。Material input 或
+  requirement 改变必须升级版本并保留旧 bundle。
 
 ## 2. 授权、前置条件与 claim boundary
 
@@ -583,14 +600,31 @@ diagnostic，不计入 baseline information gate。
 
 ### 6.7 Parameter initialization 与 determinism
 
-所有 PyTorch LSTM/Linear：
+所有 PyTorch arm 必须在 CPU 上完成构造和下述显式 re-initialization，再迁移到 CUDA；不得保留 constructor default initialization。
+每个 `(arm_id,model_seed)` 创建独立 CPU `torch.Generator` 并以 `weight_init_seed=model_seed+53` 初始化。Module 初始化顺序 exact 为：
 
 ```text
-weight_ih / Linear.weight = Xavier uniform using weight_init_seed
-weight_hh = orthogonal using weight_init_seed stream
-bias = 0
-LSTM forget-gate bias = 1
+M2: lstm_y -> score_head
+M3: lstm_y -> lstm_x -> gate_linear -> score_head
+A0: lstm_y -> lstm_x -> gate_linear -> source_decoder -> score_head
 ```
+
+每个 LSTM 固定 `hidden_size=64,num_layers=1,bidirectional=false,proj_size=0,bias=true`，PyTorch gate order 固定为
+`input|forget|cell|output`。其 tensor 初始化 exact 为：
+
+```text
+weight_ih_l0[0:4H,:]       = Xavier uniform(gain=1.0, generator=weight_init_generator)  # one full tensor draw
+weight_hh_l0[gH:(g+1)H,:]  = orthogonal(gain=1.0, generator=weight_init_generator)      # g=0,1,2,3 in order
+bias_ih_l0[:]              = 0
+bias_hh_l0[:]              = 0
+bias_ih_l0[H:2H]           = 1.0                                                        # forget gate only
+bias_hh_l0[H:2H]           = 0.0                                                        # remains zero
+```
+
+因此 effective forget bias exact 为 1.0，不允许同时把 `bias_ih` 与 `bias_hh` 的 forget slice 设为 1。每个 Linear 按上述 module
+顺序执行 `weight=Xavier uniform(gain=1.0,same generator stream)`、`bias=0`。任何额外 trainable parameter、不同 module traversal、整块
+`weight_hh_l0` 一次性 orthogonal 或 CUDA generator 初始化均使 `seed_determinism_gate=fail`。Resolved config、checkpoint manifest 和
+synthetic fixture 必须共同绑定 `parameter_initialization_contract_sha256`。
 
 Seed streams 必须继承 21A：python/model seed、numpy=`seed+11`、torch=`seed+23`、dataloader=`seed+37`、
 weight-init=`seed+53`。Dataloader 只在 train shuffle；validation 排序固定 `decision_date,instrument`。同一 checkpoint 重复 inference
@@ -651,6 +685,7 @@ parameter_count
 complexity_definition
 model_specific_complexity
 model_input_construction_sha256
+parameter_initialization_contract_sha256
 checkpoint_path
 model_type
 serialization_format
@@ -785,7 +820,38 @@ top 1/3 instruments removed
 main-board / ChiNext descriptive slices
 ```
 
-`top k removed` 的 contribution 必须基于预定义 leave-one-unit-out change，而不是按 label magnitude 重新挑样本。
+`top 1/3 removed` 只对 `validation_full` 的 learned-arm ensemble 与 M0 null role 计算，不能进入 Section 9.3 gate。对每个
+`(arm_id,score_role)`，base day set 是其原始 complete validation-full days，`base_mean` 是这些日 RankIC 的等权均值。Unit-level
+contribution exact 定义为：
+
+```text
+decision-day unit d:
+  removed_mean_d = mean(RankIC on base day set excluding d)
+  signed_contribution_d = base_mean - removed_mean_d
+
+instrument unit i:
+  remove i from every base day on which it appears
+  rerank both score and label within each affected remaining cross-section
+  removed_mean_i = equal-day mean of recomputed RankIC over the same base day set
+  signed_contribution_i = base_mean - removed_mean_i
+```
+
+Instrument hypothetical removal 不重新应用 primary `N>=100` coverage gate；只要 remaining `N>=2` 且 score/label 均非 constant/finite 即可
+计算。任一 base day 在 removal 后不满足该 hypothetical evaluability 时，该 instrument unit 标记 `not_evaluable` 且不得进入 top-third
+排序，不能静默 drop 该日。对每类 unit：
+
+```text
+evaluable_unit_n = count(unit_status == evaluable)
+k = ceil(evaluable_unit_n / 3)
+selection order = abs(signed_contribution) DESC, signed_contribution DESC, unit_id ASC
+selected_in_top_third = first k units
+```
+
+Decision-day `unit_id=YYYY-MM-DD`；instrument `unit_id=canonical_instrument`。选出 top third 后必须一次性同时删除全部 selected units并
+重新计算最终 diagnostic；禁止逐步删除后重排 selection。Tie 不得依赖 input row order。全部 unit contribution、rank 和 selection flag
+写入 `fragility_unit_contribution_audit.csv`；summary 写入 `rankic_stability_and_concentration_audit.csv`，scope exact 为
+`top_third_decision_days_removed_full|top_third_instruments_removed_full`。若 `evaluable_unit_n=0` 或 simultaneous removal 后任一 required
+base day undefined，summary status=`not_evaluable` 并记录原因；这仍是 diagnostic，不改变 baseline information gate。
 
 ## 9. Exact gates
 
@@ -826,13 +892,20 @@ null_score_sanity_gate
 output_manifest_hash_gate
 ```
 
+除 `output_manifest_hash_gate` 外，上述 gate 都是 decision-phase causal gates，必须进入 decision exact schema 并参与 Section 10
+first-match。`output_manifest_hash_gate` 是 seal meta-gate：builder 在 `.building` 中先写固定内容的 pass assertion，再生成 output hashes 与
+final manifest，随后从磁盘重新打开完整 bundle 验证 exact profile/file-set/hash；只有验证 pass 才允许 atomic rename 为 sealed root。因此任何
+已 sealed profile 的该 gate 必须为 `pass`。若 post-build 验证失败，`.building` 保持未密封并以 non-zero exit 结束，不得生成一个把
+`output_manifest_hash_gate=fail` 写入 sealed decision 的自相矛盾 bundle。该 gate 的 evidence row 只能记录固定 selector
+`post_build_full_disk_reopen_verification` 和 status，不得嵌入 final-manifest/output-hashes 的 hash value以制造控制文件环。
+
 Exact checks：
 
 1. feature/cache/split/normalizer hashes equal successful 21A successor；live qfq/source roots 必须在任何 outcome-value decode 前以
    byte-integrity hash exact-match successor；
 2. every eligible day has `U_t_resolved_n=U_t_decision_n>=100`；
 3. validation full/early/late complete days respectively at least `200/80/80`；
-4. five mandatory arms exact，planned jobs exact 13，provisional learned candidates exact 12；P4 evaluable baseline 要求 eligibility
+4. five mandatory arms exact，planned jobs exact 13，provisional learned candidates exact 12；P5 evaluable baseline 要求 eligibility
    manifest exact 12 records 且全部 `eligible_frozen`；
 5. all learned-arm ensemble scores and M0 null-role scores have 100% row coverage on every retained day；
 6. finite score/loss/gradient and exact tensor shapes；
@@ -844,7 +917,7 @@ Exact checks：
 `null_score_sanity_gate` 的 hard checks 只包括上述结构性 M0 条件，以及 deterministic synthetic null fixture：对 `N=100` 的 fixed ranks
 枚举全部 100 个 cyclic shifts，mean daily RankIC 的绝对值必须 `<=1e-12`。真实 validation M0 的 stationary-bootstrap 99% two-sided
 CI 必须报告，但只作 diagnostic，不能成为随机 hard gate。其参数固定为 10,000 replicates、expected block length=20 decision days、
-percentile `[0.5%,99.5%]`、seed=`uint64_prefix(SHA256("21B_v3|M0_REALIZED_CI")) mod 2^63`。CI 不含 0 时标记
+percentile `[0.5%,99.5%]`、seed=`uint64_prefix(SHA256("21B_v4|M0_REALIZED_CI")) mod 2^63`。CI 不含 0 时标记
 `realized_m0_null_diagnostic_warning` 并调查，不能仅凭一次 1% tail event 阻断或通过 pipeline。
 
 ### 9.3 Baseline information gate
@@ -903,13 +976,15 @@ Decision 必须按 first-match 顺序产生唯一 `stage_decision`：
    -> upstream/authorization gate fail；outcome/model counts 必须为 0。
 
 2. 21B_input_hash_or_holdout_firewall_blocked
-   -> hash/date/forbidden access failure；run 作废，不能解释 baseline。
+   -> hash/date/forbidden access failure；无论发生在 materialization、selection、gate readout 或 finalize，都优先落入 state 2；run 作废，
+      不能解释 baseline。
 
 3. 21B_label_or_denominator_pipeline_blocked
-   -> label resolution、U_t denominator 或 coverage 不完整；不能解释 baseline。
+   -> model-input panel、label resolution、U_t denominator 或 split/purge contract 不完整；不能解释 baseline。
 
 4. 21B_training_or_compute_not_evaluable
-   -> mandatory jobs/provisional candidates/checkpoint eligibility/determinism/GPU 未完成；不能解释 baseline。
+   -> dependency、arm/architecture/loss contract、mandatory jobs、provisional candidates、checkpoint eligibility、determinism、score/RankIC/null
+      pipeline 或 GPU 未完成；不能解释 baseline。
 
 5. 21B_baseline_information_not_supported
    -> pipeline evaluable，但 M1/M2/M3 均不通过 Section 9.3；关闭 EP21 complex-architecture mainline。
@@ -918,17 +993,43 @@ Decision 必须按 first-match 顺序产生唯一 `stage_decision`：
    -> 至少一个 M1/M2/M3 通过；允许生成并评审 21C requirement，不授权执行 21C。
 ```
 
+Gate-to-state first-match bucket exact 为：
+
+```text
+state 1: upstream_21a_success_gate, execution_authorization_gate
+state 2: input_hash_gate, train_validation_date_firewall_gate, historical_holdout_zero_access_gate,
+         feature_cache_integrity_gate, materialization_source_hash_gate,
+         candidate_selection_gate_firewall_gate, or any access_audit.allowed=false
+state 3: model_input_panel_integrity_gate, decision_universe_denominator_gate,
+         label_resolution_gate, split_purge_gate
+state 4: dependency_lock_gate, arm_registry_gate, architecture_shape_gate,
+         loss_and_score_index_gate, seed_determinism_gate, training_completion_gate,
+         pre_gate_checkpoint_bundle_hash_gate, checkpoint_eligibility_gate,
+         checkpoint_bundle_hash_gate, score_coverage_gate, rankic_implementation_gate,
+         null_score_sanity_gate
+state 5/6: all causal gates pass; baseline_information_gate fail/pass respectively
+seal meta-gate: output_manifest_hash_gate must pass and does not create a sealed failure state
+```
+
+同一 run 多个 gate fail 时先取最小 state number；同一 bucket 全部 failed gate 仍须进入 canonical `blocking_reasons`，不能只保留首个。
+
 Artifact profile 与 decision state 的允许映射 exact 为：
 
 ```text
-P0_PREFLIGHT_BLOCKED       -> state 1 or 2
+P0_PREFLIGHT_BLOCKED       -> state 1, 2, 3 or 4 according to failed preflight causal gate
 P1_MATERIALIZATION_BLOCKED -> state 2 or 3
-P2_SELECTION_BLOCKED       -> state 4
-P3_GATE_READOUT_BLOCKED    -> state 4
-P4_FULL_FINALIZED          -> state 4, 5 or 6
+P2_SELECTION_BLOCKED       -> state 2 or 4
+P3_GATE_READOUT_BLOCKED    -> state 2 or 4
+P4_FINALIZE_BLOCKED        -> state 2 or 4
+P5_FULL_FINALIZED          -> state 4, 5 or 6
 ```
 
-P4 中任一 provisional candidate 未获 `eligible_frozen` 必须 state 4；不得把完整 artifact file set 误写成 baseline evaluable。
+Profile 只描述最后完成的 artifact phase，不覆盖 decision precedence。尤其 selection worker 打开 late panel、gate-readout worker 调用 fit、
+任一 training/finalize phase 读取 historical holdout，均必须以当时可验证的 P2/P3/P4 artifacts 封存并落 state 2，不能因为失败发生较晚而
+降级成 state 4。State 5/6 的前提是除 seal meta-gate 外全部 upstream/firewall/pipeline causal gates pass；任何 causal gate fail 时不得计算或
+解释 `baseline_information_gate`。
+
+P5 中任一 provisional candidate 未获 `eligible_frozen` 必须 state 4；不得把完整 artifact file set 误写成 baseline evaluable。
 
 只有 state 6：
 
@@ -993,6 +1094,8 @@ historical_design_holdout_access_audit.csv
 stage_status_registry.csv
 daily_rankic_readout.csv
 rankic_stability_and_concentration_audit.csv
+fragility_unit_contribution_audit.csv
+finalize_failure_evidence.csv
 gate_evidence_21b.csv
 21B_baseline_benchmark_decision.csv
 21B_alpha158_sequence_baseline_benchmark_report.md
@@ -1005,11 +1108,18 @@ output_hashes_21b_alpha158_sequence_baseline_benchmark.json
 
 | profile | 触发条件 | required stage artifacts | forbidden sealed artifacts |
 |---|---|---|---|
-| `P0_PREFLIGHT_BLOCKED` | preflight/authorization/upstream fail | common-final + 三个 preflight artifacts + 13-row search manifest（全 `not_run_due_upstream_block`） | 全部 materialized panel、checkpoint、score/readout |
+| `P0_PREFLIGHT_BLOCKED` | 任一 preflight causal gate fail | common-final + 三个 preflight artifacts + 13-row search manifest（全 `not_run_due_upstream_block`） | 全部 materialized panel、checkpoint、score/readout |
 | `P1_MATERIALIZATION_BLOCKED` | source hash/firewall/label/denominator/materialization fail | P0 required + materialization access audit + materialization failure evidence | sealed panel components、全部 checkpoint、score/readout |
-| `P2_SELECTION_BLOCKED` | selection worker/job 未完成 | common-final + successful preflight/materialization artifacts + training registry/search/curves/access/compute + 0..11 个 completed candidate files及同数 manifest records | selection exit success record、pre-gate bundle、late score、eligibility、pre-holdout bundle |
+| `P2_SELECTION_BLOCKED` | selection worker/job 未完成或 selection firewall breach | common-final + successful preflight/materialization artifacts + training registry/search/curves/access/compute + 0..12 个 completed candidate files及同数 manifest records | selection exit success record、pre-gate bundle、late score、eligibility、pre-holdout bundle |
 | `P3_GATE_READOUT_BLOCKED` | 12 candidates 与 pre-gate seal成功，但 inference-only readout 未完成 | common-final + successful preflight/materialization + 全部 12 candidate files/manifest + selection exit + early score + pre-gate bundle + training audits | sealed late score、eligibility、pre-holdout bundle、combined score |
-| `P4_FULL_FINALIZED` | late readout 与 eligibility 完成，无论最终 information gate pass/fail | Section 11.1 全部 superset，但 `materialization_failure_evidence.csv` forbidden | 无 |
+| `P4_FINALIZE_BLOCKED` | late readout、eligibility、pre-holdout seal 与 combined score 已完成，但 finalize causal gate/readout 失败 | common-final + successful P3 artifacts + gate-readout exit + late score + eligibility + pre-holdout bundle + combined score + finalize failure evidence | daily RankIC、stability/fragility audits、materialization failure evidence |
+| `P5_FULL_FINALIZED` | 全部 finalize causal gates/readout 完成，无论最终 information gate pass/fail | Section 11.1 全部 superset，但两个 failure-evidence files forbidden | 无 |
+
+P0 若因 execution authorization 缺失或无效触发，bundle root 必须是 Section 1 的 `preauthorization_audit_path`；其他 P0 及 P1-P5 使用
+canonical output root。`successful materialization artifacts` exact 指 Section 11.1 全部 `materialized/` paths但排除
+`materialized/materialization_failure_evidence.csv`。上表 `successful P3 artifacts` exact 指 successful preflight/materialization、12 个
+checkpoint/files manifest、selection exit、early score、pre-gate bundle 及全部 training audits。P0-P4 禁止 `daily_rankic_readout.csv`、
+两个 stability/fragility audit；P5 必须包含三者。
 
 `common-final` exact 为：
 
@@ -1024,19 +1134,22 @@ manifest_21b_alpha158_sequence_baseline_benchmark.json
 output_hashes_21b_alpha158_sequence_baseline_benchmark.json
 ```
 
-`P2_SELECTION_BLOCKED` 中 candidate file count 必须等于 `checkpoint_manifest.json` record count，并等于 registry 中已完成/early-stopped
-learned job count；这些 candidate 只作失败证据，eligibility 恒为未建立。所有 profile 下，未成功 stage 的临时内容只能留在 output root
-之外的 `<output_root>.building/<stage>/`，finalize 前必须删除；sealed root 禁止 `.building`、partial memmap 或未列入 profile 的额外文件。
+`P2_SELECTION_BLOCKED` 中 candidate file count 可为 0..12，必须等于 `checkpoint_manifest.json` record count，并等于 registry 中
+已完成/early-stopped learned job count；12 个 candidate 但 child exit/firewall check 未通过时仍是 P2，这些 candidate 只作失败证据，
+eligibility 恒为未建立。所有 profile 下，未成功 stage 的临时内容只能留在 selected bundle root 之外的
+`<selected_bundle_root>.building/<stage>/`，finalize 前必须删除；sealed root 禁止 `.building`、partial memmap 或未列入 profile 的额外文件。
 
-`output_manifest_hash_gate` 必须针对 selected profile 的 required/forbidden rules 验证 exact file set，不能要求 blocked run 补造成功
+Finalize 必须先验证 training/finalize access audits、historical firewall、score coverage 与输入完整性，再计算 RankIC/stability/fragility；
+因此任何 late firewall breach 或 finalize causal failure 都能删除 partial metric files并合法封存为 P4。`output_manifest_hash_gate` 必须针对
+selected profile 的 required/forbidden rules 验证 exact file set，不能要求 blocked run 补造成功
 artifact 或空 checkpoint。Runner 在任何 stage fail 后只能进入只读 `finalize`，后续未运行 stage 在 `stage_status_registry.csv` 标记
 `not_run_due_upstream_block`。
 
 Config/resolved config 必须把上表展开为 ordered `artifact_profiles` records，字段 exact 为
-`profile_id,required_paths,forbidden_paths,conditional_path_rules`（profile order P0..P4，path 使用 Section 11.1 exact relative path）。P2
+`profile_id,required_paths,forbidden_paths,conditional_path_rules`（profile order P0..P5，path 使用 Section 11.1 exact relative path）。P2
 唯一允许的 conditional rule 为 `completed_learned_job_exact_checkpoint_subset`，其 allowed universe 是 12 个 explicit checkpoint paths，
-且 cardinality/record/status reconciliation 使用上文规则；其他 optional file 一律禁止。
-`artifact_profile_registry_sha256 = SHA256(UTF8(canonical_json(resolved_config.artifact_profiles)))`。Final manifest、decision 和 gate evidence
+且 cardinality 允许 0..12、record/status reconciliation 使用上文规则；其他 optional file 一律禁止。
+`artifact_profile_registry_sha256 = SHA256(canonical_json_bytes(resolved_config.artifact_profiles))`。Final manifest、decision 和 gate evidence
 必须绑定该 hash，禁止运行时从现有文件反推/放宽 profile。
 
 ### 11.2 Core CSV schemas
@@ -1080,14 +1193,20 @@ check_id,evidence_metric,observed_value,required_value,status,blocking_reason
 Schema：
 
 ```text
-stage_ordinal,stage_or_subphase,attempt_id,status,worker_exit_code,started_at_utc,ended_at_utc,
+stage_ordinal,stage_or_subphase,attempt_id,bundle_root_class,bundle_root_relative_path,preauthorization_audit_id,
+artifact_profile_id,status,worker_exit_code,started_at_utc,ended_at_utc,
 sealed_artifact_count,stage_manifest_sha256,blocking_reason
 ```
 
 Status 只允许 `sealed|blocked|not_run_due_upstream_block`；blocked 后的后续非-finalize rows 必须 `not_run_due_upstream_block`，finalize
-仍必须 `sealed`。非-finalize sealed row 的 `stage_manifest_sha256` 定义为该 subphase produced artifacts 的
-`SHA256(UTF8(canonical_json({relative_path:full_byte_sha256})))`，path 排序；blocked/not-run row 为 `NA`。为避免 self-reference，
+仍必须 `sealed`。七行的 root/profile fields 必须相同并与 decision/final/semantic manifests exact-match。非-finalize sealed row 的
+`stage_manifest_sha256` 定义为该 subphase produced artifacts 的
+`SHA256(canonical_json_bytes({relative_path:full_byte_sha256}))`，path 排序；blocked/not-run row 为 `NA`。为避免 self-reference，
 finalize row 的 `stage_manifest_sha256` 固定为 `NA`；final manifest 与 output-hashes 的 cycle-breaking 规则由 Section 11.5 单独验证。
+
+Stage `attempt_id` 固定为 `stage_<stage_ordinal two digits>_attempt_01`；sealed stage 不允许第二次 attempt。Training registry 的
+`attempt_id` 固定为 `<job_id>_attempt_<attempt ordinal two digits>`，ordinal 从 01 开始且只允许 OOM ladder 机械递增。不得使用 UUID、PID、
+timestamp 或随机 nonce 作为 attempt id，以保证 semantic rerun 可比。
 
 `training_run_registry.csv`：
 
@@ -1146,6 +1265,26 @@ std_RankIC,RankICIR,positive_day_rate,positive_late_seed_n,
 positive_lomo_n,lomo_total_n,max_month_abs_contribution_share,score_coverage_rate,status
 ```
 
+`fragility_unit_contribution_audit.csv`（仅 P5）：
+
+```text
+arm_id,score_role,model_seed,fold,unit_type,unit_id,base_complete_day_n,base_mean_RankIC,
+removed_complete_day_n,removed_mean_RankIC,signed_contribution,abs_contribution,
+selection_rank,selected_in_top_third,unit_status,not_evaluable_reason
+```
+
+`unit_type` 只允许 `decision_day|instrument`；`fold=validation_full`；learned rows 只允许 `score_role=ensemble,model_seed=NA`，M0
+只允许 `score_role=null,model_seed=NA`。Not-evaluable unit 的四个 removal/contribution/rank 字段为 `NA`，selection flag=false。
+
+`finalize_failure_evidence.csv`（仅 P4）：
+
+```text
+check_id,evidence_metric,observed_value,required_value,status,blocking_reason
+```
+
+只允许记录 access/firewall、score coverage、RankIC implementation fixture 或 finalize runtime 的聚合 check；禁止逐股 outcome/score/label
+value。P5 禁止该文件。
+
 `gate_evidence_21b.csv`：
 
 ```text
@@ -1155,22 +1294,29 @@ gate_id,check_id,evidence_artifact,evidence_selector,observed_value,required_val
 `21B_baseline_benchmark_decision.csv`：
 
 ```text
-run_id,requirement_version,artifact_profile_id,artifact_profile_registry_sha256,stage_decision,upstream_21a_success_gate,
-execution_authorization_gate,input_hash_gate,train_validation_date_firewall_gate,
+run_id,requirement_version,bundle_root_class,bundle_root_relative_path,preauthorization_audit_id,
+artifact_profile_id,artifact_profile_registry_sha256,stage_decision,upstream_21a_success_gate,
+execution_authorization_gate,input_hash_gate,dependency_lock_gate,train_validation_date_firewall_gate,
 historical_holdout_zero_access_gate,feature_cache_integrity_gate,
 materialization_source_hash_gate,model_input_panel_integrity_gate,
-decision_universe_denominator_gate,label_resolution_gate,
+decision_universe_denominator_gate,label_resolution_gate,split_purge_gate,arm_registry_gate,
+architecture_shape_gate,loss_and_score_index_gate,seed_determinism_gate,
 training_completion_gate,pre_gate_checkpoint_bundle_hash_gate,checkpoint_eligibility_gate,checkpoint_bundle_hash_gate,
 candidate_selection_gate_firewall_gate,score_coverage_gate,rankic_implementation_gate,
-null_score_sanity_gate,baseline_information_gate,eligible_baseline_ids,
+null_score_sanity_gate,output_manifest_hash_gate,baseline_information_gate,eligible_baseline_ids,
 best_validation_arm_diagnostic_only,next_requirement,next_requirement_generation_authorized,
 next_requirement_execution_authorized,historical_holdout_readout_authorized,
 policy_training_authorized,portfolio_optimization_authorized,deployment_authorized,
 pre_gate_checkpoint_bundle_hash,pre_holdout_checkpoint_bundle_hash,
-semantic_reproducibility_bundle_hash,gate_evidence_sha256,blocking_reasons
+semantic_payload_bundle_hash,gate_evidence_sha256,blocking_reasons
 ```
 
-`best_validation_arm_diagnostic_only` 只用于描述，不得成为 21C arm/config selector。
+`bundle_root_class` 只允许 `canonical|preauthorization_audit`；后者只允许 P0/state 1 且 `preauthorization_audit_id` non-null，前者的该字段
+必须为 `NA`。Decision 必须显式携带 Section 9 的全部 gate；`output_manifest_hash_gate` 对任何 sealed row 恒为 `pass`。Causal gate status 只允许
+`pass|fail|not_run_due_upstream_block`；`baseline_information_gate` 只允许 `pass|fail|not_evaluable`。`eligible_baseline_ids` 按
+`M1_LIGHTGBM_ALPHA158|M2_RETURN_LSTM|M3_GATED_DUAL_PATH_LSTM` 固定顺序筛选并以 `|` 连接，无 eligible arm 时为 `NA`。
+`blocking_reasons` 是 failed causal `gate_id` 的 canonical JSON array，先按 Section 10 state precedence、同 state 内按 `gate_id ASC`
+排序；无 failure 时为 `[]`。`best_validation_arm_diagnostic_only` 只用于描述，不得成为 21C arm/config selector。
 
 ### 11.3 Parquet schemas
 
@@ -1258,7 +1404,7 @@ produced_artifact_paths,produced_artifact_hashes,status
 `late_panel_open_count=0`；gate-readout record 要求 `fit_or_update_call_count=0`。两个 record 的 `exit_code=0,status=pass` 才能推进；
 controller 必须验证 produced paths/hashes，不能只信 child JSON/stdout。
 
-`checkpoint_manifest.json` 按 `arm_id,model_seed` canonical 排序：P2 必须含 0..11 个已完成 learned provisional candidates，P3/P4
+`checkpoint_manifest.json` 按 `arm_id,model_seed` canonical 排序：P2 必须含 0..12 个已完成 learned provisional candidates，P3/P4/P5
 必须 exact 12，P0/P1 禁止存在。每条共有：
 
 ```text
@@ -1266,7 +1412,8 @@ arm_id,model_seed,checkpoint_path,model_type,serialization_format,serialization_
 provisional_selected_epoch_or_round,selection_fold,validation_early_metric_at_selection,
 config_sha256,feature_cache_content_hash,split_hash,normalization_contract_hash,
 train_row_key_hash,validation_early_row_key_hash,parameter_count,complexity_definition,model_specific_complexity,
-model_input_construction_sha256,checkpoint_sha256,model_state_semantic_sha256,runtime_fingerprint_sha256
+model_input_construction_sha256,parameter_initialization_contract_sha256,
+checkpoint_sha256,model_state_semantic_sha256,runtime_fingerprint_sha256
 ```
 
 Model-specific seal：
@@ -1274,18 +1421,18 @@ Model-specific seal：
 - M1 `model_type=lightgbm_booster`，`serialization_format=lightgbm_text_model`，
   `serialization_version=lightgbm_4.6.0_text_v1`，使用 LightGBM 4.6.0
   `Booster.save_model(num_iteration=provisional_selected_round)` 写入 exact `model.txt`；full bytes 计算 `checkpoint_sha256`。Semantic state
-  使用同一文件 reload 后 `Booster.dump_model(num_iteration=...)` 的完整返回对象加 resolved training params，按 UTF-8 canonical JSON
+  使用同一文件 reload 后 `Booster.dump_model(num_iteration=...)` 的完整返回对象加 resolved training params，按 `canonical_json_bytes`
   计算 hash；不得套用 tensor hash。M1 `parameter_count=total_leaf_n`，`complexity_definition=lightgbm_total_leaf_n`，同时在 record 的
   `model_specific_complexity={tree_n,split_n,leaf_n}`；`model_input_construction_sha256` 绑定 Dataset row-key/feature-order hash、
-  current seed 和 resolved bin params；
+  current seed 和 resolved bin params；`parameter_initialization_contract_sha256=null`；
 - M2/M3/A0 `model_type=pytorch_state_dict`，`serialization_format=torch_state_dict_zip`，
   `serialization_version=torch_2.8.0_state_dict_zip_v1`，文件只含 model state_dict，不含 optimizer、dataloader 或 epoch metadata。
   Semantic state 按参数名排序，每个 tensor 转 CPU contiguous little-endian bytes，并串联
   `(name,dtype,shape,raw-bytes)` 后计算 hash；`parameter_count` 是 trainable scalar 总数，
   `complexity_definition=pytorch_trainable_scalar_n`，`model_specific_complexity=null`；`model_input_construction_sha256` 绑定 sequence index、panel hashes、sampler seed、
-  batch size 和 drop-last=false。
+  batch size 和 drop-last=false；`parameter_initialization_contract_sha256` 必须绑定 Section 6.7 exact contract 的 canonical SHA256。
 
-P3/P4 manifest 中的 12 个 `checkpoint_path` 必须与 Section 11.1 的 12 个 explicit relative paths exact-match；P2 必须是这些路径的
+P3/P4/P5 manifest 中的 12 个 `checkpoint_path` 必须与 Section 11.1 的 12 个 explicit relative paths exact-match；P2 必须是这些路径的
 completed-job exact subset。禁止 glob、symlink、额外 checkpoint 或 best-seed alias。
 
 `checkpoint_eligibility_manifest.json` 必须按 `arm_id,model_seed` exact 12 条记录：
@@ -1304,18 +1451,70 @@ scores/readouts 与
 
 ### 11.5 Byte seal 与 semantic reproducibility
 
-完整 seal 与可复现性是两个不同 hash 层：
+完整 seal 与可复现性是两个不同 hash domain：
 
 - `output_hashes_*.json` 对除自身及 final manifest 外的每个 artifact 计算**完整 bytes SHA256**，包括时间、latency 和 memory；
 - final manifest 记录 exact root file set 与 `output_hashes_*.json` 的 SHA256；验证时 file-set 必须与
   `artifact hashes + final manifest + output hashes` 的并集 exact-match；final manifest self-hash 不在 bundle 内自引用；
-- `semantic_reproducibility_manifest.json` 对确定性字段/模型 tensor/score/readout 做 canonical hash，计算时排除自身、final manifest 与
-  output-hashes control file，不能拿 full-byte bundle hash 作为“两次运行必须相同”的断言。
+- `semantic_reproducibility_manifest.json` 按下述无环 DAG 对确定性字段、模型 tensor、score/readout 做 canonical hash；不能拿
+  full-byte bundle hash 作为“两次运行必须相同”的断言。
 
-Final manifest 还必须记录 `artifact_profile_id`、profile required/forbidden registry hash 和 selected profile 验证结果；profile id 必须与
-decision、semantic manifest、stage status exact-match。
+Final manifest 还必须记录 `bundle_root_class,bundle_root_relative_path,preauthorization_audit_id`、`artifact_profile_id`、profile
+required/forbidden registry hash 和 selected profile 验证结果；root fields/profile id 必须与 decision、semantic manifest、stage status
+exact-match。
 
-Semantic canonicalization version 固定为 `21B_semantic_v3`。只允许排除以下 volatile fields：
+Semantic seal 生成顺序和 hash domain exact 为：
+
+```text
+control_paths = {
+  gate_evidence_21b.csv,
+  21B_baseline_benchmark_decision.csv,
+  21B_alpha158_sequence_baseline_benchmark_report.md,
+  semantic_reproducibility_manifest.json,
+  manifest_21b_alpha158_sequence_baseline_benchmark.json,
+  output_hashes_21b_alpha158_sequence_baseline_benchmark.json
+}
+
+semantic_payload_paths = selected_profile_required_paths - control_paths
+semantic_payload_artifact_hashes = semantic hashes of semantic_payload_paths, keyed by relative path ASC
+semantic_payload_bundle_hash = SHA256(canonical_json_bytes({
+  canonicalization_version,
+  artifact_profile_id,
+  semantic_payload_artifact_hashes,
+  model_state_semantic_hashes
+}))
+
+# Only after payload hash is frozen:
+write gate evidence
+write decision embedding semantic_payload_bundle_hash
+write report; report may embed semantic_payload_bundle_hash
+
+semantic_artifact_paths = selected_profile_required_paths - {
+  semantic_reproducibility_manifest.json,
+  manifest_21b_alpha158_sequence_baseline_benchmark.json,
+  output_hashes_21b_alpha158_sequence_baseline_benchmark.json
+}
+semantic_artifact_hashes = semantic hashes of semantic_artifact_paths, keyed by relative path ASC
+semantic_bundle_hash = SHA256(canonical_json_bytes({
+  canonicalization_version,
+  artifact_profile_id,
+  semantic_payload_bundle_hash,
+  semantic_artifact_hashes,
+  model_state_semantic_hashes
+}))
+```
+
+因此 decision、gate evidence 和 report 全部受顶层 `semantic_bundle_hash` 保护，但它们只允许嵌入 payload hash，禁止嵌入顶层
+`semantic_bundle_hash`。顶层 hash 只写入 `semantic_reproducibility_manifest.json` 和被 semantic domain 排除的 final manifest；任何其他
+artifact 出现该值均使 `output_manifest_hash_gate=fail`。该 DAG 不允许 fixed-point、自身 placeholder、写后回填或迭代求 hash。
+
+Semantic canonicalization version 固定为 `21B_semantic_v4`。本 requirement 中 `canonical_json_bytes` exact 定义为：object key 按
+UTF-8 bytes 升序；array 保持已注册 record order；UTF-8、`ensure_ascii=false`、无空白 separator；boolean/null 为小写 JSON token；integer
+使用无前导零十进制；finite JSON number 在 semantic form 中转换成字符串 `f64le:<IEEE-754-little-endian-8-byte-lowerhex>` 后再序列化；
+NaN/Inf 禁止。CSV/Parquet 的 float 继续按 schema dtype 的 little-endian bytes hash，不先转 JSON。YAML parsed object 和 LightGBM
+`dump_model()` object 同样使用此 canonicalizer；不得依赖 Python dict insertion order、默认 `json.dumps` float 文本或 locale。
+
+只允许排除以下 volatile fields：
 
 ```text
 training_run_registry.csv: started_at_utc,ended_at_utc
@@ -1343,6 +1542,8 @@ historical_design_holdout_access_audit.csv = scope
 stage_status_registry.csv = stage_ordinal
 daily_rankic_readout.csv = arm_id,score_role,model_seed,fold,decision_date
 rankic_stability_and_concentration_audit.csv = arm_id,score_role,model_seed,scope,slice_id
+fragility_unit_contribution_audit.csv = arm_id,score_role,model_seed,fold,unit_type,unit_id
+finalize_failure_evidence.csv = check_id
 gate_evidence_21b.csv = gate_id,check_id
 21B_baseline_benchmark_decision.csv = run_id
 decision_universe_and_label_resolution_audit.parquet = split,fold,decision_date,instrument
@@ -1352,19 +1553,22 @@ readout/validation_late_prediction_scores.parquet = split,decision_date,instrume
 daily_prediction_scores.parquet = split,decision_date,instrument,arm_id,score_role,model_seed
 ```
 
-YAML 的 semantic hash 必须基于 parsed object 的 canonical JSON，不基于注释/空白；JSON record arrays 使用各自已注册的 canonical
-record order，worker `produced_artifact_paths/hashes` 按 path 排序。
+YAML 的 semantic hash 必须基于 parsed object 的 `canonical_json_bytes`，不基于注释/空白；JSON record arrays 使用各自已注册的
+canonical record order，worker `produced_artifact_paths/hashes` 按 path 排序。
 
-不得排除 config、row keys、access decisions、selected epoch/round、loss/RankIC、model tensor、score、gate、decision 或 file membership。
-CSV 以 exact schema 顺序和 sort key 序列化，float 使用 IEEE-754 little-endian bytes；JSON 使用 UTF-8 canonical serialization；
+Payload/control path 分层只用于解除 DAG 依赖，不是 volatile exclusion；顶层 semantic domain 不得排除 config、row keys、access decisions、
+selected epoch/round、loss/RankIC、model tensor、score、gate、decision、report 或 file membership。CSV 以 exact schema 顺序和 sort key
+序列化，float 使用 IEEE-754 little-endian bytes；JSON 使用上述 `canonical_json_bytes`；
 Parquet 的 semantic hash 基于 schema + canonical column buffers，不基于可能变化的 footer bytes。Manifest 必须包含：
 
 ```text
 schema_version,canonicalization_version,volatile_field_exclusions,
-artifact_profile_id,semantic_artifact_hashes,model_state_semantic_hashes,semantic_bundle_hash,status
+bundle_root_class,bundle_root_relative_path,preauthorization_audit_id,
+artifact_profile_id,control_paths,semantic_payload_artifact_hashes,semantic_payload_bundle_hash,
+semantic_artifact_hashes,model_state_semantic_hashes,semantic_bundle_hash,status
 ```
 
-`model_state_semantic_hashes` 在 P0/P1 必须为空，P2 与 completed candidate count 相等，P3/P4 必须 exact 12；不能用 placeholder hash
+`model_state_semantic_hashes` 在 P0/P1 必须为空，P2 与 completed candidate count 相等，P3/P4/P5 必须 exact 12；不能用 placeholder hash
 补齐 blocked profile。
 
 所有 volatile fields 仍受 full-byte output hash 保护；semantic exclusion 只用于同输入/同环境重复运行的确定性比较。
@@ -1402,18 +1606,27 @@ artifact_profile_id,semantic_artifact_hashes,model_state_semantic_hashes,semanti
 25. ensemble 为三 seed arithmetic mean；score-role/null schema 和 checkpoint/bundle hash semantics exact；
 26. M1 每 seed 独立 Dataset construction；跨 seed shared/reference Dataset 被拒绝；same-seed synthetic rerun exact、跨 seed允许不同，
     ensemble exact 为三 seed arithmetic mean，gate 使用 `positive_late_seed_n>=2/3`；
-27. deterministic runtime flags mismatch fail；repeated/reordered inference max delta 为 0；
-28. NaN/Inf/OOM ladder 和最低 batch fail-closed；
-29. late-only baseline gate pass/fail boundary fixtures 覆盖每个 conjunct，M1/M2/M3 均覆盖 `positive_late_seed_n`；
-30. M0/A0 单独正向不能通过 baseline information gate；
-31. `historical_design_holdout_access_audit` 四个 outcome counts exact 0，byte/routing counts 不混入；
-32. P0-P4 每个 artifact profile 均测试 required/forbidden/exact file-set；blocked profile 不补造成功 artifacts；
-33. transactional `.building` 不得作为 sealed output；
-34. manifest file-set、CSV exact header/sort registry、Parquet schema/sort/null、JSON/YAML canonicalization 全部验证；
-35. output root 必须为 versioned v3 root；unversioned/v1/v2/existing sealed root 均拒绝；
-36. sealed output 重跑拒绝覆盖；
-37. full small synthetic integration 两次运行的 `semantic_bundle_hash` exact 一致；timestamp/latency 改变时 full-byte output hash 允许且应
-    变化，非 volatile score/model/gate 改变时 semantic hash 必须变化。
+27. PyTorch initialization fixture 验证 exact module order、CPU generator、四个 recurrent gate-slice orthogonal、仅
+    `bias_ih_l0[H:2H]=1`；双 forget bias、whole-matrix recurrent orthogonal 或参数顺序变化均 fail；
+28. deterministic runtime flags mismatch fail；repeated/reordered inference max delta 为 0；
+29. NaN/Inf/OOM ladder 和最低 batch fail-closed；
+30. late-only baseline gate pass/fail boundary fixtures 覆盖每个 conjunct，M1/M2/M3 均覆盖 `positive_late_seed_n`；
+31. M0/A0 单独正向不能通过 baseline information gate；
+32. `historical_design_holdout_access_audit` 四个 outcome counts exact 0，byte/routing counts 不混入；
+33. selection late-panel breach 在 0..12 candidate 的边界均产生 P2/state 2；gate-readout/late holdout breach 产生 P3 或 P4/state 2；
+34. P0-P5 每个 artifact profile 均测试 required/forbidden/exact file-set；blocked profile 不补造成功 artifacts；
+35. 缺失/无效 authorization 的 P0 只写 deterministic preauthorization audit path，随后合格 authorization 可创建 canonical v4 root；
+36. transactional `.building` 不得作为 sealed output；post-build full-disk reopen 失败不得 atomic seal；任何 sealed profile 的
+    `output_manifest_hash_gate` 必须为 pass；
+37. decision exact header 包含全部 causal gates和 seal meta-gate；任一 omitted/duplicate gate、错误 first-match 或非 canonical
+    `blocking_reasons` 均 fail；
+38. leave-one-day/instrument contribution、`ceil(n/3)`、absolute-contribution order、tie-break 与 simultaneous removal fixture exact；
+39. manifest file-set、CSV exact header/sort registry、Parquet schema/sort/null、`canonical_json_bytes` 的 float/Unicode/key-order fixture 全部验证；
+40. canonical output root 必须为 versioned v4 root；unversioned/v1/v2/v3/existing sealed root 均拒绝；
+41. sealed output 与 sealed preauthorization audit 重跑均拒绝覆盖；
+42. full small synthetic integration 两次运行的 `semantic_payload_bundle_hash` 和顶层 `semantic_bundle_hash` 均 exact 一致；decision/gate/report
+    改变只改变顶层 hash，payload artifact 改变同时改变两层；除 semantic manifest/final manifest 外任何 artifact 嵌入顶层 hash均 fail；
+    timestamp/latency 改变时 full-byte output hash 允许且应变化，非 volatile score/model/gate/decision 改变时顶层 semantic hash 必须变化。
 
 ## 13. Validation commands
 
@@ -1442,7 +1655,7 @@ Blocked 21A_v1 的 mandatory negative preflight 必须使用独立 test fixture/
   -k blocked_21a_v1_fails_before_outcome_access
 ```
 
-Fixture 必须返回 block state，且 access audit 证明没有 outcome read。Production 21A_v2-bound 21B_v3 preflight 仍须等待单独
+Fixture 必须返回 block state，且 access audit 证明没有 outcome read。Production 21A_v2-bound 21B_v4 preflight 仍须等待单独
 execution authorization；
 不得为了通过测试把 authorization gate 改成可选。
 
@@ -1457,25 +1670,28 @@ execution authorization；
 - [ ] qfq byte/routing access 与 semantic outcome row access 分离，cutoff 后 value decode 为 0
 - [ ] historical design holdout outcome/label/score-join/metric read count 为 0
 - [ ] 157-feature route、cache、normalizer、split hashes 继承成功 21A
-- [ ] output root/version exact 为 21B_v3，禁止覆盖旧 bundle
+- [ ] canonical output root/version exact 为 21B_v4；缺失/无效授权只写 content-addressed preauthorization audit path
 - [ ] 五个 mandatory arms、13 jobs、12 provisional candidates 与 actual checkpoint files exact
 - [ ] M1 tree checkpoint 与 M2/M3/A0 tensor checkpoint 的格式、byte hash、semantic hash 可复算
 - [ ] M1/M2/M3/A0 formulas、loss、score index 和 tensor shapes exact
+- [ ] M2/M3/A0 parameter initialization 的 module order、gate-slice、单一 forget bias 与 contract hash exact
 - [ ] 三 seeds 与 ensemble mean，不允许 best-seed primary；M1/M2/M3 均使用 `positive_late_seed_n>=2/3`
 - [ ] 所有 retained days 完整 denominator 与 100% score coverage
 - [ ] daily RankIC 使用 average ranks、float64 Pearson、decision-day inference unit
 - [ ] validation early 只选 provisional candidate，full/early/late coverage 后才授予 `eligible_frozen`
 - [ ] selection worker 退出后才 seal；fresh inference-only worker 才能打开 validation late
 - [ ] validation full/early/late、full/late LOMO 与 month concentration 完整
+- [ ] top-third day/instrument fragility 的 unit contribution、rounding、tie-break、selection ledger 与 simultaneous removal exact
 - [ ] baseline information gate 为 M1/M2/M3 的 late-only conjunctive any-pass
 - [ ] A0/M0 不得单独授权 21C
 - [ ] realized M0 CI 仅为 diagnostic，结构性 hash/synthetic null checks 才是 hard gate
 - [ ] 不读取 historical holdout，不运行 Koopman/residual/economic replay
 - [ ] pre-gate checkpoint bundle 在 late readout 前密封，pre-holdout bundle 在任何未来 holdout readout 前密封
-- [ ] P0-P4 artifact profile required/forbidden file set 与 blocked finalize 行为 exact
-- [ ] decision 唯一、后续授权字段 fail closed
+- [ ] P0-P5 artifact profile required/forbidden file set 与 blocked finalize 行为 exact
+- [ ] late-stage forbidden access 可由 P2/P3/P4 合法封存为 state 2，不得误降级 state 4
+- [ ] decision 唯一、全部 causal/meta gate columns、canonical blocking reasons 与后续授权字段 fail closed
 - [ ] score role/null/checkpoint schema 唯一，无重复 `ensemble_score`
-- [ ] full-byte seal 与 semantic reproducibility hash 分离且可复算
+- [ ] full-byte seal、semantic payload hash 与顶层 semantic hash 按无环 DAG 分离且可复算
 - [ ] deterministic runtime flags 与 CSV/Parquet/JSON/YAML semantic order exact
 - [ ] report、decision、gate evidence、manifest、output hashes 可双向复算
 - [ ] tests、ruff、py_compile、lock check、diff check 全通过

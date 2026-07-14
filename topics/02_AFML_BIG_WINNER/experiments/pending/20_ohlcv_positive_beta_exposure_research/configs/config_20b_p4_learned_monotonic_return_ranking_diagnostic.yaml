@@ -1,0 +1,170 @@
+identity:
+  experiment_id: 20_ohlcv_positive_beta_exposure_research
+  phase_id: 20B_P4_MLRANK
+  run_id: 20B_P4_learned_monotonic_return_ranking_diagnostic_v1
+  contract_version: 20B_P4_MLRANK_v1
+
+paths:
+  requirement_file: requirement_20b_p4_learned_monotonic_return_ranking_diagnostic.md
+  upstream_v5_root: outputs/20B_trendpv_residual_momentum_design_and_replication_diagnostic_v5
+  output_root: outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1
+  replay_a_scratch_root: outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1.__replay_a__
+  replay_b_scratch_root: outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1.__replay_b__
+
+execution:
+  authority: workspace_user_direct_instruction_2026-07-14
+  authority_mode: direct_no_separate_authorization_file
+  authority_record_required: false
+  implementation_authorized: true
+  historical_outcome_execution_authorized: true
+  model_training_authorized: true
+
+upstream:
+  expected_contract_version: 20B_v5
+  expected_run_id: 20B_trendpv_residual_momentum_design_and_replication_diagnostic_v5
+  expected_final_output_hashes_sha256: 51c74f44ec3157f0df39b724b818477907c69bc7e10490fafbc67cc2bf6ff6e4
+  expected_final_manifest_sha256: e99d797c81729ab6c51e6de027218d81cbd7d9244cb556989af62b8916f83e6b
+  expected_decision_sha256: 322aac8de0f5ccd456e9b90830644edcd2c473bfec48baf1cab348fee11e9992
+  expected_preoutcome_bundle_hash: 4079813d74ce16344dd53886c6a986c356a17589dd5725c18622a807de1102d1
+  expected_historical_bundle_hash: bac77bc13efcd7b75df5b18f44940bcc24e57589e62dde593bd0ef748705426f
+  expected_historical_manifest_sha256: 4080855f5a97ecfaba0d11dbf2ac0607a927086ef3e57cfd40dfbcdf89474bda
+  expected_assignment_sha256: 99f4d543318a343b9a1832b2e7f6c3b00ad841f80af68270c994054dd4e86721
+  expected_outcome_audit_sha256: 6231d9f6fc6828b0803b71b4a7a52ef199db6792b1ec9616b7e152495616bba6
+  expected_fold_freeze_sha256: 0930e56eaca91882b5f82b7ef0062ee924607a6a6847e9f00916e3816380b9e7
+  exact_report_waiver_path: 20B_trendpv_residual_momentum_design_and_replication_diagnostic_report.md
+  expected_sealed_report_sha256: 370904e7e69ab947f74c7e9cbfe98732ee9a3bcd53df5d39aa2623ea6ad66f26
+  expected_historical_sample_role: design_contaminated_historical
+
+base_population:
+  arm_id: P4_RESMOM_R2_MARKET_ONLY_ADAPTATION
+  semantic_track: project_sequential_market_residual_primary
+  source_bucket_count: 10
+  signal_eligible: true
+  expected_decision_month_n: 63
+  expected_row_n: 25049
+  expected_known_n: 25020
+  expected_unknown_n: 29
+
+feature_arms:
+  p0: {arm_id: P0_TOTAL_MOMENTUM_12_1, semantic_track: project_return_history_primary}
+  p1: {arm_id: P1_TRENDPV_RAW_ADAPTATION, semantic_track: project_strict_primary}
+  p4: {arm_id: P4_RESMOM_R2_MARKET_ONLY_ADAPTATION, semantic_track: project_sequential_market_residual_primary}
+  p6: {arm_id: P6_LOWVOL_36M_COMPARATOR, semantic_track: project_monthly_volatility_primary}
+
+splits:
+  train: {start: '2021-01-29', end: '2023-06-30', month_n: 30, row_n: 10642, known_n: 10631}
+  validation: {start: '2023-07-31', end: '2024-06-28', month_n: 12, row_n: 5107, known_n: 5106}
+  robustness: {start: '2024-07-31', end: '2026-03-31', month_n: 21, row_n: 9300, known_n: 9283}
+  robustness_early_month_n: 10
+  robustness_late_month_n: 11
+
+labels:
+  source_column: project_resolved_next_month_return
+  outcome_resolution_column: outcome_resolution
+  known_policy: valid_mark_and_finite_return
+  percentile_rank_formula: average_rank_minus_1_div_known_n_minus_1
+  relevance_bin_formula: min_9_floor_10_times_rank_pct
+  minimum_known_label_n: 250
+  paper_proxy_forbidden: true
+
+features:
+  ordered_feature_ids:
+    - p4_rank_t
+    - p4_rank_lag1
+    - p4_rank_lag3
+    - p4_rank_mean3
+    - p4_rank_std3
+    - p4_rank_delta1
+    - p4_rank_delta3
+    - p0_rank_t
+    - p1_rank_t
+    - p6_rank_t
+    - p4_lag1_missing
+    - p4_lag3_missing
+    - p4_mean3_missing
+    - p0_missing
+    - p1_missing
+    - p6_missing
+  minimum_arm_finite_n: 100
+  rank_and_mean_imputation: 0.5
+  std_and_delta_imputation: 0.0
+  lag_rule: exact_scheduled_p4_calendar_position_no_forward_fill
+
+models:
+  B0:
+    scored_model_id: B0_P4_RAW_RANK
+    model_family_id: NONTRAINABLE_P4_BASELINE
+  N0:
+    scored_model_id: N0_HASH_NULL
+    model_family_id: NONTRAINABLE_HASH_NULL
+  M1:
+    scored_model_id: M1_RIDGE_RANK_REGRESSION
+    model_family_id: M1_RIDGE_RANK_REGRESSION
+    alpha: 10.0
+    fit_intercept: true
+    solver: svd
+    tol: 1.0e-12
+    positive: false
+  M2:
+    scored_model_id: M2_LIGHTGBM_LAMBDARANK
+    model_family_id: M2_LIGHTGBM_LAMBDARANK
+    objective: lambdarank
+    metric: ndcg
+    eval_at: [10, 20, 50]
+    lambdarank_truncation_level: 50
+    label_gain: [0, 1, 3, 7, 15, 31, 63, 127, 255, 511]
+    n_estimators: 200
+    learning_rate: 0.03
+    num_leaves: 7
+    max_depth: 3
+    min_child_samples: 100
+    min_split_gain: 0.0
+    subsample: 1.0
+    subsample_freq: 0
+    colsample_bytree: 1.0
+    reg_alpha: 1.0
+    reg_lambda: 10.0
+    random_state: 20260714
+    n_jobs: 1
+    deterministic: true
+    force_col_wise: true
+    verbosity: -1
+
+scoring_instances:
+  validation: [B0_P4_RAW_RANK, N0_HASH_NULL, M1_RIDGE_RANK_REGRESSION, M2_LIGHTGBM_LAMBDARANK]
+  robustness: [B0_P4_RAW_RANK, N0_HASH_NULL, S0_SELECTED_FULL, A1_P4_PATH_ONLY, A2_CROSS_SIGNALS_WITHOUT_P4]
+
+research_scope:
+  multi_factor_model_allowed: true
+  P4_single_factor_repair_claim_allowed: false
+
+sorting:
+  bucket_count: 10
+  score_direction: ascending_low_to_high
+  tie_breaker: instrument_id_ascending
+
+inference:
+  hac_lag: 3
+  bootstrap_block_length: 3
+  bootstrap_repetitions: 5000
+  seed: 20260714
+  quantile_method: linear
+
+gates:
+  candidate_requires_finite_metrics: true
+  candidate_bucket_spearman_gt: 0.0
+  candidate_mean_rank_ic_gt: 0.0
+  candidate_D10_minus_D1_gt: 0.0
+  near_monotonic_bucket_spearman_gte: 0.8
+  near_monotonic_adjacent_count_gte: 8
+  near_monotonic_max_inversion_fraction_lte: 0.25
+
+serialization:
+  csv_float_format: '%.12g'
+  coefficient_float_format: '%.17g'
+  parquet_compression: zstd
+  json_sort_keys: true
+  json_separators: [',', ':']
+  json_ensure_ascii: false
+  final_newline: true
+  hash_algorithm: sha256
