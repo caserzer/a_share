@@ -1,0 +1,207 @@
+{
+  "artifact_profile_id": "P5_SENSITIVITY_MATERIALIZED",
+  "claim_flags": {
+    "deployment_authorized": false,
+    "historical_PIT_sector_claim_allowed": false,
+    "historical_support_claim_allowed": false,
+    "market_trading_crowding_claim_allowed": false,
+    "model_repair_claim_allowed": false,
+    "parameter_selection_authorized": false
+  },
+  "contract_version": "20B_P4_PORTSENS_v6",
+  "decision_state": "20B_P4_PORTSENS_sensitivity_materialized",
+  "immutable": true,
+  "payload_files": [
+    {
+      "artifact_role": "final",
+      "byte_size": 919,
+      "path": "20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_decision.csv",
+      "sha256": "219df8e5f4a5ac1681a55bfb3cc53759c385baed79006bcc73bb694a87dec3f8"
+    },
+    {
+      "artifact_role": "final",
+      "byte_size": 3091,
+      "path": "20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_report_cn.md",
+      "sha256": "f99ea4c179f8fdc87454dc978f5c3f9a12ed81724c9caa014d7a84f2e71fabea"
+    },
+    {
+      "artifact_role": "determinism",
+      "byte_size": 5164,
+      "path": "determinism/determinism_comparison.csv",
+      "sha256": "2b12c223b0604812c9f117d9e3d41e138938fd5c337148f14222c23664d76be0"
+    },
+    {
+      "artifact_role": "determinism",
+      "byte_size": 2286,
+      "path": "determinism/replay_b_core_hashes.json",
+      "sha256": "dfcd642008a61796dad8e44f0b3dfe84f34bbd6d7cea0caea321800dae6bc18c"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 101935,
+      "path": "historical/block_bootstrap_readout.csv",
+      "sha256": "b1d00670ea443ac9ea0a5f8fd6c674a6dbd10d777201691277cee16b549aa9e5"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 7197871,
+      "path": "historical/board_concentration_readout.csv",
+      "sha256": "6ee40e7d80e6dcb50789f7d94b05c3b377bea77fed79f846f19e6dd0657ebe07"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 308342,
+      "path": "historical/event_regime_slice_readout.csv",
+      "sha256": "65416aed30808e5ce1946c4c9c038896f39ff7cff6ae74ce273be8a902510cb2"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 721501,
+      "path": "historical/monthly_portfolio_returns.csv.gz",
+      "sha256": "7d940807b677a0ff1673f43c9e0acef34721dc132bfa68ab574d04a7e4feacdc"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 1152282,
+      "path": "historical/paired_sensitivity_delta.csv",
+      "sha256": "ccc5766c540b1ff2ff1d1b8f9bf8da84bbfb407c59d0ceb669fe7a93eb2cbc3d"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 1343771,
+      "path": "historical/portfolio_summary.csv",
+      "sha256": "c8ab204a897d3a035b5979868379a868adb7298405fd348d1c614ef797aa30f8"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 78505,
+      "path": "historical/stoploss_attribution_readout.csv",
+      "sha256": "915fa5b9972711e10d02c01216fa0fa3c079ec7bf1dac77dfbd51ede883652e4"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 208304,
+      "path": "historical/terminal_liquidation_shadow.csv",
+      "sha256": "87584d489b6c510d0b25f743a9b82be9226d5d2d90caff8b1d2ea5933efe0b5b"
+    },
+    {
+      "artifact_role": "historical",
+      "byte_size": 207249,
+      "path": "historical/turnover_cost_readout.csv",
+      "sha256": "943b74498426d5934afd1984a334b230dcd2510d58a5518a0d282d0150ef4ca2"
+    },
+    {
+      "artifact_role": "materialized",
+      "byte_size": 422757,
+      "path": "materialized/board_overrepresentation_monthly.csv.gz",
+      "sha256": "39143ff96badd1de2d80dc9f1edc7fc6a01e74d89f74edc3ad21fed8d7dc1826"
+    },
+    {
+      "artifact_role": "materialized",
+      "byte_size": 11475549,
+      "path": "materialized/cost_shadow_ledger.parquet",
+      "sha256": "ff428f2577070467255e0f9159c78372dbd693efe888cdc441655eb9d6281614"
+    },
+    {
+      "artifact_role": "materialized",
+      "byte_size": 6308040,
+      "path": "materialized/daily_execution_ledger.parquet",
+      "sha256": "ab8fadcb56c767637f6c9e10877ec4b115df741699ac96ff9dec9885f8c7c8f1"
+    },
+    {
+      "artifact_role": "materialized",
+      "byte_size": 5233427,
+      "path": "materialized/daily_nav.parquet",
+      "sha256": "dbe382b7f30acb8a90f187a0e1dce911e0bf6a08a1d522ed3cfd12e5f0283c11"
+    },
+    {
+      "artifact_role": "materialized",
+      "byte_size": 232413,
+      "path": "materialized/monthly_target_weights.parquet",
+      "sha256": "99b491cc9f0c5d3d8ab53107c19f327eedc828633f2f496cf130e285e1e490d4"
+    },
+    {
+      "artifact_role": "materialized",
+      "byte_size": 1169944,
+      "path": "materialized/stop_event_ledger.csv.gz",
+      "sha256": "8ab9ad2d749ebbd646308913dc8a7e4ae355adc324d2639184d598d7319a12d3"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 860,
+      "path": "preflight/board_membership_audit.csv",
+      "sha256": "c86daf102d0961face7c7417034874a641a871c3356d7dce34721f64a5f37df2"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 2756,
+      "path": "preflight/contract_snapshot.json",
+      "sha256": "e5f5b1cdaa1c7b6217a95c8d8dca02940fd86b5a444f5421e597983f107c0cd5"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 939,
+      "path": "preflight/cost_scenario_registry.csv",
+      "sha256": "cdf716e2962f4cd9d1c2da7b81e070de25f6072b1e6fcc1247b0197d7f6627c0"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 6805,
+      "path": "preflight/input_integrity_audit.csv",
+      "sha256": "669c5d5a1bb4e3efac7d6840e725103540f38eaa41c5588035527187f2461f6d"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 79333,
+      "path": "preflight/paired_comparison_registry.csv",
+      "sha256": "eedd85931d78efd676625beed408028610be8f64c572facfa559f076c1d53104"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 23472,
+      "path": "preflight/policy_arm_registry.csv",
+      "sha256": "ed6ee0f2e5b5efc859b579925fea1db3fc2025e4aa2b6416fd5c2b9c22a2c4f4"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 11087,
+      "path": "preflight/resolved_config.yaml",
+      "sha256": "22fd757476c81973d67cdb7bd7bcf638efeda69be4ab99211ece47539034635f"
+    },
+    {
+      "artifact_role": "preflight",
+      "byte_size": 71110,
+      "path": "preflight/retained_board_registry.csv",
+      "sha256": "30f1ccdb668cdb5e8570ab633aa0e28f6b96bc1922b7ad23cf3eac79ed517dfe"
+    },
+    {
+      "artifact_role": "final",
+      "byte_size": 1230,
+      "path": "stage_failure_audit.csv",
+      "sha256": "2dd1b830618c75cf7ca9d768dfe94314aea2c2e288bba9d8748f0cf4397c62ac"
+    }
+  ],
+  "reached_stage": "determinism",
+  "requirement_sha256": "a1d4744f82cf822a1f1cea2787b0428e4cf9d99a5dbde5df8be896cbaaf75a4b",
+  "resolved_config_sha256": "22fd757476c81973d67cdb7bd7bcf638efeda69be4ab99211ece47539034635f",
+  "run_id": "20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6",
+  "schema_version": "20B_P4_PORTSENS_OUTPUT_v1",
+  "upstream_bindings": {
+    "BOARD_MEMBER_sha256": "e7da98e4f1e38d2f547e3c2e8a99a02aca82345e0201766a4d63e51bd43f0905",
+    "BUCKET_ASSIGNMENT_sha256": "9611aad6cd4b8933c882a8d3ae0e04561e8c360820f9c474a9de3a5840e5e846",
+    "CONTRACT20A_FREEZE_REGISTRY_sha256": "da5902ac7a987ec061cdffc33e8735ad34c22f1ae771a43540fe005fd77acb05",
+    "CONTRACT20A_MANIFEST_sha256": "5af3b27b0189dfc935b3622cf004a250de793b5e1aef07917866cb3b8245eda4",
+    "CONTRACT20A_REGISTRY_sha256": "cbd05bc7bf39c084ce488fafb40d3362b805e4065fc252e67e21964f64d27f6b",
+    "MARKET_RULE_REGISTRY_FILE_sha256": "eab9e78aeb5191542426afb33f03decde073e90adb369b5eaddbf3a286d0b097",
+    "MLRANK_DECISION_sha256": "b1758469b0b43cc21543d7e469a7d531ea08cbe5c9c08110ac345df2fac5c1cf",
+    "MLRANK_MANIFEST_sha256": "052531faec928e0e2d4266dd65db60becf9803b90e105099fd943173d1982ab1",
+    "MLRANK_REGISTRY_sha256": "c535431f2f71cb6a87a738b495266662b3a8d002c173f8673defe23f855453c8",
+    "PROJECT_UNIVERSE_FILE_sha256": "e73968ddf54b646ab2d831467a0e2882970e5f96880df12c41bd01a39c243965",
+    "QFQ_ROOT_hash": "51ebde5a59a3afe1044ae97f7f777525eba74cf9b5b4b4be56e1323c51d46854",
+    "RAW_OHLCV_ROOT_hash": "a3dc107d3cc2ec5e3d0e75b67deefd9fd369917107670d2053cc191ef31f7968",
+    "SECURITY_MASTER_FILE_sha256": "3175ae478bbfe9729d2b45cc0c8ca373fe903ee8d9acc9a96fed111441452601",
+    "SH_NAME_HISTORY_ROOT_hash": "20879d674fe5def485776188c65c916fbfca9cc03f925822ff974f19c6de3159",
+    "SZ_NAME_HISTORY_FILE_sha256": "10b869499050656f356f91bea9fe22760bfe6ea1964368112595073cd15041b7",
+    "TRADING_CALENDAR_FILE_sha256": "1d5ff82a6718fc4e19b95c98456813043b30aeaa1b452d591376b1d427c2b60d"
+  }
+}

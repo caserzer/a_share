@@ -1,0 +1,265 @@
+identity:
+  contract_version: 20B_P4_PORTSENS_v6
+  experiment_id: 20_ohlcv_positive_beta_exposure_research
+  phase_id: 20B_P4_PORTSENS
+  run_id: 20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6
+authorization:
+  deployment_authorized: false
+  historical_outcome_execution_authorized: true
+  implementation_authorized: true
+  portfolio_replay_authorized: true
+  requirement_execution_authorized: true
+  requirement_generation_authorized: true
+paths:
+  BOARD_MEMBER: topics/02_AFML_BIG_WINNER/experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/tushare_dc_yearly_board_snapshot/by_year/2025/dc_member_2025_20250102.csv
+  CONTRACT20A_ROOT: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20A_paper_lineage_data_and_replication_contract
+  MARKET_RULE_REGISTRY_FILE: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/references/market_rules/a_share_price_limit_rules_v2.csv
+  MLRANK_ROOT: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1
+  PROJECT_UNIVERSE_FILE: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+  QFQ_ROOT: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+  RAW_OHLCV_ROOT: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/raw
+  SECURITY_MASTER_FILE: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv
+  SH_NAME_HISTORY_ROOT: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history
+  SZ_NAME_HISTORY_FILE: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv
+  TRADING_CALENDAR_FILE: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/trading_calendar.csv
+  output_root: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6
+  replay_a_scratch_root: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/.portsens_scratch/v6/replay_a
+  replay_b_scratch_root: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/.portsens_scratch/v6/replay_b
+  requirement_file: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/requirement_20b_p4_d8_d10_sector_crowding_cost_stoploss_sensitivity.md
+upstream_hashes:
+  BOARD_MEMBER_sha256: e7da98e4f1e38d2f547e3c2e8a99a02aca82345e0201766a4d63e51bd43f0905
+  BUCKET_ASSIGNMENT_sha256: 9611aad6cd4b8933c882a8d3ae0e04561e8c360820f9c474a9de3a5840e5e846
+  CONTRACT20A_FREEZE_REGISTRY_sha256: da5902ac7a987ec061cdffc33e8735ad34c22f1ae771a43540fe005fd77acb05
+  CONTRACT20A_MANIFEST_sha256: 5af3b27b0189dfc935b3622cf004a250de793b5e1aef07917866cb3b8245eda4
+  CONTRACT20A_REGISTRY_sha256: cbd05bc7bf39c084ce488fafb40d3362b805e4065fc252e67e21964f64d27f6b
+  MARKET_RULE_REGISTRY_FILE_sha256: eab9e78aeb5191542426afb33f03decde073e90adb369b5eaddbf3a286d0b097
+  MLRANK_DECISION_sha256: b1758469b0b43cc21543d7e469a7d531ea08cbe5c9c08110ac345df2fac5c1cf
+  MLRANK_MANIFEST_sha256: 052531faec928e0e2d4266dd65db60becf9803b90e105099fd943173d1982ab1
+  MLRANK_REGISTRY_sha256: c535431f2f71cb6a87a738b495266662b3a8d002c173f8673defe23f855453c8
+  PROJECT_UNIVERSE_FILE_sha256: e73968ddf54b646ab2d831467a0e2882970e5f96880df12c41bd01a39c243965
+  QFQ_ROOT_hash: 51ebde5a59a3afe1044ae97f7f777525eba74cf9b5b4b4be56e1323c51d46854
+  RAW_OHLCV_ROOT_hash: a3dc107d3cc2ec5e3d0e75b67deefd9fd369917107670d2053cc191ef31f7968
+  SECURITY_MASTER_FILE_sha256: 3175ae478bbfe9729d2b45cc0c8ca373fe903ee8d9acc9a96fed111441452601
+  SH_NAME_HISTORY_ROOT_hash: 20879d674fe5def485776188c65c916fbfca9cc03f925822ff974f19c6de3159
+  SZ_NAME_HISTORY_FILE_sha256: 10b869499050656f356f91bea9fe22760bfe6ea1964368112595073cd15041b7
+  TRADING_CALENDAR_FILE_sha256: 1d5ff82a6718fc4e19b95c98456813043b30aeaa1b452d591376b1d427c2b60d
+population:
+  bucket_ids:
+  - 8
+  - 9
+  - 10
+  decision_date_max: '2026-03-31'
+  decision_date_min: '2024-07-31'
+  decision_month_n: 21
+  event_label_months:
+  - 2024-10
+  - 2025-02
+  - 2025-08
+  - 2025-09
+  - 2026-04
+  ledger_end_date: '2026-04-30'
+  ledger_start_date: '2024-07-31'
+  ledger_trade_date_n: 423
+  scored_model_ids:
+  - S0_SELECTED_FULL
+  - B0_P4_RAW_RANK
+  split: robustness
+board_concentration:
+  classified_concentration_formula: normalized_real_board_exposure_excluding_no_board
+  concentration_observation_timing: target_and_realized_posttrade_before_intraday_stop
+  duplicate_column_rule: exact_equal_binary_member_vector_keep_lexicographically_smallest
+  fractional_membership_rule: inverse_retained_board_count_sum_one
+  lambda_grid:
+  - 0.0
+  - 0.5
+  - 1.0
+  minimum_reference_member_n: 10
+  no_board_id: __NO_BOARD__
+  no_board_tilt_rule: neutral_0_5_excluded_from_rank_and_concentration
+  percentile_formula: average_tie_rank_minus_one_over_valid_board_n_minus_one
+  proxy_id: ep19_dc_2025_static_board_proxy
+  reference_universe_dependency: retrospective_full_sample_universe_dependency
+  reference_universe_rule: union_all_21_decisions_all_buckets_1_10_after_model_population_equality
+  single_instrument_weight_cap: 0.1
+  snapshot_trade_date: '2025-01-02'
+  target_weight_formula: exp_lambda_score_minus_half_normalized
+stop:
+  basis_formula: qfq_linked_share_weighted_gross_fill_basis
+  blocked_exit_latch: retry_each_later_exchange_open_first_executable_open
+  event_attribution_horizon: first_scheduled_rebalance_strictly_after_fill_else_terminal
+  mapping_block_spread: 0.01
+  mapping_warning_spread: 0.002
+  raw_fill_domain_rule: raw_low_minus_half_tick_to_raw_high_plus_half_tick
+  reentry_rule: first_scheduled_decision_strictly_after_stop_fill
+  threshold_grid:
+  - null
+  - 0.05
+  - 0.1
+  - 0.15
+  - 0.2
+  tick_mapping: median_four_price_ratio_sell_floor_tick
+  trigger_order: gap_open_then_intraday_low
+execution:
+  capital_injection_allowed: false
+  corporate_action_rule: qfq_continuity_else_conservative_terminal_loss
+  decision_timing: after_close_last_sse_open_session
+  entry_limit_up_rule: blocked_unfilled_cash
+  exit_limit_down_rule: delayed_next_executable_open
+  initial_AUM_cny: 10000000.0
+  leverage_allowed: false
+  lot_rule: registry_minimum_increment_floor_shares
+  monthly_reset_allowed: false
+  no_borrowing: true
+  rebalance_timing: next_exchange_open_session
+  short_allowed: false
+  suspension_mark_rule: last_valid_qfq_linked_mark
+  terminal_liquidation_shadow_rule: terminal_close_mark_cost_only_no_fill
+cost:
+  break_even_root_bracket_bps:
+  - 0.0
+  - 2000.0
+  break_even_root_max_iterations: 200
+  break_even_root_status_precedence: no_turnover_then_nonpositive_zero_then_above_bracket_then_bisection
+  break_even_root_tolerance_bps: 1.0e-08
+  break_even_terminal_wealth_formula: complete_fixed_path_algebraic_terminal_wealth
+  commission_buy_bps: 2.5
+  commission_sell_bps: 2.5
+  cost_scenario_ids:
+  - GROSS
+  - SLIP000
+  - SLIP005
+  - SLIP010
+  - SLIP020
+  - SLIP040
+  cost_shadow_accounting: fixed_execution_reference_5bps_liability_only
+  minimum_commission_cny: 5.0
+  reference_slippage_bps: 5.0
+  slippage_bps_grid:
+  - 0.0
+  - 5.0
+  - 10.0
+  - 20.0
+  - 40.0
+  stamp_tax_effective_start: '2023-08-28'
+  stamp_tax_sell_bps: 5.0
+  target_turnover_formula: half_sum_abs_adjacent_target_weights_first_zero_vector
+  transfer_fee_source: 20A_price_limit_rule_registry
+statistics:
+  block_length_months: 3
+  bootstrap_method: circular_moving_block_bootstrap_paired_monthly_mean
+  incomplete_calendar_rule: no_bootstrap_unless_all_21_months_evaluable
+  month_scopes:
+  - all
+  - event_posthoc
+  - non_event_posthoc
+  paired_comparison_n: 284
+  quantile_method: linear
+  quantiles:
+  - 0.025
+  - 0.5
+  - 0.975
+  random_consumption_order: comparison_id_asc_then_repetition_asc
+  repetitions: 20000
+  rng: numpy_PCG64
+  sampled_block_count: 7
+  seed: 20260716
+serialization:
+  csv_encoding: utf-8
+  csv_float_format: '%.12g'
+  csv_na_rep: ''
+  csv_newline: LF
+  gzip_compresslevel: 9
+  gzip_mtime: 0
+  json_ensure_ascii: false
+  json_final_newline: true
+  json_indent: 2
+  json_sort_keys: true
+  parquet_compression: zstd
+  parquet_compression_level: 9
+  parquet_data_page_version: '2.0'
+  parquet_engine: pyarrow
+  parquet_row_group_size: 65536
+  parquet_use_dictionary: false
+  parquet_version: '2.6'
+  parquet_write_statistics: true
+output_contract:
+  artifact_groups:
+    G0_FINAL_AUDIT:
+    - preflight/contract_snapshot.json
+    - preflight/resolved_config.yaml
+    - preflight/input_integrity_audit.csv
+    - stage_failure_audit.csv
+    - 20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_decision.csv
+    - 20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_report_cn.md
+    - manifest_20b_p4_portsens.json
+    - output_hashes_20b_p4_portsens.json
+    G1_BASE_REGISTRIES:
+    - preflight/policy_arm_registry.csv
+    - preflight/cost_scenario_registry.csv
+    - preflight/paired_comparison_registry.csv
+    G2_BOARD_TARGETS:
+    - preflight/board_membership_audit.csv
+    - preflight/retained_board_registry.csv
+    - materialized/monthly_target_weights.parquet
+    - materialized/board_overrepresentation_monthly.csv.gz
+    G3_LEDGERS:
+    - materialized/daily_execution_ledger.parquet
+    - materialized/daily_nav.parquet
+    - materialized/stop_event_ledger.csv.gz
+    - materialized/cost_shadow_ledger.parquet
+    G4_METRICS:
+    - historical/monthly_portfolio_returns.csv.gz
+    - historical/portfolio_summary.csv
+    - historical/paired_sensitivity_delta.csv
+    - historical/block_bootstrap_readout.csv
+    - historical/turnover_cost_readout.csv
+    - historical/board_concentration_readout.csv
+    - historical/stoploss_attribution_readout.csv
+    - historical/event_regime_slice_readout.csv
+    - historical/terminal_liquidation_shadow.csv
+    G5_DETERMINISM:
+    - determinism/determinism_comparison.csv
+    - determinism/replay_b_core_hashes.json
+  decision_name: 20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_decision.csv
+  manifest_name: manifest_20b_p4_portsens.json
+  output_hashes_name: output_hashes_20b_p4_portsens.json
+  profile_ids:
+  - P0_PREFLIGHT_BLOCKED
+  - P1_BOARD_BLOCKED
+  - P2_EXECUTION_BLOCKED
+  - P3_METRIC_BLOCKED
+  - P4_DETERMINISM_BLOCKED
+  - P5_SENSITIVITY_MATERIALIZED
+  profiles:
+    P0_PREFLIGHT_BLOCKED:
+    - G0_FINAL_AUDIT
+    P1_BOARD_BLOCKED:
+    - G0_FINAL_AUDIT
+    - G1_BASE_REGISTRIES
+    P2_EXECUTION_BLOCKED:
+    - G0_FINAL_AUDIT
+    - G1_BASE_REGISTRIES
+    - G2_BOARD_TARGETS
+    P3_METRIC_BLOCKED:
+    - G0_FINAL_AUDIT
+    - G1_BASE_REGISTRIES
+    - G2_BOARD_TARGETS
+    - G3_LEDGERS
+    P4_DETERMINISM_BLOCKED:
+    - G0_FINAL_AUDIT
+    - G1_BASE_REGISTRIES
+    - G2_BOARD_TARGETS
+    - G3_LEDGERS
+    - G4_METRICS
+    - G5_DETERMINISM
+    P5_SENSITIVITY_MATERIALIZED:
+    - G0_FINAL_AUDIT
+    - G1_BASE_REGISTRIES
+    - G2_BOARD_TARGETS
+    - G3_LEDGERS
+    - G4_METRICS
+    - G5_DETERMINISM
+  report_name: 20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_report_cn.md
+  schema_registry_id: portsens_closed_schema_v1
+  schema_version: 20B_P4_PORTSENS_OUTPUT_v1
+  seal_failure_exit_code: 74

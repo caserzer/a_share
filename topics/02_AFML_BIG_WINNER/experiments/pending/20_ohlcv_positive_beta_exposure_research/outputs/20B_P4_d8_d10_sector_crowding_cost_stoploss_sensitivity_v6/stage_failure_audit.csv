@@ -1,0 +1,6 @@
+stage_id,check_id,status,expected,observed,affected_artifacts,blocking_reason,run_id,contract_version
+S0_PREFLIGHT,upstream_and_arm_registry,pass,16 hashes; 90 arms; 6 costs; 284 comparisons,16 hashes; 90 arms; 6 costs; 284 comparisons,"G0_FINAL_AUDIT,G1_BASE_REGISTRIES",,20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6,20B_P4_PORTSENS_v6
+S1_BOARD,retrospective_board_dictionary_and_targets,pass,fixed dictionary; 90 paths; weights sum one; cap <= 10%,retained=149; paths=90,G2_BOARD_TARGETS,,20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6,20B_P4_PORTSENS_v6
+S2_EXECUTION,stateful_execution_stop_and_cost_shadow,pass,90 paths; 540 daily NAV series; fixed reference fills,paths=90; nav_rows=228420; fills=134692,G3_LEDGERS,,20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6,20B_P4_PORTSENS_v6
+S3_METRICS,closed_schema_and_cardinality,pass,11340 monthly; 1620 summary; 5964 paired; 284 bootstrap,11340 monthly; 1620 summary; 5964 paired; 284 bootstrap,G4_METRICS,,20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6,20B_P4_PORTSENS_v6
+S4_DETERMINISM,replay_a_b_core_hashes,pass,all exact,all exact,G5_DETERMINISM,,20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6,20B_P4_PORTSENS_v6

@@ -812,6 +812,36 @@ Use staged labels:
 - `continuation_60`
 - `winner_120`
 
+### 9.7 Seal Only After the Complete Run
+
+Do not seal or make data and outputs immutable at the beginning of an
+experiment or during a partial run. Data, intermediate artifacts, manifests,
+hash registries, and reports must remain open to repair and rerun until the
+entire authorized execution and its post-run validation are complete.
+
+The required lifecycle is:
+
+```text
+working
+    -> preflight_checked
+    -> diagnostic_complete
+    -> full_run_complete
+    -> post_run_validation_complete
+    -> sealed
+```
+
+Only the final transition may create an immutable output bundle. A preflight
+failure, diagnostic failure, interrupted run, partial materialization, or
+failed validation must be recorded as an auditable working-state event, not
+published or sealed as a final bundle. It must remain possible to repair the
+same working lineage and rerun it to completion.
+
+After the complete run has passed its frozen cardinality, integrity,
+determinism, and report checks, the final data and report bundle may be sealed.
+Once sealed, its files, manifest, and hash chain are immutable; later analysis
+must use a new version or a clearly linked companion artifact. Existing sealed
+historical bundles are not retroactively modified by this principle.
+
 ## 10. Initial Research Workstreams
 
 These are research workstreams, not fixed experiment names. Actual experiment
