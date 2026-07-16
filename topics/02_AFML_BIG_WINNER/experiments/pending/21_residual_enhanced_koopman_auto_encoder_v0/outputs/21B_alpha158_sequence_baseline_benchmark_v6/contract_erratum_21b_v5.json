@@ -1,0 +1,30 @@
+{
+  "affected_artifacts": [
+    "audits/qfq_runtime_access_event_log.csv",
+    "audits/qfq_runtime_counter_evidence.csv"
+  ],
+  "compatibility_successor_source_inventory_hash": "0d16cb3d1c8cdcd620d8b8e9244a367cfea82c8df0dd0737762675ea3b90c806",
+  "compatibility_successor_source_requirement_version": "21B_v5",
+  "corrected_config_sha256": "aca0bface436b0d03f3e908d0eb41f04a152b8976f07c967ee9123567f1841ca",
+  "corrected_requirement_version": "21B_v6",
+  "corrected_runner_sha256": "e5a5d6e60e235c6e99a96f7bbfc39c987638a394a0f28102bcb8dcf6d31ba72b",
+  "corrected_test_sha256": "08e6bcc4eb3ca7a4b1373c1f3a78ae2ee56ab5f467344f9fb222f61954ac5f1d",
+  "counter_collection_mode": "runtime_wrapper_and_append_only_log",
+  "defect_description": "post-cutoff CSV row token materialization and runtime counter provenance",
+  "defect_id": "QFQ_POST_CUTOFF_VALUE_TOKEN_AND_RUNTIME_COUNTER_SEMANTICS",
+  "erratum_id": "21B_V5_QFQ_RUNTIME_COUNTER_CORRECTION",
+  "gate_registry_row_count": 27,
+  "historical_holdout_label_open_count": 0,
+  "historical_holdout_metric_count": 0,
+  "historical_holdout_outcome_open_count": 0,
+  "historical_holdout_score_join_count": 0,
+  "post_cutoff_outcome_value_decode_count": 0,
+  "post_cutoff_value_token_materialization_count": 0,
+  "runtime_access_event_log_path": "experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v6/audits/qfq_runtime_access_event_log.csv",
+  "runtime_access_event_log_sha256": "a406798ca9994591e63978f8ae85339daf74aeb3803cc832bef292b678ce69ef",
+  "runtime_counter_aggregation_contract_id": "QFQ_RUNTIME_ACCESS_EVENT_AGGREGATION_V1",
+  "runtime_counter_evidence_path": "experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v6/audits/qfq_runtime_counter_evidence.csv",
+  "runtime_counter_evidence_sha256": "c0625e44a235a07c795486ee3c57f279be01d3fddb8881e4e2a7982c8af8a88e",
+  "source_requirement_version": "21B_v4",
+  "status": "corrected_rerun_sealed"
+}

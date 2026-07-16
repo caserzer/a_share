@@ -1,7 +1,7 @@
 identity:
   run_id: 21B_alpha158_sequence_baseline_benchmark
-  requirement_version: 21B_v4
-  requirement_sha256: 9053c13ca0f23156a675ea55167c81501a8d08279417a77ecdd46420580fac7d
+  requirement_version: 21B_v6
+  requirement_sha256: e67c9e8655ad94f12dc563f921fb1eaf16bbece1d3c923d07c25dabdf392ca7e
   claim_ceiling: validation_only_baseline_information_diagnostic
 
 paths:
@@ -91,6 +91,7 @@ training:
     max_bin: 255
 
 gates:
+  upstream_21b_contract_erratum_gate: pass
   positive_late_seed_n: 2
   positive_late_lomo_n: 5
   late_lomo_total_n: 6
@@ -126,6 +127,16 @@ artifact_profiles:
     conditional_path_rules: []
 
 output:
-  canonical_output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v4
-  semantic_canonicalization_version: 21B_semantic_v4
+  canonical_output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v6
+  semantic_canonicalization_version: 21B_semantic_v6
   report_language: zh-CN
+
+correction:
+  source_sealed_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5
+  defect_id: QFQ_POST_CUTOFF_VALUE_TOKEN_AND_RUNTIME_COUNTER_SEMANTICS
+  erratum_id: 21B_V5_QFQ_RUNTIME_COUNTER_CORRECTION
+  runtime_counter_aggregation_contract_id: QFQ_RUNTIME_ACCESS_EVENT_AGGREGATION_V1
+  runtime_access_event_log_path: audits/qfq_runtime_access_event_log.csv
+  runtime_counter_evidence_path: audits/qfq_runtime_counter_evidence.csv
+  contract_erratum_path: contract_erratum_21b_v5.json
+  paper_lineage_erratum_path: paper_lineage_erratum_21a_for_21b_v5.json

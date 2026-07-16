@@ -30,6 +30,58 @@ def test_requirement_and_authorization_are_exactly_bound() -> None:
     assert authorization["authorization_status"] == "approved"
 
 
+def test_v6_compatibility_successor_route_is_frozen() -> None:
+    config = runner.load_config()
+    assert runner.REQUIREMENT_VERSION == "21B_v6"
+    assert config["gates"]["upstream_21b_contract_erratum_gate"] == "pass"
+    assert config["correction"]["source_sealed_root"].endswith(
+        "21B_alpha158_sequence_baseline_benchmark_v5"
+    )
+    assert config["correction"]["runtime_counter_aggregation_contract_id"] == (
+        "QFQ_RUNTIME_ACCESS_EVENT_AGGREGATION_V1"
+    )
+
+
+def test_runtime_counter_aggregate_is_derived_from_raw_log(tmp_path: Path) -> None:
+    log = tmp_path / "runtime.csv"
+    pd.DataFrame(
+        [
+            {
+                "event_seq": 0,
+                "process_id": "worker",
+                "stage": "materialize-labels",
+                "access_scope": "train_and_validation",
+                "operation": "qfq_prefix_open",
+                "path": "data/example.csv",
+                "path_class": "qfq_csv",
+                "value_token_requested": "true",
+                "value_decoded": "true",
+                "decision_date": "2023-12-14",
+                "status": "allowed",
+                "reason": "",
+            },
+            {
+                "event_seq": 1,
+                "process_id": "worker",
+                "stage": "materialize-labels",
+                "access_scope": "train_and_validation",
+                "operation": "qfq_post_cutoff_boundary_guard",
+                "path": "data/example.csv",
+                "path_class": "qfq_csv",
+                "value_token_requested": "false",
+                "value_decoded": "false",
+                "decision_date": "2023-12-15",
+                "status": "denied",
+                "reason": "cutoff",
+            },
+        ],
+        columns=runner.RUNTIME_EVENT_COLUMNS_V5,
+    ).to_csv(log, index=False, lineterminator="\n")
+    aggregate = runner._aggregate_runtime_events_v5(log, "outputs/v5/runtime.csv")
+    assert aggregate["event_count"].sum() == 2
+    assert set(aggregate["source_log_path"]) == {"outputs/v5/runtime.csv"}
+
+
 def test_planned_job_registry_is_exact() -> None:
     jobs = runner.planned_jobs()
     assert len(jobs) == 13
@@ -355,6 +407,6 @@ def test_sealed_gate_registry_is_complete_when_present() -> None:
     if not root.exists():
         pytest.skip("sealed integration bundle not present")
     gates = pd.read_csv(root / "gate_evidence_21b.csv")
-    assert len(gates) == 26
+    assert len(gates) == 27
     assert set(runner.CAUSAL_GATES).issubset(set(gates["gate_id"]))
     assert set(gates["status"]) == {"pass"}

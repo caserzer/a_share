@@ -1,0 +1,6 @@
+stage_order,stage_id,started_at_utc,ended_at_utc,stage_status,input_bundle_hash,output_bundle_hash,failed_gate_ids,reason
+0,preflight,,,pass,,,[],
+1,materialize-r2-teacher,,,fail,,,"[""teacher_materialization_gate""]",missing_train_teacher_t_plus_1_key_n=396
+2,train-r2,,,not_run,,,[],not_run_due_to_prior_gate:teacher_materialization_gate
+3,late-readout,,,not_run,,,[],not_run_due_to_prior_gate:teacher_materialization_gate
+4,finalize,,,not_run,,,[],not_run_due_to_prior_gate:teacher_materialization_gate

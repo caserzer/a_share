@@ -1,0 +1,491 @@
+schema_version: 21C_FULL_RESOLVED_CONFIG_V1
+run_id: 21C_full_reaka_pit_proxy_replication
+requirement_version: 21C_FULL_v2
+requirement_sha256: 3155b38841e2339fe3fdced9b2753ffc3a9a44cbd7ad4f900129a14049c8ed21
+execution_authorization_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v2/execution_authorization.json
+authorization_observation: 73b1a306b89f2a03e9bf42962c34739c6025254bbb40c6a819ee43af00cfae2a
+authorization_schema_status: pass
+execution_authorization_sha256: 73b1a306b89f2a03e9bf42962c34739c6025254bbb40c6a819ee43af00cfae2a
+scope_restart_decision_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v2/scope_restart_decision.json
+scope_restart_decision_sha256: a8c3a17554adc3dd4c8915bdd25cf3d50ca0524d488ec982261195a7c4265265
+approved_21c_implementation:
+  runner_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21c_full_reaka_pit_proxy_replication.py
+  runner_sha256: f77e98de87fad389210c2c7dd7d0d38375ec13e07cd84b83ec699199d5c57b7c
+  config_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21c_full_reaka_pit_proxy_replication.yaml
+  config_sha256: e3e6bd4075a337a33434e0d035b67ef621792b1b2297c2c393517ecdab0ae351
+  test_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/tests/test_21c_full_reaka_pit_proxy_replication.py
+  test_sha256: 82015729580dc3548b6ec5621badc4f540ddeb28af163752999b8d97f9958f7c
+approved_21b:
+  output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5
+  requirement_version: 21B_v5
+  requirement_sha256: c9320b8ab336e756e4a06326a4573edd05ae2aa3527981fdeea144ab1e7d15b5
+  runner_sha256: 009405baaa5f04dd604393cbd1ba4e2d1cee6e7fed09b97d2daa85b7370e74b5
+  config_sha256: 85339e77bae735e9d2626296597426a58de5552bfaee4b4842a49033ddaf3bf2
+  test_sha256: c2a78aaea6c87382b3d3526bf79f3351405cb7dc13d2765cba3143ccc2c1e41d
+  decision_sha256: cecd864338a918f3cdde282397b030d05fbf94255ad2acc231102d5ce236637f
+  manifest_sha256: d5ca5c5997c4cce5019e73c0dd0e0fa06c4747a43d323f483c4de29131478d85
+  output_hashes_sha256: e20f2ac9e5e49f51494373feaacb93c4e0ea609bb3b563e44fd98a4523db7552
+  gate_evidence_sha256: 2ee08b03d94c6776b017c738e201fcb6181a290010bc300e7bb305dd1fbef4a2
+  pre_holdout_bundle_hash: 56f4759f8604711c81cec3c000d99c198188960da0bee6ef2ea364f99641367a
+  semantic_payload_bundle_hash: 6f80e4838fc770ef095704185877f7be11ab6c74a8a41526cd123c08bbe9da01
+  contract_erratum_id: 21B_V5_QFQ_RUNTIME_COUNTER_CORRECTION
+  contract_erratum_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/contract_erratum_21b_v5.json
+  contract_erratum_sha256: 72acea30cf6ed9cdbc0ddfdf898a7c104f563c4e42b16100d1716204485fda26
+approved_21a_lineage:
+  approved_21a_version: 21A_v2
+  upstream_model_arm_registry_sha256: ce2f49aaa55c2591f1e22b82521c659582fb97266ed36f659920b228b00f8008
+  paper_lineage_erratum_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/paper_lineage_erratum_21a_for_21b_v5.json
+  paper_lineage_erratum_sha256: e2a59f199fa2c947d91c3b2d9d4410ce2bf59af725a5c789257620e6b3c87b3d
+paths:
+  requirement: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/requirement_21c_full_reaka_pit_proxy_replication.md
+  config: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21c_full_reaka_pit_proxy_replication.yaml
+  runner: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21c_full_reaka_pit_proxy_replication.py
+  test: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/tests/test_21c_full_reaka_pit_proxy_replication.py
+  execution_authorization: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v2/execution_authorization.json
+  scope_restart_decision: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v2/scope_restart_decision.json
+  canonical_output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v2
+  preauthorization_audit_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v2_preauthorization_audits
+feature_route:
+  feature_route_id: ALPHA158_NO_VWAP_REGISTERED_ADAPTATION
+  feature_dim: 157
+  lookback_T: 10
+  label_id: Y_rank_primary
+  label_formula: qfq_close(t+1)/qfq_close(t)-1
+  normalization: train_median_iqr_div_1_349_clip_10
+  invalid_fill: train_median
+  missing_indicator_direct_input: false
+splits:
+  train:
+  - '2018-01-02'
+  - '2022-12-14'
+  validation_early:
+  - '2023-01-03'
+  - '2023-06-30'
+  validation_late:
+  - first_eligible_session_after_2023-06-30
+  - '2023-12-13'
+  historical_design_holdout_readout_authorized: false
+  purge_sessions: 12
+architecture:
+  lookback_T: 10
+  feature_dim: 157
+  latent_dim: 64
+  lstm_layers: 1
+  n_operator: 4
+  selector_negative_slope: 0.01
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: linear_by_optimizer_step
+  gumbel_train_mode: soft
+  gumbel_inference_mode: hard_argmax
+  gumbel_clamp_min: 1.0e-10
+  gumbel_clamp_max: 0.9999999999
+  diffusion_steps: 20
+  beta_start: 0.0001
+  beta_end: 0.02
+  timestep_embedding_dim: 32
+  denoiser_hidden_dim: 128
+  inference_residual_draws: 8
+loss:
+  rec_weight: 1.0
+  koop_weight: 1.0
+  diff_weight: 1.0
+training:
+  model_seeds:
+  - 20260713
+  - 20260714
+  - 20260715
+  precision: fp32
+  amp: false
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 1.0e-05
+  adam_betas:
+  - 0.9
+  - 0.999
+  adam_eps: 1.0e-08
+  adam_amsgrad: false
+  adam_foreach: false
+  adam_fused: false
+  adam_capturable: false
+  adam_maximize: false
+  adam_differentiable: false
+  scheduler: none
+  gradient_clip_global_l2: 1.0
+  gradient_clip_foreach: false
+  gradient_clip_error_if_nonfinite: true
+  zero_grad_set_to_none: true
+  max_epochs: 100
+  early_stopping_patience: 10
+  evaluate_every_epochs: 1
+  checkpoint_tie_break: earliest_epoch
+  train_shuffle_each_epoch: true
+  dataloader_drop_last: false
+  dataloader_num_workers: 0
+  dataloader_pin_memory: false
+  dataloader_persistent_workers: false
+  dataloader_prefetch_factor: null
+  device_transfer_non_blocking: false
+  sample_weight: 1.0
+  day_balanced_loss: false
+randomness:
+  numpy_seed_offset: 11
+  torch_seed_offset: 23
+  dataloader_seed_offset: 37
+  weight_init_seed_offset: 53
+  gumbel_seed_offset: 71
+  diffusion_train_noise_seed_offset: 89
+  inference_seed_contract: sha256_row_key_uint64_prefix_mod_2_63
+  deterministic_algorithms: true
+  cublas_workspace_config: :4096:8
+resource_probe:
+  resource_probe_seed: 21000053
+  batch_size_candidates:
+  - 256
+  - 128
+  - 64
+  - 32
+  - 16
+  minimum_batch_size: 16
+  peak_reserved_memory_fraction_cap: 0.9
+  device: cuda
+metrics:
+  minimum_cross_section_n: 100
+  validation_full_complete_day_n_min: 200
+  validation_early_complete_day_n_min: 80
+  validation_late_complete_day_n_min: 80
+  positive_late_seed_n_min: 2
+  positive_leave_one_late_month_out_n_min: 5
+  late_month_n: 6
+  max_late_month_abs_contribution_share: 0.5
+  topk: 30
+  bootstrap_replicates: 5000
+  bootstrap_mean_block_length: 20
+  bootstrap_seed: 20260715
+gates:
+- execution_authorization_gate
+- scope_restart_gate
+- scope_override_gate
+- upstream_21b_success_gate
+- upstream_21b_contract_erratum_gate
+- upstream_paper_lineage_erratum_gate
+- upstream_hash_and_file_set_gate
+- dependency_runtime_gate
+- input_panel_integrity_gate
+- train_validation_firewall_gate
+- historical_holdout_zero_access_gate
+- teacher_materialization_gate
+- architecture_shape_gate
+- teacher_isolation_gate
+- loss_and_score_index_gate
+- seed_determinism_gate
+- gpu_memory_gate
+- training_completion_gate
+- pre_gate_bundle_hash_gate
+- late_readout_process_gate
+- checkpoint_eligibility_gate
+- score_coverage_gate
+- rankic_implementation_gate
+- finalize_transaction_gate
+- r2_direction_stability_gate
+artifact_profiles:
+- profile_order: 0
+  profile_id: P0_PREFLIGHT_BLOCKED
+  required_paths:
+  - 21C_full_reaka_pit_proxy_replication_decision.csv
+  - 21C_full_reaka_pit_proxy_replication_report.md
+  - artifact_profile_registry.csv
+  - gate_evidence_21c_full.csv
+  - historical_design_holdout_access_audit.csv
+  - manifest_21c_full_reaka_pit_proxy_replication.json
+  - output_hashes_21c_full_reaka_pit_proxy_replication.json
+  - preflight/paper_lineage_erratum_audit.csv
+  - preflight/preflight_access_audit.csv
+  - preflight/resolved_config.yaml
+  - preflight/scope_override_audit.csv
+  - preflight/scope_restart_decision_audit.csv
+  - preflight/upstream_21b_authorization_and_hash_audit.csv
+  - semantic_reproducibility_manifest.json
+  - stage_status_registry.csv
+  forbidden_paths:
+  - daily_rankic_readout.csv
+  - finalize_failure_evidence.csv
+  - materialized/materialization_access_audit.csv
+  - materialized/materialization_failure_evidence.csv
+  - materialized/r2_input_extension_manifest.json
+  - materialized/r2_train_teacher_return_panel.f32.memmap
+  - materialized/r2_train_teacher_sequence_index.parquet
+  - paired_rankic_comparison.csv
+  - paper_proxy_top30_daily.csv
+  - paper_proxy_top30_summary.csv
+  - paper_reference_comparison.csv
+  - rankic_stability_and_concentration_audit.csv
+  - stationary_bootstrap_pair_diagnostic.csv
+  - training/checkpoint_eligibility_manifest.json
+  - training/checkpoint_manifest.json
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260713/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260714/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260715/state_dict.pt
+  - training/late_readout_failure_evidence.csv
+  - training/late_readout_worker_exit_record.json
+  - training/model_parameter_compute_latency_audit.csv
+  - training/model_search_accounting_manifest.csv
+  - training/pre_gate_r2_checkpoint_bundle_manifest.json
+  - training/readout/validation_late_prediction_scores.parquet
+  - training/resource_probe_audit.csv
+  - training/seed_level_training_curves.csv
+  - training/selection/validation_early_prediction_scores.parquet
+  - training/selection_worker_exit_record.json
+  - training/training_access_audit.csv
+  - training/training_failure_evidence.csv
+  - training/training_run_registry.csv
+- profile_order: 1
+  profile_id: P1_MATERIALIZATION_BLOCKED
+  required_paths:
+  - 21C_full_reaka_pit_proxy_replication_decision.csv
+  - 21C_full_reaka_pit_proxy_replication_report.md
+  - artifact_profile_registry.csv
+  - gate_evidence_21c_full.csv
+  - historical_design_holdout_access_audit.csv
+  - manifest_21c_full_reaka_pit_proxy_replication.json
+  - materialized/materialization_access_audit.csv
+  - materialized/materialization_failure_evidence.csv
+  - output_hashes_21c_full_reaka_pit_proxy_replication.json
+  - preflight/paper_lineage_erratum_audit.csv
+  - preflight/preflight_access_audit.csv
+  - preflight/resolved_config.yaml
+  - preflight/scope_override_audit.csv
+  - preflight/scope_restart_decision_audit.csv
+  - preflight/upstream_21b_authorization_and_hash_audit.csv
+  - semantic_reproducibility_manifest.json
+  - stage_status_registry.csv
+  forbidden_paths:
+  - daily_rankic_readout.csv
+  - finalize_failure_evidence.csv
+  - materialized/r2_input_extension_manifest.json
+  - materialized/r2_train_teacher_return_panel.f32.memmap
+  - materialized/r2_train_teacher_sequence_index.parquet
+  - paired_rankic_comparison.csv
+  - paper_proxy_top30_daily.csv
+  - paper_proxy_top30_summary.csv
+  - paper_reference_comparison.csv
+  - rankic_stability_and_concentration_audit.csv
+  - stationary_bootstrap_pair_diagnostic.csv
+  - training/checkpoint_eligibility_manifest.json
+  - training/checkpoint_manifest.json
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260713/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260714/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260715/state_dict.pt
+  - training/late_readout_failure_evidence.csv
+  - training/late_readout_worker_exit_record.json
+  - training/model_parameter_compute_latency_audit.csv
+  - training/model_search_accounting_manifest.csv
+  - training/pre_gate_r2_checkpoint_bundle_manifest.json
+  - training/readout/validation_late_prediction_scores.parquet
+  - training/resource_probe_audit.csv
+  - training/seed_level_training_curves.csv
+  - training/selection/validation_early_prediction_scores.parquet
+  - training/selection_worker_exit_record.json
+  - training/training_access_audit.csv
+  - training/training_failure_evidence.csv
+  - training/training_run_registry.csv
+- profile_order: 2
+  profile_id: P2_TRAINING_BLOCKED
+  required_paths:
+  - 21C_full_reaka_pit_proxy_replication_decision.csv
+  - 21C_full_reaka_pit_proxy_replication_report.md
+  - artifact_profile_registry.csv
+  - gate_evidence_21c_full.csv
+  - historical_design_holdout_access_audit.csv
+  - manifest_21c_full_reaka_pit_proxy_replication.json
+  - materialized/materialization_access_audit.csv
+  - materialized/r2_input_extension_manifest.json
+  - materialized/r2_train_teacher_return_panel.f32.memmap
+  - materialized/r2_train_teacher_sequence_index.parquet
+  - output_hashes_21c_full_reaka_pit_proxy_replication.json
+  - preflight/paper_lineage_erratum_audit.csv
+  - preflight/preflight_access_audit.csv
+  - preflight/resolved_config.yaml
+  - preflight/scope_override_audit.csv
+  - preflight/scope_restart_decision_audit.csv
+  - preflight/upstream_21b_authorization_and_hash_audit.csv
+  - semantic_reproducibility_manifest.json
+  - stage_status_registry.csv
+  - training/checkpoint_manifest.json
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260713/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260714/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260715/state_dict.pt
+  - training/model_parameter_compute_latency_audit.csv
+  - training/model_search_accounting_manifest.csv
+  - training/resource_probe_audit.csv
+  - training/seed_level_training_curves.csv
+  - training/selection_worker_exit_record.json
+  - training/training_access_audit.csv
+  - training/training_failure_evidence.csv
+  - training/training_run_registry.csv
+  forbidden_paths:
+  - daily_rankic_readout.csv
+  - finalize_failure_evidence.csv
+  - materialized/materialization_failure_evidence.csv
+  - paired_rankic_comparison.csv
+  - paper_proxy_top30_daily.csv
+  - paper_proxy_top30_summary.csv
+  - paper_reference_comparison.csv
+  - rankic_stability_and_concentration_audit.csv
+  - stationary_bootstrap_pair_diagnostic.csv
+  - training/checkpoint_eligibility_manifest.json
+  - training/late_readout_failure_evidence.csv
+  - training/late_readout_worker_exit_record.json
+  - training/pre_gate_r2_checkpoint_bundle_manifest.json
+  - training/readout/validation_late_prediction_scores.parquet
+  - training/selection/validation_early_prediction_scores.parquet
+- profile_order: 3
+  profile_id: P3_LATE_READOUT_BLOCKED
+  required_paths:
+  - 21C_full_reaka_pit_proxy_replication_decision.csv
+  - 21C_full_reaka_pit_proxy_replication_report.md
+  - artifact_profile_registry.csv
+  - gate_evidence_21c_full.csv
+  - historical_design_holdout_access_audit.csv
+  - manifest_21c_full_reaka_pit_proxy_replication.json
+  - materialized/materialization_access_audit.csv
+  - materialized/r2_input_extension_manifest.json
+  - materialized/r2_train_teacher_return_panel.f32.memmap
+  - materialized/r2_train_teacher_sequence_index.parquet
+  - output_hashes_21c_full_reaka_pit_proxy_replication.json
+  - preflight/paper_lineage_erratum_audit.csv
+  - preflight/preflight_access_audit.csv
+  - preflight/resolved_config.yaml
+  - preflight/scope_override_audit.csv
+  - preflight/scope_restart_decision_audit.csv
+  - preflight/upstream_21b_authorization_and_hash_audit.csv
+  - semantic_reproducibility_manifest.json
+  - stage_status_registry.csv
+  - training/checkpoint_manifest.json
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260713/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260714/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260715/state_dict.pt
+  - training/late_readout_failure_evidence.csv
+  - training/late_readout_worker_exit_record.json
+  - training/model_parameter_compute_latency_audit.csv
+  - training/model_search_accounting_manifest.csv
+  - training/pre_gate_r2_checkpoint_bundle_manifest.json
+  - training/resource_probe_audit.csv
+  - training/seed_level_training_curves.csv
+  - training/selection/validation_early_prediction_scores.parquet
+  - training/selection_worker_exit_record.json
+  - training/training_access_audit.csv
+  - training/training_run_registry.csv
+  forbidden_paths:
+  - daily_rankic_readout.csv
+  - finalize_failure_evidence.csv
+  - materialized/materialization_failure_evidence.csv
+  - paired_rankic_comparison.csv
+  - paper_proxy_top30_daily.csv
+  - paper_proxy_top30_summary.csv
+  - paper_reference_comparison.csv
+  - rankic_stability_and_concentration_audit.csv
+  - stationary_bootstrap_pair_diagnostic.csv
+  - training/checkpoint_eligibility_manifest.json
+  - training/readout/validation_late_prediction_scores.parquet
+  - training/training_failure_evidence.csv
+- profile_order: 4
+  profile_id: P4_FINALIZE_BLOCKED
+  required_paths:
+  - 21C_full_reaka_pit_proxy_replication_decision.csv
+  - 21C_full_reaka_pit_proxy_replication_report.md
+  - artifact_profile_registry.csv
+  - finalize_failure_evidence.csv
+  - gate_evidence_21c_full.csv
+  - historical_design_holdout_access_audit.csv
+  - manifest_21c_full_reaka_pit_proxy_replication.json
+  - materialized/materialization_access_audit.csv
+  - materialized/r2_input_extension_manifest.json
+  - materialized/r2_train_teacher_return_panel.f32.memmap
+  - materialized/r2_train_teacher_sequence_index.parquet
+  - output_hashes_21c_full_reaka_pit_proxy_replication.json
+  - preflight/paper_lineage_erratum_audit.csv
+  - preflight/preflight_access_audit.csv
+  - preflight/resolved_config.yaml
+  - preflight/scope_override_audit.csv
+  - preflight/scope_restart_decision_audit.csv
+  - preflight/upstream_21b_authorization_and_hash_audit.csv
+  - semantic_reproducibility_manifest.json
+  - stage_status_registry.csv
+  - training/checkpoint_eligibility_manifest.json
+  - training/checkpoint_manifest.json
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260713/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260714/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260715/state_dict.pt
+  - training/late_readout_worker_exit_record.json
+  - training/model_parameter_compute_latency_audit.csv
+  - training/model_search_accounting_manifest.csv
+  - training/pre_gate_r2_checkpoint_bundle_manifest.json
+  - training/readout/validation_late_prediction_scores.parquet
+  - training/resource_probe_audit.csv
+  - training/seed_level_training_curves.csv
+  - training/selection/validation_early_prediction_scores.parquet
+  - training/selection_worker_exit_record.json
+  - training/training_access_audit.csv
+  - training/training_run_registry.csv
+  forbidden_paths:
+  - daily_rankic_readout.csv
+  - materialized/materialization_failure_evidence.csv
+  - paired_rankic_comparison.csv
+  - paper_proxy_top30_daily.csv
+  - paper_proxy_top30_summary.csv
+  - paper_reference_comparison.csv
+  - rankic_stability_and_concentration_audit.csv
+  - stationary_bootstrap_pair_diagnostic.csv
+  - training/late_readout_failure_evidence.csv
+  - training/training_failure_evidence.csv
+- profile_order: 5
+  profile_id: P5_FULL_FINALIZED
+  required_paths:
+  - 21C_full_reaka_pit_proxy_replication_decision.csv
+  - 21C_full_reaka_pit_proxy_replication_report.md
+  - artifact_profile_registry.csv
+  - daily_rankic_readout.csv
+  - gate_evidence_21c_full.csv
+  - historical_design_holdout_access_audit.csv
+  - manifest_21c_full_reaka_pit_proxy_replication.json
+  - materialized/materialization_access_audit.csv
+  - materialized/r2_input_extension_manifest.json
+  - materialized/r2_train_teacher_return_panel.f32.memmap
+  - materialized/r2_train_teacher_sequence_index.parquet
+  - output_hashes_21c_full_reaka_pit_proxy_replication.json
+  - paired_rankic_comparison.csv
+  - paper_proxy_top30_daily.csv
+  - paper_proxy_top30_summary.csv
+  - paper_reference_comparison.csv
+  - preflight/paper_lineage_erratum_audit.csv
+  - preflight/preflight_access_audit.csv
+  - preflight/resolved_config.yaml
+  - preflight/scope_override_audit.csv
+  - preflight/scope_restart_decision_audit.csv
+  - preflight/upstream_21b_authorization_and_hash_audit.csv
+  - rankic_stability_and_concentration_audit.csv
+  - semantic_reproducibility_manifest.json
+  - stage_status_registry.csv
+  - stationary_bootstrap_pair_diagnostic.csv
+  - training/checkpoint_eligibility_manifest.json
+  - training/checkpoint_manifest.json
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260713/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260714/state_dict.pt
+  - training/checkpoints/R2_REAKA_DIFFUSION/seed_20260715/state_dict.pt
+  - training/late_readout_worker_exit_record.json
+  - training/model_parameter_compute_latency_audit.csv
+  - training/model_search_accounting_manifest.csv
+  - training/pre_gate_r2_checkpoint_bundle_manifest.json
+  - training/readout/validation_late_prediction_scores.parquet
+  - training/resource_probe_audit.csv
+  - training/seed_level_training_curves.csv
+  - training/selection/validation_early_prediction_scores.parquet
+  - training/selection_worker_exit_record.json
+  - training/training_access_audit.csv
+  - training/training_run_registry.csv
+  forbidden_paths:
+  - finalize_failure_evidence.csv
+  - materialized/materialization_failure_evidence.csv
+  - training/late_readout_failure_evidence.csv
+  - training/training_failure_evidence.csv

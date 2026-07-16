@@ -1,0 +1,6 @@
+candidate_order,batch_size,resource_probe_seed,device_fingerprint_sha256,forward_pass,backward_pass,optimizer_state_step_pass,eight_draw_inference_pass,oom_observed,peak_reserved_memory_bytes,device_total_memory_bytes,peak_reserved_memory_mib,device_total_memory_mib,peak_fraction,selection_status,reason
+0,256,21000053,4c6f9920f77f29f963ef9a37283c8012e3814d0838ae77abb719f0bcc939155b,true,true,true,true,false,239075328,12878086144,228.0,12281.5,0.01856450759272076,selected,
+1,128,21000053,4c6f9920f77f29f963ef9a37283c8012e3814d0838ae77abb719f0bcc939155b,,,,,,,,,,,not_run,skipped_after_larger_batch_selected
+2,64,21000053,4c6f9920f77f29f963ef9a37283c8012e3814d0838ae77abb719f0bcc939155b,,,,,,,,,,,not_run,skipped_after_larger_batch_selected
+3,32,21000053,4c6f9920f77f29f963ef9a37283c8012e3814d0838ae77abb719f0bcc939155b,,,,,,,,,,,not_run,skipped_after_larger_batch_selected
+4,16,21000053,4c6f9920f77f29f963ef9a37283c8012e3814d0838ae77abb719f0bcc939155b,,,,,,,,,,,not_run,skipped_after_larger_batch_selected

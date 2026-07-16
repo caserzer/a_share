@@ -1,0 +1,27 @@
+{
+  "affected_artifacts": [
+    "audits/qfq_runtime_access_event_log.csv",
+    "audits/qfq_runtime_counter_evidence.csv"
+  ],
+  "corrected_config_sha256": "85339e77bae735e9d2626296597426a58de5552bfaee4b4842a49033ddaf3bf2",
+  "corrected_requirement_version": "21B_v5",
+  "corrected_runner_sha256": "009405baaa5f04dd604393cbd1ba4e2d1cee6e7fed09b97d2daa85b7370e74b5",
+  "corrected_test_sha256": "c2a78aaea6c87382b3d3526bf79f3351405cb7dc13d2765cba3143ccc2c1e41d",
+  "counter_collection_mode": "runtime_wrapper_and_append_only_log",
+  "defect_description": "post-cutoff CSV row token materialization and runtime counter provenance",
+  "defect_id": "QFQ_POST_CUTOFF_VALUE_TOKEN_AND_RUNTIME_COUNTER_SEMANTICS",
+  "erratum_id": "21B_V5_QFQ_RUNTIME_COUNTER_CORRECTION",
+  "historical_holdout_label_open_count": 0,
+  "historical_holdout_metric_count": 0,
+  "historical_holdout_outcome_open_count": 0,
+  "historical_holdout_score_join_count": 0,
+  "post_cutoff_outcome_value_decode_count": 0,
+  "post_cutoff_value_token_materialization_count": 0,
+  "runtime_access_event_log_path": "experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/audits/qfq_runtime_access_event_log.csv",
+  "runtime_access_event_log_sha256": "a406798ca9994591e63978f8ae85339daf74aeb3803cc832bef292b678ce69ef",
+  "runtime_counter_aggregation_contract_id": "QFQ_RUNTIME_ACCESS_EVENT_AGGREGATION_V1",
+  "runtime_counter_evidence_path": "experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/audits/qfq_runtime_counter_evidence.csv",
+  "runtime_counter_evidence_sha256": "c0625e44a235a07c795486ee3c57f279be01d3fddb8881e4e2a7982c8af8a88e",
+  "source_requirement_version": "21B_v4",
+  "status": "corrected_rerun_sealed"
+}

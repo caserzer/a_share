@@ -1,0 +1,124 @@
+{
+  "approved_21a_contract_version": "21A_v2",
+  "approved_21a_freeze_bundle_hash": "0c6fb85a08315a5b1bd0b7621a4a7e4d36790d201eb83f8cca35f50d460cac16",
+  "feature_cache_content_hash": "95839cfcbb28c7b83620936ec6beab38ff14adb182c8ce8dba4eaaebdcbfdee2",
+  "feature_cache_dtype": "little-endian-float32",
+  "feature_cache_keys_path": "experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/.cache/21a_alpha158_feature_only/keys.csv",
+  "feature_cache_keys_sha256": "2efa3c98327872341b1a18798aad155bc5213025da00cdf358caecb23552a278",
+  "feature_cache_memmap_path": "experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/.cache/21a_alpha158_feature_only/normalized_features.f32.memmap",
+  "feature_cache_memmap_sha256": "0fa0355876e084e85d89a872699c4cef22e6dd7cb8dcae7e76ea0e6640f16001",
+  "feature_cache_shape": [
+    1079743,
+    157
+  ],
+  "feature_count": 157,
+  "feature_expression_sha256": "da50206946efd49cf7103a56561b7a5702503c18f70b4d8c5f48e8c1e9592188",
+  "feature_route_id": "ALPHA158_NO_VWAP_REGISTERED_ADAPTATION",
+  "historical_holdout_row_materialized_n": 0,
+  "label_audit_sha256": "145c03b596cff7980a289fdb29b8f27d89000dbc09e47addf408d8d2e25bee9a",
+  "label_id": "Y_rank_primary",
+  "label_materialization_hash": "63274f2e306b77b9e1587591bcd27255b2013da652ee05acaa313a61ba77351d",
+  "materialization_worker_validation_late_metric_count": 0,
+  "materialization_worker_validation_late_summary_count": 0,
+  "max_allowed_outcome_source_date": "2023-12-14",
+  "normalization_contract_hash": "b924004891f52ab38329221d34f006ef31ea77b59f01b8187e62d894ceeb9be4",
+  "outcome_access_scope": "train_and_validation_only",
+  "panel_partitions": [
+    {
+      "byte_size": 17433108,
+      "column_semantics": [
+        "y_source_t_minus_9",
+        "y_source_t_minus_8",
+        "y_source_t_minus_7",
+        "y_source_t_minus_6",
+        "y_source_t_minus_5",
+        "y_source_t_minus_4",
+        "y_source_t_minus_3",
+        "y_source_t_minus_2",
+        "y_source_t_minus_1",
+        "y_source_t_minus_0",
+        "forecast_y_t_plus_1"
+      ],
+      "dtype": "little-endian-float32",
+      "fold": "train",
+      "open_phase_whitelist": "selection_and_readout",
+      "path": "materialized/panels/train/return_and_label_panel.f32.memmap",
+      "row_key_hash": "33fb7a5f65dad27aed31c4be53b2978d1b0baadc3be1878aac1d4f84e1fec8be",
+      "sha256": "a24283e63f2f238bcc270148f98c3648a89cd60169d5e3cf6821f1951fbe38f8",
+      "shape": [
+        396207,
+        11
+      ]
+    },
+    {
+      "byte_size": 2285008,
+      "column_semantics": [
+        "y_source_t_minus_9",
+        "y_source_t_minus_8",
+        "y_source_t_minus_7",
+        "y_source_t_minus_6",
+        "y_source_t_minus_5",
+        "y_source_t_minus_4",
+        "y_source_t_minus_3",
+        "y_source_t_minus_2",
+        "y_source_t_minus_1",
+        "y_source_t_minus_0",
+        "forecast_y_t_plus_1"
+      ],
+      "dtype": "little-endian-float32",
+      "fold": "validation_early",
+      "open_phase_whitelist": "selection_and_readout",
+      "path": "materialized/panels/validation_early/return_and_label_panel.f32.memmap",
+      "row_key_hash": "633f2bf154e826a5228c8e73c3bc361812c52fd63d3379ccd01966c80dbb8ba8",
+      "sha256": "a6dee1f2293ebe77f23be859e1353bbc38651067801b738365d298933b1a693b",
+      "shape": [
+        51932,
+        11
+      ]
+    },
+    {
+      "byte_size": 2207348,
+      "column_semantics": [
+        "y_source_t_minus_9",
+        "y_source_t_minus_8",
+        "y_source_t_minus_7",
+        "y_source_t_minus_6",
+        "y_source_t_minus_5",
+        "y_source_t_minus_4",
+        "y_source_t_minus_3",
+        "y_source_t_minus_2",
+        "y_source_t_minus_1",
+        "y_source_t_minus_0",
+        "forecast_y_t_plus_1"
+      ],
+      "dtype": "little-endian-float32",
+      "fold": "validation_late",
+      "open_phase_whitelist": "post_pre_gate_seal_readout",
+      "path": "materialized/panels/validation_late/return_and_label_panel.f32.memmap",
+      "row_key_hash": "1f46023e27b72e67afd10e01eb10daff7192c39f4be0d72846cc0ff4906e5adc",
+      "sha256": "e1e3b6fb241cdb63f49ea2add7b51b529c02408ac8f8ac5b9c79f7c486289147",
+      "shape": [
+        50167,
+        11
+      ]
+    }
+  ],
+  "requirement_version": "21B_v4",
+  "run_id": "21B_alpha158_sequence_baseline_benchmark",
+  "schema_version": "21B_model_input_panel_v4",
+  "sequence_sample_index_path": "materialized/sequence_sample_index.parquet",
+  "sequence_sample_index_sha256": "40b468038cef897dd7d2b1f95b1b3c82d1852aed1bf1da8cf08359e0bf4b87fb",
+  "sequence_sample_n": 498306,
+  "sequence_sort_key": "fold,decision_date,instrument",
+  "split_hash": "ecff4e1b86c0383d593cef355770e14a6f54305006da33c0b789699064c067fa",
+  "status": "pass",
+  "train_day_n": 842,
+  "train_row_key_hash": "33fb7a5f65dad27aed31c4be53b2978d1b0baadc3be1878aac1d4f84e1fec8be",
+  "train_row_n": 396207,
+  "validation_early_day_n": 107,
+  "validation_early_row_key_hash": "633f2bf154e826a5228c8e73c3bc361812c52fd63d3379ccd01966c80dbb8ba8",
+  "validation_early_row_n": 51932,
+  "validation_late_day_n": 103,
+  "validation_late_row_key_hash": "1f46023e27b72e67afd10e01eb10daff7192c39f4be0d72846cc0ff4906e5adc",
+  "validation_late_row_n": 50167
+}

@@ -10,7 +10,7 @@
 >
 > Run ID：`21B_alpha158_sequence_baseline_benchmark`
 >
-> Requirement version：`21B_v4`
+> Requirement version：`21B_v6`
 >
 > 上游研究计划：`research_plan.md`
 >
@@ -40,7 +40,7 @@ A0_VANILLA_AUTOENCODER
 operator、residual module、TopK 或成本参数。Validation 结果只是复杂架构的 futility screen，不是历史支持、可信 OOS support 或
 deployment evidence。
 
-为避免把同一 validation 信息同时用于 checkpoint 选择和 continuation gate，21B_v4 固定：
+为避免把同一 validation 信息同时用于 checkpoint 选择和 continuation gate，21B_v6 固定：
 
 ```text
 provisional_candidate_selection_fold = validation_early
@@ -110,8 +110,8 @@ config_file = configs/config_21b_alpha158_sequence_baseline_benchmark.yaml
 runner_file = src/run_21b_alpha158_sequence_baseline_benchmark.py
 test_file = tests/test_21b_alpha158_sequence_baseline_benchmark.py
 authorization_file = references/21b/execution_authorization.json
-canonical_output_root = outputs/21B_alpha158_sequence_baseline_benchmark_v4
-preauthorization_audit_root = outputs/21B_alpha158_sequence_baseline_benchmark_v4_preauthorization_audits
+canonical_output_root = outputs/21B_alpha158_sequence_baseline_benchmark_v6
+preauthorization_audit_root = outputs/21B_alpha158_sequence_baseline_benchmark_v6_preauthorization_audits
 ```
 
 Canonical output root 必须显式包含 requirement version；禁止把 v4 写入未版本化 root、v1/v2/v3 root 或 `latest` alias。未来任何
@@ -917,7 +917,7 @@ Exact checks：
 `null_score_sanity_gate` 的 hard checks 只包括上述结构性 M0 条件，以及 deterministic synthetic null fixture：对 `N=100` 的 fixed ranks
 枚举全部 100 个 cyclic shifts，mean daily RankIC 的绝对值必须 `<=1e-12`。真实 validation M0 的 stationary-bootstrap 99% two-sided
 CI 必须报告，但只作 diagnostic，不能成为随机 hard gate。其参数固定为 10,000 replicates、expected block length=20 decision days、
-percentile `[0.5%,99.5%]`、seed=`uint64_prefix(SHA256("21B_v4|M0_REALIZED_CI")) mod 2^63`。CI 不含 0 时标记
+percentile `[0.5%,99.5%]`、seed=`uint64_prefix(SHA256("21B_v6|M0_REALIZED_CI")) mod 2^63`。CI 不含 0 时标记
 `realized_m0_null_diagnostic_warning` 并调查，不能仅凭一次 1% tail event 阻断或通过 pipeline。
 
 ### 9.3 Baseline information gate
@@ -1508,7 +1508,7 @@ semantic_bundle_hash = SHA256(canonical_json_bytes({
 `semantic_bundle_hash`。顶层 hash 只写入 `semantic_reproducibility_manifest.json` 和被 semantic domain 排除的 final manifest；任何其他
 artifact 出现该值均使 `output_manifest_hash_gate=fail`。该 DAG 不允许 fixed-point、自身 placeholder、写后回填或迭代求 hash。
 
-Semantic canonicalization version 固定为 `21B_semantic_v4`。本 requirement 中 `canonical_json_bytes` exact 定义为：object key 按
+Semantic canonicalization version 固定为 `21B_semantic_v6`。本 requirement 中 `canonical_json_bytes` exact 定义为：object key 按
 UTF-8 bytes 升序；array 保持已注册 record order；UTF-8、`ensure_ascii=false`、无空白 separator；boolean/null 为小写 JSON token；integer
 使用无前导零十进制；finite JSON number 在 semantic form 中转换成字符串 `f64le:<IEEE-754-little-endian-8-byte-lowerhex>` 后再序列化；
 NaN/Inf 禁止。CSV/Parquet 的 float 继续按 schema dtype 的 little-endian bytes hash，不先转 JSON。YAML parsed object 和 LightGBM
@@ -1655,7 +1655,7 @@ Blocked 21A_v1 的 mandatory negative preflight 必须使用独立 test fixture/
   -k blocked_21a_v1_fails_before_outcome_access
 ```
 
-Fixture 必须返回 block state，且 access audit 证明没有 outcome read。Production 21A_v2-bound 21B_v4 preflight 仍须等待单独
+Fixture 必须返回 block state，且 access audit 证明没有 outcome read。Production 21A_v2-bound 21B_v6 preflight 仍须等待单独
 execution authorization；
 不得为了通过测试把 authorization gate 改成可选。
 
@@ -1670,7 +1670,7 @@ execution authorization；
 - [ ] qfq byte/routing access 与 semantic outcome row access 分离，cutoff 后 value decode 为 0
 - [ ] historical design holdout outcome/label/score-join/metric read count 为 0
 - [ ] 157-feature route、cache、normalizer、split hashes 继承成功 21A
-- [ ] canonical output root/version exact 为 21B_v4；缺失/无效授权只写 content-addressed preauthorization audit path
+- [ ] canonical output root/version exact 为 21B_v6；缺失/无效授权只写 content-addressed preauthorization audit path
 - [ ] 五个 mandatory arms、13 jobs、12 provisional candidates 与 actual checkpoint files exact
 - [ ] M1 tree checkpoint 与 M2/M3/A0 tensor checkpoint 的格式、byte hash、semantic hash 可复算
 - [ ] M1/M2/M3/A0 formulas、loss、score index 和 tensor shapes exact
@@ -1698,5 +1698,40 @@ execution authorization；
 
 ---
 
-本 requirement 的完成只表示 21B 规格已生成，并已绑定成功的 21A_v2 successor。当前仍须单独批准 21B 执行；本文件不得被
+## 15. 21B_v5 QFQ runtime-counter correction successor
+
+`21B_v5` 是 sealed `21B_v4` 的 immutable corrected successor。它不覆盖 v4，不重训或挑选模型，只针对
+`QFQ_POST_CUTOFF_VALUE_TOKEN_AND_RUNTIME_COUNTER_SEMANTICS` 缺陷执行真实的 cutoff-prefix access replay，并把每次 wrapper access
+在返回 value 或异常前写入 append-only raw log。v5 必须新增并密封：
+
+```text
+audits/qfq_runtime_access_event_log.csv
+audits/qfq_runtime_counter_evidence.csv
+contract_erratum_21b_v5.json
+paper_lineage_erratum_21a_for_21b_v5.json
+```
+
+Raw log、aggregate evidence、erratum 的 schema、计数公式与 hash closure exact 继承
+`requirement_21c_full_reaka_pit_proxy_replication.md` Section 2.2。两个 post-cutoff count 与四个 historical-holdout count必须均从 raw
+log 重算为 0；禁止用 config 常量或空报告声明代替。`counter_collection_mode=runtime_wrapper_and_append_only_log`、
+`runtime_counter_aggregation_contract_id=QFQ_RUNTIME_ACCESS_EVENT_AGGREGATION_V1`、`status=corrected_rerun_sealed`。
+
+v5 source config、decision 与 final manifest 必须显式包含：
+
+```text
+upstream_21b_contract_erratum_gate = pass
+```
+
+v4 model checkpoints、panels、prediction scores和 metrics 只允许 byte-preserving 继承；v5 manifest 必须重新密封 exact file set、semantic
+payload 和 output hashes，并记录 v4 source root/hash lineage。M2 lineage 同时由 human-approved
+`paper_lineage_erratum_21a_for_21b_v5.json` 修正为 `project_return_only_diagnostic`，不得映射 paper LSTM 或 `w/o GM`。
+
+### 15.1 21B_v6 gate-registry compatibility successor
+
+`21B_v6` byte-preserving 继承 sealed v5 的 corrected runtime log、aggregate evidence、model/panel/score/metric payload。唯一 material change是
+把 integration acceptance 固化为 27-row gate registry：原 26-row 21B registry 加一条
+`upstream_21b_contract_erratum_gate=pass`。v6 必须更新 requirement/config/runner/test pins、decision/root/version、semantic manifest 与 final
+hash closure；不得重训、重选 checkpoint 或访问 historical holdout。
+
+本 requirement 的完成只表示 21B 规格已生成，并已绑定成功的 21A_v2 successor。执行仍须单独 human authorization；本文件不得被
 用作绕过 execution authorization，或把已密封 `21A_v1` false-negative bundle 改写为 pass 的依据。

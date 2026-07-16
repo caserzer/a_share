@@ -1,0 +1,2 @@
+access_seq,stage,phase,path_or_resource,dataset_role,access_kind,requested_columns,parsed_value_columns,date_min,date_max,max_allowed_source_date,content_sha256,allowed,status,purpose
+1,train-baselines,selection-worker,materialized/train+validation_early,sealed_composite_panel,model_input,x_source|y_source|forecast_y,feature|return|label,2018-01-02,2023-06-30,2023-12-14,f38bcf784e95d9ff30b0900a8ff62a75c3db409e5c280afc7a310722b174eb56,true,pass,training_and_provisional_selection

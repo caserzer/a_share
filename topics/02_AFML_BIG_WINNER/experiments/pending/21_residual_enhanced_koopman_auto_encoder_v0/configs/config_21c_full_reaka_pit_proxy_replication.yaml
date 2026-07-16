@@ -1,0 +1,160 @@
+schema_version: 21C_FULL_CONFIG_V4
+identity:
+  run_id: 21C_full_reaka_pit_proxy_replication
+  experiment_id: 21_residual_enhanced_koopman_auto_encoder_v0
+  phase_id: 21C_FULL_VALIDATION_SANITY
+  requirement_version: 21C_FULL_v4
+  claim_ceiling: validation_only_full_architecture_local_sanity_and_point_ordering
+
+paths:
+  requirement: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/requirement_21c_full_reaka_pit_proxy_replication.md
+  config: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21c_full_reaka_pit_proxy_replication.yaml
+  runner: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21c_full_reaka_pit_proxy_replication.py
+  test: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/tests/test_21c_full_reaka_pit_proxy_replication.py
+  execution_authorization: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v4/execution_authorization.json
+  scope_restart_decision: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v4/scope_restart_decision.json
+  canonical_output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4
+  preauthorization_audit_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4_preauthorization_audits
+
+universe_exclusion:
+  registry_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v3/pit_universe_exclusion_registry.csv
+  registry_sha256: 3c3d903821ee56a49f1ea0d83327606b58f87826ae317d6f95e5a5d4236aef11
+  instrument_n: 396
+  exclusion_scope: all_folds_entire_instrument_history
+  derivation_scope: train_teacher_t_plus_1_key_availability_only
+  source_requirement_version: 21C_FULL_v2
+  source_v2_manifest_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v2/manifest_21c_full_reaka_pit_proxy_replication.json
+  source_v2_manifest_sha256: e74111de047040f85767ba88972dcfe6b110066de6820649f798826dd8436c87
+  source_v2_failure_evidence_path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v2/materialized/materialization_failure_evidence.csv
+  source_v2_failure_evidence_sha256: 493dded2a7aaa239d71a340a1cbab33452b1cc895c0082670107b411b6a92dbe
+
+performance:
+  successor_of: 21C_FULL_v3
+  feature_cache_residency: shared_process_ram_copy
+  inference_noise_device: cpu_row_seeded_batched_schedule
+  inference_batch_size: 1024
+  training_batch_semantics: unchanged_resource_probe_selected_256
+  inference_noise_seed_contract: unchanged_sha256_row_key_uint64_prefix_mod_2_63
+
+feature_route:
+  feature_route_id: ALPHA158_NO_VWAP_REGISTERED_ADAPTATION
+  feature_dim: 157
+  lookback_T: 10
+  label_id: Y_rank_primary
+  label_formula: qfq_close(t+1)/qfq_close(t)-1
+  normalization: train_median_iqr_div_1_349_clip_10
+  invalid_fill: train_median
+  missing_indicator_direct_input: false
+
+splits:
+  train: ['2018-01-02', '2022-12-14']
+  validation_early: ['2023-01-03', '2023-06-30']
+  validation_late: ['first_eligible_session_after_2023-06-30', '2023-12-13']
+  historical_design_holdout_readout_authorized: false
+  purge_sessions: 12
+
+architecture:
+  lookback_T: 10
+  feature_dim: 157
+  latent_dim: 64
+  lstm_layers: 1
+  n_operator: 4
+  selector_negative_slope: 0.01
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: linear_by_optimizer_step
+  gumbel_train_mode: soft
+  gumbel_inference_mode: hard_argmax
+  gumbel_clamp_min: 1.0e-10
+  gumbel_clamp_max: 0.9999999999
+  diffusion_steps: 20
+  beta_start: 0.0001
+  beta_end: 0.02
+  timestep_embedding_dim: 32
+  denoiser_hidden_dim: 128
+  inference_residual_draws: 8
+
+loss:
+  rec_weight: 1.0
+  koop_weight: 1.0
+  diff_weight: 1.0
+
+training:
+  model_seeds: [20260713, 20260714, 20260715]
+  precision: fp32
+  amp: false
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  adam_betas: [0.9, 0.999]
+  adam_eps: 0.00000001
+  adam_amsgrad: false
+  adam_foreach: false
+  adam_fused: false
+  adam_capturable: false
+  adam_maximize: false
+  adam_differentiable: false
+  scheduler: none
+  gradient_clip_global_l2: 1.0
+  gradient_clip_foreach: false
+  gradient_clip_error_if_nonfinite: true
+  zero_grad_set_to_none: true
+  max_epochs: 100
+  early_stopping_patience: 10
+  evaluate_every_epochs: 1
+  checkpoint_tie_break: earliest_epoch
+  train_shuffle_each_epoch: true
+  dataloader_drop_last: false
+  dataloader_num_workers: 0
+  dataloader_pin_memory: false
+  dataloader_persistent_workers: false
+  dataloader_prefetch_factor: null
+  device_transfer_non_blocking: false
+  sample_weight: 1.0
+  day_balanced_loss: false
+
+randomness:
+  numpy_seed_offset: 11
+  torch_seed_offset: 23
+  dataloader_seed_offset: 37
+  weight_init_seed_offset: 53
+  gumbel_seed_offset: 71
+  diffusion_train_noise_seed_offset: 89
+  inference_seed_contract: sha256_row_key_uint64_prefix_mod_2_63
+  deterministic_algorithms: true
+  cublas_workspace_config: ':4096:8'
+
+resource_probe:
+  resource_probe_seed: 21000053
+  batch_size_candidates: [256, 128, 64, 32, 16]
+  minimum_batch_size: 16
+  peak_reserved_memory_fraction_cap: 0.90
+  device: cuda
+
+metrics:
+  minimum_cross_section_n: 100
+  validation_full_complete_day_n_min: 200
+  validation_early_complete_day_n_min: 80
+  validation_late_complete_day_n_min: 80
+  positive_late_seed_n_min: 2
+  positive_leave_one_late_month_out_n_min: 5
+  late_month_n: 6
+  max_late_month_abs_contribution_share: 0.50
+  topk: 30
+  bootstrap_replicates: 5000
+  bootstrap_mean_block_length: 20
+  bootstrap_seed: 20260715
+
+execution:
+  primary_arm_id: R2_REAKA_DIFFUSION
+  inherited_comparator_ids: [M1_LIGHTGBM_ALPHA158, M3_GATED_DUAL_PATH_LSTM]
+  primary_config_n: 1
+  planned_primary_job_n: 3
+  sensitivity_job_n: 0
+  hyperparameter_search_allowed: false
+  best_seed_primary_allowed: false
+  historical_holdout_readout_authorized: false
+  next_open_execution_replay_authorized: false
+  policy_training_authorized: false
+  portfolio_optimization_authorized: false
+  deployment_authorized: false

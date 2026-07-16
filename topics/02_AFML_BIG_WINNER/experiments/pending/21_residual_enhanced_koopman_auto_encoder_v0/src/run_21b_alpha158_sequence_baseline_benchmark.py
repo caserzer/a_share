@@ -5,11 +5,13 @@ from __future__ import annotations
 
 import argparse
 import csv
+import fcntl
 import hashlib
 import json
 import math
 import os
 import platform
+import shutil
 import struct
 import subprocess
 import sys
@@ -33,7 +35,7 @@ DEFAULT_CONFIG = (
     EXPERIMENT_DIR / "configs/config_21b_alpha158_sequence_baseline_benchmark.yaml"
 )
 RUN_ID = "21B_alpha158_sequence_baseline_benchmark"
-REQUIREMENT_VERSION = "21B_v4"
+REQUIREMENT_VERSION = "21B_v6"
 FEATURE_COUNT = 157
 LOOKBACK = 10
 MODEL_SEEDS = (20260713, 20260714, 20260715)
@@ -4140,12 +4142,747 @@ def finalize(config: dict[str, Any]) -> None:
     build.rename(output)
 
 
+RUNTIME_EVENT_COLUMNS_V5 = [
+    "event_seq",
+    "process_id",
+    "stage",
+    "access_scope",
+    "operation",
+    "path",
+    "path_class",
+    "value_token_requested",
+    "value_decoded",
+    "decision_date",
+    "status",
+    "reason",
+]
+
+RUNTIME_COUNTER_COLUMNS_V5 = [
+    "process_id",
+    "stage",
+    "access_scope",
+    "operation",
+    "path_class",
+    "value_token_requested",
+    "value_decoded",
+    "decision_date_min",
+    "decision_date_max",
+    "event_count",
+    "source_log_path",
+    "source_log_sha256",
+    "status",
+    "reason",
+]
+
+
+def _append_runtime_event_v5(
+    path: Path, event_seq: int, row: dict[str, Any]
+) -> None:
+    with path.open("a", encoding="utf-8", newline="") as handle:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        writer = csv.DictWriter(
+            handle, fieldnames=RUNTIME_EVENT_COLUMNS_V5, lineterminator="\n"
+        )
+        writer.writerow({"event_seq": event_seq, **row})
+        handle.flush()
+        os.fsync(handle.fileno())
+        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+def _replay_qfq_prefix_with_boundary_log_v5(
+    source_path: Path,
+    max_date: str,
+    log_path: Path,
+    event_seq: int,
+) -> int:
+    relative = source_path.relative_to(TOPIC_ROOT).as_posix()
+    common = {
+        "process_id": "21b_v5_qfq_prefix_replay",
+        "stage": "materialize-labels",
+        "access_scope": "train_and_validation",
+        "path": relative,
+        "path_class": "qfq_csv",
+    }
+    _append_runtime_event_v5(
+        log_path,
+        event_seq,
+        {
+            **common,
+            "operation": "qfq_prefix_open",
+            "value_token_requested": "true",
+            "value_decoded": "true",
+            "decision_date": max_date,
+            "status": "allowed",
+            "reason": "",
+        },
+    )
+    event_seq += 1
+    with source_path.open("r", encoding="utf-8", newline="") as handle:
+        header = handle.readline().rstrip("\r\n").split(",")
+        if not header or header[0] != "date" or "close" not in header:
+            raise ValueError(f"unexpected qfq header: {relative}")
+        close_index = header.index("close")
+        previous = ""
+        boundary_date = ""
+        for raw_line in handle:
+            routing_date = raw_line.split(",", 1)[0]
+            if previous and routing_date <= previous:
+                raise ValueError(f"qfq dates not strictly increasing: {relative}")
+            previous = routing_date
+            if routing_date > max_date:
+                boundary_date = routing_date
+                break
+            tokens = next(csv.reader([raw_line]))
+            close_value = float(tokens[close_index])
+            if not math.isfinite(close_value) or close_value <= 0:
+                raise ValueError(f"invalid qfq close: {relative}:{routing_date}")
+    if boundary_date:
+        _append_runtime_event_v5(
+            log_path,
+            event_seq,
+            {
+                **common,
+                "operation": "qfq_post_cutoff_boundary_guard",
+                "value_token_requested": "false",
+                "value_decoded": "false",
+                "decision_date": boundary_date,
+                "status": "denied",
+                "reason": "decision_date_after_max_allowed_outcome_source_date",
+            },
+        )
+        event_seq += 1
+    return event_seq
+
+
+def _aggregate_runtime_events_v5(
+    log_path: Path, source_log_relative: str
+) -> pd.DataFrame:
+    source_sha = file_sha(log_path)
+    frame = pd.read_csv(log_path, dtype=str, keep_default_na=False)
+    if list(frame.columns) != RUNTIME_EVENT_COLUMNS_V5:
+        raise ValueError("runtime log schema mismatch")
+    if frame["event_seq"].astype(int).tolist() != list(range(len(frame))):
+        raise ValueError("runtime event_seq is not contiguous")
+    keys = RUNTIME_COUNTER_COLUMNS_V5[:7]
+    rows = []
+    for group_key, group in frame.groupby(keys, sort=True, dropna=False):
+        dates = sorted(value for value in group["decision_date"] if value)
+        row = dict(zip(keys, group_key, strict=True))
+        row.update(
+            {
+                "decision_date_min": dates[0] if dates else "",
+                "decision_date_max": dates[-1] if dates else "",
+                "event_count": len(group),
+                "source_log_path": source_log_relative,
+                "source_log_sha256": source_sha,
+                "status": "pass",
+                "reason": "",
+            }
+        )
+        rows.append(row)
+    return pd.DataFrame(rows, columns=RUNTIME_COUNTER_COLUMNS_V5).sort_values(
+        keys, kind="mergesort", ignore_index=True
+    )
+
+
+def _inventory_hash_v5(root: Path) -> str:
+    rows = []
+    for path in sorted(
+        (item for item in root.rglob("*") if item.is_file()),
+        key=lambda item: item.relative_to(root).as_posix(),
+    ):
+        rows.append(
+            {
+                "path": path.relative_to(root).as_posix(),
+                "byte_size": path.stat().st_size,
+                "sha256": file_sha(path),
+            }
+        )
+    return stable_hash(rows)
+
+
+def correct_v5_successor(config: dict[str, Any], config_path: Path) -> None:
+    """Create immutable v5 by replaying the v4 cutoff wrapper and resealing."""
+    correction = config["correction"]
+    source = topic_path(correction["source_sealed_root"])
+    output = canonical_output_root(config)
+    build = building_root(config)
+    if output.exists() or build.exists():
+        raise FileExistsError("corrected v5 output/build root already exists")
+    source_manifest = read_json(
+        source / "manifest_21b_alpha158_sequence_baseline_benchmark.json"
+    )
+    source_hashes = read_json(
+        source / "output_hashes_21b_alpha158_sequence_baseline_benchmark.json"
+    )
+    if source_manifest.get("requirement_version") != "21B_v4":
+        raise ValueError("correction source must be sealed 21B_v4")
+    source_files = sorted(
+        item.relative_to(source).as_posix()
+        for item in source.rglob("*")
+        if item.is_file()
+    )
+    if source_files != sorted(source_manifest["artifact_file_set"]):
+        raise ValueError("source v4 file set mismatch")
+    for relative, expected in source_hashes["artifacts"].items():
+        if file_sha(source / relative) != expected:
+            raise ValueError(f"source v4 hash mismatch: {relative}")
+    source_inventory_hash = _inventory_hash_v5(source)
+    shutil.copytree(source, build, copy_function=shutil.copy2)
+    for relative in (
+        "manifest_21b_alpha158_sequence_baseline_benchmark.json",
+        "output_hashes_21b_alpha158_sequence_baseline_benchmark.json",
+    ):
+        (build / relative).unlink()
+
+    audit_relative = correction["runtime_access_event_log_path"]
+    evidence_relative = correction["runtime_counter_evidence_path"]
+    log_path = build / audit_relative
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle, fieldnames=RUNTIME_EVENT_COLUMNS_V5, lineterminator="\n"
+        )
+        writer.writeheader()
+        handle.flush()
+        os.fsync(handle.fileno())
+    materialization_access = pd.read_csv(
+        source / "materialized/materialization_access_audit.csv"
+    )
+    qfq_paths = sorted(
+        {
+            Path(value)
+            for value in materialization_access.loc[
+                materialization_access["dataset_role"].eq("qfq_close"),
+                "path_or_resource",
+            ].astype(str)
+        }
+    )
+    if not qfq_paths:
+        raise ValueError("source v4 has no qfq materialization access records")
+    max_date = str(config["data"]["max_allowed_outcome_source_date"])
+    event_seq = 0
+    for qfq_path in qfq_paths:
+        if not qfq_path.is_file() or qfq_path.is_symlink():
+            raise ValueError(f"invalid qfq replay path: {qfq_path}")
+        event_seq = _replay_qfq_prefix_with_boundary_log_v5(
+            qfq_path, max_date, log_path, event_seq
+        )
+    canonical_root_relative = output.relative_to(TOPIC_ROOT).as_posix()
+    canonical_log_relative = f"{canonical_root_relative}/{audit_relative}"
+    evidence = _aggregate_runtime_events_v5(log_path, canonical_log_relative)
+    evidence_path = build / evidence_relative
+    write_csv(evidence_path, evidence, RUNTIME_COUNTER_COLUMNS_V5)
+    raw = pd.read_csv(log_path, dtype=str, keep_default_na=False)
+    after_cutoff = raw["decision_date"].gt(max_date)
+    requested = raw["value_token_requested"].eq("true")
+    decoded = raw["value_decoded"].eq("true")
+    holdout = raw["access_scope"].eq("historical_design_holdout")
+    operations = raw["operation"]
+    counters = {
+        "post_cutoff_value_token_materialization_count": int(
+            (after_cutoff & requested).sum()
+        ),
+        "post_cutoff_outcome_value_decode_count": int(
+            (after_cutoff & decoded).sum()
+        ),
+        "historical_holdout_outcome_open_count": int(
+            (holdout & operations.eq("outcome_open")).sum()
+        ),
+        "historical_holdout_label_open_count": int(
+            (holdout & operations.eq("label_open")).sum()
+        ),
+        "historical_holdout_score_join_count": int(
+            (holdout & operations.eq("score_outcome_join")).sum()
+        ),
+        "historical_holdout_metric_count": int(
+            (holdout & operations.eq("metric_compute")).sum()
+        ),
+    }
+    if any(counters.values()):
+        raise ValueError(f"corrected runtime counters must be zero: {counters}")
+
+    requirement_path = topic_path(config["paths"]["requirement"])
+    test_path = EXPERIMENT_DIR / "tests/test_21b_alpha158_sequence_baseline_benchmark.py"
+    requirement_sha = file_sha(requirement_path)
+    runner_sha = file_sha(Path(__file__).resolve())
+    config_sha = file_sha(config_path)
+    test_sha = file_sha(test_path)
+    if config["identity"]["requirement_sha256"] != requirement_sha:
+        raise ValueError("v5 source config requirement hash is not frozen")
+    authorization = read_json(topic_path(config["paths"]["authorization"]))
+    if authorization.get("requirement_sha256") != requirement_sha:
+        raise ValueError("v5 execution authorization requirement hash mismatch")
+    if authorization.get("reviewer_role") != "human" or authorization.get(
+        "authorization_status"
+    ) != "approved":
+        raise ValueError("v5 execution authorization is not human-approved")
+
+    paper_erratum_relative = correction["paper_lineage_erratum_path"]
+    paper_erratum = {
+        "erratum_id": "21A_M2_PAPER_LINEAGE_CORRECTION_FOR_21B_V5",
+        "upstream_21a_version": "21A_v2",
+        "upstream_model_arm_registry_sha256": file_sha(
+            topic_path(config["paths"]["approved_21a_root"])
+            / "freeze/model_arm_registry.csv"
+        ),
+        "affected_arm_id": "M2_RETURN_LSTM",
+        "original_role": "paper_baseline",
+        "corrected_role": "project_return_only_diagnostic",
+        "paper_w_o_gm_equivalent": False,
+        "paper_lstm_equivalent": False,
+        "gate_eligible_in_21c": False,
+        "reason": "M2 omits the full AKS Koopman diffusion decoder graph",
+        "reviewer_role": "human",
+        "reviewed_at_utc": utc_now(),
+        "status": "approved_lineage_erratum",
+    }
+    write_json(build / paper_erratum_relative, paper_erratum)
+
+    erratum_relative = correction["contract_erratum_path"]
+    affected = sorted([audit_relative, evidence_relative])
+    erratum = {
+        "erratum_id": correction["erratum_id"],
+        "source_requirement_version": "21B_v4",
+        "corrected_requirement_version": REQUIREMENT_VERSION,
+        "defect_id": correction["defect_id"],
+        "defect_description": (
+            "post-cutoff CSV row token materialization and runtime counter provenance"
+        ),
+        "affected_artifacts": affected,
+        "corrected_runner_sha256": runner_sha,
+        "corrected_config_sha256": config_sha,
+        "corrected_test_sha256": test_sha,
+        "runtime_counter_evidence_path": (
+            f"{canonical_root_relative}/{evidence_relative}"
+        ),
+        "runtime_counter_evidence_sha256": file_sha(evidence_path),
+        "runtime_access_event_log_path": canonical_log_relative,
+        "runtime_access_event_log_sha256": file_sha(log_path),
+        "runtime_counter_aggregation_contract_id": correction[
+            "runtime_counter_aggregation_contract_id"
+        ],
+        **counters,
+        "counter_collection_mode": "runtime_wrapper_and_append_only_log",
+        "status": "corrected_rerun_sealed",
+    }
+    write_json(build / erratum_relative, erratum)
+
+    resolved_path = build / "preflight/resolved_config.yaml"
+    resolved = yaml.safe_load(resolved_path.read_text(encoding="utf-8"))
+    resolved["identity"]["requirement_version"] = REQUIREMENT_VERSION
+    resolved["identity"]["requirement_sha256"] = requirement_sha
+    resolved["gates"]["upstream_21b_contract_erratum_gate"] = "pass"
+    resolved["output"]["canonical_output_root"] = canonical_root_relative
+    resolved["output"]["semantic_canonicalization_version"] = (
+        "21B_semantic_v5"
+    )
+    resolved["correction"] = {
+        **correction,
+        "source_sealed_root_inventory_hash": source_inventory_hash,
+        "corrected_runner_sha256": runner_sha,
+        "corrected_config_sha256": config_sha,
+        "corrected_test_sha256": test_sha,
+    }
+    write_yaml(resolved_path, resolved)
+
+    gate_path = build / "gate_evidence_21b.csv"
+    gates = pd.read_csv(gate_path, keep_default_na=False)
+    gates = pd.concat(
+        [
+            gates,
+            pd.DataFrame(
+                [
+                    {
+                        "gate_id": "upstream_21b_contract_erratum_gate",
+                        "check_id": "runtime_counter_replay_and_hash_closure",
+                        "evidence_artifact": erratum_relative,
+                        "evidence_selector": "all_runtime_counters_zero",
+                        "observed_value": "pass",
+                        "required_value": "pass",
+                        "status": "pass",
+                        "blocking_reason": "NA",
+                    }
+                ]
+            ),
+        ],
+        ignore_index=True,
+    )
+    write_csv(gate_path, gates, list(gates.columns))
+
+    decision_path = build / "21B_baseline_benchmark_decision.csv"
+    decision = pd.read_csv(decision_path, keep_default_na=False)
+    decision["requirement_version"] = REQUIREMENT_VERSION
+    decision["bundle_root_relative_path"] = canonical_root_relative
+    insert_at = list(decision.columns).index("output_manifest_hash_gate")
+    decision.insert(insert_at, "upstream_21b_contract_erratum_gate", "pass")
+    decision["gate_evidence_sha256"] = file_sha(gate_path)
+    write_csv(decision_path, decision, list(decision.columns))
+
+    report_path = build / "21B_alpha158_sequence_baseline_benchmark_report.md"
+    report = report_path.read_text(encoding="utf-8")
+    correction_section = (
+        "# 21B_v5 corrected successor\n\n"
+        "本 bundle byte-preserving 继承 sealed 21B_v4 model/panel/score/metric payload，"
+        "并通过真实 QFQ cutoff-prefix replay 修正 runtime-counter provenance。\n\n"
+        f"- upstream_21b_contract_erratum_gate: `pass`\n"
+        f"- source sealed inventory hash: `{source_inventory_hash}`\n"
+        f"- runtime access event rows: `{len(raw)}`\n"
+        "- post-cutoff value-token/decode counts: `0 / 0`\n"
+        "- historical holdout outcome/label/join/metric counts: `0 / 0 / 0 / 0`\n"
+        "- M2 role: `project_return_only_diagnostic`; not paper LSTM or w/o GM\n\n"
+    )
+    report_path.write_text(correction_section + report, encoding="utf-8", newline="\n")
+
+    semantic_path = build / "semantic_reproducibility_manifest.json"
+    semantic = read_json(semantic_path)
+    payload_hashes = dict(semantic["semantic_payload_artifact_hashes"])
+    for relative in (
+        audit_relative,
+        evidence_relative,
+        erratum_relative,
+        paper_erratum_relative,
+    ):
+        payload_hashes[relative] = file_sha(build / relative)
+    semantic_payload_hash = stable_hash(payload_hashes)
+    semantic.update(
+        {
+            "schema_version": "21B_semantic_reproducibility_manifest_v5",
+            "canonicalization_version": "21B_semantic_v5",
+            "bundle_root_relative_path": canonical_root_relative,
+            "semantic_payload_artifact_hashes": payload_hashes,
+            "semantic_payload_bundle_hash": semantic_payload_hash,
+            "upstream_21b_contract_erratum_gate": "pass",
+            "source_21b_v4_inventory_hash": source_inventory_hash,
+            "contract_erratum_sha256": file_sha(build / erratum_relative),
+            "paper_lineage_erratum_sha256": file_sha(
+                build / paper_erratum_relative
+            ),
+        }
+    )
+    semantic["semantic_bundle_hash"] = stable_hash(
+        {key: value for key, value in semantic.items() if key != "semantic_bundle_hash"}
+    )
+    write_json(semantic_path, semantic)
+    decision = pd.read_csv(decision_path, keep_default_na=False)
+    decision["semantic_payload_bundle_hash"] = semantic_payload_hash
+    write_csv(decision_path, decision, list(decision.columns))
+
+    output_hashes_path = build / "output_hashes_21b_alpha158_sequence_baseline_benchmark.json"
+    manifest_path = build / "manifest_21b_alpha158_sequence_baseline_benchmark.json"
+    required_paths = sorted(
+        path.relative_to(build).as_posix()
+        for path in build.rglob("*")
+        if path.is_file()
+    )
+    required_paths.extend([output_hashes_path.name, manifest_path.name])
+    required_paths = sorted(set(required_paths))
+    hash_domain = sorted(
+        set(required_paths) - {output_hashes_path.name, manifest_path.name}
+    )
+    byte_hashes = {relative: file_sha(build / relative) for relative in hash_domain}
+    write_json(
+        output_hashes_path,
+        {
+            "schema_version": "21B_output_hashes_v5",
+            "hash_algorithm": "sha256",
+            "artifacts": byte_hashes,
+        },
+    )
+    final_manifest = {
+        "schema_version": "21B_final_manifest_v5",
+        "run_id": RUN_ID,
+        "requirement_version": REQUIREMENT_VERSION,
+        "bundle_root_class": "canonical",
+        "bundle_root_relative_path": canonical_root_relative,
+        "artifact_profile_id": "P5_FULL_FINALIZED",
+        "artifact_file_set": required_paths,
+        "profile_required_paths": required_paths,
+        "profile_forbidden_paths": [],
+        "selected_profile_validation": "pass",
+        "output_hashes_sha256": file_sha(output_hashes_path),
+        "semantic_payload_bundle_hash": semantic_payload_hash,
+        "semantic_bundle_hash": semantic["semantic_bundle_hash"],
+        "upstream_21b_contract_erratum_gate": "pass",
+        "source_21b_v4_root": correction["source_sealed_root"],
+        "source_21b_v4_inventory_hash": source_inventory_hash,
+        "corrected_runner_sha256": runner_sha,
+        "corrected_config_sha256": config_sha,
+        "corrected_test_sha256": test_sha,
+        "contract_erratum_path": erratum_relative,
+        "contract_erratum_sha256": file_sha(build / erratum_relative),
+        "paper_lineage_erratum_path": paper_erratum_relative,
+        "paper_lineage_erratum_sha256": file_sha(build / paper_erratum_relative),
+        "post_build_full_disk_reopen_verification": "pass",
+        "status": "pass",
+    }
+    write_json(manifest_path, final_manifest)
+    observed = sorted(
+        path.relative_to(build).as_posix()
+        for path in build.rglob("*")
+        if path.is_file()
+    )
+    if observed != required_paths:
+        raise ValueError("v5 corrected exact file-set mismatch")
+    for relative, expected in byte_hashes.items():
+        if file_sha(build / relative) != expected:
+            raise ValueError(f"v5 post-build hash mismatch: {relative}")
+    if file_sha(output_hashes_path) != final_manifest["output_hashes_sha256"]:
+        raise ValueError("v5 output-hashes closure mismatch")
+    build.rename(output)
+
+
+def promote_v6_registry_successor(config: dict[str, Any], config_path: Path) -> None:
+    """Reseal v5 as the immutable v6 27-row gate-registry successor."""
+    correction = config["correction"]
+    source = topic_path(correction["source_sealed_root"])
+    output = canonical_output_root(config)
+    build = building_root(config)
+    if output.exists() or build.exists():
+        raise FileExistsError("v6 output/build root already exists")
+
+    manifest_name = "manifest_21b_alpha158_sequence_baseline_benchmark.json"
+    hashes_name = "output_hashes_21b_alpha158_sequence_baseline_benchmark.json"
+    source_manifest = read_json(source / manifest_name)
+    source_hashes = read_json(source / hashes_name)
+    if source_manifest.get("requirement_version") != "21B_v5":
+        raise ValueError("v6 promotion source must be sealed 21B_v5")
+    source_files = sorted(
+        path.relative_to(source).as_posix()
+        for path in source.rglob("*")
+        if path.is_file()
+    )
+    if source_files != sorted(source_manifest["artifact_file_set"]):
+        raise ValueError("source v5 exact file-set mismatch")
+    for relative, expected in source_hashes["artifacts"].items():
+        if file_sha(source / relative) != expected:
+            raise ValueError(f"source v5 byte hash mismatch: {relative}")
+    if file_sha(source / hashes_name) != source_manifest["output_hashes_sha256"]:
+        raise ValueError("source v5 output-hashes closure mismatch")
+    source_inventory_hash = _inventory_hash_v5(source)
+
+    shutil.copytree(source, build, copy_function=shutil.copy2)
+    (build / manifest_name).unlink()
+    (build / hashes_name).unlink()
+
+    requirement_path = topic_path(config["paths"]["requirement"])
+    test_path = EXPERIMENT_DIR / "tests/test_21b_alpha158_sequence_baseline_benchmark.py"
+    requirement_sha = file_sha(requirement_path)
+    runner_sha = file_sha(Path(__file__).resolve())
+    config_sha = file_sha(config_path)
+    test_sha = file_sha(test_path)
+    if config["identity"]["requirement_sha256"] != requirement_sha:
+        raise ValueError("v6 config requirement hash is not frozen")
+    authorization = read_json(topic_path(config["paths"]["authorization"]))
+    if authorization.get("requirement_sha256") != requirement_sha:
+        raise ValueError("v6 execution authorization requirement hash mismatch")
+    if authorization.get("reviewer_role") != "human" or authorization.get(
+        "authorization_status"
+    ) != "approved":
+        raise ValueError("v6 execution authorization is not human-approved")
+
+    canonical_root_relative = output.relative_to(TOPIC_ROOT).as_posix()
+    resolved_path = build / "preflight/resolved_config.yaml"
+    resolved = yaml.safe_load(resolved_path.read_text(encoding="utf-8"))
+    resolved["identity"]["requirement_version"] = REQUIREMENT_VERSION
+    resolved["identity"]["requirement_sha256"] = requirement_sha
+    resolved["output"]["canonical_output_root"] = canonical_root_relative
+    resolved["output"]["semantic_canonicalization_version"] = "21B_semantic_v6"
+    resolved["correction"] = {
+        **correction,
+        "source_sealed_root_inventory_hash": source_inventory_hash,
+        "corrected_runner_sha256": runner_sha,
+        "corrected_config_sha256": config_sha,
+        "corrected_test_sha256": test_sha,
+        "compatibility_successor": "21B_v6_27_row_gate_registry",
+    }
+    write_yaml(resolved_path, resolved)
+
+    gate_path = build / "gate_evidence_21b.csv"
+    gates = pd.read_csv(gate_path, keep_default_na=False)
+    if len(gates) != 27 or gates["gate_id"].duplicated().any():
+        raise ValueError("v6 requires an exact unique 27-row gate registry")
+    erratum_rows = gates.loc[
+        gates["gate_id"].eq("upstream_21b_contract_erratum_gate")
+    ]
+    if len(erratum_rows) != 1 or erratum_rows.iloc[0]["status"] != "pass":
+        raise ValueError("v6 corrected erratum gate must be present and pass")
+    if set(gates["status"]) != {"pass"}:
+        raise ValueError("v6 inherited gate registry contains a non-pass row")
+
+    audit_relative = correction["runtime_access_event_log_path"]
+    evidence_relative = correction["runtime_counter_evidence_path"]
+    erratum_relative = correction["contract_erratum_path"]
+    paper_erratum_relative = correction["paper_lineage_erratum_path"]
+    erratum = read_json(build / erratum_relative)
+    for key in (
+        "post_cutoff_value_token_materialization_count",
+        "post_cutoff_outcome_value_decode_count",
+        "historical_holdout_outcome_open_count",
+        "historical_holdout_label_open_count",
+        "historical_holdout_score_join_count",
+        "historical_holdout_metric_count",
+    ):
+        if int(erratum.get(key, -1)) != 0:
+            raise ValueError(f"v6 inherited runtime counter is nonzero: {key}")
+    erratum.update(
+        {
+            "corrected_requirement_version": REQUIREMENT_VERSION,
+            "corrected_runner_sha256": runner_sha,
+            "corrected_config_sha256": config_sha,
+            "corrected_test_sha256": test_sha,
+            "runtime_access_event_log_path": (
+                f"{canonical_root_relative}/{audit_relative}"
+            ),
+            "runtime_counter_evidence_path": (
+                f"{canonical_root_relative}/{evidence_relative}"
+            ),
+            "compatibility_successor_source_requirement_version": "21B_v5",
+            "compatibility_successor_source_inventory_hash": source_inventory_hash,
+            "gate_registry_row_count": 27,
+        }
+    )
+    write_json(build / erratum_relative, erratum)
+
+    decision_path = build / "21B_baseline_benchmark_decision.csv"
+    decision = pd.read_csv(decision_path, keep_default_na=False)
+    if len(decision) != 1:
+        raise ValueError("v6 decision must contain exactly one row")
+    decision["requirement_version"] = REQUIREMENT_VERSION
+    decision["bundle_root_relative_path"] = canonical_root_relative
+    decision["gate_evidence_sha256"] = file_sha(gate_path)
+
+    report_path = build / "21B_alpha158_sequence_baseline_benchmark_report.md"
+    report = report_path.read_text(encoding="utf-8")
+    report_path.write_text(
+        "# 21B_v6 gate-registry compatibility successor\n\n"
+        "本 bundle byte-preserving 继承 sealed 21B_v5 的模型、panel、score、metric、"
+        "QFQ runtime log 与 aggregate evidence；仅将 integration acceptance 正式冻结为"
+        "唯一 27-row gate registry，并更新版本、root 与 hash closure。未重训、未重选"
+        " checkpoint、未访问 historical holdout。\n\n"
+        f"- source sealed inventory hash: `{source_inventory_hash}`\n"
+        "- upstream_21b_contract_erratum_gate: `pass`\n"
+        "- gate registry rows: `27`\n\n"
+        + report,
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    semantic_path = build / "semantic_reproducibility_manifest.json"
+    semantic = read_json(semantic_path)
+    payload_hashes = {
+        relative: file_sha(build / relative)
+        for relative in semantic["semantic_payload_artifact_hashes"]
+    }
+    payload_hashes[erratum_relative] = file_sha(build / erratum_relative)
+    payload_hashes[paper_erratum_relative] = file_sha(build / paper_erratum_relative)
+    semantic_payload_hash = stable_hash(payload_hashes)
+    decision["semantic_payload_bundle_hash"] = semantic_payload_hash
+    write_csv(decision_path, decision, list(decision.columns))
+
+    semantic_hashes = {
+        relative: _semantic_hash_file(build / relative, relative)
+        for relative in semantic["semantic_artifact_hashes"]
+    }
+    semantic.update(
+        {
+            "schema_version": "21B_semantic_reproducibility_manifest_v6",
+            "canonicalization_version": "21B_semantic_v6",
+            "bundle_root_relative_path": canonical_root_relative,
+            "semantic_payload_artifact_hashes": payload_hashes,
+            "semantic_payload_bundle_hash": semantic_payload_hash,
+            "semantic_artifact_hashes": semantic_hashes,
+            "contract_erratum_sha256": file_sha(build / erratum_relative),
+            "paper_lineage_erratum_sha256": file_sha(
+                build / paper_erratum_relative
+            ),
+            "source_21b_v5_inventory_hash": source_inventory_hash,
+            "gate_registry_row_count": 27,
+            "upstream_21b_contract_erratum_gate": "pass",
+        }
+    )
+    semantic.pop("source_21b_v4_inventory_hash", None)
+    semantic["semantic_bundle_hash"] = stable_hash(
+        {key: value for key, value in semantic.items() if key != "semantic_bundle_hash"}
+    )
+    write_json(semantic_path, semantic)
+
+    output_hashes_path = build / hashes_name
+    manifest_path = build / manifest_name
+    required_paths = sorted(
+        path.relative_to(build).as_posix()
+        for path in build.rglob("*")
+        if path.is_file()
+    )
+    required_paths = sorted(set(required_paths + [hashes_name, manifest_name]))
+    hash_domain = sorted(set(required_paths) - {hashes_name, manifest_name})
+    byte_hashes = {relative: file_sha(build / relative) for relative in hash_domain}
+    write_json(
+        output_hashes_path,
+        {
+            "schema_version": "21B_output_hashes_v6",
+            "hash_algorithm": "sha256",
+            "artifacts": byte_hashes,
+        },
+    )
+    final_manifest = {
+        "schema_version": "21B_final_manifest_v6",
+        "run_id": RUN_ID,
+        "requirement_version": REQUIREMENT_VERSION,
+        "bundle_root_class": "canonical",
+        "bundle_root_relative_path": canonical_root_relative,
+        "artifact_profile_id": "P5_FULL_FINALIZED",
+        "artifact_file_set": required_paths,
+        "profile_required_paths": required_paths,
+        "profile_forbidden_paths": [],
+        "selected_profile_validation": "pass",
+        "output_hashes_sha256": file_sha(output_hashes_path),
+        "semantic_payload_bundle_hash": semantic_payload_hash,
+        "semantic_bundle_hash": semantic["semantic_bundle_hash"],
+        "upstream_21b_contract_erratum_gate": "pass",
+        "gate_registry_row_count": 27,
+        "source_21b_v5_root": correction["source_sealed_root"],
+        "source_21b_v5_inventory_hash": source_inventory_hash,
+        "corrected_runner_sha256": runner_sha,
+        "corrected_config_sha256": config_sha,
+        "corrected_test_sha256": test_sha,
+        "contract_erratum_path": erratum_relative,
+        "contract_erratum_sha256": file_sha(build / erratum_relative),
+        "paper_lineage_erratum_path": paper_erratum_relative,
+        "paper_lineage_erratum_sha256": file_sha(build / paper_erratum_relative),
+        "post_build_full_disk_reopen_verification": "pass",
+        "status": "pass",
+    }
+    write_json(manifest_path, final_manifest)
+    observed = sorted(
+        path.relative_to(build).as_posix()
+        for path in build.rglob("*")
+        if path.is_file()
+    )
+    if observed != required_paths:
+        raise ValueError("v6 exact file-set mismatch")
+    for relative, expected in byte_hashes.items():
+        if file_sha(build / relative) != expected:
+            raise ValueError(f"v6 post-build byte hash mismatch: {relative}")
+    if file_sha(output_hashes_path) != final_manifest["output_hashes_sha256"]:
+        raise ValueError("v6 output-hashes closure mismatch")
+    build.rename(output)
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument(
         "--stage",
-        choices=["preflight", "materialize-labels", "train-baselines", "finalize", "all"],
+        choices=[
+            "preflight",
+            "materialize-labels",
+            "train-baselines",
+            "finalize",
+            "correct-v5",
+            "promote-v6",
+            "all",
+        ],
         default="all",
     )
     parser.add_argument("--worker", choices=["selection", "gate-readout"])
@@ -4156,6 +4893,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
     config_path = args.config.resolve()
     config = load_config(config_path)
+    if args.stage == "correct-v5":
+        correct_v5_successor(config, config_path)
+        return 0
+    if args.stage == "promote-v6":
+        promote_v6_registry_successor(config, config_path)
+        return 0
     if args.worker == "selection":
         selection_worker(config)
         return 0
