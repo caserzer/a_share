@@ -1,0 +1,161 @@
+identity:
+  experiment_id: 20_ohlcv_positive_beta_exposure_research
+  phase_id: 20B_P4_TURNCTL
+  run_id: 20B_P4_top_region_hysteresis_partial_rebalance_turnover_control_v0
+  contract_version: 20B_P4_TURNCTL_v0
+
+authorization:
+  requirement_generation_authorized: true
+  requirement_execution_authorized: true
+  implementation_authorized: true
+  historical_outcome_execution_authorized: true
+  portfolio_replay_authorized: true
+  model_training_authorized: false
+  score_recomputation_authorized: false
+  bucket_recomputation_authorized: false
+  parameter_selection_authorized: false
+  deployment_authorized: false
+
+paths:
+  requirement_file: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/requirement_20b_p4_top_region_hysteresis_partial_rebalance_turnover_control_diagnostic.md
+  MLRANK_ROOT: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1
+  MLRANK_OUTPUT_HASHES: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/output_hashes_20b_p4_mlrank.json
+  MLRANK_MANIFEST: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/manifest_20b_p4_mlrank.json
+  MLRANK_DECISION: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/20B_P4_learned_monotonic_return_ranking_diagnostic_decision.csv
+  SCORE_BUNDLE_MANIFEST: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/scores/score_bundle_manifest.json
+  SCORE_BUNDLE_HASHES: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/scores/score_bundle_output_hashes.json
+  BUCKET_ASSIGNMENT: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/scores/robustness_model_bucket_assignment.parquet
+  SCORE_PANEL: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/scores/robustness_model_score_panel.parquet
+  FEATURE_PANEL: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/materialized/feature_panel.parquet
+  PORTSENS_ROOT: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6
+  PORTSENS_OUTPUT_HASHES: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6/output_hashes_20b_p4_portsens.json
+  PORTSENS_MANIFEST: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6/manifest_20b_p4_portsens.json
+  PORTSENS_DECISION: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_decision.csv
+  PORTSENS_RESOLVED_CONFIG: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6/preflight/resolved_config.yaml
+  PORTSENS_CONTRACT_SNAPSHOT: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6/preflight/contract_snapshot.json
+  PORTSENS_INPUT_AUDIT: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6/preflight/input_integrity_audit.csv
+  PORTSENS_COST_REGISTRY: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_d8_d10_sector_crowding_cost_stoploss_sensitivity_v6/preflight/cost_scenario_registry.csv
+  RAW_OHLCV_ROOT: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/raw
+  QFQ_ROOT: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+  TRADING_CALENDAR_FILE: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/trading_calendar.csv
+  PROJECT_UNIVERSE_FILE: topics/02_AFML_BIG_WINNER/data/processed/universe/pit_topn_400_100_executable_daily.csv
+  SECURITY_MASTER_FILE: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/instrument_metadata_target_universe.csv
+  SH_NAME_HISTORY_ROOT: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/sh_name_history
+  SZ_NAME_HISTORY_FILE: topics/02_AFML_BIG_WINNER/data/raw/akshare/status/stock_info_sz_change_name_short.csv
+  MARKET_RULE_REGISTRY_FILE: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/references/market_rules/a_share_price_limit_rules_v2.csv
+  output_root: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_top_region_hysteresis_partial_rebalance_turnover_control_v0
+  replay_a_scratch_root: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/.turnctl_scratch/v0/replay_a
+  replay_b_scratch_root: topics/02_AFML_BIG_WINNER/experiments/pending/20_ohlcv_positive_beta_exposure_research/.turnctl_scratch/v0/replay_b
+
+upstream_hashes:
+  MLRANK_OUTPUT_HASHES_sha256: c535431f2f71cb6a87a738b495266662b3a8d002c173f8673defe23f855453c8
+  MLRANK_MANIFEST_sha256: 052531faec928e0e2d4266dd65db60becf9803b90e105099fd943173d1982ab1
+  MLRANK_DECISION_sha256: b1758469b0b43cc21543d7e469a7d531ea08cbe5c9c08110ac345df2fac5c1cf
+  SCORE_BUNDLE_MANIFEST_sha256: 8cba8402335b77a530c41efe48e93fd27c2887b588af7af9cd8b66f867d851ff
+  SCORE_BUNDLE_HASHES_sha256: aea4f0811ad8306af690e48a63a519bfffa90322c89daff5984e369dcd1b2974
+  BUCKET_ASSIGNMENT_sha256: 9611aad6cd4b8933c882a8d3ae0e04561e8c360820f9c474a9de3a5840e5e846
+  SCORE_PANEL_sha256: 56622631cd8fac004509e5c3ef3a862a02e3eb753a1054a2b7da803ab8ee5118
+  FEATURE_PANEL_sha256: 22eeb61aee3c1d2e52a122896d4b494cd2079200b3e9e1a5eaa9fe23fa89c618
+  PORTSENS_OUTPUT_HASHES_sha256: 7de9cb4dcf6ec4edba696efa1bb6cae4579b3fec0eb873d67ed3814ec39d9523
+  PORTSENS_MANIFEST_sha256: e133bc06251e6ab40dfd33c3c1d974e9153b494aa065aaf69675489439dc4f11
+  PORTSENS_DECISION_sha256: 219df8e5f4a5ac1681a55bfb3cc53759c385baed79006bcc73bb694a87dec3f8
+  PORTSENS_RESOLVED_CONFIG_sha256: 22fd757476c81973d67cdb7bd7bcf638efeda69be4ab99211ece47539034635f
+  PORTSENS_CONTRACT_SNAPSHOT_sha256: e5f5b1cdaa1c7b6217a95c8d8dca02940fd86b5a444f5421e597983f107c0cd5
+  PORTSENS_INPUT_AUDIT_sha256: 669c5d5a1bb4e3efac7d6840e725103540f38eaa41c5588035527187f2461f6d
+  PORTSENS_COST_REGISTRY_sha256: cdf716e2962f4cd9d1c2da7b81e070de25f6072b1e6fcc1247b0197d7f6627c0
+
+population:
+  scored_model_id: S0_SELECTED_FULL
+  split: robustness
+  decision_date_min: '2024-07-31'
+  decision_date_max: '2026-03-31'
+  decision_month_n: 21
+  transition_month_n: 20
+  scored_row_n: 9300
+  union_instrument_n: 674
+  event_label_months: ['2024-10', '2025-02', '2025-08', '2025-09', '2026-04']
+
+policy_grid:
+  factorial_mix_ids: [MIX333, MIX403030]
+  exit_bucket_floors: [D8, D7, D6]
+  partial_rebalance_rhos: [0.25, 0.50, 1.00]
+  monthly_one_way_turnover_caps: [null, 0.20, 0.30, 0.40]
+  comparator_ids: [C_D8_ONLY_XD8_R100_CNONE, C_D9D10_EQUAL_XD8_R100_CNONE, C_MIX303040_XD8_R100_CNONE]
+  primary_policy_id: F_MIX403030_XD7_R050_C040
+  secondary_policy_id: F_MIX333_XD7_R050_C040
+  turnover_comparator_policy_id: C_D8_ONLY_XD8_R100_CNONE
+  exact_policy_n: 75
+
+membership:
+  entry_bucket_floor: D8
+  actual_holding_caps: {D8_ONLY: 45, D9D10_EQUAL: 89, TOP3: 134}
+  incumbent_rule: decision_close_executed_shares_gt_zero
+  d8_priority: [incumbent_desc, current_bucket_desc, model_score_desc, decision_close_weight_desc, instrument_id_asc]
+  new_entry_priority: [D10, D9, D8, model_score_desc, instrument_id_asc]
+  slot_admission_session_rule: scheduled_next_open_after_sell_fills_only
+  midmonth_late_buy_after_slot_release: false
+
+execution:
+  initial_AUM_cny: 10000000.0
+  initial_formation_full_rebalance: true
+  target_stock_weight_cap: 0.03
+  realized_single_weight_soft_limit: 0.03
+  realized_single_weight_emergency_limit: 0.05
+  decision_timing: after_close_last_sse_open_session
+  rebalance_timing: next_exchange_open_session
+  sell_before_buy: true
+  leverage_allowed: false
+  short_allowed: false
+  unallocated_capital: cash
+  planned_turnover_formula: cash_inclusive_one_way_max_buy_sell
+  attempted_turnover_formula: max_intended_buy_sell_notional_over_pretrade_NAV
+  realized_turnover_formula: max_executed_buy_sell_notional_over_pretrade_NAV
+  actual_holding_rule: executed_shares_gt_zero_no_dust_threshold
+
+cost:
+  inherited_contract: PORTSENS_v6
+  reference_cost_id: SLIP005
+  reference_slippage_bps: 5.0
+  commission_buy_bps: 2.5
+  commission_sell_bps: 2.5
+  minimum_commission_cny: 5.0
+  stamp_tax_sell_bps: 5.0
+  stamp_tax_effective_start: '2023-08-28'
+
+statistics:
+  month_scopes: [all, event_posthoc, non_event_posthoc]
+  bootstrap_method: circular_moving_block_bootstrap_paired_monthly_mean
+  block_length_months: 3
+  repetitions: 10000
+  rng: numpy_PCG64
+  seed: 20260717
+  quantiles: [0.025, 0.5, 0.975]
+  event_affirmative_support_contribution: false
+
+serialization:
+  csv_encoding: utf-8
+  csv_newline: LF
+  csv_na_rep: ''
+  csv_float_format: '%.12g'
+  gzip_compresslevel: 9
+  gzip_mtime: 0
+  json_ensure_ascii: false
+  json_sort_keys: true
+  json_indent: 2
+  parquet_engine: pyarrow
+  parquet_version: '2.6'
+  parquet_compression: zstd
+  parquet_compression_level: 9
+  parquet_use_dictionary: false
+  parquet_write_statistics: true
+  parquet_data_page_version: '2.0'
+  parquet_row_group_size: 65536
+
+output_contract:
+  schema_version: 20B_P4_TURNCTL_OUTPUT_v0
+  decision_name: 20B_P4_top_region_hysteresis_partial_rebalance_turnover_control_decision.csv
+  report_name: 20B_P4_top_region_hysteresis_partial_rebalance_turnover_control_report_cn.md
+  manifest_name: manifest_20b_p4_turnctl.json
+  output_hashes_name: output_hashes_20b_p4_turnctl.json
+  success_profile_id: P5_DESIGN_FEASIBILITY_MATERIALIZED
+  seal_failure_exit_code: 74
