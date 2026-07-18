@@ -1,0 +1,220 @@
+schema_version: 21D_GAP_CONFIG_V2
+
+identity:
+  run_id: 21D_reaka_replication_gap_causal_diagnostic
+  experiment_id: 21_residual_enhanced_koopman_auto_encoder_v0
+  phase_id: 21D_REAKA_REPLICATION_GAP_CAUSAL_DIAGNOSTIC
+  requirement_version: 21D_GAP_v2
+  claim_ceiling: design_contaminated_mechanism_diagnostic_and_forward_candidate_generation_only
+
+paths:
+  requirement: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/requirement_21d_reaka_replication_gap_causal_diagnostic.md
+  config: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21d_reaka_replication_gap_causal_diagnostic.yaml
+  runner: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21d_reaka_replication_gap_causal_diagnostic.py
+  test: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/tests/test_21d_reaka_replication_gap_causal_diagnostic.py
+  execution_authorization: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21d_gap_v2/execution_authorization.json
+  dependency_lock: uv.lock
+  canonical_output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21D_reaka_replication_gap_causal_diagnostic_v2
+
+upstream_pins:
+  21c_manifest:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/manifest_21c_full_reaka_pit_proxy_replication.json
+    sha256: b4537b99086c1c89c0f10d494a99aa8fb89434ea12b3557710cba29cfdda1529
+  21c_output_hashes:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/output_hashes_21c_full_reaka_pit_proxy_replication.json
+    sha256: bb56098ce915e64870a0f1b231c77c1190d4557ddd20c380b66ae23567cb2cc9
+  21c_decision:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/21C_full_reaka_pit_proxy_replication_decision.csv
+    sha256: 0eaaed6f2ec80fc8db0ca3588bf26ca6d0d4f48400eabdb198702461603ef664
+  21c_companion_report:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4_detailed_report_cn.md
+    sha256: 1b0e0d8dd910202d85616706089b4f97745f07a1761df9753564d4bda0cf1d70
+  21c_runner:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21c_full_reaka_pit_proxy_replication.py
+    sha256: fc57a05cb9ed9ef16149000137bef965fd1a768a253b5bd790cf51808d3f36a7
+  21c_config:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21c_full_reaka_pit_proxy_replication.yaml
+    sha256: 55347efd5aaa4e1132b075fb07e65b46df1e47689dafbb66a724b1ff1d591f7b
+  21c_test:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/tests/test_21c_full_reaka_pit_proxy_replication.py
+    sha256: 13a9dafbc0eb70b52115f9761556b86eb34787289c51f8388c025f7428f48699
+  21b_v5_manifest:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/manifest_21b_alpha158_sequence_baseline_benchmark.json
+    sha256: d5ca5c5997c4cce5019e73c0dd0e0fa06c4747a43d323f483c4de29131478d85
+  21b_v5_output_hashes:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/output_hashes_21b_alpha158_sequence_baseline_benchmark.json
+    sha256: e20f2ac9e5e49f51494373feaacb93c4e0ea609bb3b563e44fd98a4523db7552
+  21b_v6_manifest:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v6/manifest_21b_alpha158_sequence_baseline_benchmark.json
+    sha256: 443c0cee3dd247596e2150c22c9f2e1cdeb5d3629f59853cfe655d0069f42917
+  21b_v6_output_hashes:
+    path: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v6/output_hashes_21b_alpha158_sequence_baseline_benchmark.json
+    sha256: e219b2416c0e413979919d51ec8c8c4481db9404a3c4b50625d5832ec7ed02d9
+
+sealed_replay:
+  implementation_mode: import_pinned_21c
+  compatibility_profile: EXACT_RUNTIME_V1
+  seed_run_id: 21C_full_reaka_pit_proxy_replication
+  seed_arm_id: R2_REAKA_DIFFUSION
+  resolved_config_sha256: e42344507e84143ef144ce6ab777306bc551558e46c02f0cd64ee178b183bf19
+  initialization_contract_sha256: 0cfa6396dd0092c4257775c8eabe90490adc605f8fdb218fb6179ea4a8b08d5a
+  ordered_parameter_names_sha256: ec20a64e5f363ea1cf4202a96c7bead9e1898cca3e3dbee2d73031fbd457af8f
+  device_fingerprint_sha256: 4c6f9920f77f29f963ef9a37283c8012e3814d0838ae77abb719f0bcc939155b
+  curves_sha256: 40925a6e6456bf173764aec5abfa4934cb690ef44f2b0b1d4eb9deee06b9fa57
+  early_prediction_sha256: 5718ebdd5e5bb905850de7cb8742df90dc7c3fe1748a4c57abeb5537aebb81e5
+  late_prediction_sha256: a65f17c25de09117dc376e45c7c48a1456545a43371b38931c152ab988914a7c
+  selected:
+    '20260713': {epoch: 8, early_rankic: 0.005949575429699258, checkpoint_sha256: 1517fd270a76c5041cb61fb209ef5b0805e7ed203ed0e85463a8f701b6ee85c2, semantic_sha256: cd82c881c535500e1c6f4b93184605f0a8a5fa24f3de15ed0df698a832ce31cd}
+    '20260714': {epoch: 16, early_rankic: 0.009829404192532967, checkpoint_sha256: 37f50e7ec7f7793752ea7e6964baa7e30913b4e5d1565473e6bb25e6757c443d, semantic_sha256: e1678f1f31fb6837cc0d7449a64b08b65f2fbe48411d2b6843acaf6a1218fcfd}
+    '20260715': {epoch: 3, early_rankic: 0.008025732739492664, checkpoint_sha256: c8a7f85cdeaf1393b2658a101d7b8e7517926c2cfc7dc38eb16d00b74f23bb4b, semantic_sha256: ff28f8c6ba815dbddec63e3ab2242bf1be3d91e77f408e3b61c3e997f64c16a8}
+
+inputs:
+  panel_manifest: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/materialized/model_input_panel_manifest.json
+  sequence_index: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v5/materialized/sequence_sample_index.parquet
+  comparator_late_scores: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21B_alpha158_sequence_baseline_benchmark_v6/training/readout/validation_late_prediction_scores.parquet
+  exclusion_registry: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21c_full_v3/pit_universe_exclusion_registry.csv
+  exclusion_registry_sha256: 3c3d903821ee56a49f1ea0d83327606b58f87826ae317d6f95e5a5d4236aef11
+  teacher_manifest: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/materialized/r2_input_extension_manifest.json
+  teacher_return_panel: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/materialized/r2_train_teacher_return_panel.f32.memmap
+  teacher_sequence_index: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/materialized/r2_train_teacher_sequence_index.parquet
+  21c_curves: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/training/seed_level_training_curves.csv
+  21c_early_scores: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/training/selection/validation_early_prediction_scores.parquet
+  21c_late_scores: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/training/readout/validation_late_prediction_scores.parquet
+  21c_checkpoint_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4/training/checkpoints/R2_REAKA_DIFFUSION
+
+retained_folds:
+  train: {fold_order: 0, row_n: 335393, complete_day_n: 842, date_min: '2018-01-02', date_max: '2022-12-14', instrument_n: 860, row_key_sha256: d1d22a89e6b8096645f1f91b7941f22cd30670aabfbb37d3e388ca324daf6e4e}
+  validation_early: {fold_order: 1, row_n: 51932, complete_day_n: 107, date_min: '2023-01-04', date_max: '2023-06-30', instrument_n: 625, row_key_sha256: 633f2bf154e826a5228c8e73c3bc361812c52fd63d3379ccd01966c80dbb8ba8}
+  validation_late: {fold_order: 2, row_n: 50167, complete_day_n: 103, date_min: '2023-07-03', date_max: '2023-12-13', instrument_n: 592, row_key_sha256: 1f46023e27b72e67afd10e01eb10daff7192c39f4be0d72846cc0ff4906e5adc}
+
+transform:
+  raw_id: RAW_RETURN_CURRENT_V1
+  normalized_id: DECISION_CS_ZSCORE_RETURN_PATH_V2
+  accumulation_dtype: float64
+  model_dtype: little-endian-float32
+  ddof: 1
+  minimum_cross_section_n: 100
+  minimum_std: 1.0e-12
+  mean_tolerance: 1.0e-5
+  std_tolerance: 1.0e-5
+
+architecture:
+  lookback_T: 10
+  feature_dim: 157
+  latent_dim: 64
+  n_operator: 4
+  diffusion_steps: 20
+  beta_start: 0.0001
+  beta_end: 0.02
+  r1_hidden_width: 160
+  r1_residual_parameter_n: 46464
+  r2_denoiser_parameter_n: 45376
+
+training:
+  model_seeds: [20260713, 20260714, 20260715]
+  batch_size: 256
+  max_epochs: 100
+  early_stopping_patience: 10
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  adam_betas: [0.9, 0.999]
+  adam_eps: 0.00000001
+  gradient_clip_global_l2: 1.0
+  inference_batch_size: 1024
+  minimum_rankic_n: 100
+  deterministic_algorithms: true
+  max_attempt_n: 1
+
+gradient_calibration:
+  contract_id: 21D_GRAD_CAL_V2
+  temporal_strata_n: 4
+  rows_per_stratum: 2048
+  batches_per_stratum: 8
+  batch_size: 256
+  batches_per_seed: 32
+  rows_per_seed: 8192
+  weight_clip: [0.05, 20.0]
+
+arms:
+  - {arm_order: 0, arm_id: D0_R2_RAW_EXACT_REPLAY, return_transform: raw, loss_weights: fixed_1_1_1, selector_train: soft_gumbel, residual: ddpm, selection_draw_n: 8}
+  - {arm_order: 1, arm_id: D1_R2_RETURN_PATH_CSZ_ONLY, return_transform: decision_cs_zscore, loss_weights: fixed_1_1_1, selector_train: soft_gumbel, residual: ddpm, selection_draw_n: 8}
+  - {arm_order: 2, arm_id: D2_R2_GRADBAL_ONLY, return_transform: raw, loss_weights: train_calibrated, selector_train: soft_gumbel, residual: ddpm, selection_draw_n: 8}
+  - {arm_order: 3, arm_id: D3_R2_ST_HARD_ONLY, return_transform: raw, loss_weights: fixed_1_1_1, selector_train: straight_through_hard, residual: ddpm, selection_draw_n: 8}
+  - {arm_order: 4, arm_id: D4_R2_REPAIR_COMBINED_V1, return_transform: decision_cs_zscore, loss_weights: train_calibrated, selector_train: straight_through_hard, residual: ddpm, selection_draw_n: 64}
+  - {arm_order: 5, arm_id: D5_K2_RAW_NO_RESIDUAL, return_transform: raw, loss_weights: fixed_1_1, selector_train: soft_gumbel, residual: none, selection_draw_n: 0}
+  - {arm_order: 6, arm_id: D6_R1_RAW_MLP_RESIDUAL, return_transform: raw, loss_weights: fixed_1_1_1, selector_train: soft_gumbel, residual: mlp, selection_draw_n: 0}
+
+draws:
+  stored_identity_order: [SEALED_V4_R2, D0_R2_RAW_EXACT_REPLAY, D4_R2_REPAIR_COMBINED_V1]
+  folds: [validation_early, validation_late]
+  draw_n: 256
+  block_size: 8
+  block_n: 32
+  prefixes: [8, 32, 64, 128, 256]
+  shard_n: 18
+  sample_row_n: 918891
+  scalar_n: 235236096
+  raw_float_bytes: 940944384
+  parquet_compression: zstd
+
+resources:
+  total_gpu_wall_seconds_cap: 86400
+  canonical_output_root_bytes_cap: 17179869184
+  draw_dataset_bytes_cap: 4294967296
+  minimum_free_disk_before_training: 34359738368
+  no_batch_fallback: true
+
+execution:
+  learned_arm_n: 7
+  model_seed_n: 3
+  planned_learned_job_n: 21
+  planned_primary_job_n: 21
+  planned_sensitivity_job_n: 0
+  failed_job_replacement_n: 0
+  extra_search_job_n: 0
+  historical_holdout_readout_authorized: false
+  seal_only_after_full_success: true
+
+gates:
+  - execution_authorization_gate
+  - upstream_hash_and_file_set_gate
+  - upstream_21c_terminal_state_gate
+  - input_panel_integrity_gate
+  - retained_universe_exact_match_gate
+  - hypothesis_preseal_gate
+  - historical_holdout_zero_access_gate
+  - sealed_checkpoint_replay_gate
+  - zero_solution_recompute_gate
+  - inference_draw_schedule_gate
+  - inference_sampling_audit_gate
+  - arm_registry_exact_gate
+  - return_path_transform_firewall_gate
+  - gradient_calibration_train_only_gate
+  - architecture_shape_gate
+  - teacher_isolation_gate
+  - seed_determinism_gate
+  - resource_probe_gate
+  - training_completion_gate
+  - exact_retrain_control_gate
+  - pre_late_bundle_hash_gate
+  - fresh_late_readout_gate
+  - score_coverage_gate
+  - metric_implementation_gate
+  - hypothesis_falsification_gate
+  - repair_candidate_gate
+  - finalize_transaction_gate
+  - output_manifest_hash_gate
+  - failure_bundle_integrity_gate
+
+terminal_profiles:
+  '1': P0_PREAUTHORIZATION_BLOCKED
+  '2': P1_UPSTREAM_BLOCKED
+  '3': P2_INFERENCE_DIAGNOSTIC_BLOCKED
+  '4': P3_TRAINING_BLOCKED
+  '5': P4_LATE_READOUT_BLOCKED
+  '6': P5_FINALIZE_BLOCKED
+  '7': P6_FULL_DIAGNOSTIC_FINALIZED
+  '8': P6_FULL_DIAGNOSTIC_FINALIZED
+  '9': P6_FULL_DIAGNOSTIC_FINALIZED
+  '10': P6_FULL_DIAGNOSTIC_FINALIZED
