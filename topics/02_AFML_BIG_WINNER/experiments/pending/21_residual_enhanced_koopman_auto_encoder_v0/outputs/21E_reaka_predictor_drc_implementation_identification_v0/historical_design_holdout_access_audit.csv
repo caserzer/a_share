@@ -1,0 +1,7 @@
+stage_id,process_role,artifact_path,open_attempt_n,successful_open_n,bytes_read_n,first_opened_at_utc,last_opened_at_utc,status
+E0_PREAUTH_AND_PREFLIGHT,preflight_controller,historical_design_holdout,0,0,0,,,pass
+E1_PREDICTOR_EARLY_READOUT,predictor_worker,historical_design_holdout,0,0,0,,,pass
+E2_DRC_TRAINING_AND_EARLY_SELECTION,training_worker,historical_design_holdout,0,0,0,,,pass
+E3_PRE_LATE_COMPLETE,parent_controller,historical_design_holdout,0,0,0,,,pass
+E4_FRESH_LATE_READOUT,late_readout_worker,historical_design_holdout,0,0,0,,,pass
+E5_FINALIZE_AND_SEAL,finalize_controller,historical_design_holdout,0,0,0,,,pass

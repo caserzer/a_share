@@ -1,0 +1,15 @@
+arm_order,arm_id,stage_family,training_required,checkpoint_source,training_graph_id,denoiser_topology,diffusion_steps,beta_schedule,decoder_topology,point_predictor_id,draw_n,seed_n,oracle_control,paper_defined_fields_json,project_choice_fields_json,selection_role,status
+0,P0_CURRENT_SCORE_MEAN8,predictor_semantics,False,21c_v4,frozen_21c,concat_mlp,20,linear_1e-4_2e-2,linear,score_mean8,8,3,False,{},{},fixed_checkpoint_diagnostic,pre_registered
+1,P1_SINGLE_DRAW0,predictor_semantics,False,21c_v4,frozen_21c,concat_mlp,20,linear_1e-4_2e-2,linear,single_draw0,1,3,False,{},{},fixed_checkpoint_diagnostic,pre_registered
+2,P2_SCORE_MEAN64,predictor_semantics,False,21c_v4,frozen_21c,concat_mlp,20,linear_1e-4_2e-2,linear,score_mean64,64,3,False,{},{},fixed_checkpoint_diagnostic,pre_registered
+3,P3_SCORE_MEAN256_REF,predictor_semantics,False,21c_v4,frozen_21c,concat_mlp,20,linear_1e-4_2e-2,linear,score_mean256_ref,256,3,False,{},{},fixed_checkpoint_diagnostic,pre_registered
+4,P4_ZERO_NOISE_REVERSE_PROXY,predictor_semantics,False,21c_v4,frozen_21c,concat_mlp,20,linear_1e-4_2e-2,linear,zero_noise_reverse_path_proxy,0,3,False,{},{},fixed_checkpoint_diagnostic,pre_registered
+5,P5_KOOPMAN_ONLY,predictor_semantics,False,21c_v4,frozen_21c,concat_mlp,20,linear_1e-4_2e-2,linear,koopman_only,0,3,False,{},{},fixed_checkpoint_diagnostic,pre_registered
+6,P6_SCORE_MEDIAN256,predictor_semantics,False,21c_v4,frozen_21c,concat_mlp,20,linear_1e-4_2e-2,linear,score_median256,256,3,False,{},{},fixed_checkpoint_diagnostic,pre_registered
+7,G0_CURRENT_X0_COUPLED,drc_training_graph,True,fresh_training,x0_coupled,concat_mlp,20,linear_1e-4_2e-2,linear,score_mean64,64,3,False,{},{},early_only,pre_registered
+8,G1_STOPGRAD_X0_RECON,drc_training_graph,True,fresh_training,stopgrad_x0_recon,concat_mlp,20,linear_1e-4_2e-2,linear,score_mean64,64,3,False,{},{},early_only,pre_registered
+9,G2_TEACHER_LATENT_RECON_ORACLE,drc_training_graph,True,fresh_training,teacher_latent_recon_oracle,concat_mlp,20,linear_1e-4_2e-2,linear,score_mean64,64,3,True,{},{},early_only,pre_registered
+10,A0_SELECTED_GRAPH_CONTROL,drc_training_graph,False,selected_g0_or_g1_alias,x0_coupled,concat_mlp,20,linear_1e-4_2e-2,linear,score_mean64,64,3,False,{},{},alias_control,pre_registered
+11,A1_MLP_100_STEP,drc_architecture,True,fresh_training,selected_g0_or_g1,concat_mlp,100,linear_1e-4_2e-2,linear,score_mean64,64,3,False,{},{},early_only,pre_registered
+12,A2_RESBLOCK_20_STEP,drc_architecture,True,fresh_training,selected_g0_or_g1,residual_block,20,linear_1e-4_2e-2,linear,score_mean64,64,3,False,{},{},early_only,pre_registered
+13,A3_POINTWISE_MLP_DECODER,decoder_topology,True,fresh_training,selected_g0_or_g1,concat_mlp,20,linear_1e-4_2e-2,pointwise_mlp,score_mean64,64,3,False,{},{},early_only,pre_registered

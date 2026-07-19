@@ -1,0 +1,13 @@
+hypothesis_order,hypothesis_id,fold,required_contrast_ids_json,direct_test_complete,falsifier_triggered,material_evidence_n,directional_evidence_n,conflicting_evidence_n,evidence_paths_json,readout_status,allowed_conclusion
+1,H21E01_POINT_AGGREGATION_MATERIAL,validation_early,C01-C06,True,False,3,4,0,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic
+1,H21E01_POINT_AGGREGATION_MATERIAL,validation_late,C01-C06,True,False,3,3,0,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic
+2,H21E02_CURRENT_DRC_HARMS_SCORE,validation_early,C05,True,True,0,1,0,"[""paired_implementation_contrasts.csv""]",falsified,design_contaminated_mechanism_diagnostic
+2,H21E02_CURRENT_DRC_HARMS_SCORE,validation_late,C05,True,False,1,1,0,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic
+3,H21E03_REC_GRADIENT_PATH_MATERIAL,validation_early,C10-C11,True,True,0,0,1,"[""paired_implementation_contrasts.csv""]",falsified,design_contaminated_mechanism_diagnostic
+3,H21E03_REC_GRADIENT_PATH_MATERIAL,validation_late,C10-C11,True,False,1,1,0,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic
+4,H21E04_DENOISER_OR_SCHEDULE_MATERIAL,validation_early,C20-C21,True,False,1,1,0,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic
+4,H21E04_DENOISER_OR_SCHEDULE_MATERIAL,validation_late,C20-C21,True,True,0,0,1,"[""paired_implementation_contrasts.csv""]",falsified,design_contaminated_mechanism_diagnostic
+5,H21E05_DECODER_TOPOLOGY_MATERIAL,validation_early,C22,True,True,0,0,0,"[""paired_implementation_contrasts.csv""]",falsified,design_contaminated_mechanism_diagnostic
+5,H21E05_DECODER_TOPOLOGY_MATERIAL,validation_late,C22,True,False,1,1,0,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic
+6,H21E06_UNDISCLOSED_CODE_REMAINS,validation_early,C01-C22,True,False,4,6,1,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic
+6,H21E06_UNDISCLOSED_CODE_REMAINS,validation_late,C01-C22,True,False,6,6,1,"[""paired_implementation_contrasts.csv""]",not_falsified,design_contaminated_mechanism_diagnostic

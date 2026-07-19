@@ -1,0 +1,8 @@
+readout_order,point_predictor_id,residual_source,initial_x_T_role,reverse_noise_role,aggregation_domain,aggregation_function,draw_start,draw_stop_exclusive,draw_n,deterministic,conditional_mean_claim_allowed,paper_defined,score_index,status
+0,score_mean8,ddpm,row_keyed_noise,row_keyed_noise,decoded_score,mean,0,8,8,False,False,False,last_shifted_position,pre_registered
+1,single_draw0,ddpm,row_keyed_noise,row_keyed_noise,decoded_score,identity,0,1,1,False,False,False,last_shifted_position,pre_registered
+2,score_mean64,ddpm,row_keyed_noise,row_keyed_noise,decoded_score,mean,0,64,64,False,False,False,last_shifted_position,pre_registered
+3,score_mean256_ref,ddpm,row_keyed_noise,row_keyed_noise,decoded_score,mean,0,256,256,False,False,False,last_shifted_position,pre_registered
+4,zero_noise_reverse_path_proxy,ddpm,zero,zero,decoded_score,deterministic_reverse,0,0,0,True,False,False,last_shifted_position,pre_registered
+5,koopman_only,none,none,none,decoded_score,identity,0,0,0,True,False,False,last_shifted_position,pre_registered
+6,score_median256,ddpm,row_keyed_noise,row_keyed_noise,decoded_score,median,0,256,256,False,False,False,last_shifted_position,pre_registered
