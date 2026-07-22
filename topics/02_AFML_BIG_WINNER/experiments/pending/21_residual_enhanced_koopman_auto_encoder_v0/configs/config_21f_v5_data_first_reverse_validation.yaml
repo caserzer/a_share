@@ -1,0 +1,55 @@
+schema_version: 21F_DATA_FIRST_CONFIG_V1
+
+identity:
+  run_id: 21F_reaka_data_first_reverse_validation
+  requirement_version: 21F_DATA_FIRST_REVERSE_VALIDATION_v5
+  evidence_role: provisional_design_contaminated_diagnostic
+
+paths:
+  requirement: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/requirement_21f_v5_data_first_reverse_validation.md
+  config: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21f_v5_data_first_reverse_validation.yaml
+  runner: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21f_v5_data_first_reverse_validation.py
+  test: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/tests/test_21f_v5_data_first_reverse_validation.py
+  authorization: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/references/21f_v5_data_first/execution_authorization.json
+  base_config: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/configs/config_21f_reaka_semantic_repair_and_stability_validation.yaml
+  base_runner: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/src/run_21f_reaka_semantic_repair_and_stability_validation.py
+  source_e2_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21F_reaka_semantic_repair_and_stability_validation_v0.e2_resume_source_v4
+  output_root: experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21F_reaka_data_first_reverse_validation_v1
+  dependency_lock: uv.lock
+
+pins:
+  source_inner_manifest_sha256: 84280a14f2c470eaf6d016c7cbd74278ca116c6818407d268cff0c6ca9988dc5
+  source_inner_complete_sha256: bd83eb13858979c9d9aef285d5a840a8f8073e762200b694e9d9e410803157dd
+  base_config_sha256: 07a12460a8cfd2f215afff5507b9a5f6d83f6dec9e68d40ff484289ff40b57df
+  base_runner_sha256: 29011dffddbd397f4f316eb1e319268f2bf2f2fca1758cdd901cd4989b009599
+
+data_first:
+  estimator_id: Q1_SCORE_MEAN64
+  lane_n: 2
+  partition: inner_fold_order
+  draw_n: 64
+  reverse_steps: 20
+  inference_batch_size: 1024
+  provisional_refit_skip_fixed_epoch_readout: true
+  refit_lane_seeds:
+    - [20260713, 20260715]
+    - [20260714]
+  design_variants: [selected_drc_q1, same_backbone_k0, sealed_21c_q0]
+
+reverse_validation:
+  estimator_id: Q2_SCORE_MEAN256_REF
+  targeted_arm_n: 2
+  enabled_after_data_first: true
+  automatic_start: false
+  full_validation_required_before_seal: true
+
+resources:
+  maximum_concurrent_gpu_jobs: 2
+  worker_poll_seconds: 5
+  worker_timeout_seconds: 43200
+  minimum_free_disk_bytes: 10737418240
+
+execution:
+  seal_authorized: false
+  portfolio_output_authorized: false
+  next_requirement_execution_authorized: false
