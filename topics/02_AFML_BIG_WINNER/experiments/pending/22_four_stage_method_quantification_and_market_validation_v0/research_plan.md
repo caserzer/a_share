@@ -6,15 +6,21 @@
 >
 > Episode ID：`22_four_stage_method_quantification_and_market_validation_v0`
 >
-> 方法来源：用户提供的字幕方法分析；来源角色固定为 `practitioner_narrative_design_hypothesis`
+> 方法来源：仓库内直接来源 artifact [`【音频】投资高手白云居士李永顺：盈利1 4亿的交易心路.srt`](./【音频】投资高手白云居士李永顺：盈利1 4亿的交易心路.srt)
+>
+> 来源角色：`practitioner_narrative_design_hypothesis`
+>
+> 来源 SHA256：`a539fc184f0386e5365a7e3fc60f9bbf56d23923a73f613636cfa5c9d83232e2`
 >
 > 业绩声明：不独立核验“14 亿元盈利/收入”的真实性、归属、时间范围或统计口径
 >
-> 上游数据契约：EP19 PIT universe / tradability contract；项目 benchmark 与 qfq OHLCV 数据
+> 数据基线：EP19 PIT universe / tradability contract；项目 benchmark 与 qfq OHLCV 数据；它们是 baseline，不是 EP22 数据上限
 >
-> 启动性质：`topic_level_human_restart_for_component_quantification_and_market_validation`
+> 启动性质：`topic_level_exploratory_data_discovery_for_component_quantification_and_market_validation`
 >
-> 自动授权：`upstream_automatic_authorization = false`
+> 探索治理：`routine_local_exploration_requires_manual_stage_authorization = false`
+>
+> 正式边界：`formal_forward_freeze_or_deployment_requires_separate_explicit_authorization = true`
 >
 > 本 Episode 第一份预期需求：`requirement_22a_source_data_availability_and_validation_contract.md`
 
@@ -31,15 +37,15 @@ EP22 只回答：
 
 | 模块 | 对应原方法 | EP22 验证对象 |
 |---|---|---|
-| M1 事件反应 | 短线强弱 | 共同冲击后“实际反应－应有反应”的异常强弱 |
+| M1 事件反应 | 短线强弱 | 市场共同价格冲击、板块/行业特异 residual 冲击，以及板块/行业“实际反应－应有反应”的异常强弱 |
 | M2 情绪与持仓代理 | 情绪脉络＋博弈脉络 | 市场广度、波动、换手、拥挤等能否形成稳定的过滤状态 |
 | M3 股权供给与资金需求 | 资金中脉 | IPO、增发、解禁、减持、回购、融资、ETF/基金流等真实可得数据的市场关系 |
 | M4 风格价格冲击效率 | 资金流向与大小盘跷跷板 | 不同风格的收益、成交、广度、流动性和价格响应差异 |
 | M5 长期价值质量 | 长期价值势能 | ROIC、现金流、盈利质量、杠杆、回购/稀释等长期变量 |
 | M6 风险预算与对冲原件 | 情景＋对冲 | 波动/流动性/尾部约束是否校准；市场 beta、风格 beta 与个股残差能否被区分 |
 
-这六个模块不是一条必须串行通过的 pipeline。22A 完成共同的数据、时点、统计和 claim contract 后，M1–M6 可被分别批准、
-分别运行、分别失败：
+这六个模块不是一条必须串行通过的 pipeline。22A 提供共同的数据、时点、统计和 claim contract；M1–M6 可以在同一探索
+工作区内分别实现、分别迭代、分别运行、分别失败，不需要逐阶段等待人工批准：
 
 ```text
 22A  source + data availability + PIT timing + estimand + validation protocol
@@ -64,7 +70,7 @@ construct_invalid
 forward_freeze_candidate
 ```
 
-任何模块的历史正结果都不自动授权：
+任何模块的历史正结果都不自动升级为：
 
 ```text
 cross-module combination
@@ -85,7 +91,8 @@ live trading
 - 估计效应量、稳定性、成本和统计功效；
 - 冻结少量后续候选。
 
-但它不能提供可信的最终正向 support。若某模块值得继续，必须先密封公式、数据源、阈值、方向、horizon 和统计口径，
+但它不能提供可信的最终正向 support。探索阶段允许继续改写公式、数据源、阈值、方向、horizon 和统计口径，只要每次尝试保留
+可复现 checkpoint，并诚实记录 search path。只有准备把某个候选升级为正式 forward confirmation 时，才必须建立不可变 freeze，
 再等待 freeze 后真实形成的 forward cohort。
 
 因此 EP22 当前交付范围更精确地说是：
@@ -97,13 +104,118 @@ historical_real_market_component_diagnosis
 
 不是 `confirmatory_forward_validation_complete`。
 
+### 0.1 EP22 探索治理规则
+
+EP22 固定使用项目原则 `9.8 EP22 Uses Exploratory Data-Discovery Mode`：
+
+```text
+routine_requirement_revision_allowed = true
+routine_local_implementation_allowed = true
+routine_historical_diagnostic_run_allowed = true
+routine_ablation_and_variant_iteration_allowed = true
+per_stage_human_authorization_required = false
+mandatory_intermediate_seal = false
+```
+
+探索流程为：
+
+```text
+working
+  -> checkpointed
+  -> diagnostic_complete
+  -> validated_working_result
+  -> optional_formal_freeze
+```
+
+manifest、hash、stage log 和 config snapshot 用于重现与比较尝试，不是人工批准门槛。working artifact 可在 lineage 清楚、变更有记录的
+情况下原位修复或重跑。PIT、防泄漏、train-only selection、denominator、multiplicity、稳定性与 claim ceiling 仍是科学约束，
+不能因探索模式而取消。
+
+本文后续的 `freeze/frozen` 默认指“在单个 attempt 内固定，避免 outcome 后改口径”，不等于 immutable seal，也不触发人工批准。
+只有明确写成 `formal forward freeze` 时才表示跨 attempt 不可变的确认性合同。
+
+探索结果允许明确裁决为 `historically_supported_in_exploration`、`historically_falsified`、`unstable`、`low_power` 或
+`data_blocked`。这里的“证真”只表示冻结口径下的历史数据支持，不表示因果真理、true OOS 或 forward confirmation。
+
+只有以下动作需要另行明确授权：正式 forward-confirmation freeze、生产部署、live trading、外部副作用或付费凭据数据获取、
+破坏性修改既有 sealed bundle，以及把 EP22 扩展成跨模块决策路由或生产仓位系统。
+
+### 0.2 数据发现是横跨所有模块的一等研究方向
+
+EP22 不能把“当前本地没有数据”直接当作研究终点。现有 `U_project`、benchmark 与 OHLCV 只定义可复现 baseline；数据缺口本身、
+哪里可以补、能否 PIT 重建、补充后是否真的有研究增量，都是本 Episode 的核心问题。
+
+数据探索横向层：
+
+```text
+D0 gap registry
+  -> D1 candidate-source discovery and public read-only acquisition
+  -> D2 PIT/timestamp/revision/coverage audit
+  -> D3 construct and effective-support gain
+  -> D4 module-specific incremental empirical value
+```
+
+需要主动搜索的候选数据面至少包括：
+
+- 更宽的历史 PIT eligible A 股 universe、daily tradability 与历史权重；
+- genuine industry/sector index history、PIT constituent membership 与 taxonomy revisions；
+- 公告/新闻精确发布时间、事件类型、修订与可用时点；
+- IPO、增发、配股、解禁、减持、回购等 announcement/eligibility/execution/completion；
+- ETF/基金申赎或份额、融资融券、北向/其他资金代理及其口径变化；
+- as-reported 财务报表、首次公告时间、restatement lineage 与 analyst revision；
+- official free float、total/listed-circulating shares 的语义与历史；
+- 可交易 ETF/期货、合约、基差、换月、保证金、费率、成交与流动性；
+- 集合竞价、分钟或其他可证明 first-executable timing 的数据。
+
+数据价值必须分两层裁决：
+
+```text
+contract_usefulness:
+    source 可访问、PIT 可重建、coverage 足够、construct 更接近原命题、
+    effective support 增加、维护与许可可接受
+
+empirical_usefulness:
+    在模块专属 versioned attempt 中，
+    相对 existing-data baseline 是否增加稳定、非泄漏、非机械的历史证据
+```
+
+可能的合法结论：
+
+```text
+source_not_found
+source_available_but_not_PIT_reconstructable
+source_PIT_usable_but_coverage_insufficient
+source_redundant_with_existing_proxy
+source_improves_construct_or_support_only
+source_adds_incremental_historical_evidence
+source_changes_or_falsifies_prior_interpretation
+```
+
+公开、read-only、无需新凭据或付费的数据发现、下载、缓存和 profiling 属于常规 EP22 探索。需要新凭据、付费、许可承诺或修改外部
+系统时才另行请求授权。
+
+本文后续未加限定的 `data_blocked` 默认表示“当前 source/arm 被阻断”。只有完成预注册的 public-source search budget，或确认
+需要尚未批准的凭据、付费、许可后，才可把它升级为 module-level `component_data_blocked`。
+
 ---
 
 ## 1. 来源边界与研究身份
 
 ### 1.1 来源能提供什么
 
-用户提供的材料是对字幕内容的二次还原和方法分析。它可以提供：
+EP22 的直接方法来源是仓库内的
+[`【音频】投资高手白云居士李永顺：盈利1 4亿的交易心路.srt`](./【音频】投资高手白云居士李永顺：盈利1 4亿的交易心路.srt)。
+该文件是音频节目的文字转录 artifact，而不是二次方法还原；研究中的方法拆解、变量映射与待检验假设必须能够回溯到该字幕的
+原始表述和时间戳。22A 的 `source_claim_registry` 至少必须记录以下固定身份：
+
+```text
+source_artifact_id = ep22_baiyun_lijuyshi_liyongshun_trading_journey_srt
+source_artifact_path = topics/02_AFML_BIG_WINNER/experiments/pending/22_four_stage_method_quantification_and_market_validation_v0/【音频】投资高手白云居士李永顺：盈利1 4亿的交易心路.srt
+source_artifact_sha256 = a539fc184f0386e5365a7e3fc60f9bbf56d23923a73f613636cfa5c9d83232e2
+source_artifact_role = practitioner_narrative_design_hypothesis
+```
+
+该来源可以提供：
 
 - 可检验的 practitioner hypothesis；
 - 候选变量和作用机制；
@@ -111,7 +223,7 @@ historical_real_market_component_diagnosis
 - 风险与边界提醒；
 - 模块拆分的研究起点。
 
-它不能提供：
+该来源不能提供：
 
 - 已核验的业绩；
 - 完整交易记录；
@@ -170,14 +282,15 @@ EP22 中的真实市场验证必须满足：
 
 ### 1.3 与现有 Episode 的关系
 
-EP22 是用户明确发起的 topic-level restart，不是任何现有 Episode 自动批准的下一阶段。
+EP22 是用户明确发起的 topic-level exploratory restart，不是任何现有 Episode 的机械延续；在本计划范围内的后续本地探索不需要
+逐项人工批准。
 
 允许继承：
 
 - EP19 的 PIT top-400 主板 + top-100 创业板 universe lineage；
 - close-observed、next-session usable 的时间语义；
 - next-open、停牌、涨跌停、blocked fill、成本和现金审计方法；
-- 项目的 train-only selection、purge、embargo、episode 去重和输出密封原则；
+- 项目的 train-only selection、purge、embargo、episode 去重和可审计 checkpoint 原则；
 - 本地真实 qfq OHLCV 与 benchmark 数据作为待重新 hash 的输入。
 
 不得继承：
@@ -201,16 +314,20 @@ trailing 5D/10D market-residual continuation
 其历史终态为 `20B_SRC_not_identified_design_only`，residualization value 未通过，也没有 participation/meta-label 或下一 requirement
 授权。
 
-因此 22B 不是把 trailing residual momentum 改名重跑。22B 的新 estimand 是：
+因此 22B 不是把 trailing residual momentum 改名重跑。22B 的第一层新 estimand 是：
 
 ```text
 pre-registered common shock at t
-+ contemporaneous cross-sectional reaction relative to causal expected response
-+ forward market outcome from after the information cutoff
++ contemporaneous board/industry reaction relative to causal expected group response
++ forward group price/path outcome from after the information cutoff
 ```
 
-`EP20B-SRC-like trailing residual continuation` 必须作为 incumbent comparator。若 22B 最终只是复算 trailing residual momentum，
-应直接判为 `duplicate_research_closed`。
+`EP20B-SRC-like group trailing residual continuation` 必须作为 incumbent comparator；它必须在本次受支持 group universe 上
+重新按 group 口径因果构造，不能把 EP20B-SRC 的 stock-level 输出直接当作同口径 comparator。若 22B 最终只是把 trailing
+residual momentum 聚合到 group 后重跑，应直接判为 `duplicate_research_closed`。
+
+个股相对板块/行业的 residual 只属于第二层 decomposition。第一层板块/行业关系未通过前，不得用密集 stock-row 结果把 M1
+解释成个股选股信号。
 
 EP16 已证明 survival / drawdown-risk separability 不等于 action utility。因此 EP22 中：
 
@@ -228,7 +345,7 @@ EP16 已证明 survival / drawdown-risk separability 不等于 action utility。
 六个模块分别回答六类问题，不允许用一个模块的指标替代另一个：
 
 ```text
-M1: abnormal reaction 是否含有增量的 forward price/path information?
+M1: market/group shock 后的 group abnormal reaction 是否含有增量的 forward group price/path information?
 M2: observable state 是否稳定对应不同的 forward market distribution?
 M3: observable supply/demand event 是否对应可复现的 market response?
 M4: style return/turnover/liquidity relation 是否稳定且不同于会计式“资金消耗”?
@@ -345,7 +462,7 @@ forward_supported_component
 
 ## 3. 共同数据、时点与统计合同
 
-### 3.1 当前已知本地数据
+### 3.1 当前本地 baseline 与主动补数
 
 22A 必须重新审计，不得把计划时 inventory 当运行时证据。当前已知本地输入包括：
 
@@ -357,7 +474,7 @@ forward_supported_component
 - raw share-history cache 中的 total/listed-circulating share 候选字段；它们尚未成为 processed contract，
   且 `listed circulating A shares` 不自动等于指数方法意义的 official free float。
 
-当前不预设已可靠可用：
+当前不预设已可靠可用、但必须进入 D0–D3 source exploration 的数据：
 
 - genuine PIT industry membership；
 - 公告级语义新闻及精确发布时间；
@@ -369,9 +486,20 @@ forward_supported_component
 - 分析师预测修正；
 - 指数期货/ETF 的连续合约、基差、换月、保证金和真实成本。
 
-缺失项必须在 22A 标记，不得静默替代。
+缺失项必须在 22A 标记并进入 candidate-source registry，不得静默替代，也不得因为 baseline 中没有就直接关闭研究。每个缺口至少
+记录候选 provider/API/file、访问条件、可用字段、时间范围、PIT timestamp、revision、许可/成本、预期解锁 module 与试采结果。
 
-默认 universe claim ceiling：
+新增 source 不自动替换 baseline。必须建立成对 arm：
+
+```text
+B0_existing_local_baseline
+B1_candidate_source_augmented
+```
+
+先审计 B1 是否改善 construct/coverage/effective support，再在 module-specific attempt 中检验 B1 相对 B0 是否有 empirical increment。
+只有数据更多但无增量，正确结论是 `source_redundant_or_low_value`。
+
+existing-data baseline 的 universe claim ceiling：
 
 ```text
 stock_cross_section_scope = within_U_project
@@ -381,8 +509,9 @@ within_U_project_relative_small != A_share_small_cap
 market_wide_supply_or_flow_claim = data_blocked_without_separate_broad_source
 ```
 
-因此 M2 的上涨家数/新高/成交广度默认是项目池广度，M3 issuer panel 默认是项目池发行人，M4 size spread 默认是项目池内相对
-size。除非 22A 新建并审计宽截面 PIT eligible universe、历史权重和相关数据，不得升级为全 A 市场结论。
+因此 baseline arm 中，M2 的上涨家数/新高/成交广度是项目池广度，M3 issuer panel 是项目池发行人，M4 size spread 是项目池内
+相对 size。22A 应主动寻找并审计宽截面 PIT eligible universe、历史权重和相关数据；通过后新增 expanded-universe arm，而不是
+回写或伪装 baseline。只有 expanded arm 的 coverage/PIT/denominator audit 通过，才可形成更宽市场范围的 source-specific 结论。
 
 ### 3.2 Industry 边界
 
@@ -391,13 +520,23 @@ EP19 已确认本 topic 的 historical PIT industry classification 不足以支�
 因此默认：
 
 ```text
-M1 primary adjustment = market + supported board/style only
+M1 primary market-shock source = official market benchmark
+M1 primary reaction unit = supported board/style portfolio
+M1 genuine-industry return arm = conditional_on_22A_source_audit
+M1 genuine-industry internal-structure arm = conditional_on_22A_pit_membership_audit
 M2 primary state = within-U_project breadth + official market benchmark + supported board/style only
 M4 primary style = PIT-observable board/size/liquidity/volatility/momentum buckets
 historical_current_industry_backfill = forbidden
 ```
 
-仓库其他 topic 中若存在覆盖较窄的 PIT industry 表，只能在通过以下审计后作为 sensitivity：
+M1 的行业层可以通过两条不同数据路径获准，且 claim ceiling 不同：
+
+1. 有完整、时间语义明确的官方行业指数 OHLCV 时，可以运行 `industry_return_only_arm`，但不能据此声称掌握成分股 breadth、
+   dispersion 或内部集中度；
+2. 有逐时点有效的 industry membership、instrument mapping 与 `t-1` 权重时，才可以自建行业组合并运行
+   `industry_internal_structure_arm`。
+
+仓库其他 topic 中若存在覆盖较窄的 PIT industry 表，只能在通过以下审计后进入上述第二条路径：
 
 - universe overlap；
 - date coverage；
@@ -410,10 +549,12 @@ historical_current_industry_backfill = forbidden
 覆盖不足或 mapping 不一致时输出：
 
 ```text
-industry_adjusted_arm = not_run_due_to_unsupported_pit_industry
+industry_return_only_arm = not_run_due_to_unsupported_historical_industry_index
+industry_internal_structure_arm = not_run_due_to_unsupported_pit_industry
 ```
 
 不得把 current industry、2025 taxonomy 或 concept/theme snapshot 回填为 historical PIT industry。
+概念/主题板块在没有可证明的历史成分变更时间前不进入 M1 primary；交易板、行业、风格和概念不得混写为同一个 `board`。
 
 ### 3.3 通用时点
 
@@ -484,7 +625,7 @@ future recovery / future high / first winner hit cannot define episode boundary
 
 | 模块 | primary inference unit 候选 |
 |---|---|
-| M1 | distinct shock-date / online shock episode |
+| M1 | distinct market shock-date / online market or group shock episode；group rows nested within shock-date |
 | M2 | non-overlapping calendar block / state segment |
 | M3A | issuer-event episode + issuer/calendar block |
 | M3B | non-overlapping aggregate-flow calendar block |
@@ -536,13 +677,27 @@ future recovery / future high / first winner hit cannot define episode boundary
 实际反应 - 应有反应 = 信息
 ```
 
-在没有可靠新闻语义和 PIT 时间戳时，EP22 不称“利好/利空事件”。Primary 只研究：
+在没有可靠新闻语义、当时市场共识和 PIT 时间戳时，EP22 不称“利好/利空事件”，也不把价格波动归因于某条事后找到的
+新闻。Primary 只研究：
 
 ```text
-observable common shock
+observable market-wide common price shock
++ observable group-specific residual price shock
++ contemporaneous board/industry reaction relative to causal expected group response
 ```
 
-例如市场或受支持 board 的显著正/负冲击，以及股票对该共同冲击的同时反应。
+M1 的第一层 primary reaction unit 是受支持的交易板、行业或其他预注册 group portfolio，不是个股。研究顺序固定为：
+
+```text
+L0 market common shock
+    -> L1 board/industry abnormal reaction
+    -> L2 group internal breadth/dispersion/liquidity structure
+    -> L3 stock relative-to-group reaction, deferred
+```
+
+第一层板块/行业结果未通过前，L3 不得成为 M1 primary，不得用巨大 stock-row N 替代有效 shock-date / episode 证据。
+M1 的 event-conditioned group reaction 与 M4 的 unconditional / state-conditioned style price-impact relation 是两个 estimand；
+不得用其中一个结果替代另一个。
 
 公告/新闻语义只能作为单独的 secondary module extension，并且必须先证明精确发布时间、修订、停复牌与 first-market-usable
 时点。若该数据合同未通过：
@@ -557,88 +712,348 @@ Construct ceiling 固定为：
 
 ```text
 semantic_event_surprise = data_blocked_without_timestamped_event_polarity_and_expected_magnitude
-common_shock_reaction_residual = proxy_only
+market_or_group_price_shock_causal_origin = unidentified_without_timestamped_semantic_source
+group_shock_reaction_residual = proxy_only
 ```
 
-因此只运行 common-shock arm 时，M1 不得进入 `component_directly_measurable_historically_stable`；最高只能进入
+因此只运行 price-shock arm 时，M1 不得进入 `component_directly_measurable_historically_stable`；最高只能进入
 `component_proxy_only_historically_informative`。
 
-### 4.2 Primary 公式骨架
+### 4.2 Group taxonomy 与数据授权
 
-22A/22B 必须在 outcome 前冻结具体 lookback、最小样本和 shock cutoff。公式骨架为：
-
-```text
-shock_t =
-    causal standardized official-market or supported-board return at close t
-
-beta_i,t-1 =
-    model fit only on observations available through t-1
-
-expected_i,t =
-    alpha_i,t-1
-    + beta_market_i,t-1 * return_market,t
-    + supported_pre_registered_controls
-
-reaction_residual_i,t =
-    observed_return_i,t - expected_i,t
-```
-
-若 board/style portfolio 由个股横截面自建，必须 leave-one-out，避免股票自身机械进入 expected response。
-
-两个方向独立报告：
+`group` 必须逐类明确，不得混用：
 
 ```text
-negative_shock_resilience:
-    reaction_residual on pre-registered negative common-shock dates
+exchange_board:
+    main board / ChiNext / other PIT-observable trading board
 
-positive_shock_disappointment:
-    -reaction_residual on pre-registered positive common-shock dates
+genuine_industry:
+    pre-registered official taxonomy with historical return series
+    or auditable PIT membership
+
+style_group:
+    PIT-observable size / liquidity / volatility / momentum group
+
+concept_or_theme:
+    not eligible without historical membership and revision timestamps
 ```
 
-不得假设两者对称。
+22A 必须分别裁决：
 
-### 4.3 可增加但必须 nested 的观察量
+```text
+group_return_arm:
+    需要可信的官方历史 group index OHLCV，
+    或由 PIT membership + t-1 frozen weights 自建
+
+group_internal_structure_arm:
+    需要 PIT membership，才能计算 breadth / dispersion /
+    leader concentration / limit / suspension structure
+```
+
+只有官方行业指数 OHLCV 而没有 PIT 成分时，可以研究行业收益 residual，但不得输出行业内部 breadth、dispersion 或“多数成分股
+确认”等结论。若 genuine PIT industry 未通过，则行业 arm 必须显式 `data_blocked`，不得用 current industry 回填；M1 可以先运行
+受支持的 exchange-board/style group，但结论不得升级为行业结论。
+
+### 4.3 Primary clock 与可执行时点
+
+日频 primary 固定从收盘冲击开始：
+
+```text
+shock_observation_time = close(t)
+feature_cutoff = close(t)
+first_usable_time = next executable open after t
+outcome_start = first_usable_time
+```
+
+close `t` 才能确认的市场、板块/行业收益和内部结构，不得假设在同一 close 成交。
+
+Overnight/open shock 只能作为独立 secondary arm。若只有 daily open，不能在观察 opening gap 后仍按同一个 daily open 假设成交；
+必须有开盘集合竞价/分钟数据与明确的 first executable price，或者输出：
+
+```text
+open_shock_arm = not_run_due_to_non_executable_same_open_timing
+```
+
+### 4.4 市场共同冲击定义
+
+市场冲击不能只由单个市值加权指数越线定义。否则大权重行业可能把指数拖动，并伪装成全市场共同冲击。22A/22B 必须在 outcome
+前冻结具体 benchmark、lookback、最小样本、shock cutoff 和 breadth confirmation。
+
+公式骨架为：
+
+```text
+market_return_t =
+    official_benchmark_close_t / official_benchmark_close_t-1 - 1
+
+market_center_t-1 =
+    causal rolling center fit only through t-1
+
+market_scale_t-1 =
+    causal robust volatility fit only through t-1
+
+market_shock_z_t =
+    (market_return_t - market_center_t-1) / market_scale_t-1
+
+market_magnitude_pass_t =
+    market_shock_z_t crosses pre-registered directional cutoff
+
+market_breadth_pass_t =
+    pre-registered supported-group breadth
+    and/or eligible-instrument breadth confirms the shock direction
+
+market_common_shock_t =
+    market_magnitude_pass_t AND market_breadth_pass_t
+```
+
+22A 必须在 outcome 前冻结究竟使用 group breadth、eligible-instrument breadth，还是二者的明确布尔组合；不能运行后任选。
+若数据只支持项目池 breadth，字段和 claim 必须写成 `within_U_project_group_breadth` 或
+`within_U_project_instrument_breadth`，不得称 full-A breadth。等权 group return、上涨/下跌 group 占比、成交或涨跌停广度
+可以作为预注册 confirmation，但不得在 outcome 后挑选最有利的一项。若可用 group 数不足以形成有意义的 breadth，
+`market_wide_scope_status` 必须降级或阻断，而不是把两三个 group 的同向波动称为全市场确认。
+
+固定 `1%` 只能作为市场 benchmark 的候选 absolute magnitude floor，不能单独定义 primary shock。22A 可以在不读取未来 outcome
+的前提下比较候选 absolute floor、robust-z 或 causal tail-quantile policy，并只根据以下 support 冻结：
+
+- 正负方向 distinct shock-date / episode 数；
+- 每年和各时间 fold 覆盖；
+- 是否被少数极端年份支配；
+- supported group 覆盖；
+- missing、停牌、涨跌停和不可执行比例；
+- market/board/industry overlap；
+- 有效独立 block 与功效。
+
+不得根据哪个阈值的未来收益最好选择 shock cutoff。
+
+当 benchmark magnitude 越线但 breadth 不通过时，状态必须为：
+
+```text
+index_concentrated_or_group_led_move
+```
+
+不得归入 pure market common shock。
+
+### 4.5 板块/行业特异冲击与预期反应
+
+板块/行业的原始涨跌不能直接定义 group shock。必须先剥离市场共同反应。对于 group `g`：
+
+```text
+rest_of_market_return_ex_g,t =
+    causal market portfolio return excluding group g,
+    using membership and weights frozen no later than t-1
+
+beta_g,t-1 =
+    group expected-response model fit only through t-1
+
+expected_group_return_g,t =
+    alpha_g,t-1
+    + beta_market_g,t-1 * rest_of_market_return_ex_g,t
+    + supported_pre_registered_board_or_style_controls
+
+group_reaction_residual_g,t =
+    observed_group_return_g,t - expected_group_return_g,t
+
+group_residual_scale_g,t-1 =
+    causal robust residual volatility fit only through t-1
+
+group_shock_z_g,t =
+    group_reaction_residual_g,t / group_residual_scale_g,t-1
+
+group_specific_shock_g,t =
+    group_shock_z_g,t crosses pre-registered directional cutoff
+```
+
+优先使用 `rest_of_market_return_ex_g`，避免大权重行业机械进入自己的 market control 并压小 residual。若无法构造
+rest-of-market，22A 必须量化 benchmark contamination，并降低 claim ceiling 或阻断 group-specific arm。
+
+若自建 group portfolio，membership 和权重必须在 `t-1` 冻结。下钻到个股 arm 时，group portfolio 还必须对目标股票
+leave-one-out，避免股票自身机械进入 expected response。
+
+### 4.6 市场冲击与行业冲击的互斥分类
+
+价格数据只能识别冲击的统计作用范围，不能识别真实新闻来源。分类必须使用 `market_common_shock_t` 与
+`group_specific_shock_g,t` 的二维状态，而不是强迫所有日期二选一。下表首先定义 `(date t, group g)` pair state：
+
+| market common shock | group residual shock | event type |
+|---|---|---|
+| false | false | `no_qualified_shock` |
+| true | false | `pure_market_common_shock` |
+| false | true | `group_specific_residual_shock` |
+| true | true，residual 与市场同向 | `market_shock_with_group_amplification` |
+| true | true，residual 与市场反向 | `market_shock_with_group_resistance` |
+
+Date-level event type 再由所有受支持 pair state 聚合：
+
+```text
+pure_market_common_shock_date:
+    market_common_shock_t = true
+    AND no supported group has group_specific_shock_g,t
+
+group_specific_residual_shock_date:
+    market_common_shock_t = false
+    AND one or a pre-registered small share of groups has group_specific_shock_g,t
+
+joint_market_group_shock_date:
+    market_common_shock_t = true
+    AND at least one supported group has amplification or resistance
+```
+
+进一步的 scope 规则：
+
+- 只有一个或少数 group residual 异常，才可称 localized group-specific shock；
+- 多个相同风格 group 同时异常时，应优先审计 `style_cluster_shock`，不得机械生成多个独立 industry event；
+- 大多数 group 同向异常时，应审计遗漏的 common factor 或 market benchmark mismeasurement；
+- 市值加权指数由少数大权重 group 驱动但横截面 breadth 不足时，应标记
+  `index_concentrated_or_group_led_move`；
+- 市场、交易板/风格、行业的 residualization 顺序必须预注册，不能 outcome 后改变层级。
+
+上述 joint states 必须单独报告，不能塞入 pure market 或 pure group arm。正负方向以及 amplification/resistance 也不得假设对称。
+
+### 4.7 Online episode 与冲击传播
+
+M1 的 market/group event 必须在线聚合；future recovery、future high/low 和未来传播不得定义当前事件：
+
+```text
+episode_start = first causal threshold crossing
+episode_end = pre-registered cooldown or max_age
+```
+
+若 `t` 日只有 group shock、`t+1` 才出现 market shock：
+
+```text
+t state = group_specific_residual_shock
+t+1 episode update = group_led_market_spillover
+```
+
+不得利用 `t+1` 结果把 `t` 事后改成 market shock。反向顺序可以在线更新为：
+
+```text
+market_shock_with_delayed_group_amplification
+```
+
+同一 episode 的 market/group rows 必须进入同一 fold。
+
+### 4.8 Preoutcome census 与 as-of 数据面板
+
+22A 必须先完成 outcome-blind 的 M1 census，不能直接从“未来表现好的冲击”反推事件定义。最小中间产物为：
+
+```text
+m1_group_taxonomy_and_source_registry.csv
+m1_group_membership_and_weight_pit_audit.csv
+m1_common_shock_date_census.csv
+m1_market_group_shock_episode_census.csv
+m1_group_reaction_asof_panel.csv
+m1_shock_threshold_power_and_support_preflight.csv
+```
+
+`m1_common_shock_date_census.csv` 至少记录：
+
+```text
+shock_date
+shock_scope
+benchmark_or_group_id
+raw_return
+causal_center_t_minus_1
+causal_scale_t_minus_1
+shock_z
+shock_direction
+candidate_threshold_id
+magnitude_pass
+breadth_pass
+market_group_overlap_status
+information_cutoff
+first_usable_time
+source_availability_status
+```
+
+`m1_group_reaction_asof_panel.csv` 每行是 shock-date 内的受支持 group，不是把个股当 primary row，至少记录：
+
+```text
+event_id
+group_id
+group_type
+group_membership_status
+observed_group_return_t
+rest_of_market_return_ex_group_t
+expected_group_return_t
+group_reaction_residual_t
+group_shock_z_t
+group_breadth_t
+group_residual_breadth_t
+group_dispersion_t
+group_volume_or_amount_anomaly_t
+group_turnover_anomaly_t
+group_liquidity_change_t
+leader_concentration_t
+limit_up_down_share_t
+suspension_share_t
+feature_cutoff
+first_usable_time
+```
+
+只有 PIT membership 通过时，内部结构字段才可计算；否则必须为 structural missing，并附明确 reason，不得从当前成分回填。
+
+As-of feature 与 future outcome 必须物理分表并分别 hash：
+
+```text
+m1_group_reaction_asof_panel
+m1_group_forward_outcome_panel
+```
+
+先 checkpoint、验证并记录 as-of panel semantic hash，再连接 H1/H3/H5/H10/H20 outcome。同一次探索 run 可以在前序内部校验通过后
+自动继续，不需要人工批准或 immutable seal。
+
+### 4.9 Nested baseline 与观察量
+
+Group-level nested ablation 顺序固定为：
+
+```text
+G0 raw market/group shock magnitude
+G1 raw group return
+G2 simple group-minus-market relative strength
+G3 causal beta-adjusted group reaction residual
+G4 G3 + group breadth / residual breadth / dispersion
+G5 G4 + volume / turnover / liquidity / concentration confirmation
+```
+
+若 G3 不优于 G2，不能用 G4–G5 掩盖 group reaction residual 本身失败。
+
+个股层 B0–B5 不得用来掩盖 group layer 失败；若要探索，必须作为单独 requirement/variant checkpoint 运行并独立裁决，不需要
+逐阶段人工批准。届时以下个股量可以 nested 加入：
 
 - overnight gap；
 - open-to-close response；
 - close location value；
 - upper/lower shadow；
 - amount/volume anomaly；
-- relative strength；
-- supported board/style response。
+- stock versus supported group relative strength。
 
-本列表全部只能使用截至 `t` close 已经完成的量。`recovery speed`、post-shock MAE/MFE 和 path damage 属于 forward outcome，
+这些量全部只能使用截至 `t` close 已经完成的信息。`recovery speed`、post-shock MAE/MFE 和 path damage 属于 forward outcome，
 不得进入 `t` 时 predictor。
 
-必须按以下顺序做 nested ablation：
-
-```text
-B0 raw shock magnitude
-B1 raw stock return / simple market-relative strength
-B2 causal expected-response residual
-B3 B2 + bar-shape observables
-B4 B3 + volume/liquidity observables
-B5 supported context sensitivity
-```
-
-若 B2 不优于 B1，不能用 B3–B5 掩盖 `reaction_residual` 本身失败。
-
-### 4.4 Real-market outcomes
+### 4.10 Real-market outcomes
 
 Primary horizon 由 22A 功效审计后冻结；候选 readout 可包含 H1/H3/H5/H10/H20：
 
 - next-open-to-close / next-open-to-next-open return；
-- market-adjusted return；
-- supported board/style-adjusted return；
+- group market-adjusted return；
+- top-residual versus bottom-residual group spread；
+- residual continuation / reversal；
+- group breadth persistence；
+- volume/liquidity confirmation or decay；
 - MAE；
 - MFE；
 - time-to-recovery；
 - realized volatility；
 - downside tail / CVaR proxy。
 
-Big Winner / +50% 只可作 secondary right-tail bridge，不能作为 M1 唯一 label。
+Big Winner / +50% 不是 group-level outcome。它只可在 L3 stock decomposition 的独立 exploratory variant 中作 secondary
+right-tail bridge，
+不能参与 L0–L2 cohort、threshold 或 primary label 构造。
 
-### 4.5 可选 landmark 诊断
+在 `t` 时点，`group_reaction_residual` 只能称“相对因果预期反应更强/更弱”，不能称过度或不足定价。未来 continuation、
+reversal、recovery 或 damage 才是 outcome。二者必须作为预注册 competing mechanisms；不能看完未来路径后再选择叙事。
+
+### 4.11 可选 landmark 诊断
 
 若要检验“事件后持续观察”，只能做无动作的 landmark predictive diagnostic，并为每个 landmark 重新锚定时间：
 
@@ -653,29 +1068,42 @@ outcome_end = outcome_start + frozen horizon
 `t+1/t+3/t+5` 只是候选 landmark，22A 必须冻结一个 primary。晚到 feature 不得回填到 `t0`，landmark outcome 也不得复用
 从 `t0` 开始的 label window。Landmark 只验证信息是否更新，不学习加仓、减仓、退出或 hedge action。
 
-### 4.6 M1 可证伪假设
+### 4.12 M1 可证伪假设
 
 ```text
 H1a:
-negative common shock 下，较高 reaction residual 对后续 payoff 或较低 path damage
-具有相对 B1 的稳定增量。
+market common shock 下，group reaction residual 对后续 group-adjusted payoff、
+continuation/reversal 或 path damage 具有相对 G2 的稳定增量。
 
 H1b:
-positive common shock 下，较低 reaction residual 对后续弱势或 path damage
-具有独立、可复现的关系。
+group-specific residual shock 与 pure market common shock 是不同 estimand；
+其 forward path 关系在预注册方向、时间 fold 和 group scope 中可复现。
 
 H1c:
-增量不是 raw return、beta、volatility、liquidity、size 或 board 的重命名。
+group breadth / dispersion / liquidity structure 对单纯 group return 或 group-minus-market RS
+提供预注册的增量，而不是少数权重 group/name 的机械贡献。
+
+H1d:
+结果不是 raw return、beta、volatility、liquidity、size、board/style cluster、
+benchmark concentration 或 EP20B-SRC-like group trailing residual continuation 的重命名。
 ```
 
-### 4.7 M1 失败条件
+正负市场冲击、正负 group residual、continuation 与 reversal 必须按预注册 family 处理 multiplicity，不得假设对称，也不得在
+outcome 后改变 orientation。若只能事后判定哪一侧叫“过度/不足反应”，不构成 PIT-valid signal。
+
+### 4.13 M1 失败条件
 
 - 只在 in-sample 或少数年份成立；
-- 对 simple relative strength 无增量；
+- genuine industry arm 依赖 current taxonomy 回填或无法证明 membership/return series 的 PIT 语义；
+- market shock 只由权重指数驱动而缺少 group breadth confirmation；
+- market、style-cluster 与 industry-specific scope 无法区分；
+- 对 simple group-minus-market relative strength 无增量；
+- G3 不优于 G2，却用 G4–G5 掩盖 residual 失败；
 - 结果由 corporate-action gap 或不可成交样本驱动；
-- 只有 stock-row nominal significance，没有 shock-date support；
+- 只有 group-row 或 stock-row nominal significance，没有 shock-date / episode support；
 - 正负 shock 方向需要 outcome 后改 orientation；
-- 退化为 EP20B-SRC trailing residual continuation；
+- 只有看到未来 continuation/reversal 后才能定义 event type 或 episode boundary；
+- 退化为 EP20B-SRC-like group trailing residual continuation；
 - 只有 future-smoothed event boundary 才成立。
 
 ---
@@ -1242,7 +1670,8 @@ M6A 的目标是校准风险原件，不是证明收益 alpha 或仓位效用。
 - `liquidity_capacity_proxy_only = true`。
 
 没有订单簿、Level-2 或真实成交回报时，LiquidityCap 不能得到 executable capacity pass。若某个 primitive 通过，固定 eligibility
-下的 single-primitive shadow sizing replay 必须由后续独立 requirement 和用户授权启动，不属于 EP22 本轮 component validation。
+下的 single-primitive shadow sizing replay 必须由后续独立 exploratory requirement 启动，不属于当前 M6A component validation，
+但在 EP22 数据探究范围内无需额外人工阶段授权。
 
 ### 9.3 M6B：对冲 mechanics
 
@@ -1382,7 +1811,8 @@ M6 即使通过，也不授权：
 
 ## 10. Stage 22A：共同来源、数据与验证合同
 
-22A 是 EP22 唯一当前预期 requirement。它不读取模块 outcome，只完成 preoutcome freeze。
+22A 是共同数据与验证基线，不是人工授权闸门。它先做 outcome-blind source/PIT/support checkpoint；22B–22G 可以在绑定当前兼容
+checkpoint 后自动继续历史探索，也可以在明确记录本地补充合同的前提下与 22A 共同迭代。
 
 ### 10.1 22A 必须回答
 
@@ -1394,8 +1824,11 @@ M6 即使通过，也不授权：
 6. 哪些模块应直接 `data_blocked`？
 7. 现有历史的 split、purge、embargo 与 sample role 如何冻结？
 8. multiplicity、effect-size floor 与 stability gate 如何冻结？
-9. 哪些输入属于其他 Episode 的 sealed artifact，哪些属于 working output 而禁止读取？
+9. 哪些输入属于稳定 snapshot，哪些属于 working output；working input 如何 hash、标记 provisional 并限制 claim？
 10. 每个模块完成后允许说什么、不允许说什么？
+11. 当前每个 data gap 有哪些可试采的公开、vendor 或用户可提供 source？
+12. 候选 source 是否可 PIT 重建，是否改善 construct fidelity、coverage 或 effective support？
+13. 候选 source 应进入哪个 module-specific B0/B1 incremental-value attempt？
 
 ### 10.2 22A 必需 registry
 
@@ -1403,7 +1836,14 @@ M6 即使通过，也不授权：
 
 - `source_claim_registry.csv`
 - `source_statement_to_testable_hypothesis_map.csv`
+- `data_gap_and_candidate_source_registry.csv`
+- `source_discovery_and_acquisition_attempt_log.csv`
+- `candidate_source_access_cost_and_license_registry.csv`
 - `data_source_availability_and_pit_audit.csv`
+- `candidate_source_field_coverage_profile.csv`
+- `candidate_source_pit_reconstructability_audit.csv`
+- `source_construct_and_support_gain_registry.csv`
+- `source_incremental_value_experiment_registry.csv`
 - `field_availability_timestamp_registry.csv`
 - `module_estimand_registry.csv`
 - `module_primary_secondary_metric_registry.csv`
@@ -1411,10 +1851,19 @@ M6 即使通过，也不授权：
 - `historical_split_and_sample_role_registry.csv`
 - `multiplicity_family_registry.csv`
 - `power_and_support_preflight.csv`
-- `module_execution_authorization.csv`
+- `m1_group_taxonomy_and_source_registry.csv`
+- `m1_group_membership_and_weight_pit_audit.csv`
+- `m1_common_shock_date_census.csv`
+- `m1_market_group_shock_episode_census.csv`
+- `m1_group_reaction_asof_panel.csv`
+- `m1_shock_threshold_power_and_support_preflight.csv`
+- `module_research_readiness.csv`
 - `claim_ceiling_registry.csv`
 - `22A_source_data_availability_and_validation_contract_report.md`
 - manifest、input hash audit 与 output hashes。
+
+22A 可以完成 D0–D3；D4 empirical usefulness 由相应模块的 versioned B0/B1 attempt 读取 outcome。D3 通过不等于 D4 有用，
+但 D3 阻断时不得用该 source 形成 empirical claim。
 
 ### 10.3 22A terminal states
 
@@ -1425,16 +1874,18 @@ M6 即使通过，也不授权：
 22A_pit_or_construct_contract_blocked
 ```
 
-22A 不得输出“六个模块全部值得做”。它只能逐模块给出：
+22A 不得输出“六个模块全部有效”。它只能逐模块给出：
 
 ```text
-authorized_for_requirement_drafting
-not_authorized
+exploration_ready
+exploration_ready_low_power
 data_blocked
 construct_blocked
+deferred_out_of_scope
 ```
 
-任何 22B–22G requirement 都需要用户再次批准。
+这些状态表达数据与研究可行性，不表达人工授权。`exploration_ready` 的模块可以继续实现和运行本地历史诊断；
+`exploration_ready_low_power` 可以尝试，但必须把低功效作为首要结论。
 
 ---
 
@@ -1442,7 +1893,8 @@ construct_blocked
 
 ### 11.1 独立执行原则
 
-22B–22G 没有默认先后依赖。22A 通过后，可以只执行其中一个或几个。
+22B–22G 没有默认先后依赖。研究者可以只执行其中一个或几个，也可以并行试验多个方向。无需逐 requirement、逐 preoutcome、
+逐 historical-outcome 请求人工批准。
 
 每个模块 requirement 必须：
 
@@ -1452,7 +1904,7 @@ construct_blocked
 - 单独运行 train-only transforms；
 - 单独报告 historical caveat；
 - 单独给出 terminal state；
-- 单独密封完整 run；
+- 单独保留 config/input/code/output checkpoint 与 search-path 记录；
 - 不读取其他尚未完成模块的 outcome。
 
 ### 11.2 模块预期 requirement 名称
@@ -1483,7 +1935,8 @@ requirement_22g_a_risk_budget_primitives_validation.md
 requirement_22g_b_beta_decomposition_and_hedge_effectiveness_validation.md
 ```
 
-22D-A/22D-B 与 22G-A/22G-B 都是独立批准、独立裁决的 sibling requirements。上述全部只是 roadmap，不是自动生成或执行授权。
+22D-A/22D-B 与 22G-A/22G-B 都是独立裁决的 sibling requirements。上述 roadmap 可在 EP22 探索范围内按数据可得性直接细化、
+实现和运行；它不授权跨模块生产决策。
 
 ### 11.3 单模块统一 terminal states
 
@@ -1498,7 +1951,7 @@ component_data_blocked
 component_construct_invalid
 component_not_evaluable_low_power
 component_duplicate_research_closed
-component_run_incomplete_not_sealed
+component_run_incomplete_working
 ```
 
 M3A/M3B 与 M6A/M6B 都必须各自输出 terminal state；不得用 issuer supply 数据可用掩盖 aggregate flow 数据阻断，
@@ -1510,7 +1963,8 @@ M3A/M3B 与 M6A/M6B 都必须各自输出 terminal state；不得用 issuer supp
 
 ## 12. Stage 22H：量化与市场验证地图
 
-22H 只消费已密封的 22A–22G 输出，不做新计算、不重选阈值、不组合模型。
+22H 消费带版本、hash 与 lineage 的 22A–22G validated working snapshots。输入不要求 sealed，但 atlas 必须标注每个输入是
+`working_checkpoint`、`validated_working_result` 还是 `formally_frozen`；working 结果不得被写成 immutable final evidence。
 
 ### 12.1 22H 输出
 
@@ -1607,11 +2061,11 @@ live_trading_authorized = false
 - baseline delta；
 - sample/event/date count；
 - effective independent block count；
-- top-date/top-name contribution；
+- top-date/top-group/top-name contribution；
 - missingness；
 - direction stability。
 
-不能用巨大 stock-row N 替代有效日期或事件数。
+不能用巨大 group-row / stock-row N 替代有效日期或事件数。
 
 ### 13.2 时间稳定性
 
@@ -1636,11 +2090,12 @@ live_trading_authorized = false
 - ST/suspension/tradability caveat；
 - concentration；
 - supported style；
-- industry sensitivity 仅在 PIT 数据通过时。
+- industry return readout 仅在 historical industry-index source audit 通过时；
+- industry breadth/dispersion/internal-structure readout 仅在 PIT membership 审计通过时。
 
 ### 13.4 Overlap 与 bootstrap
 
-- M1 使用 shock/date block；
+- M1 使用 market/group shock episode + date block；同一 shock-date 下的 group rows 不独立；
 - M3A 使用 issuer-event/calendar block，M3B 使用 non-overlapping aggregate calendar block；
 - M2 使用 state segment/calendar block；
 - M4 使用 style-date block；
@@ -1680,7 +2135,7 @@ construct gate
 每个已执行模块至少发布：
 
 1. requirement；
-2. frozen config；
+2. versioned config snapshot；
 3. input artifact audit；
 4. source/timestamp audit；
 5. formula/feature registry；
@@ -1695,26 +2150,28 @@ construct gate
 14. manifest；
 15. output hashes；
 16. stage status registry。
+17. data-gap/candidate-source/search-attempt accounting；
+18. 若使用新增 source，B0 existing-data baseline 与 B1 augmented-source 的 paired comparison。
 
 若 run 中断：
 
 ```text
 status = working_or_incomplete
-sealed = false
+checkpoint_status = incomplete
 ```
 
-遵守项目原则：
+EP22 遵守探索生命周期：
 
 ```text
 working
-  -> preflight_checked
+  -> checkpointed
   -> diagnostic_complete
-  -> full_run_complete
-  -> post_run_validation_complete
-  -> sealed
+  -> validated_working_result
+  -> optional_formal_freeze
 ```
 
-只有完整 run 通过最终 validation 后才能 sealed。
+中断、失败和被证伪的尝试也要保留可审计 checkpoint。普通历史数据探究不要求 sealed；只有进入正式 forward confirmation 时才创建
+immutable freeze。
 
 ---
 
@@ -1738,11 +2195,18 @@ working
 ### 15.2 M1
 
 - [ ] Shock cutoff moments 只用 `<= t-1`。
-- [ ] Expected-response beta 只用 `<= t-1`。
-- [ ] 自建 benchmark leave-one-out。
+- [ ] Market shock 同时通过预注册 magnitude 与 breadth 合同；指数集中波动不冒充 market-wide shock。
+- [ ] Group expected-response beta、residual scale、membership 和权重只用 `<= t-1`。
+- [ ] Group-specific residual 优先使用 rest-of-market-ex-group；无法构造时污染程度和 claim ceiling 已冻结。
+- [ ] Market-only、group-only、amplification、resistance 和 index-concentrated states 互斥且 outcome-blind。
+- [ ] 多 group 同向 residual 已审计 common/style-cluster，而非机械生成多个独立 industry event。
+- [ ] 自建 group benchmark 使用 PIT membership；个股下钻 arm 使用 leave-one-out。
+- [ ] Industry return-only 与 internal-structure 数据授权分开；current taxonomy 不回填。
+- [ ] As-of group panel 在连接 future outcome 前已独立冻结并 hash。
 - [ ] qfq/corporate-action gap 已审计。
 - [ ] Positive/negative shock orientation pre-registered。
-- [ ] Simple RS 与 EP20B-SRC comparator 完整。
+- [ ] G2 simple group-minus-market RS 与本次 group universe 上重建的 EP20B-SRC-like comparator 完整。
+- [ ] Group layer 未通过时未用 stock-row 结果升级 M1。
 
 ### 15.3 M2
 
@@ -1834,14 +2298,14 @@ EP22 已产生部署策略。
 
 如果 22H 识别出一个或多个 `forward_freeze_candidate`，后续应优先为每个模块分别：
 
-1. 密封公式、数据源、阈值和 primary claim；
+1. 将探索中的公式、数据源、阈值和 primary claim 正式冻结；
 2. 建立 forward registry；
 3. 等待真实新市场数据；
 4. 独立验证；
 5. 失败即关闭或降级。
 
-只有多个组件各自获得独立 forward support 后，未来才可以由用户另行发起“是否组合”的研究。该组合不属于 EP22，
-也不由 EP22 自动授权。
+只有多个组件各自获得独立 forward support 后，未来才可以另行发起“是否组合”的研究。该组合不属于 EP22 常规数据探究范围，
+需要明确扩展项目范围。
 
 ---
 

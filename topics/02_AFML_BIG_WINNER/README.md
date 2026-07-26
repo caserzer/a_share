@@ -842,6 +842,81 @@ Once sealed, its files, manifest, and hash chain are immutable; later analysis
 must use a new version or a clearly linked companion artifact. Existing sealed
 historical bundles are not retroactively modified by this principle.
 
+### 9.8 EP22 Uses Exploratory Data-Discovery Mode
+
+Episode 22 is a data-exploration and hypothesis-testing workspace. Its purpose is
+to try multiple measurable interpretations of the practitioner narrative,
+inspect real-market data, and support, weaken, or falsify component hypotheses.
+Routine exploration must not be slowed by per-stage human authorization or by a
+requirement that every intermediate bundle be sealed.
+
+Within the documented EP22 scope, the agent may autonomously:
+
+- create and revise research plans, requirements, configs, code, and tests;
+- run local historical-data audits, diagnostics, ablations, and competing
+  variants;
+- discover, download, cache, and profile public read-only data sources that do
+  not require new credentials, payment, or mutation of an external system;
+- treat the current project PIT universe and OHLCV bundle as a reproducible
+  baseline rather than a ceiling on what EP22 may investigate;
+- read outcomes after the relevant PIT/as-of inputs have been materialized and
+  logged;
+- iterate on failed or ambiguous formulations and preserve both positive and
+  negative findings;
+- update working reports and manifests as evidence develops.
+
+The EP22 exploratory lifecycle is:
+
+```text
+working
+    -> checkpointed
+    -> diagnostic_complete
+    -> validated_working_result
+    -> optional_formal_freeze
+```
+
+`checkpointed` means the current config, inputs, code identity, and outputs are
+recorded well enough to reproduce or compare the attempt. It is not an
+immutable seal. EP22 working artifacts may be repaired, extended, or rerun in
+place when their lineage and changes remain auditable. Hashes, manifests, and
+stage logs are reproducibility tools, not human-approval gates.
+
+The following scientific controls still apply during exploration:
+
+- point-in-time timing and no future leakage;
+- clear separation of direct measurement, proxy, and unavailable construct;
+- train-only selection where a predictive claim is being tested;
+- honest denominator, multiplicity, stability, and concentration reporting;
+- explicit distinction between exploratory historical support, falsification,
+  low power, and data blockage;
+- no promotion of exploratory historical evidence to true forward support.
+
+Data discovery itself is a first-class EP22 research question. Candidate data
+must be assessed at two different levels:
+
+```text
+contract usefulness:
+    coverage + PIT reconstructability + timestamp/revision lineage
+    + construct fidelity + effective-support improvement
+
+empirical usefulness:
+    incremental historical evidence versus the existing-data baseline
+    under a versioned module-specific attempt
+```
+
+An available source is not automatically useful, and a source that improves
+coverage is not automatically predictive. EP22 must preserve source-search
+accounting and may conclude that a candidate source is unavailable, not
+PIT-reconstructable, redundant, low-value, or genuinely component-unblocking.
+
+Explicit human approval and a formal immutable freeze are required only when
+EP22 moves beyond routine local exploration into a materially different action,
+including production deployment, live trading, mutation of external systems,
+paid or newly credentialed data acquisition, a formal forward-confirmation claim, or
+destructive modification of an already sealed historical bundle. Cross-module
+decision routing and production position sizing remain outside EP22 unless the
+user separately expands the project scope.
+
 ## 10. Initial Research Workstreams
 
 These are research workstreams, not fixed experiment names. Actual experiment
