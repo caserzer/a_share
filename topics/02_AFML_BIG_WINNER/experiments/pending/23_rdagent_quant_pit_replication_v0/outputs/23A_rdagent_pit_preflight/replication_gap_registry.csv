@@ -1,0 +1,7 @@
+gap,paper,ep23,classification
+market_universe,CSI300,pit_largecap_main_chinext,required_project_adaptation
+sample_period,2008-01-01..2020-08-01,2017-01-03..2026-05-29,exact_replication_unreachable
+fundamental_data,Wind fields without full timestamp contract,PIT-audited local price-volume fields only,primary_scope_restriction
+execution_timing,text says t+1 open; YAML uses close,paper_proxy and executable_bridge lanes,dual_lane_required
+runtime,official conda/docker path,uv only,runtime_adapter_required
+llm_backend,GPT-4o/o3-mini and text-embedding-ada-002,not configured at preflight,external_runtime_blocker

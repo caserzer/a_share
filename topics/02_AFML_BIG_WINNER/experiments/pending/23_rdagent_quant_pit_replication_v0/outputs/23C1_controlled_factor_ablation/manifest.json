@@ -1,0 +1,48 @@
+{
+  "claim_ceiling": "controlled_factor_attribution_diagnostic",
+  "config_sha256": "bb0855a71316ae32cb32771e90fc3344e4f6dc85389efae53c0e051886d9b981",
+  "elapsed_seconds": 50.04796588499994,
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "factor_panel": "/home/xiaolv/code/RD-Agent/git_ignore_folder/RD-Agent_workspace/1497d409b8f8497cad7cf745fed513a4/combined_factors_df.parquet",
+  "factor_panel_sha256": "e2e89a590f9e60ebfb890116b0ce4c0581850a0fd108ad52fea84b1c83206c08",
+  "factors": [
+    "close_momentum_20d",
+    "close_reversal_5d",
+    "daily_close_location_value",
+    "volume_surprise_20d"
+  ],
+  "formal_five_seed_run": true,
+  "generated_at_utc": "2026-07-27T09:29:39.451268+00:00",
+  "preprocessing": "train-only robust z-score and fill-zero for all variants",
+  "seeds": [
+    20260723,
+    20260724,
+    20260725,
+    20260726,
+    20260727
+  ],
+  "selection": "none; report matched-seed medians",
+  "stage": "23C1_controlled_factor_ablation",
+  "variants": {
+    "alpha20": [],
+    "plus_all_four": [
+      "close_momentum_20d",
+      "close_reversal_5d",
+      "daily_close_location_value",
+      "volume_surprise_20d"
+    ],
+    "plus_close_momentum_20d": [
+      "close_momentum_20d"
+    ],
+    "plus_close_reversal_5d": [
+      "close_reversal_5d"
+    ],
+    "plus_daily_close_location_value": [
+      "daily_close_location_value"
+    ],
+    "plus_volume_surprise_20d": [
+      "volume_surprise_20d"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "effective_litellm_chat_model": "openrouter/openai/gpt-5.6-sol-pro",
+  "effective_litellm_embedding_model": "openrouter/openai/text-embedding-3-small",
+  "expected_litellm_chat_model": "openrouter/openai/gpt-5.6-sol-pro",
+  "expected_litellm_embedding_model": "openrouter/openai/text-embedding-3-small",
+  "generated_at_utc": "2026-07-27T15:31:21.644448+00:00",
+  "network_smoke": {
+    "chat_http_status": 200,
+    "chat_resolved_model": "openai/gpt-5.6-sol-pro",
+    "chat_response_contract": true,
+    "chat_status": "passed",
+    "embedding_dimensions": 1536,
+    "embedding_http_status": 200,
+    "embedding_resolved_model": "text-embedding-3-small",
+    "embedding_status": "passed",
+    "proxy_configured": true,
+    "secrets_recorded": false
+  },
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "pyqlib": "0.9.7",
+  "python": "3.11.12",
+  "rdagent_commit": "4f9ecb005881cddc08df0124a2e894c018007679",
+  "rdagent_dirty": true
+}

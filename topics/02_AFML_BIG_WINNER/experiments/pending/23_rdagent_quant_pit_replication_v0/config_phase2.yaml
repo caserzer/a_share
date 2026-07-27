@@ -1,0 +1,84 @@
+episode_id: 23_rdagent_quant_pit_replication_v0
+phase: 2
+base_config: config.yaml
+
+runtime:
+  rdagent_checkout: /home/xiaolv/code/RD-Agent
+  environment_manager: uv
+  provider: openrouter
+  litellm_chat_model: openrouter/openai/gpt-5.6-sol-pro
+  chat_model: openai/gpt-5.6-sol-pro
+  litellm_embedding_model: openrouter/openai/text-embedding-3-small
+  embedding_model: openai/text-embedding-3-small
+  require_http_proxy: true
+  secret_log_policy: redact
+
+factor_libraries:
+  primary_static:
+    - A20_RDAGENT_PINNED
+    - A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+    - A300_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+  conditional_static:
+    - A158_QLIB_PINNED
+    - A360_QLIB_PINNED
+    - A101_CANONICAL_REBUILT
+    - AUTOALPHA_EXACT_ARTIFACT
+  alpha158_source:
+    class: qlib.contrib.data.loader.Alpha158DL
+    expected_count: 158
+  alpha360_source:
+    class: qlib.contrib.data.loader.Alpha360DL
+    expected_count: 360
+  alpha101_source:
+    arxiv_id: "1601.00991"
+    expected_count: 101
+    require_reference_value_crosscheck: true
+  autoalpha_source:
+    arxiv_id: "2409.06289"
+    require_frozen_factor_artifact: true
+
+preflight:
+  materialization_smoke: ["2021-01-04", "2021-03-31"]
+  minimum_rows: 1000
+  minimum_dates: 20
+  minimum_instruments: 100
+  minimum_finite_ratio: 0.50
+
+benchmark:
+  libraries:
+    - A20_RDAGENT_PINNED
+    - A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+    - A300_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+  seeds: [20260723, 20260724, 20260725, 20260726, 20260727]
+  primary_model: frozen_lightgbm
+  capacity_sensitivity: false
+
+evolution:
+  factor_budget: 6h
+  model_budget: 6h
+  joint_budget: 12h
+  nested_segments:
+    train: ["2017-04-03", "2020-12-30"]
+    early_stop_valid: ["2021-01-04", "2021-12-29"]
+    agent_feedback: ["2022-01-04", "2022-12-28"]
+    selection_confirmation: ["2023-01-03", "2023-12-27"]
+    historical_test: ["2024-01-02", "2026-05-27"]
+  implementation_attempts_per_task: 10
+  implementation_timeout_seconds: 600
+  validation_timeout_seconds: 3600
+  factor_dedup_correlation_threshold: 0.99
+  factor_branches:
+    - A20_RDAGENT_PINNED
+    - A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+
+outputs:
+  preflight: outputs/23G_factor_library_preflight
+  benchmark: outputs/23H_static_factor_library_benchmark
+  factor_a20: outputs/23I1_rdfactor_a20_solpro_6h
+  factor_a158: outputs/23I2_rdfactor_a158_solpro_6h
+  evolution_dynamics: outputs/23J_evolution_dynamics
+  model_a20: outputs/23K1_rdmodel_a20_solpro_6h
+  model_best_library: outputs/23K2_rdmodel_best_library_solpro_6h
+  execution_bridge: outputs/23L_factor_library_execution_big_winner_bridge
+  joint_scheduler: outputs/23M_joint_scheduler_replication
+  local_cache: outputs/local_cache/phase2

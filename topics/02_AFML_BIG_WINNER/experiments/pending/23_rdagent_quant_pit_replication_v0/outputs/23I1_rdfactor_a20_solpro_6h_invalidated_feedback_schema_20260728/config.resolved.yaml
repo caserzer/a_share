@@ -1,0 +1,48 @@
+episode_id: 23_rdagent_quant_pit_replication_v0
+experiment_id: 23I1_RDFactor_A20_solpro_6h
+branch: a20
+library_id: A20_RDAGENT_PINNED
+feature_count: 20
+wall_clock_budget: 6h
+segments:
+  train:
+  - '2017-04-03'
+  - '2020-12-30'
+  early_stop_valid:
+  - '2021-01-04'
+  - '2021-12-29'
+  agent_feedback:
+  - '2022-01-04'
+  - '2022-12-28'
+  selection_confirmation:
+  - '2023-01-03'
+  - '2023-12-27'
+  historical_test:
+  - '2024-01-02'
+  - '2026-05-27'
+runtime:
+  environment_manager: uv
+  chat_model: openrouter/openai/gpt-5.6-sol-pro
+  embedding_model: openrouter/openai/text-embedding-3-small
+  provider: openrouter
+  proxy_required: true
+  temperature: 0.5
+  reasoning_effort: null
+  stream: false
+  response_schema_requested: true
+  response_schema_runtime_fallback: json_object
+  implementation_attempts_per_task: 10
+  implementation_timeout_seconds: 600
+  factor_evolving_n: 1
+paths:
+  episode_root: /home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0
+  output_dir: /home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23I1_rdfactor_a20_solpro_6h
+  trace_path: /home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23I1_rdfactor_a20_solpro_6h/raw_rdagent_trace
+  workspace_path: /home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23I1_rdfactor_a20_solpro_6h/workspaces
+  cache_path: /home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23I1_rdfactor_a20_solpro_6h/pickle_cache
+  base_features_path: /home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/rdagent_base_features_phase2/alpha20
+evidence_policy:
+  agent_feedback_visible_through: '2022-12-28'
+  selection_confirmation_hidden_during_search: true
+  historical_test_hidden_during_search: true
+  smoke_runs_are_design_contaminated: true

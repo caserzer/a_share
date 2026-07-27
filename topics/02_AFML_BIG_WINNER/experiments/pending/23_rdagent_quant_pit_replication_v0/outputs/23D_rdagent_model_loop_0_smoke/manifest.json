@@ -1,0 +1,117 @@
+{
+  "agent_loop": {
+    "chat_model": "openrouter/openai/gpt-5.6-sol",
+    "completion_tokens": 2306,
+    "embedding_model": "openrouter/openai/text-embedding-3-small",
+    "llm_call_count": 6,
+    "llm_cost_usd": null,
+    "llm_cost_status": "unavailable_model_price_mapping",
+    "loop_n": 1,
+    "prompt_tokens": 15410,
+    "stage_elapsed_seconds": {
+      "coding": 18.312102,
+      "direct_exp_gen": 29.897331,
+      "feedback": 12.49961,
+      "record": 0.000017,
+      "running": 186.244395,
+      "total": 246.953455
+    },
+    "total_tokens": 17716
+  },
+  "candidate": {
+    "architecture": "CompactAttentiveGRU128",
+    "best_epoch": 0,
+    "best_validation_loss": 0.993943,
+    "candidate_workspace_id": "be94349cede4457ea2548b2c469a6d19",
+    "inference_workspace_id": "15ab765d9d154e40a93f69a4c04a1b4d",
+    "model_fp32_parameter_bytes": 694276,
+    "model_sha256": "adc4713a56ae4ef73a726d9476ef843b79eca9be4560ba22d543c4ff87384b00",
+    "parameter_count": 173569,
+    "qlib_config_sha256": "80f47fc7772e9a50ab16cd043b3516c8b19a0eb9ae2640472449abc13cbee0dd",
+    "qlib_res_sha256": "c555deb0af3caea4ec2aa901ef07e9839ff32e4e28d0429b3749cc0f2c1c04a5",
+    "qlib_run_elapsed_seconds": 184.739,
+    "seed": null,
+    "test_samples": 190388,
+    "train_samples": 154121,
+    "valid_samples": 118860
+  },
+  "claim_ceiling": "model_loop_smoke_cost_artifact_only",
+  "comparator": {
+    "architecture": "Qlib LightGBM",
+    "provenance": "23C_rdagent_factor_loop_0/baseline_qlib_res.csv",
+    "qlib_res_sha256": "2767fc865b16eda9e0c2a0c9299f02a5436d58efabca24fc4649eb4ce7e928d0",
+    "status": "same_protocol_alpha20_baseline"
+  },
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "feedback": {
+    "internal_decision": false,
+    "raw_response_schema": "factor_feedback_schema_due_to_wrong_system_prompt",
+    "recorded_sota_replacement": false,
+    "route_fix_applied_after_run": true
+  },
+  "generated_at_utc": "2026-07-27T11:49:54Z",
+  "identifiers": {
+    "experiment_id": "320792307570494031",
+    "recorder_id": "d421c5fc00fb4c5ab79574ab424aa1f4",
+    "trace_log": "/home/xiaolv/code/RD-Agent/log/2026-07-27_11-40-14-788344"
+  },
+  "local_decision": {
+    "cost_artifact": true,
+    "decision": "do_not_promote",
+    "next_stage": "23D1_controlled_model_attribution",
+    "reason": "gross_excess_arr_worsened_and_net_improvement_is_fully_explained_by_lower_cost_drag"
+  },
+  "metrics": {
+    "baseline": {
+      "IC": 0.008418875162050685,
+      "ICIR": 0.08805024059657719,
+      "Rank IC": 0.005547663655492214,
+      "Rank ICIR": 0.05157741391007008,
+      "gross_excess_arr": -0.014083470928612606,
+      "net_excess_arr": -0.061473279771454774,
+      "net_excess_ir": -0.8372405783611963,
+      "net_excess_mdd": -0.23169817261707287
+    },
+    "candidate": {
+      "IC": 0.004130860282384394,
+      "ICIR": 0.0191235908796621,
+      "Rank IC": 0.023586414105356616,
+      "Rank ICIR": 0.09853855664391381,
+      "gross_excess_arr": -0.025600653708552995,
+      "net_excess_arr": -0.05729956994999579,
+      "net_excess_ir": -0.5652212299895331,
+      "net_excess_mdd": -0.19560557087332003
+    },
+    "candidate_minus_baseline": {
+      "IC": -0.004288014879666291,
+      "ICIR": -0.06892664971691509,
+      "Rank IC": 0.018038750449864402,
+      "Rank ICIR": 0.04696114273384373,
+      "cost_drag_arr": 0.015690892601399373,
+      "gross_excess_arr": -0.011517182779940389,
+      "net_excess_arr": 0.004173709821458982,
+      "net_excess_ir": 0.2720193483716632,
+      "net_excess_mdd": 0.03609260174375284
+    }
+  },
+  "prompt_sha256": "f8a213cb35c6677a9a4a38ccbdfb4b05fe4798090da83764b8fafe0f1dc98a1c",
+  "protocol_gaps": [
+    "declared_AdamW_but_runtime_Adam",
+    "declared_gradient_clip_and_scheduler_parameters_differ_from_GeneralPTNN_runtime",
+    "single_uncontrolled_seed",
+    "no_plain_last_state_gru_ablation",
+    "candidate_forward_writes_output_pth",
+    "model_feedback_used_factor_system_prompt_before_post_run_fix"
+  ],
+  "rdagent": {
+    "commit": "4f9ecb005881cddc08df0124a2e894c018007679",
+    "post_audit_adapter_diff_sha256": "fb6f2054aec9117673a5fff3bf761e9ece74de37d67224195ed3a2a627d93b15",
+    "run_adapter_diff_sha256": "ba997af11bd0fab7a47aef4a08d4e680abcdfd4acf025683345014f63e2da4e7"
+  },
+  "security": {
+    "candidate_workspace_key_scan_hits": 0,
+    "formal_log_key_scan_hits": 0
+  },
+  "stage": "23D_rdagent_model_loop_0_smoke"
+}

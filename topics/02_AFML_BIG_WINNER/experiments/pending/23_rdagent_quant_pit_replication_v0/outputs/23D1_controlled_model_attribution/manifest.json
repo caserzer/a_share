@@ -1,0 +1,125 @@
+{
+  "attribution_summary": {
+    "attention": {
+      "test_gross_arr_median_delta": -0.11504738965498151,
+      "test_gross_arr_positive_seeds": 1,
+      "test_net_arr_median_delta": -0.10225358005562302,
+      "test_net_arr_positive_seeds": 1,
+      "test_rank_ic_median_delta": -0.008315510668614662,
+      "test_rank_ic_positive_seeds": 1,
+      "validation_ic_median_delta": -0.010602881752045844,
+      "validation_ic_positive_seeds": 0
+    },
+    "last_state_gru_vs_lightgbm": {
+      "test_gross_arr_median_delta": 0.12553474335476159,
+      "test_gross_arr_positive_seeds": 2,
+      "test_ic_median_delta": 0.008692777685272277,
+      "test_ic_positive_seeds": 3,
+      "test_net_arr_median_delta": 0.11594040992513979,
+      "test_net_arr_positive_seeds": 2,
+      "validation_ic_median_delta": 0.01494449617684709,
+      "validation_ic_positive_seeds": 3
+    },
+    "last_state_gru_vs_mlp": {
+      "test_gross_arr_median_delta": 0.11075161709592884,
+      "test_gross_arr_positive_seeds": 3,
+      "test_ic_median_delta": 0.011654922553142716,
+      "test_ic_positive_seeds": 3,
+      "test_net_arr_median_delta": 0.10085597790161449,
+      "test_net_arr_positive_seeds": 2,
+      "test_rank_ic_median_delta": 0.01912399573309309,
+      "test_rank_ic_positive_seeds": 3,
+      "turnover_median_delta": 0.0037716262975778653,
+      "validation_ic_median_delta": 0.01654746807840969,
+      "validation_ic_positive_seeds": 3
+    }
+  },
+  "claim_ceiling": "controlled_model_attribution_smoke_only",
+  "cumulative_training_seconds": 2060.501301008,
+  "decision": "reject_attention_retain_last_state_for_formal_attribution",
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "formal_five_seed_run": false,
+  "generated_at_utc": "2026-07-27T13:13:42.664524+00:00",
+  "invocation_elapsed_seconds": 17.02342197500184,
+  "market": "pit_largecap_main_chinext",
+  "mode": "smoke",
+  "model_inventory": {
+    "attentive_gru": {
+      "class": "AttentiveGRU128",
+      "fp32_parameter_bytes": 694276,
+      "parameter_count": 173569
+    },
+    "flattened_mlp": {
+      "class": "FlattenedWindowMLP",
+      "fp32_parameter_bytes": 655236,
+      "parameter_count": 163809
+    },
+    "last_state_gru": {
+      "class": "LastStateGRU128",
+      "fp32_parameter_bytes": 660996,
+      "parameter_count": 165249
+    }
+  },
+  "model_source_sha256": "6d6d4660357652bdc52dbcc77e0d61b1c294bec1317b0447cc9351e43d06a99e",
+  "prediction_paths_local_cache": [
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260723.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260724.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260725.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260723.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260724.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260725.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/attentive_gru_20260723.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/attentive_gru_20260724.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/attentive_gru_20260725.predictions.parquet"
+  ],
+  "provider_uri": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/qlib/cn_data_pit_largecap",
+  "run_kind": "smoke",
+  "runtime_contract": {
+    "batch_size": 256,
+    "dataloader_workers": 20,
+    "early_stop": 12,
+    "formal_seeds": [
+      20260723,
+      20260724,
+      20260725,
+      20260726,
+      20260727
+    ],
+    "gradient_clip_kind": "value",
+    "gradient_clip_value": 3.0,
+    "learning_rate": 0.001,
+    "loss": "mse",
+    "n_epochs": 100,
+    "num_timesteps": 20,
+    "optimizer": "adam",
+    "scheduler": "ReduceLROnPlateau",
+    "scheduler_factor": 0.5,
+    "scheduler_min_lr": 1e-06,
+    "scheduler_patience": 5,
+    "scheduler_threshold": 1e-05,
+    "smoke_seeds": [
+      20260723,
+      20260724,
+      20260725
+    ],
+    "variants": [
+      "flattened_mlp",
+      "last_state_gru",
+      "attentive_gru"
+    ],
+    "weight_decay": 0.0001
+  },
+  "seeds": [
+    20260723,
+    20260724,
+    20260725
+  ],
+  "semantic_hash": "e1c6da9efc3a7b2b9330e9a9648315262c4c3ac092c1527687c08739e021c4bd",
+  "stage": "23D1_controlled_model_attribution",
+  "variants": [
+    "flattened_mlp",
+    "last_state_gru",
+    "attentive_gru"
+  ]
+}

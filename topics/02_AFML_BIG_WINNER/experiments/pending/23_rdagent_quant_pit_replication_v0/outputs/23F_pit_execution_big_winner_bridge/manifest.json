@@ -1,0 +1,39 @@
+{
+  "decision": "model_branch_only_supported",
+  "deployment_authorized": false,
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "formal_seeds": [
+    20260723,
+    20260724,
+    20260725,
+    20260726,
+    20260727
+  ],
+  "gates": {
+    "blocked_fill_materialization_gate": true,
+    "episode_capture_gate": true,
+    "executable_no_sign_reversal_gate": true,
+    "five_seed_executable_direction_gate": true,
+    "left_tail_burden_gate": true,
+    "morphology_concentration_gate": true,
+    "morphology_coverage_gate": true,
+    "paper_proxy_positive_gate": true,
+    "right_tail_enrichment_gate": false,
+    "universe_equal_weight_increment_gate": false
+  },
+  "generated_at_utc": "2026-07-27T14:27:30.102313+00:00",
+  "input_hashes": {
+    "config": "2bd1a31b90c89987cd712614a0fae5223c2251cbb5aae8d158d7dfebcfcf04bb",
+    "formal_seed_metrics": "2bcd849037582864cafa0d9058331edddbce9724d582e697dacff32b40ca3e3d",
+    "label_panel": "17fe5a6b2e1e5ebfe51e989d91945916577d0b8d3ded2a01399b1acfa8877129",
+    "market_rules": "eab9e78aeb5191542426afb33f03decde073e90adb369b5eaddbf3a286d0b097",
+    "primary_prediction": "69456dfd7d56ac1b64b35e7e27c85054f654c4493f7325b2948dd9521e7767bb",
+    "security_master": "3175ae478bbfe9729d2b45cc0c8ca373fe903ee8d9acc9a96fed111441452601",
+    "winner_episode_panel": "35edfa714c6b7a516623a9757e7a27b601cfb16e30697b07eb927d5722db1c49",
+    "winner_taxonomy_panel": "bb9ddef1f09b0ff5819363f1e6faaae870b03a877bb19001d6ff52222afb3cf0"
+  },
+  "output_hashes_sha256": "a0541d7cc9e0c5c579cc35f0ccd16910e7e6b6e346ea2e0937feddf3e8c70755",
+  "primary_seed": 20260725,
+  "run_id": "23F_pit_execution_big_winner_bridge",
+  "seed_selection_uses_historical_test": false
+}

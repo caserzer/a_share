@@ -1,0 +1,30 @@
+{
+  "alpha20_reconciliation_common_seeds": [
+    20260723,
+    20260724,
+    20260725,
+    20260726,
+    20260727
+  ],
+  "alpha20_reconciliation_max_abs_difference": 4.368932771114942e-09,
+  "deployment_authorized": false,
+  "exact_library_blockers_inherited": {
+    "A101_CANONICAL_REBUILT": "A101_REPLICATION_BLOCKED",
+    "A158_QLIB_PINNED": "replication_blocked_by_missing_vwap",
+    "A360_QLIB_PINNED": "replication_blocked_by_missing_vwap",
+    "AUTOALPHA_EXACT_ARTIFACT": "AUTOALPHA_DEFINITION_BLOCKED"
+  },
+  "gates": {
+    "all_registered_libraries_materialized": true,
+    "alpha20_reconciliation": true,
+    "formal_five_seed_complete": true,
+    "no_empty_retained_feature": true,
+    "preflight_authorized": true,
+    "validation_only_library_selection": true
+  },
+  "generated_at_utc": "2026-07-27T15:37:22.049807+00:00",
+  "selected_library_by_validation_median_ic": "A20_RDAGENT_PINNED",
+  "selection_rule": "maximum five-seed median validation PAPER_PROXY IC; lexical tie break",
+  "stage": "23H_static_factor_library_benchmark",
+  "terminal_state": "static_library_benchmark_complete"
+}

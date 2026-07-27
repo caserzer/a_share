@@ -1,0 +1,105 @@
+phase2_config:
+  episode_id: 23_rdagent_quant_pit_replication_v0
+  phase: 2
+  base_config: config.yaml
+  runtime:
+    rdagent_checkout: /home/xiaolv/code/RD-Agent
+    environment_manager: uv
+    provider: openrouter
+    litellm_chat_model: openrouter/openai/gpt-5.6-sol-pro
+    chat_model: openai/gpt-5.6-sol-pro
+    litellm_embedding_model: openrouter/openai/text-embedding-3-small
+    embedding_model: openai/text-embedding-3-small
+    require_http_proxy: true
+    secret_log_policy: redact
+  factor_libraries:
+    primary_static:
+    - A20_RDAGENT_PINNED
+    - A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+    - A300_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+    conditional_static:
+    - A158_QLIB_PINNED
+    - A360_QLIB_PINNED
+    - A101_CANONICAL_REBUILT
+    - AUTOALPHA_EXACT_ARTIFACT
+    alpha158_source:
+      class: qlib.contrib.data.loader.Alpha158DL
+      expected_count: 158
+    alpha360_source:
+      class: qlib.contrib.data.loader.Alpha360DL
+      expected_count: 360
+    alpha101_source:
+      arxiv_id: '1601.00991'
+      expected_count: 101
+      require_reference_value_crosscheck: true
+    autoalpha_source:
+      arxiv_id: '2409.06289'
+      require_frozen_factor_artifact: true
+  preflight:
+    materialization_smoke:
+    - '2021-01-04'
+    - '2021-03-31'
+    minimum_rows: 1000
+    minimum_dates: 20
+    minimum_instruments: 100
+    minimum_finite_ratio: 0.5
+  benchmark:
+    libraries:
+    - A20_RDAGENT_PINNED
+    - A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+    - A300_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+    seeds:
+    - 20260723
+    - 20260724
+    - 20260725
+    - 20260726
+    - 20260727
+    primary_model: frozen_lightgbm
+    capacity_sensitivity: false
+  evolution:
+    factor_budget: 6h
+    model_budget: 6h
+    joint_budget: 12h
+    implementation_attempts_per_task: 10
+    implementation_timeout_seconds: 600
+    validation_timeout_seconds: 3600
+    factor_dedup_correlation_threshold: 0.99
+    factor_branches:
+    - A20_RDAGENT_PINNED
+    - A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+  outputs:
+    preflight: outputs/23G_factor_library_preflight
+    benchmark: outputs/23H_static_factor_library_benchmark
+    factor_a20: outputs/23I1_rdfactor_a20_solpro_6h
+    factor_a158: outputs/23I2_rdfactor_a158_solpro_6h
+    evolution_dynamics: outputs/23J_evolution_dynamics
+    model_a20: outputs/23K1_rdmodel_a20_solpro_6h
+    model_best_library: outputs/23K2_rdmodel_best_library_solpro_6h
+    execution_bridge: outputs/23L_factor_library_execution_big_winner_bridge
+    joint_scheduler: outputs/23M_joint_scheduler_replication
+    local_cache: outputs/local_cache/phase2
+base_config_sha256: 2bd1a31b90c89987cd712614a0fae5223c2251cbb5aae8d158d7dfebcfcf04bb
+phase2_config_sha256: 590f01a57cd9dd156b2af5124d36553e275fd5817c30bd6f8db68fc1bffb32dd
+library_hashes:
+  A20_RDAGENT_PINNED:
+    names_sha256: 2b89f77e78ce1205c41b84689d84ffdadb6e425764162792b4133e65dfecf242
+    expressions_sha256: 29d628db147a57358ac3e2c500f77827b709d1c3328e94d45aa129e2defcc7f1
+    ordered_pairs_sha256: 199024025926b38649a35478a69f7bedf464ecb145f41cffce3b7ffbc93c9769
+  A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION:
+    names_sha256: f1d0b317dc8b5f5b6a33bfcd95bb463818a2bda4858df1dcb4c1228dcbb7f68b
+    expressions_sha256: e22b62e5428b1d8daac5e6ac1a55975306e46500414ec5c304ddd75519dec84b
+    ordered_pairs_sha256: cfa6680a5b7395c244e4195fcf7204167cf03e1abb7a828bb213f6431db360c0
+  A300_QLIB_NO_VWAP_REGISTERED_ADAPTATION:
+    names_sha256: 4b3ff0b8ef32b628bd3384f81f4fb3e1fe56f3a8bcc256c37037c4c5bab3f2b4
+    expressions_sha256: b6d6c9fc08dd34317635ad746b96d9a5155168118b3433cdbf203116f988e8b4
+    ordered_pairs_sha256: 112f76e2bf8247e1adb957c0268b512bbdffde20336aba52371e9e4a579999dd
+library_ids:
+- A20_RDAGENT_PINNED
+- A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+- A300_QLIB_NO_VWAP_REGISTERED_ADAPTATION
+seeds:
+- 20260723
+- 20260724
+- 20260725
+- 20260726
+- 20260727

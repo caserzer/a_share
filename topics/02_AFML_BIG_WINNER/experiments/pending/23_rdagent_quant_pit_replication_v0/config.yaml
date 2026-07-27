@@ -1,0 +1,158 @@
+episode_id: 23_rdagent_quant_pit_replication_v0
+paper:
+  path: experiments/pending/23_rdagent_quant_pit_replication_v0/2505.15155v2.pdf
+  sha256: 5df0919520ec1a9d556f6a20bc10e9d2d1dc11cada2e6913b871239df63a2df2
+  arxiv_id: "2505.15155v2"
+
+rdagent:
+  checkout: /home/xiaolv/code/RD-Agent
+  expected_commit: 4f9ecb00
+  require_clean_checkout: false
+  adapter_diff_sha256: 80c471ae3ba64f7465972652d419691bdc609f8ada12c946e39ef59cc051ba11
+  environment_manager: uv
+  factor_budget: 6h
+  model_budget: 6h
+  joint_budget: 12h
+  implementation_attempts_per_task: 10
+  implementation_timeout_seconds: 600
+  validation_timeout_seconds: 3600
+  factor_dedup_correlation_threshold: 0.99
+
+data:
+  provider_uri: data/qlib/cn_data_pit_largecap
+  market: pit_largecap_main_chinext
+  instrument_file: data/qlib/cn_data_pit_largecap/instruments/pit_largecap_main_chinext.txt
+  calendar_file: data/qlib/cn_data_pit_largecap/calendars/day.txt
+  benchmark_provider_uri: data/qlib/cn_index_data
+  benchmark: SH000300
+  expected_calendar_start: "2017-01-03"
+  expected_calendar_end: "2026-05-29"
+  minimum_historical_instruments: 800
+
+split:
+  warmup: ["2017-01-03", "2017-03-31"]
+  train: ["2017-04-03", "2021-12-29"]
+  validation: ["2022-01-04", "2023-12-27"]
+  historical_test: ["2024-01-02", "2026-05-27"]
+  evidence_class: design_contaminated_historical_real_market_evidence
+
+labels:
+  paper_proxy:
+    expression: Ref($close,-2)/Ref($close,-1)-1
+    semantics: close_t1_to_close_t2
+  executable_bridge:
+    expression: Ref($open,-2)/Ref($open,-1)-1
+    semantics: next_open_t1_to_next_open_t2
+
+alpha20:
+  RESI5: Resi($close,5)/$close
+  WVMA5: Std(Abs($close/Ref($close,1)-1)*$volume,5)/(Mean(Abs($close/Ref($close,1)-1)*$volume,5)+1e-12)
+  RSQR5: Rsquare($close,5)
+  KLEN: ($high-$low)/$open
+  RSQR10: Rsquare($close,10)
+  CORR5: Corr($close,Log($volume+1),5)
+  CORD5: Corr($close/Ref($close,1),Log($volume/Ref($volume,1)+1),5)
+  CORR10: Corr($close,Log($volume+1),10)
+  ROC60: Ref($close,60)/$close
+  RESI10: Resi($close,10)/$close
+  VSTD5: Std($volume,5)/($volume+1e-12)
+  RSQR60: Rsquare($close,60)
+  CORR60: Corr($close,Log($volume+1),60)
+  WVMA60: Std(Abs($close/Ref($close,1)-1)*$volume,60)/(Mean(Abs($close/Ref($close,1)-1)*$volume,60)+1e-12)
+  STD5: Std($close,5)/$close
+  RSQR20: Rsquare($close,20)
+  CORD60: Corr($close/Ref($close,1),Log($volume/Ref($volume,1)+1),60)
+  CORD10: Corr($close/Ref($close,1),Log($volume/Ref($volume,1)+1),10)
+  CORR20: Corr($close,Log($volume+1),20)
+  KLOW: (Less($open,$close)-$low)/$open
+
+baseline:
+  seeds: [20260723, 20260724, 20260725, 20260726, 20260727]
+  robust_zscore_clip: 3.0
+  minimum_daily_cross_section: 30
+  lightgbm:
+    objective: regression
+    n_estimators: 1000
+    learning_rate: 0.2
+    num_leaves: 210
+    max_depth: 8
+    subsample: 0.8789
+    colsample_bytree: 0.8879
+    reg_alpha: 205.6999
+    reg_lambda: 580.9768
+    n_jobs: 20
+    deterministic: true
+  early_stopping_rounds: 50
+
+model_attribution:
+  smoke_seeds: [20260723, 20260724, 20260725]
+  formal_seeds: [20260723, 20260724, 20260725, 20260726, 20260727]
+  variants: [flattened_mlp, last_state_gru, attentive_gru]
+  num_timesteps: 20
+  n_epochs: 100
+  learning_rate: 0.001
+  early_stop: 12
+  batch_size: 256
+  weight_decay: 0.0001
+  optimizer: adam
+  loss: mse
+  gradient_clip_kind: value
+  gradient_clip_value: 3.0
+  scheduler: ReduceLROnPlateau
+  scheduler_factor: 0.5
+  scheduler_patience: 5
+  scheduler_min_lr: 0.000001
+  scheduler_threshold: 0.00001
+  dataloader_workers: 20
+
+portfolio:
+  topk: 50
+  n_drop: 5
+  buy_cost: 0.0005
+  sell_cost: 0.0015
+  limit_threshold: 0.095
+  annualization: 252
+
+execution_bridge:
+  primary_seed_selection_metric: validation_paper_proxy_ic
+  primary_seed_selection_rule: max_metric_then_smallest_seed
+  primary_topk: 50
+  sensitivity_topk: 30
+  n_drop: 5
+  initial_aum_cny: 10000000.0
+  commission_buy_bps: 2.5
+  commission_sell_bps: 2.5
+  minimum_commission_cny: 5.0
+  stamp_tax_sell_bps: 5.0
+  reference_slippage_bps: 5.0
+  severe_left_tail_threshold: -0.20
+  severe_left_tail_horizon_sessions: 20
+  right_tail_threshold_id: up50pct
+  right_tail_enrichment_gate: 1.0
+  left_tail_excess_tolerance: 0.02
+  minimum_material_morphology_episodes: 10
+  minimum_morphology_capture_share: 0.80
+  maximum_single_morphology_capture_share: 0.70
+  market_rule_registry: experiments/pending/20_ohlcv_positive_beta_exposure_research/references/market_rules/a_share_price_limit_rules_v2.csv
+  raw_ohlcv_root: data/raw/akshare/day/raw
+  qfq_ohlcv_root: data/raw/akshare/day/qfq
+  security_master: data/raw/akshare/status/instrument_metadata_target_universe.csv
+  trading_calendar: data/raw/akshare/status/trading_calendar.csv
+  sh_name_history_root: data/raw/akshare/status/sh_name_history
+  sz_name_history: data/raw/akshare/status/stock_info_sz_change_name_short.csv
+  benchmark_panel: data/processed/index/benchmark_indices_daily.csv
+  winner_episode_panel: experiments/pending/15_path_defined_winner_episode_label_v0/outputs/local_cache/15B_winner_path_shape_taxonomy_diagnostic/winner_episode_cluster_panel.parquet
+  winner_taxonomy_panel: experiments/pending/15_path_defined_winner_episode_label_v0/outputs/local_cache/15B_winner_path_shape_taxonomy_diagnostic/taxonomy_assignment_panel.parquet
+
+outputs:
+  preflight: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23A_rdagent_pit_preflight
+  baseline: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23B_alpha20_lgbm_pit_baseline
+  factor_ablation: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23C1_controlled_factor_ablation
+  factor_interaction: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23C2_factor_interaction_isolation
+  corrected_factor_loop: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23C3_corrected_rdagent_evolution_loop_0
+  factor_marginal_attribution: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23C4_new_factor_marginal_attribution
+  model_smoke: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23D_rdagent_model_loop_0_smoke
+  model_attribution: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23D1_controlled_model_attribution
+  model_attribution_formal: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23D2_formal_last_state_gru_attribution
+  execution_bridge: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23F_pit_execution_big_winner_bridge
+  local_cache: experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache

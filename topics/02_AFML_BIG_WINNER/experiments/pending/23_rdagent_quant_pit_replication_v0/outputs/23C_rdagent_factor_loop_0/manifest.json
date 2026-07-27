@@ -1,0 +1,59 @@
+{
+  "claim_ceiling": "rdagent_raw_loop0_config_confounded",
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "generated_at_utc": "2026-07-27T09:02:57Z",
+  "stage": "23C_rdagent_factor_loop_0",
+  "loop_index": 0,
+  "loop_completed": true,
+  "next_loop_started_then_interrupted": true,
+  "rdagent_decision_replace_best": true,
+  "controlled_incremental_inference_valid": false,
+  "configuration_drift": {
+    "baseline_infer_processors": ["RobustZScoreNorm", "Fillna"],
+    "combined_infer_processors": [],
+    "impact": "baseline and combined results do not isolate the factor-set change"
+  },
+  "runtime": {
+    "environment_manager": "uv",
+    "python": "3.11.12",
+    "chat_model": "openrouter/openai/gpt-5.6-sol",
+    "embedding_model": "openrouter/openai/text-embedding-3-small",
+    "mlflow_allow_file_store": true
+  },
+  "protocol": {
+    "provider_uri": "/home/xiaolv/code/RD-Agent/git_ignore_folder/ep23_qlib_provider",
+    "market": "pit_largecap_main_chinext",
+    "benchmark": "SH000300",
+    "train": ["2017-04-03", "2021-12-29"],
+    "validation": ["2022-01-04", "2023-12-27"],
+    "test": ["2024-01-02", "2026-05-27"],
+    "model": "qlib.contrib.model.gbdt.LGBModel",
+    "strategy": "TopkDropoutStrategy(topk=50,n_drop=5)",
+    "cost": {
+      "open_cost": 0.0005,
+      "close_cost": 0.0015,
+      "min_cost": 5
+    }
+  },
+  "generated_factors": [
+    "close_momentum_20d",
+    "close_reversal_5d",
+    "daily_close_location_value",
+    "volume_surprise_20d"
+  ],
+  "source": {
+    "rdagent_log": "/home/xiaolv/code/RD-Agent/log/2026-07-27_09-00-04-495483",
+    "baseline_workspace": "/home/xiaolv/code/RD-Agent/git_ignore_folder/RD-Agent_workspace/efe0aeefd7854f6aa825f8ccc2ea6470",
+    "combined_workspace": "/home/xiaolv/code/RD-Agent/git_ignore_folder/RD-Agent_workspace/1497d409b8f8497cad7cf745fed513a4",
+    "baseline_experiment_id": "898758575789033444",
+    "baseline_recorder_id": "2f922a37a335441bbbe53aed0f186a19",
+    "combined_experiment_id": "220031752966770121",
+    "combined_recorder_id": "f7d877fdf1fb4997bdab433888bb254f",
+    "baseline_qlib_res_sha256": "2767fc865b16eda9e0c2a0c9299f02a5436d58efabca24fc4649eb4ce7e928d0",
+    "combined_qlib_res_sha256": "912839ee673e8ece9c7c1824dd84c3371b93a4e6061a7b98474af7180accb08d"
+  },
+  "security": {
+    "secret_bearing_files_in_run_log": 0
+  }
+}

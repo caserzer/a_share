@@ -1,0 +1,93 @@
+{
+  "canonical_order_reproduction_audit": {
+    "atol": 1e-08,
+    "max_abs_diff": 1.807720457769335e-07,
+    "numeric_metric_count": 44,
+    "prior_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23C1_controlled_factor_ablation/seed_metrics.csv",
+    "rtol": 1e-06,
+    "status": "passed"
+  },
+  "claim_ceiling": "posthoc_factor_interaction_diagnostic",
+  "config_sha256": "13cc2c04098541d2a042e109b827623a6be3ecf2be0a801b86d47c6ee8ce088e",
+  "contrasts": {
+    "both_weak_factors_given_core": [
+      "plus_all_four",
+      "plus_momentum_volume"
+    ],
+    "close_location_given_core": [
+      "plus_core_close_location",
+      "plus_momentum_volume"
+    ],
+    "close_location_given_core_reversal": [
+      "plus_all_four",
+      "plus_core_reversal"
+    ],
+    "momentum_given_volume": [
+      "plus_momentum_volume",
+      "plus_volume"
+    ],
+    "reversal_given_core": [
+      "plus_core_reversal",
+      "plus_momentum_volume"
+    ],
+    "reversal_given_core_close_location": [
+      "plus_all_four",
+      "plus_core_close_location"
+    ],
+    "volume_given_momentum": [
+      "plus_momentum_volume",
+      "plus_momentum"
+    ]
+  },
+  "elapsed_seconds": 55.05380904699996,
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "factor_panel": "/home/xiaolv/code/RD-Agent/git_ignore_folder/RD-Agent_workspace/1497d409b8f8497cad7cf745fed513a4/combined_factors_df.parquet",
+  "factor_panel_sha256": "e2e89a590f9e60ebfb890116b0ce4c0581850a0fd108ad52fea84b1c83206c08",
+  "factors": [
+    "close_momentum_20d",
+    "close_reversal_5d",
+    "daily_close_location_value",
+    "volume_surprise_20d"
+  ],
+  "formal_five_seed_run": true,
+  "generated_at_utc": "2026-07-27T09:41:12.696669+00:00",
+  "seeds": [
+    20260723,
+    20260724,
+    20260725,
+    20260726,
+    20260727
+  ],
+  "selection": "none; post-hoc matched-seed interaction contrasts",
+  "stage": "23C2_factor_interaction_isolation",
+  "variants": {
+    "alpha20": [],
+    "plus_all_four": [
+      "close_momentum_20d",
+      "close_reversal_5d",
+      "daily_close_location_value",
+      "volume_surprise_20d"
+    ],
+    "plus_core_close_location": [
+      "close_momentum_20d",
+      "daily_close_location_value",
+      "volume_surprise_20d"
+    ],
+    "plus_core_reversal": [
+      "close_momentum_20d",
+      "close_reversal_5d",
+      "volume_surprise_20d"
+    ],
+    "plus_momentum": [
+      "close_momentum_20d"
+    ],
+    "plus_momentum_volume": [
+      "close_momentum_20d",
+      "volume_surprise_20d"
+    ],
+    "plus_volume": [
+      "volume_surprise_20d"
+    ]
+  }
+}

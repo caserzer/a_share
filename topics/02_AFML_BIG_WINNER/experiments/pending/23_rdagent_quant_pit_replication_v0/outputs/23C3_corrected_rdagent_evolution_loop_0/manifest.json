@@ -1,0 +1,47 @@
+{
+  "agent_loop": {
+    "base_features_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/rdagent_base_features_23c2",
+    "chat_model": "openrouter/openai/gpt-5.6-sol",
+    "embedding_model": "openrouter/openai/text-embedding-3-small",
+    "loop_n": 1,
+    "raw_elapsed_seconds": 128.55,
+    "replace_best_feedback": "yes"
+  },
+  "claim_ceiling": "joint_candidate_requires_matched_seed_marginal_attribution",
+  "corrected_candidate": {
+    "factor_panel_columns": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "reversal_5d",
+      "volatility_20d",
+      "intraday_range_1d"
+    ],
+    "factor_panel_date_end": "2026-05-27",
+    "factor_panel_date_start": "2017-04-05",
+    "factor_panel_rows": 464577,
+    "factor_panel_sha256": "042e554782ae56050a980848ce3016eace26f6e7e572bb364ffe7a85047a738e",
+    "factor_panel_unique_index": true,
+    "qlib_config_sha256": "7f90fd786f7e4c9208767192b8d38237ff1070062afc103290ea78e9eb518665",
+    "workspace_id": "ba1103d850b140ba8dce94af274d331a"
+  },
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "generated_at_utc": "2026-07-27T10:17:13Z",
+  "key_scan_hits": 0,
+  "promotion": {
+    "final_factor_library_decision": "pending_matched_seed_single_addition_and_leave_one_out",
+    "rdagent_batch_decision": "replace_best_yes",
+    "status": "joint_promotion_only"
+  },
+  "raw_name_confounded_run": {
+    "annualized_excess_return_with_cost": 0.0302701981563725,
+    "status": "diagnostic_only_not_promotable",
+    "workspace_id": "b6f0a043bac34a398610e3c1030434d0"
+  },
+  "rdagent": {
+    "adapter_diff_sha256": "9f0688d21f165455c958f2dffa60259a9c1a7f951af31fcfc8b1220a8be8d446",
+    "commit": "4f9ecb005881cddc08df0124a2e894c018007679",
+    "name_collision_policy": "SOTA-first"
+  },
+  "stage": "23C3_corrected_rdagent_evolution_loop_0"
+}

@@ -1,0 +1,10 @@
+{
+  "status": "invalidated_feedback_schema_bug",
+  "formal_evidence_eligible": false,
+  "reason": "The factor feedback LLM returned Decision=true, while the runtime parser read only the legacy Replace Best Result field and silently recorded decision=false.",
+  "first_completed_loop": 0,
+  "llm_reported_decision": true,
+  "checkpoint_recorded_decision": false,
+  "terminated_exit_code": 143,
+  "preservation_policy": "retain complete invalid trace, do not resume, restart from an empty independent namespace after parser repair"
+}

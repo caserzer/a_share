@@ -1,0 +1,39 @@
+{
+  "claim_ceiling": "static_registered_library_comparison_complete",
+  "elapsed_seconds": 47.79581322099693,
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "generated_at_utc": "2026-07-27T15:37:22.051822+00:00",
+  "input_contract_sha256": "f72932b0fafe22276b1c6f6e76ff92ff46ffa076b375dfbb3e18e0d1e6368ab3",
+  "library_ids": [
+    "A20_RDAGENT_PINNED",
+    "A157_QLIB_NO_VWAP_REGISTERED_ADAPTATION",
+    "A300_QLIB_NO_VWAP_REGISTERED_ADAPTATION"
+  ],
+  "prediction_paths": [
+    "outputs/local_cache/phase2/a20_rdagent_pinned_lgbm_seed_20260723_predictions.parquet",
+    "outputs/local_cache/phase2/a20_rdagent_pinned_lgbm_seed_20260724_predictions.parquet",
+    "outputs/local_cache/phase2/a20_rdagent_pinned_lgbm_seed_20260725_predictions.parquet",
+    "outputs/local_cache/phase2/a20_rdagent_pinned_lgbm_seed_20260726_predictions.parquet",
+    "outputs/local_cache/phase2/a20_rdagent_pinned_lgbm_seed_20260727_predictions.parquet",
+    "outputs/local_cache/phase2/a157_qlib_no_vwap_registered_adaptation_lgbm_seed_20260723_predictions.parquet",
+    "outputs/local_cache/phase2/a157_qlib_no_vwap_registered_adaptation_lgbm_seed_20260724_predictions.parquet",
+    "outputs/local_cache/phase2/a157_qlib_no_vwap_registered_adaptation_lgbm_seed_20260725_predictions.parquet",
+    "outputs/local_cache/phase2/a157_qlib_no_vwap_registered_adaptation_lgbm_seed_20260726_predictions.parquet",
+    "outputs/local_cache/phase2/a157_qlib_no_vwap_registered_adaptation_lgbm_seed_20260727_predictions.parquet",
+    "outputs/local_cache/phase2/a300_qlib_no_vwap_registered_adaptation_lgbm_seed_20260723_predictions.parquet",
+    "outputs/local_cache/phase2/a300_qlib_no_vwap_registered_adaptation_lgbm_seed_20260724_predictions.parquet",
+    "outputs/local_cache/phase2/a300_qlib_no_vwap_registered_adaptation_lgbm_seed_20260725_predictions.parquet",
+    "outputs/local_cache/phase2/a300_qlib_no_vwap_registered_adaptation_lgbm_seed_20260726_predictions.parquet",
+    "outputs/local_cache/phase2/a300_qlib_no_vwap_registered_adaptation_lgbm_seed_20260727_predictions.parquet"
+  ],
+  "seeds": [
+    20260723,
+    20260724,
+    20260725,
+    20260726,
+    20260727
+  ],
+  "selected_library_by_validation_median_ic": "A20_RDAGENT_PINNED",
+  "stage": "23H_static_factor_library_benchmark"
+}

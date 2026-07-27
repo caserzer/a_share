@@ -1,0 +1,6 @@
+agent_factor,formula,status,final_library_column,reason
+momentum_20d,close_t/close_t_minus_20-1,deduplicated,close_momentum_20d,exact numeric duplicate of fixed core
+volume_surprise_20d,volume_t/mean_volume_t_minus_19_to_t-1,rejected_name_collision,volume_surprise_20d,new formula reused fixed core name; SOTA-first guard
+reversal_5d,1-close_t/close_t_minus_5,joint_candidate,reversal_5d,new nonduplicate factor
+volatility_20d,sample_std_20d_log_returns,joint_candidate,volatility_20d,new nonduplicate factor
+intraday_range_1d,(high_t-low_t)/close_t,joint_candidate,intraday_range_1d,new nonduplicate factor

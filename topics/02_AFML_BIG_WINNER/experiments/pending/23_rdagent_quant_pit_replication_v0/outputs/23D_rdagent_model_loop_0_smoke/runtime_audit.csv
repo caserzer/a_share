@@ -1,0 +1,20 @@
+field,agent_declared,runtime_observed,status
+input_features,Alpha20,Alpha20,matched
+num_features,20,20,matched
+num_timesteps,20,20,matched
+optimizer,AdamW,Adam,mismatch
+loss,MSELoss,MSE,matched
+gradient_clip,clip_norm_1.0,clip_grad_value_3.0,mismatch
+lr_scheduler,ReduceLROnPlateau_factor_0.5_patience_4_min_lr_1e-5,ReduceLROnPlateau_factor_0.5_patience_5_min_lr_1e-6_threshold_1e-5,mismatch
+n_epochs,100,100,matched
+learning_rate,0.001,0.001,matched
+early_stop,12,12,matched
+batch_size,256,256,matched
+weight_decay,0.0001,0.0001,matched
+seed,not declared,None,uncontrolled
+train_samples,not declared,154121,observed
+valid_samples,not declared,118860,observed
+test_samples,not declared,190388,observed
+best_epoch,not declared,0,observed
+best_valid_loss,not declared,0.993943,observed
+forward_side_effect,none stated,writes output.pth on every forward,protocol_gap

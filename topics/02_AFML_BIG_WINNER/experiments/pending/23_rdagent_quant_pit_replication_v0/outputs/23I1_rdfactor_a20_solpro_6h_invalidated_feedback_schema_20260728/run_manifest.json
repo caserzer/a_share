@@ -1,0 +1,38 @@
+{
+  "ended_at_utc": "2026-07-27T16:03:07.696509+00:00",
+  "exit_code": 143,
+  "openrouter_key_usage_delta_usd": 1.9079133400000003,
+  "openrouter_key_usage_end_usd": 5.9062856,
+  "openrouter_key_usage_start_usd": 3.99837226,
+  "prepared_at_utc": "2026-07-27T15:52:25.881824+00:00",
+  "provider_reported_cost_available": true,
+  "started_at_utc": "2026-07-27T15:52:49.530374+00:00",
+  "status": "raw_run_failed_or_incomplete",
+  "trace": {
+    "complete_loop_count": 1,
+    "loop_count": 2,
+    "loops": [
+      {
+        "checkpoint_count": 5,
+        "checkpoints": [
+          "0_direct_exp_gen",
+          "1_coding",
+          "2_running",
+          "3_feedback",
+          "4_record"
+        ],
+        "complete_five_step_loop": true,
+        "loop_index": 0
+      },
+      {
+        "checkpoint_count": 1,
+        "checkpoints": [
+          "0_direct_exp_gen"
+        ],
+        "complete_five_step_loop": false,
+        "loop_index": 1
+      }
+    ],
+    "trace_exists": true
+  }
+}

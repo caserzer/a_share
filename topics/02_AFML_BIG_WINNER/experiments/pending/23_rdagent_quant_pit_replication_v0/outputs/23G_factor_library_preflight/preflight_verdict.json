@@ -1,0 +1,22 @@
+{
+  "conditional_libraries": {
+    "A101_CANONICAL_REBUILT": "A101_REPLICATION_BLOCKED",
+    "A158_QLIB_PINNED": "replication_blocked_by_missing_vwap",
+    "A360_QLIB_PINNED": "replication_blocked_by_missing_vwap",
+    "AUTOALPHA_EXACT_ARTIFACT": "AUTOALPHA_DEFINITION_BLOCKED"
+  },
+  "elapsed_seconds": 31.40548238500196,
+  "gates": {
+    "network_smoke_ok": true,
+    "primary_counts_ok": true,
+    "primary_materialization_ok": true,
+    "runtime_config_ok": true,
+    "secret_scan_ok": true
+  },
+  "generated_at_utc": "2026-07-27T15:31:50.338479+00:00",
+  "ready_for_primary_static_benchmark": true,
+  "secret_scan_hit_count": 0,
+  "secret_scan_hits_redacted": [],
+  "stage": "23G_factor_library_preflight",
+  "terminal_state": "ready_for_primary_static_benchmark"
+}

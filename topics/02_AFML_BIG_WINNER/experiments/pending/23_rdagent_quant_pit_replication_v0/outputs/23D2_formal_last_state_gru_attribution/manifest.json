@@ -1,0 +1,116 @@
+{
+  "attribution_summary": {
+    "last_state_gru_vs_lightgbm": {
+      "test_gross_arr_median_delta": 0.12553473413119945,
+      "test_gross_arr_positive_seeds": 4,
+      "test_ic_median_delta": 0.008692777685272277,
+      "test_ic_positive_seeds": 4,
+      "test_net_arr_median_delta": 0.11594040120057073,
+      "test_net_arr_positive_seeds": 4,
+      "validation_ic_median_delta": 0.01494449617684709,
+      "validation_ic_positive_seeds": 5
+    },
+    "last_state_gru_vs_mlp": {
+      "executable_gross_arr_median_delta": 0.11274173622574679,
+      "executable_gross_arr_positive_seeds": 3,
+      "executable_ic_median_delta": 0.01248301670643082,
+      "executable_ic_positive_seeds": 5,
+      "test_gross_arr_median_delta": 0.11075161416085799,
+      "test_gross_arr_positive_seeds": 4,
+      "test_ic_median_delta": 0.011654922553142716,
+      "test_ic_positive_seeds": 5,
+      "test_net_arr_median_delta": 0.10085597514546052,
+      "test_net_arr_positive_seeds": 3,
+      "test_rank_ic_median_delta": 0.01818303486790894,
+      "test_rank_ic_positive_seeds": 5,
+      "turnover_median_delta": 0.005155709342560558,
+      "validation_ic_median_delta": 0.021731700054413734,
+      "validation_ic_positive_seeds": 5
+    }
+  },
+  "claim_ceiling": "formal_model_attribution_complete_pending_23F",
+  "cumulative_training_seconds": 2040.6546006649987,
+  "decision": "last_state_gru_formal_candidate_pending_23F",
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "formal_five_seed_run": true,
+  "generated_at_utc": "2026-07-27T13:39:15.989148+00:00",
+  "invocation_elapsed_seconds": 773.4830971480005,
+  "market": "pit_largecap_main_chinext",
+  "mode": "formal",
+  "model_inventory": {
+    "flattened_mlp": {
+      "class": "FlattenedWindowMLP",
+      "fp32_parameter_bytes": 655236,
+      "parameter_count": 163809
+    },
+    "last_state_gru": {
+      "class": "LastStateGRU128",
+      "fp32_parameter_bytes": 660996,
+      "parameter_count": 165249
+    }
+  },
+  "model_source_sha256": "6d6d4660357652bdc52dbcc77e0d61b1c294bec1317b0447cc9351e43d06a99e",
+  "prediction_paths_local_cache": [
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260723.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260724.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260725.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260726.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/flattened_mlp_20260727.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260723.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260724.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260725.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260726.predictions.parquet",
+    "experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/local_cache/23d1_e1c6da9efc3a7b2b/last_state_gru_20260727.predictions.parquet"
+  ],
+  "provider_uri": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/qlib/cn_data_pit_largecap",
+  "run_kind": "formal",
+  "runtime_contract": {
+    "batch_size": 256,
+    "dataloader_workers": 20,
+    "early_stop": 12,
+    "formal_seeds": [
+      20260723,
+      20260724,
+      20260725,
+      20260726,
+      20260727
+    ],
+    "gradient_clip_kind": "value",
+    "gradient_clip_value": 3.0,
+    "learning_rate": 0.001,
+    "loss": "mse",
+    "n_epochs": 100,
+    "num_timesteps": 20,
+    "optimizer": "adam",
+    "scheduler": "ReduceLROnPlateau",
+    "scheduler_factor": 0.5,
+    "scheduler_min_lr": 1e-06,
+    "scheduler_patience": 5,
+    "scheduler_threshold": 1e-05,
+    "smoke_seeds": [
+      20260723,
+      20260724,
+      20260725
+    ],
+    "variants": [
+      "flattened_mlp",
+      "last_state_gru",
+      "attentive_gru"
+    ],
+    "weight_decay": 0.0001
+  },
+  "seeds": [
+    20260723,
+    20260724,
+    20260725,
+    20260726,
+    20260727
+  ],
+  "semantic_hash": "e1c6da9efc3a7b2b9330e9a9648315262c4c3ac092c1527687c08739e021c4bd",
+  "stage": "23D2_formal_last_state_gru_attribution",
+  "variants": [
+    "flattened_mlp",
+    "last_state_gru"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "accepted_factor_count": 4,
+  "accepted_factors": [
+    {
+      "code_path": "candidate_code/loop_0001/Overnight_Gap_1D/factor.py",
+      "code_sha256": "de8fce345a91dfb09d1a069cd8423afceed67fabc8c226f9be7e6526cfe707c2",
+      "factor_name": "Overnight_Gap_1D",
+      "formulation": "\\mathrm{Overnight\\_Gap\\_1D}_{j,t}=\\frac{O_{j,t}}{C_{j,t-1}}-1",
+      "loop_index": 1,
+      "result_h5_path": "workspaces/d8ec5923ef554fcd88b3e406091302fb/result.h5",
+      "result_h5_sha256": "4791b12b9e85b0223226f3788f8b593b7e9c27351ab920b225fabdafda37220c"
+    },
+    {
+      "code_path": "candidate_code/loop_0001/Close_Location_Value_1D/factor.py",
+      "code_sha256": "de2fd2408c5431bd780b2fbe215eb5a981cfecbd1371cc9ee90d6d35457f8fad",
+      "factor_name": "Close_Location_Value_1D",
+      "formulation": "\\mathrm{Close\\_Location\\_Value\\_1D}_{j,t}=\\begin{cases}\\frac{2C_{j,t}-H_{j,t}-L_{j,t}}{H_{j,t}-L_{j,t}}, & H_{j,t}>L_{j,t}\\\\\\mathrm{NaN}, & H_{j,t}\\leq L_{j,t}\\end{cases}",
+      "loop_index": 1,
+      "result_h5_path": "workspaces/408e9b005d08438cbbdefddb04a6d8b3/result.h5",
+      "result_h5_sha256": "78408ab55b2e6f2f00e24a55a069b9ba1b1f931649f236214eadf447bc4b9347"
+    },
+    {
+      "code_path": "candidate_code/loop_0001/Close_Momentum_20D/factor.py",
+      "code_sha256": "aa156f7771e52188945f382ab8ee2146751271aa29b394ee4fe2f47db8a34d9f",
+      "factor_name": "Close_Momentum_20D",
+      "formulation": "\\mathrm{Close\\_Momentum\\_20D}_{j,t}=\\frac{C_{j,t}}{C_{j,t-20}}-1",
+      "loop_index": 1,
+      "result_h5_path": "workspaces/670d1f8d6fe34fc29ab5f52c8638d5c3/result.h5",
+      "result_h5_sha256": "815edc1af653b6b26845a6f4e2be3f1f0c678e8cbd33fe1d59c47ec7ee1d56e3"
+    },
+    {
+      "code_path": "candidate_code/loop_0038/Exponentially_Weighted_Lagged_VolumeReturn_Correlation_20D/factor.py",
+      "code_sha256": "70231fddbf327358b6aeeb9b26ae90bc1238908c117bcc166f45eeeebefb6139",
+      "factor_name": "Exponentially_Weighted_Lagged_VolumeReturn_Correlation_20D",
+      "formulation": "\\begin{aligned}a_i&=2^{-i/10},\\quad A_{20}=\\sum_{k=0}^{19}2^{-k/10},\\quad w_i=\\frac{a_i}{A_{20}},\\qquad i=0,\\ldots,19,\\\\u_{j,t-i}^{\\mathrm{lag}}&=\\ln\\!\\left(\\frac{V^{\\mathrm{instr}}_{j,t-i-1}}{V^{\\mathrm{instr}}_{j,t-i-2}}\\right),\\\\r_{j,t-i}&=\\ln\\!\\left(\\frac{C^{\\mathrm{instr}}_{j,t-i}}{C^{\\mathrm{instr}}_{j,t-i-1}}\\right),\\\\\\mu^{w}_{u,j,t}&=\\sum_{i=0}^{19}w_i u_{j,t-i}^{\\mathrm{lag}},\\qquad \\mu^{w}_{r,j,t}=\\sum_{i=0}^{19}w_i r_{j,t-i},\\\\\\sigma^{w}_{u,j,t}&=\\sqrt{\\sum_{i=0}^{19}w_i\\left(u_{j,t-i}^{\\mathrm{lag}}-\\mu^{w}_{u,j,t}\\right)^2},\\\\\\sigma^{w}_{r,j,t}&=\\sqrt{\\sum_{i=0}^{19}w_i\\left(r_{j,t-i}-\\mu^{w}_{r,j,t}\\right)^2},\\\\\\operatorname{Cov}^{w}_{ur,j,t}&=\\sum_{i=0}^{19}w_i\\left(u_{j,t-i}^{\\mathrm{lag}}-\\mu^{w}_{u,j,t}\\right)\\left(r_{j,t-i}-\\mu^{w}_{r,j,t}\\right),\\\\\\mathrm{Exponentially\\_Weighted\\_Lagged\\_VolumeReturn\\_Correlation\\_20D}_{j,t}&=\\begin{cases}\\dfrac{\\operatorname{Cov}^{w}_{ur,j,t}}{\\sigma^{w}_{u,j,t}\\sigma^{w}_{r,j,t}},&\\text{if all 22 closes and volumes from }t-21\\text{ through }t\\text{ are finite and strictly positive,}\\\\&\\quad 0<\\sigma^{w}_{u,j,t}<\\infty,\\ 0<\\sigma^{w}_{r,j,t}<\\infty,\\text{ and the result is finite},\\\\\\mathrm{NaN},&\\text{otherwise.}\\end{cases}\\end{aligned}",
+      "loop_index": 38,
+      "result_h5_path": "workspaces/d9fd52c96907412194d20244bbef730f/result.h5",
+      "result_h5_sha256": "97a0eaa95c274372a9997b3a32d89485db5f51989a24fa09211777f5cdbdc7fa"
+    }
+  ],
+  "accepted_loop_count": 2,
+  "accepted_trace_indices": [
+    1,
+    38
+  ],
+  "base_expression_feature_count": 20,
+  "branch": "a20",
+  "generated_at_utc": "2026-07-27T19:20:32.966608+00:00",
+  "rdagent_loader_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23I1_rdfactor_a20_solpro_6h/retained_library"
+}

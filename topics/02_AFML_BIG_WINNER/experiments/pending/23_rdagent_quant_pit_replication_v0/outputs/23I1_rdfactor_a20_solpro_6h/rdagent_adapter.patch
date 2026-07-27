@@ -1,0 +1,634 @@
+diff --git a/rdagent/app/cli.py b/rdagent/app/cli.py
+index 07937172..a73ee596 100644
+--- a/rdagent/app/cli.py
++++ b/rdagent/app/cli.py
+@@ -86,8 +86,16 @@ def fin_factor_cli(
+     loop_n: Optional[int] = None,
+     all_duration: Optional[str] = None,
+     checkout: CheckoutOption = True,
++    base_features_path: Optional[str] = None,
+ ):
+-    fin_factor(path=path, step_n=step_n, loop_n=loop_n, all_duration=all_duration, checkout=checkout)
++    fin_factor(
++        path=path,
++        step_n=step_n,
++        loop_n=loop_n,
++        all_duration=all_duration,
++        checkout=checkout,
++        base_features_path=base_features_path,
++    )
+ 
+ 
+ @app.command(name="fin_model")
+@@ -97,8 +105,16 @@ def fin_model_cli(
+     loop_n: Optional[int] = None,
+     all_duration: Optional[str] = None,
+     checkout: CheckoutOption = True,
++    base_features_path: Optional[str] = None,
+ ):
+-    fin_model(path=path, step_n=step_n, loop_n=loop_n, all_duration=all_duration, checkout=checkout)
++    fin_model(
++        path=path,
++        step_n=step_n,
++        loop_n=loop_n,
++        all_duration=all_duration,
++        checkout=checkout,
++        base_features_path=base_features_path,
++    )
+ 
+ 
+ @app.command(name="fin_quant")
+@@ -108,8 +124,16 @@ def fin_quant_cli(
+     loop_n: Optional[int] = None,
+     all_duration: Optional[str] = None,
+     checkout: CheckoutOption = True,
++    base_features_path: Optional[str] = None,
+ ):
+-    fin_quant(path=path, step_n=step_n, loop_n=loop_n, all_duration=all_duration, checkout=checkout)
++    fin_quant(
++        path=path,
++        step_n=step_n,
++        loop_n=loop_n,
++        all_duration=all_duration,
++        checkout=checkout,
++        base_features_path=base_features_path,
++    )
+ 
+ 
+ @app.command(name="fin_factor_report")
+diff --git a/rdagent/app/qlib_rd_loop/conf.py b/rdagent/app/qlib_rd_loop/conf.py
+index 13dade7c..2fc00589 100644
+--- a/rdagent/app/qlib_rd_loop/conf.py
++++ b/rdagent/app/qlib_rd_loop/conf.py
+@@ -8,6 +8,15 @@ from rdagent.components.workflow.conf import BasePropSetting
+ class ModelBasePropSetting(BasePropSetting):
+     model_config = SettingsConfigDict(env_prefix="QLIB_MODEL_", protected_namespaces=())
+ 
++    provider_uri: str = "~/.qlib/qlib_data/cn_data"
++    """Qlib provider URI used by model experiments."""
++
++    market: str = "csi300"
++    """Qlib instrument market used by model experiments."""
++
++    benchmark: str = "SH000300"
++    """Benchmark instrument used by model experiments."""
++
+     # 1) override base settings
+     scen: str = "rdagent.scenarios.qlib.experiment.model_experiment.QlibModelScenario"
+     """Scenario class for Qlib Model"""
+@@ -52,6 +61,15 @@ class ModelBasePropSetting(BasePropSetting):
+ class FactorBasePropSetting(BasePropSetting):
+     model_config = SettingsConfigDict(env_prefix="QLIB_FACTOR_", protected_namespaces=())
+ 
++    provider_uri: str = "~/.qlib/qlib_data/cn_data"
++    """Qlib provider URI used by factor experiments."""
++
++    market: str = "csi300"
++    """Qlib instrument market used by factor experiments."""
++
++    benchmark: str = "SH000300"
++    """Benchmark instrument used by factor experiments."""
++
+     # 1) override base settings
+     scen: str = "rdagent.scenarios.qlib.experiment.factor_experiment.QlibFactorScenario"
+     """Scenario class for Qlib Factor"""
+diff --git a/rdagent/components/coder/factor_coder/config.py b/rdagent/components/coder/factor_coder/config.py
+index a09ae666..75bd4604 100644
+--- a/rdagent/components/coder/factor_coder/config.py
++++ b/rdagent/components/coder/factor_coder/config.py
+@@ -1,15 +1,19 @@
+ import os
++import sys
+ from typing import Optional
+ 
+ from pydantic_settings import SettingsConfigDict
+ 
+ from rdagent.components.coder.CoSTEER.config import CoSTEERSettings
+-from rdagent.utils.env import CondaConf, Env, LocalEnv
++from rdagent.utils.env import CondaConf, Env, LocalEnv, UvConf
+ 
+ 
+ class FactorCoSTEERSettings(CoSTEERSettings):
+     model_config = SettingsConfigDict(env_prefix="FACTOR_CoSTEER_")
+ 
++    env_type: str = "uv"
++    """Environment used for factor implementation: 'uv' or 'conda'."""
++
+     data_folder: str = "git_ignore_folder/factor_implementation_source_data"
+     """Path to the folder containing financial data (default is fundamental data in Qlib)"""
+ 
+@@ -25,7 +29,7 @@ class FactorCoSTEERSettings(CoSTEERSettings):
+     select_method: str = "random"
+     """Method for the selection of factors implementation"""
+ 
+-    python_bin: str = "python"
++    python_bin: str = sys.executable
+     """Path to the Python binary"""
+ 
+ 
+@@ -36,8 +40,12 @@ def get_factor_env(
+     enable_cache: Optional[bool] = None,
+ ) -> Env:
+     conf = FactorCoSTEERSettings()
+-    if hasattr(conf, "python_bin"):
++    if conf.env_type == "uv":
++        env = LocalEnv(conf=UvConf(python_bin=conf.python_bin))
++    elif conf.env_type == "conda":
+         env = LocalEnv(conf=(CondaConf(conda_env_name=os.environ.get("CONDA_DEFAULT_ENV"))))
++    else:
++        raise ValueError(f"Unknown factor environment type: {conf.env_type}")
+     env.conf.extra_volumes = extra_volumes.copy()
+     env.conf.running_timeout_period = running_timeout_period
+     if enable_cache is not None:
+diff --git a/rdagent/components/coder/model_coder/conf.py b/rdagent/components/coder/model_coder/conf.py
+index 1cb8d2d3..6e2de429 100644
+--- a/rdagent/components/coder/model_coder/conf.py
++++ b/rdagent/components/coder/model_coder/conf.py
+@@ -3,14 +3,21 @@ from typing import Optional
+ from pydantic_settings import SettingsConfigDict
+ 
+ from rdagent.components.coder.CoSTEER.config import CoSTEERSettings
+-from rdagent.utils.env import Env, QlibCondaConf, QlibCondaEnv, QTDockerEnv
++from rdagent.utils.env import (
++    Env,
++    QlibCondaConf,
++    QlibCondaEnv,
++    QlibUvConf,
++    QlibUvEnv,
++    QTDockerEnv,
++)
+ 
+ 
+ class ModelCoSTEERSettings(CoSTEERSettings):
+     model_config = SettingsConfigDict(env_prefix="MODEL_CoSTEER_")
+ 
+-    env_type: str = "conda"  # or "docker"
+-    """Environment to run model code in coder and runner: 'conda' for local conda env, 'docker' for Docker container"""
++    env_type: str = "uv"
++    """Environment to run model code in coder and runner: uv, conda, or docker."""
+ 
+ 
+ def get_model_env(
+@@ -22,6 +29,8 @@ def get_model_env(
+     conf = ModelCoSTEERSettings()
+     if conf.env_type == "docker":
+         env = QTDockerEnv()
++    elif conf.env_type == "uv":
++        env = QlibUvEnv(conf=QlibUvConf())
+     elif conf.env_type == "conda":
+         env = QlibCondaEnv(conf=QlibCondaConf())
+     else:
+diff --git a/rdagent/components/coder/model_coder/model.py b/rdagent/components/coder/model_coder/model.py
+index 9789cd5a..9cc9a465 100644
+--- a/rdagent/components/coder/model_coder/model.py
++++ b/rdagent/components/coder/model_coder/model.py
+@@ -5,11 +5,11 @@ from pathlib import Path
+ from typing import Dict, Optional
+ 
+ from rdagent.components.coder.CoSTEER.task import CoSTEERTask
+-from rdagent.components.coder.model_coder.conf import MODEL_COSTEER_SETTINGS
++from rdagent.components.coder.model_coder.conf import get_model_env
+ from rdagent.core.experiment import Experiment, FBWorkspace
+ from rdagent.core.utils import cache_with_pickle
+ from rdagent.oai.llm_utils import md5_hash
+-from rdagent.utils.env import KGDockerEnv, QlibCondaConf, QlibCondaEnv, QTDockerEnv
++from rdagent.utils.env import KGDockerEnv
+ 
+ 
+ class ModelTask(CoSTEERTask):
+@@ -114,12 +114,7 @@ class ModelFBWorkspace(FBWorkspace):
+         self.before_execute()
+         try:
+             if self.target_task.version == 1:
+-                if MODEL_COSTEER_SETTINGS.env_type == "docker":
+-                    qtde = QTDockerEnv()
+-                elif MODEL_COSTEER_SETTINGS.env_type == "conda":
+-                    qtde = QlibCondaEnv(conf=QlibCondaConf())
+-                else:
+-                    raise ValueError(f"Unknown env_type: {MODEL_COSTEER_SETTINGS.env_type}")
++                qtde = get_model_env()
+             else:
+                 qtde = KGDockerEnv()
+             qtde.prepare()
+diff --git a/rdagent/oai/backend/litellm.py b/rdagent/oai/backend/litellm.py
+index 86cbe846..294a983d 100644
+--- a/rdagent/oai/backend/litellm.py
++++ b/rdagent/oai/backend/litellm.py
+@@ -52,8 +52,12 @@ class LiteLLMAPIBackend(APIBackend):
+ 
+     def __init__(self, *args: Any, **kwargs: Any) -> None:
+         if not self.__class__._has_logged_settings:
+-            logger.info(f"{LITELLM_SETTINGS}")
+-            logger.log_object(LITELLM_SETTINGS.model_dump(), tag="LITELLM_SETTINGS")
++            settings_for_log = LITELLM_SETTINGS.model_dump()
++            for key, value in settings_for_log.items():
++                if value and (key.endswith("_key") or "api_key" in key):
++                    settings_for_log[key] = "***"
++            logger.info(f"{settings_for_log}")
++            logger.log_object(settings_for_log, tag="LITELLM_SETTINGS")
+             self.__class__._has_logged_settings = True
+         super().__init__(*args, **kwargs)
+ 
+diff --git a/rdagent/scenarios/qlib/developer/factor_runner.py b/rdagent/scenarios/qlib/developer/factor_runner.py
+index c6b58d35..d0fc6088 100644
+--- a/rdagent/scenarios/qlib/developer/factor_runner.py
++++ b/rdagent/scenarios/qlib/developer/factor_runner.py
+@@ -73,6 +73,9 @@ class QlibFactorRunner(CachedRunner[QlibFactorExperiment]):
+         fbps = FactorBasePropSetting()
+         env_to_use = {
+             "PYTHONPATH": "./",
++            "provider_uri": fbps.provider_uri,
++            "market": fbps.market,
++            "benchmark": fbps.benchmark,
+             "train_start": fbps.train_start,
+             "train_end": fbps.train_end,
+             "valid_start": fbps.valid_start,
+@@ -90,7 +93,10 @@ class QlibFactorRunner(CachedRunner[QlibFactorExperiment]):
+             sota_factor_experiments_list = [
+                 base_exp for base_exp in exp.based_experiments if isinstance(base_exp, QlibFactorExperiment)
+             ]
+-            if len(sota_factor_experiments_list) > 1:
++            if len(sota_factor_experiments_list) > 1 or any(
++                base_exp.base_feature_codes
++                for base_exp in sota_factor_experiments_list
++            ):
+                 logger.info(f"SOTA factor processing ...")
+                 SOTA_factor = process_factor_data(sota_factor_experiments_list)
+ 
+@@ -103,18 +109,31 @@ class QlibFactorRunner(CachedRunner[QlibFactorExperiment]):
+ 
+             # Combine the SOTA factor and new factors if SOTA factor exists
+             if SOTA_factor is not None and not SOTA_factor.empty:
++                # A newly proposed factor may reuse the name of an existing
++                # SOTA/base factor while implementing a different formula.
++                # Preserve the accepted library by rejecting such name
++                # collisions before correlation-based deduplication.
++                colliding_columns = new_factors.columns.intersection(SOTA_factor.columns)
++                if not colliding_columns.empty:
++                    logger.warning(
++                        "Skip new factors whose names collide with SOTA factors: "
++                        f"{colliding_columns.tolist()}"
++                    )
++                    new_factors = new_factors.loc[:, ~new_factors.columns.isin(colliding_columns)]
+                 new_factors = self.deduplicate_new_factors(SOTA_factor, new_factors)
+                 if new_factors.empty:
+                     raise FactorEmptyError(
+                         "The factors generated in this round are highly similar to the previous factors. Please change the direction for creating new factors."
+                     )
+-                combined_factors = pd.concat([SOTA_factor, new_factors], axis=1).dropna()
++                combined_factors = pd.concat(
++                    [SOTA_factor, new_factors], axis=1
++                )
+             else:
+                 combined_factors = new_factors
+ 
+             # Sort and nest the combined factors under 'feature'
+             combined_factors = combined_factors.sort_index()
+-            combined_factors = combined_factors.loc[:, ~combined_factors.columns.duplicated(keep="last")]
++            combined_factors = combined_factors.loc[:, ~combined_factors.columns.duplicated(keep="first")]
+             new_columns = pd.MultiIndex.from_product([["feature"], combined_factors.columns])
+             combined_factors.columns = new_columns
+             logger.info(f"Factor data processing completed.")
+@@ -175,7 +194,7 @@ class QlibFactorRunner(CachedRunner[QlibFactorExperiment]):
+             if exp.base_feature_codes:
+                 factors = process_factor_data(exp)
+                 factors = factors.sort_index()
+-                factors = factors.loc[:, ~factors.columns.duplicated(keep="last")]
++                factors = factors.loc[:, ~factors.columns.duplicated(keep="first")]
+                 new_columns = pd.MultiIndex.from_product([["feature"], factors.columns])
+                 factors.columns = new_columns
+                 target_path = exp.experiment_workspace.workspace_path / "combined_factors_df.parquet"
+diff --git a/rdagent/scenarios/qlib/developer/feedback.py b/rdagent/scenarios/qlib/developer/feedback.py
+index 58fcfbd9..1f25a59a 100644
+--- a/rdagent/scenarios/qlib/developer/feedback.py
++++ b/rdagent/scenarios/qlib/developer/feedback.py
+@@ -21,6 +21,16 @@ IMPORTANT_METRICS = [
+ ]
+ 
+ 
++def parse_feedback_decision(response_json: dict) -> bool:
++    """Accept both the factor prompt field and the model-style fallback field."""
++    return convert2bool(
++        response_json.get(
++            "Replace Best Result",
++            response_json.get("Decision", "no"),
++        )
++    )
++
++
+ def process_results(current_result, sota_result):
+     # Convert the results to dataframes
+     current_df = pd.DataFrame(current_result)
+@@ -107,7 +117,7 @@ class QlibFactorExperiment2Feedback(Experiment2Feedback):
+         hypothesis_evaluation = response_json.get("Feedback for Hypothesis", "No feedback provided")
+         new_hypothesis = response_json.get("New Hypothesis", "No new hypothesis provided")
+         reason = response_json.get("Reasoning", "No reasoning provided")
+-        decision = convert2bool(response_json.get("Replace Best Result", "no"))
++        decision = parse_feedback_decision(response_json)
+ 
+         return HypothesisFeedback(
+             observations=observations,
+@@ -156,17 +166,6 @@ class QlibModelExperiment2Feedback(Experiment2Feedback):
+             exp_result=exp.result.loc[IMPORTANT_METRICS] if exp.result is not None else "execution failed",
+         )
+ 
+-        # Call the APIBackend to generate the response for hypothesis feedback
+-        response = APIBackend().build_messages_and_create_chat_completion(
+-            user_prompt=user_prompt,
+-            system_prompt=sys_prompt,
+-            json_mode=True,
+-            json_target_type=Dict[str, str | bool | int],
+-        )
+-
+-        # Parse the JSON response to extract the feedback
+-        response_json_hypothesis = json.loads(response)
+-
+         # Call the APIBackend to generate the response for hypothesis feedback
+         response_hypothesis = APIBackend().build_messages_and_create_chat_completion(
+             user_prompt=user_prompt,
+diff --git a/rdagent/scenarios/qlib/developer/model_runner.py b/rdagent/scenarios/qlib/developer/model_runner.py
+index 7f909420..84348ecc 100644
+--- a/rdagent/scenarios/qlib/developer/model_runner.py
++++ b/rdagent/scenarios/qlib/developer/model_runner.py
+@@ -62,6 +62,9 @@ class QlibModelRunner(CachedRunner[QlibModelExperiment]):
+         mbps = ModelBasePropSetting()
+         env_to_use = {
+             "PYTHONPATH": "./",
++            "provider_uri": mbps.provider_uri,
++            "market": mbps.market,
++            "benchmark": mbps.benchmark,
+             "train_start": mbps.train_start,
+             "train_end": mbps.train_end,
+             "valid_start": mbps.valid_start,
+diff --git a/rdagent/scenarios/qlib/experiment/factor_template/conf_baseline.yaml b/rdagent/scenarios/qlib/experiment/factor_template/conf_baseline.yaml
+index 4583dc3e..9444dc9c 100644
+--- a/rdagent/scenarios/qlib/experiment/factor_template/conf_baseline.yaml
++++ b/rdagent/scenarios/qlib/experiment/factor_template/conf_baseline.yaml
+@@ -1,9 +1,9 @@
+ qlib_init:
+-    provider_uri: "~/.qlib/qlib_data/cn_data"
++    provider_uri: {{ provider_uri | default("~/.qlib/qlib_data/cn_data", true) }}
+     region: cn
+ 
+-market: &market csi300
+-benchmark: &benchmark SH000300
++market: &market {{ market | default("csi300", true) }}
++benchmark: &benchmark {{ benchmark | default("SH000300", true) }}
+ 
+ data_handler_config: &data_handler_config
+     start_time: {{ train_start | default("2008-01-01", true) }}
+diff --git a/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors.yaml b/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors.yaml
+index df535694..011448d8 100644
+--- a/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors.yaml
++++ b/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors.yaml
+@@ -1,9 +1,9 @@
+ qlib_init:
+-    provider_uri: "~/.qlib/qlib_data/cn_data"
++    provider_uri: {{ provider_uri | default("~/.qlib/qlib_data/cn_data", true) }}
+     region: cn
+ 
+-market: &market csi300
+-benchmark: &benchmark SH000300
++market: &market {{ market | default("csi300", true) }}
++benchmark: &benchmark {{ benchmark | default("SH000300", true) }}
+ 
+ data_handler_config: &data_handler_config
+     start_time: {{ train_start | default("2008-01-01", true) }}
+@@ -26,6 +26,16 @@ data_handler_config: &data_handler_config
+                   kwargs:
+                     config: "combined_factors_df.parquet"
+ 
++    infer_processors:
++        - class: RobustZScoreNorm
++          kwargs:
++              fields_group: feature
++              clip_outlier: true
++              fit_start_time: {{ train_start | default("2008-01-01", true) }}
++              fit_end_time: {{ train_end | default("2014-12-31", true) }}
++        - class: Fillna
++          kwargs:
++              fields_group: feature
+     learn_processors:
+         - class: DropnaLabel
+         - class: CSZScoreNorm
+diff --git a/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors_sota_model.yaml b/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors_sota_model.yaml
+index f47941e0..5e763122 100644
+--- a/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors_sota_model.yaml
++++ b/rdagent/scenarios/qlib/experiment/factor_template/conf_combined_factors_sota_model.yaml
+@@ -1,9 +1,9 @@
+ qlib_init:
+-    provider_uri: "~/.qlib/qlib_data/cn_data"
++    provider_uri: {{ provider_uri | default("~/.qlib/qlib_data/cn_data", true) }}
+     region: cn
+ 
+-market: &market csi300
+-benchmark: &benchmark SH000300
++market: &market {{ market | default("csi300", true) }}
++benchmark: &benchmark {{ benchmark | default("SH000300", true) }}
+ 
+ data_handler_config: &data_handler_config
+     start_time: {{ train_start | default("2008-01-01", true) }}
+diff --git a/rdagent/scenarios/qlib/experiment/model_template/conf_baseline_factors_model.yaml b/rdagent/scenarios/qlib/experiment/model_template/conf_baseline_factors_model.yaml
+index ef6cb0a9..a6c30b5e 100644
+--- a/rdagent/scenarios/qlib/experiment/model_template/conf_baseline_factors_model.yaml
++++ b/rdagent/scenarios/qlib/experiment/model_template/conf_baseline_factors_model.yaml
+@@ -1,8 +1,8 @@
+ qlib_init:
+-    provider_uri: "~/.qlib/qlib_data/cn_data"
++    provider_uri: {{ provider_uri | default("~/.qlib/qlib_data/cn_data", true) }}
+     region: cn
+-market: &market csi300
+-benchmark: &benchmark SH000300
++market: &market {{ market | default("csi300", true) }}
++benchmark: &benchmark {{ benchmark | default("SH000300", true) }}
+ 
+ data_handler_config: &data_handler_config
+     start_time: {{ train_start | default("2008-01-01", true) }}
+diff --git a/rdagent/scenarios/qlib/experiment/model_template/conf_sota_factors_model.yaml b/rdagent/scenarios/qlib/experiment/model_template/conf_sota_factors_model.yaml
+index f47941e0..5e763122 100644
+--- a/rdagent/scenarios/qlib/experiment/model_template/conf_sota_factors_model.yaml
++++ b/rdagent/scenarios/qlib/experiment/model_template/conf_sota_factors_model.yaml
+@@ -1,9 +1,9 @@
+ qlib_init:
+-    provider_uri: "~/.qlib/qlib_data/cn_data"
++    provider_uri: {{ provider_uri | default("~/.qlib/qlib_data/cn_data", true) }}
+     region: cn
+ 
+-market: &market csi300
+-benchmark: &benchmark SH000300
++market: &market {{ market | default("csi300", true) }}
++benchmark: &benchmark {{ benchmark | default("SH000300", true) }}
+ 
+ data_handler_config: &data_handler_config
+     start_time: {{ train_start | default("2008-01-01", true) }}
+diff --git a/rdagent/scenarios/qlib/experiment/workspace.py b/rdagent/scenarios/qlib/experiment/workspace.py
+index d796240a..2ffd8856 100644
+--- a/rdagent/scenarios/qlib/experiment/workspace.py
++++ b/rdagent/scenarios/qlib/experiment/workspace.py
+@@ -4,10 +4,9 @@ from typing import Any
+ 
+ import pandas as pd
+ 
+-from rdagent.components.coder.model_coder.conf import MODEL_COSTEER_SETTINGS
++from rdagent.components.coder.model_coder.conf import get_model_env
+ from rdagent.core.experiment import FBWorkspace
+ from rdagent.log import rdagent_logger as logger
+-from rdagent.utils.env import QlibCondaConf, QlibCondaEnv, QTDockerEnv
+ 
+ 
+ class QlibFBWorkspace(FBWorkspace):
+@@ -16,13 +15,7 @@ class QlibFBWorkspace(FBWorkspace):
+         self.inject_code_from_folder(template_folder_path)
+ 
+     def execute(self, qlib_config_name: str = "conf.yaml", run_env: dict = {}, *args, **kwargs) -> str:
+-        if MODEL_COSTEER_SETTINGS.env_type == "docker":
+-            qtde = QTDockerEnv()
+-        elif MODEL_COSTEER_SETTINGS.env_type == "conda":
+-            qtde = QlibCondaEnv(conf=QlibCondaConf())
+-        else:
+-            logger.error(f"Unknown env_type: {MODEL_COSTEER_SETTINGS.env_type}")
+-            return None, "Unknown environment type"
++        qtde = get_model_env()
+         qtde.prepare()
+ 
+         # Run the Qlib backtest
+diff --git a/rdagent/utils/env.py b/rdagent/utils/env.py
+index 47d5aea2..ff15c9e5 100644
+--- a/rdagent/utils/env.py
++++ b/rdagent/utils/env.py
+@@ -15,6 +15,7 @@ import re
+ import select
+ import shutil
+ import subprocess
++import sys
+ import time
+ import uuid
+ import zipfile
+@@ -759,6 +760,22 @@ class CondaConf(LocalConf):
+         self.bin_path = conda_path_result.stdout.strip().split("=")[1] if conda_path_result.returncode == 0 else ""
+ 
+ 
++class UvConf(LocalConf):
++    """Run tasks in the active uv-managed Python environment."""
++
++    python_bin: str = sys.executable
++    default_entry: str = "python main.py"
++
++    @model_validator(mode="after")
++    def configure_bin_path(self) -> "UvConf":
++        python_path = Path(self.python_bin).expanduser().absolute()
++        if not python_path.is_file():
++            raise ValueError(f"uv Python executable does not exist: {python_path}")
++        self.python_bin = str(python_path)
++        self.bin_path = str(python_path.parent)
++        return self
++
++
+ class MLECondaConf(CondaConf):
+     enable_cache: bool = False  # aligning with the docker settings.
+ 
+@@ -864,6 +881,27 @@ class QlibCondaEnv(LocalEnv[QlibCondaConf]):
+             print(f"[red]Failed to prepare conda env: {e}[/red]")
+ 
+ 
++class QlibUvConf(UvConf):
++    enable_cache: bool = False
++    default_entry: str = "qrun conf.yaml"
++
++
++class QlibUvEnv(LocalEnv[QlibUvConf]):
++    def prepare(self) -> None:
++        """Fail closed unless qrun is installed beside the active uv Python."""
++        bin_path = Path(self.conf.bin_path)
++        missing = [
++            name
++            for name in ("python", "qrun")
++            if not (bin_path / name).exists()
++        ]
++        if missing:
++            raise RuntimeError(
++                "uv Qlib runtime is incomplete; missing executables: "
++                + ", ".join(missing)
++            )
++
++
+ # ========== Conda Environment Configuration Loader ==========
+ # Config files location: rdagent/scenarios/finetune/env/conda/
+ 
+diff --git a/rdagent/utils/qlib.py b/rdagent/utils/qlib.py
+index 5a56844a..927d3909 100644
+--- a/rdagent/utils/qlib.py
++++ b/rdagent/utils/qlib.py
+@@ -1,5 +1,5 @@
+ from rdagent.core.experiment import FBWorkspace
+-from rdagent.utils.env import QlibCondaConf, QlibCondaEnv
++from rdagent.components.coder.model_coder.conf import get_model_env
+ 
+ ALPHA20 = {
+     "RESI5": "Resi($close, 5)/$close",
+@@ -187,19 +187,38 @@ ALPHA158 = {
+ 
+ _TFW = FBWorkspace()  # test feature workspace
+ TEST_FEATURE_CODE = """
+-import qlib  
+-from qlib.data import D  
++import os
++import qlib
++from qlib.data import D
+ 
+-qlib.init()  
++provider_uri = (
++    os.getenv("QLIB_FACTOR_PROVIDER_URI")
++    or os.getenv("QLIB_MODEL_PROVIDER_URI")
++    or os.getenv("QLIB_QUANT_PROVIDER_URI")
++)
++validation_date = (
++    os.getenv("QLIB_FACTOR_VALID_START")
++    or os.getenv("QLIB_MODEL_VALID_START")
++    or os.getenv("QLIB_QUANT_VALID_START")
++    or "2015-01-01"
++)
++qlib.init(provider_uri=provider_uri)
+ expressions = {experessions}
+-df = D.features(["SH600000"], expressions, start_time="2008-01-01", end_time="2020-08-31")
++df = D.features(
++    ["SH600000"],
++    expressions,
++    start_time=validation_date,
++    end_time=validation_date,
++)
++if df.empty:
++    raise ValueError("feature validation returned an empty frame")
+ """
+ 
+ 
+ def validate_qlib_features(expressions: list[str]) -> bool:
+     _TFW.inject_files(**{"test_fea.py": TEST_FEATURE_CODE.format(experessions=str(expressions))})
+ 
+-    qlib_env = QlibCondaEnv(conf=QlibCondaConf())
++    qlib_env = get_model_env()
+     qlib_env.prepare()
+     res = _TFW.run(
+         env=qlib_env,
+diff --git a/requirements.txt b/requirements.txt
+index 3cc19cc7..3afe79ea 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -72,7 +72,9 @@ azureml-mlflow
+ types-pytz
+ 
+ # Agent
+-pydantic-ai-slim[mcp,openai,prefect]
++pydantic-ai-slim[mcp,openai,prefect]==1.9.1
++opentelemetry-api==1.38.0
++opentelemetry-sdk==1.38.0
+ nest-asyncio
+ 
+ # visualize SFT train
+@@ -83,4 +85,4 @@ prefect
+ datasets
+ 
+ # DuckDuckGo search
+-duckduckgo-search
+\ No newline at end of file
++duckduckgo-search

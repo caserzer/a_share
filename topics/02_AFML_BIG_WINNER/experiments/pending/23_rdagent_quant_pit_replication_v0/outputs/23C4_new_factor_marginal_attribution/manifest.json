@@ -1,0 +1,176 @@
+{
+  "canonical_factor_order": [
+    "close_momentum_20d",
+    "volume_surprise_20d",
+    "reversal_5d",
+    "volatility_20d",
+    "intraday_range_1d"
+  ],
+  "claim_ceiling": "posthoc_marginal_attribution_diagnostic",
+  "config_sha256": "4527eee32c046ec0b8286bf3b77695514c5fb452367212aa3b7b4d57c699f58d",
+  "contrasts": {
+    "all_three_given_core": [
+      "core_plus_all_three",
+      "core"
+    ],
+    "intraday_range_given_core": [
+      "core_plus_intraday_range",
+      "core"
+    ],
+    "intraday_range_given_core_and_other_two": [
+      "core_plus_all_three",
+      "core_plus_reversal_volatility"
+    ],
+    "intraday_range_vs_volatility": [
+      "core_plus_intraday_range",
+      "core_plus_volatility"
+    ],
+    "other_two_given_core_and_intraday_range": [
+      "core_plus_all_three",
+      "core_plus_intraday_range"
+    ],
+    "other_two_given_core_and_reversal": [
+      "core_plus_all_three",
+      "core_plus_reversal"
+    ],
+    "other_two_given_core_and_volatility": [
+      "core_plus_all_three",
+      "core_plus_volatility"
+    ],
+    "reversal_given_core": [
+      "core_plus_reversal",
+      "core"
+    ],
+    "reversal_given_core_and_other_two": [
+      "core_plus_all_three",
+      "core_plus_volatility_intraday_range"
+    ],
+    "reversal_intraday_range_given_core": [
+      "core_plus_reversal_intraday_range",
+      "core"
+    ],
+    "reversal_volatility_given_core": [
+      "core_plus_reversal_volatility",
+      "core"
+    ],
+    "volatility_given_core": [
+      "core_plus_volatility",
+      "core"
+    ],
+    "volatility_given_core_and_other_two": [
+      "core_plus_all_three",
+      "core_plus_reversal_intraday_range"
+    ],
+    "volatility_intraday_range_given_core": [
+      "core_plus_volatility_intraday_range",
+      "core"
+    ]
+  },
+  "core_factor_value_audit": {
+    "common_rows": 464577,
+    "max_abs_diff": 0.0,
+    "nan_pattern_match": true,
+    "prior_factor_panel": "/home/xiaolv/code/RD-Agent/git_ignore_folder/RD-Agent_workspace/1497d409b8f8497cad7cf745fed513a4/combined_factors_df.parquet",
+    "status": "passed"
+  },
+  "core_factors": [
+    "close_momentum_20d",
+    "volume_surprise_20d"
+  ],
+  "core_metric_reproduction_audit": {
+    "atol": 5e-07,
+    "current_variant": "core",
+    "max_abs_diff": 1.7910613386851182e-07,
+    "numeric_metric_count": 44,
+    "prior_seed_metrics": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/23_rdagent_quant_pit_replication_v0/outputs/23C2_factor_interaction_isolation/seed_metrics.csv",
+    "prior_variant": "plus_momentum_volume",
+    "rtol": 1e-06,
+    "status": "passed"
+  },
+  "elapsed_seconds": 63.387039425000694,
+  "episode_id": "23_rdagent_quant_pit_replication_v0",
+  "evidence_class": "design_contaminated_historical_real_market_evidence",
+  "factor_decisions": [
+    {
+      "factor": "reversal_5d",
+      "library_action": "reject",
+      "single_addition_decision": "reject"
+    },
+    {
+      "factor": "volatility_20d",
+      "library_action": "retain_primary",
+      "single_addition_decision": "individually_supported"
+    },
+    {
+      "factor": "intraday_range_1d",
+      "library_action": "supported_alternative_not_combined",
+      "single_addition_decision": "individually_supported"
+    }
+  ],
+  "factor_panel": "/home/xiaolv/code/RD-Agent/git_ignore_folder/RD-Agent_workspace/ba1103d850b140ba8dce94af274d331a/combined_factors_df.parquet",
+  "factor_panel_sha256": "042e554782ae56050a980848ce3016eace26f6e7e572bb364ffe7a85047a738e",
+  "formal_five_seed_run": true,
+  "generated_at_utc": "2026-07-27T11:10:11.556489+00:00",
+  "new_factors": [
+    "reversal_5d",
+    "volatility_20d",
+    "intraday_range_1d"
+  ],
+  "preprocessing": "train-only robust z-score and fill-zero for all variants",
+  "script_sha256": "60c5f8a948ddb037380e9cf185c578e0abdf54bb3aaa3618a69f4678266138c1",
+  "seeds": [
+    20260723,
+    20260724,
+    20260725,
+    20260726,
+    20260727
+  ],
+  "selection": "strict matched-seed marginal attribution gate",
+  "stage": "23C4_new_factor_marginal_attribution",
+  "variants": {
+    "core": [
+      "close_momentum_20d",
+      "volume_surprise_20d"
+    ],
+    "core_plus_all_three": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "reversal_5d",
+      "volatility_20d",
+      "intraday_range_1d"
+    ],
+    "core_plus_intraday_range": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "intraday_range_1d"
+    ],
+    "core_plus_reversal": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "reversal_5d"
+    ],
+    "core_plus_reversal_intraday_range": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "reversal_5d",
+      "intraday_range_1d"
+    ],
+    "core_plus_reversal_volatility": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "reversal_5d",
+      "volatility_20d"
+    ],
+    "core_plus_volatility": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "volatility_20d"
+    ],
+    "core_plus_volatility_intraday_range": [
+      "close_momentum_20d",
+      "volume_surprise_20d",
+      "volatility_20d",
+      "intraday_range_1d"
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+device,forward_mode,batch_size,num_timesteps,num_features,median_ms,p95_ms,notes
+cpu,compute_only,256,20,20,8.374,10.541,excludes_output_pth_save
+cpu,actual_candidate_forward,256,20,20,9.924,11.394,includes_output_pth_save
+cuda:0,compute_only,256,20,20,0.945,1.243,excludes_output_pth_save
+cuda:0,actual_candidate_forward,256,20,20,0.927,1.348,includes_output_pth_save
