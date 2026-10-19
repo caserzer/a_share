@@ -1,0 +1,55 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "candidate_count": 5,
+  "point_gates_passed": 0,
+  "total_point_gates": 60,
+  "candidates": [
+    {
+      "model": "breadth_peer_distribution",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "macro_breadth_adjustment",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "macro_breadth_full_adjustment",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "macro_credit_valuation_adjustment",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "macro_price_adjustment",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    }
+  ],
+  "outputs": [
+    {
+      "path": "outputs/r17_market_information/predictions_1m.parquet",
+      "sha256": "92a2b56f6f4bb99c8808d0d5b9ebd9f3d8525e0f6de3ab94f9012e4ed7f6cd6b",
+      "rows": 138000
+    },
+    {
+      "path": "outputs/r17_market_information/predictions_3m.parquet",
+      "sha256": "b3948b92324803c1e53fc8101e87a4ef128d8a781d3278c346823b30f68d7a4e",
+      "rows": 138000
+    },
+    {
+      "path": "outputs/r17_market_information/predictions_6m.parquet",
+      "sha256": "e2fcd49552a6fd3f392014b63aa8611393099967a3ea9c777784b6e25be0a113",
+      "rows": 138000
+    }
+  ],
+  "feature_sha256": "6d9acef3bf8ec49c17357f0f552e32ed319d387c3fa32adce19e68e31b39cbaa",
+  "baseline_contract_sha256": "ddb2c889e3f156c7f2804be45e256b76a52620c388b85eed30cd631f6265b075",
+  "evidence": "retrospective repeated exploration, not independent holdout validation"
+}

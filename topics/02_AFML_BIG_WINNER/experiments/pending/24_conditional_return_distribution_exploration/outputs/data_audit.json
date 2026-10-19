@@ -1,0 +1,18 @@
+{
+  "calendar_start": "2017-01-03",
+  "calendar_end": "2026-05-29",
+  "panel_rows": 56000,
+  "instruments": 1647,
+  "months": 112,
+  "last_month": "2026-04-30",
+  "mature_126_rows": 52598,
+  "mature_252_rows": 49718,
+  "status_sources": [
+    "stock_info_change_name_lifetime_st_exclusion;daily_bar_presence",
+    "stock_info_sz_change_name_asof;daily_bar_presence"
+  ],
+  "return_semantics": "qfq price proxy; next open to horizon close; NOT verified total return",
+  "universe_semantics": "existing top400 main/top100 chinext; lifetime ST exclusion bias unresolved",
+  "missing_endpoint_policy": "retained as missing; not assumed zero or total loss",
+  "coverage_scope": "existing universe instruments only, not all historical A-shares"
+}

@@ -1,0 +1,51 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "prediction_rows_per_model": 27600,
+  "all_original_features_and_labels_unchanged": true,
+  "same_training_and_class_atoms": true,
+  "real_source_prefix_checks": [
+    {
+      "instrument": "SH600004",
+      "cutoff": "2022-06-30",
+      "checked_stock_dates": 27
+    },
+    {
+      "instrument": "SZ000001",
+      "cutoff": "2022-06-30",
+      "checked_stock_dates": 42
+    },
+    {
+      "instrument": "SZ300001",
+      "cutoff": "2022-06-30",
+      "checked_stock_dates": 42
+    }
+  ],
+  "source_files_hashed": 2484,
+  "all_event_probabilities_reconstructed": true,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "activity_and_paths": false,
+    "activity_and_paths_depth4": false,
+    "activity_interactions": false,
+    "activity_means_control": false,
+    "activity_means_depth4": false,
+    "intraday_paths": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r23_price_volume_features/predictions_1m.parquet",
+      "sha256": "1696dc13f4081765667474d074f94273153fd6943e45764e6491f62075a65c27"
+    },
+    {
+      "path": "outputs/r23_price_volume_features/predictions_3m.parquet",
+      "sha256": "00ba3b5724020a5819191c7726355bad1372719b6b118a86b182b2e67e5ed261"
+    },
+    {
+      "path": "outputs/r23_price_volume_features/predictions_6m.parquet",
+      "sha256": "b3269d818b7f4497b2233e0bf0f4e8ae0c9107acd4f01e0bb155a346750debfc"
+    }
+  ]
+}

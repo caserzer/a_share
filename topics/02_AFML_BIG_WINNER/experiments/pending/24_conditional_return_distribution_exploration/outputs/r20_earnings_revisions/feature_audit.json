@@ -1,0 +1,24 @@
+{
+  "prediction_rows": 27600,
+  "revision_rows": 7235,
+  "revision_quantiles": {
+    "0.0": -0.8155878864903098,
+    "0.1": -0.05198355867534713,
+    "0.5": 0.0,
+    "0.9": 0.08780220344444753,
+    "1.0": 3.0462216734763823
+  },
+  "feature_sha256": "65b8da261892ff92819ab24f9b82acad6fe3a1c5894b654c52a8770018944bbe",
+  "source_panel_sha256": "bb2bacab37d9f1b47cfbf4ed7525e3207aa3d9e5a74e9d8ef221150b83f463cc",
+  "source_exclusions": {
+    "AP202504281663751625": {
+      "year": "2027",
+      "value": 78.0,
+      "sha256": "70d0346322863dfeb89079fc3e181f928ac573270c938a8c5567597d28834077",
+      "reason": "Original EPS token 078 is ambiguous and inconsistent with the stated PE sequence. Exclude that year; never guess its decimal point."
+    }
+  },
+  "revision": "change in log forecast growth, same broker and explicit fiscal-year pair, not absolute EPS revision",
+  "invariance": "common share-unit rescaling of both fiscal-year EPS values within a report cancels in growth",
+  "limitations": "Only previously observed monthly-latest reports; not all broker reports or full consensus. Raw level revisions are excluded because share units may change."
+}

@@ -1,0 +1,32 @@
+{
+  "stock": "603313",
+  "report_period": "2025-12-31",
+  "probes": [
+    {
+      "table": "RPT_PUBLIC_OP_NEWPREDICT",
+      "count": 2,
+      "notice_dates": [
+        "2026-04-29 00:00:00"
+      ],
+      "initial_notice_20260131_mentioned": true,
+      "original_notice_row_present": false,
+      "url": "https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_PUBLIC_OP_NEWPREDICT&columns=ALL&pageSize=100&pageNumber=1&sortColumns=NOTICE_DATE&sortTypes=1&filter=%28SECURITY_CODE%3D%22603313%22%29%28REPORT_DATE%3D%272025-12-31%27%29",
+      "fetched_at": "2026-10-19T12:36:48.191199+00:00",
+      "sha256": "b49c47031a6c41f51f672efe06d3654069ac63ff2995a2daa79ba927f6fcea74"
+    },
+    {
+      "table": "RPT_PUBLIC_OP_PREDICT",
+      "count": 1,
+      "notice_dates": [
+        "2026-04-29 00:00:00"
+      ],
+      "initial_notice_20260131_mentioned": true,
+      "original_notice_row_present": false,
+      "url": "https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_PUBLIC_OP_PREDICT&columns=ALL&pageSize=100&pageNumber=1&sortColumns=NOTICE_DATE&sortTypes=1&filter=%28SECURITY_CODE%3D%22603313%22%29%28REPORTDATE%3D%272025-12-31%27%29",
+      "fetched_at": "2026-10-19T12:36:48.361006+00:00",
+      "sha256": "9f4b0aad184e9f120c293ebaa85def63095de41abad53b5f1a20af8118e360e6"
+    }
+  ],
+  "conclusion": "The sampled tables do not reconstruct the original forecast before the April revision. No claim that every company or every endpoint has the same limitation.",
+  "model_usage": "Excluded from R17 model features. Public current historical tables are not assumed immutable announcement vintages."
+}

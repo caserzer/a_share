@@ -1,0 +1,37 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "unchanged_references": [
+    "r21_month_reference",
+    "r21_decay_reference"
+  ],
+  "prediction_rows_per_model": 27600,
+  "maturity_and_burn_in_verified": true,
+  "all_event_probabilities_reconstructed": true,
+  "calibrated_folds": 584,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "decay_calibration_expanding": false,
+    "decay_calibration_recent24": false,
+    "learned_frozen_mix": false,
+    "month_calibration_expanding": false,
+    "month_calibration_recent24": false,
+    "uniform_frozen_mix": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r22_probability_recalibration/predictions_1m.parquet",
+      "sha256": "a9161a01704588744b5b6d37b660a6c5ae1ddc990ab490ac1d5e33fbe8ceb4e0"
+    },
+    {
+      "path": "outputs/r22_probability_recalibration/predictions_3m.parquet",
+      "sha256": "28721f662e62f286773d745f1f9fb1385dafd6b0fb6969cfeb12b12b86db8be5"
+    },
+    {
+      "path": "outputs/r22_probability_recalibration/predictions_6m.parquet",
+      "sha256": "9a32ceb4a32a7a80dc65e68194f9a2bc5b0fe1f21ed87376ba6bb3b62985b3ae"
+    }
+  ]
+}

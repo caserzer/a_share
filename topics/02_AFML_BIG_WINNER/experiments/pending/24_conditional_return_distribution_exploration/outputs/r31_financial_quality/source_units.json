@@ -1,0 +1,18 @@
+{
+  "url": "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/Index?code=SH600519&type=web",
+  "page_sha256": "2aba172afcb1dd651f217ed91d8f1699de1b4674fbf320c76318e174c7695bc5",
+  "fields": {
+    "ROEJQ": "净资产收益率(加权)(%) {{each data as value i}} {{formatPercent(value.ROEJQ, '')}} {{/each}}",
+    "ROEKCJQ": "净资产收益率(扣非/加权)(%) {{each data as value i}} {{formatPercent(value.ROEKCJQ, '')}} {{/each}}",
+    "KCFJCXSYJLR": "扣非净利润(元) {{each data as value i}} {{formatMoney(value.KCFJCXSYJLR)}} {{/each}}",
+    "EPSJB": "基本每股收益(元) {{each data as value i}} {{toFixed(value.EPSJB,4)}} {{/each}}",
+    "MGJYXJJE": "每股经营现金流(元) {{each data as value i}} {{toFixed(value.MGJYXJJE,4)}} {{/each}}",
+    "BPS": "每股净资产(元) {{each data as value i}} {{toFixed(value.BPS,4)}} {{/each}}",
+    "XSMLL": "毛利率(%) {{each data as value i}} {{formatPercent(value.XSMLL, '')}} {{/each}}",
+    "ZCFZL": "资产负债率(%) {{each data as value i}} {{formatPercent(value.ZCFZL, '')}} {{/each}}",
+    "TOTALOPERATEREVETZ": "营业总收入同比增长(%) {{each data as value i}} {{formatPercent(value.TOTALOPERATEREVETZ, '')}} {{/each}}",
+    "KCFJCXSYJLRTZ": "扣非净利润同比增长(%) {{each data as value i}} {{formatPercent(value.KCFJCXSYJLRTZ, '')}} {{/each}}",
+    "LD": "流动比率 {{each data as value i}} {{toFixed(value.LD)}} {{/each}}",
+    "SD": "速动比率 {{each data as value i}} {{toFixed(value.SD)}} {{/each}}"
+  }
+}

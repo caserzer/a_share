@@ -1,0 +1,37 @@
+{
+  "models": {
+    "joint_expanding": [
+      "joint",
+      null
+    ],
+    "joint_recent24": [
+      "joint",
+      24
+    ],
+    "sign_expanding": [
+      "sign",
+      null
+    ],
+    "sign_recent24": [
+      "sign",
+      24
+    ]
+  },
+  "source_names": [
+    "B",
+    "catboost",
+    "rf",
+    "extra",
+    "sign",
+    "margin",
+    "global"
+  ],
+  "minimum_mature_months": 12,
+  "penalty": 0.01,
+  "source_audit_sha256": "367df9678caf672dc07822b9eb3a6429b27e8dba011dcb4d7da09c88706bbbb4",
+  "plan_sha256": "a458c1c635e14b2c887c4340cd0f7a25dad736e71865d59977d30bc696a0ab2f",
+  "warmup": "Exact uniform seven-source distribution; no row deletion",
+  "numerical_marginals": "Analytic component/sign-transform margins, verified against atoms; same strict p_up>p_down rule",
+  "training": "Only earlier origins with observed label_end strictly before prediction; equal origin-month weight",
+  "evidence": "Five fixed candidates; repeated historical exploration; unchanged 12 gates"
+}

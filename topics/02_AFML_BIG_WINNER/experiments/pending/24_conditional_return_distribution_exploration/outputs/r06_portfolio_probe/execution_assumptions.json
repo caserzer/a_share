@@ -1,0 +1,12 @@
+{
+  "initial_account": 1000000,
+  "cash_return": 0,
+  "units": "synthetic adjusted-price units; no broker lot-rounding claim",
+  "decision": "month-end known forecasts; execute next market session open",
+  "restriction": "buy blocked above +4.8% opening gap, sell below -4.8%; conservative proxy, not exact daily price limits",
+  "participation": "1% of trailing 20-session mean raw volume, known prior to execution day",
+  "marking": "last known adjusted close on missing-quote days; terminal stale exposure explicitly reported",
+  "corporate_actions": "inherited qfq price proxy; not independently reconstructed total return",
+  "endpoint": "mark-to-market at 2026-05-29; no forced terminal liquidation",
+  "caveat": "exploratory allocation simulation, not verified executable broker orders or portfolio joint-tail optimization"
+}

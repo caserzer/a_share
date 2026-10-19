@@ -1,0 +1,104 @@
+{
+  "control_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21",
+    "mom21",
+    "mom63",
+    "mom126"
+  ],
+  "models": {
+    "own_momentum_control": [],
+    "current_linked_peers": [
+      "linked0_peer_mom21",
+      "linked0_peer_mom63",
+      "linked0_peer_mom126",
+      "linked0_mean_peer_correlation",
+      "linked0_neighbors",
+      "linked0_available"
+    ],
+    "lagged_linked_peers": [
+      "linked63_peer_mom21",
+      "linked63_peer_mom63",
+      "linked63_peer_mom126",
+      "linked63_mean_peer_correlation",
+      "linked63_neighbors",
+      "linked63_available"
+    ],
+    "both_linked_peers": [
+      "linked0_peer_mom21",
+      "linked0_peer_mom63",
+      "linked0_peer_mom126",
+      "linked0_mean_peer_correlation",
+      "linked0_neighbors",
+      "linked0_available",
+      "linked63_peer_mom21",
+      "linked63_peer_mom63",
+      "linked63_peer_mom126",
+      "linked63_mean_peer_correlation",
+      "linked63_neighbors",
+      "linked63_available"
+    ]
+  },
+  "feature_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "plan_sha256": "c0c02a4be03f389c54744174c223698534772cd14def01ec692a3d1bb54d0269",
+  "iterations": 100,
+  "depth": 2,
+  "learning_rate": 0.03,
+  "l2_leaf_reg": 20,
+  "random_seed": 24,
+  "month_balanced": true,
+  "min_training_rows": 1000,
+  "min_training_months": 18,
+  "candidate_weight": 0.5,
+  "reference": "r23_class_reference",
+  "reference_source_model": "activity_means_control",
+  "source_receipts": [
+    {
+      "path": "outputs/r23_price_volume_features/predictions_1m.parquet",
+      "sha256": "1696dc13f4081765667474d074f94273153fd6943e45764e6491f62075a65c27"
+    },
+    {
+      "path": "outputs/r23_price_volume_features/predictions_3m.parquet",
+      "sha256": "00ba3b5724020a5819191c7726355bad1372719b6b118a86b182b2e67e5ed261"
+    },
+    {
+      "path": "outputs/r23_price_volume_features/predictions_6m.parquet",
+      "sha256": "b3269d818b7f4497b2233e0bf0f4e8ae0c9107acd4f01e0bb155a346750debfc"
+    }
+  ],
+  "population": "Same original 27600 stock-dates and mature training rows; no missing-peer filtering or outcome-dependent selection",
+  "evidence": "Four fixed candidates; own momentum control isolates extra linked-stock information; both formation gaps fixed before scoring"
+}

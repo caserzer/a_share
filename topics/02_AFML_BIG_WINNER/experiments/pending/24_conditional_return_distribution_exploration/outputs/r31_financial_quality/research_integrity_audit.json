@@ -1,0 +1,33 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "original_stock_dates_per_model": 27600,
+  "all_candidate_and_reference_rows_reconstructed": 662400,
+  "all_source_hashes_and_prefix_features_checked": true,
+  "all_training_maturity_and_imputation_checked": true,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "catboost_basic": false,
+    "catboost_changes": false,
+    "catboost_levels": false,
+    "extra_basic": false,
+    "extra_changes": false,
+    "extra_levels": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+      "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+      "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+      "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+    }
+  ]
+}

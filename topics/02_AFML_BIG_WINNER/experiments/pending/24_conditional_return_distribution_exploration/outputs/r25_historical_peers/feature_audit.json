@@ -1,0 +1,33 @@
+{
+  "original_rows": 37018,
+  "prediction_rows": 27600,
+  "historical_months": 112,
+  "historical_member_stocks": 1647,
+  "feature_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "base_sha256": "73311eb181966dc72569ef6c0876e75e584ad95e9d9fbf7a1cb133a7e95db8c5",
+  "members_sha256": "3247304906c26768de803a5a3753d300c9dd0f0ff4409b14d1afdbb0b61929c2",
+  "events_sha256": "e1909eafd9a559e764ed7f5a831af8c667401242bc35c1d9f020bc1e295a4e84",
+  "membership_cache_sha256": "565f30209a48a622df5ee86ebf104865326ab143706155a9cdd8dca5c9521f1a",
+  "plan_sha256": "c0c02a4be03f389c54744174c223698534772cd14def01ec692a3d1bb54d0269",
+  "test_missing_by_feature": {
+    "linked0_peer_mom21": 1670,
+    "linked0_peer_mom63": 1669,
+    "linked0_peer_mom126": 1671,
+    "linked0_mean_peer_correlation": 62,
+    "linked0_neighbors": 0,
+    "linked0_available": 0,
+    "linked63_peer_mom21": 1760,
+    "linked63_peer_mom63": 1759,
+    "linked63_peer_mom126": 1760,
+    "linked63_mean_peer_correlation": 77,
+    "linked63_neighbors": 0,
+    "linked63_available": 0
+  },
+  "test_available_by_gap": {
+    "0": 25931,
+    "63": 25843
+  },
+  "new_inputs": "No outcomes loaded for peer formation; original labels unchanged. Missing peers/price momentum stay NaN; observed peer counts and availability retained.",
+  "formation": "Current historical 500 members, past at most 252 sessions, at least 126 valid paired returns. Same-day median removed. Top20 correlation>0.2, self excluded, at least10 peers for aggregate momentum. Gap63 ends formation before the most recent63 sessions.",
+  "limitations": "Price-linkage neighborhood is not an official industry. Current known membership is applied to its past correlation window. Original selection/price-revision issues remain; no prediction improvement established by data coverage."
+}

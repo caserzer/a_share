@@ -1,0 +1,61 @@
+{
+  "groups": {
+    "rank_value_residual": [
+      "earnings_yield",
+      "book_yield",
+      "pe_percentile",
+      "forward_log_anchor12",
+      "roe",
+      "profit_growth",
+      "revenue_growth",
+      "debt_ratio",
+      "ocf_eps_ratio"
+    ],
+    "rank_technical_residual": [
+      "log_cap",
+      "vol63",
+      "relative_mom21",
+      "relative_mom63",
+      "relative_mom126",
+      "reversal5",
+      "turnover21",
+      "skew63",
+      "downvol63"
+    ],
+    "rank_combined_residual": [
+      "earnings_yield",
+      "book_yield",
+      "pe_percentile",
+      "forward_log_anchor12",
+      "roe",
+      "profit_growth",
+      "revenue_growth",
+      "debt_ratio",
+      "ocf_eps_ratio",
+      "log_cap",
+      "vol63",
+      "relative_mom21",
+      "relative_mom63",
+      "relative_mom126",
+      "reversal5",
+      "turnover21",
+      "skew63",
+      "downvol63"
+    ]
+  },
+  "ridge_alpha": 1000,
+  "target_clip": [
+    -5,
+    5
+  ],
+  "prediction_clip": [
+    -1,
+    1
+  ],
+  "stock_location_shrinkage": 0.5,
+  "train_month_weights": "equal",
+  "within_month": "predictor ranks and matured target median centering",
+  "market": "same empirical market component as R16 market_empirical_residual",
+  "residual_noise": "pooled training residual minus fitted stock effect; in-sample approximation",
+  "evidence": "retrospective exploration; parameters fixed before scoring this family"
+}

@@ -1,0 +1,9 @@
+# Large generated distributions and panels remain local; hashes are archived.
+outputs/**/*.parquet
+# Raw exchange response bodies remain local; source manifests/audits are kept.
+outputs/r37_exchange_guidance/SH_[0-9]*.json
+outputs/r37_exchange_guidance/SZ_[0-9]*.json
+outputs/r37_exchange_guidance/SZ_supplement_业绩*.json
+# Transient execution progress and process handles are not research evidence.
+outputs/**/*progress.jsonl
+outputs/**/continuation_status.json

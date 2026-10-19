@@ -1,0 +1,42 @@
+{
+  "scope": "price proxy diagnostic; no valuation/fundamentals/credit; biased legacy universe",
+  "evaluation": "2021-2023 exploration only; quarterly refit, month-end predictions",
+  "label_maturity": "strictly before quarter start",
+  "alphas": [
+    0.05,
+    0.1,
+    0.25,
+    0.5,
+    0.75,
+    0.9,
+    0.95
+  ],
+  "base_features": [
+    "log_cap",
+    "vol63",
+    "market_mom126",
+    "market_vol63",
+    "board"
+  ],
+  "technical_features": [
+    "log_cap",
+    "vol63",
+    "market_mom126",
+    "market_vol63",
+    "board",
+    "mom21",
+    "mom63",
+    "mom126",
+    "mom252",
+    "vol21",
+    "turnover21",
+    "log_money21",
+    "drawdown252"
+  ],
+  "iterations": 200,
+  "depth": 4,
+  "learning_rate": 0.04,
+  "seed": 24,
+  "metric": "mean seven-quantile pinball loss, month equally weighted; NOT full CRPS",
+  "crossing_correction": "sort predicted quantiles"
+}

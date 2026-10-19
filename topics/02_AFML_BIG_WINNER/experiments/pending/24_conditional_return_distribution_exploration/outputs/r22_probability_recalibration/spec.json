@@ -1,0 +1,64 @@
+{
+  "calibrators": {
+    "month_calibration_expanding": [
+      "month",
+      null
+    ],
+    "month_calibration_recent24": [
+      "month",
+      24
+    ],
+    "decay_calibration_expanding": [
+      "decay",
+      null
+    ],
+    "decay_calibration_recent24": [
+      "decay",
+      24
+    ]
+  },
+  "mixtures": [
+    "uniform_frozen_mix",
+    "learned_frozen_mix"
+  ],
+  "streams": {
+    "month": "market_month_balanced",
+    "decay": "market_decay24_unmixed"
+  },
+  "references": {
+    "month": "r21_month_reference",
+    "decay": "r21_decay_reference"
+  },
+  "source_receipts": [
+    {
+      "path": "outputs/r21_market_time_models/predictions_1m.parquet",
+      "sha256": "78a546a7a73aef715932c5534868f95e1e17618d55d6b742a275f1f299913194"
+    },
+    {
+      "path": "outputs/r21_market_time_models/predictions_3m.parquet",
+      "sha256": "e08e04e7985e7379f76c6ff837b61a9c4e5aa00b19dfa6ad49043083bc606a5e"
+    },
+    {
+      "path": "outputs/r21_market_time_models/predictions_6m.parquet",
+      "sha256": "c3d8bed8bdc5e1bf94d0d41bdf03e8db754e865ed5c62c0a3ac45cfcb882d406"
+    }
+  ],
+  "minimum_mature_origin_months": 12,
+  "calibration": "positive shared log-probability scale plus seven intercepts; month-equal multinomial log loss",
+  "scale_bounds": [
+    0.25,
+    4
+  ],
+  "intercept_bounds": [
+    -2,
+    2
+  ],
+  "probability_floor": 1e-06,
+  "penalty": 0.01,
+  "penalty_prior": "identity calibration; mixture coefficients centered on original B",
+  "recent_history": "last 24 available matured origin months; every included label_end strictly before prediction date",
+  "conditional_distribution": "preserve within-class source mass; if class absent use already trained class atoms, never current outcomes",
+  "mixture": "B plus month-balanced stream plus unmixed-decay stream; nonnegative simplex weights, 7-class Brier objective",
+  "burn_in": "calibrators exact original stream; learned mixture exact B; uniform mixture always fixed thirds",
+  "evidence": "six fixed new candidates, two unchanged references; repeated retrospective exploration, not independent validation"
+}

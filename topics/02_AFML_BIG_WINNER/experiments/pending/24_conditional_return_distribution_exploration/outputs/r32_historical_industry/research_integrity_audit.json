@@ -1,0 +1,33 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 3,
+  "all_new_prediction_rows_reconstructed": 248400,
+  "all_reference_rows_unchanged": true,
+  "all_source_and_prefix_checks_passed": true,
+  "mature_training_and_local_fallback_verified": true,
+  "global_local_direction_identical": true,
+  "local_rows": 62965,
+  "local_class_cells": 277316,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "industry_conditional": false,
+    "industry_identity": false,
+    "industry_state": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r32_historical_industry/predictions_1m.parquet",
+      "sha256": "8b04915da38289d93d54cfc2527f35600bda1c334d205bd61260a73c239e14d6"
+    },
+    {
+      "path": "outputs/r32_historical_industry/predictions_3m.parquet",
+      "sha256": "cc458538a903d950b240f083748174d3da1de4641b92272c036a74459229b87d"
+    },
+    {
+      "path": "outputs/r32_historical_industry/predictions_6m.parquet",
+      "sha256": "0f3f66f6571243831733fe45dc683eba5677b72dc9d74509d3075414900b103b"
+    }
+  ]
+}

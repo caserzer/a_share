@@ -1,0 +1,155 @@
+{
+  "models": {
+    "catboost_timing": [
+      "catboost",
+      [
+        "gd_age_days",
+        "gd_count30",
+        "gd_count90",
+        "gd_count365",
+        "gd_revision90",
+        "gd_revision365"
+      ]
+    ],
+    "catboost_timing_title": [
+      "catboost",
+      [
+        "gd_age_days",
+        "gd_count30",
+        "gd_count90",
+        "gd_count365",
+        "gd_revision90",
+        "gd_revision365",
+        "gd_up90",
+        "gd_down90",
+        "gd_loss90",
+        "gd_profit90"
+      ]
+    ],
+    "extra_timing": [
+      "extra",
+      [
+        "gd_age_days",
+        "gd_count30",
+        "gd_count90",
+        "gd_count365",
+        "gd_revision90",
+        "gd_revision365"
+      ]
+    ],
+    "extra_timing_title": [
+      "extra",
+      [
+        "gd_age_days",
+        "gd_count30",
+        "gd_count90",
+        "gd_count365",
+        "gd_revision90",
+        "gd_revision365",
+        "gd_up90",
+        "gd_down90",
+        "gd_loss90",
+        "gd_profit90"
+      ]
+    ]
+  },
+  "control_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21",
+    "mom21",
+    "mom63",
+    "mom126"
+  ],
+  "feature_sha256": "a779e28884bce1b4f16b5960d9f9e5f77fd17f0f1bb6c46b618affeb2a08143c",
+  "plan_sha256": "cba027e948fe7b897b81e7c8a32cb8a6145c5bf93b8c24d577e822acababcf43",
+  "catboost": {
+    "depth": 2,
+    "iterations": 100,
+    "learning_rate": 0.03,
+    "l2_leaf_reg": 20,
+    "random_seed": 24
+  },
+  "extra": {
+    "n_estimators": 96,
+    "max_depth": 6,
+    "min_samples_leaf": 150,
+    "max_features": 0.7,
+    "criterion": "gini",
+    "random_state": 24,
+    "n_jobs": 4,
+    "class_weight": null
+  },
+  "references": {
+    "catboost_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r31_financial_quality",
+      "model": "catboost_reference",
+      "receipts": [
+        {
+          "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+          "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+          "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+          "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+        }
+      ]
+    },
+    "extra_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r31_financial_quality",
+      "model": "extra_reference",
+      "receipts": [
+        {
+          "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+          "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+          "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+          "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+        }
+      ]
+    }
+  },
+  "weighting": "Month-balanced mature training rows; each candidate mixed 50% with B; same global 32 atoms per class",
+  "evidence": "Four fixed input additions; no change to original 27600 stock-dates; repeated exploration"
+}

@@ -1,0 +1,34 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "reused_reference": "r20_full_revision_reference",
+  "prediction_rows_per_model": 27600,
+  "prior_reference_unchanged": true,
+  "mature_training_windows_and_weights_verified": true,
+  "cached_probabilities_reconstructed_all_rows": true,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "market_decay24": false,
+    "market_decay24_unmixed": false,
+    "market_month_balanced": false,
+    "market_rows": false,
+    "market_window36": false,
+    "window36_without_market": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r21_market_time_models/predictions_1m.parquet",
+      "sha256": "78a546a7a73aef715932c5534868f95e1e17618d55d6b742a275f1f299913194"
+    },
+    {
+      "path": "outputs/r21_market_time_models/predictions_3m.parquet",
+      "sha256": "e08e04e7985e7379f76c6ff837b61a9c4e5aa00b19dfa6ad49043083bc606a5e"
+    },
+    {
+      "path": "outputs/r21_market_time_models/predictions_6m.parquet",
+      "sha256": "c3d8bed8bdc5e1bf94d0d41bdf03e8db754e865ed5c62c0a3ac45cfcb882d406"
+    }
+  ]
+}

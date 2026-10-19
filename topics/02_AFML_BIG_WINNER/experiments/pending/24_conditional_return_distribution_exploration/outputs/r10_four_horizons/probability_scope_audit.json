@@ -1,0 +1,47 @@
+{
+  "probability_pipeline_checks_passed": true,
+  "horizons": [
+    {
+      "months": 1,
+      "models": 9,
+      "stock_dates": 29596,
+      "mature_outcomes": 29105
+    },
+    {
+      "months": 3,
+      "models": 9,
+      "stock_dates": 29596,
+      "mature_outcomes": 28639
+    },
+    {
+      "months": 6,
+      "models": 9,
+      "stock_dates": 29596,
+      "mature_outcomes": 27230
+    },
+    {
+      "months": 12,
+      "models": 9,
+      "stock_dates": 29596,
+      "mature_outcomes": 23891
+    }
+  ],
+  "goal_complete": true,
+  "scientific_conclusion": "Conditional direction probabilities not established as trustworthy; limited short-horizon amplitude improvements",
+  "requirements": {
+    "four_horizon_conditional_distributions": "predictions_1m/3m/6m/12m.parquet plus current/SH600000_2026-10-19.json",
+    "direction_and_interval_probabilities": "reconstructed from stored current atoms; sums checked",
+    "probability_calibration_and_tails": "probability_calibration.csv and eight dated event assessments per current horizon",
+    "historical_baseline_comparison": "baseline_comparisons.csv; dated per-horizon current assessment",
+    "known_information_and_data_gaps": "strict label maturity audits; exact-date current snapshot receipts; explicit stale training and scope limitations",
+    "actual_returns_only_as_labels": "probability scripts evaluate Brier/CRPS/calibration, no portfolio objective",
+    "credible_or_not_judgment": "explicit not-established verdict; insufficient evidence is not passed as trustworthy"
+  },
+  "limitations": [
+    "Research implementation and evidence judgment completed, not proof of a useful predictive edge",
+    "Training label panel ends 2026-05-29; current-date refitting is an exploratory extension",
+    "No independent new holdout, no all-market coverage, no verified complete total-return labels"
+  ],
+  "outstanding_required_items": [],
+  "exclusions": "No strategy return, NAV, holdings or portfolio profit used as acceptance evidence"
+}

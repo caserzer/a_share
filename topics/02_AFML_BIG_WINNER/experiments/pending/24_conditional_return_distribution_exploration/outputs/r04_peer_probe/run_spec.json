@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "peers_risk_size": [
+      "vol63",
+      "log_cap"
+    ],
+    "peers_valuation": [
+      "vol63",
+      "log_cap",
+      "earnings_yield",
+      "book_yield"
+    ],
+    "peers_fundamental": [
+      "vol63",
+      "log_cap",
+      "earnings_yield",
+      "book_yield",
+      "roe",
+      "profit_growth"
+    ],
+    "peers_macro": [
+      "vol63",
+      "log_cap",
+      "earnings_yield",
+      "book_yield",
+      "credit_spread_3y",
+      "gov_3y"
+    ]
+  },
+  "neighbors": 1000,
+  "quantile_shrinkage_to_unconditional": 0.25,
+  "scaling": "training median and IQR, clip [-5,5]",
+  "hypothesis": "simple peers separate information value from flexible tree overfitting",
+  "scope": "2021-2023 exploratory; same sample as R03; no parameter grid",
+  "limitations": "1000 stock-month neighbors are NOT 1000 independent market states"
+}

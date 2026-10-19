@@ -1,0 +1,22 @@
+{
+  "market_features": [
+    "csi300_mom21",
+    "csi300_mom63",
+    "csi300_mom126",
+    "csi300_vol63",
+    "all_a_mom21",
+    "all_a_mom63"
+  ],
+  "stock_features": [
+    "log_cap",
+    "vol63",
+    "relative_mom21",
+    "relative_mom126",
+    "pe_percentile"
+  ],
+  "assumptions": "log return = clipped trailing beta * market log return + independent scaled residual; 25x25 atoms compressed to 200",
+  "market_knn_days": 252,
+  "stock_knn_rows": 1000,
+  "market_state_shrinkage": 0.5,
+  "momentum_drift_coefficient": 0.25
+}

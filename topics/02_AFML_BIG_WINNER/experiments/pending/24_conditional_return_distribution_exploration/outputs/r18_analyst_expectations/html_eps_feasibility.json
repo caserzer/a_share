@@ -1,0 +1,16 @@
+{
+  "report_id": "AP202010291424614577",
+  "instrument": "SH600519",
+  "source_url": "https://data.eastmoney.com/report/info/AP202010291424614577.html",
+  "published_date": "2020-10-29",
+  "eps_forecasts_yuan": {
+    "2020": 36.93,
+    "2021": 49.61,
+    "2022": 60.66
+  },
+  "content_selector": "#ctx-content",
+  "verification": "Manually checked year range and EPS amounts in original report paragraph; unrelated current quote or web cache timestamp excluded.",
+  "raw_html_sha256": "8f061a6a4f2168be5c5919ce2baa1e995086e1b98162ede4aa7c19fb00dacc50",
+  "usage": "Single data-feasibility example only; not used in R18 model features.",
+  "next_step": "Conservative parser must preserve explicit year/value pairs, announcement-date gates and uncertainty; verify multi-broker extraction before any full ablation."
+}

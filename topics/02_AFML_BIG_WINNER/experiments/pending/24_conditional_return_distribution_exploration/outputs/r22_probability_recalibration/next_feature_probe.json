@@ -1,0 +1,93 @@
+{
+  "scope": "Read-only availability probe, not tested predictive features",
+  "stock_count": 1242,
+  "missing_raw": [],
+  "missing_qfq": [],
+  "examples": [
+    {
+      "instrument": "SH600000",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/raw/akshare/day/raw/SH600000.csv",
+      "rows": 2281,
+      "start": "2017-01-03",
+      "end": "2026-05-29",
+      "columns": [
+        "date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "money",
+        "turnover_rate",
+        "instrument",
+        "source_function",
+        "source_volume_unit",
+        "source_turnover_unit"
+      ],
+      "volume_units": [
+        "shares"
+      ],
+      "turnover_units": [
+        "ratio"
+      ],
+      "vwap_within_daily_range_2pct_tolerance": 1.0
+    },
+    {
+      "instrument": "SZ000001",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/raw/akshare/day/raw/SZ000001.csv",
+      "rows": 2281,
+      "start": "2017-01-03",
+      "end": "2026-05-29",
+      "columns": [
+        "date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "money",
+        "turnover_rate",
+        "instrument",
+        "source_function",
+        "source_volume_unit",
+        "source_turnover_unit"
+      ],
+      "volume_units": [
+        "shares"
+      ],
+      "turnover_units": [
+        "ratio"
+      ],
+      "vwap_within_daily_range_2pct_tolerance": 1.0
+    },
+    {
+      "instrument": "SZ300750",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/data/raw/akshare/day/raw/SZ300750.csv",
+      "rows": 1932,
+      "start": "2018-06-11",
+      "end": "2026-05-29",
+      "columns": [
+        "date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "money",
+        "turnover_rate",
+        "instrument",
+        "source_function",
+        "source_volume_unit",
+        "source_turnover_unit"
+      ],
+      "volume_units": [
+        "shares"
+      ],
+      "turnover_units": [
+        "ratio"
+      ],
+      "vwap_within_daily_range_2pct_tolerance": 1.0
+    }
+  ],
+  "next_features": "Price-volume interaction, relative activity, liquidity and intraday-path summaries; existing turnover/money averages already tested and retained as controls."
+}

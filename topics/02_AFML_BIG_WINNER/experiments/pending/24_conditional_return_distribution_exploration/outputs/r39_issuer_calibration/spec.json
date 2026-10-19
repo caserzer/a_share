@@ -1,0 +1,39 @@
+{
+  "models": {
+    "base_sign": [
+      "base",
+      "sign"
+    ],
+    "base_bins": [
+      "base",
+      "bins"
+    ],
+    "extra_sign": [
+      "extra",
+      "sign"
+    ],
+    "extra_bins": [
+      "extra",
+      "bins"
+    ]
+  },
+  "panel_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "plan_sha256": "44e2bfa787acbb1f0834f447315e6466f857a2d26c501bdedb4d95f23f1dafa8",
+  "shrinkage": "20 * horizon monthly pseudo-observations; uniform per class",
+  "min_peers": 10,
+  "reference_receipts": [
+    {
+      "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+      "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+      "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+      "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+    }
+  ],
+  "original_candidates_completed": 131
+}

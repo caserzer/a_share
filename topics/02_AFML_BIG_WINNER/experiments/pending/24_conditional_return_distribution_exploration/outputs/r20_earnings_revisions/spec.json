@@ -1,0 +1,139 @@
+{
+  "models": {
+    "matched_without_earnings": {
+      "population": "matched",
+      "features": [
+        "vol63",
+        "log_cap",
+        "pe_percentile",
+        "relative_mom63",
+        "credit_spread_3y",
+        "credit_change63",
+        "forecast_age_days",
+        "forecast_basis_profit"
+      ],
+      "candidate_weight": 0.5
+    },
+    "matched_with_revisions": {
+      "population": "matched",
+      "features": [
+        "vol63",
+        "log_cap",
+        "pe_percentile",
+        "relative_mom63",
+        "credit_spread_3y",
+        "credit_change63",
+        "earnings_log_growth",
+        "earnings_raw_anchor",
+        "forecast_age_days",
+        "forecast_next_loss",
+        "forecast_basis_profit",
+        "revision_available",
+        "growth_revision",
+        "revision_gap_days"
+      ],
+      "candidate_weight": 0.5
+    },
+    "all_without_earnings": {
+      "population": "all",
+      "features": [
+        "vol63",
+        "log_cap",
+        "pe_percentile",
+        "relative_mom63",
+        "credit_spread_3y",
+        "credit_change63",
+        "forecast_age_days",
+        "forecast_basis_profit",
+        "earnings_pair_available"
+      ],
+      "candidate_weight": 0.5
+    },
+    "all_with_earnings": {
+      "population": "all",
+      "features": [
+        "vol63",
+        "log_cap",
+        "pe_percentile",
+        "relative_mom63",
+        "credit_spread_3y",
+        "credit_change63",
+        "earnings_log_growth",
+        "earnings_raw_anchor",
+        "forecast_age_days",
+        "forecast_next_loss",
+        "forecast_basis_profit",
+        "earnings_pair_available"
+      ],
+      "candidate_weight": 0.5
+    },
+    "all_with_revisions": {
+      "population": "all",
+      "features": [
+        "vol63",
+        "log_cap",
+        "pe_percentile",
+        "relative_mom63",
+        "credit_spread_3y",
+        "credit_change63",
+        "earnings_log_growth",
+        "earnings_raw_anchor",
+        "forecast_age_days",
+        "forecast_next_loss",
+        "forecast_basis_profit",
+        "earnings_pair_available",
+        "revision_available",
+        "growth_revision",
+        "revision_gap_days"
+      ],
+      "candidate_weight": 0.5
+    },
+    "all_with_revisions_unmixed": {
+      "population": "all",
+      "features": [
+        "vol63",
+        "log_cap",
+        "pe_percentile",
+        "relative_mom63",
+        "credit_spread_3y",
+        "credit_change63",
+        "earnings_log_growth",
+        "earnings_raw_anchor",
+        "forecast_age_days",
+        "forecast_next_loss",
+        "forecast_basis_profit",
+        "earnings_pair_available",
+        "revision_available",
+        "growth_revision",
+        "revision_gap_days"
+      ],
+      "candidate_weight": 1.0
+    }
+  },
+  "reference": "r19_earnings_reference",
+  "reference_receipts": [
+    {
+      "path": "outputs/r19_eps_expectations/predictions_1m.parquet",
+      "sha256": "2ff9a71afe1d3a0d16e6747aa884a4eac9f6bbfda8f17ce020bbf50dfe800f00"
+    },
+    {
+      "path": "outputs/r19_eps_expectations/predictions_3m.parquet",
+      "sha256": "2d778e399880f71bfb050e2a774c54e8a60309861d155ea1bb9b22f503caa5d2"
+    },
+    {
+      "path": "outputs/r19_eps_expectations/predictions_6m.parquet",
+      "sha256": "ac75dead44f8de5372e00628dc3c93fb833e65c4803c162dcfe8dd1cad0773eb"
+    }
+  ],
+  "architecture": {
+    "iterations": 100,
+    "depth": 2,
+    "learning_rate": 0.03,
+    "l2_leaf_reg": 20,
+    "random_seed": 24
+  },
+  "population": "Original 27600 stock-date rows, 1/3/6 calendar months, frozen R15 B",
+  "revisions": "same-broker, same-fiscal-year growth revision; history must already have been observed at an earlier decision",
+  "fallback": "Matched variants exact B outside earnings coverage or below 1000 mature training rows; all variants keep missing predictors",
+  "status": "fixed before evaluation; repeated retrospective exploration, not independent validation"
+}

@@ -1,0 +1,34 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "original_stock_dates_per_model": 27600,
+  "all_new_prediction_rows_reconstructed": 496800,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "extra_global_mixed": false,
+    "extra_local_mixed": false,
+    "extra_local_unmixed": false,
+    "rf_global_mixed": false,
+    "rf_local_mixed": false,
+    "rf_local_unmixed": false
+  },
+  "all_training_maturity_and_train_only_imputation_checked": true,
+  "shared_direction_marginals_exact": true,
+  "maximum_leaf_probability_error": 2.015054789694659e-14,
+  "receipts": [
+    {
+      "path": "outputs/r28_conditional_forests/predictions_1m.parquet",
+      "sha256": "d4fa937f4fc338c5b29e74b4dcb4fd5a5122bb0371159f6e938eccb6f5febded"
+    },
+    {
+      "path": "outputs/r28_conditional_forests/predictions_3m.parquet",
+      "sha256": "51414c390f4fa30eac18999aa721fbf733e132e8dcc92aae4381ced0f1fe3ead"
+    },
+    {
+      "path": "outputs/r28_conditional_forests/predictions_6m.parquet",
+      "sha256": "c90b9c85281b3c86871eef92695a68726962e8c9a81d5e50983fc2344547eec2"
+    }
+  ]
+}

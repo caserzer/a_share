@@ -1,0 +1,37 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 7,
+  "new_fits": 576,
+  "reused_components": 192,
+  "features": 131,
+  "original_stock_dates_per_model": 27600,
+  "all_new_prediction_rows_reconstructed": 579600,
+  "all_original_columns_and_reference_preserved": true,
+  "all_fit_maturity_feature_matrices_and_distributions_verified": true,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "deep_control_mixed": false,
+    "deep_control_raw": false,
+    "deep_full_mixed": false,
+    "deep_full_raw": false,
+    "shallow_control_raw": false,
+    "shallow_full_mixed": false,
+    "shallow_full_raw": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r34_joint_information/predictions_1m.parquet",
+      "sha256": "1515b1fbd57c56f5ad92769046a211fbd6cba575d1ff1d41342c53d39c2e8be1"
+    },
+    {
+      "path": "outputs/r34_joint_information/predictions_3m.parquet",
+      "sha256": "7423afbb8cf8fb6147a5830bf61e5ceffc2d855a50d4cc806a04ce99ac867706"
+    },
+    {
+      "path": "outputs/r34_joint_information/predictions_6m.parquet",
+      "sha256": "f635cc2afd46607f28422b6a745626f7d5b5ed44ad246fb5d1fe8d4d985ef8ab"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "url": "https://query.sse.com.cn/commonQuery.do",
+  "source_page": "https://www.sse.com.cn/assortment/options/date/",
+  "receipts": [
+    {
+      "date": "20181228",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r38_option_activity_probe/20181228.json",
+      "sha256": "1edd8d2153638440d9ad9695b5cc08f681b713cef88963139b71b4ddee2abc42",
+      "params": {
+        "isPagination": "false",
+        "sqlId": "COMMON_SSE_ZQPZ_YSP_QQ_SJTJ_MRTJ_CX",
+        "tradeDate": "20181228"
+      },
+      "checks": [
+        {
+          "code": "510050",
+          "name": "50ETF",
+          "call_volume": 669499.0,
+          "put_volume": 512536.0,
+          "call_open_interest": 1170223.0,
+          "put_open_interest": 788427.0,
+          "volume_put_call": 0.7655515542218883,
+          "oi_put_call": 0.6737408169212193
+        }
+      ]
+    },
+    {
+      "date": "20210401",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r38_option_activity_probe/20210401.json",
+      "sha256": "73a7ebdfc77bb713a7e74378055b6848b84aa239278f6828a71ad475ea2a94be",
+      "params": {
+        "isPagination": "false",
+        "sqlId": "COMMON_SSE_ZQPZ_YSP_QQ_SJTJ_MRTJ_CX",
+        "tradeDate": "20210401"
+      },
+      "checks": [
+        {
+          "code": "510050",
+          "name": "50ETF",
+          "call_volume": 1073254.0,
+          "put_volume": 849543.0,
+          "call_open_interest": 1322849.0,
+          "put_open_interest": 1224746.0,
+          "volume_put_call": 0.7915581959163441,
+          "oi_put_call": 0.9258396082999647
+        },
+        {
+          "code": "510300",
+          "name": "300ETF",
+          "call_volume": 856811.0,
+          "put_volume": 740067.0,
+          "call_open_interest": 900275.0,
+          "put_open_interest": 847410.0,
+          "volume_put_call": 0.8637459136262257,
+          "oi_put_call": 0.9412790536225042
+        }
+      ]
+    },
+    {
+      "date": "20260429",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r38_option_activity_probe/20260429.json",
+      "sha256": "252da2595d05667b02f26dc23dfcacd4e2fbe6e9e1c22e850c85621b1354f634",
+      "params": {
+        "isPagination": "false",
+        "sqlId": "COMMON_SSE_ZQPZ_YSP_QQ_SJTJ_MRTJ_CX",
+        "tradeDate": "20260429"
+      },
+      "checks": [
+        {
+          "code": "510050",
+          "name": "上证50ETF华夏",
+          "call_volume": 294907.0,
+          "put_volume": 237649.0,
+          "call_open_interest": 689578.0,
+          "put_open_interest": 515959.0,
+          "volume_put_call": 0.8058438762050409,
+          "oi_put_call": 0.7482242762965176
+        },
+        {
+          "code": "510300",
+          "name": "沪深300ETF华泰柏瑞",
+          "call_volume": 412363.0,
+          "put_volume": 375215.0,
+          "call_open_interest": 613853.0,
+          "put_open_interest": 508249.0,
+          "volume_put_call": 0.9099143230600224,
+          "oi_put_call": 0.8279653272037443
+        },
+        {
+          "code": "510500",
+          "name": "中证500ETF南方",
+          "call_volume": 630701.0,
+          "put_volume": 571044.0,
+          "call_open_interest": 537536.0,
+          "put_open_interest": 619486.0,
+          "volume_put_call": 0.905411597571591,
+          "oi_put_call": 1.1524549053458746
+        },
+        {
+          "code": "588000",
+          "name": "科创50ETF华夏",
+          "call_volume": 634439.0,
+          "put_volume": 709896.0,
+          "call_open_interest": 963808.0,
+          "put_open_interest": 828935.0,
+          "volume_put_call": 1.1189349961146777,
+          "oi_put_call": 0.8600623775689764
+        },
+        {
+          "code": "588080",
+          "name": "科创50ETF易方达",
+          "call_volume": 104395.0,
+          "put_volume": 74441.0,
+          "call_open_interest": 231500.0,
+          "put_open_interest": 182019.0,
+          "volume_put_call": 0.713070549355812,
+          "oi_put_call": 0.7862591792656587
+        }
+      ]
+    }
+  ],
+  "limitation": "Three dates only; sums and published ratios checked. Activity counts are neither implied volatility nor signed hedging demand. Not used in a model."
+}

@@ -1,0 +1,37 @@
+{
+  "training_and_test_rows": 37018,
+  "prediction_rows": 27600,
+  "stocks": 1242,
+  "feature_sha256": "73311eb181966dc72569ef6c0876e75e584ad95e9d9fbf7a1cb133a7e95db8c5",
+  "original_panel_sha256": "65b8da261892ff92819ab24f9b82acad6fe3a1c5894b654c52a8770018944bbe",
+  "market_panel_sha256": "6d9acef3bf8ec49c17357f0f552e32ed319d387c3fa32adce19e68e31b39cbaa",
+  "events_sha256": "e1909eafd9a559e764ed7f5a831af8c667401242bc35c1d9f020bc1e295a4e84",
+  "missing_test_rows": {
+    "pv_turnover_accel21_63": 13,
+    "pv_money_accel5_63": 13,
+    "pv_volume_cv21": 13,
+    "pv_return_activity_corr63": 33,
+    "pv_absret_activity_corr63": 33,
+    "pv_signed_money21": 19,
+    "pv_log_illiquidity63": 33,
+    "pv_activity_price_divergence21": 13,
+    "path_intraday_mean21": 0,
+    "path_overnight_mean21": 6,
+    "path_close_location21": 0,
+    "path_range_mean21": 0,
+    "path_range_accel5_63": 0,
+    "path_return_autocorr63": 21,
+    "path_max_positive_share21": 6,
+    "path_flat_bar_fraction21": 0
+  },
+  "quality_totals": {
+    "raw_rows": 2632930,
+    "invalid_price_rows": 0,
+    "nonpositive_activity_rows": 6,
+    "unit_or_vwap_rejected_rows": 10063,
+    "known_factor_events_masked": 100
+  },
+  "timing": "Features use only bars through the decision close, full 21/63-session windows; no future shifts or filling missing market values.",
+  "semantics": "Signed turnover is a statistical price-activity proxy, not identified investor flows. Neutral location on a valid flat bar is explicitly defined; flat bars also have a separate indicator.",
+  "limitations": "Uses existing raw/qfq price proxies and original pool; historical provider revisions and known pool bias remain. Unexplained factor days affect return-based predictors only; labels and population remain frozen."
+}

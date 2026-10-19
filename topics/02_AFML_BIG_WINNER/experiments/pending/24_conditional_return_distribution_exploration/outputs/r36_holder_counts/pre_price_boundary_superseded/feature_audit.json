@@ -1,0 +1,60 @@
+{
+  "technical_feature_integrity_passed": true,
+  "source_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "feature_sha256": "50b717698a5e657e5efa7cf8a6f3769226ac54cff3106d88ffaa4aaab3a7b9e0",
+  "plan_sha256": "b45ed526155470ec2f267f77a1fcbe21902299cff44320f841430e0d0f6cc504",
+  "source_manifest_sha256": "2bc572d3baae4084b206cec6590eca35a93091a6f38f509d45c226fd88fb76ca",
+  "availability_audit_sha256": "293c8bb96ce52a8edd37d164bd237f33e74461cad795b1b1b740fd889f75bc98",
+  "filing_checks_sha256": "82ea46a95b447c25b486e95b2e3390c45a7b92c079ff8c226bfb5c154cda8059",
+  "original_rows": 37018,
+  "evaluation_rows": 27600,
+  "features": [
+    "hc_age_days",
+    "hc_publication_lag",
+    "hc_log_count",
+    "hc_log_change",
+    "hc_change_gap",
+    "hc_year_change",
+    "hc_year_gap"
+  ],
+  "groups": {
+    "level": [
+      "hc_age_days",
+      "hc_publication_lag",
+      "hc_log_count"
+    ],
+    "change": [
+      "hc_age_days",
+      "hc_publication_lag",
+      "hc_log_change",
+      "hc_change_gap",
+      "hc_year_change",
+      "hc_year_gap"
+    ],
+    "both": [
+      "hc_age_days",
+      "hc_publication_lag",
+      "hc_log_count",
+      "hc_log_change",
+      "hc_change_gap",
+      "hc_year_change",
+      "hc_year_gap"
+    ]
+  },
+  "prefix_checks": [
+    "2021-01-29",
+    "2022-06-30",
+    "2024-01-31",
+    "2026-04-30"
+  ],
+  "test_feature_coverage": {
+    "hc_age_days": 0.8481884057971014,
+    "hc_publication_lag": 0.8481884057971014,
+    "hc_log_count": 0.8481884057971014,
+    "hc_log_change": 0.8473913043478261,
+    "hc_change_gap": 0.8473913043478261,
+    "hc_year_change": 0.8444565217391304,
+    "hc_year_gap": 0.8444565217391304
+  },
+  "limitation": "Vendor shareholder counts and dated historical records, not immutable vintages or a measure of institutional flows. No-record stocks and stale observations stay missing; no outcome filtering."
+}

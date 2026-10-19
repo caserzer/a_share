@@ -1,0 +1,87 @@
+{
+  "params": {
+    "depth": 2,
+    "iterations": 100,
+    "learning_rate": 0.03,
+    "l2_leaf_reg": 20,
+    "random_seed": 24
+  },
+  "models": [
+    "industry_identity",
+    "industry_state",
+    "industry_conditional"
+  ],
+  "control": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21",
+    "mom21",
+    "mom63",
+    "mom126"
+  ],
+  "identity": [
+    "industry_id",
+    "industry_age_days",
+    "industry_stale"
+  ],
+  "state": [
+    "industry_mom21",
+    "industry_mom63",
+    "industry_mom126",
+    "industry_breadth63",
+    "industry_peer_count",
+    "industry_relative63"
+  ],
+  "feature_sha256": "1084bf7a909c5bf94f293f52b6423a29ea2036047d8e3ec32199c653ca3f4cd8",
+  "plan_sha256": "aa039b75b67f5bbf7640e152f710e0c2d93151f5802fd8fad1d56af6ab0c831c",
+  "reference_receipts": [
+    {
+      "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+      "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+      "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+      "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+    }
+  ],
+  "reference_model": "catboost_reference",
+  "reference_folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r31_financial_quality",
+  "min_class_count": 30,
+  "distribution": "Same global seven-class probabilities; 32 weighted atoms/class; exact B mixed 50%; local atoms fall back class by class."
+}

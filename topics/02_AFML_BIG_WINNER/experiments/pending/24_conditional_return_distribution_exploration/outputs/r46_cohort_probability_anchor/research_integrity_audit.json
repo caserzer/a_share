@@ -1,0 +1,32 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 4,
+  "cumulative_complete_candidates": 163,
+  "original_stock_dates_per_model": 27600,
+  "cohort_calibration_checks": 768,
+  "all_new_prediction_rows_reconstructed": 331200,
+  "maximum_anchor_residual": 9.975942294460083e-11,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "mixed_bins": false,
+    "mixed_sign": false,
+    "raw_bins": false,
+    "raw_sign": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r46_cohort_probability_anchor/predictions_1m.parquet",
+      "sha256": "9e5ab62b8f587f46b9d910056e95fd45b9f8d8bfbeec34e8cc4718ebf896e15f"
+    },
+    {
+      "path": "outputs/r46_cohort_probability_anchor/predictions_3m.parquet",
+      "sha256": "745a0d4ca90581da8850fa712aa46f4a95d2a835be66c16fb343aaae840c6bba"
+    },
+    {
+      "path": "outputs/r46_cohort_probability_anchor/predictions_6m.parquet",
+      "sha256": "83b3739dc34e795e8f1cdb3574289326ebcd07bb313e496b33152e4ce60056ac"
+    }
+  ]
+}

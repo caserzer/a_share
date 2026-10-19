@@ -1,0 +1,34 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 4,
+  "original_rows_per_model": 27600,
+  "mature_training_and_conditional_labels_checked": true,
+  "original_labels_and_reference_unchanged": true,
+  "frozen_class_atoms_and_source_cache_verified": true,
+  "shared_sign_probabilities_and_decisions_exactly_equal": true,
+  "analytic_vs_atom_sign_max_error": 4.440892098500626e-16,
+  "fully_reconstructed_new_prediction_rows": 331200,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "sign_hierarchy_mixed": false,
+    "sign_hierarchy_unmixed": false,
+    "sign_reweight_mixed": false,
+    "sign_reweight_unmixed": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r26_direction_first/predictions_1m.parquet",
+      "sha256": "bf382da7197e1b5401ce94adbedfab03b6757613561260452ab440acb93b8064"
+    },
+    {
+      "path": "outputs/r26_direction_first/predictions_3m.parquet",
+      "sha256": "902d882a2f009ec14f29aea23ad39b09b99dbb350d081b3535e22c3a90d1c891"
+    },
+    {
+      "path": "outputs/r26_direction_first/predictions_6m.parquet",
+      "sha256": "825b03aa869d2d459dee4971ec0cad71ca4e9e2e3d855c908d87f240e8348c47"
+    }
+  ]
+}

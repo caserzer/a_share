@@ -1,0 +1,31 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 4,
+  "cumulative_complete_candidates": 139,
+  "original_stock_dates_per_model": 27600,
+  "maturity_loss_leaf_checks": 384,
+  "all_new_prediction_rows_reconstructed": 331200,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "joint_mixed": false,
+    "joint_raw": false,
+    "ordinal_mixed": false,
+    "ordinal_raw": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r40_probability_loss_forests/predictions_1m.parquet",
+      "sha256": "c57fef9e4a60d90c7cea722f37d046517a9a72466029f718ac976033790ac7c9"
+    },
+    {
+      "path": "outputs/r40_probability_loss_forests/predictions_3m.parquet",
+      "sha256": "62293396704ca1759fcb408bed1c80c8274d03658bee9e5fc4061a9f91cb513e"
+    },
+    {
+      "path": "outputs/r40_probability_loss_forests/predictions_6m.parquet",
+      "sha256": "f4509789fb3c408495acb82b779361ee37776a14e3a0d8e7831b2bed2e2efdd2"
+    }
+  ]
+}

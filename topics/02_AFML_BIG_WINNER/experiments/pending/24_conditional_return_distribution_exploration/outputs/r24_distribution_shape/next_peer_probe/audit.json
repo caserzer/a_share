@@ -1,0 +1,59 @@
+{
+  "status": "feasibility_only_no_forecasts_or_outcome_scores",
+  "dates": [
+    {
+      "date": "2019-06-28",
+      "historical_members": 500,
+      "original_eligible": 384,
+      "eligible_with_10_peers": 321,
+      "eligible_with_all_peer_momenta": 321,
+      "median_neighbor_count": 20.0,
+      "median_selected_correlation": 0.31202662939923337,
+      "peer_vs_own_mom21_spearman": 0.4321220228433305,
+      "peer_vs_own_mom63_spearman": 0.5781802198785353,
+      "peer_vs_own_mom126_spearman": 0.5707481014453536
+    },
+    {
+      "date": "2021-01-29",
+      "historical_members": 500,
+      "original_eligible": 405,
+      "eligible_with_10_peers": 353,
+      "eligible_with_all_peer_momenta": 353,
+      "median_neighbor_count": 20.0,
+      "median_selected_correlation": 0.33628749031188476,
+      "peer_vs_own_mom21_spearman": 0.475557470845095,
+      "peer_vs_own_mom63_spearman": 0.6823239276975083,
+      "peer_vs_own_mom126_spearman": 0.7125636811125262
+    },
+    {
+      "date": "2024-01-31",
+      "historical_members": 500,
+      "original_eligible": 447,
+      "eligible_with_10_peers": 424,
+      "eligible_with_all_peer_momenta": 424,
+      "median_neighbor_count": 20.0,
+      "median_selected_correlation": 0.381254935961967,
+      "peer_vs_own_mom21_spearman": 0.8298790400086331,
+      "peer_vs_own_mom63_spearman": 0.7610955652052467,
+      "peer_vs_own_mom126_spearman": 0.7462495285653589
+    },
+    {
+      "date": "2026-04-30",
+      "historical_members": 500,
+      "original_eligible": 437,
+      "eligible_with_10_peers": 407,
+      "eligible_with_all_peer_momenta": 407,
+      "median_neighbor_count": 20.0,
+      "median_selected_correlation": 0.3985065916140046,
+      "peer_vs_own_mom21_spearman": 0.7095615225309845,
+      "peer_vs_own_mom63_spearman": 0.7126951702493155,
+      "peer_vs_own_mom126_spearman": 0.7487384791422098
+    }
+  ],
+  "membership_sha256": "3247304906c26768de803a5a3753d300c9dd0f0ff4409b14d1afdbb0b61929c2",
+  "events_sha256": "e1909eafd9a559e764ed7f5a831af8c667401242bc35c1d9f020bc1e295a4e84",
+  "source_files": 990,
+  "historical_prefix_reconstruction_passed": true,
+  "method": "Current historical 500-member universe; past 252 daily simple returns with at least 126 paired observations; subtract per-day median of those members; up to 20 peers with correlation >0.2, at least 10 for momentum aggregates; self excluded.",
+  "limitations": "Current historical membership used for its past correlation window; not official industry membership. Known price anomalies masked, historical price/universe revision bias remains. No predictive value established; no new candidate counted."
+}

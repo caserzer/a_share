@@ -1,0 +1,56 @@
+{
+  "experiments": {
+    "macro_price_adjustment": [
+      "csi300_mom21",
+      "csi300_mom63",
+      "csi300_mom126",
+      "csi300_vol63",
+      "all_a_mom21"
+    ],
+    "macro_credit_valuation_adjustment": [
+      "csi300_mom21",
+      "csi300_mom63",
+      "csi300_mom126",
+      "csi300_vol63",
+      "all_a_mom21",
+      "credit_spread_3y",
+      "credit_change63",
+      "gov_3y",
+      "yield_slope",
+      "market_earnings_yield",
+      "market_pe_percentile"
+    ],
+    "macro_breadth_adjustment": [
+      "csi300_mom21",
+      "csi300_mom63",
+      "csi300_mom126",
+      "csi300_vol63",
+      "all_a_mom21",
+      "credit_spread_3y",
+      "credit_change63",
+      "gov_3y",
+      "yield_slope",
+      "market_earnings_yield",
+      "market_pe_percentile",
+      "breadth21",
+      "breadth63",
+      "breadth126",
+      "above_ma20",
+      "dispersion21",
+      "dispersion63",
+      "median_vol63",
+      "cap_concentration",
+      "small_large_mom63"
+    ]
+  },
+  "ridge_C": 0.3,
+  "horizons": [
+    1,
+    3,
+    6
+  ],
+  "training": "each matured origin month has total multinomial weight one",
+  "base_distribution": "frozen R15 B, class likelihood reweighting, half baseline unless full_adjustment",
+  "support": "reweighting preserves atom support; cannot create absent class mass",
+  "evidence": "retrospective repeated exploration; unchanged frozen R16 target contract"
+}

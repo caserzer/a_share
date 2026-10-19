@@ -1,0 +1,33 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "original_stock_dates_per_model": 27600,
+  "all_new_prediction_rows_reconstructed": 496800,
+  "all_source_hashes_and_prefix_features_checked": true,
+  "all_training_maturity_and_imputation_checked": true,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "catboost_both": false,
+    "catboost_change": false,
+    "catboost_level": false,
+    "extra_both": false,
+    "extra_change": false,
+    "extra_level": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r36_holder_counts/predictions_1m.parquet",
+      "sha256": "8a420d37dc1d1b645b57689e601b82406818f857937e73e4007660e04ac5d904"
+    },
+    {
+      "path": "outputs/r36_holder_counts/predictions_3m.parquet",
+      "sha256": "f2ec1b8c063cfd36a713e6a7e347a1ac8855415d401df14651c058b6744b882d"
+    },
+    {
+      "path": "outputs/r36_holder_counts/predictions_6m.parquet",
+      "sha256": "38b4b2d3f7f0970dbd43b112240f7e6b15d87325af1b8880f4a535bc79e5d784"
+    }
+  ]
+}

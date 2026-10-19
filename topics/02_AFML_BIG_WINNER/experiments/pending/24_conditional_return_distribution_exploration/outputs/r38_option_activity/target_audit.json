@@ -1,0 +1,62 @@
+{
+  "coverage": [
+    {
+      "months": 1,
+      "models": 6,
+      "stock_dates": 27600,
+      "observed": 27138
+    },
+    {
+      "months": 3,
+      "models": 6,
+      "stock_dates": 27600,
+      "observed": 26703
+    },
+    {
+      "months": 6,
+      "models": 6,
+      "stock_dates": 27600,
+      "observed": 25413
+    }
+  ],
+  "candidate_results": [
+    {
+      "model": "catboost_both",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "catboost_reference",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "catboost_sse50",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "extra_both",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "extra_reference",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "extra_sse50",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    }
+  ],
+  "goal_achieved": false,
+  "note": "A round is not the goal. Require all 12 gates, integrity audit and validation review before claiming achievement."
+}

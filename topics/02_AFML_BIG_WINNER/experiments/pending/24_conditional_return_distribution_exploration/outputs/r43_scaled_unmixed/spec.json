@@ -1,0 +1,30 @@
+{
+  "models": {
+    "catboost_separate_raw": "catboost_separate",
+    "catboost_shared_raw": "catboost_shared",
+    "extra_separate_raw": "extra_separate",
+    "extra_shared_raw": "extra_shared"
+  },
+  "plan_sha256": "899c277c1735c1dfde226e3fcbe78bd90652d3bf570477cd7e3cbae2a5fcf393",
+  "source_audit_sha256": "17630c90cb531be7a17db62e6a221f643b450bbb458e31464be9c084a9edbef6",
+  "source_spec_sha256": "3caa3019e10f9fa837be3b2054b805d4ec6e740ef8fe932084bcaac35f6017ca",
+  "source_plan_sha256": "2735675811309b5b430bbac6ed79388a4a69b6acd7a5cf7487769ced73aa14b7",
+  "panel_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "source_prediction_receipts": [
+    {
+      "path": "outputs/r42_scaled_horizon_models/predictions_1m.parquet",
+      "sha256": "57ea4d6ac660250b68b82d0f46e8703025b31819841642cb2c5624cad70eb617"
+    },
+    {
+      "path": "outputs/r42_scaled_horizon_models/predictions_3m.parquet",
+      "sha256": "9d2f5221ac4281fd5f9eaa5f491512997844e168e6b5a0eb593350d19f7bc092"
+    },
+    {
+      "path": "outputs/r42_scaled_horizon_models/predictions_6m.parquet",
+      "sha256": "d6b426d5d9171799f2027dee5b26d1aea44db965a8afea28765e325d35efad42"
+    }
+  ],
+  "new_fits": 0,
+  "raw_fraction": 1.0,
+  "matched_reference_fraction": 0.5
+}

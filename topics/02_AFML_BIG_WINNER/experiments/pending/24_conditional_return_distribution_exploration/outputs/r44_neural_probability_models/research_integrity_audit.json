@@ -1,0 +1,33 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 4,
+  "cumulative_complete_candidates": 155,
+  "original_stock_dates_per_model": 27600,
+  "network_fit_and_forward_checks": 384,
+  "all_new_prediction_rows_reconstructed": 331200,
+  "fixed_budget_iteration_limit_warnings": 384,
+  "optimization_convergence_claimed": false,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "control_mixed": false,
+    "control_raw": false,
+    "full_mixed": false,
+    "full_raw": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r44_neural_probability_models/predictions_1m.parquet",
+      "sha256": "74fa55d5f6a6fd12a67e9320cbd1c26c25ebc741b7e1cf1de0cd24194e92697e"
+    },
+    {
+      "path": "outputs/r44_neural_probability_models/predictions_3m.parquet",
+      "sha256": "d9d5f7b2ea2430f249c9f7cd5f881153fc51fbc353e8e9c0010001adb265ddaf"
+    },
+    {
+      "path": "outputs/r44_neural_probability_models/predictions_6m.parquet",
+      "sha256": "c83b4128f7cebfe52ef64222e7d6448e16d5e807b02fc47b6234a75962a515be"
+    }
+  ]
+}

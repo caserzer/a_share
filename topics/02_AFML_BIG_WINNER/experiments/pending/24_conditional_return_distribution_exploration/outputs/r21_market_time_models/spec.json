@@ -1,0 +1,112 @@
+{
+  "models": {
+    "market_rows": {
+      "market": true,
+      "window": null,
+      "month_balanced": false,
+      "half_life": null,
+      "candidate_weight": 0.5
+    },
+    "market_month_balanced": {
+      "market": true,
+      "window": null,
+      "month_balanced": true,
+      "half_life": null,
+      "candidate_weight": 0.5
+    },
+    "market_window36": {
+      "market": true,
+      "window": 36,
+      "month_balanced": true,
+      "half_life": null,
+      "candidate_weight": 0.5
+    },
+    "market_decay24": {
+      "market": true,
+      "window": null,
+      "month_balanced": true,
+      "half_life": 24,
+      "candidate_weight": 0.5
+    },
+    "market_decay24_unmixed": {
+      "market": true,
+      "window": null,
+      "month_balanced": true,
+      "half_life": 24,
+      "candidate_weight": 1.0
+    },
+    "window36_without_market": {
+      "market": false,
+      "window": 36,
+      "month_balanced": true,
+      "half_life": null,
+      "candidate_weight": 0.5
+    }
+  },
+  "stock_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days"
+  ],
+  "market_features": [
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63"
+  ],
+  "min_training_rows": 1000,
+  "min_training_months": 18,
+  "source_panel_sha256": "65b8da261892ff92819ab24f9b82acad6fe3a1c5894b654c52a8770018944bbe",
+  "market_panel_sha256": "6d9acef3bf8ec49c17357f0f552e32ed319d387c3fa32adce19e68e31b39cbaa",
+  "source_prediction_receipts": [
+    {
+      "path": "outputs/r20_earnings_revisions/predictions_1m.parquet",
+      "sha256": "fb8309a03d83261c73ba52b6dcbda4138b39a64f7fba945ee6d75b3d7c37854c"
+    },
+    {
+      "path": "outputs/r20_earnings_revisions/predictions_3m.parquet",
+      "sha256": "3c3b5bcc1d8e162b623cae20ed56d2266021ed8a0f6ea383ee9ba499512d8883"
+    },
+    {
+      "path": "outputs/r20_earnings_revisions/predictions_6m.parquet",
+      "sha256": "3c72df2eaed9817a317d2324e5e85e23ca5e070ef2b7e5cba8041599117ac76e"
+    }
+  ],
+  "reference": "r20_full_revision_reference",
+  "model": {
+    "iterations": 100,
+    "depth": 2,
+    "learning_rate": 0.03,
+    "l2_leaf_reg": 20,
+    "random_seed": 24
+  },
+  "weighting": "origin month totals equal or decay with a fixed 24-month half-life; mean row weight normalized to one; same weights used within outcome classes",
+  "market_population": "historical 500-stock research pool, not full A-share breadth",
+  "evidence": "fixed candidates before scoring; repeated retrospective exploration on original population, not independent validation"
+}

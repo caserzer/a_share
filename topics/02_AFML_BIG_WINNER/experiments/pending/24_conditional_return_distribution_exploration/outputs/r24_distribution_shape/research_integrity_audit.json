@@ -1,0 +1,56 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "original_population_per_model": 27600,
+  "all_labels_and_target_dates_unchanged": true,
+  "training_maturity_verified": true,
+  "prior_references_unchanged": true,
+  "all_quantile_scales_verified": true,
+  "prediction_rows_fully_reconstructed": 496800,
+  "annual_volatility_units_verified_from_prices": [
+    {
+      "instrument": "SH600004",
+      "date": "2021-01-29",
+      "annual_vol63": 0.3471232483097571,
+      "source_sha256": "ec2f629f3c2da9889e29bc7e48367c3a12cd570ad5283664bbb193137d9995eb"
+    },
+    {
+      "instrument": "SZ000001",
+      "date": "2021-01-29",
+      "annual_vol63": 0.3752698245853999,
+      "source_sha256": "6ba12628aa3c76ad05e028e0bbaeca26994f61f964b29af455f80968c58b02bf"
+    },
+    {
+      "instrument": "SZ300001",
+      "date": "2021-01-29",
+      "annual_vol63": 0.7500222878580332,
+      "source_sha256": "ed2a53221b111ec436ca4f3205ea436e6850bfe7997678ef76fa3b9181d5d4d4"
+    }
+  ],
+  "reused_unscaled_fits": 89,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "quantile_control_mixed": false,
+    "quantile_control_unmixed": false,
+    "quantile_paths_mixed": false,
+    "quantile_paths_unmixed": false,
+    "quantile_scaled_mixed": false,
+    "quantile_scaled_unmixed": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r24_distribution_shape/predictions_1m.parquet",
+      "sha256": "729ac535459f72d037264ef1f2649254afaff3f949ec54ba24feee2fcccbfe2a"
+    },
+    {
+      "path": "outputs/r24_distribution_shape/predictions_3m.parquet",
+      "sha256": "630b01db6e41e29e4d659b0ecfc721f4f2e9fd10b5220189101c4b6c3fb369e1"
+    },
+    {
+      "path": "outputs/r24_distribution_shape/predictions_6m.parquet",
+      "sha256": "e876afcfad26f0fb88985ccfe3ae8723d0d46ecbe9788e3893b85842ec8c71e4"
+    }
+  ]
+}

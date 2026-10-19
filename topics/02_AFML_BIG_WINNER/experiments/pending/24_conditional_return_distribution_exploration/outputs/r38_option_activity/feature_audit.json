@@ -1,0 +1,74 @@
+{
+  "technical_feature_integrity_passed": true,
+  "source_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "feature_sha256": "53c5ee6585cace9af7b27588ece71f9dcb3549c9f6ce801d43e72bda5bd23eac",
+  "plan_sha256": "e24044afa74d8c8c9268378f0b467491b66ad5b402678d181dd27dfe565fa044",
+  "source_manifest_sha256": "d183c6e4e490b923867410184fb9008868851f0bd989cd717f4df12d4aff2fd9",
+  "publication_crosscheck_sha256": "7651e6a8617793309ec5a895b3d15ec1e4bda5943c0466859a3451245cecfdd6",
+  "monthly_features_sha256": "2d4dbf67c5510f8fd885fcebe5ff6276b4483a99f4ea23a808495e573359c1de",
+  "original_rows": 37018,
+  "evaluation_rows": 27600,
+  "snapshots": 91,
+  "asset_date_rows": 168,
+  "features": [
+    "opt50_volume_pcr",
+    "opt50_oi_pcr",
+    "opt50_turnover",
+    "opt50_volume_pcr_change1",
+    "opt50_oi_pcr_change1",
+    "opt50_volume_pcr_change3",
+    "opt50_oi_pcr_change3",
+    "opt300_volume_pcr",
+    "opt300_oi_pcr",
+    "opt300_turnover",
+    "opt300_volume_pcr_change1",
+    "opt300_oi_pcr_change1",
+    "opt300_volume_pcr_change3",
+    "opt300_oi_pcr_change3"
+  ],
+  "groups": {
+    "sse50": [
+      "opt50_volume_pcr",
+      "opt50_oi_pcr",
+      "opt50_turnover",
+      "opt50_volume_pcr_change1",
+      "opt50_oi_pcr_change1",
+      "opt50_volume_pcr_change3",
+      "opt50_oi_pcr_change3"
+    ],
+    "both": [
+      "opt50_volume_pcr",
+      "opt50_oi_pcr",
+      "opt50_turnover",
+      "opt50_volume_pcr_change1",
+      "opt50_oi_pcr_change1",
+      "opt50_volume_pcr_change3",
+      "opt50_oi_pcr_change3",
+      "opt300_volume_pcr",
+      "opt300_oi_pcr",
+      "opt300_turnover",
+      "opt300_volume_pcr_change1",
+      "opt300_oi_pcr_change1",
+      "opt300_volume_pcr_change3",
+      "opt300_oi_pcr_change3"
+    ]
+  },
+  "prefix_checks": [
+    "2021-01-29",
+    "2022-06-30",
+    "2024-01-31",
+    "2026-04-30"
+  ],
+  "source_lag_trading_sessions": 2,
+  "all_evaluation_features_available": true,
+  "training_300_feature_missing_rows": {
+    "opt300_volume_pcr": 4208,
+    "opt300_oi_pcr": 4208,
+    "opt300_turnover": 4208,
+    "opt300_volume_pcr_change1": 4619,
+    "opt300_oi_pcr_change1": 4619,
+    "opt300_volume_pcr_change3": 5431,
+    "opt300_oi_pcr_change3": 5431
+  },
+  "limitation": "Official historical activity snapshots, not immutable vintages, implied volatility or net demand. Two-session availability lag is a conservative assumption; product-specific expiry effects remain."
+}

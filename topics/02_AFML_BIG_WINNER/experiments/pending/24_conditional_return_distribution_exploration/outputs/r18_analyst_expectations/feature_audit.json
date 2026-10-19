@@ -1,0 +1,20 @@
+{
+  "source_reports": 133166,
+  "prediction_rows": 27600,
+  "covered_analyst_rows": 22577,
+  "covered_target_rows": 8732,
+  "target_age_days": {
+    "0.1": 11.0,
+    "0.5": 63.0,
+    "0.9": 144.0
+  },
+  "target_log_upside": {
+    "0.01": -0.3333680266699975,
+    "0.5": 0.22423713296885905,
+    "0.99": 0.773229101903483
+  },
+  "temporal_check": "all contributing publication dates strictly before decision; 180-day limit; latest report per broker",
+  "adjustment": "target / raw prior-publication close * adjusted prior-publication close / adjusted as-of close",
+  "source_limit": "public dated report metadata, not immutable vendor vintages or complete broker consensus",
+  "missing_policy": "retain every original stock-date; forecast uses frozen B where feature unavailable"
+}

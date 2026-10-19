@@ -1,0 +1,87 @@
+{
+  "models": {
+    "ordinal_raw": [
+      "ordinal",
+      1.0
+    ],
+    "ordinal_mixed": [
+      "ordinal",
+      0.5
+    ],
+    "joint_raw": [
+      "joint",
+      1.0
+    ],
+    "joint_mixed": [
+      "joint",
+      0.5
+    ]
+  },
+  "parameters": {
+    "n_estimators": 96,
+    "max_depth": 6,
+    "min_samples_leaf": 150,
+    "max_features": 0.7,
+    "criterion": "squared_error",
+    "random_state": 24,
+    "n_jobs": 4,
+    "bootstrap": false
+  },
+  "features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21",
+    "mom21",
+    "mom63",
+    "mom126"
+  ],
+  "sklearn_version": "1.9.0",
+  "panel_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "plan_sha256": "df3314563b972b70e1e55fedd0c9b68289eb6a075da0f173e0fa84a7388e9cea",
+  "reference_receipts": [
+    {
+      "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+      "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+      "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+    },
+    {
+      "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+      "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+    }
+  ]
+}

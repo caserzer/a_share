@@ -1,0 +1,67 @@
+{
+  "technical_feature_integrity_passed": true,
+  "source_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "feature_sha256": "a779e28884bce1b4f16b5960d9f9e5f77fd17f0f1bb6c46b618affeb2a08143c",
+  "plan_sha256": "cba027e948fe7b897b81e7c8a32cb8a6145c5bf93b8c24d577e822acababcf43",
+  "source_manifests": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r37_exchange_guidance/SZ_manifest.json",
+      "sha256": "865848682f4d0746e62d7ac8a48fe76f3e096fc376cefbe1a302859ace12181c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r37_exchange_guidance/SZ_supplement_manifest.json",
+      "sha256": "bcbd734abf50b83c90855223147cd48dfc64f9e52e125dbd6b8c7c1168ff8527"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r37_exchange_guidance/SH_manifest.json",
+      "sha256": "fd3de343cb7088fb18dbfe0e4fe445e690f2d09425ea61d3b00886ed574c0580"
+    }
+  ],
+  "coverage_audit_sha256": "47d5bccb69f7a0b00223768dd021564eab1f074628c09869bd9d3c9c3a1c5a6a",
+  "dated_events_sha256": "6630b9da387d320ac65dbece7274c98ea34040a4c962e4e64c63d5ad95604a0f",
+  "original_rows": 37018,
+  "evaluation_rows": 27600,
+  "features": [
+    "gd_age_days",
+    "gd_count30",
+    "gd_count90",
+    "gd_count365",
+    "gd_revision90",
+    "gd_revision365",
+    "gd_up90",
+    "gd_down90",
+    "gd_loss90",
+    "gd_profit90"
+  ],
+  "groups": {
+    "timing": [
+      "gd_age_days",
+      "gd_count30",
+      "gd_count90",
+      "gd_count365",
+      "gd_revision90",
+      "gd_revision365"
+    ],
+    "timing_title": [
+      "gd_age_days",
+      "gd_count30",
+      "gd_count90",
+      "gd_count365",
+      "gd_revision90",
+      "gd_revision365",
+      "gd_up90",
+      "gd_down90",
+      "gd_loss90",
+      "gd_profit90"
+    ]
+  },
+  "prefix_checks": [
+    "2021-01-29",
+    "2022-06-30",
+    "2024-01-31",
+    "2026-04-30"
+  ],
+  "recent365_test_coverage": 0.5034057971014493,
+  "recent90_test_coverage": 0.22452898550724637,
+  "limitation": "Title-scoped original announcement events, not numeric earnings or a complete inventory of all corporate forecasts. Zero means no matching archived record only."
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "historical_report",
+    "url": "https://datacenter.eastmoney.com/securities/api/data/v1/get",
+    "params": {
+      "reportName": "RPT_PUBLIC_OP_PREDICT",
+      "columns": "ALL",
+      "filter": "(SECURITY_CODE=\"300520\")(REPORT_DATE='2024-12-31')",
+      "pageNumber": 1,
+      "pageSize": 500,
+      "sortColumns": "NOTICE_DATE",
+      "sortTypes": -1
+    },
+    "success": false,
+    "message": "REPORT_DATE\u5217\u4e0d\u5b58\u5728",
+    "rows": null,
+    "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_guidance_revision_checks/historical_report.json",
+    "sha256": "139c464ee5ce7d9bd118b06e45499bf0499fca052b99294b9c4c11b80d59c5a5"
+  },
+  {
+    "name": "explicit_nonlatest",
+    "url": "https://datacenter.eastmoney.com/securities/api/data/v1/get",
+    "params": {
+      "reportName": "RPT_PUBLIC_OP_NEWPREDICT",
+      "columns": "ALL",
+      "filter": "(SECURITY_CODE=\"300520\")(REPORT_DATE='2024-12-31')(IS_LATEST=\"F\")",
+      "pageNumber": 1,
+      "pageSize": 500,
+      "sortColumns": "NOTICE_DATE",
+      "sortTypes": -1
+    },
+    "success": false,
+    "message": "\u8fd4\u56de\u6570\u636e\u4e3a\u7a7a",
+    "rows": null,
+    "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_guidance_revision_checks/explicit_nonlatest.json",
+    "sha256": "ea6528a2204b61a7ee34683a73ca00f8afdc86aadf3f765d4dae39bbfb19dbe7"
+  }
+]

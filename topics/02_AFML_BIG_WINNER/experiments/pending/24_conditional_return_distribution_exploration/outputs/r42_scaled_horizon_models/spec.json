@@ -1,0 +1,156 @@
+{
+  "models": {
+    "catboost_separate": [
+      "catboost",
+      "separate"
+    ],
+    "catboost_shared": [
+      "catboost",
+      "shared"
+    ],
+    "extra_separate": [
+      "extra",
+      "separate"
+    ],
+    "extra_shared": [
+      "extra",
+      "shared"
+    ]
+  },
+  "control_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21",
+    "mom21",
+    "mom63",
+    "mom126"
+  ],
+  "catboost": {
+    "depth": 2,
+    "iterations": 100,
+    "learning_rate": 0.03,
+    "l2_leaf_reg": 20,
+    "random_seed": 24
+  },
+  "extra": {
+    "n_estimators": 96,
+    "max_depth": 6,
+    "min_samples_leaf": 150,
+    "max_features": 0.7,
+    "criterion": "gini",
+    "random_state": 24,
+    "n_jobs": 4,
+    "class_weight": null
+  },
+  "references": {
+    "catboost_separate_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r31_financial_quality",
+      "model": "catboost_reference",
+      "receipts": [
+        {
+          "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+          "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+          "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+          "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+        }
+      ]
+    },
+    "catboost_shared_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r41_shared_horizon_models",
+      "model": "catboost_h136",
+      "receipts": [
+        {
+          "path": "outputs/r41_shared_horizon_models/predictions_1m.parquet",
+          "sha256": "69b4e31cde75d5d46d542b8c815abaa4d2ce6ba6e363292e6e9161fd36efb785"
+        },
+        {
+          "path": "outputs/r41_shared_horizon_models/predictions_3m.parquet",
+          "sha256": "8382c568f23cd5302c7ebc0aa343a5eb5a7d91db57545115ba0aca332dd61417"
+        },
+        {
+          "path": "outputs/r41_shared_horizon_models/predictions_6m.parquet",
+          "sha256": "e69e29cfd90d317c26b9605490e3f0d19137d5543e67a7c42791aac558144672"
+        }
+      ]
+    },
+    "extra_separate_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r31_financial_quality",
+      "model": "extra_reference",
+      "receipts": [
+        {
+          "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+          "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+          "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+          "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+        }
+      ]
+    },
+    "extra_shared_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r41_shared_horizon_models",
+      "model": "extra_h136",
+      "receipts": [
+        {
+          "path": "outputs/r41_shared_horizon_models/predictions_1m.parquet",
+          "sha256": "69b4e31cde75d5d46d542b8c815abaa4d2ce6ba6e363292e6e9161fd36efb785"
+        },
+        {
+          "path": "outputs/r41_shared_horizon_models/predictions_3m.parquet",
+          "sha256": "8382c568f23cd5302c7ebc0aa343a5eb5a7d91db57545115ba0aca332dd61417"
+        },
+        {
+          "path": "outputs/r41_shared_horizon_models/predictions_6m.parquet",
+          "sha256": "e69e29cfd90d317c26b9605490e3f0d19137d5543e67a7c42791aac558144672"
+        }
+      ]
+    }
+  },
+  "panel_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "plan_sha256": "2735675811309b5b430bbac6ed79388a4a69b6acd7a5cf7487769ced73aa14b7",
+  "normalization": "log1p(y) / (max(annualized_vol63,.001) * sqrt(h/12)) / 10",
+  "class_atoms": "Own-horizon mature normalized labels, same for separate and shared",
+  "candidate_fraction": 0.5
+}

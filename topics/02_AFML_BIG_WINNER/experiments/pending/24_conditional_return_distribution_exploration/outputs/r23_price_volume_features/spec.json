@@ -1,0 +1,154 @@
+{
+  "control_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21"
+  ],
+  "models": {
+    "activity_means_control": {
+      "added_features": [],
+      "depth": 2,
+      "iterations": 100,
+      "l2_leaf_reg": 20
+    },
+    "activity_interactions": {
+      "added_features": [
+        "pv_turnover_accel21_63",
+        "pv_money_accel5_63",
+        "pv_volume_cv21",
+        "pv_return_activity_corr63",
+        "pv_absret_activity_corr63",
+        "pv_signed_money21",
+        "pv_log_illiquidity63",
+        "pv_activity_price_divergence21"
+      ],
+      "depth": 2,
+      "iterations": 100,
+      "l2_leaf_reg": 20
+    },
+    "intraday_paths": {
+      "added_features": [
+        "path_intraday_mean21",
+        "path_overnight_mean21",
+        "path_close_location21",
+        "path_range_mean21",
+        "path_range_accel5_63",
+        "path_return_autocorr63",
+        "path_max_positive_share21",
+        "path_flat_bar_fraction21"
+      ],
+      "depth": 2,
+      "iterations": 100,
+      "l2_leaf_reg": 20
+    },
+    "activity_and_paths": {
+      "added_features": [
+        "pv_turnover_accel21_63",
+        "pv_money_accel5_63",
+        "pv_volume_cv21",
+        "pv_return_activity_corr63",
+        "pv_absret_activity_corr63",
+        "pv_signed_money21",
+        "pv_log_illiquidity63",
+        "pv_activity_price_divergence21",
+        "path_intraday_mean21",
+        "path_overnight_mean21",
+        "path_close_location21",
+        "path_range_mean21",
+        "path_range_accel5_63",
+        "path_return_autocorr63",
+        "path_max_positive_share21",
+        "path_flat_bar_fraction21"
+      ],
+      "depth": 2,
+      "iterations": 100,
+      "l2_leaf_reg": 20
+    },
+    "activity_means_depth4": {
+      "added_features": [],
+      "depth": 4,
+      "iterations": 200,
+      "l2_leaf_reg": 50
+    },
+    "activity_and_paths_depth4": {
+      "added_features": [
+        "pv_turnover_accel21_63",
+        "pv_money_accel5_63",
+        "pv_volume_cv21",
+        "pv_return_activity_corr63",
+        "pv_absret_activity_corr63",
+        "pv_signed_money21",
+        "pv_log_illiquidity63",
+        "pv_activity_price_divergence21",
+        "path_intraday_mean21",
+        "path_overnight_mean21",
+        "path_close_location21",
+        "path_range_mean21",
+        "path_range_accel5_63",
+        "path_return_autocorr63",
+        "path_max_positive_share21",
+        "path_flat_bar_fraction21"
+      ],
+      "depth": 4,
+      "iterations": 200,
+      "l2_leaf_reg": 50
+    }
+  },
+  "learning_rate": 0.03,
+  "random_seed": 24,
+  "month_balanced": true,
+  "candidate_weight": 0.5,
+  "min_training_rows": 1000,
+  "min_training_months": 18,
+  "feature_sha256": "73311eb181966dc72569ef6c0876e75e584ad95e9d9fbf7a1cb133a7e95db8c5",
+  "reference": "r21_month_reference",
+  "source_receipts": [
+    {
+      "path": "outputs/r21_market_time_models/predictions_1m.parquet",
+      "sha256": "78a546a7a73aef715932c5534868f95e1e17618d55d6b742a275f1f299913194"
+    },
+    {
+      "path": "outputs/r21_market_time_models/predictions_3m.parquet",
+      "sha256": "e08e04e7985e7379f76c6ff837b61a9c4e5aa00b19dfa6ad49043083bc606a5e"
+    },
+    {
+      "path": "outputs/r21_market_time_models/predictions_6m.parquet",
+      "sha256": "c3d8bed8bdc5e1bf94d0d41bdf03e8db754e865ed5c62c0a3ac45cfcb882d406"
+    }
+  ],
+  "population": "same original 27600 stock-date predictions, same mature training rows for every new model; missing inputs remain NaN",
+  "source": "historical daily bars through current close; no label or future-price input",
+  "evidence": "fixed six candidates before scoring; deeper model changes capacity and regularization together; same-capacity feature contrasts provided"
+}

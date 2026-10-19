@@ -1,0 +1,17 @@
+{
+  "history_window_months": 36,
+  "minimum_history_months": 12,
+  "mixing_base_weight": 0.5,
+  "softmax_temperature_inverse": 10,
+  "selection_metrics": [
+    "brier",
+    "multiclass_brier",
+    "crps",
+    "accuracy"
+  ],
+  "gate": "all four historical loss ratios below .99; minimize worst ratio; otherwise B",
+  "calibration": "month-equal PIT CDF with 50 percent identity shrinkage",
+  "future_outcomes": "strictly excluded from all weight and calibration decisions",
+  "evidence": "retrospective repeated exploration, not a new independent holdout",
+  "distributions": "exact weighted mixtures; cached atoms are float32 then evaluated in float64"
+}

@@ -1,0 +1,37 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 6,
+  "reused_reference": "r19_earnings_reference",
+  "prediction_rows_per_model": 27600,
+  "matched_populations_verified": true,
+  "prior_reference_unchanged": true,
+  "source_revision_arithmetic_verified": true,
+  "unchanged_fallback_verified": true,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "all_with_earnings": false,
+    "all_with_revisions": false,
+    "all_with_revisions_unmixed": false,
+    "all_without_earnings": false,
+    "matched_with_revisions": false,
+    "matched_without_earnings": false
+  },
+  "feature_sha256": "65b8da261892ff92819ab24f9b82acad6fe3a1c5894b654c52a8770018944bbe",
+  "receipts": [
+    {
+      "path": "outputs/r20_earnings_revisions/predictions_1m.parquet",
+      "sha256": "fb8309a03d83261c73ba52b6dcbda4138b39a64f7fba945ee6d75b3d7c37854c"
+    },
+    {
+      "path": "outputs/r20_earnings_revisions/predictions_3m.parquet",
+      "sha256": "3c3b5bcc1d8e162b623cae20ed56d2266021ed8a0f6ea383ee9ba499512d8883"
+    },
+    {
+      "path": "outputs/r20_earnings_revisions/predictions_6m.parquet",
+      "sha256": "3c72df2eaed9817a317d2324e5e85e23ca5e070ef2b7e5cba8041599117ac76e"
+    }
+  ],
+  "evidence": "Repeated retrospective exploration; same frozen baseline. Six new candidates and one reused reference, not seven new trials."
+}

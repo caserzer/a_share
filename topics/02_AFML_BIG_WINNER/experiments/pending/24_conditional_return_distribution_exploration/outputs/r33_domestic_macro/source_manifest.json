@@ -1,0 +1,138 @@
+{
+  "series": [
+    {
+      "name": "RPT_ECONOMY_PMI",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/RPT_ECONOMY_PMI.json",
+      "sha256": "6b1c8f1b20e9334d6bb1ba6ecc7f982d3cf0ff18bdb4b0ff3c08db308b6b245b",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_ECONOMY_PMI",
+        "columns": "ALL",
+        "pageNumber": 1,
+        "pageSize": 2000,
+        "sortColumns": "REPORT_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "rows": 225
+    },
+    {
+      "name": "RPT_ECONOMY_CURRENCY_SUPPLY",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/RPT_ECONOMY_CURRENCY_SUPPLY.json",
+      "sha256": "fb7c6ce5bdc84debd1f6738fd34e7785c632b672a65ff35e50645b0e649a5b90",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_ECONOMY_CURRENCY_SUPPLY",
+        "columns": "ALL",
+        "pageNumber": 1,
+        "pageSize": 2000,
+        "sortColumns": "REPORT_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "rows": 225
+    },
+    {
+      "name": "RPT_ECONOMY_CPI",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/RPT_ECONOMY_CPI.json",
+      "sha256": "eee1bd0effff84e377396a35215f27a2f1bc24d27657ba8f7380b33bc41163b3",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_ECONOMY_CPI",
+        "columns": "ALL",
+        "pageNumber": 1,
+        "pageSize": 2000,
+        "sortColumns": "REPORT_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "rows": 225
+    },
+    {
+      "name": "RPT_ECONOMY_PPI",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/RPT_ECONOMY_PPI.json",
+      "sha256": "fc9804a7b36967bdd2678bc2852f13b85e1d2e56383a8bc9043aeced5efd9523",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_ECONOMY_PPI",
+        "columns": "ALL",
+        "pageNumber": 1,
+        "pageSize": 2000,
+        "sortColumns": "REPORT_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "rows": 249
+    },
+    {
+      "name": "tsf",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/mofcom_social_financing.json",
+      "sha256": "411c2c89889dcc6643498d215317a93334a97a839b09c11c1b223720c7f8348b",
+      "url": "https://data.mofcom.gov.cn/datamofcom/front/gnmy/shrzgmQuery",
+      "method": "POST read-only query",
+      "rows": 136
+    }
+  ],
+  "official": [
+    {
+      "name": "pmi2020",
+      "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202012/t20201231_1811956.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/pmi2020.html",
+      "sha256": "097d4f8e9e5ba6b57b829983c4ae88b1614c487b751113c73debcc7982955491",
+      "status": "downloaded"
+    },
+    {
+      "name": "pmi2025",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202512/t20251231_1962218.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/pmi2025.html",
+      "sha256": "c0ddfab5bf8aba69ac58403c3bc514c5d2a8dac060b4fb26337d75a421c6a249",
+      "status": "downloaded"
+    },
+    {
+      "name": "cpi2025",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202601/t20260109_1962273.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/cpi2025.html",
+      "sha256": "029d16d76ba6c207b46be0cf4a13ca2c88ae431540aec335778644e97830da7f",
+      "status": "downloaded"
+    },
+    {
+      "name": "ppi2025",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202601/t20260109_1962272.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/ppi2025.html",
+      "sha256": "7b8b4c7ec427e17ecb28e0218a745f04a26ab033a6a28a9b2f6672abbad548d4",
+      "status": "downloaded"
+    },
+    {
+      "name": "money2020",
+      "url": "https://app.www.gov.cn/govdata/gov/202101/13/466933/article.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/money2020.html",
+      "sha256": "dd70cfed7c802ccd3f5077e1f1c742d675022f2ea6714141fc6afeb4d9031ef8",
+      "status": "downloaded"
+    },
+    {
+      "name": "money2025",
+      "url": "https://www.pbc.gov.cn/en/3688247/3688978/3709137/5838983/index.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/money2025.html",
+      "sha256": "bca596d2aa57df9952926c110509979286896631084a4a032cae6b47e2fbc931",
+      "status": "downloaded"
+    },
+    {
+      "name": "tsf2020",
+      "url": "https://www.ndrc.gov.cn/fggz/fgzh/gnjjjc/hbjr/202101/t20210128_1266089.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/tsf2020.html",
+      "sha256": "00ad9781bc7f049a54e289e2b70fb8c9cd32f38a5ac196ea2f292a8830941d48",
+      "status": "downloaded"
+    },
+    {
+      "name": "tsf2021",
+      "url": "https://www.ndrc.gov.cn/fggz/fgzh/gnjjjc/hbjr/202201/t20220125_1313247.html",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/tsf2021.html",
+      "sha256": "a64810515275f813589752504b79658e9087d9139002cfbbbf0d1d91ecc9319d",
+      "status": "downloaded"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "control_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21",
+    "mom21",
+    "mom63",
+    "mom126"
+  ],
+  "models": {
+    "individual_margin": [
+      "margin_observed",
+      "margin_financing_cap",
+      "margin_financing_change_cap",
+      "margin_buy_balance",
+      "margin_lending_cap"
+    ],
+    "market_margin": [
+      "margin_market_financing_change",
+      "margin_market_buy_balance",
+      "margin_market_lending_share"
+    ],
+    "both_margin": [
+      "margin_observed",
+      "margin_financing_cap",
+      "margin_financing_change_cap",
+      "margin_buy_balance",
+      "margin_lending_cap",
+      "margin_market_financing_change",
+      "margin_market_buy_balance",
+      "margin_market_lending_share"
+    ]
+  },
+  "feature_sha256": "c29a7f0db72cb49d3d586e7cae3380d93800824a1dde7c62b2836c5ffe76f2ba",
+  "plan_sha256": "816e988f80401cb7d19cb225287f00d1cec62a075986c1a55e13b6a47161594a",
+  "iterations": 100,
+  "depth": 2,
+  "learning_rate": 0.03,
+  "l2_leaf_reg": 20,
+  "random_seed": 24,
+  "month_balanced": true,
+  "min_training_rows": 1000,
+  "min_training_months": 18,
+  "candidate_weight": 0.5,
+  "reference": "own_momentum_reference",
+  "reference_source_model": "own_momentum_control",
+  "source_receipts": [
+    {
+      "path": "outputs/r25_historical_peers/predictions_1m.parquet",
+      "sha256": "19447faee50ffb868f14f77dfbf416de7e91f9f4f97b270983c2ed76cd464a6e"
+    },
+    {
+      "path": "outputs/r25_historical_peers/predictions_3m.parquet",
+      "sha256": "4f32ccc463a8c880138f10f9e3cf026df9c03227ef9ede1e8f3d47eed3b9d005"
+    },
+    {
+      "path": "outputs/r25_historical_peers/predictions_6m.parquet",
+      "sha256": "d61796070d1a5d7623a6fd7eaac48acf1bd67700e3081ff9ebf1c39a4c7747cf"
+    }
+  ],
+  "population": "Same original 27600 stock-dates and mature training rows; no missing-margin filtering or outcome-dependent selection",
+  "evidence": "Three fixed additions to frozen own-momentum control; features fixed before scoring"
+}

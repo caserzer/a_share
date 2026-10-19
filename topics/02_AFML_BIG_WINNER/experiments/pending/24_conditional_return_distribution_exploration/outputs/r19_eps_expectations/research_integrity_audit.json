@@ -1,0 +1,34 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "candidates_passing_all_point_gates": {
+    "earnings_forecast_classes": false,
+    "earnings_forecast_raw": false,
+    "eps_forecast_capped": false,
+    "eps_forecast_raw": false,
+    "eps_historical_control": false
+  },
+  "passed_point_gates": 0,
+  "candidate_count": 5,
+  "prediction_rows_per_model": 27600,
+  "source_reports": 14571,
+  "unchanged_fallback_verified": true,
+  "matched_eps_controls_verified": true,
+  "receipts": [
+    {
+      "path": "outputs/r19_eps_expectations/predictions_1m.parquet",
+      "sha256": "2ff9a71afe1d3a0d16e6747aa884a4eac9f6bbfda8f17ce020bbf50dfe800f00"
+    },
+    {
+      "path": "outputs/r19_eps_expectations/predictions_3m.parquet",
+      "sha256": "2d778e399880f71bfb050e2a774c54e8a60309861d155ea1bb9b22f503caa5d2"
+    },
+    {
+      "path": "outputs/r19_eps_expectations/predictions_6m.parquet",
+      "sha256": "ac75dead44f8de5372e00628dc3c93fb833e65c4803c162dcfe8dd1cad0773eb"
+    }
+  ],
+  "feature_sha256": "bb2bacab37d9f1b47cfbf4ed7525e3207aa3d9e5a74e9d8ef221150b83f463cc",
+  "evidence": "Repeated retrospective exploration. Single latest public original report, not full consensus or immutable vintages."
+}

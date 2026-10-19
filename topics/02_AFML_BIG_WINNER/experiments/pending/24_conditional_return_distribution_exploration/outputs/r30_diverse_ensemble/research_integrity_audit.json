@@ -1,0 +1,35 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "new_candidates": 5,
+  "all_new_prediction_rows_reconstructed": 414000,
+  "active_parameter_refits": 584,
+  "exact_uniform_warmup_rows": 76188,
+  "pairwise_cdf_integrals_independently_recomputed": 189,
+  "all_history_maturity_checked": true,
+  "frozen_baseline_unchanged": true,
+  "recovered_baseline_matches_original_exactly": true,
+  "passed_point_gates": 0,
+  "candidates_passing_all_point_gates": {
+    "joint_expanding": false,
+    "joint_recent24": false,
+    "sign_expanding": false,
+    "sign_recent24": false,
+    "uniform_diverse": false
+  },
+  "receipts": [
+    {
+      "path": "outputs/r30_diverse_ensemble/predictions_1m.parquet",
+      "sha256": "d67cdf5136973360c27aa48ff167bd37c14a7601caff91ee8970d2202b543ec4"
+    },
+    {
+      "path": "outputs/r30_diverse_ensemble/predictions_3m.parquet",
+      "sha256": "00595affebe5f04adb542e2c0f451a6e37880eeee0892e0ff6aa1088f0b1ca6e"
+    },
+    {
+      "path": "outputs/r30_diverse_ensemble/predictions_6m.parquet",
+      "sha256": "31b52cb61853a364a42e15e002d747d2ebc9eda21874bb042d6b7770fbf14ee2"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "instrument": "SH600000",
+      "report_id": "AP201910311370071887",
+      "target_low": 15.07,
+      "target_high": 16.95,
+      "source": "https://pdf.dfcfw.com/pdf/H3_AP201910311370071887_1.pdf?1574411299000.pdf=",
+      "checked": "R17 primary report text"
+    },
+    {
+      "instrument": "SH600519",
+      "report_id": "AP202010291424614577",
+      "target_low": 1885.0,
+      "target_high": 1885.0,
+      "source": "https://data.eastmoney.com/report/info/AP202010291424614577.html",
+      "checked": "Original report passage agrees with metadata"
+    },
+    {
+      "instrument": "SZ300750",
+      "report_id": "AP202310201602156909",
+      "target_low": 298.0,
+      "target_high": 298.0,
+      "source": "https://pdf.dfcfw.com/pdf/H3_AP202310201602156909_1.PDF",
+      "checked": "Original PDF text agrees with metadata"
+    }
+  ],
+  "limit": "Three manual checks, not proof of immutable full historical metadata. Broker target horizons differ; targets are predictors only, never outcome labels."
+}

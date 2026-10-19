@@ -1,0 +1,26 @@
+{
+  "reports": 14571,
+  "statuses": {
+    "parsed": 5393,
+    "profit_only": 3575,
+    "empty_original_body": 2851,
+    "no_explicit_earnings": 2734,
+    "conflicting_forecasts": 16,
+    "source_inconsistent_forecast": 2
+  },
+  "parser_sha256": "641200e73d8413498bc2a50ab746663361b053ac83dc2e0e70dc0425e9a2463a",
+  "original_extraction_sha256": "0929d8636be917136d3e9fbbf11c81d206be6d279194294b5a6890bc558fb828",
+  "source_exclusions": {
+    "AP202110141522607540": {
+      "field": "forecasts",
+      "sha256": "de2728d963d58191944469d68639044b3fd9083b9b9a85adff4fc180531669a3",
+      "reason": "EPS sequence 2.13,249,2.86 contradicts the same sentence growth 8%,17%,15%; original HTML contains other corrupted numerals."
+    },
+    "AP202409061639782662": {
+      "field": "profit_forecasts",
+      "sha256": "28d203f2d4e0323699b117710bbf9fc3739e891dee5a1e4dfdc07d9ee61c6040",
+      "reason": "Profit sequence 201,30,35 contradicts same-current-market-cap PE sequence 18,12,10. Do not infer a replacement number."
+    }
+  },
+  "rule": "Full cached-byte reparse after retrieval; no outcomes used; no inferred correction of corrupted numbers."
+}

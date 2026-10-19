@@ -1,0 +1,43 @@
+{
+  "models": {
+    "raw_sign": [
+      "raw",
+      "sign"
+    ],
+    "raw_bins": [
+      "raw",
+      "bins"
+    ],
+    "mixed_sign": [
+      "mixed",
+      "sign"
+    ],
+    "mixed_bins": [
+      "mixed",
+      "bins"
+    ]
+  },
+  "references": {
+    "raw_reference": "alpha16_raw",
+    "mixed_reference": "alpha16_mixed"
+  },
+  "plan_sha256": "b45da294891cc4fc3aaf56e1e8acd8a2f35d7d7c6ced6b4385cc410c1717dcff",
+  "reference_receipts": [
+    {
+      "path": "outputs/r45_neural_regularization/predictions_1m.parquet",
+      "sha256": "38391e2bfd12fe446a089ef77040a555e12143fe2da9eb127892138d0f3c0f9c"
+    },
+    {
+      "path": "outputs/r45_neural_regularization/predictions_3m.parquet",
+      "sha256": "ae29ba6c520dd2b606ec3561ef9abd2de59d6bcd522ecf37f2d2fe616276e5bf"
+    },
+    {
+      "path": "outputs/r45_neural_regularization/predictions_6m.parquet",
+      "sha256": "0e2ab2da7a531306d4b527d9b4ea7f3e373a65fd669923a44706935779abcb10"
+    }
+  ],
+  "source_fit_sha256": "7771498db11edb182cbc3ecfcae855474dc8bafca8a9fc740c4bc58cbf9603a9",
+  "tolerance": 1e-10,
+  "max_bin_iterations": 10000,
+  "anchor": "Same origin same complete cohort frozen-B predictions only; no actual outcome input"
+}

@@ -1,0 +1,45 @@
+{
+  "execution_audit_passed": true,
+  "checks": {
+    "original_discussion_byte_identical": true,
+    "nine_rounds_have_results": true,
+    "required_deliverables_present": true,
+    "holdout_spec_matches_retained_hash": true,
+    "total_return_gap_audit_covers_all_source_targets": true,
+    "public_data_coverage_measured": true,
+    "portfolio_all_planned_scenarios_present": true,
+    "no_terminal_stale_mark_exposure": true,
+    "r05_holdout_scores_reconcile": true,
+    "r05_holdout_six_models_both_horizons": true,
+    "r08_excess_probe_scores_reconcile": true,
+    "r08_excess_probe_six_models_both_horizons": true,
+    "meaningful_tests_pass": true,
+    "local_report_links_resolve": true,
+    "source_compiles": true
+  },
+  "task_outcome": "Nine-round exploratory episode executed; stable probability and sizing advantage not established",
+  "hypothesis_supported": false,
+  "not_claimed": [
+    "complete unbiased A-share universe",
+    "original-vintage financial/valuation/industry PIT verification",
+    "all-corporate-action total-return database",
+    "exact broker execution",
+    "validated joint-tail portfolio optimizer",
+    "new prospective investment evidence"
+  ],
+  "limitations_are_reported_research_outcomes_not_positive_validation": true,
+  "input_hashes": {
+    "monthly_panel.parquet": "aad689f7325013ca7c83e53aeeb81a09f03a7876a04614880e1b41509bac1a42",
+    "enriched_panel.parquet": "0c831185b7976079eef8e880324441434026399378fdccfc22580c17325e3bd0",
+    "reinvested_labels.parquet": "f6832f622f5436419c3992b4153597a8f7ba65284fb0b1907e0be8ad1ea1d827"
+  },
+  "versions": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.0",
+    "catboost": "1.2.10",
+    "pyarrow": "24.0.0"
+  },
+  "test_output": "test_results.txt",
+  "artifact_hashes": "artifact_hashes.json"
+}

@@ -1,0 +1,241 @@
+{
+  "technical_feature_integrity_passed": true,
+  "source_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "feature_sha256": "6a62c8bf47ae04b77eadf3d72e5a53e6c27d81a445e6697e0b98a8a0d9066ac4",
+  "plan_sha256": "4f2268047e490040e5f6b878bb28506275365fb263957dc874ecee7a3babe225",
+  "monthly_sha256": "c7c9f43b4996093b6afed23fa21218e94885678ec2538e7b272ce16052bfad65",
+  "decoder_sha256": "a42a1b100f70c858666ba74d9855a34e5b2a584c45e987e08eeaedf8d70b7167",
+  "rows": 37018,
+  "months": 88,
+  "evaluation_rows": 27600,
+  "all_new_features_available": true,
+  "lags_calendar_days": {
+    "vix": 3,
+    "nasdaq": 3,
+    "yields": 7,
+    "fx": 14
+  },
+  "max_extra_age_days": 7,
+  "prefix_dates": [
+    "2019-01-31",
+    "2021-01-29",
+    "2026-04-30"
+  ],
+  "source_receipts": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/VIX.csv",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/VIX.receipt.json",
+      "receipt_sha256": "9f32bba002a57dd8ab494cc25f17c5885830530ebe42f7b931947ac8b027f1ab",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:28:01.837115+00:00",
+      "bytes": 473839,
+      "sha256": "a9742d4deab98f7644bda10df92db0b6afbca17ccc8b64139c52ad2ca0963d42"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/VIX3M.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/VIX3M.receipt.json",
+      "receipt_sha256": "cea8df229677174821d1bcd6a5011406073bbbc36732b4fcd30e6dbcd0c5f53f",
+      "url": "https://cdn-api.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:29:43.850432+00:00",
+      "bytes": 219121,
+      "sha256": "7767e832b24d979fd5b8516cb00fd2d11df386cfd0d4f4bbc7c2ef2b5e2ef5dc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/NASDAQ_SINA.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/NASDAQ_SINA.receipt.json",
+      "receipt_sha256": "e61f83ad986369d364b3f954f1ad8543feb9351b6f810977b780418d88c03a2b",
+      "url": "https://finance.sina.com.cn/staticdata/us/.IXIC",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:29:43.274322+00:00",
+      "bytes": 112397,
+      "sha256": "5db7237f39ccc893baf53f31d050fbd480847d5903f0c50f92a99de8c706366a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/FX_FED_HTML.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/FX_FED_HTML.receipt.json",
+      "receipt_sha256": "17523999a3272651b67ffd39f54086da976b46d47de90e7f09db738466e2c10b",
+      "url": "https://www.federalreserve.gov/releases/h10/hist/dat00_ch.htm",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:29:43.852847+00:00",
+      "bytes": 1130599,
+      "sha256": "012e6fe52021788d6e713032f2f0b03a360ad36ae3516f2dd6ded37cced0df72"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2016.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2016.receipt.json",
+      "receipt_sha256": "f9dc40f0a07c970897d407f29c57a4162bc0e48bc4439a88055fb356000cb585",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2016",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:38.800646+00:00",
+      "bytes": 347673,
+      "sha256": "2a6237e48354f2726332d01020d4f7ad4056bb00ebbfcc95f32a2a29d24ae19c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2017.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2017.receipt.json",
+      "receipt_sha256": "50536a4b9cac75302a23f1e6019dc9299406bd0de50b43f44676d05b2860e545",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2017",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:40.040417+00:00",
+      "bytes": 347673,
+      "sha256": "0b50eab1fc6f4ac12a1f38877f7b5ccd16519e313537685cf7b99566643f1a3b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2018.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2018.receipt.json",
+      "receipt_sha256": "74f74ceeca416e2f3ac1cfc8fb7253cb255515ba8127f0c5a6b40e92e8fe1937",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2018",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:41.210513+00:00",
+      "bytes": 348937,
+      "sha256": "cdedb1dd9b458df28547d4bc1a6c15a26a94749414402c1f7a180990f46e2d5d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2019.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2019.receipt.json",
+      "receipt_sha256": "91cc1bd4140afcdc938d97d974ab657425647c1c1ea2f1fadb8476fa65601496",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2019",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:42.092417+00:00",
+      "bytes": 360673,
+      "sha256": "6d047b8fcbe79af19fca8c2fdb8a5cb656dff455f1e3e55593a8e0d182d4b4d2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2020.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2020.receipt.json",
+      "receipt_sha256": "99f0a866817d52b17c43f1cdfee07d9efddfcc4f812d700ba6411cf6a7f67d24",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2020",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:43.285868+00:00",
+      "bytes": 362113,
+      "sha256": "931c12aca431c4195bb06ffb8592f2500da70c7376ed4bdf783f3cfd63816972"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2021.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2021.receipt.json",
+      "receipt_sha256": "e580795caff558775975a244a337e16cc1c465eda37ef4f2a26166a34bf0acac",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2021",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:44.423982+00:00",
+      "bytes": 362113,
+      "sha256": "871f895b3efb8834c5fab379e7db07ed236e4a26380182be7402680135eefd52"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2022.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2022.receipt.json",
+      "receipt_sha256": "fbcabec1435ed64794d03ca90c258f5372dfdd1a91fded55823ac81f5058a4f8",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2022",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:45.413408+00:00",
+      "bytes": 343983,
+      "sha256": "95c9674b549fd93640d94bb7d914ea0e5ee251c79533070708e77225686914a7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2023.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2023.receipt.json",
+      "receipt_sha256": "53a993a5ba637a97867b06bc39910b780fe7a456a786358370dd641196f5d51d",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2023",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:46.611544+00:00",
+      "bytes": 284423,
+      "sha256": "853da196bd3489b9bab7cbc0676b7f5e3f81513db57a2f8218ac2cad97bca2a4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2024.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2024.receipt.json",
+      "receipt_sha256": "d9bc85b3b8ebc2bb30db113f7d12fdf6c7be1b7ef537ff463ba9d711d9641dac",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2024",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:47.509416+00:00",
+      "bytes": 284423,
+      "sha256": "3f5791021daad909fe91170772c5087d5a59a3c66357a120afb9f3eaf70454d0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2025.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2025.receipt.json",
+      "receipt_sha256": "a9d9b8c556411da6275363ec5e5bfb322cc57d38f10f713ede6ae5fdb760e54e",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2025",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:48.247813+00:00",
+      "bytes": 345104,
+      "sha256": "310ae7ea7d4110f50c1c2edff484cec363ca67cfcd14464db9fd97d0c8359cdc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2026.body",
+      "receipt_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/TREASURY_2026.receipt.json",
+      "receipt_sha256": "b6b787732fc802b4783b7467809e850bf026e2934cca7ccb42d7bc719f466940",
+      "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2026",
+      "status": 200,
+      "fetched_at": "2026-10-19T16:30:49.350792+00:00",
+      "bytes": 308128,
+      "sha256": "4daa686f9123ce70252853a4f9307d131b1ee41731f16a5a8f793795898ac77b"
+    }
+  ],
+  "treasury_year_coverage": [
+    {
+      "year": 2016,
+      "rows": 250
+    },
+    {
+      "year": 2017,
+      "rows": 250
+    },
+    {
+      "year": 2018,
+      "rows": 249
+    },
+    {
+      "year": 2019,
+      "rows": 250
+    },
+    {
+      "year": 2020,
+      "rows": 251
+    },
+    {
+      "year": 2021,
+      "rows": 251
+    },
+    {
+      "year": 2022,
+      "rows": 249
+    },
+    {
+      "year": 2023,
+      "rows": 250
+    },
+    {
+      "year": 2024,
+      "rows": 250
+    },
+    {
+      "year": 2025,
+      "rows": 249
+    },
+    {
+      "year": 2026,
+      "rows": 199
+    }
+  ],
+  "normalized_receipts": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/normalized_vix.parquet",
+      "sha256": "151c8745bef0a4b05c18f026c440571d2d23c70d07a4e0b0186e1a7a6051115c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/normalized_nasdaq.parquet",
+      "sha256": "b328d9b48502db739b860ff4591d496690e9e68cd0164ac3201c643adc87de77"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/normalized_yields.parquet",
+      "sha256": "3354b50b5d71d301be2c727004d78de8e76de84b688be1eb7bac3fce12b28811"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r29_global_risk/normalized_fx.parquet",
+      "sha256": "8ce9e5164ee7cfb75f1fe3751c7f964a01b7cb8788b6ad22e4789931a04c90e9"
+    }
+  ],
+  "limitation": "Conservative calendar lags, not original-vintage certification; Nasdaq uses Sina redistributed history; FRED downloads timed out."
+}

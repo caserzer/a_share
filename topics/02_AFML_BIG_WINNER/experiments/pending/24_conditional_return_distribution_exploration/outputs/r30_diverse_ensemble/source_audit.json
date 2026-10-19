@@ -1,0 +1,143 @@
+{
+  "technical_source_integrity_passed": true,
+  "source_names": [
+    "B",
+    "catboost",
+    "rf",
+    "extra",
+    "sign",
+    "margin",
+    "global"
+  ],
+  "source_predictions_reconstructed": 579600,
+  "max_crps_mixture_identity_error": 6.661338147750939e-15,
+  "max_recovered_baseline_score_error": 0.0,
+  "baseline_cache_note": "B float64 atoms recovered and original scores matched. Older mixed-source references retain their original float32 B component for provenance checks only.",
+  "baseline_recovery_audit_sha256": "3508b91adf861ece2bac5fcba53cd94ee716764efe95de4b78cd7d0f811148c0",
+  "plan_sha256": "a458c1c635e14b2c887c4340cd0f7a25dad736e71865d59977d30bc696a0ab2f",
+  "input_cache_receipts_sha256": "e67017a8fcf2fb59a099d61b992707b4a1521b8a4a900e4139a6e2deb88c09af",
+  "prediction_receipts": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r15_three_factor_ablation/predictions_1m.parquet",
+      "sha256": "2a00a0442a17e594836e35c666b6885976e4c41cca57792da0b8bf0c82806a5e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r25_historical_peers/predictions_1m.parquet",
+      "sha256": "19447faee50ffb868f14f77dfbf416de7e91f9f4f97b270983c2ed76cd464a6e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r28_conditional_forests/predictions_1m.parquet",
+      "sha256": "d4fa937f4fc338c5b29e74b4dcb4fd5a5122bb0371159f6e938eccb6f5febded"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r28_conditional_forests/predictions_1m.parquet",
+      "sha256": "d4fa937f4fc338c5b29e74b4dcb4fd5a5122bb0371159f6e938eccb6f5febded"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r26_direction_first/predictions_1m.parquet",
+      "sha256": "bf382da7197e1b5401ce94adbedfab03b6757613561260452ab440acb93b8064"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r27_margin_information/predictions_1m.parquet",
+      "sha256": "02b710bbbc2fc79c72efb0009fe9c7ea945105671e440f53ab34a177eebfb279"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r29_global_risk/predictions_1m.parquet",
+      "sha256": "92a7fc337724efb0854ef9b9a1d8e318ec5670321f65a06b9104583284f8ca93"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r15_three_factor_ablation/predictions_3m.parquet",
+      "sha256": "3e97ac1461081851d7afb86314b3a071b24a761d8b5aa904c88a6c7c61ecd5eb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r25_historical_peers/predictions_3m.parquet",
+      "sha256": "4f32ccc463a8c880138f10f9e3cf026df9c03227ef9ede1e8f3d47eed3b9d005"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r28_conditional_forests/predictions_3m.parquet",
+      "sha256": "51414c390f4fa30eac18999aa721fbf733e132e8dcc92aae4381ced0f1fe3ead"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r28_conditional_forests/predictions_3m.parquet",
+      "sha256": "51414c390f4fa30eac18999aa721fbf733e132e8dcc92aae4381ced0f1fe3ead"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r26_direction_first/predictions_3m.parquet",
+      "sha256": "902d882a2f009ec14f29aea23ad39b09b99dbb350d081b3535e22c3a90d1c891"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r27_margin_information/predictions_3m.parquet",
+      "sha256": "ef0c3d55e750d1e56f057bbaff8439c1321eda6f6d26b413ba897a36444a530e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r29_global_risk/predictions_3m.parquet",
+      "sha256": "d85852b17fb4bc43b31a3ad03d8fe680d1687976f633d1a6f25ea08b83339981"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r15_three_factor_ablation/predictions_6m.parquet",
+      "sha256": "cc40f49d465ad5b87b3c9c5b880918e8f69ca68d79a39978a3ba3506e66c60f6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r25_historical_peers/predictions_6m.parquet",
+      "sha256": "d61796070d1a5d7623a6fd7eaac48acf1bd67700e3081ff9ebf1c39a4c7747cf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r28_conditional_forests/predictions_6m.parquet",
+      "sha256": "c90b9c85281b3c86871eef92695a68726962e8c9a81d5e50983fc2344547eec2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r28_conditional_forests/predictions_6m.parquet",
+      "sha256": "c90b9c85281b3c86871eef92695a68726962e8c9a81d5e50983fc2344547eec2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r26_direction_first/predictions_6m.parquet",
+      "sha256": "825b03aa869d2d459dee4971ec0cad71ca4e9e2e3d855c908d87f240e8348c47"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r27_margin_information/predictions_6m.parquet",
+      "sha256": "a78f924fe3c5bd11cd2af6ab716f88621113d7c3ea4154a562477ccade4382eb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r29_global_risk/predictions_6m.parquet",
+      "sha256": "da420583cef4257d1bfd4d34fc1b6285adbf6f0329bbe74e533f1088e6d0408b"
+    }
+  ],
+  "prepared_receipts": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/sources_1m.npz",
+      "sha256": "30d61888e56d16cc89b8e00b46a2c5e00e65e10e218c86c345dd911ff2755084"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/keys_1m.parquet",
+      "sha256": "89489bca0edb325e982764624ef93aae69f1ab0106d2df7a3d90ed53848811f8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/uniform_1m.parquet",
+      "sha256": "8350bd10347ca72364ba147e5a7d8b1847cb05eb1b40a409283ff42cd6c7a2f3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/sources_3m.npz",
+      "sha256": "2ec2eb04089be1cc71690cfe8db4f02f3de2416998b7b24a36fa353d5462d849"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/keys_3m.parquet",
+      "sha256": "91ab53d03a2c1e2ebf2407f936e010f4f369cd2bc6412d4cd22b994eb464186b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/uniform_3m.parquet",
+      "sha256": "88fa06d347cc21f15f13ef942b1d1191fdfd1b7fc9850dc86d9ea9e88cb4b95d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/sources_6m.npz",
+      "sha256": "14cd82fe91292dd33d85a857007792526ced379c3c88ce0fb96309a987fcd6dc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/keys_6m.parquet",
+      "sha256": "fe41b80f41a33b1e01ea95a86159406e3e6562cf6144b390abffcefe6651ad1b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r30_diverse_sources/uniform_6m.parquet",
+      "sha256": "8be181c7f284ce19bd69f68451fe9e00631ed81dcb272f5a2e50ff222cbf59fa"
+    }
+  ]
+}

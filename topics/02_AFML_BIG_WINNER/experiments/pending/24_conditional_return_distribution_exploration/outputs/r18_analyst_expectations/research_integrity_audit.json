@@ -1,0 +1,32 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "candidates_passing_all_point_gates": {
+    "analyst_attention_peers": false,
+    "analyst_full_peers": false,
+    "analyst_target_classes": false,
+    "analyst_target_peers": false
+  },
+  "passed_point_gates": 0,
+  "candidate_count": 4,
+  "source_reports": 133166,
+  "prediction_rows_per_model": 27600,
+  "unchanged_fallback_verified": true,
+  "receipts": [
+    {
+      "path": "outputs/r18_analyst_expectations/predictions_1m.parquet",
+      "sha256": "b89a206acf2215e79f51ef44643ec18fc9bdaf2ca88d0c11f7a086df3e839753"
+    },
+    {
+      "path": "outputs/r18_analyst_expectations/predictions_3m.parquet",
+      "sha256": "68ab450c734300ca4bdbeade34a5ce16930c1ddbc576ac0cd1befe6959b9107e"
+    },
+    {
+      "path": "outputs/r18_analyst_expectations/predictions_6m.parquet",
+      "sha256": "837dad7e0149814a1ee28c17b765bb755bbf3fbe55a614b5e6ba5dc354b74e8f"
+    }
+  ],
+  "feature_sha256": "2311a0f17bda3bf6ec7a9cfa1dd9256bdad04cbfa2db1a00b366cde349c5a239",
+  "evidence": "Repeated retrospective exploration; no independent holdout. Public metadata is not a complete immutable consensus history."
+}

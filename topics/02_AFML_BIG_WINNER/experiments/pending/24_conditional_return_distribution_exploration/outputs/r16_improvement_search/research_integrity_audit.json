@@ -1,0 +1,150 @@
+{
+  "technical_integrity_passed": true,
+  "goal_achieved": false,
+  "goal_status": "active",
+  "candidate_count": 15,
+  "gates_per_candidate": 12,
+  "candidates": [
+    {
+      "model": "market_empirical_pit",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "market_empirical_residual",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "market_momentum_residual",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "market_state_residual",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "prequential_gate",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "prequential_mixture",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "rank_combined_residual",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "rank_technical_residual",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "rank_value_residual",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "richer_peers",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "shallow_classes",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "shallow_classes_shrunk",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "uniform_mixture",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "vol_normalized_global",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "vol_normalized_peers",
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    }
+  ],
+  "passed_point_gates": 0,
+  "total_point_gates": 180,
+  "validation": "Repeated retrospective exploration; no new independent holdout; no multiplicity correction",
+  "source_files": [
+    {
+      "path": "outputs/r16_improvement_search/round1/predictions_1m.parquet",
+      "sha256": "731fca5c7fd85a304a600982c5ced35bf5d916ff77f76ee867c69d7673f3349b",
+      "rows": 138000
+    },
+    {
+      "path": "outputs/r16_improvement_search/round1/predictions_3m.parquet",
+      "sha256": "c20e62fdd5df8f8a1a7e936a0bfe34d7a8d7f3ae77ff76c5d889820448e2e793",
+      "rows": 138000
+    },
+    {
+      "path": "outputs/r16_improvement_search/round1/predictions_6m.parquet",
+      "sha256": "aa85e0fe8429814391c255e86e5c681f9cedc0c02387cdc3048a8988cca10a94",
+      "rows": 138000
+    },
+    {
+      "path": "outputs/r16_improvement_search/market_residual/predictions_1m.parquet",
+      "sha256": "559a2886baf5a8bffe081ff9e41da357c607a71b9ac3febb668777a70654f2f3",
+      "rows": 82800
+    },
+    {
+      "path": "outputs/r16_improvement_search/market_residual/predictions_3m.parquet",
+      "sha256": "9365e5852cdaacb3f3f258c795ab4f929169f6b08371fe912a2203976d09b05e",
+      "rows": 82800
+    },
+    {
+      "path": "outputs/r16_improvement_search/market_residual/predictions_6m.parquet",
+      "sha256": "546232c6235e2d80a462fe67aaa41ae108c9af588da7d916a93626b442ab7a9f",
+      "rows": 82800
+    },
+    {
+      "path": "outputs/r16_improvement_search/prequential/predictions_1m.parquet",
+      "sha256": "ad5c4d79db0cb7e8256b2b9846db47f6d345f909015279585a119325c5a2dbc0",
+      "rows": 110400
+    },
+    {
+      "path": "outputs/r16_improvement_search/prequential/predictions_3m.parquet",
+      "sha256": "56b7f3f5ce4d7e8499d7828af8e2ed03290e400b1604e039c9e80ddf4034d4ff",
+      "rows": 110400
+    },
+    {
+      "path": "outputs/r16_improvement_search/prequential/predictions_6m.parquet",
+      "sha256": "149a625f38fe48b2d3ac3d6099b37c4575bfa822266e461bca3dccfa177dad5e",
+      "rows": 110400
+    },
+    {
+      "path": "outputs/r16_improvement_search/rank_residual/predictions_1m.parquet",
+      "sha256": "be2c06c305f5dcd46d7772c8408ab9b3ec451a5a45e344d138c6b6c1e344cd69",
+      "rows": 82800
+    },
+    {
+      "path": "outputs/r16_improvement_search/rank_residual/predictions_3m.parquet",
+      "sha256": "355b52d322f94dcbcae37f6171f074b039c5d0c541bdd3d297a50afe934c519f",
+      "rows": 82800
+    },
+    {
+      "path": "outputs/r16_improvement_search/rank_residual/predictions_6m.parquet",
+      "sha256": "6224d475c521ea796bd63090922953f2290b3bfbb9664a420eae8ec960046df6",
+      "rows": 82800
+    }
+  ],
+  "baseline_contract_sha256": "ddb2c889e3f156c7f2804be45e256b76a52620c388b85eed30cd631f6265b075"
+}

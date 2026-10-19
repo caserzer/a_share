@@ -1,0 +1,763 @@
+{
+  "feature_sha256": "73311eb181966dc72569ef6c0876e75e584ad95e9d9fbf7a1cb133a7e95db8c5",
+  "original_spec_sha256": "7ecb8d65445a377f2cc703a0b41340758ddefdee5b231ef905c37fe3a37b2278",
+  "reason": "vol63 is annualized in prepare_panel.py:55; replace sqrt(21*h) with sqrt(21*h/252). Only unscaled fits may be reused.",
+  "reusable": [
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-01-29_quantile_control.npz",
+      "sha256": "92be26616bf6e99d1e0c36f07eb49a5bb12ea965ba805992d7c35dcd79168083",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-01-29_keys.parquet",
+      "keys_sha256": "bed0696deb627eb85987ab8369d64b0bc904b96412d041468f5ba49beb2061ba"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-01-29_quantile_paths.npz",
+      "sha256": "a14a6142dbfd593a25e1fcfc406feda661d7d680a1cd48bf8fb91667a7a44f14",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-01-29_keys.parquet",
+      "keys_sha256": "bed0696deb627eb85987ab8369d64b0bc904b96412d041468f5ba49beb2061ba"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-02-26_quantile_control.npz",
+      "sha256": "b9147eaac358fb6bb25c3f95aa58bbacf73bdcf4f619797c4ffd91fbaa91d372",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-02-26_keys.parquet",
+      "keys_sha256": "d98d33a84f6f973562095bccd5e3882eaef5787a5e58a47c5618add65bae039c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-02-26_quantile_paths.npz",
+      "sha256": "aa35deea31693ff32a2de4642e5d95eeb4f77477111b796a8e6129e626838349",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-02-26_keys.parquet",
+      "keys_sha256": "d98d33a84f6f973562095bccd5e3882eaef5787a5e58a47c5618add65bae039c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-03-31_quantile_control.npz",
+      "sha256": "047e8d614751590d23f815f28960fdd4e6912aaa45a6174c7e10df976d33aae0",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-03-31_keys.parquet",
+      "keys_sha256": "14cb0b9b415de12569f1fa89fbcfd7ee18e82d858f7f676978512b9b05b0aeba"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-03-31_quantile_paths.npz",
+      "sha256": "ac79b335dfcb5531cdc01b59759f9cd21a99e4908f0be0f9dc2b3f56c93c7d7b",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-03-31_keys.parquet",
+      "keys_sha256": "14cb0b9b415de12569f1fa89fbcfd7ee18e82d858f7f676978512b9b05b0aeba"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-04-30_quantile_control.npz",
+      "sha256": "db6c85632a3dcc8213134fe559d8b8d4fca306b16df60b66cd17e56975effeca",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-04-30_keys.parquet",
+      "keys_sha256": "cb9c52f538baca69fdee2baddcc573ed2b69a7ee0f3ceabb63808fa3d942fea8"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-04-30_quantile_paths.npz",
+      "sha256": "84c8e130d4f243fb1e26a973770904bc63afe9818b3fd4e35e1a7da6ad32752b",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-04-30_keys.parquet",
+      "keys_sha256": "cb9c52f538baca69fdee2baddcc573ed2b69a7ee0f3ceabb63808fa3d942fea8"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-05-31_quantile_control.npz",
+      "sha256": "dbd302c4f7ef3551fa34630534e6f03c621c87b49561b9bef5eeaa4c6d33a1a2",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-05-31_keys.parquet",
+      "keys_sha256": "41b881d1821cb6cc27cb23fa89cdbe2d7ec850b80fc91eb5b1afe1844a5b295d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-05-31_quantile_paths.npz",
+      "sha256": "82f2457214568d9e80f3de9f03b158d131198babc928987ef400120ae63b3f7a",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-05-31_keys.parquet",
+      "keys_sha256": "41b881d1821cb6cc27cb23fa89cdbe2d7ec850b80fc91eb5b1afe1844a5b295d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-06-30_quantile_control.npz",
+      "sha256": "59f5f22634b341067963e5706857367260a7ca69bfcf4a551ea2542748cebb89",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-06-30_keys.parquet",
+      "keys_sha256": "b48c9280765f0866c9663385dd266cfceed37c35da3f1c6d0a0db546c3ff9088"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-06-30_quantile_paths.npz",
+      "sha256": "56e32d64360437beec01dd585f2d64a4dd2faf45191794c8cd591fbd2e415f65",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-06-30_keys.parquet",
+      "keys_sha256": "b48c9280765f0866c9663385dd266cfceed37c35da3f1c6d0a0db546c3ff9088"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-07-30_quantile_control.npz",
+      "sha256": "be23feb0f45c936f9e2ac38bc72a06bc837e8235251bf31aa9ddaef3135657f0",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-07-30_keys.parquet",
+      "keys_sha256": "e5c3de76d660243c3e6cbe2773669b708ea0517959c9f83466018fe8c1efdd5d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-07-30_quantile_paths.npz",
+      "sha256": "5dd525ea469a9dd55568f3a552082ea6f219055cd6f0dcf6934777d760c82b8b",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-07-30_keys.parquet",
+      "keys_sha256": "e5c3de76d660243c3e6cbe2773669b708ea0517959c9f83466018fe8c1efdd5d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-08-31_quantile_control.npz",
+      "sha256": "9ae46ac4cbc30cdff1b556de4b3ea8faf9c831b972ae780a562607feaecc667a",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-08-31_keys.parquet",
+      "keys_sha256": "fd8fe5b38a185757f9534c13abe211ce6e9b55bbbe9860a6ac0f9de6d72ca69d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-08-31_quantile_paths.npz",
+      "sha256": "68952abba7c6ee64fd357d625bd6a8f2c2197aae4f0a9f7c003f4bbf34cfebae",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-08-31_keys.parquet",
+      "keys_sha256": "fd8fe5b38a185757f9534c13abe211ce6e9b55bbbe9860a6ac0f9de6d72ca69d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-09-30_quantile_control.npz",
+      "sha256": "30ec1aa433de93aa7e8f3934150c7e2b73f58d893beba0fee2daefc55df3c946",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-09-30_keys.parquet",
+      "keys_sha256": "2134c08eb4868d20b6ef3721ca380226cf9a22ffb8a5007dcf34d1e038cb0af3"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-09-30_quantile_paths.npz",
+      "sha256": "54317bed974b451f8d565979087f3c7a1a34836a9872c3213e9ec2b20c0d946c",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-09-30_keys.parquet",
+      "keys_sha256": "2134c08eb4868d20b6ef3721ca380226cf9a22ffb8a5007dcf34d1e038cb0af3"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-10-29_quantile_control.npz",
+      "sha256": "9c56917eec2c8d5d718e92a9ddd60369c30a708b49a7ee93e8879a2a2037169d",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-10-29_keys.parquet",
+      "keys_sha256": "09416ab0dc38349b611a9424195938176e39b72969faa00b5dc97eed94c6668c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-10-29_quantile_paths.npz",
+      "sha256": "b70a78b5e463ea715b22f1327fc3301519ddda0d6ecb188d83aff61da8e4c424",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-10-29_keys.parquet",
+      "keys_sha256": "09416ab0dc38349b611a9424195938176e39b72969faa00b5dc97eed94c6668c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-11-30_quantile_control.npz",
+      "sha256": "862db93b2c5743a74fc053149634f35996b35394b6235c63187206f16937fc8a",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-11-30_keys.parquet",
+      "keys_sha256": "5ef36e11d97fad1e9741710a94fae8e550e37b948301d8595172f2226080a848"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-11-30_quantile_paths.npz",
+      "sha256": "fcb34498b6ade73c9cc2e21508c10f5e37f144c25bb524e10576a8d46234c9ad",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-11-30_keys.parquet",
+      "keys_sha256": "5ef36e11d97fad1e9741710a94fae8e550e37b948301d8595172f2226080a848"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-12-31_quantile_control.npz",
+      "sha256": "2ae05ef2206662aa9a377867c65f122f81d8eff4cd8ca8bd3298a6a9fdd77a73",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-12-31_keys.parquet",
+      "keys_sha256": "a963cf8adf6d140bf4b64f994d2153d1529b055018e97746426a8e24c0178b7c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-12-31_quantile_paths.npz",
+      "sha256": "4f2d9b2b531cfe3b3d159c7684faef6a059b0431cf02f8cff0965c2abd9fcb60",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-12-31_keys.parquet",
+      "keys_sha256": "a963cf8adf6d140bf4b64f994d2153d1529b055018e97746426a8e24c0178b7c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-01-28_quantile_control.npz",
+      "sha256": "47fd8c821734ee2f902a746fb504c4d13c504fd44f453947627ad405a0609340",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-01-28_keys.parquet",
+      "keys_sha256": "ea325baf42adb0da424180f78ee367ebe255de703b62f5f1bd7b66ce7e3b2a0f"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-01-28_quantile_paths.npz",
+      "sha256": "0170fb83ea6a1a23610d1c080bd720078c0b950c6392215419efb9a212dc7711",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-01-28_keys.parquet",
+      "keys_sha256": "ea325baf42adb0da424180f78ee367ebe255de703b62f5f1bd7b66ce7e3b2a0f"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-02-28_quantile_control.npz",
+      "sha256": "cf005af144ae52b277516eddc90e157e3f0ea1df268ff4028a5b4118730a5517",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-02-28_keys.parquet",
+      "keys_sha256": "ae29a94ff7df916021ede1bd3973f02c327916993d9678c0b04ba39cc81f7e0c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-02-28_quantile_paths.npz",
+      "sha256": "308c19fcac7266bc39969e3920ba1c525bfa3c4de3ede1e75317731c22d0b24e",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-02-28_keys.parquet",
+      "keys_sha256": "ae29a94ff7df916021ede1bd3973f02c327916993d9678c0b04ba39cc81f7e0c"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-03-31_quantile_control.npz",
+      "sha256": "924f59e8909116f3d4d504c93f6d7668928ef300d09aee3f391ce2ca6a398c11",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-03-31_keys.parquet",
+      "keys_sha256": "2a517288e5fc748ff8b36aa3090015bd7c5ffea1fca605fae32a6be65f6f1066"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-03-31_quantile_paths.npz",
+      "sha256": "f28deefa797045c0bec05ce4d27e5a3e0af9abb9e610b63304a14bdcc1d3687b",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-03-31_keys.parquet",
+      "keys_sha256": "2a517288e5fc748ff8b36aa3090015bd7c5ffea1fca605fae32a6be65f6f1066"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-04-29_quantile_control.npz",
+      "sha256": "5ae65edb3faa4e067fd71be2f155d7563f6e88bba17bc85e8aa2865e476fb39d",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-04-29_keys.parquet",
+      "keys_sha256": "78279fbae192a829516ab739053754c58e285afac0e374521f0d21f9bf4a7b8b"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-04-29_quantile_paths.npz",
+      "sha256": "4839ebd9bc1f7a7543635a4f5384593e80470966dd7abfd1a2d3d827f0b8301e",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-04-29_keys.parquet",
+      "keys_sha256": "78279fbae192a829516ab739053754c58e285afac0e374521f0d21f9bf4a7b8b"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-05-31_quantile_control.npz",
+      "sha256": "d9449986d239230d4d579de4d13ab21eb62aa6be89ab4f1999a843b3568ec293",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-05-31_keys.parquet",
+      "keys_sha256": "9ab2d3afd6f8a19a43d4721a98e59c6f2960b76cdab28364266d55e75717b91a"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-05-31_quantile_paths.npz",
+      "sha256": "12a9385f99260c76e96cadbe4e5ab9c7366e627517b9579769152af6569979fa",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-05-31_keys.parquet",
+      "keys_sha256": "9ab2d3afd6f8a19a43d4721a98e59c6f2960b76cdab28364266d55e75717b91a"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-06-30_quantile_control.npz",
+      "sha256": "fc5e4ca9bac3fe7977b472821f72a660b9f72ae8d0c2733264a5ac3463647bf8",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-06-30_keys.parquet",
+      "keys_sha256": "ff91eb9e6ecf86070003f00a566d2281af92c5e44127d61c012017ea028e76b6"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-06-30_quantile_paths.npz",
+      "sha256": "2407071b56751b409db244ab54731c2b0a1a7a63c5e39d4a420f6c19333c44d1",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-06-30_keys.parquet",
+      "keys_sha256": "ff91eb9e6ecf86070003f00a566d2281af92c5e44127d61c012017ea028e76b6"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-07-29_quantile_control.npz",
+      "sha256": "5018499c770c2261d1311866af4a0fb91f25b61108777f9ab2b8ace21b5e78ec",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-07-29_keys.parquet",
+      "keys_sha256": "8ffac8c17cbf6935c5ffee6e88df0900ed307ab06f9225139289e75253a57e1d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-07-29_quantile_paths.npz",
+      "sha256": "d47249afbaad6b8c1fe24e51260f73414ac9422aa3fdc6c812c5a51410f2ef59",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-07-29_keys.parquet",
+      "keys_sha256": "8ffac8c17cbf6935c5ffee6e88df0900ed307ab06f9225139289e75253a57e1d"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-08-31_quantile_control.npz",
+      "sha256": "0302c7577878f92849d26f92484a1fad96251842fbfa93da5d560ace226b357f",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-08-31_keys.parquet",
+      "keys_sha256": "cb86c97aa71c82f86aa4ff94762552812eadd81adfacb6b5858b1014d4db1ca0"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-08-31_quantile_paths.npz",
+      "sha256": "c55b4cd5e00e0c0f6323b71bfad893d5e963d84e2f19c77fb34700fa08843999",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-08-31_keys.parquet",
+      "keys_sha256": "cb86c97aa71c82f86aa4ff94762552812eadd81adfacb6b5858b1014d4db1ca0"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-09-30_quantile_control.npz",
+      "sha256": "a7d029e3e64ab9335c3d6182a5667079193a8c5d4787ab6583d5baa2db87d78e",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-09-30_keys.parquet",
+      "keys_sha256": "3ba6bb413c0c22b3b9b09ed236229015966a6858d1cfae85ab81b0d46c04e76b"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-09-30_quantile_paths.npz",
+      "sha256": "956846ff45fee7c5a1a0d7269a6bf5c4dda02aba27f5e6dec4b572fad8536ac3",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-09-30_keys.parquet",
+      "keys_sha256": "3ba6bb413c0c22b3b9b09ed236229015966a6858d1cfae85ab81b0d46c04e76b"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-10-31_quantile_control.npz",
+      "sha256": "a56ee5682913dc3f5082ab647c0100b7b0ea2f85c2b1a1ea026b8f3a82c8fdd9",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-10-31_keys.parquet",
+      "keys_sha256": "3ab51ecf6dcf2b8a35960d660f7a2983eecde2d7107290916af6a251d348913e"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-10-31_quantile_paths.npz",
+      "sha256": "5d0337750cffd3a15118dced1d9badbd1231bdaae2821a4c4dea3d544fbef076",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-10-31_keys.parquet",
+      "keys_sha256": "3ab51ecf6dcf2b8a35960d660f7a2983eecde2d7107290916af6a251d348913e"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-11-30_quantile_control.npz",
+      "sha256": "6569accfab8416524966abad55c7db39b83809f75e13c5a3acf6151001a86f27",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-11-30_keys.parquet",
+      "keys_sha256": "631ef7081c47231a8bcd41ee3ac46c508ff6f495e4e9a47587c01657fdc34fae"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-11-30_quantile_paths.npz",
+      "sha256": "1fde172fd1353b43dffd45edf1597d65fef9dac4dba79b3d2fcd5d9575bc9e0f",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-11-30_keys.parquet",
+      "keys_sha256": "631ef7081c47231a8bcd41ee3ac46c508ff6f495e4e9a47587c01657fdc34fae"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-12-30_quantile_control.npz",
+      "sha256": "738780778ceb76964dc48af1bd1a2f0ccf467188a3f668a01a0d70b57942ef0e",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-12-30_keys.parquet",
+      "keys_sha256": "c55e749bda3fad993166693baa4324c1772482a04e1ba26f200729e650a3d1d1"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-12-30_quantile_paths.npz",
+      "sha256": "76870228aeb6ba169e44b15c86d89e11f5fadb7fdc83959dec20d1b79ab371b3",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-12-30_keys.parquet",
+      "keys_sha256": "c55e749bda3fad993166693baa4324c1772482a04e1ba26f200729e650a3d1d1"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-01-31_quantile_control.npz",
+      "sha256": "6ebefc26b908ed9baaf6fc2009a84f0a82e6c792cd46e5243150388e556a409c",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-01-31_keys.parquet",
+      "keys_sha256": "9b04e77216d3354cd20f95b428038f2da3e2bf6c7975bf9e7ac46c4f50a8a188"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-01-31_quantile_paths.npz",
+      "sha256": "382c81af08ecef786fff35764bfdf5a59895e36cb1b745d63a01cea68702730c",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-01-31_keys.parquet",
+      "keys_sha256": "9b04e77216d3354cd20f95b428038f2da3e2bf6c7975bf9e7ac46c4f50a8a188"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-02-28_quantile_control.npz",
+      "sha256": "6063f81b516ec52f8608d99d3c1fd1aad3934ff11b7a72e42ac0a10c510329da",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-02-28_keys.parquet",
+      "keys_sha256": "ea2957db31bf9b0152feddda918e2df7d1b80ad17430322c940f83ea691ad1f5"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-02-28_quantile_paths.npz",
+      "sha256": "19dfc0c9a7416111e236a4bb7f62c43a9f79938532016b670639025af54becc4",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-02-28_keys.parquet",
+      "keys_sha256": "ea2957db31bf9b0152feddda918e2df7d1b80ad17430322c940f83ea691ad1f5"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-03-31_quantile_control.npz",
+      "sha256": "bcef986298ba66089b6a8d3840eb81f12b2ce62dad403fbf539a2d3764841814",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-03-31_keys.parquet",
+      "keys_sha256": "8ca1c3045e0bbaae2c0ea8e708d6021db9dc10f3e895a1c40fa6ccbef02ee300"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-03-31_quantile_paths.npz",
+      "sha256": "27dc1e9a8936364a928c6aa131ebf18818c2abd9e3d9a97b2b076f5a449a4a3b",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-03-31_keys.parquet",
+      "keys_sha256": "8ca1c3045e0bbaae2c0ea8e708d6021db9dc10f3e895a1c40fa6ccbef02ee300"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-04-28_quantile_control.npz",
+      "sha256": "a24fb541ed176e50022ad873421ac961c9ad74309ff39fbd8b318900a8ac1d4a",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-04-28_keys.parquet",
+      "keys_sha256": "164a3ff82f43b4072c5715ae4ccc12aee476b895d855af61d666d49ba7935b63"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-04-28_quantile_paths.npz",
+      "sha256": "e2979c21fbe8e11a8ffaa1828177cc340f1c3723404f849936b539a80670840a",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-04-28_keys.parquet",
+      "keys_sha256": "164a3ff82f43b4072c5715ae4ccc12aee476b895d855af61d666d49ba7935b63"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-05-31_quantile_control.npz",
+      "sha256": "a80e49ea2844e18e19a5da80885f41cc49d61d0d458e98f69ba1213fb0ff6915",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-05-31_keys.parquet",
+      "keys_sha256": "8b6899c6a6763ea06d3cbf865e1654410a1222c2f4c4479b7834a6d4b6edba76"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-05-31_quantile_paths.npz",
+      "sha256": "c4457f40d6a30a3ec97c2e1ea3e2d1a9a752bbb9cd5091e1df330c4f808a41d3",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-05-31_keys.parquet",
+      "keys_sha256": "8b6899c6a6763ea06d3cbf865e1654410a1222c2f4c4479b7834a6d4b6edba76"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-06-30_quantile_control.npz",
+      "sha256": "c7ba52922412be4b0e8ba56c50c1af9e7b7cc479f35bec321c3aff32af34a8bf",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-06-30_keys.parquet",
+      "keys_sha256": "71e2e0aef57558a1713c6fcd33bf1b1d14dcb08c0b8e36e401972bc2dd612ef3"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-06-30_quantile_paths.npz",
+      "sha256": "2d84d5a4fedb23bb6ac0d1d8a89f7ef935ed743f8d52eef5c3eefa6c7547265c",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-06-30_keys.parquet",
+      "keys_sha256": "71e2e0aef57558a1713c6fcd33bf1b1d14dcb08c0b8e36e401972bc2dd612ef3"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-07-31_quantile_control.npz",
+      "sha256": "e3911c78abe4edc87d4f42c212830194a81ed4e6c9f8a21fcc1d0dc51046e808",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-07-31_keys.parquet",
+      "keys_sha256": "46918a295cfe6746fcadd99325fc7e1236550bedfddcf784d1904243dcc7ddae"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-07-31_quantile_paths.npz",
+      "sha256": "26dbe102815df9c57dc07be9acca8b4610b95331ecd42c580c66893dfcfa0215",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-07-31_keys.parquet",
+      "keys_sha256": "46918a295cfe6746fcadd99325fc7e1236550bedfddcf784d1904243dcc7ddae"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-08-31_quantile_control.npz",
+      "sha256": "cb395fa515b6a4be223d90f605270535ce8f42dfa078dc5b642704720926bbd7",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-08-31_keys.parquet",
+      "keys_sha256": "177ef1ba4501282d671a6eb71eb8e934689c396c47d0a3c3a002d643c07bacd5"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-08-31_quantile_paths.npz",
+      "sha256": "4a90db59de7760484d0b2f2293daa0c3e69d44056f267ad1c66afa90228e47b0",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-08-31_keys.parquet",
+      "keys_sha256": "177ef1ba4501282d671a6eb71eb8e934689c396c47d0a3c3a002d643c07bacd5"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-09-28_quantile_control.npz",
+      "sha256": "56129692241388a0b41825e80602960dd9828ef6cdb402e35bf9ac6b1e20ae66",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-09-28_keys.parquet",
+      "keys_sha256": "28ac56f69e5631a5bb87d8afb22604dcfaa4db1880550f6e8866465e018bca36"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-09-28_quantile_paths.npz",
+      "sha256": "18fb81d20837a3bc623ca9c2aeba42c4f1c3227c809f7037b3e0a97b75991b78",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-09-28_keys.parquet",
+      "keys_sha256": "28ac56f69e5631a5bb87d8afb22604dcfaa4db1880550f6e8866465e018bca36"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-10-31_quantile_control.npz",
+      "sha256": "0e0c28b35243782d782cee64be7331a669d8ceb5ade75b9852391caf414a76e7",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-10-31_keys.parquet",
+      "keys_sha256": "b77bf27a403da047c8a5f781329d310fba446d475e4c4b21167d166335f268b9"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-10-31_quantile_paths.npz",
+      "sha256": "8f67485bad3bf10a33e84ee1df8bd61e1a89abea55a53f39e5dfd53881729990",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-10-31_keys.parquet",
+      "keys_sha256": "b77bf27a403da047c8a5f781329d310fba446d475e4c4b21167d166335f268b9"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-11-30_quantile_control.npz",
+      "sha256": "9fea7e251442343c365365e8cdd104e2166b828da552ad7a6954b2a18c82b74a",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-11-30_keys.parquet",
+      "keys_sha256": "c81ab359c26e2c63f03778e92c65a8e0884b3adeb766c4ed3c8c58334a5f7807"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-11-30_quantile_paths.npz",
+      "sha256": "02715aae3565ab0bc946966cf4faf326224a9b24d67fe9e2e83d6aa9291b01cc",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-11-30_keys.parquet",
+      "keys_sha256": "c81ab359c26e2c63f03778e92c65a8e0884b3adeb766c4ed3c8c58334a5f7807"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-12-29_quantile_control.npz",
+      "sha256": "7141b946b72971ed5abc7d3194a13d28cfc41b51f05d1679e1508c168e9214b4",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-12-29_keys.parquet",
+      "keys_sha256": "41e4a3dc5342a2d6e5dc1bab9868e5cf5674e55a75f5d6adebb24ac4ea1f43db"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-12-29_quantile_paths.npz",
+      "sha256": "64cbbb5c21c3ad3b879ebed392c44d01bab8514738870dde8c26c71a5bda0834",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-12-29_keys.parquet",
+      "keys_sha256": "41e4a3dc5342a2d6e5dc1bab9868e5cf5674e55a75f5d6adebb24ac4ea1f43db"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-01-31_quantile_control.npz",
+      "sha256": "ecf6b3ebfdb55d3be0ad620573b951e3afd9020231ceda376ad2546623fab165",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-01-31_keys.parquet",
+      "keys_sha256": "92bd03be25ac36dd3618cc28aa5650e98a6e10b5618f82bac5c35d71ca5c62ef"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-01-31_quantile_paths.npz",
+      "sha256": "9490a5f5777db1ceed668f098c182b4a738c42a838c86f118ea433766f7057e2",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-01-31_keys.parquet",
+      "keys_sha256": "92bd03be25ac36dd3618cc28aa5650e98a6e10b5618f82bac5c35d71ca5c62ef"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-02-29_quantile_control.npz",
+      "sha256": "5857779e68d3fe6223e62eb23b7996d1731993066fe159965d7cf8112ce4ec06",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-02-29_keys.parquet",
+      "keys_sha256": "8311077af40eb2df92d70f2851aaab7fb1f8443d56c5473af0d279aaf2bb4003"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-02-29_quantile_paths.npz",
+      "sha256": "4c60da1bef296bb43c84f946fe6d24630d8508ffd139b6877ca05989b90abab2",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-02-29_keys.parquet",
+      "keys_sha256": "8311077af40eb2df92d70f2851aaab7fb1f8443d56c5473af0d279aaf2bb4003"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-03-29_quantile_control.npz",
+      "sha256": "caa39944b026f3078bff641779c5fa01f66b632c0a9477399ecb5554bc35cfe4",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-03-29_keys.parquet",
+      "keys_sha256": "f6ad836b724657e242b4ea21dc33a7ea5a41d23283647c3ec874341ccb35167f"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-03-29_quantile_paths.npz",
+      "sha256": "19ded39b9aa83a1daaf5d654105284e242a1d639e7d401c9e8c474efbcac7a47",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-03-29_keys.parquet",
+      "keys_sha256": "f6ad836b724657e242b4ea21dc33a7ea5a41d23283647c3ec874341ccb35167f"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-04-30_quantile_control.npz",
+      "sha256": "6ccb58b6133a553baef149aa2cb359ae3b5ca350751bbc387f5ef66292aeda7f",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-04-30_keys.parquet",
+      "keys_sha256": "b7332c9e1d68e838f9e22b045b72d9524a58d5abafb7c1e12254176aaaf94b97"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-04-30_quantile_paths.npz",
+      "sha256": "71740743fa26bcfd2afdcf21be860179834812daf31969f235efc6e72e02878c",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-04-30_keys.parquet",
+      "keys_sha256": "b7332c9e1d68e838f9e22b045b72d9524a58d5abafb7c1e12254176aaaf94b97"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-05-31_quantile_control.npz",
+      "sha256": "fc65df35ad75670622f8e019d2f658bf6be99568f30783c37f61edb7fd2fb9a3",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-05-31_keys.parquet",
+      "keys_sha256": "d4bad846cdb16736507f5f3a08b7d3391de9fe3ec32afc366a91ec720b28afa3"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-05-31_quantile_paths.npz",
+      "sha256": "1b9c9049900d365f30dcdf8b6f4495a9f812c10445f237e2b1058a415ef380a5",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-05-31_keys.parquet",
+      "keys_sha256": "d4bad846cdb16736507f5f3a08b7d3391de9fe3ec32afc366a91ec720b28afa3"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-06-28_quantile_control.npz",
+      "sha256": "250064c571f246b43a3af75291464c6c2c14dd34df648961ab39ef8f82422b3b",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-06-28_keys.parquet",
+      "keys_sha256": "f7c82ee5a2b37b35df415ffd8ce9c310a699ae7f3af9e73666a8c2d7b00f6569"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-06-28_quantile_paths.npz",
+      "sha256": "f52404a208baf113e337be9078f4718bb49d9eb3cecf24f672e6bb799100af81",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-06-28_keys.parquet",
+      "keys_sha256": "f7c82ee5a2b37b35df415ffd8ce9c310a699ae7f3af9e73666a8c2d7b00f6569"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-07-31_quantile_control.npz",
+      "sha256": "b1173bf9a29dc6f366b4a97dd136c80e8cdda461812293c8329d398204d6581b",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-07-31_keys.parquet",
+      "keys_sha256": "e7aee63e27de2857299a4eedb285aed70aef69dc47845d26c0afb454435e1c9b"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-07-31_quantile_paths.npz",
+      "sha256": "e91105a09388f0bbb9ea4d61bad053bb02f8b588324480b871e2ca5206d27345",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-07-31_keys.parquet",
+      "keys_sha256": "e7aee63e27de2857299a4eedb285aed70aef69dc47845d26c0afb454435e1c9b"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-08-30_quantile_control.npz",
+      "sha256": "9e6e76dac9b69c1d819373a2e6078355a30c775745d471727bde771460e8fd92",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-08-30_keys.parquet",
+      "keys_sha256": "8a4b2b7d89de99668846ef41398ba50afaac7d32416f881146f3fd0921cbad01"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-08-30_quantile_paths.npz",
+      "sha256": "a6cff5638dd1f6bd4a2fa7216803db5145603505a2722430399dfa59757e7efc",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-08-30_keys.parquet",
+      "keys_sha256": "8a4b2b7d89de99668846ef41398ba50afaac7d32416f881146f3fd0921cbad01"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-09-30_quantile_control.npz",
+      "sha256": "a525934d3fbc3d6af1ebc2f10c9b61b9cdf1ddbc288631d8a43427cc01d231c1",
+      "keys_path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-09-30_keys.parquet",
+      "keys_sha256": "03897726b1a27443a3471c20a5605e47109d3522ada0348e5836c980799166c6"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-01-29_quantile_scaled.npz",
+      "sha256": "da37d7ebc7dbfbdd8124a481bc58f9855f058ee61e0e5160c375b5ba23bce93b",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-02-26_quantile_scaled.npz",
+      "sha256": "4896ad31e6afded404133865dea4a010bfbf168f02e1bb6bb07780d8e7785938",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-03-31_quantile_scaled.npz",
+      "sha256": "eb0191a66bd6722a3c3df61a13c5803dbc1b19a45c73d1320c0f18ef2091c8b8",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-04-30_quantile_scaled.npz",
+      "sha256": "4ab8f49afd3b2a9bae12d564b3ebe50c2ff168ef84307a585c831b84505e806e",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-05-31_quantile_scaled.npz",
+      "sha256": "2977d384c265f1fa760881c39f0ea476937e7113405a45045f7372e9b16c45a1",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-06-30_quantile_scaled.npz",
+      "sha256": "cf1b7be248980f60af5daa009943ba0fec00e04fb9a154bc8b690d7b0fba4bc3",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-07-30_quantile_scaled.npz",
+      "sha256": "9e0833c58e548408da8abcc1c0e55c9d1fa8c2429df8aa56bbcc3ed4be5ca76c",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-08-31_quantile_scaled.npz",
+      "sha256": "5f8f0760f10f616c200de167e1ad2b10c0d8b98202091a75355059687ee3aff2",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-09-30_quantile_scaled.npz",
+      "sha256": "0089b94d0976f6d393eb21800c1c2a3a1a443c11a3e8f98c043ba133e70a8554",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-10-29_quantile_scaled.npz",
+      "sha256": "a05cff885222f57e58de701eb6333f2bf6e179731817b04b2fa9eb643085d47a",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-11-30_quantile_scaled.npz",
+      "sha256": "4e1b6923fc7e2492f5773f6f1a33ed07501c4b31fb993105a53728a718946afd",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2021-12-31_quantile_scaled.npz",
+      "sha256": "64c7ec52a38c969b71fb9fb504f1d7de04c858d495df148b0816f25d6f34dda5",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-01-28_quantile_scaled.npz",
+      "sha256": "8144bdb594de9c1e718e9fc9b202ce1f55b206216127bee85c90f79d9d80d7a4",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-02-28_quantile_scaled.npz",
+      "sha256": "e64846fea4b6a603bfccf3cae5ef80e38a28beaca7f0a89fe5c059c283782d5f",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-03-31_quantile_scaled.npz",
+      "sha256": "e5eb8625a3a3f81bc00addd22905d0ba120e116bf6ed993d96cd999e828923ad",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-04-29_quantile_scaled.npz",
+      "sha256": "c80dbf4a750c4eb100b9c71cc9e2b5d2e1e111bc5f557577d9df30ac62cf3b54",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-05-31_quantile_scaled.npz",
+      "sha256": "4afc29e8934cea6f20ce39f1ad70bef4f91b901cb56ab786a538d7b8afba8134",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-06-30_quantile_scaled.npz",
+      "sha256": "91cc8c780d675dab086ec2bb3b9e7b92da4fbf5e6c726aa1313f8ec8727415d2",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-07-29_quantile_scaled.npz",
+      "sha256": "5cf75d2eb2dd9d1d6f9c9bb295e03048cabf36b37a0241dbcf9af1a7e29d7f77",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-08-31_quantile_scaled.npz",
+      "sha256": "2663eda45302d35dc74c7bc4217202aa736b76ef3fd1a07c7f9aa2c21f9e5cb5",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-09-30_quantile_scaled.npz",
+      "sha256": "9129c93c54fe494b7bf2ec89b3f7745c7345672a9affe187b600ae31ef50c7f2",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-10-31_quantile_scaled.npz",
+      "sha256": "30528b21343000a6ed071d2c5c2c096e3a144761c82315d8dd3f86b969563d66",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-11-30_quantile_scaled.npz",
+      "sha256": "0513da6a68ed940668ab01b493db0ba4f7ca000a9b4a5a0b135d3019373f6369",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2022-12-30_quantile_scaled.npz",
+      "sha256": "edc40f8ba96c1d3859c8ba391763e42ee44a57e4daa5d3d79e047425a6adff50",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-01-31_quantile_scaled.npz",
+      "sha256": "ef2c7b1341e53e146aec97e84db5e34ec0ab4ba39eb455edf1beadd6c547760c",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-02-28_quantile_scaled.npz",
+      "sha256": "4912c2be09f215e9b12bfdacb77989bed7e8d58cc8860a49398ee62c21fabdd5",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-03-31_quantile_scaled.npz",
+      "sha256": "fd0cf2e3a07ad462b7252553d2455c3e8372b7534234fd29397135c93031ab5b",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-04-28_quantile_scaled.npz",
+      "sha256": "175f1baebf0149a341d5afdf54c5a5f4d1b7dfa6b310cb4d104cefb017169981",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-05-31_quantile_scaled.npz",
+      "sha256": "c31260599cb5cfaddb647df143be16df0e862a1d47501a9d3f8b8129feeb86c1",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-06-30_quantile_scaled.npz",
+      "sha256": "95d35953b276bdf496366c89c8b95c6f6604771c77edf1453adbdbd84ccdf115",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-07-31_quantile_scaled.npz",
+      "sha256": "b585897ab1038837aff183ee50306084cef799c083faf0bbaf46f2696fa13130",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-08-31_quantile_scaled.npz",
+      "sha256": "4f57cdafa886e492706b605dca0c1a857c89505545d7f68fe7ca5fd5f1db6689",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-09-28_quantile_scaled.npz",
+      "sha256": "b26d6b6ca716f3952e0409a2679c6480f5a9f646bd0cc37f640aeb61f9d75c22",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-10-31_quantile_scaled.npz",
+      "sha256": "eaea12816227c82b54f207e657df7734867300020e3c8f063118d5dba82d95e9",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-11-30_quantile_scaled.npz",
+      "sha256": "c61fcf1322aadf1620f1761eea24ce3c97c2a79e856514e4bce4826b9e6aa0dc",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2023-12-29_quantile_scaled.npz",
+      "sha256": "923e9ac426aba2d35fcd5446b0afcc157cc0b6236e364754f56ee9aa5b65e668",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-01-31_quantile_scaled.npz",
+      "sha256": "884eb4aba71e9c7fc21b398ee2e5ab726742df9a01d3424beb97f6b295ccbebb",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-02-29_quantile_scaled.npz",
+      "sha256": "2b13bcd65287578714c91b7dea465197f29640d5ae9388a628ae51d8a21e1f24",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-03-29_quantile_scaled.npz",
+      "sha256": "d38fe3437bc770b26797fdb7751e8761113b78b5fd4fcc7a6cf1bf9d7835968d",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-04-30_quantile_scaled.npz",
+      "sha256": "34be8cb48e06003d8f27ece811b75d61ec59c8eb313fa8b57e7ee5852db54dea",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-05-31_quantile_scaled.npz",
+      "sha256": "2d7314bac88fcee104696cf215b80ecac7024be327c82ac72cba2ed01938cacf",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-06-28_quantile_scaled.npz",
+      "sha256": "499a9a7141c6c8cd72d77ae1f7b4d6fbc579cd98fc6ccf139791efccd14b1a05",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-07-31_quantile_scaled.npz",
+      "sha256": "09a807446592973633355471b72156c2774c4be13c8887532744c7074f91b107",
+      "reason": "incorrect annual-to-horizon scale"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r24_quantile_distributions/1_2024-08-30_quantile_scaled.npz",
+      "sha256": "44de10ae5ba27b1189da855f54e59bf9b9a52a5729863ab8556ef2fe7db488d2",
+      "reason": "incorrect annual-to-horizon scale"
+    }
+  ]
+}

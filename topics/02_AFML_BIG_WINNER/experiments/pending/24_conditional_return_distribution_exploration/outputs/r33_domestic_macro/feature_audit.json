@@ -1,0 +1,55 @@
+{
+  "technical_feature_integrity_passed": true,
+  "feature_sha256": "30286ca381b9270009d43c077aa257c1a438915ab6fdeeb210e5071d8ce75fc8",
+  "source_sha256": "9ff9d8e137cae65d03781bbd5c1f1806f9613ef212c08939adbb4383f8db366a",
+  "monthly_sha256": "322fe2836ed784db477b67d5342853f0aad6380efb243259decb545837645f11",
+  "plan_sha256": "5e803406fc9dad8ac9c575fb3c702a9aeda51a474f5e4ffe0ced8c5a68ce653b",
+  "source_manifest_sha256": "9cd3c54cf91aa7e5e09febc68d91fbbc672654c972dfbfa0a866305c1e7c5ceb",
+  "crosschecks_sha256": "668664915253f6c34d4a275999dce81e0bb80b188973f619844b249158648fb7",
+  "rows": 37018,
+  "origin_months": 88,
+  "evaluation_rows": 27600,
+  "all_features_coverage": 1.0,
+  "min_observation_age": 54,
+  "max_observation_age": 62,
+  "prefix_checks": [
+    "2019-01-31",
+    "2021-01-29",
+    "2024-01-31",
+    "2026-04-30"
+  ],
+  "source_coverage": [
+    {
+      "series": "RPT_ECONOMY_PMI",
+      "first": "2008-01",
+      "last": "2026-09",
+      "months": 225
+    },
+    {
+      "series": "RPT_ECONOMY_CURRENCY_SUPPLY",
+      "first": "2008-01",
+      "last": "2026-09",
+      "months": 225
+    },
+    {
+      "series": "RPT_ECONOMY_CPI",
+      "first": "2008-01",
+      "last": "2026-09",
+      "months": 225
+    },
+    {
+      "series": "RPT_ECONOMY_PPI",
+      "first": "2006-01",
+      "last": "2026-09",
+      "months": 249
+    },
+    {
+      "series": "tsf",
+      "first": "2015-01",
+      "last": "2026-04",
+      "months": 136
+    }
+  ],
+  "lag_days": 45,
+  "limitation": "45-day availability is conservative assumption, not individually verified release dates; current historical series may contain revisions and TSF scope changes."
+}

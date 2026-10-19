@@ -1,0 +1,84 @@
+{
+  "known_original_revision_pdfs": 4,
+  "all_four_byte_identical": true,
+  "pdf_comparison": [
+    {
+      "ann_id": 1223301948,
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-04-25/46ba70c7-eacb-45b3-a888-7b2a3ef8183f.PDF",
+      "sha256": "0a001d132a0781f9b2780cf4ed53148b5a4dfcbef18befe65f0764e411815710",
+      "cninfo_sha256": "0a001d132a0781f9b2780cf4ed53148b5a4dfcbef18befe65f0764e411815710",
+      "byte_identical": true
+    },
+    {
+      "ann_id": 1223191491,
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-04-21/17a0e047-0ccf-4fb5-80a3-a7a839571c0e.PDF",
+      "sha256": "2e3fbb21cdc264ff1b7018924d2a659ac7ef2fc490701625e4b2f4d991a6bf36",
+      "cninfo_sha256": "2e3fbb21cdc264ff1b7018924d2a659ac7ef2fc490701625e4b2f4d991a6bf36",
+      "byte_identical": true
+    },
+    {
+      "ann_id": 1222431147,
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-01-24/5691c8e2-e113-4227-acef-a0525998ba42.PDF",
+      "sha256": "b777250c8a1871c31d818960c373e387adf5e3e3b1e88af42c51d4ec6658fa10",
+      "cninfo_sha256": "b777250c8a1871c31d818960c373e387adf5e3e3b1e88af42c51d4ec6658fa10",
+      "byte_identical": true
+    },
+    {
+      "ann_id": 1222379842,
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-01-21/a6a28b08-b7dd-4a25-94d2-1f400cb15123.PDF",
+      "sha256": "59aaa0a8a8c242e981e5edfe7cfcb42c77cbd48717123d3767b39a81d8f4a1b6",
+      "cninfo_sha256": "59aaa0a8a8c242e981e5edfe7cfcb42c77cbd48717123d3767b39a81d8f4a1b6",
+      "byte_identical": true
+    }
+  ],
+  "source_pages": [
+    "https://www.szse.cn/disclosure/listed/notice/index.html",
+    "https://www.sse.com.cn/disclosure/listedinfo/announcement/"
+  ],
+  "source_files": [
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/szse_notice.html",
+      "sha256": "daa3e4920de1cc56773ee423ecfe607c45f226b6a6e1ed0fa65e538ac12c38c0"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/version.js",
+      "sha256": "c50cd25200a62e43d49137bcf0728134cb465d535fd424329eb4417574dd5eee"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/listedAnnoun.min.js",
+      "sha256": "0b94827a8966061f50e13f18508c9fdfa2f75f330728cc6963481508e822dfde"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/concatDisc.min.js",
+      "sha256": "ce05ae62d52c152789f713ed9767f5a9165e4c753e4e3f68ab81b5903cb59c8e"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/search_query.json",
+      "sha256": "47b6b174fc5538620b29b1c5bf663d59d5a96b366c26cdb10e0f934b9bffdc21"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/known_guidance_cases.json",
+      "sha256": "6f34b197dfc92027cf4bb0126e22d808bceab263aac985468e45490b38002f15"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/sse_page.html",
+      "sha256": "90e945840e0e0cd71ef7f3b0df0faa2aad0be22d0a7dcab5a5697631b95a4fbd"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/sse_search.js",
+      "sha256": "e2685c1e237664ca9b4e792d2c5d95c59e2914deb51e0acd9c1c8b54c94e4227"
+    },
+    {
+      "path": "experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r37_exchange_probe/sse_announcement_types.json",
+      "sha256": "7556383dad8f563395076a39fe6541e5469218ca254b44c10fb19b3a58c70c43"
+    }
+  ],
+  "findings": [
+    "SZ independent announcement IDs agree with all four original/amended CNINFO PDFs.",
+    "SH all-security queries need <=3-month windows; an overlong probe returned a misleading empty result.",
+    "SH pageNo alone repeats page one; beginPage/endPage must also advance.",
+    "SH category 11 returned zero in 2017 Q1 while keyword search found legacy announcements marked category Other; category is not used for full history.",
+    "SH title prefix 业绩预 covers 业绩预告, 业绩预增, 业绩预减 and 业绩预亏; other titles or embedded forecasts remain outside scope."
+  ],
+  "model_status": "Not used in any forecast model; 123 completed candidates remain unchanged."
+}

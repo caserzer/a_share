@@ -1,0 +1,49 @@
+{
+  "probe_only_loan_fields_excluded": true,
+  "source_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r33_domestic_macro/RPT_ECONOMY_RMB_LOAN.json",
+  "source_sha256": "5c3f42c725e482659914f97479f3dec0e51ed0a90c555d4ebe330356c5b6e2fe",
+  "overlap_months": 136,
+  "equal_within_one_yuan100m_rounding": 135,
+  "mismatched_months": {
+    "2022-06": {
+      "vendor_loan": 30540.0,
+      "tsf_entity_loan": 61759.0,
+      "difference": -31219.0
+    }
+  },
+  "annual_tsf_crosschecks": [
+    {
+      "year": 2022,
+      "field": "tsf",
+      "value": 320099.0,
+      "official": 320100,
+      "tolerance": 50,
+      "official_url": "https://www.ndrc.gov.cn/fggz/fgzh/gnjjjc/hbjr/202301/t20230130_1347689.html"
+    },
+    {
+      "year": 2023,
+      "field": "tsf",
+      "value": 355874.0,
+      "official": 355900,
+      "tolerance": 50,
+      "official_url": "https://www.china-cba.net/Index/show/catid/33/id/42988.html"
+    },
+    {
+      "year": 2024,
+      "field": "tsf",
+      "value": 322558.0,
+      "official": 322600,
+      "tolerance": 50,
+      "official_url": "https://jrj.sh.gov.cn/SCGK194/20250115/0e2b8ef740064ad6ad14b0a2e609c2f5.html"
+    },
+    {
+      "year": 2025,
+      "field": "tsf",
+      "value": 356033.0,
+      "official": 356000,
+      "tolerance": 50,
+      "official_url": "https://www.stats.gov.cn/zt_18555/zthd/lhfw/2026lhzt/2026hgjj/202602/t20260228_1962667.html"
+    }
+  ],
+  "interpretation": "135/136 overlapping loan observations agree within integer-CNY100m rounding. 2022-06 is inconsistent; neither loan field is used. Annual total TSF checks do not certify all monthly vintages."
+}

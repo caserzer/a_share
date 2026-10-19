@@ -1,0 +1,24 @@
+{
+  "source_reports": 14571,
+  "source_statuses": {
+    "parsed": 5393,
+    "profit_only": 3575,
+    "empty_original_body": 2851,
+    "no_explicit_earnings": 2734,
+    "conflicting_forecasts": 16,
+    "source_inconsistent_forecast": 2
+  },
+  "prediction_rows": 27600,
+  "eps_available": 10259,
+  "eps_positive": 10246,
+  "earnings_available": 16922,
+  "earnings_positive": 16907,
+  "forecast_age_days": {
+    "0.1": 2.0,
+    "0.5": 32.0,
+    "0.9": 112.0
+  },
+  "fiscal_year_rule": "use explicit decision-calendar-year and following-year forecasts; not a rolling-12m consensus EPS",
+  "profit_proxy": "if EPS pair absent, ordinary attributed net-profit growth is a separate constant-share proxy; never relabeled EPS",
+  "missing": "empty original, ambiguous parsing, unavailable years and future publication remain missing; never zero-filled"
+}

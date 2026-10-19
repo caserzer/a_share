@@ -1,0 +1,68 @@
+{
+  "coverage": [
+    {
+      "months": 1,
+      "models": 7,
+      "stock_dates": 27600,
+      "observed": 27138
+    },
+    {
+      "months": 3,
+      "models": 7,
+      "stock_dates": 27600,
+      "observed": 26703
+    },
+    {
+      "months": 6,
+      "models": 7,
+      "stock_dates": 27600,
+      "observed": 25413
+    }
+  ],
+  "candidate_results": [
+    {
+      "model": "market_decay24",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "market_decay24_unmixed",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "market_month_balanced",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "market_rows",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "market_window36",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "r20_full_revision_reference",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    },
+    {
+      "model": "window36_without_market",
+      "all_horizons_present": true,
+      "all_point_targets_met": false,
+      "all_confidence_targets_met": false
+    }
+  ],
+  "goal_achieved": false,
+  "note": "A round is not the goal. Require all 12 gates, integrity audit and validation review before claiming achievement."
+}

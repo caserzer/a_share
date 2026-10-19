@@ -1,0 +1,44 @@
+{
+  "groups": {
+    "eps_historical_control": [
+      "eps_positive",
+      "historical_log_growth",
+      "forward_log_anchor12"
+    ],
+    "eps_forecast_capped": [
+      "eps_positive",
+      "eps_capped_log_growth",
+      "eps_capped_anchor"
+    ],
+    "eps_forecast_raw": [
+      "eps_positive",
+      "eps_log_growth",
+      "eps_raw_anchor"
+    ],
+    "earnings_forecast_raw": [
+      "earnings_positive",
+      "earnings_log_growth",
+      "earnings_raw_anchor"
+    ]
+  },
+  "class_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit"
+  ],
+  "baseline": "unchanged frozen R15 B, same 27600 stock-date predictions per horizon",
+  "earnings_source": "latest known original report, explicit fiscal-year forecast pairs",
+  "eps_comparison": "first three variants use identical EPS-positive train/query rows; only growth/anchor inputs differ",
+  "raw_growth": "no fixed 30 percent cap; peer inputs use training-only median/IQR and clip to 5 IQR units",
+  "fallback": "exact B where no features or training rows <1000",
+  "prior_weight": 0.5,
+  "evidence": "repeated retrospective exploration; not an independent holdout"
+}

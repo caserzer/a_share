@@ -1,0 +1,189 @@
+{
+  "models": {
+    "catboost_activity": [
+      "catboost",
+      [
+        "macro_pmi",
+        "macro_pmi_change3",
+        "macro_nonmanufacturing",
+        "macro_nonmanufacturing_change3",
+        "macro_cpi",
+        "macro_cpi_change3",
+        "macro_ppi",
+        "macro_ppi_change3",
+        "macro_ppi_cpi_gap"
+      ]
+    ],
+    "catboost_credit": [
+      "catboost",
+      [
+        "macro_m2_yoy",
+        "macro_m2_change3",
+        "macro_tsf_to_m2",
+        "macro_tsf_to_m2_change3",
+        "macro_tsf_ttm_growth"
+      ]
+    ],
+    "catboost_both": [
+      "catboost",
+      [
+        "macro_pmi",
+        "macro_pmi_change3",
+        "macro_nonmanufacturing",
+        "macro_nonmanufacturing_change3",
+        "macro_cpi",
+        "macro_cpi_change3",
+        "macro_ppi",
+        "macro_ppi_change3",
+        "macro_ppi_cpi_gap",
+        "macro_m2_yoy",
+        "macro_m2_change3",
+        "macro_tsf_to_m2",
+        "macro_tsf_to_m2_change3",
+        "macro_tsf_ttm_growth"
+      ]
+    ],
+    "extra_activity": [
+      "extra",
+      [
+        "macro_pmi",
+        "macro_pmi_change3",
+        "macro_nonmanufacturing",
+        "macro_nonmanufacturing_change3",
+        "macro_cpi",
+        "macro_cpi_change3",
+        "macro_ppi",
+        "macro_ppi_change3",
+        "macro_ppi_cpi_gap"
+      ]
+    ],
+    "extra_credit": [
+      "extra",
+      [
+        "macro_m2_yoy",
+        "macro_m2_change3",
+        "macro_tsf_to_m2",
+        "macro_tsf_to_m2_change3",
+        "macro_tsf_ttm_growth"
+      ]
+    ],
+    "extra_both": [
+      "extra",
+      [
+        "macro_pmi",
+        "macro_pmi_change3",
+        "macro_nonmanufacturing",
+        "macro_nonmanufacturing_change3",
+        "macro_cpi",
+        "macro_cpi_change3",
+        "macro_ppi",
+        "macro_ppi_change3",
+        "macro_ppi_cpi_gap",
+        "macro_m2_yoy",
+        "macro_m2_change3",
+        "macro_tsf_to_m2",
+        "macro_tsf_to_m2_change3",
+        "macro_tsf_ttm_growth"
+      ]
+    ]
+  },
+  "control_features": [
+    "vol63",
+    "log_cap",
+    "pe_percentile",
+    "relative_mom63",
+    "credit_spread_3y",
+    "credit_change63",
+    "earnings_log_growth",
+    "earnings_raw_anchor",
+    "forecast_age_days",
+    "forecast_next_loss",
+    "forecast_basis_profit",
+    "earnings_pair_available",
+    "revision_available",
+    "growth_revision",
+    "revision_gap_days",
+    "state_csi300_mom21",
+    "state_csi300_mom63",
+    "state_csi300_mom126",
+    "state_csi300_vol63",
+    "state_all_a_mom21",
+    "state_gov_3y",
+    "state_yield_slope",
+    "state_market_earnings_yield",
+    "state_market_pe_percentile",
+    "state_breadth21",
+    "state_breadth63",
+    "state_breadth126",
+    "state_above_ma20",
+    "state_dispersion21",
+    "state_dispersion63",
+    "state_median_vol63",
+    "state_cap_concentration",
+    "state_small_large_mom63",
+    "turnover21",
+    "log_money21",
+    "mom21",
+    "mom63",
+    "mom126"
+  ],
+  "feature_sha256": "30286ca381b9270009d43c077aa257c1a438915ab6fdeeb210e5071d8ce75fc8",
+  "plan_sha256": "5e803406fc9dad8ac9c575fb3c702a9aeda51a474f5e4ffe0ced8c5a68ce653b",
+  "catboost": {
+    "depth": 2,
+    "iterations": 100,
+    "learning_rate": 0.03,
+    "l2_leaf_reg": 20,
+    "random_seed": 24
+  },
+  "extra": {
+    "n_estimators": 96,
+    "max_depth": 6,
+    "min_samples_leaf": 150,
+    "max_features": 0.7,
+    "criterion": "gini",
+    "random_state": 24,
+    "n_jobs": 4,
+    "class_weight": null
+  },
+  "references": {
+    "catboost_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r31_financial_quality",
+      "model": "catboost_reference",
+      "receipts": [
+        {
+          "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+          "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+          "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+          "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+        }
+      ]
+    },
+    "extra_reference": {
+      "folder": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r31_financial_quality",
+      "model": "extra_reference",
+      "receipts": [
+        {
+          "path": "outputs/r31_financial_quality/predictions_1m.parquet",
+          "sha256": "5fd1d35195efffafcce2a2da735ce2cc54fb62d9b573c7178fa22a6ad6cb428f"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_3m.parquet",
+          "sha256": "3ccf30f84ff54ea21c077625cb657f61d9bdc3e1c68d9b8ba997b74757404cf2"
+        },
+        {
+          "path": "outputs/r31_financial_quality/predictions_6m.parquet",
+          "sha256": "6d446ea8aab3e588ce3c02679a2fc5a39101b59e7fa4f766a0511992ef250fcb"
+        }
+      ]
+    }
+  },
+  "weighting": "Month-balanced mature training rows; each candidate mixed 50% with B; same global 32 atoms per class",
+  "evidence": "Six fixed input additions; no change to original 27600 stock-dates; repeated exploration"
+}

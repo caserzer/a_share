@@ -1,0 +1,24 @@
+{
+  "technical_source_and_availability_checks_passed": true,
+  "raw_rows": 119108,
+  "source_stocks": 1242,
+  "stocks_with_records": 1216,
+  "stocks_vendor_no_records": 26,
+  "failed_requests": 0,
+  "raw_page_receipts_verified": 1242,
+  "notice_before_period_rows_excluded": 440,
+  "original_rows": 37018,
+  "original_test_rows": 27600,
+  "test_coverage": {
+    "has_history": 0.9618478260869565,
+    "fresh180": 0.8481884057971014,
+    "fresh365": 0.9107971014492754,
+    "previous_available": 0.9502173913043478
+  },
+  "uncovered_test_rows": 1053,
+  "source_manifest_sha256": "2bc572d3baae4084b206cec6590eca35a93091a6f38f509d45c226fd88fb76ca",
+  "availability_sha256": "f2b7906414d7875cee09315ef46314e211c216df78fd93b8e78911e0603670e6",
+  "forecast_candidate": false,
+  "goal_evidence": false,
+  "limitations": "Vendor histories and announcement fields only; original filing vintages not certified. No-record response means unknown, never zero shareholders. Early-notice records conservatively excluded without claiming all are errors. No improvement or full original-source coverage established."
+}

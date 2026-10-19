@@ -1,0 +1,155 @@
+{
+  "diagnostics": [
+    {
+      "code": "000001",
+      "rows": 68,
+      "first_period": "2013-03-01",
+      "last_period": "2026-06-30",
+      "missing_announcement": 0,
+      "notice_before_period": 0,
+      "duplicate_periods": 0,
+      "positive_count": 68,
+      "pre2021_rows": 40,
+      "announcement_lag_median": 24.0,
+      "date_fields": [
+        "END_DATE",
+        "PRE_END_DATE",
+        "PRE_E_DATE",
+        "HOLD_NOTICE_DATE",
+        "HOLD_N_DATE"
+      ]
+    },
+    {
+      "code": "600519",
+      "rows": 63,
+      "first_period": "2013-03-22",
+      "last_period": "2026-06-30",
+      "missing_announcement": 0,
+      "notice_before_period": 0,
+      "duplicate_periods": 0,
+      "positive_count": 63,
+      "pre2021_rows": 38,
+      "announcement_lag_median": 29.0,
+      "date_fields": [
+        "END_DATE",
+        "PRE_END_DATE",
+        "PRE_E_DATE",
+        "HOLD_NOTICE_DATE",
+        "HOLD_N_DATE"
+      ]
+    },
+    {
+      "code": "300750",
+      "rows": 35,
+      "first_period": "2018-06-11",
+      "last_period": "2026-06-30",
+      "missing_announcement": 0,
+      "notice_before_period": 1,
+      "duplicate_periods": 0,
+      "positive_count": 35,
+      "pre2021_rows": 12,
+      "announcement_lag_median": 28.0,
+      "date_fields": [
+        "END_DATE",
+        "PRE_END_DATE",
+        "PRE_E_DATE",
+        "HOLD_NOTICE_DATE",
+        "HOLD_N_DATE"
+      ]
+    },
+    {
+      "code": "300469",
+      "rows": 53,
+      "first_period": "2015-06-11",
+      "last_period": "2026-06-30",
+      "missing_announcement": 0,
+      "notice_before_period": 1,
+      "duplicate_periods": 0,
+      "positive_count": 53,
+      "pre2021_rows": 31,
+      "announcement_lag_median": 30.0,
+      "date_fields": [
+        "END_DATE",
+        "PRE_END_DATE",
+        "PRE_E_DATE",
+        "HOLD_NOTICE_DATE",
+        "HOLD_N_DATE"
+      ]
+    }
+  ],
+  "receipts": [
+    {
+      "code": "000001",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_HOLDERNUM_DET",
+        "columns": "ALL",
+        "filter": "(SECURITY_CODE=\"000001\")",
+        "pageNumber": 1,
+        "pageSize": 500,
+        "sortColumns": "END_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r36_holder_count_probe/000001.json",
+      "sha256": "c30081b219e8187b73b1a31fe5dd3dd78c191a50527156aead35515ae249d7b1",
+      "rows": 68
+    },
+    {
+      "code": "600519",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_HOLDERNUM_DET",
+        "columns": "ALL",
+        "filter": "(SECURITY_CODE=\"600519\")",
+        "pageNumber": 1,
+        "pageSize": 500,
+        "sortColumns": "END_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r36_holder_count_probe/600519.json",
+      "sha256": "70c13822c78fd5c1c3f4c584796002b3fffb536d003c4013bd9c4c07672435a7",
+      "rows": 63
+    },
+    {
+      "code": "300750",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_HOLDERNUM_DET",
+        "columns": "ALL",
+        "filter": "(SECURITY_CODE=\"300750\")",
+        "pageNumber": 1,
+        "pageSize": 500,
+        "sortColumns": "END_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r36_holder_count_probe/300750.json",
+      "sha256": "7dd21450c5938989edc6d7bbb7426ea0ef938ea9cee9963d5f82ef690389843f",
+      "rows": 35
+    },
+    {
+      "code": "300469",
+      "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+      "params": {
+        "reportName": "RPT_HOLDERNUM_DET",
+        "columns": "ALL",
+        "filter": "(SECURITY_CODE=\"300469\")",
+        "pageNumber": 1,
+        "pageSize": 500,
+        "sortColumns": "END_DATE",
+        "sortTypes": -1,
+        "source": "WEB",
+        "client": "WEB"
+      },
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/local_cache/r36_holder_count_probe/300469.json",
+      "sha256": "ec18c3b02d205b2e726baa1fc394838d4144e44c4722047124e1230feccfb5b9",
+      "rows": 53
+    }
+  ],
+  "limitations": "Small source feasibility probe only. Vendor historical announcement fields are not immutable original vintages; no full population coverage or predictive improvement demonstrated."
+}
