@@ -1,0 +1,37 @@
+{
+  "controls": [
+    {
+      "control": "positive_known_signal",
+      "passed": true,
+      "model_crps": 0.04053212244415593,
+      "baseline_crps": 0.13053186813391926,
+      "delta": -0.08999974568976331,
+      "low95": -0.09114302110567149,
+      "high95": -0.08875833128233304,
+      "low_family": -0.09141680423565467,
+      "high_family": -0.08841784183660084,
+      "months": 60,
+      "mean_block": 6,
+      "approximate_blocks": 10.0,
+      "detectable_80pct_effect_approx": 0.0017093601245129993
+    },
+    {
+      "control": "negative_shuffled_labels",
+      "passed": true,
+      "model_crps": 0.13342455232475928,
+      "baseline_crps": 0.13053186813391926,
+      "delta": 0.002892684190840001,
+      "low95": 0.0021565823265730795,
+      "high95": 0.0036096613311316704,
+      "low_family": 0.0019614211025669797,
+      "high_family": 0.003785781455977255,
+      "months": 60,
+      "mean_block": 6,
+      "approximate_blocks": 10.0,
+      "detectable_80pct_effect_approx": 0.0010443335961343265
+    }
+  ],
+  "all_passed": true,
+  "interpretation": "pipeline controls on synthetic data only; not market evidence",
+  "negative_test": "no spurious CRPS improvement >=0.005; no guarantee all random permutations pass"
+}
