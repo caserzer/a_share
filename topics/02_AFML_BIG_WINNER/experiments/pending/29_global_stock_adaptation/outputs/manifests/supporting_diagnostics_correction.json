@@ -1,0 +1,18 @@
+{
+  "created_utc": "2026-10-20T17:00:06.790265+00:00",
+  "reason": "Retain 59 calendar origins with NA where no valid peer pairs; initial supporting diagnostic compressed to 44 available origins. Same point estimate, valid calendar block structure.",
+  "files": {
+    "src/peer_ranking.py": {
+      "before": "1bcf710511f1d7c23bfc8f4160a1a1f9e29f9b3948bec4d37e0f1dfd5f3d35a0",
+      "after": "bcd0b881b921569ec5c8aaf50fc57a97142bf3d80696ae8e4b02da4289e627d5",
+      "preserved_before_path": "outputs/manifests/amendment_sources/peer_ranking_calendar/peer_ranking.py"
+    },
+    "tests/test_peer_ranking.py": {
+      "before": "1175f737208e5364677d09f89188ade65b74cc01f015d732071b7932cfc70c78",
+      "after": "5236571997484c227cc57ea24af963b0739d38ee6e0e95ebe7be97031db574c5",
+      "preserved_before_path": "outputs/manifests/amendment_sources/peer_ranking_calendar/test_peer_ranking.py"
+    }
+  },
+  "models_predictions_and_pairs_unchanged": true,
+  "old_intervals": "outputs/audits/before_peer_calendar_fix.csv"
+}

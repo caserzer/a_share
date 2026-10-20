@@ -1,0 +1,50 @@
+/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/29_global_stock_adaptation/src/walk_forward.py:26: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  previous=pd.concat([previous,out],ignore_index=True);parts.append(out);audits.append(audit)
+synthetic_positive 1985-01-31 rows 90 history 0
+synthetic_positive 1985-07-31 rows 90 history 0
+synthetic_positive 1986-01-31 rows 90 history 540
+synthetic_positive 1986-07-31 rows 90 history 1080
+synthetic_positive 1987-01-31 rows 90 history 1620
+synthetic_positive 1987-07-31 rows 90 history 2160
+synthetic_positive 1988-01-31 rows 90 history 2700
+synthetic_positive 1988-07-31 rows 90 history 3240
+synthetic_positive 1989-01-31 rows 90 history 3780
+synthetic_positive 1989-07-31 rows 90 history 4320
+synthetic_positive 1990-01-31 rows 90 history 4860
+synthetic_positive 1990-07-31 rows 90 history 4860
+synthetic_positive 1991-01-31 rows 90 history 4860
+synthetic_positive 1991-07-31 rows 90 history 4860
+synthetic_positive 1992-01-31 rows 90 history 4860
+synthetic_positive 1992-07-31 rows 90 history 4860
+synthetic_positive 1993-01-31 rows 90 history 4860
+synthetic_positive 1993-07-31 rows 90 history 4860
+synthetic_positive 1994-01-31 rows 120 history 4860
+synthetic_positive 1994-07-31 rows 120 history 4860
+synthetic_positive 1995-01-31 rows 120 history 5040
+synthetic_positive 1995-07-31 rows 120 history 5220
+synthetic_positive 1996-01-31 rows 120 history 5400
+synthetic_positive 1996-07-31 rows 120 history 5580
+synthetic_positive 1997-01-31 rows 120 history 5760
+synthetic_positive 1997-07-31 rows 120 history 5940
+synthetic_positive 1998-01-31 rows 120 history 6120
+synthetic_positive 1998-07-31 rows 120 history 6300
+synthetic_positive 1999-01-31 rows 120 history 6480
+synthetic_positive 1999-07-31 rows 120 history 6480
+Traceback (most recent call last):
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/29_global_stock_adaptation/src/controls.py", line 105, in <module>
+    if args.mode=='synthetic':synthetic_checks()
+                              ^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/29_global_stock_adaptation/src/controls.py", line 52, in synthetic_checks
+    sparse=test[test.sparse&(test.date<start+pd.DateOffset(months=12))]
+                ^^^^^^^^^^^
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/generic.py", line 6321, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/accessor.py", line 224, in __get__
+    accessor_obj = self._accessor(obj)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/arrays/sparse/accessor.py", line 31, in __init__
+    self._validate(data)
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/arrays/sparse/accessor.py", line 249, in _validate
+    raise AttributeError(self._validation_msg)
+AttributeError: Can only use the '.sparse' accessor with Sparse data.

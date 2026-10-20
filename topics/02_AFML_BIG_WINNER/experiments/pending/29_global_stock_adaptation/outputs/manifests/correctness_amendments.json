@@ -1,0 +1,36 @@
+[
+  {
+    "sequence": 1,
+    "utc": "2026-10-20T16:34:21.282573+00:00",
+    "reason": "Fix pandas sparse accessor collision in synthetic-control summary; extend registry verification to explicit hash-chained correctness amendments",
+    "model_or_data_specification_changed": false,
+    "seed_or_threshold_changed": false,
+    "affected_results": "synthetic summary stopped before result record; existing deterministic predictions retained",
+    "files": {
+      "src/controls.py": {
+        "before": "756c61a6ecaafe37956cbc7dfcb26135932ab3a1eccb514d6288b2f5eb762a9c",
+        "after": "4db91f91da0f56aebd07e3d09d0b2cb83b237e9f53917d30735aa15cd8d68a75",
+        "preserved_before_path": "outputs/manifests/amendment_sources/001/controls.py"
+      },
+      "src/global_model.py": {
+        "before": "6f93daf1b5d4e38139a5e3a241d8c969059877c37cfab16bc8c173fc99dd2ca9",
+        "after": "c7cf31b107b1cf74b07d7e8ee29400b3422d61b46a97bd66565f174cede8e9b2",
+        "preserved_before_path": "outputs/manifests/amendment_sources/001/global_model.py"
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "utc": "2026-10-20T16:43:20.361730+00:00",
+    "reason": "Exclude entirely unmatured trailing control months from scoring; retain original before/after records and rescore unchanged predictions",
+    "model_or_data_specification_changed": false,
+    "seed_or_threshold_changed": false,
+    "files": {
+      "src/controls.py": {
+        "before": "4db91f91da0f56aebd07e3d09d0b2cb83b237e9f53917d30735aa15cd8d68a75",
+        "after": "fb6e9a4d9a66b64a3691f60a84b07daac93c196c1e0e96739c8a906e88f8269a",
+        "preserved_before_path": "outputs/manifests/amendment_sources/002/controls.py"
+      }
+    }
+  }
+]

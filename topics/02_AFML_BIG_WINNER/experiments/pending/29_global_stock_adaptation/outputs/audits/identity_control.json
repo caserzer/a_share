@@ -1,0 +1,93 @@
+{
+  "comparisons": [
+    {
+      "comparison": "GI-G",
+      "estimate": 3.346882858723638e-05,
+      "low95": -8.609364941496624e-06,
+      "high95": 9.003899887918112e-05,
+      "low_secondary": -2.007326004890929e-05,
+      "high_secondary": 0.00011162060844742755,
+      "block": 6,
+      "months": 59,
+      "valid_bootstrap_draws": 5000,
+      "approximate_blocks": 9.833333333333334,
+      "se": 2.5802862956658e-05,
+      "approximate_80pct_detectable_effect": 7.224801627864239e-05
+    },
+    {
+      "comparison": "GI-G",
+      "estimate": 3.346882858723638e-05,
+      "low95": -8.795996373286586e-06,
+      "high95": 8.453066904336574e-05,
+      "low_secondary": -1.5910093081910315e-05,
+      "high_secondary": 0.0001041768346767066,
+      "block": 12,
+      "months": 59,
+      "valid_bootstrap_draws": 5000,
+      "approximate_blocks": 4.916666666666667,
+      "se": 2.483139302457466e-05,
+      "approximate_80pct_detectable_effect": 6.952790046880904e-05
+    },
+    {
+      "comparison": "GPI-GP",
+      "estimate": 3.596142321688993e-05,
+      "low95": -5.035928346466231e-06,
+      "high95": 9.032837696055844e-05,
+      "low_secondary": -1.583459762768098e-05,
+      "high_secondary": 0.00011217641341868361,
+      "block": 6,
+      "months": 59,
+      "valid_bootstrap_draws": 5000,
+      "approximate_blocks": 9.833333333333334,
+      "se": 2.5248505453347274e-05,
+      "approximate_80pct_detectable_effect": 7.069581526937236e-05
+    },
+    {
+      "comparison": "GPI-GP",
+      "estimate": 3.596142321688993e-05,
+      "low95": -5.799245492827893e-06,
+      "high95": 8.663531205190085e-05,
+      "low_secondary": -1.2151206337220247e-05,
+      "high_secondary": 0.00010467885004397336,
+      "block": 12,
+      "months": 59,
+      "valid_bootstrap_draws": 5000,
+      "approximate_blocks": 4.916666666666667,
+      "se": 2.4658769551182645e-05,
+      "approximate_80pct_detectable_effect": 6.90445547433114e-05
+    },
+    {
+      "comparison": "GPI-G",
+      "estimate": 4.289998087386832e-05,
+      "low95": -0.00022025529439242413,
+      "high95": 0.00038084452986954866,
+      "low_secondary": -0.0002855904607305049,
+      "high_secondary": 0.0005350935181751369,
+      "block": 6,
+      "months": 59,
+      "valid_bootstrap_draws": 5000,
+      "approximate_blocks": 9.833333333333334,
+      "se": 0.00015117333993122447,
+      "approximate_80pct_detectable_effect": 0.0004232853518074285
+    },
+    {
+      "comparison": "GPI-G",
+      "estimate": 4.289998087386832e-05,
+      "low95": -0.00018612709592684697,
+      "high95": 0.0003245226148284519,
+      "low_secondary": -0.0002629535336781664,
+      "high_secondary": 0.0004363158086195103,
+      "block": 12,
+      "months": 59,
+      "valid_bootstrap_draws": 5000,
+      "approximate_blocks": 4.916666666666667,
+      "se": 0.00013063372148408635,
+      "approximate_80pct_detectable_effect": 0.00036577442015544177
+    }
+  ],
+  "identity_changed_fraction": 0.6922651238837882,
+  "row_features_probabilities_outcomes_kept_together": true,
+  "events_and_missingness_per_condition_preserved": true,
+  "interpretation": "descriptive identity-persistence control; preserved common/industry effects can still be predictive",
+  "suspicious_individual_gain": false
+}

@@ -1,0 +1,139 @@
+{
+  "episode": "EP29",
+  "primary_foundation": "M_R",
+  "secondary_foundation": "L2",
+  "horizon": 6,
+  "threshold": -0.2,
+  "source_cutoff": "2026-05-29",
+  "prediction_start": "2021-01-01",
+  "warmup_start": "2019Q1",
+  "warmup_end": "2020Q4",
+  "maximum_warmup_fits": 16,
+  "formal_models": [
+    "G",
+    "GP",
+    "GI",
+    "GPI",
+    "L"
+  ],
+  "diagnostic_models": [
+    "GPI_strong",
+    "L_unshrunk"
+  ],
+  "catboost": {
+    "loss_function": "Logloss",
+    "iterations": 120,
+    "depth": 3,
+    "learning_rate": 0.04,
+    "l2_leaf_reg": 3,
+    "random_seed": 26,
+    "thread_count": 2,
+    "verbose": false,
+    "allow_writing_files": false,
+    "nan_mode": "Min",
+    "bootstrap_type": "No",
+    "random_strength": 0,
+    "one_hot_max_size": 255
+  },
+  "global_features": {
+    "M_R": [
+      "vol63",
+      "log_cap"
+    ],
+    "L2": [
+      "vol63",
+      "log_cap",
+      "market_beta63",
+      "industry_beta63",
+      "idiosyncratic_vol63",
+      "idiosyncratic_share63",
+      "industry_increment_r2_63"
+    ]
+  },
+  "lookback_months": 60,
+  "overlap_discount": 7.0,
+  "probability_clip": 1e-06,
+  "peer": {
+    "features": [
+      "log_cap",
+      "vol63",
+      "market_beta63",
+      "industry_beta63",
+      "idiosyncratic_vol63"
+    ],
+    "neighbors": 15,
+    "minimum_neighbors": 5,
+    "sector_neighbors": 30,
+    "sector_minimum_neighbors": 10,
+    "minimum_history_months": 21,
+    "minimum_historical_peers": 5,
+    "prior_sd": 0.75,
+    "maximum_logit_shift": 1.0,
+    "distance_scale": "current cross-sectional median/IQR; equal feature weights",
+    "require_unstale_industry": true,
+    "maximum_standardized_value": 5.0
+  },
+  "individual": {
+    "minimum_months": 21,
+    "minimum_nonoverlap_events": 2,
+    "minimum_nonoverlap_nonevents": 2,
+    "maximum_logit_shift": 1.0,
+    "fixed_strong_sd": 0.25,
+    "tau_minimum_issuers": 30,
+    "tau_minimum_months": 24,
+    "tau_split": "first and last calendar thirds of lookback; label-purged gap",
+    "tau_score_cap": 2.0,
+    "tau_sd_maximum": 1.0,
+    "tau_estimator": "positive part of cross-issuer covariance of first/last temporal-third logit score estimates",
+    "require_temporal_direction_agreement": true
+  },
+  "local": {
+    "prior_alpha": 1.0,
+    "prior_beta": 4.0,
+    "weak_alpha": 0.5,
+    "weak_beta": 0.5
+  },
+  "bootstrap": {
+    "seed": 2901,
+    "replicates": 5000,
+    "blocks": [
+      6,
+      12
+    ],
+    "secondary_family_size": 6
+  },
+  "cohort": {
+    "origin": "2021-01-29",
+    "size": 40,
+    "seed": 29,
+    "single_rule": "earliest listing_date among first-origin D0 eligible instruments; instrument tie-break",
+    "sampling": "include single case then round-robin historical industries ordered by hash; within industry alternate size-tercile/hash order"
+  },
+  "controls": {
+    "seed": 2900,
+    "months": 180,
+    "warmup_months": 120,
+    "stocks": 120,
+    "synthetic_min_brier_gain": 0.0005,
+    "synthetic_min_correlation": 0.35,
+    "zero_effect_tolerance": 0.001,
+    "permutation_seed": 2902
+  },
+  "conditional_auc": {
+    "min_rows": 8,
+    "min_events": 2,
+    "min_nonevents": 2
+  },
+  "prospective": {
+    "first_possible_origin": "2026-10-30",
+    "checkpoints": [
+      36,
+      48,
+      60
+    ],
+    "minimum_events": 300,
+    "minimum_event_months": 24,
+    "important_brier": 0.002
+  },
+  "no_search": true
+}

@@ -1,0 +1,27 @@
+/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/29_global_stock_adaptation/src/validate.py:44: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  previous=pd.concat([previous,saved],ignore_index=True);origins+=1;rows+=len(saved)
+Replay L2 2019-01-31
+Replay L2 2020-01-23
+Replay L2 2021-01-29
+Replay L2 2022-01-28
+Traceback (most recent call last):
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/29_global_stock_adaptation/src/validate.py", line 111, in <module>
+    freeze();result=replay_adaptation(args.foundation)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/29_global_stock_adaptation/src/validate.py", line 42, in replay_adaptation
+    pd.testing.assert_frame_equal(stored,peers,check_exact=True)
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/_testing/asserters.py", line 1264, in assert_frame_equal
+    assert_index_equal(
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/_testing/asserters.py", line 253, in assert_index_equal
+    _check_types(left, right, obj=obj)
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/_testing/asserters.py", line 236, in _check_types
+    assert_attr_equal("inferred_type", left, right, obj=obj)
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/_testing/asserters.py", line 421, in assert_attr_equal
+    raise_assert_detail(obj, msg, left_attr, right_attr)
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/_testing/asserters.py", line 620, in raise_assert_detail
+    raise AssertionError(msg)
+AssertionError: DataFrame.columns are different
+
+Attribute "inferred_type" are different
+[left]:  empty
+[right]: integer
