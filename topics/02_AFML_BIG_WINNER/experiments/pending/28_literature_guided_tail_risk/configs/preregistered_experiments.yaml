@@ -1,0 +1,259 @@
+{
+  "risk_features": [
+    "vol63",
+    "log_cap"
+  ],
+  "market_features": [
+    "market_mom126",
+    "market_vol63",
+    "gov_3y",
+    "credit_spread_3y",
+    "credit_change63",
+    "yield_slope",
+    "state_turnover",
+    "state_breadth63"
+  ],
+  "industry_features": [
+    "industry_id",
+    "industry_sector",
+    "industry_age_days",
+    "industry_stale",
+    "industry_peer_count",
+    "industry_mom63",
+    "industry_mom126",
+    "industry_breadth63"
+  ],
+  "categorical_features": [
+    "industry_id",
+    "industry_sector"
+  ],
+  "catboost": {
+    "loss_function": "Logloss",
+    "iterations": 120,
+    "depth": 3,
+    "learning_rate": 0.04,
+    "l2_leaf_reg": 3,
+    "random_seed": 26,
+    "thread_count": 2,
+    "verbose": false,
+    "allow_writing_files": false,
+    "nan_mode": "Min",
+    "bootstrap_type": "No",
+    "random_strength": 0,
+    "one_hot_max_size": 255
+  },
+  "within_group": {
+    "minimum_rows": 8,
+    "minimum_positive": 2,
+    "minimum_negative": 2,
+    "risk_bins": 2
+  },
+  "matching": {
+    "fraction": 0.2,
+    "minimum_industry_rows": 10,
+    "target_pairs_per_month": 20,
+    "maximum_log_cap_difference": 0.35,
+    "maximum_log_vol_difference": 0.2,
+    "same_board": true,
+    "score": "logit(candidate)-logit(M_R)"
+  },
+  "experiment": "EP28",
+  "source_cutoff": "2026-05-29",
+  "horizon": 6,
+  "threshold": -0.2,
+  "prediction_start": "2021-01-01",
+  "tail_features": [
+    "tail_hill",
+    "tail_change",
+    "tail_beta",
+    "tail_beta_x_level"
+  ],
+  "structure_features": [
+    "market_beta63",
+    "industry_beta63",
+    "idiosyncratic_vol63",
+    "idiosyncratic_share63",
+    "industry_increment_r2_63"
+  ],
+  "disagreement_features": [
+    "past_excess6",
+    "past_excess12",
+    "dturn6_18",
+    "past_ncskew6",
+    "past_duvol6"
+  ],
+  "candidates": {
+    "M_R": [],
+    "M_RMI": [
+      "market",
+      "industry"
+    ],
+    "L1": [
+      "tail"
+    ],
+    "L2": [
+      "structure"
+    ],
+    "L4": [
+      "disagreement"
+    ],
+    "RMI_L1": [
+      "market",
+      "industry",
+      "tail"
+    ],
+    "RMI_L2": [
+      "market",
+      "industry",
+      "structure"
+    ],
+    "RMI_L4": [
+      "market",
+      "industry",
+      "disagreement"
+    ],
+    "L1_common": [
+      "tail_common"
+    ],
+    "L2_systematic": [
+      "systematic"
+    ],
+    "L4_price_history": [
+      "price_history"
+    ]
+  },
+  "fitted_candidates": [
+    "L1",
+    "L2",
+    "L4",
+    "RMI_L1",
+    "RMI_L2",
+    "RMI_L4",
+    "L1_common",
+    "L2_systematic",
+    "L4_price_history"
+  ],
+  "stopped": {
+    "L3": "no certified original financial vintages and full distress ingredients",
+    "Cao_Level_A": "original formula unavailable",
+    "text_and_opacity": "no original filing corpus or validated accrual ingredients",
+    "valuation_interactions": "original valuation vintage unverified"
+  },
+  "primary_family": [
+    "L1-M_R",
+    "L2-M_R",
+    "L3-M_R",
+    "L4-M_R"
+  ],
+  "family_size": 4,
+  "bootstrap": {
+    "seed": 2801,
+    "replicates": 10000,
+    "blocks": [
+      6,
+      12
+    ]
+  },
+  "features": {
+    "tail_quantile": 0.05,
+    "minimum_tail_exceedances": 100,
+    "tail_beta_window_months": 120,
+    "tail_beta_min_months": 36,
+    "structure_window_sessions": 63,
+    "structure_min_sessions": 50,
+    "minimum_industry_peers": 5,
+    "past_return_months": [
+      6,
+      12
+    ],
+    "turnover_current_months": 6,
+    "turnover_reference_months": 18,
+    "turnover_reference_ends_before_current_six_months": true,
+    "turnover_min_daily_coverage": 0.95,
+    "shape_max_missing_sessions": 5
+  },
+  "calibration": {
+    "method": "global logit intercept offset only; fixed slope 1",
+    "lookback_origins": 36,
+    "minimum_origins": 12,
+    "minimum_events": 30,
+    "models": [
+      "M_R",
+      "L1",
+      "L2",
+      "L4"
+    ],
+    "max_shift": 8
+  },
+  "portfolio": {
+    "selected_model": "L4",
+    "selection_rule": "fixed before EP28 scores: company-level disagreement mechanism; no score-based selection",
+    "excluded_fraction": 0.05,
+    "variants": [
+      "global_5pct",
+      "industry_risk_matched_5pct"
+    ],
+    "capital_cny": 1000000,
+    "minimum_past21_money_cny": 5000000,
+    "participation_cap": 0.1,
+    "cost_bps": [
+      10,
+      30
+    ],
+    "target_equity": 1.0,
+    "minimum_equity_comparability_tolerance": 0.01
+  },
+  "controls": {
+    "seed": 2800,
+    "permutation_seed": 2802,
+    "train_months": 80,
+    "test_months": 60,
+    "stocks_per_month": 160,
+    "positive_min_brier_gain": 0.002
+  },
+  "mechanism_B": {
+    "CHS_targets": [
+      "future_ncskew6",
+      "future_duvol6"
+    ],
+    "CHS_models": [
+      "shape_base",
+      "shape_disagreement"
+    ],
+    "KJ_market_target": "next calendar month CSI300 price return",
+    "KJ_initial_months": 36,
+    "KJ_note": "120-month original initial market regression unavailable; 36-month transfer assumption fixed before score"
+  },
+  "maximum_classification_fits": 198,
+  "maximum_shape_regression_fits": 88,
+  "maximum_permutation_fits": 88,
+  "forbid_search": true,
+  "prospective": {
+    "shared_EP27_first_possible_origin": "2026-10-30",
+    "candidate_selection": "keep all three prespecified mechanisms; no historical winner selection",
+    "important_brier_effect": 0.002,
+    "checkpoints": [
+      36,
+      48,
+      60
+    ],
+    "minimum_events": 300,
+    "minimum_event_months": 24,
+    "family_size": 4
+  },
+  "tail_common_features": [
+    "tail_hill",
+    "tail_change"
+  ],
+  "systematic_features": [
+    "market_beta63",
+    "industry_beta63",
+    "industry_increment_r2_63"
+  ],
+  "price_history_features": [
+    "past_excess6",
+    "past_excess12",
+    "past_ncskew6",
+    "past_duvol6"
+  ]
+}

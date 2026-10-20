@@ -1,0 +1,124 @@
+{
+  "positive": [
+    {
+      "world": "common_tail",
+      "estimate": -0.07603935392641961,
+      "low95": -0.0802625893278331,
+      "high95": -0.071219390166818,
+      "low_family": -0.08118558184441567,
+      "high_family": -0.069939846777156,
+      "months": 60,
+      "defined_months": 60,
+      "block": 6,
+      "approximate_blocks": 10.0,
+      "se": 0.002334008382876687,
+      "detectable_80pct_effect_approx": 0.006535223472054724,
+      "passed": true
+    },
+    {
+      "world": "individual",
+      "estimate": -0.07520601631547115,
+      "low95": -0.07904753275172359,
+      "high95": -0.07130845362093081,
+      "low_family": -0.08015336805723297,
+      "high_family": -0.07043286819032946,
+      "months": 60,
+      "defined_months": 60,
+      "block": 6,
+      "approximate_blocks": 10.0,
+      "se": 0.001948141312859877,
+      "detectable_80pct_effect_approx": 0.005454795676007655,
+      "passed": true
+    },
+    {
+      "world": "distress_change",
+      "estimate": -0.07771303206151745,
+      "low95": -0.08221131342800382,
+      "high95": -0.07339432836783727,
+      "low_family": -0.08353806465525136,
+      "high_family": -0.07217650896860062,
+      "months": 60,
+      "defined_months": 60,
+      "block": 6,
+      "approximate_blocks": 10.0,
+      "se": 0.002263708751821841,
+      "detectable_80pct_effect_approx": 0.006338384505101154,
+      "passed": true
+    }
+  ],
+  "negative": {
+    "checks": [
+      {
+        "model": "M_R",
+        "industry_auc_minus_half": {
+          "estimate": 0.005548241016961317,
+          "low95": -0.014459159829846193,
+          "high95": 0.02576495922462269,
+          "low_family": -0.019467900688765936,
+          "high_family": 0.03135827211395243,
+          "months": 59,
+          "defined_months": 56,
+          "block": 6,
+          "approximate_blocks": 9.833333333333334,
+          "se": 0.010252122338100744,
+          "detectable_80pct_effect_approx": 0.028705942546682083
+        },
+        "passed": true
+      },
+      {
+        "model": "L1",
+        "industry_auc_minus_half": {
+          "estimate": -0.002557277937394623,
+          "low95": -0.03197668735506054,
+          "high95": 0.021035036243269065,
+          "low_family": -0.041239676938638135,
+          "high_family": 0.02589766954800486,
+          "months": 59,
+          "defined_months": 56,
+          "block": 6,
+          "approximate_blocks": 9.833333333333334,
+          "se": 0.013525931229737692,
+          "detectable_80pct_effect_approx": 0.03787260744326554
+        },
+        "passed": true
+      },
+      {
+        "model": "L2",
+        "industry_auc_minus_half": {
+          "estimate": 0.003933104929902083,
+          "low95": -0.01272699835327334,
+          "high95": 0.019598921614708373,
+          "low_family": -0.01779335155420289,
+          "high_family": 0.023928261013425024,
+          "months": 59,
+          "defined_months": 56,
+          "block": 6,
+          "approximate_blocks": 9.833333333333334,
+          "se": 0.00823510397375107,
+          "detectable_80pct_effect_approx": 0.023058291126502994
+        },
+        "passed": true
+      },
+      {
+        "model": "L4",
+        "industry_auc_minus_half": {
+          "estimate": -0.0026879529977041033,
+          "low95": -0.03057466284176754,
+          "high95": 0.01908802435837126,
+          "low_family": -0.040436798352975006,
+          "high_family": 0.024304051831910055,
+          "months": 59,
+          "defined_months": 56,
+          "block": 6,
+          "approximate_blocks": 9.833333333333334,
+          "se": 0.012810351258901731,
+          "detectable_80pct_effect_approx": 0.03586898352492485
+        },
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "warning": "common and industry rates preserved; overall Brier may still improve"
+  },
+  "all_passed": true
+}

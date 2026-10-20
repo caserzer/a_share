@@ -1,0 +1,23 @@
+{
+  "status": "executable_economic_branch_stopped",
+  "selected_model": "L4",
+  "selection_before_scoring": true,
+  "fixed_filter": 0.05,
+  "diagnostic": "equal-weight target holdings only; not actual holdings",
+  "unavailable": [
+    "actual held loss-event share",
+    "daily/monthly portfolio Expected Shortfall",
+    "maximum drawdown",
+    "net cumulative/annualized return",
+    "cost and participation-cap execution",
+    "realized exposure drift",
+    "opportunity cost"
+  ],
+  "reason": "delisting settlement, suspension/resumption tradeability and special corporate-action total-return closure are not certified",
+  "planned_cost_bps": [
+    10,
+    30
+  ],
+  "cost_runs_not_executed": true,
+  "static_event_and_exposure_diagnostics_complete": true
+}

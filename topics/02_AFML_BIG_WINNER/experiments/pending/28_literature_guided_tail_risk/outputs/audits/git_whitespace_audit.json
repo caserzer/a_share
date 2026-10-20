@@ -1,0 +1,7 @@
+{
+  "default_diff_check": "one warning: preregistered src/core.py has an extra blank line at EOF",
+  "resolution": "preserve the exact preregistered source bytes; no scientific or runtime change",
+  "scoped_check": "git -c core.whitespace=-blank-at-eof diff --cached --check",
+  "scoped_check_passed": true,
+  "global_git_configuration_changed": false
+}
