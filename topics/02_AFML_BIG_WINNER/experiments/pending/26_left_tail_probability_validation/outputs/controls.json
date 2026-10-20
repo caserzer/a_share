@@ -1,0 +1,43 @@
+{
+  "ep25_original_controls_retained_and_passed": true,
+  "ep25_controls_sha256": "b9f02bb4b25df1a2a8518383e17125c5480c5b8b4ea24cd76219271b1aaa9e23",
+  "controls": [
+    {
+      "control": "known_binary_probability",
+      "passed": true,
+      "probability_recovery_mae": 0.01250315471344384,
+      "monthly_auc": 0.8132698285745753,
+      "estimate": -0.07836531989401044,
+      "low95": -0.08402250977543427,
+      "high95": -0.07221935290654598,
+      "low_family": -0.08556556946428531,
+      "high_family": -0.07056675190529703,
+      "months": 60,
+      "defined_months": 60,
+      "block": 6,
+      "approximate_blocks": 10.0,
+      "se": 0.002988560611437312,
+      "detectable_80pct_effect_approx": 0.008367969712024474
+    },
+    {
+      "control": "real_labels_permuted_within_month",
+      "passed": true,
+      "monthly_auc": 0.49356816504923356,
+      "mean_brier": 0.14770296590859303,
+      "all_month_event_rates_preserved": true,
+      "null": "no individual discrimination; market rate variation preserved",
+      "estimate": -0.006431834950766434,
+      "low95": -0.023241215967482538,
+      "high95": 0.007173694923664651,
+      "low_family": -0.028431539243698515,
+      "high_family": 0.010015534048947488,
+      "months": 59,
+      "defined_months": 59,
+      "block": 6,
+      "approximate_blocks": 9.833333333333334,
+      "se": 0.0078026111590550435,
+      "detectable_80pct_effect_approx": 0.02184731124535412
+    }
+  ],
+  "all_passed": true
+}

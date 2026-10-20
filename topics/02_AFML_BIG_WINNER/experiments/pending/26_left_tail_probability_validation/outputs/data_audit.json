@@ -1,0 +1,28 @@
+{
+  "raw_rows": 56000,
+  "eligible_rows": 43960,
+  "prediction_rows": 29596,
+  "scorable_rows": 27230,
+  "events": 4581,
+  "months": 59,
+  "ep25_threshold_matches": true,
+  "all_56000_6m_labels_recomputed": true,
+  "financial_age_median": 456.0,
+  "mature_missing": 25,
+  "financial_vintage": "strictly after max(notice,update), not certified original vintage",
+  "industry_known_fraction": 0.9325584538451142,
+  "industry_stale_fraction": 0.2851060954182998,
+  "unresolved": [
+    "Shanghai lifetime ST universe selection",
+    "valuation vendor historical vintages unverified",
+    "financial conservative max(notice,update) is not original as-published vintage",
+    "full dividends/delisting/rights/restructuring total return unresolved",
+    "missing endpoints can be informative",
+    "all EP24 old history and R14 new maturities already inspected",
+    "short overlapping periods and nonstationarity limit inference"
+  ],
+  "left_tail_direction": "survivor/ST selection and missing delisting endpoints may undercount losses; magnitude outside observed pool unidentified",
+  "prospective": false,
+  "repairs": "none; unchanged original universe and labels",
+  "prior_files_preserved": 1191
+}

@@ -1,0 +1,38 @@
+{
+  "quarter": "2026Q1",
+  "train_rows": 39182,
+  "training_months": 90,
+  "training_events": 6631,
+  "prediction_rows": 1404,
+  "last_training_label": "2025-12-30",
+  "first_prediction": "2026-01-30",
+  "train_key_sha256": "fcfe82479aabb1e21ca79b740642968a61ac2f3040c7c6cd066dc4d0e9af8255",
+  "test_key_sha256": "d9094e0f490b3b41ab8c125f93111e365276ce0a41e10630cdaed0be99326618",
+  "prediction_path": "outputs/local_cache/2026Q1_predictions.parquet",
+  "prediction_sha256": "ddbe870d73416b1d6f3a02e7b25959b5e6e0044bf0f54b9314b9c9edd271e838",
+  "preregistration_sha256": "e102d6640f49fd29db878eaa1d8e14164c5d5eff82c6304f103880832832c487",
+  "auxiliary_crossings": {
+    "M_R": {
+      "p10_below_p20": 0,
+      "p30_above_p20": 0
+    },
+    "M_V": {
+      "p10_below_p20": 0,
+      "p30_above_p20": 0
+    },
+    "M_F": {
+      "p10_below_p20": 0,
+      "p30_above_p20": 0
+    },
+    "M_VF": {
+      "p10_below_p20": 0,
+      "p30_above_p20": 4
+    },
+    "M_VFS": {
+      "p10_below_p20": 0,
+      "p30_above_p20": 3
+    }
+  },
+  "elapsed_seconds": 2.0512822810001126,
+  "models_fit": 15
+}
