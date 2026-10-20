@@ -1,0 +1,19 @@
+{
+  "phase": "P4",
+  "completed": true,
+  "target_published_industry_weights_exactly_equal": true,
+  "target_risk_cell_counts_exactly_equal": true,
+  "target_equity_one": true,
+  "maximum_daily_equity_difference": 0.0,
+  "equity_difference_within_tolerance": true,
+  "stale_valuation_present": true,
+  "liquidity_cap_uses_only_previous_session_rolling_money": true,
+  "next_session_close_execution": true,
+  "future_outcome_selection": false,
+  "limitations": [
+    "published classification may be stale or unknown",
+    "realized industry weights drift between rebalances",
+    "missing quotes and delisting settlements",
+    "qfq-unit price proxy; not exact executable total return"
+  ]
+}

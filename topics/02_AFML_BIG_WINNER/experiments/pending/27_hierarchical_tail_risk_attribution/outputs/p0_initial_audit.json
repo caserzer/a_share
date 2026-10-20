@@ -1,0 +1,31 @@
+{
+  "phase": "P0",
+  "pass_for_limited_exploration": true,
+  "independent_confirmation_permitted": false,
+  "raw_labels_all_horizons_recomputed": true,
+  "fixed_rows": 43960,
+  "prediction_rows": 29596,
+  "known_6m": 27230,
+  "historical_releases": 19,
+  "industry_known_fraction": 0.9963170698743073,
+  "industry_stale_fraction": 0.23651844843897823,
+  "industry_same_asof_rule": true,
+  "current_classification_backfill": false,
+  "full_unbiased_PIT_universe_available": false,
+  "source_files": 7994,
+  "prior_preserved_files": 1304,
+  "census_stocks": 4819,
+  "census_missing_price_stocks": 228,
+  "census_delisted_stocks": 229,
+  "sh_lifetime_ST_flagged_stocks": 34,
+  "remaining_limits": [
+    "future Shanghai lifetime ST filtering",
+    "delisted and suspended quote/settlement missing",
+    "published historical industry documents not archived original byte certification; 2021-2023 stale gap",
+    "financial max(notice,update) not original vintage; median 456 days",
+    "historical valuation date age=0 is observation date only, not vintage certification",
+    "qfq proxy not complete total return",
+    "all prior historical periods selected and reused"
+  ],
+  "gate": "Observed proxy labels reproducible; published-before-date industry and past-only market fields allow conditional diagnostics in fixed legacy population. No causal, full-market or independent probability confirmation. Census and SZ30 sensitivity kept separate."
+}
