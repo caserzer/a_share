@@ -1,8 +1,8 @@
 # 02_AFML_BIG_WINNER 研究日志
 
-生成日期：2026-06-30
+初版生成日期：2026-06-30；EP17—EP29增补：2026-10-21
 
-本文档整理 `topics/02_AFML_BIG_WINNER` 截至 Episode 16 的研究历程。范围包括根目录 `README.md`、`research_direction_discussion_20260614.md`、`topic_retrospective_20260625_short.md`，以及 `experiments/pending/01` 到 `16` 的 publishable/final reports。
+本文档上方第0—7节归档截至 Episode 16 的研究历程；第8—10节追补至 EP29。范围包括根目录 `README.md`、`research_direction_discussion_20260614.md`、`topic_retrospective_20260625_short.md`，以及 `experiments/pending/01` 到 `16` 的 publishable/final reports。
 
 状态说明：当前 `experiments/completed/` 为空，所有研究仍位于 `experiments/pending/`。因此本文记录的是研究证据、失败边界和后续方向，不是生产信号、交易建议或部署授权。
 
@@ -593,3 +593,150 @@ main_unsolved_problem = OOS payoff/utility ranking, not recall
 - `experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/reports/sequential_continuation_utility_diagnostic_report.md`
 - `experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/reports/continuation_utility_failure_postmortem_report.md`
 - `experiments/pending/16_winner_episode_sequential_sampling_geometry_preflight_v0/outputs/publishable/reports/payoff_aligned_continuation_label_power_precheck_report.md`
+
+
+---
+
+## 8. 2026-10-21 增补：EP17—EP29 研究日志
+
+> 版本来源：截至 commit `ab048ce7f361743f3d846b76986ae0c11b30690b` 的已发布实验。上方第 0—7 节为 2026-06-30 封存的 **EP1—EP16 历史记载**，不是截至 EP29 的当前状态。以下“支持”均限定对应报告的样本、标签、时点和证据等级；`pending/` 表示目录位置，不等于实验尚未跑完，也不表示生产授权。
+>
+> **统一判定：截至 EP29，无可独立确认、可部署且持续优于可比简单基准的投资策略。** 历史探索中存在价格路径、尾部风险、短期收益排序的局部信号；其经济效用、校准、市场状态稳定性或真正前瞻泛化未形成完整证据链。
+
+### EP17 — Oracle Action Value Upper Bound
+
+[主要报告](experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/reports/ep17_oracle_action_value_diagnostic_report.md)
+
+- 裁决：`oracle_payoff_state_research_allowed`，仅授权 payoff-state 表征研究。
+- 在固定行动空间及 50bps 成本条件下，robustness 的完美效用 Oracle O5 平均增量回报约 **+2.9467%**；路径/标签 Oracle O1/O4 约 +2.4681%，回撤 Oracle O2 约 +1.8511%。
+- Oracle 使用不同程度的未来信息，**不是可以交易的回测成绩**。意义是行动空间存在事后上限价值，而现有可观察特征未能逼近它。
+
+### EP18 — Payoff-state Representation / Utility Bridge
+
+[18F 报告](experiments/pending/18_payoff_state_representation_research/outputs/publishable/reports/payoff_state_oracle_gap_bridge_report.md)
+
+- 裁决：`18F_utility_bridge_not_supported`。
+- 学习模型的 `defend_bottom30_continue_rest` 在 robustness 全分母的增量回报为 **−1.0552%**，而 Oracle O5 为 +2.9467%；被错误防守的正收益机会超过避开的负收益。
+- 冻结训练阈值在 robustness 实际防守比例由 30%升至44.11%，暴露分布迁移。**排序证据不等于行动效用证据**，不能继续将 survival/ranking score 直接阈值化为仓位规则。
+
+### EP19 — PIT Entry Universe / Double-tail Exposure
+
+[结题报告](experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/publishable/reports/episode_19_final_report.md)
+
+- 裁决：`EP19_closed_entry_enrichment_only_no_tradeable_alpha_path`。
+- 建立 close-observed、next-executable-open、cooldown、成交可行性和真实候选分母的研究合同。
+- B2 在 robustness 具有较高的未来 +50% MFE 机会暴露，但**左尾同步扩大**；静态抑制规则降低左尾也舍弃右尾，不能确认方向性剩余 Alpha。
+- EP19 主线关闭；右尾机会率、实际固定期限净收益、相对市场 Beta 的超额收益必须分别报告。
+
+### EP20 — OHLCV / TrendPV / Residual Momentum
+
+[TrendPV/Residual Momentum v5](experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_trendpv_residual_momentum_design_and_replication_diagnostic_v5_detailed_report_cn.md) · [学习排序诊断](experiments/pending/20_ohlcv_positive_beta_exposure_research/outputs/20B_P4_learned_monotonic_return_ranking_diagnostic_v1/20B_P4_learned_monotonic_return_ranking_diagnostic_report.md)
+
+- **多项子实验，不能归纳为单个通过/失败判决**：P4 市场残差动量点估计存在正向历史迹象，但可评价月份未达预冻结门槛（P4 43 月，相对要求 60 月）；没有确认式授权。
+- P4 学习排序 v1 存在指标物化阻断（LambdaRank 常数分数）；冻结的 Full 排序在21个 robustness 月中的十桶聚合 Spearman 为负，叠加交叉因子不改善原始P4。
+- 事后事件月份诊断发现高弹性 Risk-on rotation 时交叉因子可反向失效；**不能删除异常月份或把事后新闻标签用于PIT切换**。成本/止损敏感性研究未确认静态行业倾斜或硬止损可修复问题。
+
+### EP21 — REAKA / Koopman / DRC
+
+[21C 已密封实证](experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4_detailed_report_cn.md) · [21F 暂定诊断](experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21F_reaka_data_first_reverse_validation_v1.building/21F_v5_data_first_provisional_report.md)
+
+- 21C 裁决：`21C_FULL_r2_direction_not_supported`。Early ensemble RankIC +0.015658，Late −0.002304；不同 seed 的 Top30 重合接近随机，目标换手极高。
+- 21E 确认论文未披露的实现细节对结果有实质影响；不能声称作者模型精确复现。
+- 21F 对收益输入使用 decision-date 横截面标准化后有**暂定**RankIC增量，但 Top30 身份和换手未稳，`REVERSE_VALIDATION` 未执行，`seal_authorized=false`；不能把未完成的暂定结果改写为正式模型成功。
+
+### EP22 — 四阶段交易方法机制量化
+
+[研究计划](experiments/pending/22_four_stage_method_quantification_and_market_validation_v0/research_plan.md)
+
+- 仓库可见 `research_plan.md`、22A/22B需求和来源叙事，**未找到已发布的正式实证结果/结题报告**。
+- 状态：`plan / requirements only`；不得写作已验证、已否定或生产就绪。来自交易者的业绩叙述没有独立验证。
+
+### EP23 — R&D-Agent-Quant PIT 研究迁移
+
+[完整报告](experiments/pending/23_rdagent_quant_pit_replication_v0/EP23_rdagent_quant_pit_replication_full_report_cn.md)
+
+- 总裁决：`model_branch_only_supported`，历史样本经过多轮研究选择，**不是新独立测试**。
+- Last-state GRU 相对容量匹配的 Flattened MLP，在五个正式种子的历史 IC/RankIC 均表现为正向增量；完整 next-open 执行状态机中五种子绝对净 ARR 为正。
+- 但策略**未超过同期市场和PIT股票池等权**；Winner episode recall 291/545（53.39%），右尾机会富集只有0.872×。严重左尾暴露率较股票池降低（4.59%→1.13%），同时右尾机会暴露率下降（55.55%→48.44%）。
+- 价值在于受控模型结构归因与潜在防御性排序；不支持直接部署，也不支持把Agent自动生成代码等同于Alpha。
+
+### EP24 — Conditional Return Distribution Exploration
+
+[研究报告](experiments/pending/24_conditional_return_distribution_exploration/EP24_research_report.md)
+
+- 尝试用波动率、市值、估值、财务、信用、宏观、技术与多种算法预测1/3/6/12月方向和条件收益分布。
+- 原双20%多指标、跨期限联合改善目标过于苛刻，**167个候选无一通过**；但失败不仅是门槛问题：相对简单风险/市值条件基线，新因子/模型没有持续可重复的经济增量。
+- 早期动态组合暴露降低风险但显著增加现金、牺牲收益；不得把风险降低单独解释为投资优越性。EP24不同子阶段的预测期限/标签口径有过变化，不可跨版混算。
+
+### EP25 — 估值/财务完整分布增量
+
+[最终结论](experiments/pending/25_incremental_distribution_validation/final_conclusion.md)
+
+- 主6个月CRPS：风险/市值基线 **0.146129**，估值+财务候选 **0.147689**，`Δ=+0.001560`（越低越好），95%区间跨0。
+- 重复历史中尾部Brier存在局部线索，但不能把同算法 M_R 比较中未确认的差异归因于估值/财务。
+- 仅59个重叠预测月份，统计功效有限；控制实验说明管道能够识别已知信号，却不能据此证明A股真实信息增量。
+
+### EP26 — 6个月重大亏损概率
+
+[最终结论](experiments/pending/26_left_tail_probability_validation/final_conclusion.md)
+
+- 主事件固定为 `R_6m < −20%`，27,230已知股票月、4,581事件、59个重叠月。
+- M_R（风险/市值同算法）Brier **0.138095**、月内AUC **0.673902**；估值组曾提高风险排序AUC，但联合估值+财务没有稳定Brier增量。
+- 整体偏差掩盖2021—2023低估和2024年后高估，概率校准明显漂移。历史风险排序不等于可靠绝对赔率或可交易经济价值。
+
+### EP27 — 分层风险归因
+
+[最终结论](experiments/pending/27_hierarchical_tail_risk_attribution/final_conclusion.md)
+
+- Full 相对市场/行业扩展基线 RMI，Brier **0.141732→0.138253**，点改善2.45%，注册比较时间块区间支持；行业内AUC增量约 +0.0301（只在有限可评价群体）。
+- **Full Brier仍略差于更简单的M_R 0.138095。** 主要是估值条件贡献，财务单组贡献不稳；不能把“击败被扩展特征拉差的RMI”解释为“超越最佳简单风险基线”。
+- 原始股票池、退市结算、PIT原版本及跨市场状态校准未闭合；行业/风格匹配的组合尾部价值未确认。
+
+### EP28 — 文献驱动风险机制迁移
+
+[最终结论](experiments/pending/28_literature_guided_tail_risk/reports/final_conclusion.md) · [数据审计](experiments/pending/28_literature_guided_tail_risk/reports/data_integrity.md)
+
+- L1共同尾部、L2市场/行业/个股风险结构、L4量价分歧迁移到相同的6个月重大亏损标签；L3财务困境变化因首次财报版本及公式/字段不完备停止，**不能判断该机制无效**。
+- L2 Brier **0.136503**，相对M_R点改善约1.15%，但主比较95%区间 **[−0.004729,+0.001089]** 跨0；月内AUC约0.695。去掉残差风险特征组的消融有历史增量，不能归为单一特质波动因子的已确认作用。
+- L2的2021—2023与2024年后主效应变号；月均ECE约0.11。部分CHS价量历史特征改善未来偏度目标，但不是6个月累计−20%事件成功。
+- 恢复228只过去缺价退市证券的公开历史报价；恢复报价子群已知事件率30.61%，旧报价群体14.22%，**两组人群不可直接比较**；退市结算/公司行动及D1完整PIT训练样本仍未认证。未完成任何原市场Level A忠实复现，也没有确认真实执行经济价值。
+
+### EP29 — Global / Peer / Individual Adaptation
+
+[最终结论](experiments/pending/29_global_stock_adaptation/reports/final_conclusion.md) · [统计报告](experiments/pending/29_global_stock_adaptation/reports/statistical_validation.md)
+
+- 五模型：G全局Brier **0.138095**、GP全局+同行 **0.138327**、GI全局+个股 **0.138036**、GPI联合 **0.138272**、L纯局部 **0.138553**。
+- 主比较GPI−G = **+0.000177**，95%区间跨0；同行迁移没有总体增量，联合适配未优于全局。GI−G = **−0.0000593**（约0.043%相对改善），仅为极小的探索性公司历史边际线索，主要出现在2024年后；公司等权与前瞻证据不支持推广。
+- 全29,596预测行仅2,663行触发个股修正（约9%），其余大多因样本少、独立风险窗口不足或效应不稳回退。预选40家公司仅866条已知标签，月份等权与公司等权结论相反。
+- 单股案例万科A：59个成熟重叠月、27个重大亏损标签仅5个合并风险阶段；GPI均值预测15.88%，实际重叠标签事件率45.76%，依旧明显失准。真实新样本与可用于仓位的概率尚未获得。
+
+## 9. EP1—EP29 跨阶段归纳（研究判断，不是新实证）
+
+| 证据链 | 主要实验 | 当前结论与边界 |
+| --- | --- | --- |
+| 右尾生命周期、修复、持续 | EP2/3/6/7 | 事后结构强；前瞻入场精度、匹配覆盖和经济效用不足 |
+| 事件召回、坏侧拒绝、动作效用 | EP8—EP18 | 常能规避部分负面路径，但正收益机会牺牲和现金拖累较大 |
+| PIT入场、方向性Alpha、复杂模型 | EP19—EP23 | 市场/个股排序局部线索；EP22只有计划；EP23模型增量不等于超越股票池等权 |
+| 完整收益分布 | EP24—EP25 | 新增估值/财务等特征没有建立稳定分布预测增量 |
+| 6月−20%亏损概率 | EP26—EP28 | 传统波动/市值排序与L2风险结构线索；绝对概率校准和经济价值不支持 |
+| 全局→同行→个股 | EP29 | 同行和联合适配未改善整体预测；极小个股修正线索未具跨公司/前瞻支持 |
+
+跨阶段核心教训：
+
+1. 观察到 `P(特征 | Winner)` 的后验区别，不等于已验证 `P(Winner | PIT特征)`。
+2. 未来MFE/MAE、Winner episode recall、月内AUC、CRPS、RankIC、净组合收益都是不同的 estimand，不能跨事件/样本/期限直接排名。
+3. 风险排序、绝对概率校准、收益排序和行动净效用必须分开评分；过滤尾部事件可能同时牺牲巨大右尾。
+4. 时间状态漂移、重叠标签、反复审视历史造成的研究选择，以及ST/退市/公司行动/PIT数据缺口，在所有正面结果解释时必须优先披露。
+5. 有些“失败”是数据/统计功效或复现条件未满足，不能解释成相应经济理论已被证伪。
+
+## 10. 下一步执行边界与研究提议（尚未授权的新实验）
+
+**P0 数据闭合**：历史时点股票池、ST和退市收益、公司行动、首次财报及估值历史版本、停复牌可交易性。EP28恢复报价不等于D1全部可用。
+
+**P1 前瞻冻结**：遵守EP27—EP29已有协议；最早计划2026-10-30真实月末，当日生成不可改写的M_R、L2、G/GP/GI/GPI等注册概率，六个月标签到期后再追加；这只是一项协议，当前尚无真实前瞻记录。相同市场月不得计作多份独立验证。
+
+**P2 两条预测研究分离**：收益机会线谨慎保留EP20/EP23历史线索；条件风险线保留M_R、L2、GI作研究对照。不得按历史成绩自行修改已经冻结的前瞻候选或选股规则。
+
+**P3 经济价值合同**：将未来买入/持有/过滤/退出的行动定义、机会成本、敞口、延迟、现金、退市结算、净收益和ES预先冻结；不能把风险控制改善或“跑赢弱模型”当成完成投资闭环。
+
+**当前状态**：`deployable_strategy_found=false`；`production_signal_authorized=false`；`independent_forward_confirmation=false`。本段是EP17—EP29追加性主题总结，不覆盖各实验自身授权和封存裁决。

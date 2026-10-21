@@ -1,8 +1,8 @@
 # 02_AFML_BIG_WINNER 研究结论
 
-生成日期：2026-06-30
+初版生成日期：2026-06-30；EP17—EP29增补：2026-10-21
 
-本文档是 `research_log.md` 的对应结论版。它不重复完整时间线，只沉淀截至 Episode 16 可以成立、不能成立、以及后续研究应遵守的边界。
+本文档第1—8节归档截至 Episode 16 的原始结论；新增第9—10节总结EP17—EP29，区分历史结论与当前状态。
 
 完整时间线见 `research_log.md`。
 
@@ -230,3 +230,79 @@ recall / probability / risk separability exists
 02_AFML_BIG_WINNER 到 Episode 16 的价值不是找到一个可交易策略，而是把大量看似有希望的路径系统性排除，并收敛出一个更清晰的问题边界：
 
 Big Winner 的 lifecycle、repair、survival 和 fast-fail 风险并非随机；但当前研究尚未找到能稳定捕捉 winner payoff magnitude、同时不牺牲过多 right-tail upside 的 OOS action surface。后续研究必须从 payoff/utility 排序问题重新出发，而不是把已有 probability/risk signal 包装成交易动作。
+
+
+---
+
+## 9. 2026-10-21 当前研究结论：扩展至 EP29
+
+> 上述第1—8节是 **2026-06-30 截至EP16的原始结论**，其数值、裁决与引用保留不变。本节及以下为更新后的总体结论。原“completed_experiment_count=0”属于当时 `experiments/completed/` 目录/研究授权口径；**不应读成EP1—EP29没有执行或没有交付报告**。新的总结以各EP正式报告和冻结证据等级为准，详见 [research_log.md](research_log.md)。
+
+### 当前最高级别裁决
+
+```text
+research_scope = EP01..EP29
+as_of = 2026-10-21
+repository_commit_reviewed = ab048ce7f361743f3d846b76986ae0c11b30690b
+deployable_strategy_found = false
+confirmed_tradable_alpha_over_comparable_baseline = false
+production_signal_authorized = false
+independent_forward_confirmation = false
+EP22_status = plan_only_no_formal_result
+EP21F_status = provisional_reverse_validation_not_run
+EP27_EP29_prospective_status = protocol_only_no_real_future_forecast
+```
+
+### 新增可保留的历史观察
+
+| 编号 | 结论 | 证据与限制 |
+| --- | --- | --- |
+| C13 | EP17证明行动空间存在具有未来信息的Oracle收益上限 | O5 robustness +2.9467%增量收益；未来信息Oracle不能当成可交易Alpha |
+| C14 | EP18/EP19重现“风险规避和正收益牺牲” | 学到的排序无法稳定转换为动作效用；右尾机会暴露与未来净收益不能混同 |
+| C15 | EP20包含有条件的动量/残差动量研究线索 | 样本月份不足、事件Regime脆弱、复杂交叉因子排序反转，尚无独立策略结论 |
+| C16 | EP21模型结构和输入语义敏感 | REAKA Early-to-Late坍塌，21F正面暂定结果未做反向验证；不可将复杂模型优越性视为事实 |
+| C17 | EP23 Last-state GRU在历史结构对照中有增量 | 对比MLP的IC/RankIC较稳，但未跑赢市场或股票池等权，未形成Big Winner右尾Alpha |
+| C18 | EP24/25尚未证明完整条件收益分布可显著优化 | 167候选未达门；6月主要CRPS候选0.147689差于基线0.146129 |
+| C19 | EP26/28证明有条件尾部风险排序线索 | M_R月内AUC0.673902，L2约0.694947；但L2对M_R主Brier区间跨零、跨阶段变号 |
+| C20 | EP27估值相对RMI有条件增量，但没有战胜M_R | Full 0.138253 vs RMI 0.141732、简单M_R 0.138095，不能换弱基线宣称总体胜利 |
+| C21 | EP29个股部分池化仅有极小历史边际信息 | GI对G改善约0.043%，GPI反而恶化；多数样本回退，40公司结论随权重翻转 |
+| C22 | PIT/退市收益和真前瞻数据仍是核心阻断 | EP28恢复228只退市历史报价，但结算及PIT财务版本未闭合；EP27—29没有真正新预测到期数据 |
+
+### 当前不支持或尚无证据的主张
+
+1. 反向Big Winner路径特征已成为可交易的提前买入Alpha。
+2. 过滤fast-fail或重大亏损风险即可在保留机会成本后提高净收益。
+3. EP20/21的复杂模型已经确认跨市场状态泛化与实盘可执行收益。
+4. EP23的GRU已跑赢同期股票池等权或具有Big Winner右尾富集能力。
+5. EP24/25已获得可用于凯利仓位的条件收益联合分布。
+6. EP26—28的重大亏损概率已稳定校准、具有可靠的绝对概率解释。
+7. EP27 Full击败EP28/29 M_R主要简单基线。
+8. EP29 GP/GPI提供稳定可迁移的同行与个股联合优势。
+9. EP22已完成实证；EP21F已完成正式反向验证；EP27—29已产生独立前瞻结果。
+10. 可以凭这些实验认定“A股完全不可预测”或“财务/估值因子永远无用”：现有数据与检验范围不支持这种外推。
+
+### EP29之后的研究判断（建议，非已验证结论）
+
+**不要再把“构造更多信号”作为通用目标。** 未来研究分三条互相独立的证据链：
+
+- **收益预测线**：对EP20、EP23已有方向性/序列增量用新时间样本与强基准复验，明确beta、净Alpha和实际容量。
+- **风险预测线**：对EP26 M_R、EP28 L2、EP29 GI执行来源/标签闭合、前瞻Brier与校准检验；不得把风险排序当可用个股赔率。
+- **行动效用线**：先冻结交易、仓位、机会成本、流动性、现金、退出及退市结算语义，再检验上述信息是否改善相同风险敞口下的净收益与尾部表现。
+
+进入实盘资金管理之前，必须有：可审计PIT原始版本、可信总收益及退市终点、真正新预测时点、稳健概率与经济效用。当前不能从 `P(R_6m<−20%)` 一个概率直接推导可信的最优仓位。
+
+## 10. 复核链接与证据等级
+
+各阶段最终链接、少数并行子实验的实际状态和不应混算的口径，请见 [research_log.md 第8—10节](research_log.md)；下列是最重要的新证据入口：
+
+- [EP17 Oracle 上限](experiments/pending/17_oracle_action_value_upper_bound_diagnostic/outputs/publishable/reports/ep17_oracle_action_value_diagnostic_report.md)
+- [EP19 入场Alpha结题](experiments/pending/19_entry_universe_pit_tradability_preflight/outputs/publishable/reports/episode_19_final_report.md)
+- [EP21 已密封验证与21F暂定报告](experiments/pending/21_residual_enhanced_koopman_auto_encoder_v0/outputs/21C_full_reaka_pit_proxy_replication_v4_detailed_report_cn.md)
+- [EP23 R&D-Agent归因](experiments/pending/23_rdagent_quant_pit_replication_v0/EP23_rdagent_quant_pit_replication_full_report_cn.md)
+- [EP25 分布增量](experiments/pending/25_incremental_distribution_validation/final_conclusion.md)
+- [EP26 重大亏损概率](experiments/pending/26_left_tail_probability_validation/final_conclusion.md)
+- [EP27 分层风险](experiments/pending/27_hierarchical_tail_risk_attribution/final_conclusion.md)
+- [EP28 文献迁移与数据恢复](experiments/pending/28_literature_guided_tail_risk/reports/final_conclusion.md)
+- [EP29 个股适配](experiments/pending/29_global_stock_adaptation/reports/final_conclusion.md)
+
+**证据等级说明**：`retrospective` 为事后形态/Oracle；`historical_exploratory` 为带时间切分但反复被研究过的历史样本；`protocol_only` 为尚未执行的前瞻设计；`independent_forward_confirmed` 必须基于预测日当时形成、不可覆写且已经成熟的真实新标签。目前尚未达到最后一级。

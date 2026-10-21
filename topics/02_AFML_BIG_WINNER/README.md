@@ -1,9 +1,31 @@
 # AFML Big Winner Research
 
+> **当前研究状态（更新：2026-10-21，覆盖 EP1—EP29）**
+>
+> This README retains the original AFML Big Winner design as **historical project context**, not a claim that the original event → confirmation → bet-sizing pipeline has passed trading validation.
+> **No independently confirmed, deployable strategy or calibrated single-stock odds model has been established.**
+>
+> - **研究全记录**：[research_log.md](research_log.md) — EP1—EP16原始详细记录，EP17—EP29追加逐项结论、研究分支和来源。
+> - **统一研究结论**：[research_conclusions.md](research_conclusions.md) — 证据等级、明确不支持的主张、后续研究边界。
+> - **实验索引**：[experiments/README.md](experiments/README.md) — EP01—EP29目录和结论入口。
+>
+> **当前研究拆为三条不混淆的验证线**：
+>
+> | 研究线 | 保留的候选证据 | 尚未解决 |
+> | --- | --- | --- |
+> | 收益/机会 | EP20部分动量/残差动量、EP23 last-state GRU相对MLP历史增量 | 是否真正超过同期股票池等权、扣费后和新样本仍有Alpha |
+> | 风险与分布 | EP26 M_R、EP28 L2风险结构、EP29 GI极小个股历史修正 | 非平稳校准、退市/公司行动、PIT原始版本、独立前瞻 |
+> | 行动价值 | EP17 Oracle存在未来信息上限；EP8—EP19大量效用反证 | Winner机会牺牲、现金拖累、真实执行/经济价值 |
+>
+> **未来验证**：EP27—EP29已有最早2026-10-30的真实月末前瞻归档协议，但截至上述提交只有协议与代码，无实际封存的新预测和成熟标签。禁止事后补造；共享市场月不得算独立多次确认。
+>
+> **注意**：EP22目前为计划/需求，没有已发布结题结果；EP21F为尚未做反向验证的暂定研究。下面第1—12节记录最初的研究立意与技术设计，其中“应当”“计划”不是当前已取得的实证支持。
+
+
 Restarting the A-share BIG WINNER / +50% stock discovery project with an
 AFML-style research pipeline.
 
-## 1. Project Goal
+## 1. Original Project Goal (historical design)
 
 This project aims to build a slow, event-driven quantitative research system
 for identifying and managing potential BIG WINNER stocks in the A-share market.
@@ -20,7 +42,7 @@ The project is restarted based on the framework of *Advances in Financial
 Machine Learning* because prior experiments showed that dense daily prediction,
 raw factor libraries, and fixed-horizon labels were not sufficient.
 
-## 2. Core Research Thesis
+## 2. Original Core Research Thesis (historical hypothesis)
 
 The system should not directly predict this question from dense daily stock-day
 samples:
