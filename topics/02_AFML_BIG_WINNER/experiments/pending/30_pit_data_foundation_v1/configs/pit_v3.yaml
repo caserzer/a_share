@@ -1,0 +1,34 @@
+version: D2-v3-evidence-ledger-20261021
+cutoff: '2026-10-21'
+baseline_v2_release: d24febaf36b968c2f8f0653633ed4a10a514db91a87c9af76dc37549a99db3a2
+phases: [historical_eligibility_and_terminal_rights, strict_labels, financial_version_chains, full_population_bridge]
+scope:
+  full_bridge: all_provisional_listing_episodes_20170103_to_last_completed_month_202609
+  core_original_documents: delisted_since_2017_plus_identity_conflicts_and_prior_truncated_histories_plus_fixed_board_examples
+  financial_index: all_v2_original_financial_target_issuers_all_periods_2016_to_cutoff
+  financial_originals: corrected_period_original_and_revision_pairs_plus_preexisting_selected_periods_and_fixed_strata
+evidence:
+  original_documents_and_retrospective_vendor_values_separate: true
+  historical_endpoint_date_filter_not_trusted_without_response_validation: true
+  original_payment_schedule_not_actual_receipt: true
+  delisting_not_zero_terminal_wealth: true
+  daily_positive_volume_not_verified_open_fill: true
+  official_exchange_history_not_automatically_original_vintage_certified: true
+  strict_label_requires_all_frozen_v1_contract_evidence: true
+  independent_human_review_is_not_agent_review: true
+sources:
+  np_notices: https://np-anotice-stock.eastmoney.com/api/security/ann
+  issuer_original_mirror: https://pdf.dfcfw.com/pdf/
+  cninfo: https://www.cninfo.com.cn/new/hisAnnouncement/query
+  official_exchange_historical_quotes: https://yunhq.sse.com.cn:32042/
+  retirement_board: https://www.neeq.com.cn/
+capture:
+  global_per_host_interval_seconds: 1
+  public_static_pdf_cdn_interval_seconds: 0.25
+  static_download_operational_amendment: '2026-10-21_after_full_index_validation_no_change_to_quality_or_selection_gates'
+  transient_attempts: 3
+  stop_host_on_http: [401, 403, 429, 567]
+  preserve_actual_transform_source_bytes: true
+  snapshots_independent_copies_no_mutable_hardlinks: true
+paid_access_or_personal_credentials_authorized: false
+alpha_training: prohibited

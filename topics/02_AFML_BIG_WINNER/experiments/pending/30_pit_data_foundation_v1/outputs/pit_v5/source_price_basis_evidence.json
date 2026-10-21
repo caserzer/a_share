@@ -1,0 +1,20 @@
+{
+  "baseline_primary_basis": "unadjusted",
+  "bao_adjustflag_mapping": {
+    "1": "hfq",
+    "2": "qfq",
+    "3": "unadjusted"
+  },
+  "daily_partitions_audited": 102,
+  "daily_rows_audited": 529304,
+  "all_adjustflag_3": true,
+  "raw_parquet_bodies_retained": true,
+  "old_sina_qfq_caches_separate": true,
+  "primary_qfq_not_preexisting_in_v4": true,
+  "akshare_sina_adapter_source_sha256": "80c9d622a9e8cab5324605d63ccce589d4c3e771d259692c5d93cf7da8e99547",
+  "akshare_qfq_formula": "raw_OHLC / qfq_factor",
+  "new_pipeline_rounding": "none; old AkShare cached qfq prices rounded to two decimals",
+  "baostock_factor_probes_not_used_in_main_labels": true,
+  "daily_originals_match_sealed_v3_manifest": true,
+  "original_v3_manifest_sha256": "b22cfa0901179c093e8a06ebdfc8f65fdf27ad18a53fd03bf8197f287e8d9f01"
+}

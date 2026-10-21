@@ -1,0 +1,26 @@
+{
+  "baseline_price_basis": "unadjusted",
+  "baseline_adjustflag": "3",
+  "qfq_formula": "raw_OHLC / effective_Sina_qfq_divisor",
+  "factor_join": "backward-asof only; missing predecessor remains missing",
+  "no_rounding": true,
+  "qfq_is_retrospective_price_return_proxy": true,
+  "feature_pit_certified": false,
+  "securities": 5919,
+  "raw_rows": 10542824,
+  "qfq_rows": 10541309,
+  "securities_with_qfq": 5823,
+  "transform_source_hashes": {
+    "v5_core.py": "8d85c3810c542112bf9dd756d7b30b0c87417c4b40050fd7130887862c309e47",
+    "v5_dataset.py": "bc338b1f5a8e3aec571113ab1fb66eafacb97091c89402abbf65cdd99458c9a8",
+    "v5_factors.py": "28d9da716b24a1d05f61eeaa15136e20ee7d39a02022cfcd9f58431838146387",
+    "v5_labels.py": "53c516b1ff92e8f2361baa10c3018652713778e9f66fe95c19a73b55aefc59ca",
+    "v5_offline_replay.py": "782ca501fd679935247b6da1ab1e21b4a0d462121fb79b8757741808e1c6dedf",
+    "v5_prices.py": "e68313d6a350915a87f15efff9f00f831518d5c059252665476ec029ec299976",
+    "v5_report.py": "ad160eaf2b1f09f296fb76a5aeae2cd496fb175987a8c4609cbe29aee46bd441",
+    "v5_seal.py": "006d615da2ac1f14436257272db10e73f30a3be660e3fe555355f4c7b2206dd8",
+    "v5_validate.py": "335003eac1156191d65f4214e19c8029a4d8f26282393a355d49dc6cac2d9973",
+    "archive.py": "9770e76a664d6cbbdacb76b4160274a6002fb6f970b0c432e834cc900b64f7b3",
+    "pit_v5.json": "9f1d5abf4a996588a49b536783727f6d8a21c0b18501bea103c70f8aeb9b8dab"
+  }
+}

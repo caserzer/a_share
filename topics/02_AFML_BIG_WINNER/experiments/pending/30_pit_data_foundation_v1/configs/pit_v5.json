@@ -1,0 +1,57 @@
+{
+  "version": "D2-v5-qfq-price-inference",
+  "authorization": "user explicitly requested all strict-return labels be inferred from price changes and selected forward-adjusted price changes",
+  "baseline_v4": "a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6",
+  "primary_basis": "qfq",
+  "return_inference": "qfq_exit_open / qfq_entry_open - 1",
+  "execution": "first positive observed-volume open after decision; exit first observed-volume open on/after target and after entry; execution assumed",
+  "horizons": [
+    "6_calendar_months",
+    "20_sessions",
+    "60_sessions",
+    "120_sessions"
+  ],
+  "requested_policy_aliases": [
+    "price",
+    "total",
+    "executable"
+  ],
+  "effective_policy": "qfq_price_change_inferred_for_all_requested_policies",
+  "quality": "Historical-proxy",
+  "retain_original_v4_strict_labels": true,
+  "unknown_prices_or_adjustment_factors_not_zero_filled": true,
+  "delisting_unknown_terminal_not_zero": true,
+  "raw_price_comparator": true,
+  "no_alpha_training": true,
+  "sources": [
+    {
+      "id": "sina_public_qfq_divisors",
+      "url": "https://finance.sina.com.cn/realstock/company/{instrument}/qfq.js",
+      "tier": "Historical-proxy",
+      "minimum_interval_seconds": 0.25,
+      "concurrency": 1,
+      "cost": "public no purchase",
+      "permission_failure": "stop on 401/403/429/567; no host bypass",
+      "transform": "unadjusted OHLC / qfq_divisor; backward effective-date join; no rounding; no missing-factor fill"
+    },
+    {
+      "id": "baostock_public_anonymous",
+      "methods": [
+        "query_daily_adjust_factor",
+        "query_adjust_factor",
+        "query_history_k_data_plus"
+      ],
+      "tier": "Historical-proxy",
+      "rate_limit_seconds": 1,
+      "cost": "public anonymous no purchase",
+      "raw_storage": "private content addressed"
+    },
+    {
+      "id": "legacy_sina_qfq",
+      "path": "topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq",
+      "tier": "Historical-proxy",
+      "purpose": "audit and independently labelled vendor-method sensitivity"
+    }
+  ],
+  "sina_factor_minimum_interval_seconds": 0.25
+}

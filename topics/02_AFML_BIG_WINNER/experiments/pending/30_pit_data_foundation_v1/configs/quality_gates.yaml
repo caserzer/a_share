@@ -1,0 +1,27 @@
+version: D2-v1
+frozen_on: '2026-10-21'
+freeze_stage: P0_before_EP30_coverage_scoring
+zero_tolerance:
+  temporal_leakage: 0
+  overwritten_prior_files: 0
+  fabricated_settlement_values: 0
+  unresolved_conflicts_in_certified_inputs: 0
+ready:
+  required_field_coverage: 1.0
+  original_version_evidence_rate: 1.0
+  source_hash_verification_rate: 1.0
+  snapshot_reconstruction_match_rate: 1.0
+  independent_manual_review_match_rate: 1.0
+  exchange_population_reconciled: true
+partial: observed_diagnostic_data_with_explicit_denominator_and_limitations
+blocked: missing_population_or_required_first_vintage_or_execution_or_rights_evidence
+review:
+  selection: sorted_instrument_first_per_stratum_without_outcome_ranking
+  strata: [ordinary_SH, ordinary_SZ, delisted_SH, delisted_SZ, lifetime_ST, share_change]
+  independent_human_review_required_for_READY: true
+  machine_review_is_not_human_review: true
+downstream:
+  certified_features: only_PIT-certified_or_PIT-reconstructed_with_verified_provenance
+  proxy: diagnostics_only_never_silently_promoted
+  unknown: never_zero_fill_never_default_total_loss
+  alpha_training: prohibited_in_EP30

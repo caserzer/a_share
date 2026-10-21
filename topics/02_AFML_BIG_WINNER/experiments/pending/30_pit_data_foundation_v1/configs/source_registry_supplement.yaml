@@ -1,0 +1,31 @@
+version: D2-v1-discovery-supplement
+added_on: '2026-10-21'
+freeze_policy: append_discovery_details_without_changing_P0_thresholds_or_original_registry
+sources:
+  - id: cninfo_financial_vintage_sample
+    fields: [other_receivables_intercompany_balance_2023_12_31]
+    security: SZ000584
+    original: discovered_from_cninfo_first_report_query_and_preserved_original_PDF
+    correction: https://static.cninfo.com.cn/finalpage/2024-07-31/1220755916.PDF
+    amended_report: https://static.cninfo.com.cn/finalpage/2024-07-31/1220755914.PDF
+    historical_first_date: '2024-04-30'
+    correction_date: '2024-07-31'
+    precise_release_time: UNKNOWN
+    availability: next_verified_session_open
+    evidence: issuer_original_page_168_correction_page_1_plus_platform_index_SHA
+    tier: PIT-reconstructed_one_field_only
+    independent_human_review: pending_not_a_READY_population
+    original_bytes: private_content_addressed_archive
+    license: public_access_no_bulk_redistribution_permission_assumed
+    backup: issuer_PDF_Sina_mirror_original_and_correction_SHA_match_cninfo
+  - id: capco_historical_industry
+    fields: [industry_id, classification_release]
+    primary: preserved_EP24_CAPCO_PDF_JS_parse_receipts
+    backup: original_issuer_or_official_classification_release
+    historical_coverage: 19_releases_with_explicit_gaps
+    tier_ceiling_for_this_delivery: Historical-proxy_pending_full_vintage_review
+    license: inherited_copyright_raw_private
+raw_vintage_limitations:
+  legacy_AkShare_CSV: parsed_vendor_cache_not_original_HTTP_response_or_contemporaneous_capture
+  existing_financial_Parquet: vendor_retrospective_version_not_original_statement
+  current_official_lists: observed_today_do_not_prove_all_past_members

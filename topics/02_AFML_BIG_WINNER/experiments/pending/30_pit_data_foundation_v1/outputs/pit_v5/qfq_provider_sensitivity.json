@@ -1,0 +1,58 @@
+{
+  "disagreement_securities": 24,
+  "legacy_source_functions": {
+    "stock_zh_a_daily": 4572,
+    "stock_zh_a_hist": 25
+  },
+  "residual_field_curves_by_source": {
+    "stock_zh_a_hist": 48
+  },
+  "main_provider_fixed_before_labels": true,
+  "no_adaptive_provider_selection": true,
+  "numerical_cause_not_independently_resolved": true,
+  "primary_values_remain_vendor_price_proxies": true,
+  "horizons": [
+    {
+      "horizon": "6_calendar_months",
+      "disagreement_security_months": 2283,
+      "known_primary_inferred_with_disagreement": 2139,
+      "same_dates_comparable": 2030,
+      "loss_classification_disagrees": 18
+    },
+    {
+      "horizon": "20_sessions",
+      "disagreement_security_months": 2283,
+      "known_primary_inferred_with_disagreement": 2254,
+      "same_dates_comparable": 2134,
+      "loss_classification_disagrees": 9
+    },
+    {
+      "horizon": "60_sessions",
+      "disagreement_security_months": 2283,
+      "known_primary_inferred_with_disagreement": 2210,
+      "same_dates_comparable": 2101,
+      "loss_classification_disagrees": 34
+    },
+    {
+      "horizon": "120_sessions",
+      "disagreement_security_months": 2283,
+      "known_primary_inferred_with_disagreement": 2139,
+      "same_dates_comparable": 2019,
+      "loss_classification_disagrees": 25
+    }
+  ],
+  "transform_source_hashes": {
+    "v5_core.py": "8d85c3810c542112bf9dd756d7b30b0c87417c4b40050fd7130887862c309e47",
+    "v5_dataset.py": "57e89ffb1d0b2d6b95115c59e294ef0e66b1d08e14caae333757dc03119c7335",
+    "v5_factors.py": "28d9da716b24a1d05f61eeaa15136e20ee7d39a02022cfcd9f58431838146387",
+    "v5_labels.py": "53c516b1ff92e8f2361baa10c3018652713778e9f66fe95c19a73b55aefc59ca",
+    "v5_offline_replay.py": "59e25c728ac4e6d6a104ffc8c98be5b2a538a8df613ca96d8e986295fc242e58",
+    "v5_prices.py": "e68313d6a350915a87f15efff9f00f831518d5c059252665476ec029ec299976",
+    "v5_qualify.py": "c37f668cc83768ca50e4d3d7a843368d03f062c8294672528fde58dd9efdfcfb",
+    "v5_report.py": "ad160eaf2b1f09f296fb76a5aeae2cd496fb175987a8c4609cbe29aee46bd441",
+    "v5_seal.py": "acae515d25659e247e5f60c1855c6727d1d77d851efb629759331bdfa2403ecb",
+    "v5_validate.py": "335003eac1156191d65f4214e19c8029a4d8f26282393a355d49dc6cac2d9973",
+    "archive.py": "9770e76a664d6cbbdacb76b4160274a6002fb6f970b0c432e834cc900b64f7b3",
+    "pit_v5.json": "9f1d5abf4a996588a49b536783727f6d8a21c0b18501bea103c70f8aeb9b8dab"
+  }
+}

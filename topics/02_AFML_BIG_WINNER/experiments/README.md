@@ -77,3 +77,19 @@ Current pending experiments:
 - [EP29 结论](pending/29_global_stock_adaptation/reports/final_conclusion.md)
 
 研究结论的最低证据要求：相同可用PIT信息、相同股票/预测日期与标签、竞争性简单基线、重叠标签的时间依赖、真实执行成本及机会成本；反复使用的历史测试集不得重新包装为独立前瞻样本。
+
+## EP30 数据地基补充（2026-10-21）
+
+[30_pit_data_foundation_v1](pending/30_pit_data_foundation_v1/README.md)：D2版本化事实/查询/标签基础、全缓存覆盖普查、真实财报首次/更正回放、D0/D1/D2桥接及受阻裁决。完整历史全市场PIT、权益/退市结算和可执行总收益仍BLOCKED；工程测试通过不升级为数据READY。EP01—EP29原始结论不改写。
+
+
+EP30 追加 [D2 v2 实际补数](pending/30_pit_data_foundation_v1/reports/backfill_v2.md)（2026-10-21）：独立数据与冻结快照；保留v1及所有旧模型、预测、收益和研究裁决。
+
+
+2026-10-21：[D2-v3原始资格与权益补数](pending/30_pit_data_foundation_v1/reports/pit_v3.md)追加发布：原文状态、退市权益与扫描件候选、财报版本链和全月份严格标签；全量PIT/执行/终值仍受阻，旧研究结论保留。
+
+
+2026-10-21：EP30 追加 D2-v4，三组原件证明的连续代码变更修复重复身份及误报退市，删除155个重复证券月；退市披露代码桥接85家，原缺年报期66→43，重建6309144条严格标签，严格已知仍为0。79项测试通过；旧研究与三版封存保留。详见[本轮报告](pending/30_pit_data_foundation_v1/reports/pit_v4.md)。
+
+
+2026-10-22：EP30 追加 D2-v5，按用户指定将当前收益标签统一为前复权价格变化推断。原 D2 主行情确认未复权；新生成10541309行前复权开收盘可用报价，6309144行标签中6007218行可推断；24只证券的跨供应商复权差异单列标记。旧严格结果保留，未知退市终值不填零。详见[本轮报告](pending/30_pit_data_foundation_v1/reports/pit_v5.md)。

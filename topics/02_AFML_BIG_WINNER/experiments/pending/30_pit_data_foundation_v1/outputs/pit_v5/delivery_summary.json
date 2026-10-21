@@ -1,0 +1,107 @@
+{
+  "candidate_months": 525762,
+  "bridge_rows": 525987,
+  "old_bridge_columns_preserved": 41,
+  "label_rows": 6309144,
+  "known_inferred_rows": 6007218,
+  "six_month_known": 490174,
+  "six_month_qfq_loss_below_minus20": 99007,
+  "six_month_raw_loss_below_minus20": 113263,
+  "six_month_loss_classification_changed": 14274,
+  "policy_aliases_are_same_price_inference": true,
+  "raw_to_qfq_comparison_uses_same_entry_exit": true,
+  "no_actual_execution_or_wealth_certification": true,
+  "transform_source_hashes": {
+    "v5_core.py": "8d85c3810c542112bf9dd756d7b30b0c87417c4b40050fd7130887862c309e47",
+    "v5_dataset.py": "0a4ca085251bde7319512543de2ee5012058147b5b9038425917b9f5df3b6ff3",
+    "v5_factors.py": "28d9da716b24a1d05f61eeaa15136e20ee7d39a02022cfcd9f58431838146387",
+    "v5_labels.py": "53c516b1ff92e8f2361baa10c3018652713778e9f66fe95c19a73b55aefc59ca",
+    "v5_offline_replay.py": "782ca501fd679935247b6da1ab1e21b4a0d462121fb79b8757741808e1c6dedf",
+    "v5_prices.py": "5aa71ff13f62601032e1c6124dcfb90d80cf609414d12da7129834b0df3c780f",
+    "v5_seal.py": "006d615da2ac1f14436257272db10e73f30a3be660e3fe555355f4c7b2206dd8",
+    "v5_validate.py": "335003eac1156191d65f4214e19c8029a4d8f26282393a355d49dc6cac2d9973",
+    "archive.py": "9770e76a664d6cbbdacb76b4160274a6002fb6f970b0c432e834cc900b64f7b3",
+    "pit_v5.json": "9f1d5abf4a996588a49b536783727f6d8a21c0b18501bea103c70f8aeb9b8dab"
+  },
+  "version": "D2-v5-qfq-price-inference",
+  "baseline_v4": "a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6",
+  "price_security_count": 5919,
+  "price_security_count_with_qfq": 5823,
+  "raw_price_rows": 10542824,
+  "qfq_price_rows": 10541309,
+  "factor_acquisition": {
+    "queued": 6170,
+    "acquired": 6162,
+    "unresolved": 8,
+    "completed_at": "2026-10-21T16:00:38.731064+00:00"
+  },
+  "factor_attempts_verified": 6170,
+  "factor_gaps": 8,
+  "legacy_qfq_security_curves_compared": 4597,
+  "legacy_qfq_field_curves_with_residual_difference": 48,
+  "qfq_provider_sensitivity": {
+    "disagreement_securities": 24,
+    "legacy_source_functions": {
+      "stock_zh_a_daily": 4572,
+      "stock_zh_a_hist": 25
+    },
+    "residual_field_curves_by_source": {
+      "stock_zh_a_hist": 48
+    },
+    "main_provider_fixed_before_labels": true,
+    "no_adaptive_provider_selection": true,
+    "numerical_cause_not_independently_resolved": true,
+    "primary_values_remain_vendor_price_proxies": true,
+    "horizons": [
+      {
+        "horizon": "6_calendar_months",
+        "disagreement_security_months": 2283,
+        "known_primary_inferred_with_disagreement": 2139,
+        "same_dates_comparable": 2030,
+        "loss_classification_disagrees": 18
+      },
+      {
+        "horizon": "20_sessions",
+        "disagreement_security_months": 2283,
+        "known_primary_inferred_with_disagreement": 2254,
+        "same_dates_comparable": 2134,
+        "loss_classification_disagrees": 9
+      },
+      {
+        "horizon": "60_sessions",
+        "disagreement_security_months": 2283,
+        "known_primary_inferred_with_disagreement": 2210,
+        "same_dates_comparable": 2101,
+        "loss_classification_disagrees": 34
+      },
+      {
+        "horizon": "120_sessions",
+        "disagreement_security_months": 2283,
+        "known_primary_inferred_with_disagreement": 2139,
+        "same_dates_comparable": 2019,
+        "loss_classification_disagrees": 25
+      }
+    ],
+    "transform_source_hashes": {
+      "v5_core.py": "8d85c3810c542112bf9dd756d7b30b0c87417c4b40050fd7130887862c309e47",
+      "v5_dataset.py": "57e89ffb1d0b2d6b95115c59e294ef0e66b1d08e14caae333757dc03119c7335",
+      "v5_factors.py": "28d9da716b24a1d05f61eeaa15136e20ee7d39a02022cfcd9f58431838146387",
+      "v5_labels.py": "53c516b1ff92e8f2361baa10c3018652713778e9f66fe95c19a73b55aefc59ca",
+      "v5_offline_replay.py": "59e25c728ac4e6d6a104ffc8c98be5b2a538a8df613ca96d8e986295fc242e58",
+      "v5_prices.py": "e68313d6a350915a87f15efff9f00f831518d5c059252665476ec029ec299976",
+      "v5_qualify.py": "c37f668cc83768ca50e4d3d7a843368d03f062c8294672528fde58dd9efdfcfb",
+      "v5_report.py": "ad160eaf2b1f09f296fb76a5aeae2cd496fb175987a8c4609cbe29aee46bd441",
+      "v5_seal.py": "acae515d25659e247e5f60c1855c6727d1d77d851efb629759331bdfa2403ecb",
+      "v5_validate.py": "335003eac1156191d65f4214e19c8029a4d8f26282393a355d49dc6cac2d9973",
+      "archive.py": "9770e76a664d6cbbdacb76b4160274a6002fb6f970b0c432e834cc900b64f7b3",
+      "pit_v5.json": "9f1d5abf4a996588a49b536783727f6d8a21c0b18501bea103c70f8aeb9b8dab"
+    }
+  },
+  "canonical_alias_fallback_segments": 5,
+  "independently_matched_alias_segments": 246,
+  "all_horizons_and_policies_have_full_candidate_denominator": true,
+  "old_strict_results_retained": true,
+  "independent_full_pit_acceptance": false,
+  "generated_at": "2026-10-21T16:06:57.735855+00:00",
+  "report_transform_sha256": "ff83880700b5efa53985bfdcf785431e4280810cec8a1953072452cfd099bdc1"
+}

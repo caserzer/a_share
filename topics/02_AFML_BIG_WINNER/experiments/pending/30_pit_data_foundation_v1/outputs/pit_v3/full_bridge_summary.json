@@ -1,0 +1,110 @@
+{
+  "securities_with_candidate_months": 5823,
+  "candidate_month_rows": 525917,
+  "first_origin": "2017-01-26",
+  "last_origin": "2026-09-30",
+  "legacy_rows_preserved": 486561,
+  "legacy_columns_preserved": [
+    "date",
+    "instrument",
+    "security_id",
+    "board",
+    "D2_provisional_member",
+    "label_end",
+    "actual",
+    "start_quote",
+    "source",
+    "is_delisted",
+    "exchange",
+    "y_6",
+    "end_6",
+    "D0_member",
+    "D1_member",
+    "legacy_return_difference",
+    "legacy_knownness_differs",
+    "D2_added_vs_D1",
+    "D2_strict_member",
+    "D2_strict_member_reason",
+    "D2_price_label",
+    "D2_total_label",
+    "D2_executable_label",
+    "D2_label_reason",
+    "D2v2_start_raw_close_known",
+    "D2v2_end_raw_close_known",
+    "D2v2_start_vendor_suspended",
+    "D2v2_label_reason"
+  ],
+  "legacy_sha256": "665bb32063ea74ad198d5750f54464a25b7b6510fe26a02c31e101f5da2c7a0d",
+  "union_bridge_rows": 525918,
+  "new_month_or_identity_rows": 39357,
+  "bridge_sha256": "53b1c0a6c272d49aaec0692bd9afaad539f90a1ac1b27ddc64ee736c848d468a",
+  "labels": [
+    {
+      "path": "normalized/labels/6_calendar_months/price.parquet",
+      "sha256": "f93082a69d54683864a68b1c76a9be26a32ab418fe2b482ac4a360f3082a83c6",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/6_calendar_months/total.parquet",
+      "sha256": "49437948c9165d35cce5fddc71d07258541c30d2e32df74a78f1c04ce9a44adf",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/6_calendar_months/executable.parquet",
+      "sha256": "60636fec24d513062a9970647217d04caf5468638cfb65046d7c12d0b6f78515",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/20_sessions/price.parquet",
+      "sha256": "3fdee7f48b385c51dee9fcebedcf8236b3cf047a953425b31cfdfcabbd505354",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/20_sessions/total.parquet",
+      "sha256": "d5c8109e4dd8c5adc750953c0a0606b77359b95d3527f2c74cf365d9fe82d4d1",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/20_sessions/executable.parquet",
+      "sha256": "706275038112f54a22a8a9cb7bd56b776c85f583023c573ed860edcdba27c099",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/60_sessions/price.parquet",
+      "sha256": "3d480d8971b9af6e30c2323ef1ff0e697fa2ccbf3904f3b2a6e5b566d54740e3",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/60_sessions/total.parquet",
+      "sha256": "d755a63d0293e07ce2b6213db37e54e1a8ce91fd31e7cb9699f69380a12a84eb",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/60_sessions/executable.parquet",
+      "sha256": "68465b204215916042e296099205757a3b2c1d3ed4c8a4c2bec0b16c59c8e5ae",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/120_sessions/price.parquet",
+      "sha256": "d83d09225f49f4e43935ccf4db667391bfc86b85ba8f2d7056ad62e0010b3713",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/120_sessions/total.parquet",
+      "sha256": "deaddba18e6556b01121ee891d8e3fe11f7fe0c524b1ea22575ce87f817b810b",
+      "rows": 525917
+    },
+    {
+      "path": "normalized/labels/120_sessions/executable.parquet",
+      "sha256": "d67d9aaf7662ac9728eed79802bcfe7948e8471715dda86be9517c39b63237ec",
+      "rows": 525917
+    }
+  ],
+  "transform_sha256": "d7bc3f30a678eb28ee0a3ce84d645af49805a4e2fa28debcf44e544d5a14ee6d",
+  "bulk_fast_path_precondition": "all source can_buy/can_sell flags are null; enforced per security",
+  "strict_known": 0,
+  "proxy_diagnostics_are_not_strict_labels": true,
+  "inventory_sha256": "4d256be634a9d5860dd449ed637eb88a1ebadf82baee7d24002ca4f482ac0429",
+  "status_facts_sha256": "223844b1aee5a08c1dc45d37f032b35f58762c1772782b21d06d23c3f424086e",
+  "population_not_certified_from_current_metadata": true
+}

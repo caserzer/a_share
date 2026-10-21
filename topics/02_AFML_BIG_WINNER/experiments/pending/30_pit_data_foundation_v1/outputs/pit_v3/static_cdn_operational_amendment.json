@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-10-21T13:05:58.608970+00:00",
+  "host": "pdf.dfcfw.com",
+  "previous_interval_seconds": 1,
+  "new_minimum_interval_seconds": 0.25,
+  "scope": "public static PDFs only; dynamic APIs remain 1/s globally across workers",
+  "rationale": "bounded concurrent static-document acquisition; no source refusal in prior captured CDN attempts; stop host on 401/403/429",
+  "quality_gates_and_selection_rules_unchanged": true
+}

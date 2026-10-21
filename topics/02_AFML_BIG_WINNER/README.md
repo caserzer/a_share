@@ -1111,3 +1111,19 @@ Confirm early.
 Hold right tails.
 Size by probability, payoff, and risk.
 Validate without leakage.
+
+## EP30 数据地基交付（2026-10-21）
+
+新增 [D2 PIT基础与缺口审计](experiments/pending/30_pit_data_foundation_v1/README.md)。提供版本化as-of、Parquet/Qlib接口、标签合同、字段覆盖、旧新桥接和明确阻断证据；完整全历史PIT及可执行总收益仍BLOCKED，不启动新Alpha训练。原EP01—EP29历史判断保持不变。
+
+
+EP30 后续已追加 **D2 v2 实际补数（2026-10-21）**：行情接入至10月21日，历史缺源、内部截断、股本、公司行动、原始年报及北交所身份事件另版保存；[补数结果与残余缺口](experiments/pending/30_pit_data_foundation_v1/reports/backfill_v2.md)。原v1及旧研究结论保留，完整历史PIT与实际结算仍有明确阻断。
+
+
+2026-10-21：[D2-v3原始资格与权益补数](experiments/pending/30_pit_data_foundation_v1/reports/pit_v3.md)追加发布：原文状态、退市权益与扫描件候选、财报版本链和全月份严格标签；全量PIT/执行/终值仍受阻，旧研究结论保留。
+
+
+2026-10-21：EP30 追加 D2-v4，三组原件证明的连续代码变更修复重复身份及误报退市，删除155个重复证券月；退市披露代码桥接85家，原缺年报期66→43，重建6309144条严格标签，严格已知仍为0。79项测试通过；旧研究与三版封存保留。详见[本轮报告](experiments/pending/30_pit_data_foundation_v1/reports/pit_v4.md)。
+
+
+2026-10-22：EP30 追加 D2-v5，按用户指定将当前收益标签统一为前复权价格变化推断。原 D2 主行情确认未复权；新生成10541309行前复权开收盘可用报价，6309144行标签中6007218行可推断；24只证券的跨供应商复权差异单列标记。旧严格结果保留，未知退市终值不填零。详见[本轮报告](experiments/pending/30_pit_data_foundation_v1/reports/pit_v5.md)。

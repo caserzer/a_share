@@ -1,0 +1,36 @@
+{
+  "schema_version": "D2-v1",
+  "domain": "corporate_actions",
+  "format": "Parquet exchange table; timestamps require timezone contract",
+  "required_provenance": {
+    "event_time": "fact occurrence or report period",
+    "effective_time": "economic validity start",
+    "known_at": "verified first release or null; never ingestion backdated",
+    "source_observed_at": "actual observation UTC or offset timestamp",
+    "ingested_at": "actual ingestion timestamp",
+    "vendor_revision_time": "vendor clock or null",
+    "source_uri": "source or announcement id",
+    "source_sha256": "SHA256 of preserved source bytes",
+    "unit": "explicit unit",
+    "original_version": "source vintage id",
+    "transform_sha256": "transformation code SHA256",
+    "quality_tier": "four-tier classification"
+  },
+  "fields": {
+    "security_id": "id",
+    "action_id": "immutable id",
+    "kind": "cash_dividend/split/rights_issue/reorganization/termination",
+    "announcement_date": "release date",
+    "record_date": "entitlement record close",
+    "effective_date": "ex-right date",
+    "payment_date": "actual cash or share delivery date",
+    "cash_per_share": "gross CNY or unknown",
+    "share_multiplier": "ratio or unknown",
+    "subscription_cash": "cash outflow or unknown",
+    "settlement_date": "actual settlement or null",
+    "verified": "independent rights evidence; not inferred from factor"
+  },
+  "null_policy": "unknown is null with explicit reason; no synthetic zeros",
+  "publication_rule": "date only becomes available next verified session open",
+  "version_rule": "append only"
+}

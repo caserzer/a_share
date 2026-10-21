@@ -1,0 +1,73 @@
+{
+  "real_quote_replays": [
+    {
+      "instrument": "SH600000",
+      "cutoff": "2023-06-30 15:00",
+      "before": {
+        "open": 7.17,
+        "close": 7.24,
+        "volume": 19425283.0
+      },
+      "future_source_rows_removed_unchanged": true,
+      "future_quotes_perturbed_unchanged": true,
+      "strict_proxy_admission_blocked": true
+    },
+    {
+      "instrument": "SZ000001",
+      "cutoff": "2023-06-30 15:00",
+      "before": {
+        "open": 11.18,
+        "close": 11.23,
+        "volume": 51905258.0
+      },
+      "future_source_rows_removed_unchanged": true,
+      "future_quotes_perturbed_unchanged": true,
+      "strict_proxy_admission_blocked": true
+    },
+    {
+      "instrument": "SH600005",
+      "cutoff": "2017-01-20 15:00",
+      "before": {
+        "open": 3.74,
+        "close": 3.74,
+        "volume": "60314601"
+      },
+      "future_source_rows_removed_unchanged": true,
+      "future_quotes_perturbed_unchanged": true,
+      "strict_proxy_admission_blocked": true
+    }
+  ],
+  "real_financial_original_and_correction_replay": true,
+  "real_D2_unknown_label": {
+    "security_id": "D2-72423ab4f9235504a442e20abda98f5e",
+    "origin": "2021-01-29 15:00:00+08:00",
+    "horizon": "20",
+    "return_policy": "total",
+    "status": "UNKNOWN",
+    "reason": "UNKNOWN_BUY_EXECUTION",
+    "entry": null,
+    "target": "2021-03-05",
+    "exit": null,
+    "value": null,
+    "loss_below_minus20": null,
+    "mfe": null,
+    "mae": null,
+    "mature_at": null,
+    "quality_tier": "UNKNOWN/BLOCKED"
+  },
+  "fixture_leakage_tests_scope": [
+    "future_ST",
+    "current_shares",
+    "restatement",
+    "retrospective_qfq_factor",
+    "future_industry",
+    "next_open",
+    "suspension",
+    "delisting",
+    "cash_rights",
+    "UNKNOWN",
+    "source_conflict",
+    "Parquet_reconstruction"
+  ],
+  "temporal_leakage_failures": 0
+}

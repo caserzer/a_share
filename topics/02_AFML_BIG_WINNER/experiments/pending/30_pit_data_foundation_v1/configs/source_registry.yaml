@@ -1,0 +1,64 @@
+version: D2-v1
+policy:
+  credentials: do_not_read_or_publish
+  paid_sources: separate_user_approval_required
+  public_access_is_not_redistribution_license: true
+  raw_storage: external_private_content_addressed
+  default_rate_limit: sequential_requests_at_most_one_per_second_timeout_20s
+sources:
+  - id: legacy_akshare
+    primary: data/raw/akshare
+    backup: EP28_Sina_recovered_raw
+    fields: [identity, raw_OHLCV, qfq, shares, name_history]
+    historical_coverage: 'cached_2017-01-03_to_2026-05-29_main_board_chinext_only'
+    first_version: unproven_retrospective_vendor_history
+    tier_ceiling: Historical-proxy
+    license: upstream_data_rights_unconfirmed_do_not_publish_raw
+    cost: existing_cache_no_new_purchase
+    revisions: no_original_vendor_revision_clock
+  - id: sse_official
+    primary: https://www.sse.com.cn/assortment/stock/list/share/
+    backup: https://www.sse.com.cn/assortment/stock/list/delisting/
+    fields: [listing, delisting, board, announcements, corporate_actions]
+    historical_coverage: current_lists_and_individual_historical_disclosures_requires_reconciliation
+    first_version: current_list_not_historical_membership_proof
+    license: public_site_copyright_retained_raw_private
+    cost: public_access_no_purchase
+    revisions: archive_every_response_as_observed_do_not_backdate
+  - id: szse_official
+    primary: https://www.szse.cn/market/product/stock/list/index.html
+    backup: https://www.szse.cn/market/stock/suspend/index.html
+    fields: [listing, delisting, suspension, announcements]
+    historical_coverage: current_lists_plus_monthly_and_individual_disclosures
+    first_version: original_notice_bytes_and_release_time_required
+    license: public_site_copyright_retained_raw_private
+    cost: public_access_no_purchase
+    revisions: append_original_and_correction
+  - id: bse_official
+    primary: https://www.bse.cn/nq/listedcompany.html
+    backup: https://www.bse.cn/
+    fields: [listing, board, code_migrations, announcements]
+    historical_coverage: from_actual_BSE_listing_not_NEEQ_listing
+    first_version: per_listing_and_code_migration_notice_required
+    license: public_site_copyright_retained_raw_private
+    cost: public_access_no_purchase
+    revisions: code_changes_require_interval_identity_reconciliation
+  - id: cninfo_original
+    primary: https://www.cninfo.com.cn/
+    backup: exchange_original_announcements
+    fields: [financials, corrections, cash_dividends, share_rights, settlement]
+    historical_coverage: per_document_and_field_requires_evidence_inventory
+    first_version: original_announcement_id_bytes_publication_time_and_extracted_page
+    license: public_access_only_no_bulk_redistribution_permission_assumed
+    cost: no_purchase
+    revisions: original_and_restatement_separate_never_UPDATE_DATE_as_first_release
+  - id: legacy_financial_valuation_industry_macro
+    primary: EP24_to_EP29_source_receipts_and_caches
+    backup: cninfo_original_and_exchange_archives
+    fields: [financials, valuation, industry, macro, forecasts]
+    historical_coverage: audited_per_field_year_board
+    first_version: original_vendor_vintage_unproven
+    tier_ceiling: Historical-proxy
+    license: inherited_source_rights_unconfirmed_raw_private
+    cost: existing_cache_only
+    revisions: UPDATE_DATE_not_first_publication_current_industry_never_backfilled

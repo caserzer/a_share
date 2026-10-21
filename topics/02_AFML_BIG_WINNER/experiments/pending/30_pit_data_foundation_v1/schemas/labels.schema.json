@@ -1,0 +1,38 @@
+{
+  "schema_version": "D2-v1",
+  "domain": "labels",
+  "format": "Parquet exchange table; timestamps require timezone contract",
+  "required_provenance": {
+    "event_time": "fact occurrence or report period",
+    "effective_time": "economic validity start",
+    "known_at": "verified first release or null; never ingestion backdated",
+    "source_observed_at": "actual observation UTC or offset timestamp",
+    "ingested_at": "actual ingestion timestamp",
+    "vendor_revision_time": "vendor clock or null",
+    "source_uri": "source or announcement id",
+    "source_sha256": "SHA256 of preserved source bytes",
+    "unit": "explicit unit",
+    "original_version": "source vintage id",
+    "transform_sha256": "transformation code SHA256",
+    "quality_tier": "four-tier classification"
+  },
+  "fields": {
+    "security_id": "id",
+    "origin": "after-close decision time",
+    "horizon": "6_calendar_months or 20/60/120 sessions",
+    "return_policy": "price/total/executable",
+    "entry": "actual first filled next open or null",
+    "target": "target session",
+    "exit": "actual filled open or verified terminal cash endpoint",
+    "mature_at": "observable result time or null",
+    "status": "KNOWN/CENSORED/UNKNOWN",
+    "reason": "why result unknown",
+    "value": "return or null, never fill missing with zero",
+    "loss_below_minus20": "strict threshold or null",
+    "mfe": "maximum close-NAV excursion or null",
+    "mae": "minimum close-NAV excursion or null"
+  },
+  "null_policy": "unknown is null with explicit reason; no synthetic zeros",
+  "publication_rule": "date only becomes available next verified session open",
+  "version_rule": "append only"
+}

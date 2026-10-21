@@ -1,0 +1,28 @@
+version: D2-v4-retired-issuer-continuity
+cutoff: '2026-10-21'
+baseline_v3: 7aa946f77a7702afb4c4adcd4fb5e2db9a9a1aa64fad7d17f97095fa3d5b2012
+selection_before_values:
+  identity_review: scanned_confirmations_that_bridge_unrecovered_v2_selected_report_periods
+  financial_versions: all_2016_2025_annual_full_reports_for_verified_retired_identities_in_complete_v3_retirement_index
+  prior_missing_reports: all_v2_selected_periods_without_v3_full_report
+  continuation: original_retirement_listing_notices_for_verified_retired_identities
+evidence:
+  ocr_is_candidate_only: true
+  agent_pixel_review_is_not_independent_human_review: true
+  retired_code_is_disclosure_alias_not_same_exchange_trading_code: true
+  alias_known_at_required_for_asof_use: true
+  issuer_identity_does_not_prove_account_share_delivery: true
+  scheduled_listing_is_not_actual_first_trade: true
+  raw_prices_do_not_attest_open_execution: true
+  strict_label_contract_unchanged: true
+  original_and_revised_financial_values_separate: true
+  full_version_coverage_not_implied_by_report_index: true
+capture:
+  dynamic_minimum_interval_seconds: 1
+  static_pdf_minimum_interval_seconds: 0.25
+  inherit_v3_provider_stops: true
+  permanently_excluded_hosts: [np-cnotice-stock.eastmoney.com, www.neeq.com.cn]
+  stop_on_http: [401, 403, 429, 567]
+  public_raw_redistribution: false
+paid_access_or_credentials_authorized: false
+alpha_training: prohibited

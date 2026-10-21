@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "source_versions": 3,
+  "reviewed_fields": 5,
+  "facts": 15,
+  "replay": [
+    {
+      "decision_time": "2021-04-20 15:00",
+      "field": "financial:reviewed_reported_operating_cash_flow:2020-12-31",
+      "historical_value": null,
+      "original_versions": [],
+      "archived_value": null
+    },
+    {
+      "decision_time": "2021-04-21 09:30",
+      "field": "financial:reviewed_reported_operating_cash_flow:2020-12-31",
+      "historical_value": 4456443.98,
+      "original_versions": [
+        "AN202104201486637512"
+      ],
+      "archived_value": null
+    },
+    {
+      "decision_time": "2021-06-24 09:30",
+      "field": "financial:reviewed_reported_operating_cash_flow:2020-12-31",
+      "historical_value": 4456443.98,
+      "original_versions": [
+        "AN202106231499541174"
+      ],
+      "archived_value": null
+    },
+    {
+      "decision_time": "2023-04-04 15:00",
+      "field": "financial:reviewed_reported_operating_cash_flow:2020-12-31",
+      "historical_value": 4456443.98,
+      "original_versions": [
+        "AN202106231499541174"
+      ],
+      "archived_value": null
+    },
+    {
+      "decision_time": "2023-04-06 09:30",
+      "field": "financial:reviewed_reported_operating_cash_flow:2020-12-31",
+      "historical_value": -4549865.76,
+      "original_versions": [
+        "AN202304041585128585"
+      ],
+      "archived_value": null
+    }
+  ],
+  "future_version_deletion_invariant": true,
+  "archive_not_backdated": true,
+  "reviewed_version_namespace_does_not_claim_all_amendments_field_complete": true,
+  "independent_human_review": false,
+  "reviewed_facts_sha256": "2599498720035f53f00c75458e1db3c36e42d87eecf85c4ccc78939325334c18",
+  "transform_sha256": "926a2e9083bf536200fd66580030e327af2d8e4fe6e612fe35ad51681d0fb142"
+}

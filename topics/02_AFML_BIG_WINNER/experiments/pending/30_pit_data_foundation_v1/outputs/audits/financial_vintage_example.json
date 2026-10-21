@@ -1,0 +1,40 @@
+{
+  "status": "PARTIAL_SINGLE_FIELD_PIT_RECONSTRUCTION",
+  "security_id": "D2-99e6809882a45fbf8cccdbcdfb148887",
+  "instrument": "SZ000584",
+  "field": "financial:other_receivables_intercompany_balance:2023-12-31",
+  "original_source": "https://static.cninfo.com.cn/finalpage/2024-04-30/1219927356.PDF",
+  "correction_source": "https://static.cninfo.com.cn/finalpage/2024-07-31/1220755916.PDF",
+  "original_sha256": "11bdae464e5121b5d526c23c941550544c7604f89c31e9158071e409007224ff",
+  "correction_sha256": "97629243ea29d13dcd14246b08af175749cadbc34ef2d940365ea5c766b1693a",
+  "original_physical_page": 168,
+  "correction_physical_page": 1,
+  "facts_path": "/home/xiaolv/.cache/a_share/ep30_d2/vintages/facts.parquet",
+  "facts_sha256": "9defb1f98f4499256372533c85afae44e312dbd500ec37420803c50985d16759",
+  "values": {
+    "2024-04-30 15:00": {
+      "value": null,
+      "status": "UNKNOWN",
+      "reason": "NO_ELIGIBLE_RECORD"
+    },
+    "2024-05-06 15:00": {
+      "value": 91685852.54,
+      "status": "PIT-reconstructed",
+      "reason": "OK"
+    },
+    "2024-07-31 15:00": {
+      "value": 91685852.54,
+      "status": "PIT-reconstructed",
+      "reason": "OK"
+    },
+    "2024-08-01 15:00": {
+      "value": 37014048.62,
+      "status": "PIT-reconstructed",
+      "reason": "OK"
+    }
+  },
+  "time_truncation_invariant": true,
+  "archived_2024_unavailable": true,
+  "independent_human_review": false,
+  "scope": "one financial note item; no whole-statement or population certification"
+}

@@ -1,0 +1,122 @@
+{
+  "securities_with_candidate_months": 5820,
+  "candidate_month_rows": 525762,
+  "first_origin": "2017-01-26",
+  "last_origin": "2026-09-30",
+  "legacy_rows_preserved": 486561,
+  "legacy_columns_preserved": [
+    "date",
+    "instrument",
+    "security_id",
+    "board",
+    "D2_provisional_member",
+    "label_end",
+    "actual",
+    "start_quote",
+    "source",
+    "is_delisted",
+    "exchange",
+    "y_6",
+    "end_6",
+    "D0_member",
+    "D1_member",
+    "legacy_return_difference",
+    "legacy_knownness_differs",
+    "D2_added_vs_D1",
+    "D2_strict_member",
+    "D2_strict_member_reason",
+    "D2_price_label",
+    "D2_total_label",
+    "D2_executable_label",
+    "D2_label_reason",
+    "D2v2_start_raw_close_known",
+    "D2v2_end_raw_close_known",
+    "D2v2_start_vendor_suspended",
+    "D2v2_label_reason"
+  ],
+  "legacy_sha256": "665bb32063ea74ad198d5750f54464a25b7b6510fe26a02c31e101f5da2c7a0d",
+  "union_bridge_rows": 525987,
+  "new_month_or_identity_rows": 39426,
+  "bridge_sha256": "b71c92eb48ea7edf2b1d07fa41173bd84b53350f397cdc5c88c97fea7981935d",
+  "labels": [
+    {
+      "path": "normalized/labels/6_calendar_months/price.parquet",
+      "sha256": "f9eef969e127554d7bbdb756be0f3818be9cf97f14d9d339ae73ae43a2a668e9",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/6_calendar_months/total.parquet",
+      "sha256": "cd1e477abddc198add619b9998bdf9ca17f49595339e0f0a2f5fd566804ea2be",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/6_calendar_months/executable.parquet",
+      "sha256": "57a81be65ba2400c793829f8738ced53196a5eee533e7252580e6e2a7ce2c5da",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/20_sessions/price.parquet",
+      "sha256": "426c6310c197c1ec0ac1b859fe2c94ecd7a67350b52041bd2621dcf4b94e4a51",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/20_sessions/total.parquet",
+      "sha256": "ade1a68b68015aede0321a021c6a576471f965959bf641d05c4ea3d00ac39d1a",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/20_sessions/executable.parquet",
+      "sha256": "ec39729d928df5160481ce5bd34b38ba8dd4ad80cdbf791e21c665e7ad79f8ee",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/60_sessions/price.parquet",
+      "sha256": "ab8f3897fec0f72090d66facf931f5a6c14cc7714a3f07011504f9d174ca367f",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/60_sessions/total.parquet",
+      "sha256": "bd04f157aa688993cedc217eb0bd18c274bc56b3ebb98f1bc722567b4a710035",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/60_sessions/executable.parquet",
+      "sha256": "629de200a90e5674bba1a8a3ed678dbfe247679aa0fb8b92a95a1f4b394713bb",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/120_sessions/price.parquet",
+      "sha256": "630456d048fe37d4ff4cb5ec4386632bd3e8b71c2b747003957f566701369a91",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/120_sessions/total.parquet",
+      "sha256": "1c943c65918fe3d3f5239e141ee09182697c55f7d90a7a1b2152009c7fdeacc8",
+      "rows": 525762
+    },
+    {
+      "path": "normalized/labels/120_sessions/executable.parquet",
+      "sha256": "d544384d6ca38bf0841521e18c8a298302e854e2d6e6476de1b94fb4f15b4b71",
+      "rows": 525762
+    }
+  ],
+  "transform_sha256": "d7bc3f30a678eb28ee0a3ce84d645af49805a4e2fa28debcf44e544d5a14ee6d",
+  "bulk_fast_path_precondition": "all source can_buy/can_sell flags are null; enforced per security",
+  "strict_known": 0,
+  "proxy_diagnostics_are_not_strict_labels": true,
+  "inventory_sha256": "1fac43050af38c37b6753b5ba38a51fca8b0fa2f39e00fffe72e610e9f96f75e",
+  "status_facts_sha256": "eadc59e1882ea0b4eb05c1ecafc8646d33ecd397abe369c3789155541da5b64a",
+  "population_not_certified_from_current_metadata": true,
+  "v4_wrapper_transform_sha256": "a2eb38e3550e252fed728fe1905d11775ff0677292f06134263b91bc962f9312",
+  "code_change_identity_source_sha256s": [
+    "bf406b1759dd7fda45cc46927e36316840b0b1152bb40677a7b52e11568d4350",
+    "46160431c51df23c30b3be802eb140492255128fb166d103ed735a62f303ab05",
+    "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488"
+  ],
+  "legacy_alias_rows_retained": 224,
+  "legacy_rows_preserved_without_rekeying": true,
+  "historical_origin_codes_not_current_code_backfill": true,
+  "v3_candidate_month_rows": 525917,
+  "duplicate_security_months_removed": 155,
+  "strict_label_rows": 6309144
+}

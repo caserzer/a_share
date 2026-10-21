@@ -1,0 +1,77 @@
+{
+  "identity": {
+    "legacy_metadata": 4915,
+    "D1_metadata": 4819,
+    "excluded_from_D1": {
+      "IN_SCOPE": 4819,
+      "DELISTED_BEFORE_FIRST_MONTH_ORIGIN": 90,
+      "LISTED_AFTER_LAST_D0_ORIGIN": 6
+    },
+    "additional_observed_official": 625,
+    "provisional_inventory": 5540,
+    "complete_historical_population_certified": false,
+    "cross_code_identity_certified": false,
+    "official_historical_reconciliation": "BLOCKED",
+    "certified_identity_facts": 0
+  },
+  "quotes": {
+    "raw_source_securities": 4825,
+    "legacy_sources": 4597,
+    "recovered_sources": 228,
+    "unresolved_sources": 715,
+    "rows": 9091310,
+    "quarantined_rows": 7,
+    "share_history_files": 4597,
+    "EP05_states": {
+      "supported": 4597,
+      "missing_active_source": 229,
+      "missing_inactive_source": 89
+    },
+    "certified_status_rows": 0,
+    "latest_raw_observation": "2026-05-29",
+    "calendar_sessions": 2281
+  },
+  "domains": {
+    "financials": {
+      "files": 1647,
+      "rows_including_overlapping_pages": 122947,
+      "strict_gate": "BLOCKED",
+      "reason": "NO_COMPLETE_VERIFIED_FIRST_VINTAGE_OR_RIGHTS_LEDGER"
+    },
+    "valuation": {
+      "files": 1646,
+      "rows_including_overlapping_pages": 3313649,
+      "strict_gate": "BLOCKED",
+      "reason": "NO_COMPLETE_VERIFIED_FIRST_VINTAGE_OR_RIGHTS_LEDGER"
+    },
+    "industry": {
+      "files": 19,
+      "rows_including_overlapping_pages": 82897,
+      "strict_gate": "BLOCKED",
+      "reason": "NO_COMPLETE_VERIFIED_FIRST_VINTAGE_OR_RIGHTS_LEDGER"
+    },
+    "corporate_actions": {
+      "files": 71,
+      "rows_including_overlapping_pages": 66026,
+      "strict_gate": "BLOCKED",
+      "reason": "NO_COMPLETE_VERIFIED_FIRST_VINTAGE_OR_RIGHTS_LEDGER"
+    },
+    "macro": {
+      "files": 10,
+      "rows_including_overlapping_pages": 7050,
+      "strict_gate": "BLOCKED",
+      "reason": "NO_COMPLETE_VERIFIED_FIRST_VINTAGE_OR_RIGHTS_LEDGER"
+    }
+  },
+  "bridge": {
+    "D0_rows": 43960,
+    "D1_rows": 452846,
+    "union_rows": 452846,
+    "matched_rows": 43960,
+    "legacy_return_mismatch_max": 0.0,
+    "legacy_return_mismatch_count": 0,
+    "D2_strict_known_labels": 0,
+    "D2_population_unbiased": false,
+    "caution": "zero admitted strict records means blocked evidence, not an empty real market"
+  }
+}

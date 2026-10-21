@@ -1,0 +1,37 @@
+version: D2-v1
+timezone: Asia/Shanghai
+requested_start: '2017-01-03'
+requested_end: runtime_last_closed_verified_session
+tiers: [PIT-certified, PIT-reconstructed, Historical-proxy, UNKNOWN/BLOCKED]
+clocks:
+  historical_asof: known_at_and_effective_time_at_or_before_decision
+  archived_asof: historical_asof_and_verified_observed_snapshot_at_or_before_decision
+  date_only_publication: next_verified_session_open
+  date_only_ingestion: end_of_observed_day
+  no_publication_evidence: null_known_at_proxy_only
+revision: append_only_never_overwrite
+conflict: block_without_documented_resolution
+identity: stable_internal_id_with_interval_aliases_no_code_reuse_merge
+universe: listed_identity_separate_from_tradability_strategy_and_source_success
+missing_price: [NOT_LISTED, DELISTED, SUSPENDED, SOURCE_FAILURE, UNKNOWN]
+price_unit: CNY_per_share_unadjusted
+shares_unit: shares
+market_cap: same_date_raw_close_times_effective_total_shares
+returns:
+  entry: first_explicitly_buy_executable_open_strictly_after_decision
+  horizon_anchor: decision_session
+  horizons: [6_calendar_months, 20_sessions, 60_sessions, 120_sessions]
+  exit: first_explicitly_sell_executable_open_on_or_after_target_and_after_entry
+  six_month_target: first_calendar_session_on_or_after_decision_date_plus_6_calendar_months
+  loss_event: return_strictly_less_than_minus_0.20
+  mfe_mae: close_mark_to_market_between_entry_and_target_requires_complete_path
+  price_return: raw_exit_open_divided_by_raw_entry_open_minus_one
+  total_return: gross_cash_dividends_held_as_cash_no_reinvestment_plus_share_rights
+  executable_pnl: paid_cash_only_no_assumed_receivable_liquidation_explicit_costs
+  complex_rights: block_without_verified_entitlement_subscription_and_settlement
+  missing_terminal_value: UNKNOWN_no_default_zero_or_minus_100_percent
+  immature: CENSORED_until_target_and_actual_exit_observable
+  total_return_requires: independently_attested_complete_action_ledger_for_full_holding_interval
+  price_return_warning: split_or_other_share_changes_can_make_raw_price_return_economically_misleading
+storage: Parquet_exchange_layer_external_content_addressed_raw_archive
+qlib: MultiIndex_datetime_instrument_export_with_provenance_sidecar_no_proxy_promotion

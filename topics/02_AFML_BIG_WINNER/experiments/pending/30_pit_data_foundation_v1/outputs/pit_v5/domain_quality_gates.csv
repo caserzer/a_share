@@ -1,0 +1,9 @@
+domain,status,evidence,remaining
+qfq_price_change_inferred_labels,PARTIAL,6007218 known inferred / 6309144 records,"unknown endpoints, factors, conflicts or terminal wealth; censored future horizons"
+original_unadjusted_price_basis_audit,PASS,102 raw partitions; 529304 rows; all adjustflag=3,retrospective raw prices remain Historical-proxy
+observed_open_inference,ENABLED_BY_USER,actual fill and cash ledger no longer gate this price inference,actual execution and realized wealth remain unverified
+qfq_provider_disagreement,PARTIAL,24 securities separately flagged,different provider historical qfq curves not independently reconciled
+daily_historical_eligibility,BLOCKED,unchanged v4 per-field evidence,full daily historical qualification and limits
+retired_terminal_wealth,BLOCKED,249 provisional retirement or transfer outcomes,unknown terminal values are not zero or last-quote filled
+financial_version_coverage,PARTIAL,v4 selected report gaps remain 43 company-years,full first/revision field denominators
+industry_macro_complete_pit,BLOCKED,unchanged domain gates,historical original vintages

@@ -1,0 +1,35 @@
+version: D2-v2-backfill-20261021
+requested_start: '2017-01-03'
+requested_end: '2026-10-21'
+original_D2_v1_release: f97e739dcc7bae24ff996106343211a5d0bc05146f3d823dbefeac1d73b453b9
+policy:
+  preserve_v1_and_EP01_EP29: true
+  alpha_training: false
+  paid_sources_or_personal_credentials: false
+  historical_vendor_values_remain_proxy: true
+  missing_terminal_cash_never_default_zero: true
+  freeze_P0_quality_thresholds_unchanged: true
+  sequential_rate_per_provider_seconds: 1.0
+  failure_attempts: 3
+  retry_after_disconnect_seconds: [5, 15]
+  stop_on_explicit_permission_or_quota_refusal: true
+acquisition:
+  primary: BaoStock_public_anonymous_0.9.4_raw_TCP_responses
+  fields: [unadjusted_OHLCV, amount, isST, tradestatus, valuation_proxies, calendar, security_metadata]
+  recent_priority: '2026-05-25_to_2026-10-21'
+  historical_scope: existing_v1_plus_missing_security_full_Sina_histories
+  complete_bulk_daily_scope: 101_verified_sessions_20260525_to_20261021_plus_20170103_preflight
+  full_2017_onward_daily_ST_rebuild_completed: false
+  fallback_and_BSE: Sina_preserved_raw_history_bytes
+  official_identity: SSE_and_SZSE_current_and_delisted_lists
+  BSE_registry: CNINFO_A_share_registry_with_orgId_and_all_old_new_aliases
+  corporate_disclosure: CNINFO_original_PDFs_and_announcement_index
+  issuer_original_mirror: Eastmoney_original_issuer_PDF_and_public_announcement_index
+  BSE_official_working_host: https://www.bseinfo.net
+  BSE_official_source_uses_NE_EQ_dates_before_20211115: true
+  BSE_code_cutovers: [2025-05-06_pilot_six, 2025-10-09_remaining_242]
+  shares: existing_history_plus_new_public_share_change_records
+storage:
+  private_root: '~/.cache/a_share/ep30_d2/backfill_v2'
+  raw_bytes: parent_content_addressed_archive_and_private_release
+  public: counts_gaps_reconciliation_hashes_and_reports_only

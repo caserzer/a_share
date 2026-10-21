@@ -1,0 +1,47 @@
+version: D2-v5-qfq-price-inference
+authorization:
+  all_requested_return_policies: infer_from_price_changes
+  primary_basis: user_selected_forward_adjusted_price_changes
+  changes_v1_to_v4_strict_acceptance: false
+  price_inference_requires_actual_fill_or_cash_ledger: false
+  historical_proxy_may_become_certified_feature: false
+policy:
+  no_paid_sources_or_credentials: true
+  raw_redistribution_authorized: false
+  raw_storage: external_private_content_addressed
+  no_unknown_zero_fill: true
+  no_automatic_delisting_terminal_wealth: true
+sources:
+  - id: sina_public_qfq_divisors
+    primary: https://finance.sina.com.cn/realstock/company/{instrument}/qfq.js
+    fields: [effective_date, qfq_divisor]
+    method: unadjusted_OHLC_divided_by_divisor_without_rounding
+    join: backward_asof_no_missing_predecessor_fill
+    historical_vintage: collected_today_retrospective_history
+    tier_ceiling: Historical-proxy
+    minimum_interval_seconds: 0.25
+    concurrency: 1
+    cadence_scope: dedicated_v5_small_static_factor_responses
+    refusal_stop_http_status: [401, 403, 429, 567]
+    refusal_host_bypass: forbidden
+    cost: public_no_purchase
+    license: public_access_not_permission_to_redistribute_raw
+    receipt: exact_body_SHA256_plus_collector_source_SHA256_at_start
+  - id: frozen_v4_unadjusted_prices
+    release: a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6
+    fields: [date, open, high, low, close, volume, conflicts, source_hashes]
+    primary_basis: unadjusted
+    historical_vintage: retrospective_multiple_provider_history
+    tier_ceiling: Historical-proxy
+    revision: verify_every_copied_input_against_frozen_manifest
+  - id: legacy_sina_qfq
+    primary: topics/02_AFML_BIG_WINNER/data/raw/akshare/day/qfq
+    purpose: audit_curve_after_scalar_reanchoring_and_allow_two_decimal_rounding
+    tier_ceiling: Historical-proxy
+    raw_bytes: independently_archived_for_offline_replay
+  - id: baostock_public_factor_probe
+    methods: [query_daily_adjust_factor, query_adjust_factor]
+    purpose: provider_method_and_factor_direction_probe_only
+    minimum_interval_seconds: 1
+    tier_ceiling: Historical-proxy
+    main_labels_mix_factor_providers: false
