@@ -93,3 +93,7 @@ EP30 追加 [D2 v2 实际补数](pending/30_pit_data_foundation_v1/reports/backf
 
 
 2026-10-22：EP30 追加 D2-v5，按用户指定将当前收益标签统一为前复权价格变化推断。原 D2 主行情确认未复权；新生成10541309行前复权开收盘可用报价，6309144行标签中6007218行可推断；24只证券的跨供应商复权差异单列标记。旧严格结果保留，未知退市终值不填零。详见[本轮报告](pending/30_pit_data_foundation_v1/reports/pit_v5.md)。
+
+## EP31 量价八假说验证（2026-10-22，已立项 / 未执行）
+
+[EP31 GOAL](pending/31_price_volume_hypotheses_oos_walk_forward/GOAL.md)：基于 EP30 D2-v5 检验 H01/H02/H03/H07/H09/H10/H11/H12；强制 nested purged OOS、按季 expanding/rolling walk-forward、标签成熟性、历史 proxy 与真正前瞻区分。H09 无逐笔数据则 BLOCKED，不伪造。当前仅创建研究合同和执行入口，尚无实证结果。
