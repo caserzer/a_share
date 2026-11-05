@@ -1,0 +1,65 @@
+version: EP31-P0-v1
+release_id: 9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e
+observation_cutoff: '2026-10-21 15:00:00'
+quality: Historical-proxy / inferred
+primary:
+  H01: {feature: atr, horizon: 20, endpoint: adjusted_return, direction: -1}
+  H02: {feature: mavd, horizon: 60, endpoint: adjusted_return, direction: -1}
+  H03: {feature: momentum_turnover, horizon: 20, endpoint: adjusted_return, direction: -1}
+  H07: {feature: abnormal_volume, horizon: 20, endpoint: log_variance_mse, direction: 1}
+  H09: {feature: small_trade_share, horizon: 20, endpoint: adjusted_return, direction: 1}
+  H10: {feature: high_turnover_low_eff, horizon: 20, endpoint: downside_brier, direction: 1}
+  H11: {feature: relative_volume, horizon: 20, endpoint: adjusted_return, direction: -1}
+  H12: {feature: trend_decay, horizon: 20, endpoint: adjusted_return, direction: -1}
+features:
+  warmup: 250
+  turnover_windows: [20, 250]
+  volume_windows: [21, 200]
+  breakthrough_window: 120
+  episode_cooling_sessions: 20
+  tail_return_threshold: -0.10
+  failure_10: {horizon: 10, return_below: -0.05}
+  confirm_20: {horizon: 20, return_above: 0.05}
+  continuation_60: {horizon: 60, return_above: 0.10}
+  winner_120: {horizon: 120, return_above: 0.50}
+  abnormal_high_quantile: 0.80
+  efficiency_low_quantile: 0.20
+  sort_quantiles: [0.10, 0.90]
+  momentum_turnover_sort: [0.30, 0.70]
+  epsilon: 1.0e-12
+models:
+  family: ridge_with_train_fitted_winsor_median_standardization
+  alpha_candidates: [1.0, 100.0]
+  winner_filter_quantile: 0.20
+  combined_selection: inner_validation_loss_only
+  controls: [mom20, mom60, rv5, rv20, rv60, log_turnover, log_float_cap_proxy, log_money, amplitude, day_return, breakthrough_strength]
+  missing_policy: train_median_plus_missing_indicators
+  winsor_quantiles: [0.01, 0.99]
+  sector_control: BLOCKED_NO_HISTORICAL_INDUSTRY
+  float_cap: raw_close_times_volume_divided_by_turnover_rate_PROXY_not_certified_shares
+statistics:
+  seed: 310021
+  bootstrap_replicates: 1999
+  bootstrap: stationary_month_blocks_preserve_full_date_cross_section
+  expected_block_months: 6
+  confidence: 0.95
+  fdr: BH_across_eligible_primary_hypotheses
+  q_threshold: 0.05
+  minimum_consistent_folds: 0.70
+  minimum_month_blocks: 24
+  primary_estimate_returns: train_scaled_partial_slope_of_factor_on_baseline_residual
+  primary_estimate_H07_H10: paired_OOS_loss_baseline_minus_augmented
+  placebo: [lag_20_sessions, within_date_board_permutation, train_label_permutation]
+  secondary_results: descriptive_not_confirmatory_no_parameter_search
+costs:
+  round_trip_bps: [0, 20, 50, 100]
+  portfolio: equal_weight_top_decile_baseline_predicted_return_long_only
+  holding_sessions: 20
+  execution: observed_positive_volume_next_open_assumed_fill
+  actual_execution_certified: false
+conclusion:
+  historical_name: historical_simulated_OOS_chronological_OOF
+  unsupported_allowed: true
+  full_independent_alpha_claim_blocked_by_missing_industry_and_PIT: true
+  forward_required: new_time_snapshot_after_final_code_freeze_or_explicit_blocker
+  trading: TRADING_NOT_AUTHORIZED

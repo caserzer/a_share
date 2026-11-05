@@ -1,0 +1,14 @@
+revision: EP31-P0-R01
+parent: EP31-P0-v1
+reason: Original six-month validation ended at fit cutoff; the final three-month slot often contained no mature 60-session labels.
+observed_outer_metrics: false
+preserve_attempt_01: true
+change:
+  validation_end: market_calendar_session_at_fit_cutoff_minus_endpoint_horizon
+  validation_start: validation_end_minus_six_calendar_months
+  inner_slots: two_consecutive_three_calendar_month_segments
+  maturity_rule: still_mature_at_strictly_before_outer_fit_cutoff
+  interval_purge: still_training_mature_at_strictly_before_inner_start
+  minimum_train_months: 24
+unchanged: [hypotheses, endpoints, directions, outer_quarter_start, expanding_window, rolling36_window, alpha_candidates, thresholds, statistics, success_criteria]
+scope: all_seven_hypotheses_and_big_winner_use_the_same_endpoint_maturity_alignment

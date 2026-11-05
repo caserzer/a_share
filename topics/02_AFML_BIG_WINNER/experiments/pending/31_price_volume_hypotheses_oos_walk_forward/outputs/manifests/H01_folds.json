@@ -1,0 +1,3109 @@
+{
+  "folds": [
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2021Q1",
+      "fit_cutoff": "2021-01-01 00:00:00",
+      "train_rows": 379807,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2020-11-27 00:00:00",
+      "max_train_mature_at": "2020-12-29 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2020-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.028501604536136666
+        },
+        {
+          "start": "2020-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.02849958214666257
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013286186956396625
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013285151614970674
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2020-06-04 00:00:00",
+          "train_rows": 289086,
+          "validation_rows": 39258,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-04-30 00:00:00",
+          "max_maturity": "2020-06-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "train_rows": 328374,
+          "validation_rows": 39343,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-07-31 00:00:00",
+          "max_maturity": "2020-09-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0032916399310242545,
+      "test_rows": 37181,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2021Q1.pkl",
+      "model_sha256": "289c1cc34cdf4d072fd1e2997b655ceee8eb0777b370ccfebf59dd761281b864",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2021Q1.parquet",
+      "predictions_sha256": "1b5b46f7ce78627c05334531a08e68f955270d54e0bdec2d7c7cff8d51b316e0",
+      "predictions_written_at": "2026-10-22T07:47:37.749807+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2021Q2",
+      "fit_cutoff": "2021-04-01 00:00:00",
+      "train_rows": 419950,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2021-02-26 00:00:00",
+      "max_train_mature_at": "2021-03-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013286737082603639
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013285701735690984
+        },
+        {
+          "start": "2020-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01831116653722736
+        },
+        {
+          "start": "2020-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01830910435725847
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2020-09-04 00:00:00",
+          "train_rows": 328374,
+          "validation_rows": 39344,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-07-31 00:00:00",
+          "max_maturity": "2020-09-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2020-12-04 00:00:00",
+          "train_rows": 367624,
+          "validation_rows": 40142,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-10-30 00:00:00",
+          "max_maturity": "2020-12-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0015528235722578165,
+      "test_rows": 40573,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2021Q2.pkl",
+      "model_sha256": "79d99d9da9ce23f3cd0db2abfe98edb213585175ee2f6cbcba364ad849a1c48f",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2021Q2.parquet",
+      "predictions_sha256": "eb431d40105e2f0f4b915bafb743efa6b65928998edb33f19c5158dc9fcd318b",
+      "predictions_written_at": "2026-10-22T07:47:45.143831+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2021Q3",
+      "fit_cutoff": "2021-07-01 00:00:00",
+      "train_rows": 460372,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2021-05-28 00:00:00",
+      "max_train_mature_at": "2021-06-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2020-12-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01831106963936691
+        },
+        {
+          "start": "2020-12-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.018309007937748464
+        },
+        {
+          "start": "2021-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.016575319945255775
+        },
+        {
+          "start": "2021-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.016575002762279537
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2020-12-02 00:00:00",
+          "train_rows": 367624,
+          "validation_rows": 40144,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-10-30 00:00:00",
+          "max_maturity": "2020-12-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-03-02 00:00:00",
+          "train_rows": 404448,
+          "validation_rows": 40420,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-01-22 00:00:00",
+          "max_maturity": "2021-03-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0024918645332777734,
+      "test_rows": 44816,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2021Q3.pkl",
+      "model_sha256": "03a69f88009d71fcf706b23a60230cfb4d314340bb4fe11ca590de4226831316",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2021Q3.parquet",
+      "predictions_sha256": "13906238d82e02aff34a84abbc415104aeca7657880c7f7b4e05fe4881d03d26",
+      "predictions_written_at": "2026-10-22T07:47:52.874527+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2021Q4",
+      "fit_cutoff": "2021-10-01 00:00:00",
+      "train_rows": 501498,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2021-08-27 00:00:00",
+      "max_train_mature_at": "2021-09-30 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2021-03-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01657349478073534
+        },
+        {
+          "start": "2021-03-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.016573177605054428
+        },
+        {
+          "start": "2021-06-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.023872606243212906
+        },
+        {
+          "start": "2021-06-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.02387334262113752
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-03-01 00:00:00",
+          "train_rows": 404447,
+          "validation_rows": 40424,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-01-22 00:00:00",
+          "max_maturity": "2021-02-26 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-06-01 00:00:00",
+          "train_rows": 444792,
+          "validation_rows": 41122,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-04-23 00:00:00",
+          "max_maturity": "2021-05-31 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.003805481144927126,
+      "test_rows": 43141,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2021Q4.pkl",
+      "model_sha256": "8342bb75f6a8de54d884ce2359e5cba1885ecec0337d084ba39303c56712eb26",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2021Q4.parquet",
+      "predictions_sha256": "bafad9cf3b71dbf773b43ea0306cb631fe9c24d531aea6940f041b37ecc543d3",
+      "predictions_written_at": "2026-10-22T07:48:01.160737+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2022Q1",
+      "fit_cutoff": "2022-01-01 00:00:00",
+      "train_rows": 547500,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2021-12-03 00:00:00",
+      "max_train_mature_at": "2021-12-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2021-06-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.023653631565938513
+        },
+        {
+          "start": "2021-06-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.023654193105838956
+        },
+        {
+          "start": "2021-09-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.018609129610916195
+        },
+        {
+          "start": "2021-09-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01860768492293644
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-06-06 00:00:00",
+          "train_rows": 450988,
+          "validation_rows": 41233,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-05-07 00:00:00",
+          "max_maturity": "2021-06-04 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-09-06 00:00:00",
+          "train_rows": 491908,
+          "validation_rows": 42763,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-08-06 00:00:00",
+          "max_maturity": "2021-09-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005048123611743803,
+      "test_rows": 37364,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2022Q1.pkl",
+      "model_sha256": "df66c76e0406ad2a7f128a3c8825c60fdc00cedf85a37f47422ede05d7334c12",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2022Q1.parquet",
+      "predictions_sha256": "4f0704cad3bc75ca0aa38429a2ffe606e3a88981a0c796e52fc3175528f9a4e7",
+      "predictions_written_at": "2026-10-22T07:48:10.478947+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2022Q2",
+      "fit_cutoff": "2022-04-01 00:00:00",
+      "train_rows": 584560,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2022-02-25 00:00:00",
+      "max_train_mature_at": "2022-03-29 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2021-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01869010221064152
+        },
+        {
+          "start": "2021-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.018688659803502077
+        },
+        {
+          "start": "2021-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.016982216073048995
+        },
+        {
+          "start": "2021-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.016982415903546738
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-09-04 00:00:00",
+          "train_rows": 491908,
+          "validation_rows": 42768,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-08-06 00:00:00",
+          "max_maturity": "2021-09-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-12-04 00:00:00",
+          "train_rows": 534210,
+          "validation_rows": 37055,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-11-05 00:00:00",
+          "max_maturity": "2021-12-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0038960241389968454,
+      "test_rows": 45371,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2022Q2.pkl",
+      "model_sha256": "ede40093b4324f46664bbae34409d202f1b7ddeb641d8c3c0f912f04084bfdc3",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2022Q2.parquet",
+      "predictions_sha256": "97489a471e9a820e9fe789c169d363127e4e7afaa55b5f3752d455ac0908a4a6",
+      "predictions_written_at": "2026-10-22T07:48:21.730870+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2022Q3",
+      "fit_cutoff": "2022-07-01 00:00:00",
+      "train_rows": 629433,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2022-05-27 00:00:00",
+      "max_train_mature_at": "2022-06-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2021-12-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.017071404532828557
+        },
+        {
+          "start": "2021-12-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.017071447299807533
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02328073859682459
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.023280929158789945
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-12-02 00:00:00",
+          "train_rows": 530900,
+          "validation_rows": 40382,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2021-10-29 00:00:00",
+          "max_maturity": "2021-11-29 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "train_rows": 570989,
+          "validation_rows": 44873,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-01-21 00:00:00",
+          "max_maturity": "2022-03-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005060356402656148,
+      "test_rows": 50746,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2022Q3.pkl",
+      "model_sha256": "12edd914a56670d5ad740386dbed3c08649a965e13f5966601ca2385da3b1689",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2022Q3.parquet",
+      "predictions_sha256": "8d668e69020af6de0a3747d5aef6272c903343447724fd13097ad228e1eaefad",
+      "predictions_written_at": "2026-10-22T07:48:33.139364+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2022Q4",
+      "fit_cutoff": "2022-10-01 00:00:00",
+      "train_rows": 676063,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2022-08-26 00:00:00",
+      "max_train_mature_at": "2022-09-27 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.023285373950314756
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.023285565281022682
+        },
+        {
+          "start": "2022-06-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.015082134077314548
+        },
+        {
+          "start": "2022-06-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.015082064364620135
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-03-02 00:00:00",
+          "train_rows": 570989,
+          "validation_rows": 44879,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-01-21 00:00:00",
+          "max_maturity": "2022-03-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-06-02 00:00:00",
+          "train_rows": 615484,
+          "validation_rows": 46624,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-04-29 00:00:00",
+          "max_maturity": "2022-06-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.004879912871581726,
+      "test_rows": 44572,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2022Q4.pkl",
+      "model_sha256": "a8d10fb1085b94db5fdb32eca55fa555cc010cb42669ac4d7d98b03c241ebd87",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2022Q4.parquet",
+      "predictions_sha256": "ff0f6d49c37bdffcf4d379a003bcd09b3fa320045ace46106b9d8733cfd52c89",
+      "predictions_written_at": "2026-10-22T07:48:43.657512+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2023Q1",
+      "fit_cutoff": "2023-01-01 00:00:00",
+      "train_rows": 723991,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2022-12-02 00:00:00",
+      "max_train_mature_at": "2022-12-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2022-06-05 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.014950703760663119
+        },
+        {
+          "start": "2022-06-05 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01495069659500711
+        },
+        {
+          "start": "2022-09-05 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013230174716076017
+        },
+        {
+          "start": "2022-09-05 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013230161484523708
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-06-05 00:00:00",
+          "train_rows": 615484,
+          "validation_rows": 46750,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-04-29 00:00:00",
+          "max_maturity": "2022-06-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-09-05 00:00:00",
+          "train_rows": 665171,
+          "validation_rows": 44276,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-08-05 00:00:00",
+          "max_maturity": "2022-09-02 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005162213269485116,
+      "test_rows": 45459,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2023Q1.pkl",
+      "model_sha256": "c8616764d7065148c14f30d68e9558e2f8b971d5c7e8012b446b4c447c7db1e3",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2023Q1.parquet",
+      "predictions_sha256": "44fa29bd99c62ed6af21676b420ceae93522391df80c09166c8d8e96fedcb7ab",
+      "predictions_written_at": "2026-10-22T07:48:57.126153+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2023Q2",
+      "fit_cutoff": "2023-04-01 00:00:00",
+      "train_rows": 769154,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2023-03-03 00:00:00",
+      "max_train_mature_at": "2023-03-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2022-09-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013230708542742114
+        },
+        {
+          "start": "2022-09-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01323069715567947
+        },
+        {
+          "start": "2022-12-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.010569388015927014
+        },
+        {
+          "start": "2022-12-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010569101483746826
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-09-06 00:00:00",
+          "train_rows": 665173,
+          "validation_rows": 44285,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-08-05 00:00:00",
+          "max_maturity": "2022-09-05 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-12-06 00:00:00",
+          "train_rows": 709139,
+          "validation_rows": 45154,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-11-04 00:00:00",
+          "max_maturity": "2022-12-02 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005272324210112034,
+      "test_rows": 49991,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2023Q2.pkl",
+      "model_sha256": "84e8daed64939a50b4ef20f90445913fc4ae50dc64d58c0c8548c6e95e5e47f8",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2023Q2.parquet",
+      "predictions_sha256": "14dcb34624eac3c747a2c87b914c21bc33fbff2fc3af9af38abacbaf483c9a9b",
+      "predictions_written_at": "2026-10-22T07:49:10.096301+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2023Q3",
+      "fit_cutoff": "2023-07-01 00:00:00",
+      "train_rows": 815021,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2023-05-26 00:00:00",
+      "max_train_mature_at": "2023-06-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2022-12-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.010666775662671933
+        },
+        {
+          "start": "2022-12-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010666477969262534
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01261400714147962
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.012613890162111884
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-12-01 00:00:00",
+          "train_rows": 705437,
+          "validation_rows": 45077,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2022-10-28 00:00:00",
+          "max_maturity": "2022-11-29 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "train_rows": 750222,
+          "validation_rows": 49667,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-01-20 00:00:00",
+          "max_maturity": "2023-02-28 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0048463536699301455,
+      "test_rows": 51096,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2023Q3.pkl",
+      "model_sha256": "cf791b7c47f79ba8d69d0ffbc1439ce3788e29db15ae0b9e29fad80d297db69b",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2023Q3.parquet",
+      "predictions_sha256": "bf2c59e8761d6bd85a0ed921bea34d86e34e6a85df4d0709cea85c24080ce71f",
+      "predictions_written_at": "2026-10-22T07:49:26.542824+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2023Q4",
+      "fit_cutoff": "2023-10-01 00:00:00",
+      "train_rows": 865678,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2023-08-25 00:00:00",
+      "max_train_mature_at": "2023-09-22 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.012620160766072919
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.012620043954383577
+        },
+        {
+          "start": "2023-06-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.008258067173878027
+        },
+        {
+          "start": "2023-06-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.008258192531691041
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-03-01 00:00:00",
+          "train_rows": 750222,
+          "validation_rows": 49673,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-01-20 00:00:00",
+          "max_maturity": "2023-02-28 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-06-01 00:00:00",
+          "train_rows": 799683,
+          "validation_rows": 50651,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-04-28 00:00:00",
+          "max_maturity": "2023-05-31 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.004973278512142579,
+      "test_rows": 48321,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2023Q4.pkl",
+      "model_sha256": "0e985a361f1027255f0cfecc37f38777f2a80dde8600af44e194373e03f0e17b",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2023Q4.parquet",
+      "predictions_sha256": "e96b220ec899ff9e1f0df400d5c70a95ea1b36fd36a12efce5726fcec7a654a1",
+      "predictions_written_at": "2026-10-22T07:49:41.197141+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2024Q1",
+      "fit_cutoff": "2024-01-01 00:00:00",
+      "train_rows": 917584,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2023-12-01 00:00:00",
+      "max_train_mature_at": "2023-12-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.008237194263884338
+        },
+        {
+          "start": "2023-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.008237357335418359
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.010034563560927757
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010034715114140468
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-06-04 00:00:00",
+          "train_rows": 803494,
+          "validation_rows": 50733,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-05-05 00:00:00",
+          "max_maturity": "2023-06-02 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "train_rows": 853892,
+          "validation_rows": 47961,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-08-04 00:00:00",
+          "max_maturity": "2023-09-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.00480154317768716,
+      "test_rows": 49119,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2024Q1.pkl",
+      "model_sha256": "1837c178025e9527a5776e9ae94fa5d9f7e70893263371a545da63ef21e4eedb",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2024Q1.parquet",
+      "predictions_sha256": "5da21cec424ee15f23296579eca1b1d0e7c44dd1d85146429005222c42d48637",
+      "predictions_written_at": "2026-10-22T07:50:00.689610+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2024Q2",
+      "fit_cutoff": "2024-04-01 00:00:00",
+      "train_rows": 966463,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2024-03-01 00:00:00",
+      "max_train_mature_at": "2024-03-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.010034977182046188
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010035128654201962
+        },
+        {
+          "start": "2023-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.023351773007265066
+        },
+        {
+          "start": "2023-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.023353359031597156
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-09-04 00:00:00",
+          "train_rows": 853892,
+          "validation_rows": 47965,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-08-04 00:00:00",
+          "max_maturity": "2023-09-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-12-04 00:00:00",
+          "train_rows": 901463,
+          "validation_rows": 48875,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-11-03 00:00:00",
+          "max_maturity": "2023-12-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.00565507796889693,
+      "test_rows": 53847,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2024Q2.pkl",
+      "model_sha256": "deabf081fd6fe143ff59ca87d781a621e02144fdf22737b99df04e92c528caec",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2024Q2.parquet",
+      "predictions_sha256": "b1dd31a9253cd1c68c8b2be992c068a66e9bfc850721f120d18a128902debfdc",
+      "predictions_written_at": "2026-10-22T07:50:20.432280+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2024Q3",
+      "fit_cutoff": "2024-07-01 00:00:00",
+      "train_rows": 1015974,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2024-05-24 00:00:00",
+      "max_train_mature_at": "2024-06-24 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-11-30 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.0228405028967108
+        },
+        {
+          "start": "2023-11-30 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.02284209124377322
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.016391401862415278
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.016391821300257247
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-11-30 00:00:00",
+          "train_rows": 897456,
+          "validation_rows": 48823,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2023-10-27 00:00:00",
+          "max_maturity": "2023-11-24 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "train_rows": 946015,
+          "validation_rows": 53610,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-01-19 00:00:00",
+          "max_maturity": "2024-02-27 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005075964854413065,
+      "test_rows": 58892,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2024Q3.pkl",
+      "model_sha256": "0b89214b906f2ca97c561162e49b2ca6d29d50d4c128ff5a6b20fb4d09540138",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2024Q3.parquet",
+      "predictions_sha256": "f9a21f6fdd18c43cda61e534f9b7ff45e4d302d0b9da4b79ca4dde3823be08ea",
+      "predictions_written_at": "2026-10-22T07:50:43.034787+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2024Q4",
+      "fit_cutoff": "2024-10-01 00:00:00",
+      "train_rows": 1070338,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2024-08-23 00:00:00",
+      "max_train_mature_at": "2024-09-25 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.016391401862415278
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.016391821300257247
+        },
+        {
+          "start": "2024-05-30 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.009917608645421516
+        },
+        {
+          "start": "2024-05-30 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.009917665303651894
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-02-29 00:00:00",
+          "train_rows": 946015,
+          "validation_rows": 53610,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-01-19 00:00:00",
+          "max_maturity": "2024-02-27 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-05-30 00:00:00",
+          "train_rows": 999444,
+          "validation_rows": 54364,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-04-26 00:00:00",
+          "max_maturity": "2024-05-29 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005267878125794192,
+      "test_rows": 50549,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2024Q4.pkl",
+      "model_sha256": "c600948f0a252d97457e5b18ca2745183ac8b81a733b460bab7f165723eb54b8",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2024Q4.parquet",
+      "predictions_sha256": "d77a5c1a60b8c9404dd9da1e5d24ed53dab637850025e72b57ec17466f09b36c",
+      "predictions_written_at": "2026-10-22T07:51:06.557031+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2025Q1",
+      "fit_cutoff": "2025-01-01 00:00:00",
+      "train_rows": 1129349,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2024-11-29 00:00:00",
+      "max_train_mature_at": "2024-12-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2024-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02201431163343863
+        },
+        {
+          "start": "2024-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.022014124943142865
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.047827645149689915
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.047826801476808366
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-06-04 00:00:00",
+          "train_rows": 1003560,
+          "validation_rows": 54435,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-04-30 00:00:00",
+          "max_maturity": "2024-05-31 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "train_rows": 1057705,
+          "validation_rows": 54789,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-08-02 00:00:00",
+          "max_maturity": "2024-08-30 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005752780262677361,
+      "test_rows": 54794,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2025Q1.pkl",
+      "model_sha256": "a1cc6edde6f8c5106afe15ac013cadbe4353d14e2c38dc7efc0f9aeb0feffab5",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2025Q1.parquet",
+      "predictions_sha256": "78ef70d45e000925af612c98f47d5133f36bb6f070660eaa23eff915d7d6e3e3",
+      "predictions_written_at": "2026-10-22T07:51:26.760926+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2025Q2",
+      "fit_cutoff": "2025-04-01 00:00:00",
+      "train_rows": 1184156,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2025-02-28 00:00:00",
+      "max_train_mature_at": "2025-03-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.04783296632474026
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.04783212135885648
+        },
+        {
+          "start": "2024-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.020530625369664865
+        },
+        {
+          "start": "2024-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.020531124879842953
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-09-04 00:00:00",
+          "train_rows": 1057705,
+          "validation_rows": 54797,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-08-02 00:00:00",
+          "max_maturity": "2024-08-30 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-12-04 00:00:00",
+          "train_rows": 1112505,
+          "validation_rows": 54799,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-11-01 00:00:00",
+          "max_maturity": "2024-11-29 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.00590213736862775,
+      "test_rows": 53871,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2025Q2.pkl",
+      "model_sha256": "d3a4ad30b4a6fa107d38a1b2286af91a07341a5ef09fc7493165a9471389579f",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2025Q2.parquet",
+      "predictions_sha256": "8c269e96b99faacf8f615ae5ac982ccba160570afa231553d0e5ad60cde2cac5",
+      "predictions_written_at": "2026-10-22T07:51:46.371927+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2025Q3",
+      "fit_cutoff": "2025-07-01 00:00:00",
+      "train_rows": 1238385,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2025-05-30 00:00:00",
+      "max_train_mature_at": "2025-06-30 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2024-12-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.0205352188841291
+        },
+        {
+          "start": "2024-12-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.020535718487460074
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.015416117608007162
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.015415903556014758
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-12-03 00:00:00",
+          "train_rows": 1112505,
+          "validation_rows": 54804,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2024-11-01 00:00:00",
+          "max_maturity": "2024-11-29 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "train_rows": 1158847,
+          "validation_rows": 54224,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-01-17 00:00:00",
+          "max_maturity": "2025-02-28 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.006163244377799559,
+      "test_rows": 57460,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2025Q3.pkl",
+      "model_sha256": "aae6e44519a9d525938575cef0d9dc4165cfc0f2c1df71d857ab9cc9e90ce9b1",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2025Q3.parquet",
+      "predictions_sha256": "199ff00754227fe9868476d4b703b076ab4dbb2f296c1ebbbf161c3b75d3b233",
+      "predictions_written_at": "2026-10-22T07:52:08.264503+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2025Q4",
+      "fit_cutoff": "2025-10-01 00:00:00",
+      "train_rows": 1291832,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2025-08-29 00:00:00",
+      "max_train_mature_at": "2025-09-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.015434202188058204
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.015433986690280269
+        },
+        {
+          "start": "2025-06-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.018302237589197575
+        },
+        {
+          "start": "2025-06-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01830244203304587
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-03-03 00:00:00",
+          "train_rows": 1158847,
+          "validation_rows": 54239,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-01-17 00:00:00",
+          "max_maturity": "2025-02-28 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-06-03 00:00:00",
+          "train_rows": 1217748,
+          "validation_rows": 53432,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-04-25 00:00:00",
+          "max_maturity": "2025-05-30 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.006576093849674655,
+      "test_rows": 53179,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2025Q4.pkl",
+      "model_sha256": "f3119d22861c8d12cb61b0f38ec031c1b687364d1299ad15f45da92197d5d254",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2025Q4.parquet",
+      "predictions_sha256": "81e80c258b15f6bc00fd41412dc95f68882a6fb856d2d0722a67c97a8afb7191",
+      "predictions_written_at": "2026-10-22T07:52:29.988723+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2026Q1",
+      "fit_cutoff": "2026-01-01 00:00:00",
+      "train_rows": 1345081,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2025-11-28 00:00:00",
+      "max_train_mature_at": "2025-12-31 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2025-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.018303638871604196
+        },
+        {
+          "start": "2025-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01830383812444571
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013792836796285143
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013792790092527575
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-06-04 00:00:00",
+          "train_rows": 1221855,
+          "validation_rows": 53433,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-04-30 00:00:00",
+          "max_maturity": "2025-06-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "train_rows": 1275417,
+          "validation_rows": 53248,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-08-01 00:00:00",
+          "max_maturity": "2025-09-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.006302739661607215,
+      "test_rows": 44817,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2026Q1.pkl",
+      "model_sha256": "be401a10f6d3da763075f997df36b7e0ce3e8941a2c7858b20fd9f771022c888",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2026Q1.parquet",
+      "predictions_sha256": "76b64c74e52cc2c651c8689149f13c96c31d7034de41640ec027872836daecda",
+      "predictions_written_at": "2026-10-22T07:52:50.334963+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2026Q2",
+      "fit_cutoff": "2026-04-01 00:00:00",
+      "train_rows": 1394010,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2026-02-27 00:00:00",
+      "max_train_mature_at": "2026-03-31 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01379784765650908
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01379780083367822
+        },
+        {
+          "start": "2025-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.021384712114161663
+        },
+        {
+          "start": "2025-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.021384897629543136
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-09-04 00:00:00",
+          "train_rows": 1275417,
+          "validation_rows": 53252,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-08-01 00:00:00",
+          "max_maturity": "2025-09-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-12-04 00:00:00",
+          "train_rows": 1328695,
+          "validation_rows": 48925,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-10-31 00:00:00",
+          "max_maturity": "2025-12-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.006359181475376091,
+      "test_rows": 50824,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2026Q2.pkl",
+      "model_sha256": "18200ef2cdc5ed2bd1159ecdd22346b97daf874b32dea81ac292e410b5234694",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2026Q2.parquet",
+      "predictions_sha256": "498c3453b76c00b8069bbbab38fd63791da36d3a3b87d08d2609d08f56702734",
+      "predictions_written_at": "2026-10-22T07:53:17.500160+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2026Q3",
+      "fit_cutoff": "2026-07-01 00:00:00",
+      "train_rows": 1446505,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2026-05-29 00:00:00",
+      "max_train_mature_at": "2026-06-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2025-12-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.021384150758740384
+        },
+        {
+          "start": "2025-12-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.02138433645487404
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.026929561870435055
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.026930155356849002
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-12-02 00:00:00",
+          "train_rows": 1328689,
+          "validation_rows": 48931,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2025-10-31 00:00:00",
+          "max_maturity": "2025-12-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "train_rows": 1373647,
+          "validation_rows": 52489,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2026-01-16 00:00:00",
+          "max_maturity": "2026-02-27 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.006925566476175912,
+      "test_rows": 51477,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2026Q3.pkl",
+      "model_sha256": "d21da29a0095c0598ea1aaac7e07ee0120f142429795aae93ae511b4aeb1ad37",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2026Q3.parquet",
+      "predictions_sha256": "6b435b84276f59ba0aa5055385be5483ccd82eda1dfa870858e9625d15beca96",
+      "predictions_written_at": "2026-10-22T07:53:43.625331+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "expanding",
+      "fold": "2026Q4",
+      "fit_cutoff": "2026-10-01 00:00:00",
+      "train_rows": 1494209,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2026-08-28 00:00:00",
+      "max_train_mature_at": "2026-09-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.026931547638719196
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.026932141088459524
+        },
+        {
+          "start": "2026-06-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.019923809805598876
+        },
+        {
+          "start": "2026-06-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01992246173664416
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2026-03-02 00:00:00",
+          "train_rows": 1373647,
+          "validation_rows": 52497,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2026-01-16 00:00:00",
+          "max_maturity": "2026-02-27 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2026-06-02 00:00:00",
+          "train_rows": 1426657,
+          "validation_rows": 47696,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2026-04-24 00:00:00",
+          "max_maturity": "2026-06-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.006087851559382606,
+      "test_rows": 7367,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/expanding_2026Q4.pkl",
+      "model_sha256": "02e18596f1c47c9589f3c8c49cb61836b66bcf10786a1b3cc992595046e7f40c",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/expanding_2026Q4.parquet",
+      "predictions_sha256": "1cd6b957d1c281c666a29b8d73a3e6fc050e3a6874f10ff14929e5a2c211a9b9",
+      "predictions_written_at": "2026-10-22T07:54:08.139337+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2021Q1",
+      "fit_cutoff": "2021-01-01 00:00:00",
+      "train_rows": 379807,
+      "train_start": "2018-01-12 00:00:00",
+      "train_end": "2020-11-27 00:00:00",
+      "max_train_mature_at": "2020-12-29 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2020-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.028501604536136666
+        },
+        {
+          "start": "2020-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.02849958214666257
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013286186956396625
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013285151614970674
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2020-06-04 00:00:00",
+          "train_rows": 289086,
+          "validation_rows": 39258,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-04-30 00:00:00",
+          "max_maturity": "2020-06-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "train_rows": 328374,
+          "validation_rows": 39343,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-07-31 00:00:00",
+          "max_maturity": "2020-09-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0032916399310242545,
+      "test_rows": 37181,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2021Q1.pkl",
+      "model_sha256": "289c1cc34cdf4d072fd1e2997b655ceee8eb0777b370ccfebf59dd761281b864",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2021Q1.parquet",
+      "predictions_sha256": "82ca6d5b302edd31f3649b4eedfd20734f0007a6b11e61b9f81a7f069a8a0ea8",
+      "predictions_written_at": "2026-10-22T07:54:13.608933+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2021Q2",
+      "fit_cutoff": "2021-04-01 00:00:00",
+      "train_rows": 399235,
+      "train_start": "2018-04-04 00:00:00",
+      "train_end": "2021-02-26 00:00:00",
+      "max_train_mature_at": "2021-03-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013286737082603639
+        },
+        {
+          "start": "2020-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013285701735690984
+        },
+        {
+          "start": "2020-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01831116653722736
+        },
+        {
+          "start": "2020-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01830910435725847
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2020-09-04 00:00:00",
+          "train_rows": 328374,
+          "validation_rows": 39344,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-07-31 00:00:00",
+          "max_maturity": "2020-09-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2020-12-04 00:00:00",
+          "train_rows": 367624,
+          "validation_rows": 40142,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-10-30 00:00:00",
+          "max_maturity": "2020-12-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0014545780627621648,
+      "test_rows": 40573,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2021Q2.pkl",
+      "model_sha256": "779de5a8ca862648b398f049e9ec52f3ec259098719fe9d9dc1b9b9d20b34dbd",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2021Q2.parquet",
+      "predictions_sha256": "ce210178e1c9ec02f2ea3eb1859a4b497b3f1be975eea8ce541e88adc5332e38",
+      "predictions_written_at": "2026-10-22T07:54:21.806750+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2021Q3",
+      "fit_cutoff": "2021-07-01 00:00:00",
+      "train_rows": 415505,
+      "train_start": "2018-07-06 00:00:00",
+      "train_end": "2021-05-28 00:00:00",
+      "max_train_mature_at": "2021-06-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2020-12-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01831106963936691
+        },
+        {
+          "start": "2020-12-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.018309007937748464
+        },
+        {
+          "start": "2021-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01651885083744211
+        },
+        {
+          "start": "2021-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01651851149705048
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2020-12-02 00:00:00",
+          "train_rows": 367624,
+          "validation_rows": 40144,
+          "train_min": "2018-01-12 00:00:00",
+          "train_max": "2020-10-30 00:00:00",
+          "max_maturity": "2020-12-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-03-02 00:00:00",
+          "train_rows": 392453,
+          "validation_rows": 40420,
+          "train_min": "2018-03-02 00:00:00",
+          "train_max": "2021-01-22 00:00:00",
+          "max_maturity": "2021-03-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.001719312078678792,
+      "test_rows": 44816,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2021Q3.pkl",
+      "model_sha256": "0a8ff748d1da7fd6207510c8103b2b4136d61bf0f5e26b6b8389e1a82113c00d",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2021Q3.parquet",
+      "predictions_sha256": "299649ca30c3fa61f6666a6efb3421031b8ef0a5346b4867a268b5bce2b23fa9",
+      "predictions_written_at": "2026-10-22T07:54:28.709304+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2021Q4",
+      "fit_cutoff": "2021-10-01 00:00:00",
+      "train_rows": 429939,
+      "train_start": "2018-10-12 00:00:00",
+      "train_end": "2021-08-27 00:00:00",
+      "max_train_mature_at": "2021-09-30 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2021-03-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01651702313937056
+        },
+        {
+          "start": "2021-03-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.016516683809371772
+        },
+        {
+          "start": "2021-06-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.023776444801786603
+        },
+        {
+          "start": "2021-06-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.02377714872687545
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-03-01 00:00:00",
+          "train_rows": 392452,
+          "validation_rows": 40424,
+          "train_min": "2018-03-02 00:00:00",
+          "train_max": "2021-01-22 00:00:00",
+          "max_maturity": "2021-02-26 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-06-01 00:00:00",
+          "train_rows": 409433,
+          "validation_rows": 41122,
+          "train_min": "2018-06-01 00:00:00",
+          "train_max": "2021-04-23 00:00:00",
+          "max_maturity": "2021-05-31 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0027349778417752263,
+      "test_rows": 43141,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2021Q4.pkl",
+      "model_sha256": "98f102ccc73110252eeacc7dde18c79b00db06c6df84e1423633920c50eecf88",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2021Q4.parquet",
+      "predictions_sha256": "8eedb421f09204d698828263ad94138f5cd880f886b76bba285d4909f188d508",
+      "predictions_written_at": "2026-10-22T07:54:35.653592+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2022Q1",
+      "fit_cutoff": "2022-01-01 00:00:00",
+      "train_rows": 448466,
+      "train_start": "2019-01-04 00:00:00",
+      "train_end": "2021-12-03 00:00:00",
+      "max_train_mature_at": "2021-12-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2021-06-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.023558510263580912
+        },
+        {
+          "start": "2021-06-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.023559024711502247
+        },
+        {
+          "start": "2021-09-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.018465707393090912
+        },
+        {
+          "start": "2021-09-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.018464064775959847
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-06-06 00:00:00",
+          "train_rows": 413746,
+          "validation_rows": 41233,
+          "train_min": "2018-06-08 00:00:00",
+          "train_max": "2021-05-07 00:00:00",
+          "max_maturity": "2021-06-04 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-09-06 00:00:00",
+          "train_rows": 428885,
+          "validation_rows": 42763,
+          "train_min": "2018-09-07 00:00:00",
+          "train_max": "2021-08-06 00:00:00",
+          "max_maturity": "2021-09-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.004159253181108361,
+      "test_rows": 37364,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2022Q1.pkl",
+      "model_sha256": "7be6e223f62ac7aaa2ff824990242a71d487d0617838ac86906e92d61527d126",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2022Q1.parquet",
+      "predictions_sha256": "8eae40751460c9d57932bb85c0e06ce7ddd607583d1b3144928f2521cf25f189",
+      "predictions_written_at": "2026-10-22T07:54:42.678040+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2022Q2",
+      "fit_cutoff": "2022-04-01 00:00:00",
+      "train_rows": 455626,
+      "train_start": "2019-04-04 00:00:00",
+      "train_end": "2022-02-25 00:00:00",
+      "max_train_mature_at": "2022-03-29 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2021-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.018545707608025506
+        },
+        {
+          "start": "2021-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01854406822926595
+        },
+        {
+          "start": "2021-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01737325462422718
+        },
+        {
+          "start": "2021-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.017373487225465254
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-09-04 00:00:00",
+          "train_rows": 428885,
+          "validation_rows": 42768,
+          "train_min": "2018-09-07 00:00:00",
+          "train_max": "2021-08-06 00:00:00",
+          "max_maturity": "2021-09-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2021-12-04 00:00:00",
+          "train_rows": 444621,
+          "validation_rows": 37055,
+          "train_min": "2018-12-07 00:00:00",
+          "train_max": "2021-11-05 00:00:00",
+          "max_maturity": "2021-12-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.007214929311833558,
+      "test_rows": 45371,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2022Q2.pkl",
+      "model_sha256": "5da5cb3a56d60ad61faa9aac31258747103e53ecaaaae3e339b71e054647504d",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2022Q2.parquet",
+      "predictions_sha256": "8edf1763d7a6be165411193d8d3e0a1cb8d9a970866f18c16331e8e232d521dc",
+      "predictions_written_at": "2026-10-22T07:54:50.093381+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2022Q3",
+      "fit_cutoff": "2022-07-01 00:00:00",
+      "train_rows": 465756,
+      "train_start": "2019-07-05 00:00:00",
+      "train_end": "2022-05-27 00:00:00",
+      "max_train_mature_at": "2022-06-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2021-12-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.0173689778978158
+        },
+        {
+          "start": "2021-12-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.017369083926076726
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.024074698077321557
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.024074818343876495
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2021-12-02 00:00:00",
+          "train_rows": 441311,
+          "validation_rows": 40382,
+          "train_min": "2018-12-07 00:00:00",
+          "train_max": "2021-10-29 00:00:00",
+          "max_maturity": "2021-11-29 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "train_rows": 452312,
+          "validation_rows": 44873,
+          "train_min": "2019-03-08 00:00:00",
+          "train_max": "2022-01-21 00:00:00",
+          "max_maturity": "2022-03-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.00440191639456858,
+      "test_rows": 50746,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2022Q3.pkl",
+      "model_sha256": "fa9be790c642076a669779dabf5eff092a2df7dce3559d67dd653b156c299f09",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2022Q3.parquet",
+      "predictions_sha256": "6be6df3570c19e19f328022d4df3b27c450e989af38fc12621bd110e78e9272b",
+      "predictions_written_at": "2026-10-22T07:54:58.719776+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2022Q4",
+      "fit_cutoff": "2022-10-01 00:00:00",
+      "train_rows": 472764,
+      "train_start": "2019-10-11 00:00:00",
+      "train_end": "2022-08-26 00:00:00",
+      "max_train_mature_at": "2022-09-27 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02408011842579111
+        },
+        {
+          "start": "2022-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.024080238762173096
+        },
+        {
+          "start": "2022-06-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.0152909886090705
+        },
+        {
+          "start": "2022-06-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.015290895693150446
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-03-02 00:00:00",
+          "train_rows": 452312,
+          "validation_rows": 44879,
+          "train_min": "2019-03-08 00:00:00",
+          "train_max": "2022-01-21 00:00:00",
+          "max_maturity": "2022-03-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-06-02 00:00:00",
+          "train_rows": 462775,
+          "validation_rows": 46624,
+          "train_min": "2019-06-06 00:00:00",
+          "train_max": "2022-04-29 00:00:00",
+          "max_maturity": "2022-06-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.0032867452377766102,
+      "test_rows": 44572,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2022Q4.pkl",
+      "model_sha256": "22dc3c8e838adfa74228c0030fd6a2a4522cf13ac222e304036f3466804effa5",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2022Q4.parquet",
+      "predictions_sha256": "cd3edd62a467f9507e50775fb5d13af5da5ecba3bdf37763239c77a30bc5ef65",
+      "predictions_written_at": "2026-10-22T07:55:07.099026+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2023Q1",
+      "fit_cutoff": "2023-01-01 00:00:00",
+      "train_rows": 485698,
+      "train_start": "2020-01-03 00:00:00",
+      "train_end": "2022-12-02 00:00:00",
+      "max_train_mature_at": "2022-12-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2022-06-05 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.015233931332252645
+        },
+        {
+          "start": "2022-06-05 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.015233881545516333
+        },
+        {
+          "start": "2022-09-05 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013341321609178931
+        },
+        {
+          "start": "2022-09-05 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013341327657653694
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-06-05 00:00:00",
+          "train_rows": 462775,
+          "validation_rows": 46750,
+          "train_min": "2019-06-06 00:00:00",
+          "train_max": "2022-04-29 00:00:00",
+          "max_maturity": "2022-06-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-09-05 00:00:00",
+          "train_rows": 476137,
+          "validation_rows": 44276,
+          "train_min": "2019-09-06 00:00:00",
+          "train_max": "2022-08-05 00:00:00",
+          "max_maturity": "2022-09-02 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.00380428784122988,
+      "test_rows": 45459,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2023Q1.pkl",
+      "model_sha256": "df3f674ca39e7fcfc3c80086365c6dc546eabb17ca3950b06a5ebc077dc8dba9",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2023Q1.parquet",
+      "predictions_sha256": "fc722202cccfa34822d9871e05f57eabe63432688dc37fd57bfffa69d32466db",
+      "predictions_written_at": "2026-10-22T07:55:15.032728+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2023Q2",
+      "fit_cutoff": "2023-04-01 00:00:00",
+      "train_rows": 495126,
+      "train_start": "2020-04-03 00:00:00",
+      "train_end": "2023-03-03 00:00:00",
+      "max_train_mature_at": "2023-03-31 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2022-09-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01334157289486372
+        },
+        {
+          "start": "2022-09-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013341580401012519
+        },
+        {
+          "start": "2022-12-06 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01006343006970062
+        },
+        {
+          "start": "2022-12-06 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010063464182870465
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-09-06 00:00:00",
+          "train_rows": 476139,
+          "validation_rows": 44285,
+          "train_min": "2019-09-06 00:00:00",
+          "train_max": "2022-08-05 00:00:00",
+          "max_maturity": "2022-09-05 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2022-12-06 00:00:00",
+          "train_rows": 482645,
+          "validation_rows": 45154,
+          "train_min": "2019-12-06 00:00:00",
+          "train_max": "2022-11-04 00:00:00",
+          "max_maturity": "2022-12-02 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.004636735057027491,
+      "test_rows": 49991,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2023Q2.pkl",
+      "model_sha256": "1c4625898d604cfd8b8fb7c7f616ce9e4c14f09e063e9abe8de33c3f86420d9c",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2023Q2.parquet",
+      "predictions_sha256": "69b9c00c5262bdb67b8fea6b7100b7b57decc5327b4ffcd971da270b85444d54",
+      "predictions_written_at": "2026-10-22T07:55:23.379974+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2023Q3",
+      "fit_cutoff": "2023-07-01 00:00:00",
+      "train_rows": 501734,
+      "train_start": "2020-07-03 00:00:00",
+      "train_end": "2023-05-26 00:00:00",
+      "max_train_mature_at": "2023-06-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2022-12-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01020889940983283
+        },
+        {
+          "start": "2022-12-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010208920251690614
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.012931787912561395
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.012931709364346048
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2022-12-01 00:00:00",
+          "train_rows": 478943,
+          "validation_rows": 45077,
+          "train_min": "2019-12-06 00:00:00",
+          "train_max": "2022-10-28 00:00:00",
+          "max_maturity": "2022-11-29 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "train_rows": 488168,
+          "validation_rows": 49667,
+          "train_min": "2020-03-06 00:00:00",
+          "train_max": "2023-01-20 00:00:00",
+          "max_maturity": "2023-02-28 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005118366141928802,
+      "test_rows": 51096,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2023Q3.pkl",
+      "model_sha256": "29118fed9d4d3843192ee178e60886c90aa27228a006d0196b2de1f5b38fbdee",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2023Q3.parquet",
+      "predictions_sha256": "979c18f0bea997d3f50abc4a125ea281a86b99fabfa2b7326e536c49e8dd650f",
+      "predictions_written_at": "2026-10-22T07:55:32.708103+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2023Q4",
+      "fit_cutoff": "2023-10-01 00:00:00",
+      "train_rows": 510149,
+      "train_start": "2020-10-09 00:00:00",
+      "train_end": "2023-08-25 00:00:00",
+      "max_train_mature_at": "2023-09-22 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.012938319493060556
+        },
+        {
+          "start": "2023-03-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01293824088475458
+        },
+        {
+          "start": "2023-06-01 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.00819911422037162
+        },
+        {
+          "start": "2023-06-01 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.00819937972067006
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-03-01 00:00:00",
+          "train_rows": 488168,
+          "validation_rows": 49673,
+          "train_min": "2020-03-06 00:00:00",
+          "train_max": "2023-01-20 00:00:00",
+          "max_maturity": "2023-02-28 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-06-01 00:00:00",
+          "train_rows": 498477,
+          "validation_rows": 50651,
+          "train_min": "2020-06-05 00:00:00",
+          "train_max": "2023-04-28 00:00:00",
+          "max_maturity": "2023-05-31 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005439949098494702,
+      "test_rows": 48321,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2023Q4.pkl",
+      "model_sha256": "b56984a5feccb9470aad897bc9cc11acfb4e404ac25077aaf3bc400732c0554d",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2023Q4.parquet",
+      "predictions_sha256": "682cf91f78bd78e58947febe14b03ad0b41a3ec0203c423ae31c4c884e92d018",
+      "predictions_written_at": "2026-10-22T07:55:41.006258+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2024Q1",
+      "fit_cutoff": "2024-01-01 00:00:00",
+      "train_rows": 522415,
+      "train_start": "2021-01-08 00:00:00",
+      "train_end": "2023-12-01 00:00:00",
+      "max_train_mature_at": "2023-12-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.008179149312192905
+        },
+        {
+          "start": "2023-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.008179467812083454
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01027097725674008
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01027088206117565
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-06-04 00:00:00",
+          "train_rows": 502288,
+          "validation_rows": 50733,
+          "train_min": "2020-06-05 00:00:00",
+          "train_max": "2023-05-05 00:00:00",
+          "max_maturity": "2023-06-02 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "train_rows": 513428,
+          "validation_rows": 47961,
+          "train_min": "2020-09-04 00:00:00",
+          "train_max": "2023-08-04 00:00:00",
+          "max_maturity": "2023-09-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005675398437838451,
+      "test_rows": 49119,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2024Q1.pkl",
+      "model_sha256": "fc92e9aa7118ff969e05189d02e5bc99b1f9e5c7db5987519bb28b0c54f4a96b",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2024Q1.parquet",
+      "predictions_sha256": "4372cf3962ad9c0d9a2853036aac16ab8ec08f0069889350e4a0f9c402e28a2e",
+      "predictions_written_at": "2026-10-22T07:55:49.604535+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2024Q2",
+      "fit_cutoff": "2024-04-01 00:00:00",
+      "train_rows": 534113,
+      "train_start": "2021-04-02 00:00:00",
+      "train_end": "2024-03-01 00:00:00",
+      "max_train_mature_at": "2024-03-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.010271333035996399
+        },
+        {
+          "start": "2023-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010271237803616164
+        },
+        {
+          "start": "2023-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02334556001538583
+        },
+        {
+          "start": "2023-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.023347693903704836
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-09-04 00:00:00",
+          "train_rows": 513428,
+          "validation_rows": 47965,
+          "train_min": "2020-09-04 00:00:00",
+          "train_max": "2023-08-04 00:00:00",
+          "max_maturity": "2023-09-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2023-12-04 00:00:00",
+          "train_rows": 521655,
+          "validation_rows": 48875,
+          "train_min": "2020-12-04 00:00:00",
+          "train_max": "2023-11-03 00:00:00",
+          "max_maturity": "2023-12-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.009097892197582837,
+      "test_rows": 53847,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2024Q2.pkl",
+      "model_sha256": "a9d94ea2e8eeea496ce6ea9cff6775469b80029b33116e35a8e928f576776fe2",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2024Q2.parquet",
+      "predictions_sha256": "e19eb26d992429f5c105b2b5e7763b111c89a361b1b23472c15f99b5aaa10eda",
+      "predictions_written_at": "2026-10-22T07:55:58.606252+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2024Q3",
+      "fit_cutoff": "2024-07-01 00:00:00",
+      "train_rows": 543051,
+      "train_start": "2021-07-02 00:00:00",
+      "train_end": "2024-05-24 00:00:00",
+      "max_train_mature_at": "2024-06-24 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2023-11-30 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02280956522977659
+        },
+        {
+          "start": "2023-11-30 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.022811733760507744
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01749398290357671
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.017494027458214607
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2023-11-30 00:00:00",
+          "train_rows": 517648,
+          "validation_rows": 48823,
+          "train_min": "2020-12-04 00:00:00",
+          "train_max": "2023-10-27 00:00:00",
+          "max_maturity": "2023-11-24 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "train_rows": 526063,
+          "validation_rows": 53610,
+          "train_min": "2021-03-05 00:00:00",
+          "train_max": "2024-01-19 00:00:00",
+          "max_maturity": "2024-02-27 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.007019388227301516,
+      "test_rows": 58892,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2024Q3.pkl",
+      "model_sha256": "ded18596f5131f2bb775230c04aa6c8b658f04bb7d643bec3ec50ebace18a205",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2024Q3.parquet",
+      "predictions_sha256": "bbb5521b89cad2d49609f18f5ed878a9d12a3223c90548c197f96efa281bd94e",
+      "predictions_written_at": "2026-10-22T07:56:09.945164+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2024Q4",
+      "fit_cutoff": "2024-10-01 00:00:00",
+      "train_rows": 552599,
+      "train_start": "2021-10-08 00:00:00",
+      "train_end": "2024-08-23 00:00:00",
+      "max_train_mature_at": "2024-09-25 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.01749398290357671
+        },
+        {
+          "start": "2024-02-29 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.017494027458214607
+        },
+        {
+          "start": "2024-05-30 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.010037366946748614
+        },
+        {
+          "start": "2024-05-30 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.010037404810974402
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-02-29 00:00:00",
+          "train_rows": 526063,
+          "validation_rows": 53610,
+          "train_min": "2021-03-05 00:00:00",
+          "train_max": "2024-01-19 00:00:00",
+          "max_maturity": "2024-02-27 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-05-30 00:00:00",
+          "train_rows": 539068,
+          "validation_rows": 54364,
+          "train_min": "2021-06-04 00:00:00",
+          "train_max": "2024-04-26 00:00:00",
+          "max_maturity": "2024-05-29 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.005703128094141844,
+      "test_rows": 50549,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2024Q4.pkl",
+      "model_sha256": "21bf5c3b91a66182efb90d7255af62d92784f6168ba04ebb87d67d21cceccc0d",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2024Q4.parquet",
+      "predictions_sha256": "cb2fb61b5ff1365b9e3095ca7f55c4574643c2891c96b7a5814a7836b5915761",
+      "predictions_written_at": "2026-10-22T07:56:19.938203+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2025Q1",
+      "fit_cutoff": "2025-01-01 00:00:00",
+      "train_rows": 568469,
+      "train_start": "2022-01-07 00:00:00",
+      "train_end": "2024-11-29 00:00:00",
+      "max_train_mature_at": "2024-12-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2024-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.021965464897521773
+        },
+        {
+          "start": "2024-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.021965167889544328
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.049362132121930566
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.04936219110666894
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-06-04 00:00:00",
+          "train_rows": 543184,
+          "validation_rows": 54435,
+          "train_min": "2021-06-04 00:00:00",
+          "train_max": "2024-04-30 00:00:00",
+          "max_maturity": "2024-05-31 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "train_rows": 552968,
+          "validation_rows": 54789,
+          "train_min": "2021-09-10 00:00:00",
+          "train_max": "2024-08-02 00:00:00",
+          "max_maturity": "2024-08-30 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.006798003523209118,
+      "test_rows": 54794,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2025Q1.pkl",
+      "model_sha256": "dd5b1c115623eb02572fbe8db76ec9d10931f08d1e30f0958f159c0727399a81",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2025Q1.parquet",
+      "predictions_sha256": "fbbd0b4cd10c9323eae0102b3c01cf55a4037a428bd7dc2aab81e51fdcf0aa7f",
+      "predictions_written_at": "2026-10-22T07:56:31.194522+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2025Q2",
+      "fit_cutoff": "2025-04-01 00:00:00",
+      "train_rows": 585912,
+      "train_start": "2022-04-01 00:00:00",
+      "train_end": "2025-02-28 00:00:00",
+      "max_train_mature_at": "2025-03-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.04936783106943465
+        },
+        {
+          "start": "2024-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.049367888670331914
+        },
+        {
+          "start": "2024-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.020400596827386694
+        },
+        {
+          "start": "2024-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.020399941008556403
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-09-04 00:00:00",
+          "train_rows": 552968,
+          "validation_rows": 54797,
+          "train_min": "2021-09-10 00:00:00",
+          "train_max": "2024-08-02 00:00:00",
+          "max_maturity": "2024-08-30 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2024-12-04 00:00:00",
+          "train_rows": 565000,
+          "validation_rows": 54799,
+          "train_min": "2021-12-10 00:00:00",
+          "train_max": "2024-11-01 00:00:00",
+          "max_maturity": "2024-11-29 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.008806680913808172,
+      "test_rows": 53871,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2025Q2.pkl",
+      "model_sha256": "d69fb859ee81ca6746a81cc4f4632c89a3a24530f72e755e8639fd7f515d1be4",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2025Q2.parquet",
+      "predictions_sha256": "1f05cb3c6ce16fe2551f9d38e88774620aff9b7f07ae42e2413f87b28e526d66",
+      "predictions_written_at": "2026-10-22T07:56:42.711206+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2025Q3",
+      "fit_cutoff": "2025-07-01 00:00:00",
+      "train_rows": 594770,
+      "train_start": "2022-07-01 00:00:00",
+      "train_end": "2025-05-30 00:00:00",
+      "max_train_mature_at": "2025-06-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2024-12-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.020425863897918412
+        },
+        {
+          "start": "2024-12-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.020425226933023604
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.015144886995772478
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.015144585842615365
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2024-12-03 00:00:00",
+          "train_rows": 568327,
+          "validation_rows": 54804,
+          "train_min": "2021-12-03 00:00:00",
+          "train_max": "2024-11-01 00:00:00",
+          "max_maturity": "2024-11-29 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "train_rows": 574287,
+          "validation_rows": 54224,
+          "train_min": "2022-03-04 00:00:00",
+          "train_max": "2025-01-17 00:00:00",
+          "max_maturity": "2025-02-28 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.007815861730386313,
+      "test_rows": 57460,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2025Q3.pkl",
+      "model_sha256": "9e3d499a36a6df5e5ab3f42a9d692708d6d05a45880560ae3d8b2153b3a0762e",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2025Q3.parquet",
+      "predictions_sha256": "4dbf45c632ed5c4dd44e7bf0633b9017f2b5ba83e28629e8f3a6ef108738810b",
+      "predictions_written_at": "2026-10-22T07:56:53.114470+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2025Q4",
+      "fit_cutoff": "2025-10-01 00:00:00",
+      "train_rows": 597471,
+      "train_start": "2022-10-14 00:00:00",
+      "train_end": "2025-08-29 00:00:00",
+      "max_train_mature_at": "2025-09-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.015163654438998562
+        },
+        {
+          "start": "2025-03-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.015163351678274326
+        },
+        {
+          "start": "2025-06-03 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.019558403978742568
+        },
+        {
+          "start": "2025-06-03 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.019558056815632847
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-03-03 00:00:00",
+          "train_rows": 574287,
+          "validation_rows": 54239,
+          "train_min": "2022-03-04 00:00:00",
+          "train_max": "2025-01-17 00:00:00",
+          "max_maturity": "2025-02-28 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-06-03 00:00:00",
+          "train_rows": 584783,
+          "validation_rows": 53432,
+          "train_min": "2022-06-10 00:00:00",
+          "train_max": "2025-04-25 00:00:00",
+          "max_maturity": "2025-05-30 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.009816814776318555,
+      "test_rows": 53179,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2025Q4.pkl",
+      "model_sha256": "2e6789cf796d67cc5338dee44d42767f21f7e16b8523ac7d4ea1ffe259f89df3",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2025Q4.parquet",
+      "predictions_sha256": "8cb79ac12d8112d18dd9cf778702ea7beaa4a344bcd7c1ca219e83ea8b3c54e3",
+      "predictions_written_at": "2026-10-22T07:57:02.845054+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2026Q1",
+      "fit_cutoff": "2026-01-01 00:00:00",
+      "train_rows": 606148,
+      "train_start": "2023-01-06 00:00:00",
+      "train_end": "2025-11-28 00:00:00",
+      "max_train_mature_at": "2025-12-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2025-06-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.019557459779852317
+        },
+        {
+          "start": "2025-06-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01955709892130609
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013792613207456431
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.01379240454364062
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-06-04 00:00:00",
+          "train_rows": 588890,
+          "validation_rows": 53433,
+          "train_min": "2022-06-10 00:00:00",
+          "train_max": "2025-04-30 00:00:00",
+          "max_maturity": "2025-06-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "train_rows": 595702,
+          "validation_rows": 53248,
+          "train_min": "2022-09-09 00:00:00",
+          "train_max": "2025-08-01 00:00:00",
+          "max_maturity": "2025-09-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.008356973055568644,
+      "test_rows": 44817,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2026Q1.pkl",
+      "model_sha256": "71568c844aa02128cd91f4c31d232f661a7cc7d049abaa9f3f486ba16721f315",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2026Q1.parquet",
+      "predictions_sha256": "1cf488eed07176270390d36d61ca23af42e95bc52789b09108be04682b77ad5c",
+      "predictions_written_at": "2026-10-22T07:57:14.483746+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2026Q2",
+      "fit_cutoff": "2026-04-01 00:00:00",
+      "train_rows": 609618,
+      "train_start": "2023-04-07 00:00:00",
+      "train_end": "2026-02-27 00:00:00",
+      "max_train_mature_at": "2026-03-31 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.013797567503156302
+        },
+        {
+          "start": "2025-09-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.013797358401384642
+        },
+        {
+          "start": "2025-12-04 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.021353772379788097
+        },
+        {
+          "start": "2025-12-04 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.021353677211285088
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-09-04 00:00:00",
+          "train_rows": 595702,
+          "validation_rows": 53252,
+          "train_min": "2022-09-09 00:00:00",
+          "train_max": "2025-08-01 00:00:00",
+          "max_maturity": "2025-09-03 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2025-12-04 00:00:00",
+          "train_rows": 604695,
+          "validation_rows": 48925,
+          "train_min": "2022-12-09 00:00:00",
+          "train_max": "2025-10-31 00:00:00",
+          "max_maturity": "2025-12-03 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.009050107246561252,
+      "test_rows": 50824,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2026Q2.pkl",
+      "model_sha256": "c3b1d1ca2cbc2dd09b4883f38b1947f610c75a8c1f7139d7b0afd033b1b73a91",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2026Q2.parquet",
+      "predictions_sha256": "a7ef9963c29175b3e1ad4c88ecba9195150d1e9b5bd4011837b8f77212b75bde",
+      "predictions_written_at": "2026-10-22T07:57:24.517615+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2026Q3",
+      "fit_cutoff": "2026-07-01 00:00:00",
+      "train_rows": 612125,
+      "train_start": "2023-07-07 00:00:00",
+      "train_end": "2026-05-29 00:00:00",
+      "max_train_mature_at": "2026-06-29 09:30:00",
+      "alpha": 1.0,
+      "cv": [
+        {
+          "start": "2025-12-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02136969537179026
+        },
+        {
+          "start": "2025-12-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.02136960425180066
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02695608634092224
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.026957086960883395
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2025-12-02 00:00:00",
+          "train_rows": 608412,
+          "validation_rows": 48931,
+          "train_min": "2022-12-02 00:00:00",
+          "train_max": "2025-10-31 00:00:00",
+          "max_maturity": "2025-12-01 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "train_rows": 608293,
+          "validation_rows": 52489,
+          "train_min": "2023-03-03 00:00:00",
+          "train_max": "2026-01-16 00:00:00",
+          "max_maturity": "2026-02-27 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.010807673175477131,
+      "test_rows": 51477,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2026Q3.pkl",
+      "model_sha256": "521f489ac6a4b0cc4cb044e39f51a1c2e22d28bda387886675c89ecd23c9607b",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2026Q3.parquet",
+      "predictions_sha256": "e44fc82884da7803364896f3d6664f6cae6b23b44038061f72e612b2a0600afa",
+      "predictions_written_at": "2026-10-22T07:57:35.290058+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    },
+    {
+      "hypothesis": "H01",
+      "scheme": "rolling36",
+      "fold": "2026Q4",
+      "fit_cutoff": "2026-10-01 00:00:00",
+      "train_rows": 608733,
+      "train_start": "2023-10-13 00:00:00",
+      "train_end": "2026-08-28 00:00:00",
+      "max_train_mature_at": "2026-09-30 09:30:00",
+      "alpha": 100.0,
+      "cv": [
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.02695708014140996
+        },
+        {
+          "start": "2026-03-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.026958080751297332
+        },
+        {
+          "start": "2026-06-02 00:00:00",
+          "alpha": 1.0,
+          "loss": 0.021068434654485865
+        },
+        {
+          "start": "2026-06-02 00:00:00",
+          "alpha": 100.0,
+          "loss": 0.021065642407403388
+        }
+      ],
+      "inner_timeline": [
+        {
+          "start": "2026-03-02 00:00:00",
+          "train_rows": 608293,
+          "validation_rows": 52497,
+          "train_min": "2023-03-03 00:00:00",
+          "train_max": "2026-01-16 00:00:00",
+          "max_maturity": "2026-02-27 09:30:00",
+          "ready": true
+        },
+        {
+          "start": "2026-06-02 00:00:00",
+          "train_rows": 611630,
+          "validation_rows": 47696,
+          "train_min": "2023-06-02 00:00:00",
+          "train_max": "2026-04-24 00:00:00",
+          "max_maturity": "2026-06-01 09:30:00",
+          "ready": true
+        }
+      ],
+      "factor_coefficient": -0.008493338255653453,
+      "test_rows": 7367,
+      "model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H01/rolling36_2026Q4.pkl",
+      "model_sha256": "e037f4b877dbafb10f9e582c427314104263dbc69d6c09de6a957d2c93144646",
+      "predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H01/rolling36_2026Q4.parquet",
+      "predictions_sha256": "2b535b3b8fb1161bb04cea8609d10fff0d1f7700a10632fb6ffb7f2137f54044",
+      "predictions_written_at": "2026-10-22T07:57:46.090107+00:00",
+      "outer_outcomes_scored": false,
+      "model_replay": "PASS",
+      "quality": "Historical-proxy",
+      "preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310"
+    }
+  ],
+  "blocked": [],
+  "sources": {
+    "src/audit_data.py": "d145cbf3663c560b2f895bb1b90b7d91c6a1836de291b6f1c63cf8202734ed17",
+    "src/baselines.py": "85236985a57cb7c70f7ccdd7d68e35c7c1f9b8f6c6afb6d24ccd1c66b3c3e10d",
+    "src/big_winner.py": "110d971566e5019ce307b03fcf7d31ddf25cc1d49779c4bb34c007da40725ab8",
+    "src/build_data.py": "e3ecf896ac14cce4475932d365e62ad6ce573d6f5f6cf0168ad2af64f690dbce",
+    "src/common.py": "a76c91a8a8a985e5facf929a104a4fe78437e9f0e1910234f859c542b7f493cf",
+    "src/ep30_adapter.py": "05d376fe6f6ce4af8dcea8f8ed09eeaa4782f5f9616c45d33f6ef2d28cf7f4aa",
+    "src/episode_builder.py": "086080c7b87684a2a683a8e4ef0f988690161f644e0d6903a8123f52858c0b06",
+    "src/evaluate.py": "cb88fa5f62b7ced165e071887422aa6b92fc1055a227c5b891c6cc07b5f46c3e",
+    "src/hypothesis_tests.py": "4e8ca42247128409e03d8f27ee885dd860257d236562b458889782f89a38fcdc",
+    "src/labels_and_maturity.py": "ae605f65573831cda89c0ddc7c8df56f81b66ea0180b1e31821ccc95489dec9a",
+    "src/multiple_testing.py": "c8ab63be701fbd0b7418bb66d33982c6932182fab1492e222ed28ab48482b3ed",
+    "src/volume_price_features.py": "a312338e862cdb0de6002191cd171f7b552e52a9289846b2ff26414d47b97e67",
+    "src/walk_forward.py": "0cb3f26294a22b1b9edacda45663b86bd8d44eac77c010db9e064588608284ed",
+    "tests/conftest.py": "bb2ca8da906675e2823a20462dafdf146202a9a2d88d914bd5ab871b4417e85e",
+    "tests/test_adjustment_corporate_actions.py": "ee8a3e806c19e7e69f67e35bea3e4a9da1bf89b8856c2f45a73d800f353e4db9",
+    "tests/test_breakout_no_current_bar.py": "cad8bd3a74d4268757b957af198ee4510f13bf999b08f07819d92209b35bb24f",
+    "tests/test_ep30_data_lineage.py": "c6efadf949939219793bf5660595353fb647dfca93458dcd4906bcbf05fbc7e5",
+    "tests/test_label_maturity_and_purge.py": "8c7ef528a93dae471b7bc199d24b5d5acd029c3108a847aea12fb0e64a0aa1d4",
+    "tests/test_microstructure_h09_gate.py": "378c7b3dc327e9420579b7637d60771cc5d718ac2123bfaf148a887f752164e4",
+    "tests/test_no_future_leakage.py": "959985b6c450c003cbdc9d3c336a47d9a00bbc72343d41115e9a855f04196e00",
+    "tests/test_statistics_and_controls.py": "4e03d5dcbfcdcf2e2095c1e5611a1468dff90540627e0119d2631c14e9b43d3c",
+    "configs/feature_label_contract.yaml": "53a4c16f3025d3d1a087da28406dee6be50efa2449c2c425081cdae3e30b8e2d",
+    "configs/preregistration.yaml": "a74421d68bf18cd619f8e333ce84ddacc65d11b49aaaeecde7199912d5dd911d",
+    "configs/revision_01_inner_maturity.yaml": "71c1b4d042eeee07dc9241c7a74caf3123432df04755e4817ca43f768d67c191",
+    "configs/walk_forward.yaml": "5120a12c5d6fc89b6f11c55d54b3d02cb9274e96d652c6321bb27dfb60c8124f"
+  },
+  "revision": "EP31-P0-R01",
+  "prediction_freeze_completed_at": "2026-10-22T07:57:46.090816+00:00",
+  "outcome_scoring_started": false,
+  "exact_calendar_admission": true,
+  "admitted_at": "2026-10-22T08:09:30.205095+00:00"
+}

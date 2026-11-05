@@ -1,0 +1,66 @@
+[
+  {
+    "hypothesis": "H02",
+    "scheme": "expanding",
+    "fold": "2021Q1",
+    "reason": "BLOCKED_INSUFFICIENT_HISTORY",
+    "exact_reason": "INNER_LESS_THAN_24_FULL_CALENDAR_MONTHS",
+    "provisional_model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H02/expanding_2021Q1.pkl",
+    "provisional_predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H02/expanding_2021Q1.parquet",
+    "provisional_model_sha256": "338865928d3cf9844680d1aeea6c9d8b5a918a69fc8ae27997a90956f6874711",
+    "provisional_predictions_sha256": "0d442630cb8a8fe41462a9768dd32c41b2b998b767ddaa1bcddf06a366b967ac",
+    "inner_timeline": [
+      {
+        "start": "2020-04-09 00:00:00",
+        "train_rows": 266948,
+        "validation_rows": 41904,
+        "train_min": "2018-01-12 00:00:00",
+        "train_max": "2020-01-03 00:00:00",
+        "max_maturity": "2020-04-08 09:30:00",
+        "ready": true
+      },
+      {
+        "start": "2020-07-09 00:00:00",
+        "train_rows": 305717,
+        "validation_rows": 41746,
+        "train_min": "2018-01-12 00:00:00",
+        "train_max": "2020-04-03 00:00:00",
+        "max_maturity": "2020-07-08 09:30:00",
+        "ready": true
+      }
+    ],
+    "excluded_before_any_outer_score": true
+  },
+  {
+    "hypothesis": "H02",
+    "scheme": "rolling36",
+    "fold": "2021Q1",
+    "reason": "BLOCKED_INSUFFICIENT_HISTORY",
+    "exact_reason": "INNER_LESS_THAN_24_FULL_CALENDAR_MONTHS",
+    "provisional_model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H02/rolling36_2021Q1.pkl",
+    "provisional_predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H02/rolling36_2021Q1.parquet",
+    "provisional_model_sha256": "338865928d3cf9844680d1aeea6c9d8b5a918a69fc8ae27997a90956f6874711",
+    "provisional_predictions_sha256": "bb37b25a56af473c1f28de25e76e15dedf13c9908fa4941d11007c2f26b2b3f8",
+    "inner_timeline": [
+      {
+        "start": "2020-04-09 00:00:00",
+        "train_rows": 266948,
+        "validation_rows": 41904,
+        "train_min": "2018-01-12 00:00:00",
+        "train_max": "2020-01-03 00:00:00",
+        "max_maturity": "2020-04-08 09:30:00",
+        "ready": true
+      },
+      {
+        "start": "2020-07-09 00:00:00",
+        "train_rows": 305717,
+        "validation_rows": 41746,
+        "train_min": "2018-01-12 00:00:00",
+        "train_max": "2020-04-03 00:00:00",
+        "max_maturity": "2020-07-08 09:30:00",
+        "ready": true
+      }
+    ],
+    "excluded_before_any_outer_score": true
+  }
+]

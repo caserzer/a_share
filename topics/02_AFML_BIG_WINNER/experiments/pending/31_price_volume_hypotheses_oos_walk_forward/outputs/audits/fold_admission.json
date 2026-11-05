@@ -1,0 +1,123 @@
+{
+  "status": "PASS",
+  "admitted_at": "2026-10-22T08:11:18.375752+00:00",
+  "checks": [
+    {
+      "hypothesis": "H01",
+      "admitted": 48,
+      "rejected": [],
+      "original_index_sha256": "77491d88648d660eeb9e2b53af4d040634b7ed6bccc4b42f4ebf95117fff7524",
+      "admitted_index_sha256": "94264cac798a8ae855ced7a95ceeec933618aa109c1bf0db098544c4914e0d49"
+    },
+    {
+      "hypothesis": "H02",
+      "admitted": 46,
+      "rejected": [
+        {
+          "hypothesis": "H02",
+          "scheme": "expanding",
+          "fold": "2021Q1",
+          "reason": "BLOCKED_INSUFFICIENT_HISTORY",
+          "exact_reason": "INNER_LESS_THAN_24_FULL_CALENDAR_MONTHS",
+          "provisional_model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H02/expanding_2021Q1.pkl",
+          "provisional_predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H02/expanding_2021Q1.parquet",
+          "provisional_model_sha256": "338865928d3cf9844680d1aeea6c9d8b5a918a69fc8ae27997a90956f6874711",
+          "provisional_predictions_sha256": "0d442630cb8a8fe41462a9768dd32c41b2b998b767ddaa1bcddf06a366b967ac",
+          "inner_timeline": [
+            {
+              "start": "2020-04-09 00:00:00",
+              "train_rows": 266948,
+              "validation_rows": 41904,
+              "train_min": "2018-01-12 00:00:00",
+              "train_max": "2020-01-03 00:00:00",
+              "max_maturity": "2020-04-08 09:30:00",
+              "ready": true
+            },
+            {
+              "start": "2020-07-09 00:00:00",
+              "train_rows": 305717,
+              "validation_rows": 41746,
+              "train_min": "2018-01-12 00:00:00",
+              "train_max": "2020-04-03 00:00:00",
+              "max_maturity": "2020-07-08 09:30:00",
+              "ready": true
+            }
+          ],
+          "excluded_before_any_outer_score": true
+        },
+        {
+          "hypothesis": "H02",
+          "scheme": "rolling36",
+          "fold": "2021Q1",
+          "reason": "BLOCKED_INSUFFICIENT_HISTORY",
+          "exact_reason": "INNER_LESS_THAN_24_FULL_CALENDAR_MONTHS",
+          "provisional_model_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/models/H02/rolling36_2021Q1.pkl",
+          "provisional_predictions_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/fold_predictions/H02/rolling36_2021Q1.parquet",
+          "provisional_model_sha256": "338865928d3cf9844680d1aeea6c9d8b5a918a69fc8ae27997a90956f6874711",
+          "provisional_predictions_sha256": "bb37b25a56af473c1f28de25e76e15dedf13c9908fa4941d11007c2f26b2b3f8",
+          "inner_timeline": [
+            {
+              "start": "2020-04-09 00:00:00",
+              "train_rows": 266948,
+              "validation_rows": 41904,
+              "train_min": "2018-01-12 00:00:00",
+              "train_max": "2020-01-03 00:00:00",
+              "max_maturity": "2020-04-08 09:30:00",
+              "ready": true
+            },
+            {
+              "start": "2020-07-09 00:00:00",
+              "train_rows": 305717,
+              "validation_rows": 41746,
+              "train_min": "2018-01-12 00:00:00",
+              "train_max": "2020-04-03 00:00:00",
+              "max_maturity": "2020-07-08 09:30:00",
+              "ready": true
+            }
+          ],
+          "excluded_before_any_outer_score": true
+        }
+      ],
+      "original_index_sha256": "8a6bc45ae30b6ade01116128b1f93c7c9536ff56e41fb33719eeb6d836532fbb",
+      "admitted_index_sha256": "ed0e7f710aee20ae53f796f7e821f56cb0c0035e9e89f577d134feb09facb3a9"
+    },
+    {
+      "hypothesis": "H03",
+      "admitted": 48,
+      "rejected": [],
+      "original_index_sha256": "b7948b66eb80c181c58c064fb27476bebbc1f4f7ecafdebce27005f8de891f10",
+      "admitted_index_sha256": "88d7d8b73c28988a5c59262d2497428cb4b1ee2950f697682a27990c1102b92c"
+    },
+    {
+      "hypothesis": "H07",
+      "admitted": 48,
+      "rejected": [],
+      "original_index_sha256": "8db00cb3f505533cca06dc1390e2ceaed8a521ba7fa48ddacb8eb52fd34883e9",
+      "admitted_index_sha256": "a34b07c20cacbd9931e537effe95dd7331ecffca75c95b22b1c8dd096c86c21a"
+    },
+    {
+      "hypothesis": "H10",
+      "admitted": 48,
+      "rejected": [],
+      "original_index_sha256": "a4f74ad83a9e058aa16e452074820e181eeb80d117f1111c4e899a3165d913f4",
+      "admitted_index_sha256": "1d9174812c9b7e3cf1618cad4fbba1f7505c692426df6b0673452ef104a856d5"
+    },
+    {
+      "hypothesis": "H11",
+      "admitted": 48,
+      "rejected": [],
+      "original_index_sha256": "330192d5991fc23a4afc24a93a551f1202489cd68974b0cecc4e038016f13ed6",
+      "admitted_index_sha256": "dc595cde431a7603bdf26ce9e964f38d15b1f601cd56adc5865fa2dd647ec74f"
+    },
+    {
+      "hypothesis": "H12",
+      "admitted": 48,
+      "rejected": [],
+      "original_index_sha256": "7d43a1e3fe91a310cd679d566d9de8f7de18ad016ba6c7f3483251e9876fb7c0",
+      "admitted_index_sha256": "22d8350f9d05046ae46c900c904fe8c6dc2b206339485499882942a29ec238f6"
+    }
+  ],
+  "exact_rule": "train_min + 24 calendar months <= train_max for outer and every inner window",
+  "original_indexes_archived": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/pre_score_history_admission",
+  "no_outer_metrics_seen": true
+}

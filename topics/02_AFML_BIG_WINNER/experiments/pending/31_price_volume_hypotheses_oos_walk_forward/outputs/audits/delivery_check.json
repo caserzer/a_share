@@ -1,0 +1,992 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-22T08:30:34.890687+00:00",
+  "checks": [
+    {
+      "check": "P0_original_and_R01_immutable",
+      "status": "PASS",
+      "evidence": {
+        "frozen_at": "2026-10-22T07:46:55.418846+00:00",
+        "parent_preregistration_id": "02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310",
+        "file": "configs/revision_01_inner_maturity.yaml",
+        "sha256": "71c1b4d042eeee07dc9241c7a74caf3123432df04755e4817ca43f768d67c191",
+        "before_first_outcome_score": true,
+        "prior_attempt": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/attempt01_unscored_inner_validation_maturity"
+      }
+    },
+    {
+      "check": "EP01_EP30_repository_bytes_unchanged",
+      "status": "PASS",
+      "evidence": {
+        "files": 7460,
+        "changed": []
+      }
+    },
+    {
+      "check": "EP30_all_release_files_unchanged",
+      "status": "PASS",
+      "evidence": {
+        "status": "PASS",
+        "checked_at": "2026-10-22T08:30:22.124069+00:00",
+        "release_id": "9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e",
+        "files_verified": 35170,
+        "bytes_verified": 3062382512,
+        "read_only": true,
+        "private_release": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e",
+        "full_manifest_sha256": "9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e"
+      }
+    },
+    {
+      "check": "all_feature_label_market_partitions_unchanged",
+      "status": "PASS",
+      "evidence": {
+        "partitions": 408,
+        "changed": []
+      }
+    },
+    {
+      "check": "all_four_monthly_labels_rederived",
+      "status": "PASS",
+      "evidence": [
+        {
+          "horizon": "120_sessions",
+          "rows": 525762,
+          "compared": 525762,
+          "mismatches": 0,
+          "status_mismatches": 0,
+          "reason_mismatches": 0,
+          "entry_date_mismatches": 0,
+          "exit_date_mismatches": 0,
+          "mature_at_mismatches": 0,
+          "value_mismatches": 0,
+          "raw_price_return_mismatches": 0,
+          "mfe_mismatches": 0,
+          "mae_mismatches": 0
+        },
+        {
+          "horizon": "20_sessions",
+          "rows": 525762,
+          "compared": 525762,
+          "mismatches": 0,
+          "status_mismatches": 0,
+          "reason_mismatches": 0,
+          "entry_date_mismatches": 0,
+          "exit_date_mismatches": 0,
+          "mature_at_mismatches": 0,
+          "value_mismatches": 0,
+          "raw_price_return_mismatches": 0,
+          "mfe_mismatches": 0,
+          "mae_mismatches": 0
+        },
+        {
+          "horizon": "60_sessions",
+          "rows": 525762,
+          "compared": 525762,
+          "mismatches": 0,
+          "status_mismatches": 0,
+          "reason_mismatches": 0,
+          "entry_date_mismatches": 0,
+          "exit_date_mismatches": 0,
+          "mature_at_mismatches": 0,
+          "value_mismatches": 0,
+          "raw_price_return_mismatches": 0,
+          "mfe_mismatches": 0,
+          "mae_mismatches": 0
+        },
+        {
+          "horizon": "6_calendar_months",
+          "rows": 525762,
+          "compared": 525762,
+          "mismatches": 0,
+          "status_mismatches": 0,
+          "reason_mismatches": 0,
+          "entry_date_mismatches": 0,
+          "exit_date_mismatches": 0,
+          "mature_at_mismatches": 0,
+          "value_mismatches": 0,
+          "raw_price_return_mismatches": 0,
+          "mfe_mismatches": 0,
+          "mae_mismatches": 0
+        }
+      ]
+    },
+    {
+      "check": "full_feature_reconstruction_after_chain_guard",
+      "status": "PASS",
+      "evidence": {
+        "status": "PASS",
+        "replayed_at": "2026-10-22T07:56:40.826307+00:00",
+        "rows": 2571506,
+        "securities": 5823,
+        "all_stored_feature_columns_compared": true,
+        "chain_guard_added_after_data_build_actual_rows_unchanged": true,
+        "no_outcome_scoring_used": true,
+        "current_feature_source_sha256": "71f8fbafa873b26c655eabdb75acf03b8ce6421ab1e59ff28478d16b64f21cd6",
+        "original_data_source_snapshot": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/frozen_data_source_v1"
+      }
+    },
+    {
+      "check": "all_policy_aliases_equal_used_once",
+      "status": "PASS",
+      "evidence": {
+        "status": "PASS",
+        "comparisons": [
+          {
+            "horizon": "20_sessions",
+            "alias": "total",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          },
+          {
+            "horizon": "20_sessions",
+            "alias": "executable",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          },
+          {
+            "horizon": "60_sessions",
+            "alias": "total",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          },
+          {
+            "horizon": "60_sessions",
+            "alias": "executable",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          },
+          {
+            "horizon": "120_sessions",
+            "alias": "total",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          },
+          {
+            "horizon": "120_sessions",
+            "alias": "executable",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          },
+          {
+            "horizon": "6_calendar_months",
+            "alias": "total",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          },
+          {
+            "horizon": "6_calendar_months",
+            "alias": "executable",
+            "rows": 525762,
+            "numeric_and_timing_equal": true
+          }
+        ],
+        "used_policy": "price",
+        "independent_policy_samples": 1
+      }
+    },
+    {
+      "check": "fitting_code_frozen",
+      "status": "PASS",
+      "evidence": {
+        "frozen_at": "2026-10-22T07:46:55.424067+00:00",
+        "files": {
+          "common.py": "a76c91a8a8a985e5facf929a104a4fe78437e9f0e1910234f859c542b7f493cf",
+          "baselines.py": "85236985a57cb7c70f7ccdd7d68e35c7c1f9b8f6c6afb6d24ccd1c66b3c3e10d",
+          "walk_forward.py": "0cb3f26294a22b1b9edacda45663b86bd8d44eac77c010db9e064588608284ed",
+          "ep30_adapter.py": "05d376fe6f6ce4af8dcea8f8ed09eeaa4782f5f9616c45d33f6ef2d28cf7f4aa"
+        },
+        "private_snapshot": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/frozen_model_source_v2",
+        "before_first_EP31_score": true
+      }
+    },
+    {
+      "check": "all_prediction_indexes_precede_scoring",
+      "status": "PASS",
+      "evidence": {
+        "started_at": "2026-10-22T08:18:14.123460+00:00",
+        "prediction_indexes": {
+          "manifests/H01_folds.json": "94264cac798a8ae855ced7a95ceeec933618aa109c1bf0db098544c4914e0d49",
+          "manifests/H02_folds.json": "ed0e7f710aee20ae53f796f7e821f56cb0c0035e9e89f577d134feb09facb3a9",
+          "manifests/H03_folds.json": "88d7d8b73c28988a5c59262d2497428cb4b1ee2950f697682a27990c1102b92c",
+          "manifests/H07_folds.json": "a34b07c20cacbd9931e537effe95dd7331ecffca75c95b22b1c8dd096c86c21a",
+          "manifests/H10_folds.json": "1d9174812c9b7e3cf1618cad4fbba1f7505c692426df6b0673452ef104a856d5",
+          "manifests/H11_folds.json": "dc595cde431a7603bdf26ce9e964f38d15b1f601cd56adc5865fa2dd647ec74f",
+          "manifests/H12_folds.json": "22d8350f9d05046ae46c900c904fe8c6dc2b206339485499882942a29ec238f6",
+          "manifests/big_winner.json": "86793c8e67ae6ea68802f9321e55fe66e0c3677bf6d02645bc1720ec1a4957bf",
+          "manifests/H02_turnover_sensitivity.json": "c2f5408715daca09e0ec0bde0a5d302a0b1f61cee98497ff06ea5e1ae9a84e74",
+          "manifests/H12_independence.json": "ce0a1a74d5016e496a0a5e2c9bf8947785aae2b2a1b2692768a99537d2ac42a0",
+          "manifests/auxiliary_baselines.json": "0f98f80543ad35122770be3fc4f79b5fad2ae2fb6b027e5d1d01b6aa720f1027",
+          "manifests/constant_baseline.json": "466b0568fbc063169d91d2e759fdfe241754a2aeaccbe513b821f18051cfcdb1"
+        },
+        "all_prediction_families_frozen_before_scores": true
+      }
+    },
+    {
+      "check": "scoring_optimization_changes_no_results_or_predictions",
+      "status": "PASS",
+      "evidence": {
+        "status": "PASS",
+        "change": "cache deterministic quarter maturity once per unique quarter",
+        "original_monthly_sha256": "94ad59680482f5d63098dfa590847f9f1344ca9499f05b659dd2904a9740c378",
+        "recomputed_monthly_sha256": "94ad59680482f5d63098dfa590847f9f1344ca9499f05b659dd2904a9740c378",
+        "byte_equal": true,
+        "first_outer_score_started_at": "2026-10-22T08:12:52.155730+00:00",
+        "current_attempt_started_at": "2026-10-22T08:18:14.123460+00:00",
+        "frozen_prediction_indexes_identical": true,
+        "no_model_or_prediction_changes": true
+      }
+    },
+    {
+      "check": "all_required_baseline_sensitivity_payloads_frozen",
+      "status": "PASS",
+      "evidence": {
+        "payloads": 620
+      }
+    },
+    {
+      "check": "H01_prediction_freeze_before_scoring",
+      "status": "PASS",
+      "evidence": "2026-10-22T07:57:46.090816+00:00"
+    },
+    {
+      "check": "H01_expanding_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H01_rolling36_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H02_prediction_freeze_before_scoring",
+      "status": "PASS",
+      "evidence": "2026-10-22T07:58:17.254501+00:00"
+    },
+    {
+      "check": "H02_expanding_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": [
+          "2021Q1"
+        ]
+      }
+    },
+    {
+      "check": "H02_rolling36_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": [
+          "2021Q1"
+        ]
+      }
+    },
+    {
+      "check": "H03_prediction_freeze_before_scoring",
+      "status": "PASS",
+      "evidence": "2026-10-22T07:59:11.076923+00:00"
+    },
+    {
+      "check": "H03_expanding_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H03_rolling36_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H07_prediction_freeze_before_scoring",
+      "status": "PASS",
+      "evidence": "2026-10-22T08:04:33.210738+00:00"
+    },
+    {
+      "check": "H07_expanding_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H07_rolling36_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H10_prediction_freeze_before_scoring",
+      "status": "PASS",
+      "evidence": "2026-10-22T07:52:28.582959+00:00"
+    },
+    {
+      "check": "H10_expanding_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H10_rolling36_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H11_prediction_freeze_before_scoring",
+      "status": "PASS",
+      "evidence": "2026-10-22T07:53:58.629344+00:00"
+    },
+    {
+      "check": "H11_expanding_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H11_rolling36_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H12_prediction_freeze_before_scoring",
+      "status": "PASS",
+      "evidence": "2026-10-22T08:06:48.018387+00:00"
+    },
+    {
+      "check": "H12_expanding_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "H12_rolling36_all_quarters_accounted",
+      "status": "PASS",
+      "evidence": {
+        "ready": [
+          "2021Q1",
+          "2021Q2",
+          "2021Q3",
+          "2021Q4",
+          "2022Q1",
+          "2022Q2",
+          "2022Q3",
+          "2022Q4",
+          "2023Q1",
+          "2023Q2",
+          "2023Q3",
+          "2023Q4",
+          "2024Q1",
+          "2024Q2",
+          "2024Q3",
+          "2024Q4",
+          "2025Q1",
+          "2025Q2",
+          "2025Q3",
+          "2025Q4",
+          "2026Q1",
+          "2026Q2",
+          "2026Q3",
+          "2026Q4"
+        ],
+        "blocked": []
+      }
+    },
+    {
+      "check": "all_nested_timelines_and_outer_prediction_payloads",
+      "status": "PASS",
+      "evidence": {
+        "folds": 334,
+        "predictions": 13114298,
+        "minimum_outer_train_months": 32.427104722792606
+      }
+    },
+    {
+      "check": "every_admitted_model_all_output_columns_replay",
+      "status": "PASS",
+      "evidence": {
+        "status": "PASS",
+        "checked_at": "2026-10-22T08:26:35.440543+00:00",
+        "folds": 334,
+        "rows": 13114298,
+        "all_columns_exact": true,
+        "includes_placebo_lag_partial_factor_masks_and_primary_predictions": true,
+        "arrow_boolean_serialization_type_canonicalized": true,
+        "inputs": "feature-only; no outcome table read"
+      }
+    },
+    {
+      "check": "BH_seven_primary_endpoints_expanding",
+      "status": "PASS",
+      "evidence": [
+        {
+          "hypothesis": "H01",
+          "p_one_sided": 0.009,
+          "q_bh": 0.0315
+        },
+        {
+          "hypothesis": "H02",
+          "p_one_sided": 0.0175,
+          "q_bh": 0.0408333333333333
+        },
+        {
+          "hypothesis": "H03",
+          "p_one_sided": 0.08,
+          "q_bh": 0.14
+        },
+        {
+          "hypothesis": "H07",
+          "p_one_sided": 0.0085,
+          "q_bh": 0.0315
+        },
+        {
+          "hypothesis": "H10",
+          "p_one_sided": 0.276,
+          "q_bh": 0.3864
+        },
+        {
+          "hypothesis": "H11",
+          "p_one_sided": 0.715,
+          "q_bh": 0.8341666666666666
+        },
+        {
+          "hypothesis": "H12",
+          "p_one_sided": 0.9495,
+          "q_bh": 0.9495
+        }
+      ]
+    },
+    {
+      "check": "BH_seven_primary_endpoints_rolling36",
+      "status": "PASS",
+      "evidence": [
+        {
+          "hypothesis": "H01",
+          "p_one_sided": 0.0045,
+          "q_bh": 0.0315
+        },
+        {
+          "hypothesis": "H02",
+          "p_one_sided": 0.0175,
+          "q_bh": 0.0408333333333333
+        },
+        {
+          "hypothesis": "H03",
+          "p_one_sided": 0.0445,
+          "q_bh": 0.077875
+        },
+        {
+          "hypothesis": "H07",
+          "p_one_sided": 0.0105,
+          "q_bh": 0.03675
+        },
+        {
+          "hypothesis": "H10",
+          "p_one_sided": 0.3495,
+          "q_bh": 0.4892999999999999
+        },
+        {
+          "hypothesis": "H11",
+          "p_one_sided": 0.738,
+          "q_bh": 0.8610000000000001
+        },
+        {
+          "hypothesis": "H12",
+          "p_one_sided": 0.907,
+          "q_bh": 0.907
+        }
+      ]
+    },
+    {
+      "check": "same_coverage_for_expanding_rolling_comparison",
+      "status": "PASS",
+      "evidence": {
+        "expanding": {
+          "H01": 1065978,
+          "H02": 1204000,
+          "H03": 1142090,
+          "H07": 1308303,
+          "H10": 229287,
+          "H11": 49778,
+          "H12": 1143207
+        },
+        "rolling": {
+          "H01": 1065978,
+          "H02": 1204000,
+          "H03": 1142090,
+          "H07": 1308303,
+          "H10": 229287,
+          "H11": 49778,
+          "H12": 1143207
+        }
+      }
+    },
+    {
+      "check": "eight_independent_verdicts_H09_blocked",
+      "status": "PASS",
+      "evidence": [
+        {
+          "hypothesis": "H01",
+          "verdict": "INCONCLUSIVE"
+        },
+        {
+          "hypothesis": "H02",
+          "verdict": "INCONCLUSIVE"
+        },
+        {
+          "hypothesis": "H03",
+          "verdict": "INCONCLUSIVE"
+        },
+        {
+          "hypothesis": "H07",
+          "verdict": "INCONCLUSIVE"
+        },
+        {
+          "hypothesis": "H09",
+          "verdict": "BLOCKED_DATA"
+        },
+        {
+          "hypothesis": "H10",
+          "verdict": "INCONCLUSIVE"
+        },
+        {
+          "hypothesis": "H11",
+          "verdict": "INCONCLUSIVE"
+        },
+        {
+          "hypothesis": "H12",
+          "verdict": "INCONCLUSIVE"
+        }
+      ]
+    },
+    {
+      "check": "forward_not_fabricated",
+      "status": "PASS",
+      "evidence": "EP30 release ends before EP31 final code freeze; no post-freeze complete t0 market data in authorized frozen input"
+    },
+    {
+      "check": "forward_final_source_freeze_current",
+      "status": "PASS",
+      "evidence": "all source/config/test hashes match forward status"
+    },
+    {
+      "check": "independent_full_data_replay",
+      "status": "PASS",
+      "evidence": {
+        "status": "PASS",
+        "original_manifest_sha256": "1ea8b6db88a94bd37f8333f32e6b19cfb808522eece3e13c7424a30e4ec0f92d",
+        "replay_manifest_sha256": "ec2bc8c289f3755ad7ec81bdd85208736585cbfbe67558dc4afcb8afc03db18c",
+        "parquet_files": 408,
+        "mismatches": [],
+        "replay_root": "/home/xiaolv/.cache/a_share/ep31_replay_20261022_r01",
+        "source_release": "EP30 frozen release only",
+        "original_outputs_unchanged": true
+      }
+    },
+    {
+      "check": "adversarial_test_suite",
+      "status": "PASS",
+      "evidence": {
+        "returncode": 0,
+        "passed": 36,
+        "command": [
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/.venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/tests"
+        ],
+        "log_path": "/home/xiaolv/.cache/a_share/ep31/02d8428894e6b21e763784a11f793db9b6ace8a930c054de11ec75139895e310/final_tests.log",
+        "log_sha256": "9049ba1b93045fdcb2921a4789aef6914604f02ba46dddf61c308ae2c4470aca",
+        "all_source_compiles": true,
+        "checked_at": "2026-10-22T08:24:15.200195+00:00"
+      }
+    },
+    {
+      "check": "required_reports_present",
+      "status": "PASS",
+      "evidence": [
+        "README.md",
+        "research_plan.md",
+        "reports/data_quality.md",
+        "reports/hypothesis_scorecard.md",
+        "reports/oos_walk_forward.md",
+        "reports/big_winner_incremental_value.md",
+        "reports/final_conclusion.md"
+      ]
+    },
+    {
+      "check": "exact_EP31_worktree_scope",
+      "status": "PASS",
+      "evidence": [
+        " M topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/README.md",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/.gitignore",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/configs/",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/notes/",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/outputs/",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/reports/",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/requirements.txt",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/research_plan.md",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/src/",
+        "?? topics/02_AFML_BIG_WINNER/experiments/pending/31_price_volume_hypotheses_oos_walk_forward/tests/"
+      ]
+    }
+  ],
+  "frozen_model_folds": 334,
+  "outer_prediction_rows": 13114298,
+  "task_complete_with_disclosed_data_and_forward_branches": true,
+  "strict_PIT_industry_alpha": "BLOCKED_DATA",
+  "H09": "BLOCKED_DATA",
+  "forward": "FORWARD_PENDING",
+  "trading": "TRADING_NOT_AUTHORIZED"
+}

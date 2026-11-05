@@ -1,0 +1,24 @@
+features:
+  source: frozen_raw_and_qfq_OHLCV_only_never_label_table
+  known_at: t0_15_00_assumed_vendor_daily_observation_historical_proxy
+  qfq_features: ratios_only_invariant_to_future_global_reanchoring
+  vendor_status: contemporaneous_row_proxy_no_lifetime_ST_exclusion
+  future_universe: forbidden
+  turnover: sealed_row_turnover_rate_conflicts_masked
+  corporate_actions: volume_primary_plus_turnover_and_no_recent_factor_step_sensitivities
+  industry: UNKNOWN
+  true_shares: UNKNOWN
+  daily_eligibility: Historical-proxy
+labels:
+  horizons: [5, 10, 20, 60, 120, 6_calendar_months]
+  target: t0_plus_h_market_sessions_or_six_calendar_months
+  entry: first_observed_positive_volume_open_strictly_after_t0
+  exit: first_observed_positive_volume_open_on_or_after_target_and_after_entry
+  mature_at: exit_date_09_30
+  unknown: never_zero_fill_or_last_quote_fill
+  future_end: CENSORED
+  delisting_terminal: UNKNOWN
+  price_total_executable: one_alias_only_price
+  rv: mean_squared_log_close_return_t1_through_t20_complete_path_only
+  mfe_mae: complete_close_path_only_not_intraday_extremes
+  path_timestamps: [feature_start, t0, trade_time, t1, mature_at]

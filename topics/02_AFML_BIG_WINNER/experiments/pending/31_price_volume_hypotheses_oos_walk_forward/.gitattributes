@@ -1,0 +1,4 @@
+# Preserve the frozen CSV bytes and recognize their CRLF line endings.
+outputs/audits/*_fold_timeline.csv -text whitespace=cr-at-eol
+# Preserve the generated figure, including whitespace in SVG path data.
+reports/figures/primary_effects.svg -text -whitespace
