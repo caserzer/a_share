@@ -1,0 +1,39 @@
+{
+  "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/state_features.parquet",
+  "sha256": "8ca85aacba62ba6d53ea20424fd189c80b75b0c4113d7258224cd43d5da46f59",
+  "rows": 773934,
+  "code_sha256": "034540424bca0810a05f78360361d29779eb3cdc79c04e67520772251df741b1",
+  "inputs": {
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet": "67bb7572e341399bf3e5cb845fd8d0fd1570232c2145697bafb4246d711a3e9e",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/features.parquet": "9275eb696b9e2d872dcf8748874f7725f412bb47de77b7893749b51f56f54dc7",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/stage_b_labels.parquet": "9ff21cc8ba565cc6cd39d3e7c894e65f791b7890897eff2f5c313c4a98dfea32",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI300.parquet": "4acdd4c6f1afdfe326bc9b75f772dbba06fa5f95a47da1f671261ad95688b8e0",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470"
+  },
+  "excludes": [
+    "future prices",
+    "ex-post phases",
+    "label values"
+  ],
+  "features": [
+    "date",
+    "candidate_low_date",
+    "state_direction",
+    "state_left",
+    "state_age",
+    "state_confirm_age",
+    "state_drawup",
+    "state_drawdown",
+    "state_previous_decline",
+    "state_eligible",
+    "start_confirmed_at",
+    "row_id",
+    "threshold",
+    "era",
+    "level",
+    "industry_code",
+    "block",
+    "state_market_CSI300",
+    "state_market_CSI_ALL"
+  ]
+}

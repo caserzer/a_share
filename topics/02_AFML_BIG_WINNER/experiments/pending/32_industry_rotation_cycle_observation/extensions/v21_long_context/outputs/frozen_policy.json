@@ -1,0 +1,107 @@
+{
+  "models": [
+    "risk_blend",
+    "rank_hedged",
+    "risk_tree",
+    "rd_gate",
+    "rd_selected",
+    "capacity_tree",
+    "diffusion_tree",
+    "diffusion_blend",
+    "long_tree",
+    "long_blend"
+  ],
+  "policies": [
+    [
+      "top_0.01",
+      0.01,
+      0.0
+    ],
+    [
+      "top_0.025",
+      0.025,
+      0.0
+    ],
+    [
+      "top_0.05",
+      0.05,
+      0.0
+    ],
+    [
+      "top_0.075",
+      0.075,
+      0.0
+    ],
+    [
+      "top_0.1",
+      0.1,
+      0.0
+    ],
+    [
+      "all_p0.025",
+      1.0,
+      0.025
+    ],
+    [
+      "all_p0.05",
+      1.0,
+      0.05
+    ],
+    [
+      "all_p0.075",
+      1.0,
+      0.075
+    ],
+    [
+      "all_p0.1",
+      1.0,
+      0.1
+    ],
+    [
+      "all_p0.15",
+      1.0,
+      0.15
+    ],
+    [
+      "all_p0.2",
+      1.0,
+      0.2
+    ],
+    [
+      "top10_p0.025",
+      0.1,
+      0.025
+    ],
+    [
+      "top10_p0.05",
+      0.1,
+      0.05
+    ],
+    [
+      "top10_p0.075",
+      0.1,
+      0.075
+    ],
+    [
+      "top10_p0.1",
+      0.1,
+      0.1
+    ],
+    [
+      "top10_p0.15",
+      0.1,
+      0.15
+    ],
+    [
+      "top10_p0.2",
+      0.1,
+      0.2
+    ]
+  ],
+  "plan_sha256": "b7b5f5fa3534957180bb555278dc07f9fae93114618c89c7e0b11a068bea297e",
+  "code_sha256": "868ecb5470b917313c8a38dc8e08623271ec745cda71f11c91fc395011256dad",
+  "labels_sha256": "9ff21cc8ba565cc6cd39d3e7c894e65f791b7890897eff2f5c313c4a98dfea32",
+  "phases_sha256": "bb6284195b28f7c49c53f095a22470733607daf8c5e3c5e1311dd783dcc3b5e0",
+  "target_precision": 0.235,
+  "target_event_recall": 0.4125
+}

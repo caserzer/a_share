@@ -1,0 +1,20 @@
+{
+  "status": "TARGET_NOT_MET",
+  "precision_target": 0.235,
+  "event_recall_floor": 0.4125,
+  "candidate_count": 629,
+  "model_count": 37,
+  "diagnostic_hits": [],
+  "best_recall_preserving": {
+    "model": "risk_diffusion_min",
+    "policy": "all_p0.15",
+    "precision": 0.1762625103538395,
+    "event_recall": 0.5018364127630863,
+    "point_recall": 0.2236446029919167,
+    "median_delay_days": 55.31944444444444,
+    "source_version": "v20_persistent_confirmation"
+  },
+  "goal_complete": false,
+  "strict_PIT": "BLOCKED_DATA",
+  "forward_validation": "FORWARD_PENDING"
+}

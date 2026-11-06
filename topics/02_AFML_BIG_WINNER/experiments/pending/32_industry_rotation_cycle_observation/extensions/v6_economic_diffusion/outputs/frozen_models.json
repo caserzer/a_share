@@ -1,0 +1,139 @@
+{
+  "spec": {
+    "model": "lightgbm",
+    "features": [
+      "mom21",
+      "mom63",
+      "mom126",
+      "excess21",
+      "excess63",
+      "excess126",
+      "dd21",
+      "dd63",
+      "dd126",
+      "vol21",
+      "vol63",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "coverage",
+      "log_members",
+      "mom_accel",
+      "excess_accel",
+      "breadth_accel",
+      "drawdown_recovery",
+      "risk_adjusted_excess",
+      "vol_accel",
+      "breadth_excess_confirmation",
+      "market_accel"
+    ],
+    "engineered": [
+      {
+        "name": "mom_accel",
+        "op": "sub",
+        "left": "mom21",
+        "right": "mom63"
+      },
+      {
+        "name": "excess_accel",
+        "op": "sub",
+        "left": "excess21",
+        "right": "excess63"
+      },
+      {
+        "name": "breadth_accel",
+        "op": "sub",
+        "left": "breadth21",
+        "right": "breadth63"
+      },
+      {
+        "name": "drawdown_recovery",
+        "op": "sub",
+        "left": "dd21",
+        "right": "dd126"
+      },
+      {
+        "name": "risk_adjusted_excess",
+        "op": "div",
+        "left": "excess63",
+        "right": "vol63"
+      },
+      {
+        "name": "vol_accel",
+        "op": "sub",
+        "left": "vol21",
+        "right": "vol63"
+      },
+      {
+        "name": "breadth_excess_confirmation",
+        "op": "mul",
+        "left": "breadth21",
+        "right": "excess_accel"
+      },
+      {
+        "name": "market_accel",
+        "op": "sub",
+        "left": "market21",
+        "right": "market63"
+      }
+    ],
+    "C": 1.0,
+    "trees": 90,
+    "leaves": 7,
+    "max_depth": 3,
+    "min_child_samples": 500,
+    "learning_rate": 0.03,
+    "reg_lambda": 25.0
+  },
+  "variants": {
+    "base": [],
+    "H1": [
+      "leader_pos21",
+      "leader_neg21",
+      "peer21",
+      "peer63",
+      "leader_gap21"
+    ],
+    "H2": [
+      "leader_gap_lag21",
+      "peer_breadth21",
+      "peer_breadth_change",
+      "diffusion_interaction"
+    ],
+    "H3": [
+      "beta_residual21",
+      "down_resilience63"
+    ],
+    "joint": [
+      "leader_pos21",
+      "leader_neg21",
+      "peer21",
+      "peer63",
+      "leader_gap21",
+      "leader_gap_lag21",
+      "peer_breadth21",
+      "peer_breadth_change",
+      "diffusion_interaction",
+      "beta_residual21",
+      "down_resilience63"
+    ],
+    "other_leader": [
+      "other_pos21",
+      "other_neg21",
+      "peer21",
+      "peer63",
+      "other_gap21"
+    ],
+    "reverse": [
+      "reverse_pos21",
+      "reverse_neg21",
+      "leader21",
+      "leader63",
+      "reverse_gap21"
+    ]
+  },
+  "plan_sha256": "4971e3908f84c47138ddd7b7118207f341991026038182da98fece2f46654795",
+  "evaluation_code_sha256": "2c94fd5c3e7d8ee94e485c049abf8aa9cd02ea9015077ebdc1510ac5121e20ea",
+  "source_feature_sha256": "c2f0cbfcfa0518492895fa6efdfbbd5a548f1665a130e035f1956ed16277f681",
+  "scope": "fixed ablation; no optimization against already viewed outer period"
+}

@@ -1,0 +1,4207 @@
+{
+  "path": "/home/xiaolv/.cache/a_share/ep32/economic_v6/predictions.parquet",
+  "sha256": "4d060a4d95c835296a04076b2cad8bea12af379ecad1e35b16f23e7104655778",
+  "frozen_models_sha256": "fcfdba611098c63d30cc729e4c5ffc7bc8d5e7f5841e2052221fab0347b07107",
+  "folds": [
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 27973,
+      "test": 2095,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 31335,
+      "test": 2293,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 32726,
+      "test": 2332,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 36346,
+      "test": 2029,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 37426,
+      "test": 1992,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 39255,
+      "test": 2188,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 41428,
+      "test": 2331,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 41769,
+      "test": 1988,
+      "latest_training_label": "2025-09-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 43549,
+      "test": 1623,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 45849,
+      "test": 2246,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 48652,
+      "test": 2464,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 51988,
+      "test": 346,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 37950,
+      "test": 2323,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 41683,
+      "test": 2709,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 43209,
+      "test": 2689,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 47428,
+      "test": 2312,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 48650,
+      "test": 2316,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 50767,
+      "test": 2702,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 53282,
+      "test": 2699,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 53699,
+      "test": 2310,
+      "latest_training_label": "2025-09-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 55850,
+      "test": 1942,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 58547,
+      "test": 2715,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 61808,
+      "test": 2712,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 65834,
+      "test": 388,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 13326,
+      "test": 1051,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 15165,
+      "test": 965,
+      "latest_training_label": "2024-03-04 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 15717,
+      "test": 994,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 17310,
+      "test": 1022,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 17835,
+      "test": 1001,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 18749,
+      "test": 927,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 19722,
+      "test": 993,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 19869,
+      "test": 1000,
+      "latest_training_label": "2025-09-23 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 20673,
+      "test": 988,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 21712,
+      "test": 957,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 23111,
+      "test": 1053,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 18008,
+      "test": 1162,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 20050,
+      "test": 1160,
+      "latest_training_label": "2024-03-18 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 20660,
+      "test": 1153,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 22520,
+      "test": 1156,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 23120,
+      "test": 1158,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 24164,
+      "test": 1158,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 25290,
+      "test": 1157,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 25471,
+      "test": 1155,
+      "latest_training_label": "2025-09-23 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 26447,
+      "test": 1166,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 27674,
+      "test": 1163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 29281,
+      "test": 1162,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 56744,
+      "test": 4182,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 63830,
+      "test": 4230,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 66310,
+      "test": 4644,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 73369,
+      "test": 4075,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 75429,
+      "test": 4323,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 79191,
+      "test": 4045,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 83347,
+      "test": 4659,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 84027,
+      "test": 4298,
+      "latest_training_label": "2025-09-23 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 87673,
+      "test": 3587,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 92288,
+      "test": 4163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 98144,
+      "test": 4919,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 105020,
+      "test": 691,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 76652,
+      "test": 4647,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 84539,
+      "test": 5031,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 87266,
+      "test": 5378,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 95527,
+      "test": 4622,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 97860,
+      "test": 5018,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 102193,
+      "test": 5018,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 107013,
+      "test": 5399,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 107846,
+      "test": 5005,
+      "latest_training_label": "2025-09-23 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 112240,
+      "test": 4273,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 117675,
+      "test": 5042,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 124461,
+      "test": 5423,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 132728,
+      "test": 776,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 22145,
+      "test": 2095,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 28244,
+      "test": 2293,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 29181,
+      "test": 2332,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 33264,
+      "test": 2029,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 33569,
+      "test": 1992,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 35344,
+      "test": 2188,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 37674,
+      "test": 2331,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 37949,
+      "test": 1988,
+      "latest_training_label": "2025-08-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 38366,
+      "test": 1623,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 39761,
+      "test": 2246,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 42424,
+      "test": 2464,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 48159,
+      "test": 346,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 31227,
+      "test": 2323,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 38039,
+      "test": 2709,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 39054,
+      "test": 2689,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 43783,
+      "test": 2312,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 44129,
+      "test": 2316,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 46134,
+      "test": 2702,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 48850,
+      "test": 2699,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 49189,
+      "test": 2310,
+      "latest_training_label": "2025-09-05 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 49717,
+      "test": 1942,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 51436,
+      "test": 2715,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 54554,
+      "test": 2712,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 61316,
+      "test": 388,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 10569,
+      "test": 1051,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 13758,
+      "test": 965,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 14160,
+      "test": 994,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 15929,
+      "test": 1022,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 16087,
+      "test": 1001,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 16958,
+      "test": 927,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 18027,
+      "test": 993,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 18152,
+      "test": 1000,
+      "latest_training_label": "2025-08-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 18344,
+      "test": 988,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 18997,
+      "test": 957,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 20248,
+      "test": 1053,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 14830,
+      "test": 1162,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 18389,
+      "test": 1160,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 18826,
+      "test": 1153,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 20881,
+      "test": 1156,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 21061,
+      "test": 1158,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 22038,
+      "test": 1158,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 23288,
+      "test": 1157,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 23442,
+      "test": 1155,
+      "latest_training_label": "2025-09-05 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 23686,
+      "test": 1166,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 24491,
+      "test": 1163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 25954,
+      "test": 1162,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 44814,
+      "test": 4182,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 57587,
+      "test": 4230,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 59344,
+      "test": 4644,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 67202,
+      "test": 4075,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 67786,
+      "test": 4323,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 71356,
+      "test": 4045,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 75859,
+      "test": 4659,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 76390,
+      "test": 4298,
+      "latest_training_label": "2025-08-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 77248,
+      "test": 3587,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 80124,
+      "test": 4163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 85554,
+      "test": 4919,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 97298,
+      "test": 691,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 62916,
+      "test": 4647,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 77198,
+      "test": 5031,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 79110,
+      "test": 5378,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 88246,
+      "test": 4622,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 88911,
+      "test": 5018,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 92936,
+      "test": 5018,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 98186,
+      "test": 5399,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 98849,
+      "test": 5005,
+      "latest_training_label": "2025-09-05 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 99929,
+      "test": 4273,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 103465,
+      "test": 5042,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 109827,
+      "test": 5423,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 123646,
+      "test": 776,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 15521,
+      "test": 2095,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 23701,
+      "test": 2293,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 24449,
+      "test": 2332,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 29243,
+      "test": 2029,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 29253,
+      "test": 1992,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 30011,
+      "test": 2188,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 32178,
+      "test": 2331,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 32656,
+      "test": 1988,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 32738,
+      "test": 1623,
+      "latest_training_label": "2025-12-16 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 33368,
+      "test": 2246,
+      "latest_training_label": "2026-03-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 34648,
+      "test": 2464,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 39969,
+      "test": 346,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 23184,
+      "test": 2323,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 32470,
+      "test": 2709,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 33286,
+      "test": 2689,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 38765,
+      "test": 2312,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 38781,
+      "test": 2316,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 39667,
+      "test": 2702,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 42162,
+      "test": 2699,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 42731,
+      "test": 2310,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 42842,
+      "test": 1942,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 43627,
+      "test": 2715,
+      "latest_training_label": "2026-03-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 45121,
+      "test": 2712,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 51262,
+      "test": 388,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 7401,
+      "test": 1051,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 11613,
+      "test": 965,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 11975,
+      "test": 994,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 14093,
+      "test": 1022,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 14097,
+      "test": 1001,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 14470,
+      "test": 927,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 15484,
+      "test": 993,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 15706,
+      "test": 1000,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 15744,
+      "test": 988,
+      "latest_training_label": "2025-12-16 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 16037,
+      "test": 957,
+      "latest_training_label": "2026-03-23 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 16635,
+      "test": 1053,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 10986,
+      "test": 1162,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 15752,
+      "test": 1160,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 16152,
+      "test": 1153,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 18583,
+      "test": 1156,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 18590,
+      "test": 1158,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 19022,
+      "test": 1158,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 20188,
+      "test": 1157,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 20453,
+      "test": 1155,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 20505,
+      "test": 1166,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 20873,
+      "test": 1163,
+      "latest_training_label": "2026-03-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 21568,
+      "test": 1162,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 31201,
+      "test": 4182,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 48363,
+      "test": 4230,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 49880,
+      "test": 4644,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 59159,
+      "test": 4075,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 59179,
+      "test": 4323,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 60688,
+      "test": 4045,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 64912,
+      "test": 4659,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 65842,
+      "test": 4298,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 66008,
+      "test": 3587,
+      "latest_training_label": "2025-12-16 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 67301,
+      "test": 4163,
+      "latest_training_label": "2026-03-23 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 69897,
+      "test": 4919,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 80739,
+      "test": 691,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 46425,
+      "test": 4647,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 65897,
+      "test": 5031,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 67555,
+      "test": 5378,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 78206,
+      "test": 4622,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 78237,
+      "test": 5018,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 79999,
+      "test": 5018,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 84865,
+      "test": 5399,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 85977,
+      "test": 5005,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 86200,
+      "test": 4273,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 87810,
+      "test": 5042,
+      "latest_training_label": "2026-03-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 90831,
+      "test": 5423,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 103341,
+      "test": 776,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 27972,
+      "test": 2095,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 31334,
+      "test": 2293,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 32725,
+      "test": 2332,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 36345,
+      "test": 2029,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 37425,
+      "test": 1992,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 39254,
+      "test": 2188,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 41427,
+      "test": 2331,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 41762,
+      "test": 1988,
+      "latest_training_label": "2025-09-22 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 43519,
+      "test": 1622,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 45791,
+      "test": 2246,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 48635,
+      "test": 2464,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 51980,
+      "test": 346,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 37952,
+      "test": 2323,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 41686,
+      "test": 2709,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 43212,
+      "test": 2689,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 47431,
+      "test": 2312,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 48653,
+      "test": 2316,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 50770,
+      "test": 2702,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 53285,
+      "test": 2699,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 53696,
+      "test": 2310,
+      "latest_training_label": "2025-09-22 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 55816,
+      "test": 1939,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 58474,
+      "test": 2714,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 61787,
+      "test": 2712,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 65827,
+      "test": 388,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 13032,
+      "test": 1051,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 14871,
+      "test": 965,
+      "latest_training_label": "2024-03-04 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 15423,
+      "test": 994,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 17016,
+      "test": 1022,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 17541,
+      "test": 1001,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 18455,
+      "test": 927,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 19428,
+      "test": 993,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 19572,
+      "test": 1000,
+      "latest_training_label": "2025-09-22 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 20365,
+      "test": 988,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 21391,
+      "test": 957,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 22810,
+      "test": 1053,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 17631,
+      "test": 1162,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 19673,
+      "test": 1160,
+      "latest_training_label": "2024-03-18 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 20283,
+      "test": 1153,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 22143,
+      "test": 1156,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 22743,
+      "test": 1158,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 23787,
+      "test": 1158,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 24913,
+      "test": 1157,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 25091,
+      "test": 1155,
+      "latest_training_label": "2025-09-22 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 26052,
+      "test": 1166,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 27261,
+      "test": 1163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 28895,
+      "test": 1162,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 56455,
+      "test": 4182,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 63541,
+      "test": 4230,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 66021,
+      "test": 4644,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 73080,
+      "test": 4077,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 75142,
+      "test": 4323,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 78904,
+      "test": 4045,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 83060,
+      "test": 4659,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 83727,
+      "test": 4298,
+      "latest_training_label": "2025-09-22 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 87324,
+      "test": 3586,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 91880,
+      "test": 4163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 97825,
+      "test": 4919,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 104719,
+      "test": 691,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 76298,
+      "test": 4648,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 84186,
+      "test": 5031,
+      "latest_training_label": "2024-03-20 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 86914,
+      "test": 5378,
+      "latest_training_label": "2024-06-19 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 95175,
+      "test": 4623,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 97510,
+      "test": 5018,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 101842,
+      "test": 5018,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 106662,
+      "test": 5399,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 107482,
+      "test": 5005,
+      "latest_training_label": "2025-09-22 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 111811,
+      "test": 4270,
+      "latest_training_label": "2025-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 117166,
+      "test": 5041,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 124066,
+      "test": 5423,
+      "latest_training_label": "2026-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 132360,
+      "test": 776,
+      "latest_training_label": "2026-09-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 22144,
+      "test": 2095,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 28243,
+      "test": 2293,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 29180,
+      "test": 2332,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 33263,
+      "test": 2029,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 33568,
+      "test": 1992,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 35343,
+      "test": 2188,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 37673,
+      "test": 2331,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 37948,
+      "test": 1988,
+      "latest_training_label": "2025-08-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 38358,
+      "test": 1622,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 39674,
+      "test": 2246,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 42306,
+      "test": 2464,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 48135,
+      "test": 346,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 31226,
+      "test": 2323,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 38040,
+      "test": 2709,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 39055,
+      "test": 2689,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 43784,
+      "test": 2312,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 44130,
+      "test": 2316,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 46135,
+      "test": 2702,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 48851,
+      "test": 2699,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 49190,
+      "test": 2310,
+      "latest_training_label": "2025-09-05 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 49711,
+      "test": 1939,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 51332,
+      "test": 2714,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 54408,
+      "test": 2712,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 61283,
+      "test": 388,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 10300,
+      "test": 1051,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 13471,
+      "test": 965,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 13870,
+      "test": 994,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 15639,
+      "test": 1022,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 15797,
+      "test": 1001,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 16668,
+      "test": 927,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 17737,
+      "test": 993,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 17862,
+      "test": 1000,
+      "latest_training_label": "2025-08-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 18051,
+      "test": 988,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 18665,
+      "test": 957,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 19902,
+      "test": 1053,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 14485,
+      "test": 1162,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 18023,
+      "test": 1160,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 18457,
+      "test": 1153,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 20512,
+      "test": 1156,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 20692,
+      "test": 1158,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 21669,
+      "test": 1158,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 22919,
+      "test": 1157,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 23073,
+      "test": 1155,
+      "latest_training_label": "2025-09-05 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 23314,
+      "test": 1166,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 24071,
+      "test": 1163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 25516,
+      "test": 1162,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 44549,
+      "test": 4182,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 57306,
+      "test": 4230,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 59060,
+      "test": 4644,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 66918,
+      "test": 4077,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 67502,
+      "test": 4323,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 71074,
+      "test": 4045,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 75577,
+      "test": 4659,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 76108,
+      "test": 4298,
+      "latest_training_label": "2025-08-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 76953,
+      "test": 3586,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 79658,
+      "test": 4163,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 85028,
+      "test": 4919,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 96967,
+      "test": 691,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 62585,
+      "test": 4648,
+      "latest_training_label": "2023-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 76851,
+      "test": 5031,
+      "latest_training_label": "2024-03-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 78760,
+      "test": 5378,
+      "latest_training_label": "2024-06-18 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 87896,
+      "test": 4623,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 88561,
+      "test": 5018,
+      "latest_training_label": "2024-12-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 92587,
+      "test": 5018,
+      "latest_training_label": "2025-03-27 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 97837,
+      "test": 5399,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 98500,
+      "test": 5005,
+      "latest_training_label": "2025-09-05 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 99567,
+      "test": 4270,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 102894,
+      "test": 5041,
+      "latest_training_label": "2026-03-31 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 109176,
+      "test": 5423,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 123229,
+      "test": 776,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 15492,
+      "test": 2095,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 23672,
+      "test": 2293,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 24420,
+      "test": 2332,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 29214,
+      "test": 2029,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 29224,
+      "test": 1992,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 29982,
+      "test": 2188,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 32149,
+      "test": 2331,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 32627,
+      "test": 1988,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 32709,
+      "test": 1622,
+      "latest_training_label": "2025-12-16 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 33314,
+      "test": 2246,
+      "latest_training_label": "2026-03-23 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 34493,
+      "test": 2464,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 39883,
+      "test": 346,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 23160,
+      "test": 2323,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 32448,
+      "test": 2709,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 33264,
+      "test": 2689,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 38743,
+      "test": 2312,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 38759,
+      "test": 2316,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 39645,
+      "test": 2702,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 42140,
+      "test": 2699,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 42709,
+      "test": 2310,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 42813,
+      "test": 1939,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 43573,
+      "test": 2714,
+      "latest_training_label": "2026-03-30 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 44949,
+      "test": 2712,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 51159,
+      "test": 388,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 7208,
+      "test": 1051,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 11344,
+      "test": 965,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 11701,
+      "test": 994,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 13812,
+      "test": 1022,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 13816,
+      "test": 1001,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 14189,
+      "test": 927,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 15203,
+      "test": 993,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 15425,
+      "test": 1000,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 15463,
+      "test": 988,
+      "latest_training_label": "2025-12-16 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 15744,
+      "test": 957,
+      "latest_training_label": "2026-03-23 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 16296,
+      "test": 1053,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 10750,
+      "test": 1162,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 15414,
+      "test": 1160,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 15807,
+      "test": 1153,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 18230,
+      "test": 1156,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 18237,
+      "test": 1158,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 18669,
+      "test": 1158,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 19835,
+      "test": 1157,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 20100,
+      "test": 1155,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 20149,
+      "test": 1166,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 20505,
+      "test": 1163,
+      "latest_training_label": "2026-03-30 00:00:00"
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 21146,
+      "test": 1162,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-01-01",
+      "train": 30968,
+      "test": 4182,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-04-01",
+      "train": 48056,
+      "test": 4230,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-07-01",
+      "train": 49568,
+      "test": 4644,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2024-10-01",
+      "train": 58840,
+      "test": 4077,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-01-01",
+      "train": 58860,
+      "test": 4323,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-04-01",
+      "train": 60370,
+      "test": 4045,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-07-01",
+      "train": 64594,
+      "test": 4659,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2025-10-01",
+      "train": 65524,
+      "test": 4298,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-01-01",
+      "train": 65690,
+      "test": 3586,
+      "latest_training_label": "2025-12-16 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-04-01",
+      "train": 66931,
+      "test": 4163,
+      "latest_training_label": "2026-03-23 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-07-01",
+      "train": 69324,
+      "test": 4919,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "common",
+      "quarter": "2026-10-01",
+      "train": 80305,
+      "test": 691,
+      "latest_training_label": "2026-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-01-01",
+      "train": 46162,
+      "test": 4648,
+      "latest_training_label": "2023-12-28 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-04-01",
+      "train": 65535,
+      "test": 5031,
+      "latest_training_label": "2024-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-07-01",
+      "train": 67186,
+      "test": 5378,
+      "latest_training_label": "2024-06-17 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2024-10-01",
+      "train": 77829,
+      "test": 4623,
+      "latest_training_label": "2024-09-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-01-01",
+      "train": 77860,
+      "test": 5018,
+      "latest_training_label": "2024-10-08 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-04-01",
+      "train": 79623,
+      "test": 5018,
+      "latest_training_label": "2025-03-26 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-07-01",
+      "train": 84489,
+      "test": 5399,
+      "latest_training_label": "2025-06-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2025-10-01",
+      "train": 85601,
+      "test": 5005,
+      "latest_training_label": "2025-09-15 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-01-01",
+      "train": 85812,
+      "test": 4270,
+      "latest_training_label": "2025-12-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-04-01",
+      "train": 87370,
+      "test": 5041,
+      "latest_training_label": "2026-03-30 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-07-01",
+      "train": 90157,
+      "test": 5423,
+      "latest_training_label": "2026-06-29 00:00:00"
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "cohort": "h3_full",
+      "quarter": "2026-10-01",
+      "train": 102808,
+      "test": 776,
+      "latest_training_label": "2026-09-30 00:00:00"
+    }
+  ]
+}

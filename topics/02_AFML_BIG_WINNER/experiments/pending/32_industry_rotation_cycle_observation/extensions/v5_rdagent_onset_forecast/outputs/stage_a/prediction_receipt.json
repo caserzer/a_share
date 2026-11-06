@@ -1,0 +1,2109 @@
+{
+  "path": "/home/xiaolv/.cache/a_share/ep32/forecast_v5/stage_a/outer_predictions.parquet",
+  "sha256": "2a8ff99bfd3374f9b404ba1ede7c0d4425a6c52aaa78ed6cf3fb21b006a208ec",
+  "rows": 2311152,
+  "outcome_columns_present": false,
+  "frozen_selection_sha256": "13646d530726132f7421d0ba53887b1437e285d25769f6c1bc38af8b0bfb85b9",
+  "folds": [
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 38705,
+      "train_positive": 367,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 2326
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 42247,
+      "train_positive": 392,
+      "latest_train_label": "2024-03-20 00:00:00",
+      "test_rows": 2712
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 43769,
+      "train_positive": 392,
+      "latest_train_label": "2024-06-19 00:00:00",
+      "test_rows": 2695
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 47972,
+      "train_positive": 396,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 2314
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 49183,
+      "train_positive": 396,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 2316
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 51248,
+      "train_positive": 396,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 2702
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 53648,
+      "train_positive": 396,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 2699
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 54067,
+      "train_positive": 407,
+      "latest_train_label": "2025-09-23 00:00:00",
+      "test_rows": 2315
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 56042,
+      "train_positive": 681,
+      "latest_train_label": "2025-12-31 00:00:00",
+      "test_rows": 1945
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 58706,
+      "train_positive": 896,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 2717
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 62237,
+      "train_positive": 917,
+      "latest_train_label": "2026-06-30 00:00:00",
+      "test_rows": 2714
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-10-01",
+      "train_rows": 66381,
+      "train_positive": 917,
+      "latest_train_label": "2026-09-23 00:00:00",
+      "test_rows": 388
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 17983,
+      "train_positive": 188,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 20046,
+      "train_positive": 200,
+      "latest_train_label": "2024-03-18 00:00:00",
+      "test_rows": 1162
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 20658,
+      "train_positive": 200,
+      "latest_train_label": "2024-06-19 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 22518,
+      "train_positive": 202,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 23120,
+      "train_positive": 202,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 24168,
+      "train_positive": 202,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 25291,
+      "train_positive": 202,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 25462,
+      "train_positive": 207,
+      "latest_train_label": "2025-09-23 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 26308,
+      "train_positive": 317,
+      "latest_train_label": "2025-12-31 00:00:00",
+      "test_rows": 1167
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 27499,
+      "train_positive": 405,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 29220,
+      "train_positive": 413,
+      "latest_train_label": "2026-06-30 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 77808,
+      "train_positive": 801,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 4653
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 85341,
+      "train_positive": 858,
+      "latest_train_label": "2024-03-20 00:00:00",
+      "test_rows": 5036
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 88245,
+      "train_positive": 858,
+      "latest_train_label": "2024-06-19 00:00:00",
+      "test_rows": 5390
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 96560,
+      "train_positive": 868,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 4628
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 98887,
+      "train_positive": 868,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 103083,
+      "train_positive": 868,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 107870,
+      "train_positive": 868,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 5399
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 108684,
+      "train_positive": 889,
+      "latest_train_label": "2025-09-23 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 112574,
+      "train_positive": 1385,
+      "latest_train_label": "2025-12-31 00:00:00",
+      "test_rows": 4279
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 117868,
+      "train_positive": 1778,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 5046
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 125221,
+      "train_positive": 1815,
+      "latest_train_label": "2026-06-30 00:00:00",
+      "test_rows": 5428
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "quarter": "2026-10-01",
+      "train_rows": 133761,
+      "train_positive": 1815,
+      "latest_train_label": "2026-09-23 00:00:00",
+      "test_rows": 776
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 31717,
+      "train_positive": 537,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 2326
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 38513,
+      "train_positive": 587,
+      "latest_train_label": "2024-03-29 00:00:00",
+      "test_rows": 2712
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 39550,
+      "train_positive": 587,
+      "latest_train_label": "2024-06-18 00:00:00",
+      "test_rows": 2695
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 44259,
+      "train_positive": 593,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 2314
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 44607,
+      "train_positive": 599,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 2316
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 46555,
+      "train_positive": 613,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 2702
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 49192,
+      "train_positive": 662,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 2699
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 49515,
+      "train_positive": 664,
+      "latest_train_label": "2025-09-05 00:00:00",
+      "test_rows": 2315
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 49945,
+      "train_positive": 758,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1945
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 51102,
+      "train_positive": 1204,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 2717
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 54428,
+      "train_positive": 1367,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 2714
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-10-01",
+      "train_rows": 61712,
+      "train_positive": 1414,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 388
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 14768,
+      "train_positive": 316,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 18366,
+      "train_positive": 350,
+      "latest_train_label": "2024-03-29 00:00:00",
+      "test_rows": 1162
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 18814,
+      "train_positive": 350,
+      "latest_train_label": "2024-06-18 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 20869,
+      "train_positive": 353,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 21045,
+      "train_positive": 356,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 22020,
+      "train_positive": 363,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 23278,
+      "train_positive": 387,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 23430,
+      "train_positive": 388,
+      "latest_train_label": "2025-09-05 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 23616,
+      "train_positive": 427,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1167
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 24113,
+      "train_positive": 608,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 25665,
+      "train_positive": 677,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 63545,
+      "train_positive": 1160,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 4653
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 77782,
+      "train_positive": 1289,
+      "latest_train_label": "2024-03-29 00:00:00",
+      "test_rows": 5036
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 79813,
+      "train_positive": 1289,
+      "latest_train_label": "2024-06-18 00:00:00",
+      "test_rows": 5390
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 89088,
+      "train_positive": 1304,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 4628
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 89748,
+      "train_positive": 1317,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 93638,
+      "train_positive": 1350,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 98903,
+      "train_positive": 1448,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 5399
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 99547,
+      "train_positive": 1452,
+      "latest_train_label": "2025-09-05 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 100390,
+      "train_positive": 1626,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 4279
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 102624,
+      "train_positive": 2439,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 5046
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 109414,
+      "train_positive": 2741,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 5428
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "quarter": "2026-10-01",
+      "train_rows": 124326,
+      "train_positive": 2828,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 776
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 23604,
+      "train_positive": 416,
+      "latest_train_label": "2023-12-28 00:00:00",
+      "test_rows": 2326
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 33009,
+      "train_positive": 478,
+      "latest_train_label": "2024-03-26 00:00:00",
+      "test_rows": 2712
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 33861,
+      "train_positive": 478,
+      "latest_train_label": "2024-06-17 00:00:00",
+      "test_rows": 2695
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 39381,
+      "train_positive": 484,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 2314
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 39397,
+      "train_positive": 484,
+      "latest_train_label": "2024-10-08 00:00:00",
+      "test_rows": 2316
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 40265,
+      "train_positive": 502,
+      "latest_train_label": "2025-03-26 00:00:00",
+      "test_rows": 2702
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 42692,
+      "train_positive": 630,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 2699
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 43236,
+      "train_positive": 632,
+      "latest_train_label": "2025-09-15 00:00:00",
+      "test_rows": 2315
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 43313,
+      "train_positive": 653,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1945
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 43808,
+      "train_positive": 882,
+      "latest_train_label": "2026-03-30 00:00:00",
+      "test_rows": 2717
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 44965,
+      "train_positive": 1131,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 2714
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-10-01",
+      "train_rows": 51412,
+      "train_positive": 1283,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 388
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 10953,
+      "train_positive": 236,
+      "latest_train_label": "2023-12-28 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 15763,
+      "train_positive": 287,
+      "latest_train_label": "2024-03-26 00:00:00",
+      "test_rows": 1162
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 16176,
+      "train_positive": 287,
+      "latest_train_label": "2024-06-17 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 18631,
+      "train_positive": 290,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 18638,
+      "train_positive": 290,
+      "latest_train_label": "2024-10-08 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 19070,
+      "train_positive": 299,
+      "latest_train_label": "2025-03-26 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 20234,
+      "train_positive": 362,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 20497,
+      "train_positive": 363,
+      "latest_train_label": "2025-09-15 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 20533,
+      "train_positive": 372,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1167
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 20741,
+      "train_positive": 462,
+      "latest_train_label": "2026-03-30 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 21273,
+      "train_positive": 572,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-01-01",
+      "train_rows": 46929,
+      "train_positive": 856,
+      "latest_train_label": "2023-12-28 00:00:00",
+      "test_rows": 4653
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-04-01",
+      "train_rows": 66612,
+      "train_positive": 1032,
+      "latest_train_label": "2024-03-26 00:00:00",
+      "test_rows": 5036
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-07-01",
+      "train_rows": 68352,
+      "train_positive": 1032,
+      "latest_train_label": "2024-06-17 00:00:00",
+      "test_rows": 5390
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2024-10-01",
+      "train_rows": 79294,
+      "train_positive": 1047,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 4628
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-01-01",
+      "train_rows": 79325,
+      "train_positive": 1047,
+      "latest_train_label": "2024-10-08 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-04-01",
+      "train_rows": 81036,
+      "train_positive": 1087,
+      "latest_train_label": "2025-03-26 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-07-01",
+      "train_rows": 85873,
+      "train_positive": 1350,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 5399
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2025-10-01",
+      "train_rows": 86960,
+      "train_positive": 1354,
+      "latest_train_label": "2025-09-15 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-01-01",
+      "train_rows": 87112,
+      "train_positive": 1394,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 4279
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-04-01",
+      "train_rows": 88053,
+      "train_positive": 1806,
+      "latest_train_label": "2026-03-30 00:00:00",
+      "test_rows": 5046
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-07-01",
+      "train_rows": 90375,
+      "train_positive": 2279,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 5428
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "quarter": "2026-10-01",
+      "train_rows": 103478,
+      "train_positive": 2565,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 776
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 38705,
+      "train_positive": 374,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 2326
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 42247,
+      "train_positive": 399,
+      "latest_train_label": "2024-03-20 00:00:00",
+      "test_rows": 2712
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 43769,
+      "train_positive": 399,
+      "latest_train_label": "2024-06-19 00:00:00",
+      "test_rows": 2695
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 47972,
+      "train_positive": 403,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 2314
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 49183,
+      "train_positive": 403,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 2316
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 51248,
+      "train_positive": 403,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 2702
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 53648,
+      "train_positive": 403,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 2699
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 54064,
+      "train_positive": 411,
+      "latest_train_label": "2025-09-22 00:00:00",
+      "test_rows": 2315
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 56025,
+      "train_positive": 665,
+      "latest_train_label": "2025-12-31 00:00:00",
+      "test_rows": 1945
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 58678,
+      "train_positive": 856,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 2717
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 62230,
+      "train_positive": 877,
+      "latest_train_label": "2026-06-30 00:00:00",
+      "test_rows": 2714
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-10-01",
+      "train_rows": 66378,
+      "train_positive": 877,
+      "latest_train_label": "2026-09-23 00:00:00",
+      "test_rows": 388
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 17983,
+      "train_positive": 188,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 20046,
+      "train_positive": 200,
+      "latest_train_label": "2024-03-18 00:00:00",
+      "test_rows": 1162
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 20658,
+      "train_positive": 200,
+      "latest_train_label": "2024-06-19 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 22518,
+      "train_positive": 202,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 23120,
+      "train_positive": 202,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 24168,
+      "train_positive": 202,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 25291,
+      "train_positive": 202,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 25461,
+      "train_positive": 206,
+      "latest_train_label": "2025-09-22 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 26302,
+      "train_positive": 309,
+      "latest_train_label": "2025-12-31 00:00:00",
+      "test_rows": 1167
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 27487,
+      "train_positive": 386,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 29217,
+      "train_positive": 394,
+      "latest_train_label": "2026-06-30 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 77808,
+      "train_positive": 818,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 4653
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 85341,
+      "train_positive": 875,
+      "latest_train_label": "2024-03-20 00:00:00",
+      "test_rows": 5036
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 88245,
+      "train_positive": 875,
+      "latest_train_label": "2024-06-19 00:00:00",
+      "test_rows": 5390
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 96560,
+      "train_positive": 885,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 4628
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 98887,
+      "train_positive": 885,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 103083,
+      "train_positive": 885,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 107870,
+      "train_positive": 885,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 5399
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 108679,
+      "train_positive": 901,
+      "latest_train_label": "2025-09-22 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 112545,
+      "train_positive": 1363,
+      "latest_train_label": "2025-12-31 00:00:00",
+      "test_rows": 4279
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 117816,
+      "train_positive": 1710,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 5046
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 125208,
+      "train_positive": 1747,
+      "latest_train_label": "2026-06-30 00:00:00",
+      "test_rows": 5428
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-10-01",
+      "train_rows": 133756,
+      "train_positive": 1747,
+      "latest_train_label": "2026-09-23 00:00:00",
+      "test_rows": 776
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 31717,
+      "train_positive": 535,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 2326
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 38513,
+      "train_positive": 585,
+      "latest_train_label": "2024-03-29 00:00:00",
+      "test_rows": 2712
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 39550,
+      "train_positive": 585,
+      "latest_train_label": "2024-06-18 00:00:00",
+      "test_rows": 2695
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 44259,
+      "train_positive": 591,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 2314
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 44607,
+      "train_positive": 597,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 2316
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 46555,
+      "train_positive": 611,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 2702
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 49192,
+      "train_positive": 660,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 2699
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 49515,
+      "train_positive": 662,
+      "latest_train_label": "2025-09-05 00:00:00",
+      "test_rows": 2315
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 49943,
+      "train_positive": 754,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1945
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 51057,
+      "train_positive": 1155,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 2717
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 54367,
+      "train_positive": 1296,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 2714
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-10-01",
+      "train_rows": 61699,
+      "train_positive": 1343,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 388
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 14768,
+      "train_positive": 312,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 18366,
+      "train_positive": 346,
+      "latest_train_label": "2024-03-29 00:00:00",
+      "test_rows": 1162
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 18814,
+      "train_positive": 346,
+      "latest_train_label": "2024-06-18 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 20869,
+      "train_positive": 349,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 21045,
+      "train_positive": 352,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 22020,
+      "train_positive": 359,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 23278,
+      "train_positive": 383,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 23430,
+      "train_positive": 384,
+      "latest_train_label": "2025-09-05 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 23615,
+      "train_positive": 422,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1167
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 24096,
+      "train_positive": 586,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 25642,
+      "train_positive": 646,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 63545,
+      "train_positive": 1156,
+      "latest_train_label": "2023-12-29 00:00:00",
+      "test_rows": 4653
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 77782,
+      "train_positive": 1285,
+      "latest_train_label": "2024-03-29 00:00:00",
+      "test_rows": 5036
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 79813,
+      "train_positive": 1285,
+      "latest_train_label": "2024-06-18 00:00:00",
+      "test_rows": 5390
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 89088,
+      "train_positive": 1300,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 4628
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 89748,
+      "train_positive": 1313,
+      "latest_train_label": "2024-12-31 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 93638,
+      "train_positive": 1346,
+      "latest_train_label": "2025-03-27 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 98903,
+      "train_positive": 1444,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 5399
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 99547,
+      "train_positive": 1448,
+      "latest_train_label": "2025-09-05 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 100386,
+      "train_positive": 1618,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 4279
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 102545,
+      "train_positive": 2352,
+      "latest_train_label": "2026-03-31 00:00:00",
+      "test_rows": 5046
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 109306,
+      "train_positive": 2613,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 5428
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-10-01",
+      "train_rows": 124303,
+      "train_positive": 2700,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 776
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 23598,
+      "train_positive": 399,
+      "latest_train_label": "2023-12-28 00:00:00",
+      "test_rows": 2326
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 33003,
+      "train_positive": 461,
+      "latest_train_label": "2024-03-26 00:00:00",
+      "test_rows": 2712
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 33855,
+      "train_positive": 461,
+      "latest_train_label": "2024-06-17 00:00:00",
+      "test_rows": 2695
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 39375,
+      "train_positive": 467,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 2314
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 39391,
+      "train_positive": 467,
+      "latest_train_label": "2024-10-08 00:00:00",
+      "test_rows": 2316
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 40259,
+      "train_positive": 485,
+      "latest_train_label": "2025-03-26 00:00:00",
+      "test_rows": 2702
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 42686,
+      "train_positive": 613,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 2699
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 43230,
+      "train_positive": 615,
+      "latest_train_label": "2025-09-15 00:00:00",
+      "test_rows": 2315
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 43305,
+      "train_positive": 634,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1945
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 43789,
+      "train_positive": 852,
+      "latest_train_label": "2026-03-30 00:00:00",
+      "test_rows": 2717
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 44905,
+      "train_positive": 1060,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 2714
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-10-01",
+      "train_rows": 51379,
+      "train_positive": 1212,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 388
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 10949,
+      "train_positive": 225,
+      "latest_train_label": "2023-12-28 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 15759,
+      "train_positive": 276,
+      "latest_train_label": "2024-03-26 00:00:00",
+      "test_rows": 1162
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 16172,
+      "train_positive": 276,
+      "latest_train_label": "2024-06-17 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 18627,
+      "train_positive": 279,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 18634,
+      "train_positive": 279,
+      "latest_train_label": "2024-10-08 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 19066,
+      "train_positive": 288,
+      "latest_train_label": "2025-03-26 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 20230,
+      "train_positive": 351,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 1157
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 20493,
+      "train_positive": 352,
+      "latest_train_label": "2025-09-15 00:00:00",
+      "test_rows": 1158
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 20528,
+      "train_positive": 360,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 1167
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 20732,
+      "train_positive": 446,
+      "latest_train_label": "2026-03-30 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 21246,
+      "train_positive": 538,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 1164
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-01-01",
+      "train_rows": 46915,
+      "train_positive": 817,
+      "latest_train_label": "2023-12-28 00:00:00",
+      "test_rows": 4653
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-04-01",
+      "train_rows": 66598,
+      "train_positive": 993,
+      "latest_train_label": "2024-03-26 00:00:00",
+      "test_rows": 5036
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-07-01",
+      "train_rows": 68338,
+      "train_positive": 993,
+      "latest_train_label": "2024-06-17 00:00:00",
+      "test_rows": 5390
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2024-10-01",
+      "train_rows": 79280,
+      "train_positive": 1008,
+      "latest_train_label": "2024-09-30 00:00:00",
+      "test_rows": 4628
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-01-01",
+      "train_rows": 79311,
+      "train_positive": 1008,
+      "latest_train_label": "2024-10-08 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-04-01",
+      "train_rows": 81022,
+      "train_positive": 1048,
+      "latest_train_label": "2025-03-26 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-07-01",
+      "train_rows": 85859,
+      "train_positive": 1311,
+      "latest_train_label": "2025-06-30 00:00:00",
+      "test_rows": 5399
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2025-10-01",
+      "train_rows": 86946,
+      "train_positive": 1315,
+      "latest_train_label": "2025-09-15 00:00:00",
+      "test_rows": 5018
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-01-01",
+      "train_rows": 87093,
+      "train_positive": 1350,
+      "latest_train_label": "2025-12-29 00:00:00",
+      "test_rows": 4279
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-04-01",
+      "train_rows": 88014,
+      "train_positive": 1742,
+      "latest_train_label": "2026-03-30 00:00:00",
+      "test_rows": 5046
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-07-01",
+      "train_rows": 90258,
+      "train_positive": 2137,
+      "latest_train_label": "2026-06-29 00:00:00",
+      "test_rows": 5428
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "quarter": "2026-10-01",
+      "train_rows": 103411,
+      "train_positive": 2423,
+      "latest_train_label": "2026-09-30 00:00:00",
+      "test_rows": 776
+    }
+  ]
+}

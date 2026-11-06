@@ -1,0 +1,993 @@
+{
+  "status": "PASS",
+  "observed_at": "2026-11-05T12:42:15.479177+00:00",
+  "membership_rows": 7928,
+  "stocks": 5922,
+  "levels": {
+    "L1": 31,
+    "L2": 134,
+    "L3": 346
+  },
+  "current_and_removed": true,
+  "raw_receipts": [
+    {
+      "api": "index_classify",
+      "params": {
+        "level": "L1",
+        "src": "SW2021"
+      },
+      "observed_at": "2026-11-05T12:41:47.528727+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/L1.json",
+      "sha256": "7842c58bb3a6789b194708e391c64603c428d1886daac6d0d44b2955a149311a",
+      "bytes": 2025,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_classify",
+      "params": {
+        "level": "L2",
+        "src": "SW2021"
+      },
+      "observed_at": "2026-11-05T12:41:47.994887+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/L2.json",
+      "sha256": "9541216763b92d21e5290d90c90671cdba094c75230e3f00a1a786733989e940",
+      "bytes": 8940,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_classify",
+      "params": {
+        "level": "L3",
+        "src": "SW2021"
+      },
+      "observed_at": "2026-11-05T12:41:48.416028+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/L3.json",
+      "sha256": "87a9134538fe5472297b3b907751c9bd39d9e22210adee58e266af02a47f6963",
+      "bytes": 23026,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801010.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:48.823243+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801010.SI_Y.json",
+      "sha256": "6458564d4d1d4febeb1be41bfcab5fab1ba02a05bc4daff6d3057a409eab5d05",
+      "bytes": 16578,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801010.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:49.226192+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801010.SI_N.json",
+      "sha256": "5a01d726aa3f585431cc5de04de788806e7ba2106d9f4dbda15d8d2fd8ccf956",
+      "bytes": 8223,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801030.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:49.639604+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801030.SI_Y.json",
+      "sha256": "8862584ee5de06c1df29dccd83502e887bebe31daa690bf9f08363b69332fe92",
+      "bytes": 60640,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801030.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:50.046228+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801030.SI_N.json",
+      "sha256": "682c6e36c7494c8c43ba82335296ce399cb8f9a41fd2fa75f4a1d82c89113086",
+      "bytes": 43237,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801040.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:50.450384+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801040.SI_Y.json",
+      "sha256": "7f09e88ad192815551c845c03f4459760b0d077d51ce482bc779a308fc1627e7",
+      "bytes": 6118,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801040.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:50.873935+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801040.SI_N.json",
+      "sha256": "3b9ae02b92718998e0f84ab7c05cc6869383d3ebbbb8ffb7655f4c31616701e4",
+      "bytes": 2244,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801050.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:51.304791+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801050.SI_Y.json",
+      "sha256": "916513e6b8cf23d4288a6e1f0c9c1b1a1329a0fd95b7b5e9c082e8485d7e1704",
+      "bytes": 20469,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801050.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:51.706708+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801050.SI_N.json",
+      "sha256": "c0ebe16ecf37558a92f7682866c6318c508a6a7dc354cf88d379a8d0b753a935",
+      "bytes": 10803,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801080.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:52.121605+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801080.SI_Y.json",
+      "sha256": "6e8bd141012ab6a5e2af2b2756a883e9066ebbbc039c50b13b422359d354a9c4",
+      "bytes": 67871,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801080.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:52.526615+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801080.SI_N.json",
+      "sha256": "11e9300d8a2977cae792f33b07e3afb7c08fdb49c49eb5d1e9e26a678589a3ba",
+      "bytes": 23284,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801880.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:52.936110+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801880.SI_Y.json",
+      "sha256": "a60995952d009df53479c826613cd207317b9a966d72d78648a5e3de3cf1edf3",
+      "bytes": 45820,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801880.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:53.337766+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801880.SI_N.json",
+      "sha256": "2b76a5f3cf7c6dd12cce08505b77c520d6f08aaa0db203d619a20dfc521e27bf",
+      "bytes": 4804,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801110.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:53.739678+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801110.SI_Y.json",
+      "sha256": "022d6fea867dfb5cb4eee97863603199caf4b47aa5c84364a7444fe6d816768b",
+      "bytes": 14836,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801110.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:54.164583+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801110.SI_N.json",
+      "sha256": "82d34d829c2463ebaa2cb0c284313b497da2c7a3792d0135210ba254d6b6bb76",
+      "bytes": 4756,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801120.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:54.577132+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801120.SI_Y.json",
+      "sha256": "d2eab344b586b13a02097c7ff46e09b80646f4008f48501c8305480f1e6d5d41",
+      "bytes": 16640,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801120.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:54.977203+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801120.SI_N.json",
+      "sha256": "bd63b74e0bd8d6f83013eb60a34d6070caa65abfdbd5a317a569ff863047d6e8",
+      "bytes": 8069,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801130.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:55.382407+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801130.SI_Y.json",
+      "sha256": "932420b1e99bf932048126a6bdea8e56ea45860d2bd161795e3da69455cbdb07",
+      "bytes": 15591,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801130.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:55.795094+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801130.SI_N.json",
+      "sha256": "b1a1aab93c2443870ae6c8f0b3765a82ebbadca619a08caea3718fe53745f89e",
+      "bytes": 7593,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801140.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:56.201008+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801140.SI_Y.json",
+      "sha256": "5a4bbcc68ecce1f2ed3078076d8228b31c9dd9b43b4ad7b350a56e0daf2776c8",
+      "bytes": 22397,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801140.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:56.609662+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801140.SI_N.json",
+      "sha256": "20887a5c16c4685e27e7a849c784a9b3902061c8bb6d3bfd0da77530c82da00b",
+      "bytes": 2275,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801150.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:57.022094+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801150.SI_Y.json",
+      "sha256": "887f4f02009dea7f768eb3d2501873b6247b7b112edb287e1ca882b2b8e264f9",
+      "bytes": 68647,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801150.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:57.910676+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801150.SI_N.json",
+      "sha256": "338dc65924bf57a5a1f65c7bcb8f1e434ca787e6797ca0a48c26badf45598ad5",
+      "bytes": 15325,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801160.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:58.315657+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801160.SI_Y.json",
+      "sha256": "a64f973fa4837653bd3326a6410547a5c63fd5618cbe9f792e17c33ab82ccfc6",
+      "bytes": 17956,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801160.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:58.716767+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801160.SI_N.json",
+      "sha256": "be88cb0f6eefb05c15668ace89eaf56a8612bcabf170d49f1834c6198ea35a8c",
+      "bytes": 6650,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801170.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:59.120814+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801170.SI_Y.json",
+      "sha256": "c22563c264ed7aba0fb9a9c58844c39290dfd1443d7a43a0ee8339f8c92ab41d",
+      "bytes": 18730,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801170.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:41:59.524080+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801170.SI_N.json",
+      "sha256": "1d3211387f83c65fa013d4a7cdcb72721a52cf8c0725f96812e6eafdfb589015",
+      "bytes": 5195,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801180.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:41:59.963683+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801180.SI_Y.json",
+      "sha256": "3acf73679551e9473f6219b03a341f8e84dbd58fab6bcf1dd1be73f9f09c8472",
+      "bytes": 15257,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801180.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:00.375631+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801180.SI_N.json",
+      "sha256": "0ad60b3326bb263cba3d598286efcb552534c829605080ae1698a3c7ecf99c76",
+      "bytes": 17881,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801200.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:00.791471+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801200.SI_Y.json",
+      "sha256": "54e913463f5e3d017dd0f65ffae9a5caf2ff2ceadd42a35b72b21cbccd69ea38",
+      "bytes": 15465,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801200.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:01.191246+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801200.SI_N.json",
+      "sha256": "97dc91e284d158654771adb741599373dc7e0d944dde269f82302b9e9c86b802",
+      "bytes": 9697,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801210.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:01.626501+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801210.SI_Y.json",
+      "sha256": "22780be1042e59657e7322221742ef41e8e7ccf7bbb401d7c04e23e848baf3aa",
+      "bytes": 12557,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801210.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:02.117610+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801210.SI_N.json",
+      "sha256": "3221cdf0bcbcd08b9b35f2aa31653c741c5dbff3e6f44a2bb32cfc2b72f4ecb3",
+      "bytes": 6979,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801780.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:02.609771+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801780.SI_Y.json",
+      "sha256": "2d04a61749aa97c084a40596b40e76aa9d07db580be89fbfcc5183b9638b97e2",
+      "bytes": 5674,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801780.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:03.108468+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801780.SI_N.json",
+      "sha256": "82c9e12c9a9b466e4f0538a7b002b12e3f6da82205fdfe4e8edd0b4a9f6f469d",
+      "bytes": 251,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801790.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:03.669505+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801790.SI_Y.json",
+      "sha256": "5378ce0adad4ce1f92e3d817a64a984dbdaa713b3ece07cafbab1c25e8108e57",
+      "bytes": 12015,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801790.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:04.208245+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801790.SI_N.json",
+      "sha256": "03d600d8ff1f2e8865667f67e2e6ae28fe4ecc0271f1a5963a9435f9397e6ffb",
+      "bytes": 1060,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801230.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:04.749641+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801230.SI_Y.json",
+      "sha256": "b80a1cabbd2941c39b1017d7695ad1784c8fce96f8899216ae1fe821a2be84a3",
+      "bytes": 5070,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801230.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:05.148753+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801230.SI_N.json",
+      "sha256": "715e8633967f87a4fff765d1fb10b09830af9317d290613d7a0845cf11e2176f",
+      "bytes": 18866,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801710.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:05.553918+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801710.SI_Y.json",
+      "sha256": "2eaaefc40fc3f3033972b05ccf034cca438511642b631612ecdfb6fae3ec8b0d",
+      "bytes": 10443,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801710.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:05.964117+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801710.SI_N.json",
+      "sha256": "fc8f019e28a0341b69d6dab1e5870db55709d143f962198321fcabf1389fae61",
+      "bytes": 7770,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801720.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:06.377044+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801720.SI_Y.json",
+      "sha256": "8c3c9119586b61c229acf3633932a4ffcd99fd69cd038e2b65372de9303058ab",
+      "bytes": 23644,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801720.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:06.775977+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801720.SI_N.json",
+      "sha256": "6bd388420669c9230670160bb2313c1ee3f4e8ec27182a2379eff0bea6d52e38",
+      "bytes": 8397,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801730.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:07.183331+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801730.SI_Y.json",
+      "sha256": "e2dde9790d24f0120ecca54bc663c1670085dc7a207d5a6d0e7a960fa37ada1b",
+      "bytes": 57724,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801730.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:07.596146+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801730.SI_N.json",
+      "sha256": "098a09af2b59e48064366327e7e61c9feca93700fbb73d6a7a27d33de3735e3b",
+      "bytes": 8748,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801890.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:08.006839+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801890.SI_Y.json",
+      "sha256": "63ac258bf85be74d76b0a73d43716c912530d144bb3890ac1629fb9bebadc57c",
+      "bytes": 84952,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801890.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:08.411046+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801890.SI_N.json",
+      "sha256": "395b4f1ef2e19e9a08714cc0124dc10270cf78d8fee1c1e86545f66aca79952a",
+      "bytes": 32246,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801740.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:08.830945+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801740.SI_Y.json",
+      "sha256": "77c77d807af055fdd8ff5d33a4ced446228ffba1df50d6d39457c2a128522014",
+      "bytes": 20512,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801740.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:09.233812+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801740.SI_N.json",
+      "sha256": "4c53e665f8540f3458f0badec12fc4ca94e821076b90e12ec14cbee03dc84863",
+      "bytes": 6625,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801750.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:09.642499+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801750.SI_Y.json",
+      "sha256": "056312709801a7f0dbfbe1bc7d95826529a5e6452a23e21e64e4124835b1cd6d",
+      "bytes": 50021,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801750.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:10.046828+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801750.SI_N.json",
+      "sha256": "4e18ef67c85c10f6353f98a96b6f9fffba54755a509a655a4480480348b8cb9c",
+      "bytes": 6524,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801760.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:10.453603+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801760.SI_Y.json",
+      "sha256": "a71e90f7baa54aebf56702490b37d6f7cbdfd18a74526837f5f6e334b4f0dd55",
+      "bytes": 19132,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801760.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:10.870501+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801760.SI_N.json",
+      "sha256": "032e22aa1b032e505e172628b1b27d6de3c8bcd5eca3e083d141407cadb321c1",
+      "bytes": 3306,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801770.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:11.368958+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801770.SI_Y.json",
+      "sha256": "6febdd633c5dbb861496d0ecec3ef69276e48f194e386447f491cd4d7f0620ca",
+      "bytes": 19631,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801770.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:11.834841+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801770.SI_N.json",
+      "sha256": "26da6e228f23885365f49483654fff0b58350ab620ab26ae817d6c0a78e650ce",
+      "bytes": 2209,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801950.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:12.238956+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801950.SI_Y.json",
+      "sha256": "8c35568e79a320bc952c4f91f1885c724498e77bd827452d6ab5bf56aeb8cf3a",
+      "bytes": 4564,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801950.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:12.642297+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801950.SI_N.json",
+      "sha256": "c2762f5d274889065b151a5b79fb8181d84f159c96b44e7f041ba6fcd31f4066",
+      "bytes": 1130,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801960.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:13.048058+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801960.SI_Y.json",
+      "sha256": "502fc750aa1c47056f6d6ffde279e9f2a8285affac38517e496a7a179dbe8a5d",
+      "bytes": 7539,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801960.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:13.463463+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801960.SI_N.json",
+      "sha256": "95d85fd55dfbd66ffed3d38d3e198eb1ad87a3c184bdb85aed5806accc199d61",
+      "bytes": 818,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801970.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:13.894172+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801970.SI_Y.json",
+      "sha256": "80ccab4b14721dfd567f5b07a7d0778b425fc32308f83969a743abce2b1f2c4f",
+      "bytes": 18297,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801970.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:14.293403+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801970.SI_N.json",
+      "sha256": "b33bfacf8085bb0693cb29292ef9a45f2772b262445345d0ffed1b7eddfc2ca3",
+      "bytes": 3036,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801980.SI",
+        "is_new": "Y"
+      },
+      "observed_at": "2026-11-05T12:42:14.693711+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801980.SI_Y.json",
+      "sha256": "79629333e7fac7c7bbe125acb97912e7ae39e33ea221d26b38abfa90f6f321e6",
+      "bytes": 4458,
+      "provider_code": 0,
+      "token_in_artifact": false
+    },
+    {
+      "api": "index_member_all",
+      "params": {
+        "l1_code": "801980.SI",
+        "is_new": "N"
+      },
+      "observed_at": "2026-11-05T12:42:15.092487+00:00",
+      "url": "https://api.tushare.pro",
+      "tls_verified": true,
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/801980.SI_N.json",
+      "sha256": "1dee6d3ec86d4444e9a55e25e9433166d342086e397ee6d04d3c3a5bfc4abfba",
+      "bytes": 948,
+      "provider_code": 0,
+      "token_in_artifact": false
+    }
+  ],
+  "membership_path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/members.parquet",
+  "membership_sha256": "a527c5d9ae503f0f5dc439a4f32ccb89e7d67e07ad9c466b90486409d210922d",
+  "first_vintage_attested": false,
+  "quality": "Historical-proxy"
+}

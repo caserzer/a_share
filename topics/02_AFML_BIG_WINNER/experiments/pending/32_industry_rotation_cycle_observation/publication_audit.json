@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-06",
+  "scope": "topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation",
+  "prepublication_files": 1161,
+  "prepublication_bytes": 166642420,
+  "manifest_count": 29,
+  "unique_manifest_files": 1131,
+  "predecessor_hashes_verified": 1146,
+  "all_hashes_match": true,
+  "tests_passed": 65,
+  "test_suites": 12,
+  "syntax_files": 124,
+  "tests": [
+    {
+      "path": "extensions/v15_rank_separation/tests",
+      "result": "3 passed in 0.55s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v2_full_history_benchmark/tests",
+      "result": "5 passed in 0.24s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v3_screening_review/tests",
+      "result": "4 passed in 0.22s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v13_completed_history/tests",
+      "result": "3 passed in 1.39s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v12_duration_risk/tests",
+      "result": "4 passed in 1.39s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v10_label_delay/tests",
+      "result": "3 passed in 1.41s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v4_adaptive_6_18_months/tests",
+      "result": "9 passed in 0.24s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v5_rdagent_onset_forecast/tests",
+      "result": "13 passed in 0.71s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v6_economic_diffusion/tests",
+      "result": "7 passed in 0.72s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v7_online_stage/tests",
+      "result": "5 passed in 0.77s",
+      "exit_code": 0
+    },
+    {
+      "path": "extensions/v9_market_context/tests",
+      "result": "2 passed in 0.77s",
+      "exit_code": 0
+    },
+    {
+      "path": "tests",
+      "result": "7 passed in 0.19s",
+      "exit_code": 0
+    }
+  ],
+  "credential_pattern_hits": 0,
+  "compressed_files_scanned": 23,
+  "excluded": [
+    "private cache",
+    "parquet",
+    "pickle",
+    "__pycache__",
+    ".pytest_cache"
+  ],
+  "largest_file_bytes": 16935085,
+  "aggregate_acceptance_checks": 302,
+  "strict_PIT": "BLOCKED_DATA",
+  "forward_validation": "FORWARD_PENDING",
+  "runner_note": "Initial test launcher resolved the virtualenv Python symlink to the base interpreter; fixed by retaining the virtualenv executable path. All suites passed without changing research source files."
+}

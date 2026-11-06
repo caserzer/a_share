@@ -1,0 +1,47 @@
+{
+  "models": [
+    "event_equal",
+    "risk_diffusion_min",
+    "event_equal__market63",
+    "event_equal__market126",
+    "event_equal__market_both",
+    "event_equal__market_breadth126",
+    "risk_diffusion_min__market63",
+    "risk_diffusion_min__market126",
+    "risk_diffusion_min__market_both",
+    "risk_diffusion_min__market_breadth126"
+  ],
+  "policies": [
+    [
+      "all_p0.1",
+      1.0,
+      0.1
+    ],
+    [
+      "all_p0.15",
+      1.0,
+      0.15
+    ],
+    [
+      "all_p0.2",
+      1.0,
+      0.2
+    ],
+    [
+      "all_p0.225",
+      1.0,
+      0.225
+    ],
+    [
+      "all_p0.25",
+      1.0,
+      0.25
+    ]
+  ],
+  "plan_sha256": "e6cda0307a107d7d61c3262678a91864f5c55fd0020b9bc0ef007a84e17e092a",
+  "code_sha256": "98b41a821ab798d832680e0b4f8fd1772a9d2ddeff1f54338c382f3268a4f05e",
+  "labels_sha256": "9ff21cc8ba565cc6cd39d3e7c894e65f791b7890897eff2f5c313c4a98dfea32",
+  "phases_sha256": "bb6284195b28f7c49c53f095a22470733607daf8c5e3c5e1311dd783dcc3b5e0",
+  "target_precision": 0.235,
+  "target_event_recall": 0.4125
+}

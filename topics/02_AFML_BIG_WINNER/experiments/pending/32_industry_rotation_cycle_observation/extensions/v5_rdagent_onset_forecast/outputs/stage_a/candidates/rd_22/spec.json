@@ -1,0 +1,40 @@
+{
+  "model": "lightgbm",
+  "features": [
+    "excess21",
+    "excess63",
+    "excess126",
+    "excess252",
+    "dd63",
+    "dd126",
+    "vol63",
+    "breadth21",
+    "breadth63",
+    "market63",
+    "coverage",
+    "log_members",
+    "excess_accel",
+    "breadth_shift"
+  ],
+  "engineered": [
+    {
+      "name": "excess_accel",
+      "op": "sub",
+      "left": "excess63",
+      "right": "excess252"
+    },
+    {
+      "name": "breadth_shift",
+      "op": "sub",
+      "left": "breadth21",
+      "right": "breadth63"
+    }
+  ],
+  "C": 1.0,
+  "trees": 75,
+  "leaves": 5,
+  "max_depth": 3,
+  "min_child_samples": 350,
+  "learning_rate": 0.015,
+  "reg_lambda": 70.0
+}

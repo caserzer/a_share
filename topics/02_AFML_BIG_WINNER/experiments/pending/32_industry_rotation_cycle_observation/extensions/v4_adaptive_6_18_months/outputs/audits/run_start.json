@@ -1,0 +1,46 @@
+{
+  "status": "working",
+  "started_at": "2026-11-06T00:58:07.215982+00:00",
+  "plan_sha256": "07e40ed72382109c7d122e02a02a4f8daab2b57837a24cd631048ae467bea869",
+  "thresholds": [
+    0.1,
+    0.15,
+    0.2
+  ],
+  "valuation_policies": [
+    [
+      "EXACT",
+      0
+    ],
+    [
+      "MARK_7D",
+      7
+    ],
+    [
+      "MARK_31D",
+      31
+    ]
+  ],
+  "benchmarks": [
+    [
+      "CSI300",
+      "000300.SH"
+    ],
+    [
+      "CSI_ALL",
+      "000985.CSI"
+    ]
+  ],
+  "min_months": 6,
+  "max_months": 18,
+  "split_long_stages": false,
+  "sources": {
+    "context.py": "029b6b8226139ba86324c3c4bc370c0490b61ffea2bc70d30fd0ae2d5be97036",
+    "data.py": "1d997410c9cd3a6c3c9f3572b5d1d1292ed2c0c3d407131829636067b22526d5",
+    "report.py": "182a36d62524ca03b92b99b51f38eefb6ea88b430439835d1abaf9c203f44dc7",
+    "run.py": "8150a3e935843ce49d5faf39c5e31db5a4e65ad06729823289c028e8f0eb6bb8",
+    "scoring.py": "6604762ec4b7701f9eafdb7e0d76aa8fed6a0cfd3e8431f8b4a02b411424688e",
+    "stages.py": "f9effad5fe043a158fc840b215ee541acd400ce4d00cfe393faedab6be33ca25",
+    "turns.py": "05b2b92071b1fd62338154bbd49e60ad0a4999b390f852fcd42cde518f1280f6"
+  }
+}

@@ -1,0 +1,2804 @@
+{
+  "winner": {
+    "candidate": "rd_20",
+    "objective": 0.032201454755505385,
+    "spec": {
+      "model": "lightgbm",
+      "features": [
+        "mom21",
+        "mom63",
+        "mom126",
+        "excess21",
+        "excess63",
+        "excess126",
+        "dd21",
+        "dd63",
+        "dd126",
+        "vol21",
+        "vol63",
+        "breadth21",
+        "breadth63",
+        "volume_ratio",
+        "coverage",
+        "log_members",
+        "mom_accel",
+        "excess_accel",
+        "breadth_accel",
+        "drawdown_recovery",
+        "risk_adjusted_excess",
+        "vol_accel",
+        "breadth_excess_confirmation",
+        "market_accel"
+      ],
+      "engineered": [
+        {
+          "name": "mom_accel",
+          "op": "sub",
+          "left": "mom21",
+          "right": "mom63"
+        },
+        {
+          "name": "excess_accel",
+          "op": "sub",
+          "left": "excess21",
+          "right": "excess63"
+        },
+        {
+          "name": "breadth_accel",
+          "op": "sub",
+          "left": "breadth21",
+          "right": "breadth63"
+        },
+        {
+          "name": "drawdown_recovery",
+          "op": "sub",
+          "left": "dd21",
+          "right": "dd126"
+        },
+        {
+          "name": "risk_adjusted_excess",
+          "op": "div",
+          "left": "excess63",
+          "right": "vol63"
+        },
+        {
+          "name": "vol_accel",
+          "op": "sub",
+          "left": "vol21",
+          "right": "vol63"
+        },
+        {
+          "name": "breadth_excess_confirmation",
+          "op": "mul",
+          "left": "breadth21",
+          "right": "excess_accel"
+        },
+        {
+          "name": "market_accel",
+          "op": "sub",
+          "left": "market21",
+          "right": "market63"
+        }
+      ],
+      "C": 1.0,
+      "trees": 90,
+      "leaves": 7,
+      "max_depth": 3,
+      "min_child_samples": 500,
+      "learning_rate": 0.03,
+      "reg_lambda": 25.0
+    },
+    "spec_sha256": "5e8d31b45723e5e87b47614e958393ec17a9461643afd56873e4598fe9521f42"
+  },
+  "all_candidates": [
+    {
+      "candidate": "rd_20",
+      "objective": 0.032201454755505385,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "5e8d31b45723e5e87b47614e958393ec17a9461643afd56873e4598fe9521f42"
+    },
+    {
+      "candidate": "rd_26",
+      "objective": 0.03219330015277133,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth_accel",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "e9489733b3f2cd6dfd912afcaeaeb9d8ffb757ffcb5ad548a66bcbd1f8b5b010"
+    },
+    {
+      "candidate": "rd_18",
+      "objective": 0.03217939301614029,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "7c5fb78128fc51a7877447b61d0468c28d6fdf59fe3ba6c6284fdf7dbe977316"
+    },
+    {
+      "candidate": "rd_17",
+      "objective": 0.03212040083663075,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 22.5
+      },
+      "spec_sha256": "843dcf6d1eac0e1553dd2cd5c4ea6ffdd938b3683f7de4e3eecffe8734bf962e"
+    },
+    {
+      "candidate": "rd_29",
+      "objective": 0.03211282693679132,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth_accel",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 525,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "dee6d15cd430836aa7303b7bc26df3a500d90ecefb81270c655faf5f025136bc"
+    },
+    {
+      "candidate": "rd_16",
+      "objective": 0.032087696836203626,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "91b84fb807feec66c862630ae6c29d04a02a1020263d8f981d86a86dfeaf4cba"
+    },
+    {
+      "candidate": "rd_21",
+      "objective": 0.03208587290481572,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 525,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "4b5244c005cb374fbdd197fbbf73c9cccf201c6d0a6d50771959071eda268801"
+    },
+    {
+      "candidate": "rd_27",
+      "objective": 0.03203483278468377,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 27.5
+      },
+      "spec_sha256": "5b5d904af3d0ac4d956cfdeca5f783c155ac9d31f7e7932194b736952e455d8f"
+    },
+    {
+      "candidate": "rd_25",
+      "objective": 0.03200190289555511,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 100,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.027,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "e3ead4a3036d6407532becd4e0daac6ba8511c4e1187777d7d921fa6df0653bd"
+    },
+    {
+      "candidate": "rd_19",
+      "objective": 0.03195449545576162,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 27.5
+      },
+      "spec_sha256": "103ba541e9c3a5878deef2ccad5c0d5b2c4fe8271154b889ca23547b14935106"
+    },
+    {
+      "candidate": "rd_24",
+      "objective": 0.031910101924538505,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom5",
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "672cc94d61658c18fec5e0e47b477407821cfd92a6751eb3989eb2fbcdf99698"
+    },
+    {
+      "candidate": "rd_22",
+      "objective": 0.03170202336833978,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "037b67b53aa6eaed50aafcde6281158408dc71bd3463c56c2d9eabdee2add563"
+    },
+    {
+      "candidate": "rd_07",
+      "objective": 0.030447556237025115,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "7e9cc0895d2060a6dfee4f1829a20eb4079fc7e2e4a634d52b1dbf40e3ea8f5b"
+    },
+    {
+      "candidate": "rd_11",
+      "objective": 0.030399611454028624,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "7a2199412ff20104e017617c7ef2197c10aca1b67adcb12c61b75110ba94339f"
+    },
+    {
+      "candidate": "rd_09",
+      "objective": 0.030375225603717058,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market21",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "4c2a4acb76b5d59f9c524e88601321205abc17ecc23a393391f83a4c07b9d230"
+    },
+    {
+      "candidate": "rd_05",
+      "objective": 0.030316608083404313,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "22a80eddaeefb96720bc5e8ab698dcfd4a0699f13097704302614945785d9334"
+    },
+    {
+      "candidate": "rd_10",
+      "objective": 0.030274156218078614,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "volume_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "volume_excess_confirmation",
+            "op": "mul",
+            "left": "volume_ratio",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "a0ac91fcd78edb746ddbf6f2e13d0c6cd7579d16d22abed862c83b2f60f36732"
+    },
+    {
+      "candidate": "rd_28",
+      "objective": 0.030151478227260758,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "recovery_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "recovery_excess_confirmation",
+            "op": "mul",
+            "left": "drawdown_recovery",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "6f6582fc5092479956c7baa1af3e0e5597e374dfae9137136eff8d6e00d3ccdf"
+    },
+    {
+      "candidate": "rd_15",
+      "objective": 0.030104168498666904,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "363a29e26a88222f0e7245c8edb02d9c9025d2615184639277dbdaccfdef6e46"
+    },
+    {
+      "candidate": "rd_06",
+      "objective": 0.02998954126144948,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "73314f01a4995fa80d8e33a06fc23e88f1799811d29a7db4fce4ff00146a2482"
+    },
+    {
+      "candidate": "rd_23",
+      "objective": 0.029882461704429986,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "dd252",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "market_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "market_accel",
+            "op": "sub",
+            "left": "market21",
+            "right": "market63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 500,
+        "learning_rate": 0.03,
+        "reg_lambda": 25.0
+      },
+      "spec_sha256": "4be5a0243f516f50cd13982f84f3b5faa6f165b67a2b69cdd2dbb89cd0521bbc"
+    },
+    {
+      "candidate": "rd_12",
+      "objective": 0.029694590991893793,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 95,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.028,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "c4dea5c0fb10128b9c02efb4574d6cce3b84250db09c804494a41e2644c8caea"
+    },
+    {
+      "candidate": "rd_08",
+      "objective": 0.029645164170071053,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation",
+          "recovery_breadth_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          },
+          {
+            "name": "recovery_breadth_confirmation",
+            "op": "mul",
+            "left": "drawdown_recovery",
+            "right": "breadth21"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "d126bd97a14e208da466d7f18405d63cbb6168dcfc4a539f68ecaf572efa5777"
+    },
+    {
+      "candidate": "rd_04",
+      "objective": 0.029610717169093484,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 400,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "8b4226ce5f9967035cd0f4950273163df62d69d7bc29ba308ae11e7a3fdd77ca"
+    },
+    {
+      "candidate": "rd_03",
+      "objective": 0.029603933645810647,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 350,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "5345d261ae5ec05d2f297716813bf1ba3be4d728f5e39eb829c4693ec03374c9"
+    },
+    {
+      "candidate": "rd_14",
+      "objective": 0.029563323968493167,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 425,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "85961e6b748affc8ba80639d95e11c50d3c1d6fa0bd978e91caed1348a0b8210"
+    },
+    {
+      "candidate": "rd_02",
+      "objective": 0.02896078581979151,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 350,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "847f8eadf7639f4bbe59b0ab40cd59255996add2ce76e18f436a22fbca399c6c"
+    },
+    {
+      "candidate": "rd_00",
+      "objective": 0.02863425700937266,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 300,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "314dbd9e0668e4d1a5c68bd2f934d2bf08c07f70d67ac2c20ae654f96b369807"
+    },
+    {
+      "candidate": "rd_13",
+      "objective": 0.014260851908286385,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "excess252",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "vol_accel",
+          "breadth_excess_confirmation"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "vol_accel",
+            "op": "sub",
+            "left": "vol21",
+            "right": "vol63"
+          },
+          {
+            "name": "breadth_excess_confirmation",
+            "op": "mul",
+            "left": "breadth21",
+            "right": "excess_accel"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 450,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "edd6e956310958095511b16fadc9ea6e47bb640aad18a73f9c3a8f8ae787180a"
+    },
+    {
+      "candidate": "rd_01",
+      "objective": 0.010342338512014708,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom21",
+          "mom63",
+          "mom126",
+          "excess21",
+          "excess63",
+          "excess126",
+          "excess252",
+          "dd21",
+          "dd63",
+          "dd126",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "market63",
+          "mom_accel",
+          "excess_accel",
+          "breadth_accel",
+          "drawdown_recovery",
+          "risk_adjusted_excess",
+          "long_excess_accel"
+        ],
+        "engineered": [
+          {
+            "name": "mom_accel",
+            "op": "sub",
+            "left": "mom21",
+            "right": "mom63"
+          },
+          {
+            "name": "excess_accel",
+            "op": "sub",
+            "left": "excess21",
+            "right": "excess63"
+          },
+          {
+            "name": "breadth_accel",
+            "op": "sub",
+            "left": "breadth21",
+            "right": "breadth63"
+          },
+          {
+            "name": "drawdown_recovery",
+            "op": "sub",
+            "left": "dd21",
+            "right": "dd126"
+          },
+          {
+            "name": "risk_adjusted_excess",
+            "op": "div",
+            "left": "excess63",
+            "right": "vol63"
+          },
+          {
+            "name": "long_excess_accel",
+            "op": "sub",
+            "left": "excess63",
+            "right": "excess252"
+          }
+        ],
+        "C": 1.0,
+        "trees": 90,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 300,
+        "learning_rate": 0.03,
+        "reg_lambda": 20.0
+      },
+      "spec_sha256": "7d033bfae60316b64274e628d88abc6c28de6684b2be22d0f07d1278ac1356ba"
+    },
+    {
+      "candidate": "static_tree",
+      "objective": 0.0013162000938873413,
+      "spec": {
+        "model": "lightgbm",
+        "features": [
+          "mom5",
+          "mom21",
+          "mom63",
+          "mom126",
+          "mom252",
+          "dd21",
+          "dd63",
+          "dd126",
+          "dd252",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "excess21",
+          "excess63",
+          "excess126",
+          "excess252",
+          "market21",
+          "market63",
+          "market126"
+        ],
+        "engineered": [],
+        "trees": 120,
+        "leaves": 7,
+        "max_depth": 3,
+        "min_child_samples": 150,
+        "learning_rate": 0.03,
+        "reg_lambda": 10.0
+      },
+      "spec_sha256": "ec0b56d4e22e1baed379d0f09b4a1252c77c37ba4578ce536e9cde246826eaa5"
+    },
+    {
+      "candidate": "prior",
+      "objective": 0.0,
+      "spec": {
+        "model": "prior",
+        "features": [
+          "mom5",
+          "mom21",
+          "mom63",
+          "mom126",
+          "mom252",
+          "dd21",
+          "dd63",
+          "dd126",
+          "dd252",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "excess21",
+          "excess63",
+          "excess126",
+          "excess252",
+          "market21",
+          "market63",
+          "market126"
+        ],
+        "engineered": []
+      },
+      "spec_sha256": "0a5497d3b62a4d5c2127f87bc42f437a0e40822fd7dc01d4a7b13e274817920f"
+    },
+    {
+      "candidate": "logistic",
+      "objective": -0.002288587290525316,
+      "spec": {
+        "model": "logistic",
+        "features": [
+          "mom5",
+          "mom21",
+          "mom63",
+          "mom126",
+          "mom252",
+          "dd21",
+          "dd63",
+          "dd126",
+          "dd252",
+          "vol21",
+          "vol63",
+          "breadth21",
+          "breadth63",
+          "volume_ratio",
+          "coverage",
+          "log_members",
+          "excess21",
+          "excess63",
+          "excess126",
+          "excess252",
+          "market21",
+          "market63",
+          "market126"
+        ],
+        "engineered": [],
+        "C": 0.1
+      },
+      "spec_sha256": "24c6219da46af4c4b7a1c67b151fb6c2e6d241ca83ba704a9def1b7301bdb8c9"
+    }
+  ],
+  "selection_uses": "2021-2022 feedback only",
+  "historical_outer_start": "2024-01-01",
+  "quality": "exploratory historical replay",
+  "independent_holdout": false,
+  "evaluation_code_sha256": "598e5c8607aac161c92e4c22a96b81a3f58d78d69821c3c284b826a4e7139f79"
+}

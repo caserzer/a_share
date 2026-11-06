@@ -1,0 +1,23 @@
+{
+  "rejected_official_xls_probes": [
+    {
+      "url": "https://www.swsresearch.com/swindex/pdf/SwClass2021/StockClassifyUse_stock.xls",
+      "observed_at": "2026-11-05T12:39:18.036506+00:00",
+      "error": "SSLError: HTTPSConnectionPool(host='www.swsresearch.com', port=443): Max retries exceeded with url: /swindex/pdf/SwClass2021/StockClassifyUse_stock.xls (Caused by SSLError(SSLCertVerificatio"
+    },
+    {
+      "url": "https://www.swsresearch.com/swindex/pdf/SwClass2021/SwClassCode_2021.xls",
+      "observed_at": "2026-11-05T12:39:18.150434+00:00",
+      "error": "SSLError: HTTPSConnectionPool(host='www.swsresearch.com', port=443): Max retries exceeded with url: /swindex/pdf/SwClass2021/SwClassCode_2021.xls (Caused by SSLError(SSLCertVerificationError"
+    },
+    {
+      "url": "https://www.swsresearch.com/swindex/pdf/StockClassifyUse_stock.xls",
+      "observed_at": "2026-11-05T12:39:18.175192+00:00",
+      "error": "SSLError: HTTPSConnectionPool(host='www.swsresearch.com', port=443): Max retries exceeded with url: /swindex/pdf/StockClassifyUse_stock.xls (Caused by SSLError(SSLCertVerificationError(1, '["
+    }
+  ],
+  "selected_source": "Tushare index_classify + index_member_all, verified TLS, existing permission",
+  "official_documentation": "https://tushare.pro/document/2?doc_id=335",
+  "current_membership_only_sources_not_admitted": true,
+  "remaining_gap": "effective intervals do not establish original known_at or revision history"
+}

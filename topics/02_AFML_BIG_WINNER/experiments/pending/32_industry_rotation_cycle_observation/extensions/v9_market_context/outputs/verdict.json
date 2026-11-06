@@ -1,0 +1,1169 @@
+{
+  "status": "NO_SATISFACTORY_RESULT",
+  "frequency_gates": {
+    "context_tree": {
+      "W": {
+        "passed_thresholds": [],
+        "passed": false
+      },
+      "BW": {
+        "passed_thresholds": [],
+        "passed": false
+      },
+      "M": {
+        "passed_thresholds": [],
+        "passed": false
+      }
+    },
+    "context_blend": {
+      "W": {
+        "passed_thresholds": [],
+        "passed": false
+      },
+      "BW": {
+        "passed_thresholds": [],
+        "passed": false
+      },
+      "M": {
+        "passed_thresholds": [],
+        "passed": false
+      }
+    },
+    "context_cap": {
+      "W": {
+        "passed_thresholds": [],
+        "passed": false
+      },
+      "BW": {
+        "passed_thresholds": [],
+        "passed": false
+      },
+      "M": {
+        "passed_thresholds": [],
+        "passed": false
+      }
+    }
+  },
+  "task_gates": [
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        false,
+        false,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "BW",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        false,
+        false,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023
+      ],
+      "year_pass": [
+        false,
+        false,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": true,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": true,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": true,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "M",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.1,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.15,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI300",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        true
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_tree",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_blend",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "passed": false
+    },
+    {
+      "frequency": "W",
+      "threshold": 0.2,
+      "benchmark": "CSI_ALL",
+      "candidate": "context_cap",
+      "aggregate_pass": false,
+      "stable": false,
+      "eligible_years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "year_pass": [
+        false,
+        false,
+        true,
+        true
+      ],
+      "passed": false
+    }
+  ],
+  "strict_PIT": "BLOCKED_DATA",
+  "independent_confirmation": false,
+  "primary_followup_months": 24,
+  "prospective": "FORWARD_PENDING"
+}

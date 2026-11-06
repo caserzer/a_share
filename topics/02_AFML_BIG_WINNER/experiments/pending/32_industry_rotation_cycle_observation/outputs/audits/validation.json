@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "panel_unique_stable_identity_month",
+      "passed": true
+    },
+    {
+      "name": "no_2021_taxonomy_backcast_before_2022",
+      "passed": true
+    },
+    {
+      "name": "raw_price_times_effective_shares",
+      "passed": true
+    },
+    {
+      "name": "strict_PIT_not_upgraded",
+      "passed": true
+    },
+    {
+      "name": "next_calendar_session_not_later_stock_resumption",
+      "passed": true
+    },
+    {
+      "name": "no_forward_endpoints_filled",
+      "passed": true
+    },
+    {
+      "name": "unknown_joint_outcome_not_false_or_zero",
+      "passed": true
+    },
+    {
+      "name": "compressed_public_detail_matches_private_original",
+      "passed": true
+    },
+    {
+      "name": "all_published_top3_fixed_by_origin_market_cap",
+      "passed": true,
+      "rows": 47466
+    },
+    {
+      "name": "prefix_leader1",
+      "passed": true
+    },
+    {
+      "name": "prefix_leader6",
+      "passed": true
+    },
+    {
+      "name": "prefix_leader12",
+      "passed": true
+    },
+    {
+      "name": "prefix_strength12",
+      "passed": true
+    },
+    {
+      "name": "prefix_entry_events",
+      "passed": true
+    },
+    {
+      "name": "all_known_terminal_price_returns_recomputed",
+      "passed": true,
+      "known_rows": 38131,
+      "mismatches": []
+    },
+    {
+      "name": "all_consumed_EP30_input_bytes_unchanged",
+      "passed": true,
+      "files": 11674
+    },
+    {
+      "name": "EP31_publication_unchanged",
+      "passed": true,
+      "files": 142
+    },
+    {
+      "name": "EP31_hypothesis_reports_v1_unchanged",
+      "passed": true,
+      "files": 11
+    },
+    {
+      "name": "tracked_predecessors_unchanged",
+      "passed": true
+    },
+    {
+      "name": "temporal_contract_tests",
+      "passed": true,
+      "output": ".......                                                                  [100%]\n7 passed in 0.20s"
+    }
+  ],
+  "claims_validated": "arithmetic_and_temporal_contract_not_economic_hypothesis"
+}

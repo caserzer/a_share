@@ -1,0 +1,61 @@
+{
+  "plan_sha256": "4904cf322a8dbaad33756a9d78a4704d6e0da92a56ed77a5df721c4d86205b79",
+  "code_sha256": "1def9e40b168009128b397d97ee78794e6d9060e5b49ca882bc62589269b5435",
+  "features": [
+    "state_direction",
+    "state_age",
+    "state_confirm_age",
+    "state_drawup",
+    "state_drawdown",
+    "state_previous_decline",
+    "state_excess",
+    "mom21",
+    "mom63",
+    "excess21",
+    "excess63",
+    "market21",
+    "market63",
+    "vol63",
+    "breadth21",
+    "breadth63",
+    "volume_ratio",
+    "threshold",
+    "benchmark_code",
+    "risk_clock21",
+    "risk_clock63",
+    "risk_vol_accel",
+    "risk_drift",
+    "risk_distance",
+    "risk_progress",
+    "risk_excess",
+    "risk_age"
+  ],
+  "params": {
+    "n_estimators": 90,
+    "num_leaves": 7,
+    "max_depth": 3,
+    "min_child_samples": 500,
+    "learning_rate": 0.03,
+    "reg_lambda": 25,
+    "n_jobs": 1,
+    "verbosity": -1,
+    "random_state": 32,
+    "deterministic": true,
+    "force_col_wise": true
+  },
+  "models": [
+    "hazard21_gate",
+    "hazard63_gate",
+    "survival6_gate"
+  ],
+  "controls": [
+    "risk_blend",
+    "diffusion_tree",
+    "risk_diffusion_min"
+  ],
+  "risk_features_sha256": "aa161ea6c1898f77e5539be717ed26e71bdd236bc4b723887da557302d684656",
+  "auxiliary_horizons": [
+    21,
+    63
+  ]
+}

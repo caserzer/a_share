@@ -1,0 +1,120 @@
+{
+  "spec": {
+    "model": "lightgbm",
+    "features": [
+      "mom21",
+      "mom63",
+      "mom126",
+      "excess21",
+      "excess63",
+      "excess126",
+      "dd21",
+      "dd63",
+      "dd126",
+      "vol21",
+      "vol63",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "coverage",
+      "log_members",
+      "mom_accel",
+      "excess_accel",
+      "breadth_accel",
+      "drawdown_recovery",
+      "risk_adjusted_excess",
+      "vol_accel",
+      "breadth_excess_confirmation",
+      "market_accel"
+    ],
+    "engineered": [
+      {
+        "name": "mom_accel",
+        "op": "sub",
+        "left": "mom21",
+        "right": "mom63"
+      },
+      {
+        "name": "excess_accel",
+        "op": "sub",
+        "left": "excess21",
+        "right": "excess63"
+      },
+      {
+        "name": "breadth_accel",
+        "op": "sub",
+        "left": "breadth21",
+        "right": "breadth63"
+      },
+      {
+        "name": "drawdown_recovery",
+        "op": "sub",
+        "left": "dd21",
+        "right": "dd126"
+      },
+      {
+        "name": "risk_adjusted_excess",
+        "op": "div",
+        "left": "excess63",
+        "right": "vol63"
+      },
+      {
+        "name": "vol_accel",
+        "op": "sub",
+        "left": "vol21",
+        "right": "vol63"
+      },
+      {
+        "name": "breadth_excess_confirmation",
+        "op": "mul",
+        "left": "breadth21",
+        "right": "excess_accel"
+      },
+      {
+        "name": "market_accel",
+        "op": "sub",
+        "left": "market21",
+        "right": "market63"
+      }
+    ],
+    "C": 1.0,
+    "trees": 90,
+    "leaves": 7,
+    "max_depth": 3,
+    "min_child_samples": 500,
+    "learning_rate": 0.03,
+    "reg_lambda": 25.0
+  },
+  "models": [
+    "prior",
+    "logistic",
+    "static_tree",
+    "rd_selected",
+    "rd_gate",
+    "rd_state",
+    "rd_conditional"
+  ],
+  "state_features": [
+    "state_direction",
+    "state_left",
+    "state_age",
+    "state_confirm_age",
+    "state_drawup",
+    "state_drawdown",
+    "state_previous_decline",
+    "state_excess",
+    "state_eligible"
+  ],
+  "plan_sha256": "fd0631fd8d3c534a24e63547e1efde9faeb214c8f4fd9afaeb904c20ee6f1665",
+  "code_sha256": "a664abc25bc49016f29a617dca192fc33e9efa2ea8d623d068ebf6931c385840",
+  "state_sha256": "8ca85aacba62ba6d53ea20424fd189c80b75b0c4113d7258224cd43d5da46f59",
+  "old_predictions_sha256": "040e485d34fa2c35cbe5d97be4a7c00f432db8413e9621107a7455d2c4b66237",
+  "old_inputs": {
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet": "67bb7572e341399bf3e5cb845fd8d0fd1570232c2145697bafb4246d711a3e9e",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/features.parquet": "9275eb696b9e2d872dcf8748874f7725f412bb47de77b7893749b51f56f54dc7",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/stage_b_labels.parquet": "9ff21cc8ba565cc6cd39d3e7c894e65f791b7890897eff2f5c313c4a98dfea32",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI300.parquet": "4acdd4c6f1afdfe326bc9b75f772dbba06fa5f95a47da1f671261ad95688b8e0",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470"
+  },
+  "search": false
+}

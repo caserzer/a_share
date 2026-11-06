@@ -1,0 +1,41 @@
+{
+  "plan_sha256": "12c9e48b3fd9462d7b219809f4fd07fad90b8b5bb8509eaa228e813e60ac674b",
+  "code_sha256": "e8ec0a84b8dc89839b97db4c6a36d8eba7344f592d8023b7d290f0aa306a34a1",
+  "features": [
+    "state_direction",
+    "state_age",
+    "state_confirm_age",
+    "state_drawup",
+    "state_drawdown",
+    "state_previous_decline",
+    "state_excess",
+    "mom21",
+    "mom63",
+    "excess21",
+    "excess63",
+    "market21",
+    "market63",
+    "vol63",
+    "breadth21",
+    "breadth63",
+    "volume_ratio",
+    "threshold",
+    "benchmark_code"
+  ],
+  "logistic_C": 0.01,
+  "blend_weight": 0.5,
+  "state_sha256": "8ca85aacba62ba6d53ea20424fd189c80b75b0c4113d7258224cd43d5da46f59",
+  "baseline_receipt_sha256": "568e1dedf2b9b95d4fa19b66418c205daed86fafd6e4f7f7a2fa941cc7b232eb",
+  "models": [
+    "prior",
+    "logistic",
+    "static_tree",
+    "rd_selected",
+    "rd_gate",
+    "rd_state",
+    "rd_conditional",
+    "pool_logistic",
+    "pool_tree",
+    "pool_blend"
+  ]
+}

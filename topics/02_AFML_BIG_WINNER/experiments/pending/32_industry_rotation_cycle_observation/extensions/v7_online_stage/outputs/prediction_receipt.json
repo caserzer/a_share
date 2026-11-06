@@ -1,0 +1,4230 @@
+{
+  "tasks": [
+    {
+      "task": "BW_0.1_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/BW_0.1_CSI300.parquet",
+      "sha256": "f06dc51078762d80f51bc724fa7041ba420a7490b3c0d4a33b170e6981185020",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 19929,
+          "train_positive": 416,
+          "conditional_train": 17289,
+          "conditional_positive": 416,
+          "test": 1675,
+          "latest_training_label": "2020-12-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 23267,
+          "train_positive": 484,
+          "conditional_train": 19765,
+          "conditional_positive": 484,
+          "test": 1682,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 24083,
+          "train_positive": 503,
+          "conditional_train": 20380,
+          "conditional_positive": 503,
+          "test": 1979,
+          "latest_training_label": "2021-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 25791,
+          "train_positive": 893,
+          "conditional_train": 21707,
+          "conditional_positive": 893,
+          "test": 1142,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 27772,
+          "train_positive": 1048,
+          "conditional_train": 22757,
+          "conditional_positive": 1048,
+          "test": 1143,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 27789,
+          "train_positive": 1048,
+          "conditional_train": 22774,
+          "conditional_positive": 1048,
+          "test": 2657,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 28307,
+          "train_positive": 1048,
+          "conditional_train": 23247,
+          "conditional_positive": 1048,
+          "test": 2282,
+          "latest_training_label": "2022-09-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 31536,
+          "train_positive": 1048,
+          "conditional_train": 25659,
+          "conditional_positive": 1048,
+          "test": 1931,
+          "latest_training_label": "2022-12-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 32536,
+          "train_positive": 1053,
+          "conditional_train": 26602,
+          "conditional_positive": 1053,
+          "test": 2704,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 34056,
+          "train_positive": 1195,
+          "conditional_train": 27714,
+          "conditional_positive": 1195,
+          "test": 2322,
+          "latest_training_label": "2023-06-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 36637,
+          "train_positive": 1276,
+          "conditional_train": 29609,
+          "conditional_positive": 1276,
+          "test": 2327,
+          "latest_training_label": "2023-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 40038,
+          "train_positive": 1348,
+          "conditional_train": 32298,
+          "conditional_positive": 1348,
+          "test": 2326,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 43777,
+          "train_positive": 1432,
+          "conditional_train": 35426,
+          "conditional_positive": 1432,
+          "test": 2712,
+          "latest_training_label": "2024-03-20 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 45309,
+          "train_positive": 1432,
+          "conditional_train": 36958,
+          "conditional_positive": 1432,
+          "test": 2695,
+          "latest_training_label": "2024-06-19 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 49528,
+          "train_positive": 1446,
+          "conditional_train": 40935,
+          "conditional_positive": 1446,
+          "test": 2314,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 50757,
+          "train_positive": 1446,
+          "conditional_train": 42155,
+          "conditional_positive": 1446,
+          "test": 2316,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 52875,
+          "train_positive": 1446,
+          "conditional_train": 44190,
+          "conditional_positive": 1446,
+          "test": 2702,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 55390,
+          "train_positive": 1446,
+          "conditional_train": 46638,
+          "conditional_positive": 1446,
+          "test": 2699,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 55807,
+          "train_positive": 1478,
+          "conditional_train": 47016,
+          "conditional_positive": 1478,
+          "test": 2315,
+          "latest_training_label": "2025-09-23 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 57958,
+          "train_positive": 2143,
+          "conditional_train": 48355,
+          "conditional_positive": 2143,
+          "test": 1945,
+          "latest_training_label": "2025-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 60657,
+          "train_positive": 2690,
+          "conditional_train": 49881,
+          "conditional_positive": 2690,
+          "test": 2717,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 63924,
+          "train_positive": 2738,
+          "conditional_train": 51638,
+          "conditional_positive": 2738,
+          "test": 2714,
+          "latest_training_label": "2026-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 67951,
+          "train_positive": 2738,
+          "conditional_train": 54797,
+          "conditional_positive": 2738,
+          "test": 388,
+          "latest_training_label": "2026-09-23 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "M_0.1_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/M_0.1_CSI300.parquet",
+      "sha256": "b3bea23094bf192c846aa370243aaf022f62fac6abf36082ec97915659ee4518",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 9199,
+          "train_positive": 192,
+          "conditional_train": 8111,
+          "conditional_positive": 192,
+          "test": 838,
+          "latest_training_label": "2020-12-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 10817,
+          "train_positive": 225,
+          "conditional_train": 9326,
+          "conditional_positive": 225,
+          "test": 840,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 11189,
+          "train_positive": 234,
+          "conditional_train": 9604,
+          "conditional_positive": 234,
+          "test": 851,
+          "latest_training_label": "2021-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 11940,
+          "train_positive": 413,
+          "conditional_train": 10203,
+          "conditional_positive": 413,
+          "test": 572,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 12809,
+          "train_positive": 485,
+          "conditional_train": 10691,
+          "conditional_positive": 485,
+          "test": 762,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 12814,
+          "train_positive": 485,
+          "conditional_train": 10696,
+          "conditional_positive": 485,
+          "test": 1138,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 13067,
+          "train_positive": 485,
+          "conditional_train": 10916,
+          "conditional_positive": 485,
+          "test": 1141,
+          "latest_training_label": "2022-09-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 14600,
+          "train_positive": 485,
+          "conditional_train": 12073,
+          "conditional_positive": 485,
+          "test": 1159,
+          "latest_training_label": "2022-12-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 15047,
+          "train_positive": 487,
+          "conditional_train": 12492,
+          "conditional_positive": 487,
+          "test": 1158,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 15812,
+          "train_positive": 557,
+          "conditional_train": 13057,
+          "conditional_positive": 557,
+          "test": 1162,
+          "latest_training_label": "2023-06-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 17075,
+          "train_positive": 600,
+          "conditional_train": 13967,
+          "conditional_positive": 600,
+          "test": 1163,
+          "latest_training_label": "2023-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 18759,
+          "train_positive": 636,
+          "conditional_train": 15269,
+          "conditional_positive": 636,
+          "test": 1164,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 20805,
+          "train_positive": 675,
+          "conditional_train": 16988,
+          "conditional_positive": 675,
+          "test": 1162,
+          "latest_training_label": "2024-03-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 21418,
+          "train_positive": 675,
+          "conditional_train": 17601,
+          "conditional_positive": 675,
+          "test": 1157,
+          "latest_training_label": "2024-06-19 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 23278,
+          "train_positive": 681,
+          "conditional_train": 19350,
+          "conditional_positive": 681,
+          "test": 1157,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 23882,
+          "train_positive": 681,
+          "conditional_train": 19950,
+          "conditional_positive": 681,
+          "test": 1158,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 24927,
+          "train_positive": 681,
+          "conditional_train": 20960,
+          "conditional_positive": 681,
+          "test": 1158,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 26053,
+          "train_positive": 681,
+          "conditional_train": 22064,
+          "conditional_positive": 681,
+          "test": 1157,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 26234,
+          "train_positive": 696,
+          "conditional_train": 22228,
+          "conditional_positive": 696,
+          "test": 1158,
+          "latest_training_label": "2025-09-23 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 27210,
+          "train_positive": 1026,
+          "conditional_train": 22868,
+          "conditional_positive": 1026,
+          "test": 1167,
+          "latest_training_label": "2025-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 28437,
+          "train_positive": 1290,
+          "conditional_train": 23586,
+          "conditional_positive": 1290,
+          "test": 1164,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 30048,
+          "train_positive": 1314,
+          "conditional_train": 24457,
+          "conditional_positive": 1314,
+          "test": 1164,
+          "latest_training_label": "2026-06-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "W_0.1_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/W_0.1_CSI300.parquet",
+      "sha256": "0669c079e170a1c9e8d81aafa0bfe92b86bbe4ee3d54711c9b658a79d1fde7d5",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 39479,
+          "train_positive": 841,
+          "conditional_train": 34335,
+          "conditional_positive": 841,
+          "test": 3349,
+          "latest_training_label": "2020-12-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 46171,
+          "train_positive": 984,
+          "conditional_train": 39298,
+          "conditional_positive": 984,
+          "test": 3644,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 47809,
+          "train_positive": 1023,
+          "conditional_train": 40530,
+          "conditional_positive": 1023,
+          "test": 3962,
+          "latest_training_label": "2021-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 51249,
+          "train_positive": 1792,
+          "conditional_train": 43183,
+          "conditional_positive": 1792,
+          "test": 2286,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 55160,
+          "train_positive": 2104,
+          "conditional_train": 45262,
+          "conditional_positive": 2104,
+          "test": 2667,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 55195,
+          "train_positive": 2104,
+          "conditional_train": 45297,
+          "conditional_positive": 2104,
+          "test": 5311,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 56256,
+          "train_positive": 2104,
+          "conditional_train": 46293,
+          "conditional_positive": 2104,
+          "test": 4564,
+          "latest_training_label": "2022-09-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 63089,
+          "train_positive": 2104,
+          "conditional_train": 51662,
+          "conditional_positive": 2104,
+          "test": 4634,
+          "latest_training_label": "2022-12-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 65163,
+          "train_positive": 2115,
+          "conditional_train": 53621,
+          "conditional_positive": 2115,
+          "test": 5021,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 68337,
+          "train_positive": 2413,
+          "conditional_train": 55985,
+          "conditional_positive": 2413,
+          "test": 5032,
+          "latest_training_label": "2023-06-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 73747,
+          "train_positive": 2591,
+          "conditional_train": 60005,
+          "conditional_positive": 2591,
+          "test": 4653,
+          "latest_training_label": "2023-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 80784,
+          "train_positive": 2743,
+          "conditional_train": 65555,
+          "conditional_positive": 2743,
+          "test": 4653,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 88683,
+          "train_positive": 2911,
+          "conditional_train": 72205,
+          "conditional_positive": 2911,
+          "test": 5036,
+          "latest_training_label": "2024-03-20 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 91420,
+          "train_positive": 2911,
+          "conditional_train": 74942,
+          "conditional_positive": 2911,
+          "test": 5390,
+          "latest_training_label": "2024-06-19 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 99681,
+          "train_positive": 2937,
+          "conditional_train": 82694,
+          "conditional_positive": 2937,
+          "test": 4628,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 102031,
+          "train_positive": 2937,
+          "conditional_train": 85023,
+          "conditional_positive": 2937,
+          "test": 5018,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 106365,
+          "train_positive": 2937,
+          "conditional_train": 89186,
+          "conditional_positive": 2937,
+          "test": 5018,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 111185,
+          "train_positive": 2937,
+          "conditional_train": 93896,
+          "conditional_positive": 2937,
+          "test": 5399,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 112018,
+          "train_positive": 3002,
+          "conditional_train": 94650,
+          "conditional_positive": 3002,
+          "test": 5018,
+          "latest_training_label": "2025-09-23 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 116412,
+          "train_positive": 4432,
+          "conditional_train": 97472,
+          "conditional_positive": 4432,
+          "test": 4279,
+          "latest_training_label": "2025-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 121851,
+          "train_positive": 5584,
+          "conditional_train": 100616,
+          "conditional_positive": 5584,
+          "test": 5046,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 128652,
+          "train_positive": 5688,
+          "conditional_train": 104293,
+          "conditional_positive": 5688,
+          "test": 5428,
+          "latest_training_label": "2026-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 136922,
+          "train_positive": 5688,
+          "conditional_train": 110811,
+          "conditional_positive": 5688,
+          "test": 776,
+          "latest_training_label": "2026-09-23 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "BW_0.15_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/BW_0.15_CSI300.parquet",
+      "sha256": "559c3608ab96977817af304a776a61f57724e48f24d01f1077704364b8dc0331",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 17808,
+          "train_positive": 896,
+          "conditional_train": 12836,
+          "conditional_positive": 896,
+          "test": 1675,
+          "latest_training_label": "2020-12-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 20378,
+          "train_positive": 1211,
+          "conditional_train": 14060,
+          "conditional_positive": 1211,
+          "test": 1682,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 22338,
+          "train_positive": 1230,
+          "conditional_train": 14910,
+          "conditional_positive": 1230,
+          "test": 1979,
+          "latest_training_label": "2021-06-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 23465,
+          "train_positive": 1454,
+          "conditional_train": 15466,
+          "conditional_positive": 1454,
+          "test": 1142,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 24602,
+          "train_positive": 1638,
+          "conditional_train": 15978,
+          "conditional_positive": 1638,
+          "test": 1143,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 24607,
+          "train_positive": 1638,
+          "conditional_train": 15983,
+          "conditional_positive": 1638,
+          "test": 2657,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 24664,
+          "train_positive": 1638,
+          "conditional_train": 16040,
+          "conditional_positive": 1638,
+          "test": 2282,
+          "latest_training_label": "2022-09-19 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 26900,
+          "train_positive": 1648,
+          "conditional_train": 17401,
+          "conditional_positive": 1648,
+          "test": 1931,
+          "latest_training_label": "2022-12-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 27769,
+          "train_positive": 1648,
+          "conditional_train": 18004,
+          "conditional_positive": 1648,
+          "test": 2704,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 28687,
+          "train_positive": 1845,
+          "conditional_train": 18498,
+          "conditional_positive": 1845,
+          "test": 2322,
+          "latest_training_label": "2023-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 29861,
+          "train_positive": 2038,
+          "conditional_train": 19221,
+          "conditional_positive": 2038,
+          "test": 2327,
+          "latest_training_label": "2023-09-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 33052,
+          "train_positive": 2277,
+          "conditional_train": 20945,
+          "conditional_positive": 2277,
+          "test": 2326,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 39930,
+          "train_positive": 2548,
+          "conditional_train": 24662,
+          "conditional_positive": 2548,
+          "test": 2712,
+          "latest_training_label": "2024-03-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 40950,
+          "train_positive": 2548,
+          "conditional_train": 25456,
+          "conditional_positive": 2548,
+          "test": 2695,
+          "latest_training_label": "2024-06-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 45682,
+          "train_positive": 2569,
+          "conditional_train": 29520,
+          "conditional_positive": 2569,
+          "test": 2314,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 46028,
+          "train_positive": 2589,
+          "conditional_train": 29841,
+          "conditional_positive": 2589,
+          "test": 2316,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 48038,
+          "train_positive": 2638,
+          "conditional_train": 31440,
+          "conditional_positive": 2638,
+          "test": 2702,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 50754,
+          "train_positive": 2796,
+          "conditional_train": 33591,
+          "conditional_positive": 2796,
+          "test": 2699,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 51093,
+          "train_positive": 2803,
+          "conditional_train": 33877,
+          "conditional_positive": 2803,
+          "test": 2315,
+          "latest_training_label": "2025-09-05 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 51621,
+          "train_positive": 3046,
+          "conditional_train": 34220,
+          "conditional_positive": 3046,
+          "test": 1945,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 53340,
+          "train_positive": 4166,
+          "conditional_train": 35511,
+          "conditional_positive": 4166,
+          "test": 2717,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 56465,
+          "train_positive": 4594,
+          "conditional_train": 36333,
+          "conditional_positive": 4594,
+          "test": 2714,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 63228,
+          "train_positive": 4714,
+          "conditional_train": 39035,
+          "conditional_positive": 4714,
+          "test": 388,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "M_0.15_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/M_0.15_CSI300.parquet",
+      "sha256": "a4f99cb66acc559b4a1400c7626f0dfe65e5c46be3e115c65edb070fd3f06028",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 8255,
+          "train_positive": 424,
+          "conditional_train": 6043,
+          "conditional_positive": 424,
+          "test": 838,
+          "latest_training_label": "2020-12-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 9466,
+          "train_positive": 575,
+          "conditional_train": 6653,
+          "conditional_positive": 575,
+          "test": 840,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 10391,
+          "train_positive": 584,
+          "conditional_train": 7076,
+          "conditional_positive": 584,
+          "test": 851,
+          "latest_training_label": "2021-06-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 10901,
+          "train_positive": 690,
+          "conditional_train": 7332,
+          "conditional_positive": 690,
+          "test": 572,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 11407,
+          "train_positive": 777,
+          "conditional_train": 7577,
+          "conditional_positive": 777,
+          "test": 762,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 11408,
+          "train_positive": 777,
+          "conditional_train": 7578,
+          "conditional_positive": 777,
+          "test": 1138,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 11435,
+          "train_positive": 777,
+          "conditional_train": 7605,
+          "conditional_positive": 777,
+          "test": 1141,
+          "latest_training_label": "2022-09-19 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 12507,
+          "train_positive": 781,
+          "conditional_train": 8261,
+          "conditional_positive": 781,
+          "test": 1159,
+          "latest_training_label": "2022-12-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 12911,
+          "train_positive": 781,
+          "conditional_train": 8545,
+          "conditional_positive": 781,
+          "test": 1158,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 13349,
+          "train_positive": 870,
+          "conditional_train": 8782,
+          "conditional_positive": 870,
+          "test": 1162,
+          "latest_training_label": "2023-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 13922,
+          "train_positive": 965,
+          "conditional_train": 9135,
+          "conditional_positive": 965,
+          "test": 1163,
+          "latest_training_label": "2023-09-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 15483,
+          "train_positive": 1079,
+          "conditional_train": 9958,
+          "conditional_positive": 1079,
+          "test": 1164,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 19065,
+          "train_positive": 1210,
+          "conditional_train": 11959,
+          "conditional_positive": 1210,
+          "test": 1162,
+          "latest_training_label": "2024-03-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 19503,
+          "train_positive": 1210,
+          "conditional_train": 12284,
+          "conditional_positive": 1210,
+          "test": 1157,
+          "latest_training_label": "2024-06-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 21560,
+          "train_positive": 1219,
+          "conditional_train": 14045,
+          "conditional_positive": 1219,
+          "test": 1157,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 21740,
+          "train_positive": 1228,
+          "conditional_train": 14213,
+          "conditional_positive": 1228,
+          "test": 1158,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 22720,
+          "train_positive": 1249,
+          "conditional_train": 14966,
+          "conditional_positive": 1249,
+          "test": 1158,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 23970,
+          "train_positive": 1321,
+          "conditional_train": 15930,
+          "conditional_positive": 1321,
+          "test": 1157,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 24124,
+          "train_positive": 1324,
+          "conditional_train": 16058,
+          "conditional_positive": 1324,
+          "test": 1158,
+          "latest_training_label": "2025-09-05 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 24368,
+          "train_positive": 1441,
+          "conditional_train": 16222,
+          "conditional_positive": 1441,
+          "test": 1167,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 25173,
+          "train_positive": 1984,
+          "conditional_train": 16840,
+          "conditional_positive": 1984,
+          "test": 1164,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 26639,
+          "train_positive": 2191,
+          "conditional_train": 17241,
+          "conditional_positive": 2191,
+          "test": 1164,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "W_0.15_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/W_0.15_CSI300.parquet",
+      "sha256": "3fd761e3c50d82eb210a2a67520fa341af1cf8e12ba6557f62f6d11688de61ec",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 35172,
+          "train_positive": 1852,
+          "conditional_train": 25447,
+          "conditional_positive": 1852,
+          "test": 3349,
+          "latest_training_label": "2020-12-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 40337,
+          "train_positive": 2508,
+          "conditional_train": 27959,
+          "conditional_positive": 2508,
+          "test": 3644,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 44277,
+          "train_positive": 2547,
+          "conditional_train": 29683,
+          "conditional_positive": 2547,
+          "test": 3962,
+          "latest_training_label": "2021-06-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 46547,
+          "train_positive": 3003,
+          "conditional_train": 30803,
+          "conditional_positive": 3003,
+          "test": 2286,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 48814,
+          "train_positive": 3380,
+          "conditional_train": 31839,
+          "conditional_positive": 3380,
+          "test": 2667,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 48824,
+          "train_positive": 3380,
+          "conditional_train": 31849,
+          "conditional_positive": 3380,
+          "test": 5311,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 48942,
+          "train_positive": 3380,
+          "conditional_train": 31967,
+          "conditional_positive": 3380,
+          "test": 4564,
+          "latest_training_label": "2022-09-19 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 53645,
+          "train_positive": 3402,
+          "conditional_train": 35036,
+          "conditional_positive": 3402,
+          "test": 4634,
+          "latest_training_label": "2022-12-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 55464,
+          "train_positive": 3402,
+          "conditional_train": 36367,
+          "conditional_positive": 3402,
+          "test": 5021,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 57390,
+          "train_positive": 3832,
+          "conditional_train": 37430,
+          "conditional_positive": 3832,
+          "test": 5032,
+          "latest_training_label": "2023-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 59857,
+          "train_positive": 4251,
+          "conditional_train": 38981,
+          "conditional_positive": 4251,
+          "test": 4653,
+          "latest_training_label": "2023-09-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 66501,
+          "train_positive": 4764,
+          "conditional_train": 42597,
+          "conditional_positive": 4764,
+          "test": 4653,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 80912,
+          "train_positive": 5344,
+          "conditional_train": 50527,
+          "conditional_positive": 5344,
+          "test": 5036,
+          "latest_training_label": "2024-03-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 82832,
+          "train_positive": 5344,
+          "conditional_train": 51983,
+          "conditional_positive": 5344,
+          "test": 5390,
+          "latest_training_label": "2024-06-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 91973,
+          "train_positive": 5383,
+          "conditional_train": 59703,
+          "conditional_positive": 5383,
+          "test": 4628,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 92638,
+          "train_positive": 5421,
+          "conditional_train": 60314,
+          "conditional_positive": 5421,
+          "test": 5018,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 96675,
+          "train_positive": 5508,
+          "conditional_train": 63531,
+          "conditional_positive": 5508,
+          "test": 5018,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 101925,
+          "train_positive": 5822,
+          "conditional_train": 67663,
+          "conditional_positive": 5822,
+          "test": 5399,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 102588,
+          "train_positive": 5835,
+          "conditional_train": 68211,
+          "conditional_positive": 5835,
+          "test": 5018,
+          "latest_training_label": "2025-09-05 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 103668,
+          "train_positive": 6342,
+          "conditional_train": 68926,
+          "conditional_positive": 6342,
+          "test": 4279,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 107204,
+          "train_positive": 8697,
+          "conditional_train": 71627,
+          "conditional_positive": 8697,
+          "test": 5046,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 113582,
+          "train_positive": 9593,
+          "conditional_train": 73338,
+          "conditional_positive": 9593,
+          "test": 5428,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 127404,
+          "train_positive": 9853,
+          "conditional_train": 78948,
+          "conditional_positive": 9853,
+          "test": 776,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "BW_0.2_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/BW_0.2_CSI300.parquet",
+      "sha256": "8c3245685cacc2b5abd3ce0e453a7756a2d3a51d137a9ca66bcb45c7b2e93a8d",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 15497,
+          "train_positive": 844,
+          "conditional_train": 9260,
+          "conditional_positive": 844,
+          "test": 1675,
+          "latest_training_label": "2020-12-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 16837,
+          "train_positive": 1193,
+          "conditional_train": 9840,
+          "conditional_positive": 1193,
+          "test": 1682,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 18751,
+          "train_positive": 1193,
+          "conditional_train": 10317,
+          "conditional_positive": 1193,
+          "test": 1979,
+          "latest_training_label": "2021-06-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 19948,
+          "train_positive": 1321,
+          "conditional_train": 10704,
+          "conditional_positive": 1321,
+          "test": 1142,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 20376,
+          "train_positive": 1366,
+          "conditional_train": 10881,
+          "conditional_positive": 1366,
+          "test": 1143,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 20378,
+          "train_positive": 1366,
+          "conditional_train": 10883,
+          "conditional_positive": 1366,
+          "test": 2657,
+          "latest_training_label": "2022-06-23 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 20391,
+          "train_positive": 1366,
+          "conditional_train": 10895,
+          "conditional_positive": 1366,
+          "test": 2282,
+          "latest_training_label": "2022-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 21149,
+          "train_positive": 1366,
+          "conditional_train": 11301,
+          "conditional_positive": 1366,
+          "test": 1931,
+          "latest_training_label": "2022-12-09 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 22018,
+          "train_positive": 1366,
+          "conditional_train": 11791,
+          "conditional_positive": 1366,
+          "test": 2704,
+          "latest_training_label": "2023-03-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 22273,
+          "train_positive": 1473,
+          "conditional_train": 11924,
+          "conditional_positive": 1473,
+          "test": 2322,
+          "latest_training_label": "2023-06-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 22718,
+          "train_positive": 1642,
+          "conditional_train": 12241,
+          "conditional_positive": 1642,
+          "test": 2327,
+          "latest_training_label": "2023-09-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 24591,
+          "train_positive": 1841,
+          "conditional_train": 13000,
+          "conditional_positive": 1841,
+          "test": 2326,
+          "latest_training_label": "2023-12-28 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 34182,
+          "train_positive": 2368,
+          "conditional_train": 16275,
+          "conditional_positive": 2368,
+          "test": 2712,
+          "latest_training_label": "2024-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 35020,
+          "train_positive": 2368,
+          "conditional_train": 16623,
+          "conditional_positive": 2368,
+          "test": 2695,
+          "latest_training_label": "2024-06-17 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 40524,
+          "train_positive": 2389,
+          "conditional_train": 20174,
+          "conditional_positive": 2389,
+          "test": 2314,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 40540,
+          "train_positive": 2389,
+          "conditional_train": 20181,
+          "conditional_positive": 2389,
+          "test": 2316,
+          "latest_training_label": "2024-10-08 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 41426,
+          "train_positive": 2452,
+          "conditional_train": 20741,
+          "conditional_positive": 2452,
+          "test": 2702,
+          "latest_training_label": "2025-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 43921,
+          "train_positive": 2870,
+          "conditional_train": 22033,
+          "conditional_positive": 2870,
+          "test": 2699,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 44490,
+          "train_positive": 2877,
+          "conditional_train": 22460,
+          "conditional_positive": 2877,
+          "test": 2315,
+          "latest_training_label": "2025-09-15 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 44601,
+          "train_positive": 2934,
+          "conditional_train": 22530,
+          "conditional_positive": 2934,
+          "test": 1945,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 45386,
+          "train_positive": 3498,
+          "conditional_train": 23126,
+          "conditional_positive": 3498,
+          "test": 2717,
+          "latest_training_label": "2026-03-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 46882,
+          "train_positive": 4202,
+          "conditional_train": 23907,
+          "conditional_positive": 4202,
+          "test": 2714,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 53029,
+          "train_positive": 4605,
+          "conditional_train": 25343,
+          "conditional_positive": 4605,
+          "test": 388,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "M_0.2_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/M_0.2_CSI300.parquet",
+      "sha256": "e0e1195eba108460421286978e5064705268feb042a7205d820caa30bdb064d7",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 7172,
+          "train_positive": 401,
+          "conditional_train": 4351,
+          "conditional_positive": 401,
+          "test": 838,
+          "latest_training_label": "2020-12-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 7802,
+          "train_positive": 568,
+          "conditional_train": 4637,
+          "conditional_positive": 568,
+          "test": 840,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 8707,
+          "train_positive": 568,
+          "conditional_train": 4881,
+          "conditional_positive": 568,
+          "test": 851,
+          "latest_training_label": "2021-06-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 9266,
+          "train_positive": 628,
+          "conditional_train": 5065,
+          "conditional_positive": 628,
+          "test": 572,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 9464,
+          "train_positive": 652,
+          "conditional_train": 5154,
+          "conditional_positive": 652,
+          "test": 762,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 9464,
+          "train_positive": 652,
+          "conditional_train": 5154,
+          "conditional_positive": 652,
+          "test": 1138,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 9470,
+          "train_positive": 652,
+          "conditional_train": 5159,
+          "conditional_positive": 652,
+          "test": 1141,
+          "latest_training_label": "2022-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 9837,
+          "train_positive": 652,
+          "conditional_train": 5357,
+          "conditional_positive": 652,
+          "test": 1159,
+          "latest_training_label": "2022-12-09 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 10252,
+          "train_positive": 652,
+          "conditional_train": 5593,
+          "conditional_positive": 652,
+          "test": 1158,
+          "latest_training_label": "2023-03-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 10371,
+          "train_positive": 699,
+          "conditional_train": 5651,
+          "conditional_positive": 699,
+          "test": 1162,
+          "latest_training_label": "2023-06-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 10583,
+          "train_positive": 776,
+          "conditional_train": 5800,
+          "conditional_positive": 776,
+          "test": 1163,
+          "latest_training_label": "2023-09-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 11494,
+          "train_positive": 865,
+          "conditional_train": 6157,
+          "conditional_positive": 865,
+          "test": 1164,
+          "latest_training_label": "2023-12-28 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 16360,
+          "train_positive": 1111,
+          "conditional_train": 7910,
+          "conditional_positive": 1111,
+          "test": 1162,
+          "latest_training_label": "2024-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 16767,
+          "train_positive": 1111,
+          "conditional_train": 8067,
+          "conditional_positive": 1111,
+          "test": 1157,
+          "latest_training_label": "2024-06-17 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 19208,
+          "train_positive": 1120,
+          "conditional_train": 9605,
+          "conditional_positive": 1120,
+          "test": 1157,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 19215,
+          "train_positive": 1120,
+          "conditional_train": 9608,
+          "conditional_positive": 1120,
+          "test": 1158,
+          "latest_training_label": "2024-10-08 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 19647,
+          "train_positive": 1147,
+          "conditional_train": 9861,
+          "conditional_positive": 1147,
+          "test": 1158,
+          "latest_training_label": "2025-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 20813,
+          "train_positive": 1336,
+          "conditional_train": 10436,
+          "conditional_positive": 1336,
+          "test": 1157,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 21078,
+          "train_positive": 1339,
+          "conditional_train": 10628,
+          "conditional_positive": 1339,
+          "test": 1158,
+          "latest_training_label": "2025-09-15 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 21130,
+          "train_positive": 1366,
+          "conditional_train": 10661,
+          "conditional_positive": 1366,
+          "test": 1167,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 21498,
+          "train_positive": 1636,
+          "conditional_train": 10944,
+          "conditional_positive": 1636,
+          "test": 1164,
+          "latest_training_label": "2026-03-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 22194,
+          "train_positive": 1966,
+          "conditional_train": 11308,
+          "conditional_positive": 1966,
+          "test": 1164,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "W_0.2_CSI300",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/W_0.2_CSI300.parquet",
+      "sha256": "f87e0e434bdb87f445844844b8c75a5141499eb3cc84370c46354aaff94fca77",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 30504,
+          "train_positive": 1760,
+          "conditional_train": 18281,
+          "conditional_positive": 1760,
+          "test": 3349,
+          "latest_training_label": "2020-12-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 33216,
+          "train_positive": 2486,
+          "conditional_train": 19495,
+          "conditional_positive": 2486,
+          "test": 3644,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 37072,
+          "train_positive": 2486,
+          "conditional_train": 20480,
+          "conditional_positive": 2486,
+          "test": 3962,
+          "latest_training_label": "2021-06-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 39492,
+          "train_positive": 2746,
+          "conditional_train": 21270,
+          "conditional_positive": 2746,
+          "test": 2286,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 40350,
+          "train_positive": 2838,
+          "conditional_train": 21628,
+          "conditional_positive": 2838,
+          "test": 2667,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 40354,
+          "train_positive": 2838,
+          "conditional_train": 21632,
+          "conditional_positive": 2838,
+          "test": 5311,
+          "latest_training_label": "2022-06-23 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 40380,
+          "train_positive": 2838,
+          "conditional_train": 21657,
+          "conditional_positive": 2838,
+          "test": 4564,
+          "latest_training_label": "2022-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 41968,
+          "train_positive": 2838,
+          "conditional_train": 22572,
+          "conditional_positive": 2838,
+          "test": 4634,
+          "latest_training_label": "2022-12-09 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 43790,
+          "train_positive": 2838,
+          "conditional_train": 23676,
+          "conditional_positive": 2838,
+          "test": 5021,
+          "latest_training_label": "2023-03-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 44330,
+          "train_positive": 3072,
+          "conditional_train": 23967,
+          "conditional_positive": 3072,
+          "test": 5032,
+          "latest_training_label": "2023-06-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 45274,
+          "train_positive": 3442,
+          "conditional_train": 24648,
+          "conditional_positive": 3442,
+          "test": 4653,
+          "latest_training_label": "2023-09-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 49181,
+          "train_positive": 3875,
+          "conditional_train": 26260,
+          "conditional_positive": 3875,
+          "test": 4653,
+          "latest_training_label": "2023-12-28 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 69257,
+          "train_positive": 5017,
+          "conditional_train": 33364,
+          "conditional_positive": 5017,
+          "test": 5036,
+          "latest_training_label": "2024-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 70957,
+          "train_positive": 5017,
+          "conditional_train": 34051,
+          "conditional_positive": 5017,
+          "test": 5390,
+          "latest_training_label": "2024-06-17 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 81656,
+          "train_positive": 5056,
+          "conditional_train": 40649,
+          "conditional_positive": 5056,
+          "test": 4628,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 81687,
+          "train_positive": 5056,
+          "conditional_train": 40662,
+          "conditional_positive": 5056,
+          "test": 5018,
+          "latest_training_label": "2024-10-08 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 83450,
+          "train_positive": 5166,
+          "conditional_train": 41786,
+          "conditional_positive": 5166,
+          "test": 5018,
+          "latest_training_label": "2025-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 88316,
+          "train_positive": 5978,
+          "conditional_train": 44275,
+          "conditional_positive": 5978,
+          "test": 5399,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 89428,
+          "train_positive": 5991,
+          "conditional_train": 45099,
+          "conditional_positive": 5991,
+          "test": 5018,
+          "latest_training_label": "2025-09-15 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 89651,
+          "train_positive": 6107,
+          "conditional_train": 45241,
+          "conditional_positive": 6107,
+          "test": 4279,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 91261,
+          "train_positive": 7278,
+          "conditional_train": 46477,
+          "conditional_positive": 7278,
+          "test": 5046,
+          "latest_training_label": "2026-03-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 94287,
+          "train_positive": 8706,
+          "conditional_train": 48056,
+          "conditional_positive": 8706,
+          "test": 5428,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 106810,
+          "train_positive": 9564,
+          "conditional_train": 51029,
+          "conditional_positive": 9564,
+          "test": 776,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "BW_0.1_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/BW_0.1_CSI_ALL.parquet",
+      "sha256": "c74328c8d8c87d76c6547130480b7e09c9ff96d00cf5b55efc964d73cdf8a636",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 19929,
+          "train_positive": 431,
+          "conditional_train": 17289,
+          "conditional_positive": 431,
+          "test": 1675,
+          "latest_training_label": "2020-12-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 23274,
+          "train_positive": 506,
+          "conditional_train": 19772,
+          "conditional_positive": 506,
+          "test": 1682,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 24083,
+          "train_positive": 525,
+          "conditional_train": 20380,
+          "conditional_positive": 525,
+          "test": 1979,
+          "latest_training_label": "2021-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 25791,
+          "train_positive": 915,
+          "conditional_train": 21707,
+          "conditional_positive": 915,
+          "test": 1142,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 27772,
+          "train_positive": 1070,
+          "conditional_train": 22757,
+          "conditional_positive": 1070,
+          "test": 1143,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 27789,
+          "train_positive": 1070,
+          "conditional_train": 22774,
+          "conditional_positive": 1070,
+          "test": 2657,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 28307,
+          "train_positive": 1070,
+          "conditional_train": 23247,
+          "conditional_positive": 1070,
+          "test": 2282,
+          "latest_training_label": "2022-09-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 31536,
+          "train_positive": 1070,
+          "conditional_train": 25659,
+          "conditional_positive": 1070,
+          "test": 1931,
+          "latest_training_label": "2022-12-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 32536,
+          "train_positive": 1075,
+          "conditional_train": 26602,
+          "conditional_positive": 1075,
+          "test": 2704,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 34068,
+          "train_positive": 1229,
+          "conditional_train": 27726,
+          "conditional_positive": 1229,
+          "test": 2322,
+          "latest_training_label": "2023-06-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 36637,
+          "train_positive": 1310,
+          "conditional_train": 29609,
+          "conditional_positive": 1310,
+          "test": 2327,
+          "latest_training_label": "2023-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 40038,
+          "train_positive": 1382,
+          "conditional_train": 32298,
+          "conditional_positive": 1382,
+          "test": 2326,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 43777,
+          "train_positive": 1466,
+          "conditional_train": 35426,
+          "conditional_positive": 1466,
+          "test": 2712,
+          "latest_training_label": "2024-03-20 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 45309,
+          "train_positive": 1466,
+          "conditional_train": 36958,
+          "conditional_positive": 1466,
+          "test": 2695,
+          "latest_training_label": "2024-06-19 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 49528,
+          "train_positive": 1480,
+          "conditional_train": 40935,
+          "conditional_positive": 1480,
+          "test": 2314,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 50757,
+          "train_positive": 1480,
+          "conditional_train": 42155,
+          "conditional_positive": 1480,
+          "test": 2316,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 52875,
+          "train_positive": 1480,
+          "conditional_train": 44190,
+          "conditional_positive": 1480,
+          "test": 2702,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 55390,
+          "train_positive": 1480,
+          "conditional_train": 46638,
+          "conditional_positive": 1480,
+          "test": 2699,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 55801,
+          "train_positive": 1506,
+          "conditional_train": 47010,
+          "conditional_positive": 1506,
+          "test": 2315,
+          "latest_training_label": "2025-09-22 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 57921,
+          "train_positive": 2128,
+          "conditional_train": 48318,
+          "conditional_positive": 2128,
+          "test": 1945,
+          "latest_training_label": "2025-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 60581,
+          "train_positive": 2604,
+          "conditional_train": 49805,
+          "conditional_positive": 2604,
+          "test": 2717,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 63904,
+          "train_positive": 2652,
+          "conditional_train": 51618,
+          "conditional_positive": 2652,
+          "test": 2714,
+          "latest_training_label": "2026-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 67945,
+          "train_positive": 2652,
+          "conditional_train": 54791,
+          "conditional_positive": 2652,
+          "test": 388,
+          "latest_training_label": "2026-09-23 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "M_0.1_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/M_0.1_CSI_ALL.parquet",
+      "sha256": "c9037e89d8512dd3faa1060487a12e46cb8401f36c5137019d58446522ef7a7b",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 9199,
+          "train_positive": 198,
+          "conditional_train": 8111,
+          "conditional_positive": 198,
+          "test": 838,
+          "latest_training_label": "2020-12-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 10820,
+          "train_positive": 234,
+          "conditional_train": 9329,
+          "conditional_positive": 234,
+          "test": 840,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 11189,
+          "train_positive": 243,
+          "conditional_train": 9604,
+          "conditional_positive": 243,
+          "test": 851,
+          "latest_training_label": "2021-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 11940,
+          "train_positive": 422,
+          "conditional_train": 10203,
+          "conditional_positive": 422,
+          "test": 572,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 12809,
+          "train_positive": 494,
+          "conditional_train": 10691,
+          "conditional_positive": 494,
+          "test": 762,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 12814,
+          "train_positive": 494,
+          "conditional_train": 10696,
+          "conditional_positive": 494,
+          "test": 1138,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 13067,
+          "train_positive": 494,
+          "conditional_train": 10916,
+          "conditional_positive": 494,
+          "test": 1141,
+          "latest_training_label": "2022-09-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 14600,
+          "train_positive": 494,
+          "conditional_train": 12073,
+          "conditional_positive": 494,
+          "test": 1159,
+          "latest_training_label": "2022-12-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 15047,
+          "train_positive": 496,
+          "conditional_train": 12492,
+          "conditional_positive": 496,
+          "test": 1158,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 15818,
+          "train_positive": 572,
+          "conditional_train": 13063,
+          "conditional_positive": 572,
+          "test": 1162,
+          "latest_training_label": "2023-06-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 17075,
+          "train_positive": 615,
+          "conditional_train": 13967,
+          "conditional_positive": 615,
+          "test": 1163,
+          "latest_training_label": "2023-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 18759,
+          "train_positive": 651,
+          "conditional_train": 15269,
+          "conditional_positive": 651,
+          "test": 1164,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 20805,
+          "train_positive": 690,
+          "conditional_train": 16988,
+          "conditional_positive": 690,
+          "test": 1162,
+          "latest_training_label": "2024-03-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 21418,
+          "train_positive": 690,
+          "conditional_train": 17601,
+          "conditional_positive": 690,
+          "test": 1157,
+          "latest_training_label": "2024-06-19 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 23278,
+          "train_positive": 696,
+          "conditional_train": 19350,
+          "conditional_positive": 696,
+          "test": 1157,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 23882,
+          "train_positive": 696,
+          "conditional_train": 19950,
+          "conditional_positive": 696,
+          "test": 1158,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 24927,
+          "train_positive": 696,
+          "conditional_train": 20960,
+          "conditional_positive": 696,
+          "test": 1158,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 26053,
+          "train_positive": 696,
+          "conditional_train": 22064,
+          "conditional_positive": 696,
+          "test": 1157,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 26231,
+          "train_positive": 708,
+          "conditional_train": 22225,
+          "conditional_positive": 708,
+          "test": 1158,
+          "latest_training_label": "2025-09-22 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 27192,
+          "train_positive": 1017,
+          "conditional_train": 22850,
+          "conditional_positive": 1017,
+          "test": 1167,
+          "latest_training_label": "2025-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 28401,
+          "train_positive": 1248,
+          "conditional_train": 23550,
+          "conditional_positive": 1248,
+          "test": 1164,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 30039,
+          "train_positive": 1272,
+          "conditional_train": 24448,
+          "conditional_positive": 1272,
+          "test": 1164,
+          "latest_training_label": "2026-06-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "W_0.1_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/W_0.1_CSI_ALL.parquet",
+      "sha256": "f0a0189be6de44dbf943b33157041f75a3ea72ea24ceb6909ebebe99483e7d66",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 39479,
+          "train_positive": 867,
+          "conditional_train": 34335,
+          "conditional_positive": 867,
+          "test": 3349,
+          "latest_training_label": "2020-12-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 46184,
+          "train_positive": 1023,
+          "conditional_train": 39311,
+          "conditional_positive": 1023,
+          "test": 3644,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 47809,
+          "train_positive": 1062,
+          "conditional_train": 40530,
+          "conditional_positive": 1062,
+          "test": 3962,
+          "latest_training_label": "2021-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 51249,
+          "train_positive": 1831,
+          "conditional_train": 43183,
+          "conditional_positive": 1831,
+          "test": 2286,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 55160,
+          "train_positive": 2143,
+          "conditional_train": 45262,
+          "conditional_positive": 2143,
+          "test": 2667,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 55195,
+          "train_positive": 2143,
+          "conditional_train": 45297,
+          "conditional_positive": 2143,
+          "test": 5311,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 56256,
+          "train_positive": 2143,
+          "conditional_train": 46293,
+          "conditional_positive": 2143,
+          "test": 4564,
+          "latest_training_label": "2022-09-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 63089,
+          "train_positive": 2143,
+          "conditional_train": 51662,
+          "conditional_positive": 2143,
+          "test": 4634,
+          "latest_training_label": "2022-12-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 65163,
+          "train_positive": 2154,
+          "conditional_train": 53621,
+          "conditional_positive": 2154,
+          "test": 5021,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 68361,
+          "train_positive": 2476,
+          "conditional_train": 56009,
+          "conditional_positive": 2476,
+          "test": 5032,
+          "latest_training_label": "2023-06-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 73747,
+          "train_positive": 2654,
+          "conditional_train": 60005,
+          "conditional_positive": 2654,
+          "test": 4653,
+          "latest_training_label": "2023-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 80784,
+          "train_positive": 2806,
+          "conditional_train": 65555,
+          "conditional_positive": 2806,
+          "test": 4653,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 88683,
+          "train_positive": 2974,
+          "conditional_train": 72205,
+          "conditional_positive": 2974,
+          "test": 5036,
+          "latest_training_label": "2024-03-20 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 91420,
+          "train_positive": 2974,
+          "conditional_train": 74942,
+          "conditional_positive": 2974,
+          "test": 5390,
+          "latest_training_label": "2024-06-19 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 99681,
+          "train_positive": 3000,
+          "conditional_train": 82694,
+          "conditional_positive": 3000,
+          "test": 4628,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 102031,
+          "train_positive": 3000,
+          "conditional_train": 85023,
+          "conditional_positive": 3000,
+          "test": 5018,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 106365,
+          "train_positive": 3000,
+          "conditional_train": 89186,
+          "conditional_positive": 3000,
+          "test": 5018,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 111185,
+          "train_positive": 3000,
+          "conditional_train": 93896,
+          "conditional_positive": 3000,
+          "test": 5399,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 112005,
+          "train_positive": 3052,
+          "conditional_train": 94637,
+          "conditional_positive": 3052,
+          "test": 5018,
+          "latest_training_label": "2025-09-22 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 116334,
+          "train_positive": 4391,
+          "conditional_train": 97394,
+          "conditional_positive": 4391,
+          "test": 4279,
+          "latest_training_label": "2025-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 121693,
+          "train_positive": 5398,
+          "conditional_train": 100458,
+          "conditional_positive": 5398,
+          "test": 5046,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 128612,
+          "train_positive": 5502,
+          "conditional_train": 104253,
+          "conditional_positive": 5502,
+          "test": 5428,
+          "latest_training_label": "2026-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 136909,
+          "train_positive": 5502,
+          "conditional_train": 110798,
+          "conditional_positive": 5502,
+          "test": 776,
+          "latest_training_label": "2026-09-23 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "BW_0.15_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/BW_0.15_CSI_ALL.parquet",
+      "sha256": "2f1c2adb6b7d8f7fecb7e496973508a410ed796831793af7bde50ed5296ecd3a",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 17796,
+          "train_positive": 911,
+          "conditional_train": 12824,
+          "conditional_positive": 911,
+          "test": 1675,
+          "latest_training_label": "2020-12-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 20342,
+          "train_positive": 1208,
+          "conditional_train": 14024,
+          "conditional_positive": 1208,
+          "test": 1682,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 22326,
+          "train_positive": 1227,
+          "conditional_train": 14898,
+          "conditional_positive": 1227,
+          "test": 1979,
+          "latest_training_label": "2021-06-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 23465,
+          "train_positive": 1451,
+          "conditional_train": 15466,
+          "conditional_positive": 1451,
+          "test": 1142,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 24602,
+          "train_positive": 1635,
+          "conditional_train": 15978,
+          "conditional_positive": 1635,
+          "test": 1143,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 24607,
+          "train_positive": 1635,
+          "conditional_train": 15983,
+          "conditional_positive": 1635,
+          "test": 2657,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 24664,
+          "train_positive": 1635,
+          "conditional_train": 16040,
+          "conditional_positive": 1635,
+          "test": 2282,
+          "latest_training_label": "2022-09-19 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 26900,
+          "train_positive": 1645,
+          "conditional_train": 17401,
+          "conditional_positive": 1645,
+          "test": 1931,
+          "latest_training_label": "2022-12-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 27769,
+          "train_positive": 1645,
+          "conditional_train": 18004,
+          "conditional_positive": 1645,
+          "test": 2704,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 28687,
+          "train_positive": 1842,
+          "conditional_train": 18498,
+          "conditional_positive": 1842,
+          "test": 2322,
+          "latest_training_label": "2023-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 29861,
+          "train_positive": 2035,
+          "conditional_train": 19221,
+          "conditional_positive": 2035,
+          "test": 2327,
+          "latest_training_label": "2023-09-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 33052,
+          "train_positive": 2274,
+          "conditional_train": 20945,
+          "conditional_positive": 2274,
+          "test": 2326,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 39930,
+          "train_positive": 2545,
+          "conditional_train": 24662,
+          "conditional_positive": 2545,
+          "test": 2712,
+          "latest_training_label": "2024-03-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 40950,
+          "train_positive": 2545,
+          "conditional_train": 25456,
+          "conditional_positive": 2545,
+          "test": 2695,
+          "latest_training_label": "2024-06-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 45682,
+          "train_positive": 2566,
+          "conditional_train": 29520,
+          "conditional_positive": 2566,
+          "test": 2314,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 46028,
+          "train_positive": 2586,
+          "conditional_train": 29841,
+          "conditional_positive": 2586,
+          "test": 2316,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 48038,
+          "train_positive": 2635,
+          "conditional_train": 31440,
+          "conditional_positive": 2635,
+          "test": 2702,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 50754,
+          "train_positive": 2793,
+          "conditional_train": 33591,
+          "conditional_positive": 2793,
+          "test": 2699,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 51093,
+          "train_positive": 2800,
+          "conditional_train": 33877,
+          "conditional_positive": 2800,
+          "test": 2315,
+          "latest_training_label": "2025-09-05 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 51614,
+          "train_positive": 3036,
+          "conditional_train": 34213,
+          "conditional_positive": 3036,
+          "test": 1945,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 53235,
+          "train_positive": 4051,
+          "conditional_train": 35406,
+          "conditional_positive": 4051,
+          "test": 2717,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 56321,
+          "train_positive": 4422,
+          "conditional_train": 36189,
+          "conditional_positive": 4422,
+          "test": 2714,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 63197,
+          "train_positive": 4542,
+          "conditional_train": 39004,
+          "conditional_positive": 4542,
+          "test": 388,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "M_0.15_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/M_0.15_CSI_ALL.parquet",
+      "sha256": "29f0407778eafb97fab0bb3c84210d1b47abd49f67a83ca8d6406a29fbd28f51",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 8249,
+          "train_positive": 430,
+          "conditional_train": 6037,
+          "conditional_positive": 430,
+          "test": 838,
+          "latest_training_label": "2020-12-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 9448,
+          "train_positive": 572,
+          "conditional_train": 6635,
+          "conditional_positive": 572,
+          "test": 840,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 10385,
+          "train_positive": 581,
+          "conditional_train": 7070,
+          "conditional_positive": 581,
+          "test": 851,
+          "latest_training_label": "2021-06-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 10901,
+          "train_positive": 687,
+          "conditional_train": 7332,
+          "conditional_positive": 687,
+          "test": 572,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 11407,
+          "train_positive": 774,
+          "conditional_train": 7577,
+          "conditional_positive": 774,
+          "test": 762,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 11408,
+          "train_positive": 774,
+          "conditional_train": 7578,
+          "conditional_positive": 774,
+          "test": 1138,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 11435,
+          "train_positive": 774,
+          "conditional_train": 7605,
+          "conditional_positive": 774,
+          "test": 1141,
+          "latest_training_label": "2022-09-19 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 12507,
+          "train_positive": 778,
+          "conditional_train": 8261,
+          "conditional_positive": 778,
+          "test": 1159,
+          "latest_training_label": "2022-12-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 12911,
+          "train_positive": 778,
+          "conditional_train": 8545,
+          "conditional_positive": 778,
+          "test": 1158,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 13349,
+          "train_positive": 867,
+          "conditional_train": 8782,
+          "conditional_positive": 867,
+          "test": 1162,
+          "latest_training_label": "2023-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 13922,
+          "train_positive": 962,
+          "conditional_train": 9135,
+          "conditional_positive": 962,
+          "test": 1163,
+          "latest_training_label": "2023-09-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 15483,
+          "train_positive": 1076,
+          "conditional_train": 9958,
+          "conditional_positive": 1076,
+          "test": 1164,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 19065,
+          "train_positive": 1207,
+          "conditional_train": 11959,
+          "conditional_positive": 1207,
+          "test": 1162,
+          "latest_training_label": "2024-03-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 19503,
+          "train_positive": 1207,
+          "conditional_train": 12284,
+          "conditional_positive": 1207,
+          "test": 1157,
+          "latest_training_label": "2024-06-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 21560,
+          "train_positive": 1216,
+          "conditional_train": 14045,
+          "conditional_positive": 1216,
+          "test": 1157,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 21740,
+          "train_positive": 1225,
+          "conditional_train": 14213,
+          "conditional_positive": 1225,
+          "test": 1158,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 22720,
+          "train_positive": 1246,
+          "conditional_train": 14966,
+          "conditional_positive": 1246,
+          "test": 1158,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 23970,
+          "train_positive": 1318,
+          "conditional_train": 15930,
+          "conditional_positive": 1318,
+          "test": 1157,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 24124,
+          "train_positive": 1321,
+          "conditional_train": 16058,
+          "conditional_positive": 1321,
+          "test": 1158,
+          "latest_training_label": "2025-09-05 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 24365,
+          "train_positive": 1435,
+          "conditional_train": 16219,
+          "conditional_positive": 1435,
+          "test": 1167,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 25122,
+          "train_positive": 1927,
+          "conditional_train": 16789,
+          "conditional_positive": 1927,
+          "test": 1164,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 26570,
+          "train_positive": 2107,
+          "conditional_train": 17172,
+          "conditional_positive": 2107,
+          "test": 1164,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "W_0.15_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/W_0.15_CSI_ALL.parquet",
+      "sha256": "991a9c5b5b171ee13785feae655ddfd7671f55482671bff42079d2486a6da697",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 35146,
+          "train_positive": 1878,
+          "conditional_train": 25421,
+          "conditional_positive": 1878,
+          "test": 3349,
+          "latest_training_label": "2020-12-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 40259,
+          "train_positive": 2495,
+          "conditional_train": 27881,
+          "conditional_positive": 2495,
+          "test": 3644,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 44251,
+          "train_positive": 2534,
+          "conditional_train": 29657,
+          "conditional_positive": 2534,
+          "test": 3962,
+          "latest_training_label": "2021-06-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 46547,
+          "train_positive": 2990,
+          "conditional_train": 30803,
+          "conditional_positive": 2990,
+          "test": 2286,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 48814,
+          "train_positive": 3367,
+          "conditional_train": 31839,
+          "conditional_positive": 3367,
+          "test": 2667,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 48824,
+          "train_positive": 3367,
+          "conditional_train": 31849,
+          "conditional_positive": 3367,
+          "test": 5311,
+          "latest_training_label": "2022-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 48942,
+          "train_positive": 3367,
+          "conditional_train": 31967,
+          "conditional_positive": 3367,
+          "test": 4564,
+          "latest_training_label": "2022-09-19 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 53645,
+          "train_positive": 3389,
+          "conditional_train": 35036,
+          "conditional_positive": 3389,
+          "test": 4634,
+          "latest_training_label": "2022-12-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 55464,
+          "train_positive": 3389,
+          "conditional_train": 36367,
+          "conditional_positive": 3389,
+          "test": 5021,
+          "latest_training_label": "2023-03-31 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 57390,
+          "train_positive": 3819,
+          "conditional_train": 37430,
+          "conditional_positive": 3819,
+          "test": 5032,
+          "latest_training_label": "2023-06-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 59857,
+          "train_positive": 4238,
+          "conditional_train": 38981,
+          "conditional_positive": 4238,
+          "test": 4653,
+          "latest_training_label": "2023-09-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 66501,
+          "train_positive": 4751,
+          "conditional_train": 42597,
+          "conditional_positive": 4751,
+          "test": 4653,
+          "latest_training_label": "2023-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 80912,
+          "train_positive": 5331,
+          "conditional_train": 50527,
+          "conditional_positive": 5331,
+          "test": 5036,
+          "latest_training_label": "2024-03-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 82832,
+          "train_positive": 5331,
+          "conditional_train": 51983,
+          "conditional_positive": 5331,
+          "test": 5390,
+          "latest_training_label": "2024-06-18 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 91973,
+          "train_positive": 5370,
+          "conditional_train": 59703,
+          "conditional_positive": 5370,
+          "test": 4628,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 92638,
+          "train_positive": 5408,
+          "conditional_train": 60314,
+          "conditional_positive": 5408,
+          "test": 5018,
+          "latest_training_label": "2024-12-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 96675,
+          "train_positive": 5495,
+          "conditional_train": 63531,
+          "conditional_positive": 5495,
+          "test": 5018,
+          "latest_training_label": "2025-03-27 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 101925,
+          "train_positive": 5809,
+          "conditional_train": 67663,
+          "conditional_positive": 5809,
+          "test": 5399,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 102588,
+          "train_positive": 5822,
+          "conditional_train": 68211,
+          "conditional_positive": 5822,
+          "test": 5018,
+          "latest_training_label": "2025-09-05 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 103655,
+          "train_positive": 6316,
+          "conditional_train": 68913,
+          "conditional_positive": 6316,
+          "test": 4279,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 106982,
+          "train_positive": 8449,
+          "conditional_train": 71405,
+          "conditional_positive": 8449,
+          "test": 5046,
+          "latest_training_label": "2026-03-31 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 113283,
+          "train_positive": 9229,
+          "conditional_train": 73039,
+          "conditional_positive": 9229,
+          "test": 5428,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 127339,
+          "train_positive": 9489,
+          "conditional_train": 78883,
+          "conditional_positive": 9489,
+          "test": 776,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "BW_0.2_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/BW_0.2_CSI_ALL.parquet",
+      "sha256": "5cf5ee1e2112db97cdaa04ef35bfb01aa0dbdf26ff36a75b51bb66ec2e76c8fc",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 15465,
+          "train_positive": 812,
+          "conditional_train": 9228,
+          "conditional_positive": 812,
+          "test": 1675,
+          "latest_training_label": "2020-12-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 16774,
+          "train_positive": 1123,
+          "conditional_train": 9777,
+          "conditional_positive": 1123,
+          "test": 1682,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 18718,
+          "train_positive": 1123,
+          "conditional_train": 10284,
+          "conditional_positive": 1123,
+          "test": 1979,
+          "latest_training_label": "2021-06-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 19922,
+          "train_positive": 1251,
+          "conditional_train": 10678,
+          "conditional_positive": 1251,
+          "test": 1142,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 20350,
+          "train_positive": 1296,
+          "conditional_train": 10855,
+          "conditional_positive": 1296,
+          "test": 1143,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 20352,
+          "train_positive": 1296,
+          "conditional_train": 10857,
+          "conditional_positive": 1296,
+          "test": 2657,
+          "latest_training_label": "2022-06-23 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 20365,
+          "train_positive": 1296,
+          "conditional_train": 10869,
+          "conditional_positive": 1296,
+          "test": 2282,
+          "latest_training_label": "2022-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 21123,
+          "train_positive": 1296,
+          "conditional_train": 11275,
+          "conditional_positive": 1296,
+          "test": 1931,
+          "latest_training_label": "2022-12-09 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 21992,
+          "train_positive": 1296,
+          "conditional_train": 11765,
+          "conditional_positive": 1296,
+          "test": 2704,
+          "latest_training_label": "2023-03-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 22247,
+          "train_positive": 1403,
+          "conditional_train": 11898,
+          "conditional_positive": 1403,
+          "test": 2322,
+          "latest_training_label": "2023-06-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 22692,
+          "train_positive": 1572,
+          "conditional_train": 12215,
+          "conditional_positive": 1572,
+          "test": 2327,
+          "latest_training_label": "2023-09-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 24565,
+          "train_positive": 1771,
+          "conditional_train": 12974,
+          "conditional_positive": 1771,
+          "test": 2326,
+          "latest_training_label": "2023-12-28 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 34156,
+          "train_positive": 2298,
+          "conditional_train": 16249,
+          "conditional_positive": 2298,
+          "test": 2712,
+          "latest_training_label": "2024-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 34994,
+          "train_positive": 2298,
+          "conditional_train": 16597,
+          "conditional_positive": 2298,
+          "test": 2695,
+          "latest_training_label": "2024-06-17 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 40498,
+          "train_positive": 2319,
+          "conditional_train": 20148,
+          "conditional_positive": 2319,
+          "test": 2314,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 40514,
+          "train_positive": 2319,
+          "conditional_train": 20155,
+          "conditional_positive": 2319,
+          "test": 2316,
+          "latest_training_label": "2024-10-08 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 41400,
+          "train_positive": 2382,
+          "conditional_train": 20715,
+          "conditional_positive": 2382,
+          "test": 2702,
+          "latest_training_label": "2025-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 43895,
+          "train_positive": 2800,
+          "conditional_train": 22007,
+          "conditional_positive": 2800,
+          "test": 2699,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 44464,
+          "train_positive": 2807,
+          "conditional_train": 22434,
+          "conditional_positive": 2807,
+          "test": 2315,
+          "latest_training_label": "2025-09-15 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 44568,
+          "train_positive": 2857,
+          "conditional_train": 22497,
+          "conditional_positive": 2857,
+          "test": 1945,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 45328,
+          "train_positive": 3396,
+          "conditional_train": 23068,
+          "conditional_positive": 3396,
+          "test": 2717,
+          "latest_training_label": "2026-03-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 46707,
+          "train_positive": 3983,
+          "conditional_train": 23732,
+          "conditional_positive": 3983,
+          "test": 2714,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 52925,
+          "train_positive": 4386,
+          "conditional_train": 25239,
+          "conditional_positive": 4386,
+          "test": 388,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "M_0.2_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/M_0.2_CSI_ALL.parquet",
+      "sha256": "01f040001b96cefc6fcf082eb2d746d7bc222f0bdf52e0abc7b1b2623d0c8486",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 7157,
+          "train_positive": 386,
+          "conditional_train": 4336,
+          "conditional_positive": 386,
+          "test": 838,
+          "latest_training_label": "2020-12-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 7772,
+          "train_positive": 535,
+          "conditional_train": 4607,
+          "conditional_positive": 535,
+          "test": 840,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 8692,
+          "train_positive": 535,
+          "conditional_train": 4866,
+          "conditional_positive": 535,
+          "test": 851,
+          "latest_training_label": "2021-06-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 9254,
+          "train_positive": 595,
+          "conditional_train": 5053,
+          "conditional_positive": 595,
+          "test": 572,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 9452,
+          "train_positive": 619,
+          "conditional_train": 5142,
+          "conditional_positive": 619,
+          "test": 762,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 9452,
+          "train_positive": 619,
+          "conditional_train": 5142,
+          "conditional_positive": 619,
+          "test": 1138,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 9458,
+          "train_positive": 619,
+          "conditional_train": 5147,
+          "conditional_positive": 619,
+          "test": 1141,
+          "latest_training_label": "2022-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 9825,
+          "train_positive": 619,
+          "conditional_train": 5345,
+          "conditional_positive": 619,
+          "test": 1159,
+          "latest_training_label": "2022-12-09 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 10240,
+          "train_positive": 619,
+          "conditional_train": 5581,
+          "conditional_positive": 619,
+          "test": 1158,
+          "latest_training_label": "2023-03-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 10359,
+          "train_positive": 666,
+          "conditional_train": 5639,
+          "conditional_positive": 666,
+          "test": 1162,
+          "latest_training_label": "2023-06-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 10571,
+          "train_positive": 743,
+          "conditional_train": 5788,
+          "conditional_positive": 743,
+          "test": 1163,
+          "latest_training_label": "2023-09-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 11482,
+          "train_positive": 832,
+          "conditional_train": 6145,
+          "conditional_positive": 832,
+          "test": 1164,
+          "latest_training_label": "2023-12-28 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 16348,
+          "train_positive": 1078,
+          "conditional_train": 7898,
+          "conditional_positive": 1078,
+          "test": 1162,
+          "latest_training_label": "2024-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 16755,
+          "train_positive": 1078,
+          "conditional_train": 8055,
+          "conditional_positive": 1078,
+          "test": 1157,
+          "latest_training_label": "2024-06-17 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 19196,
+          "train_positive": 1087,
+          "conditional_train": 9593,
+          "conditional_positive": 1087,
+          "test": 1157,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 19203,
+          "train_positive": 1087,
+          "conditional_train": 9596,
+          "conditional_positive": 1087,
+          "test": 1158,
+          "latest_training_label": "2024-10-08 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 19635,
+          "train_positive": 1114,
+          "conditional_train": 9849,
+          "conditional_positive": 1114,
+          "test": 1158,
+          "latest_training_label": "2025-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 20801,
+          "train_positive": 1303,
+          "conditional_train": 10424,
+          "conditional_positive": 1303,
+          "test": 1157,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 21066,
+          "train_positive": 1306,
+          "conditional_train": 10616,
+          "conditional_positive": 1306,
+          "test": 1158,
+          "latest_training_label": "2025-09-15 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 21115,
+          "train_positive": 1330,
+          "conditional_train": 10646,
+          "conditional_positive": 1330,
+          "test": 1167,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 21471,
+          "train_positive": 1588,
+          "conditional_train": 10917,
+          "conditional_positive": 1588,
+          "test": 1164,
+          "latest_training_label": "2026-03-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 22113,
+          "train_positive": 1864,
+          "conditional_train": 11227,
+          "conditional_positive": 1864,
+          "test": 1164,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    },
+    {
+      "task": "W_0.2_CSI_ALL",
+      "path": "/home/xiaolv/.cache/a_share/ep32/online_v7/predictions/W_0.2_CSI_ALL.parquet",
+      "sha256": "af4a17dcd78b0cc160d99f02dfeb6c27f7137e01a6c194349205ff1550165022",
+      "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+      "folds": [
+        {
+          "quarter": "2021-01-01",
+          "train": 30437,
+          "train_positive": 1693,
+          "conditional_train": 18214,
+          "conditional_positive": 1693,
+          "test": 3349,
+          "latest_training_label": "2020-12-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-04-01",
+          "train": 33084,
+          "train_positive": 2340,
+          "conditional_train": 19363,
+          "conditional_positive": 2340,
+          "test": 3644,
+          "latest_training_label": "2021-03-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-07-01",
+          "train": 37005,
+          "train_positive": 2340,
+          "conditional_train": 20413,
+          "conditional_positive": 2340,
+          "test": 3962,
+          "latest_training_label": "2021-06-28 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2021-10-01",
+          "train": 39438,
+          "train_positive": 2600,
+          "conditional_train": 21216,
+          "conditional_positive": 2600,
+          "test": 2286,
+          "latest_training_label": "2021-09-29 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-04-01",
+          "train": 40296,
+          "train_positive": 2692,
+          "conditional_train": 21574,
+          "conditional_positive": 2692,
+          "test": 2667,
+          "latest_training_label": "2021-11-30 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-07-01",
+          "train": 40300,
+          "train_positive": 2692,
+          "conditional_train": 21578,
+          "conditional_positive": 2692,
+          "test": 5311,
+          "latest_training_label": "2022-06-23 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2022-10-01",
+          "train": 40326,
+          "train_positive": 2692,
+          "conditional_train": 21603,
+          "conditional_positive": 2692,
+          "test": 4564,
+          "latest_training_label": "2022-09-27 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-01-01",
+          "train": 41914,
+          "train_positive": 2692,
+          "conditional_train": 22518,
+          "conditional_positive": 2692,
+          "test": 4634,
+          "latest_training_label": "2022-12-09 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-04-01",
+          "train": 43736,
+          "train_positive": 2692,
+          "conditional_train": 23622,
+          "conditional_positive": 2692,
+          "test": 5021,
+          "latest_training_label": "2023-03-24 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-07-01",
+          "train": 44276,
+          "train_positive": 2926,
+          "conditional_train": 23913,
+          "conditional_positive": 2926,
+          "test": 5032,
+          "latest_training_label": "2023-06-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2023-10-01",
+          "train": 45220,
+          "train_positive": 3296,
+          "conditional_train": 24594,
+          "conditional_positive": 3296,
+          "test": 4653,
+          "latest_training_label": "2023-09-21 00:00:00",
+          "baseline_reused": false
+        },
+        {
+          "quarter": "2024-01-01",
+          "train": 49127,
+          "train_positive": 3729,
+          "conditional_train": 26206,
+          "conditional_positive": 3729,
+          "test": 4653,
+          "latest_training_label": "2023-12-28 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-04-01",
+          "train": 69203,
+          "train_positive": 4871,
+          "conditional_train": 33310,
+          "conditional_positive": 4871,
+          "test": 5036,
+          "latest_training_label": "2024-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-07-01",
+          "train": 70903,
+          "train_positive": 4871,
+          "conditional_train": 33997,
+          "conditional_positive": 4871,
+          "test": 5390,
+          "latest_training_label": "2024-06-17 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2024-10-01",
+          "train": 81602,
+          "train_positive": 4910,
+          "conditional_train": 40595,
+          "conditional_positive": 4910,
+          "test": 4628,
+          "latest_training_label": "2024-09-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-01-01",
+          "train": 81633,
+          "train_positive": 4910,
+          "conditional_train": 40608,
+          "conditional_positive": 4910,
+          "test": 5018,
+          "latest_training_label": "2024-10-08 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-04-01",
+          "train": 83396,
+          "train_positive": 5020,
+          "conditional_train": 41732,
+          "conditional_positive": 5020,
+          "test": 5018,
+          "latest_training_label": "2025-03-26 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-07-01",
+          "train": 88262,
+          "train_positive": 5832,
+          "conditional_train": 44221,
+          "conditional_positive": 5832,
+          "test": 5399,
+          "latest_training_label": "2025-06-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2025-10-01",
+          "train": 89374,
+          "train_positive": 5845,
+          "conditional_train": 45045,
+          "conditional_positive": 5845,
+          "test": 5018,
+          "latest_training_label": "2025-09-15 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-01-01",
+          "train": 89585,
+          "train_positive": 5949,
+          "conditional_train": 45175,
+          "conditional_positive": 5949,
+          "test": 4279,
+          "latest_training_label": "2025-12-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-04-01",
+          "train": 91143,
+          "train_positive": 7068,
+          "conditional_train": 46359,
+          "conditional_positive": 7068,
+          "test": 5046,
+          "latest_training_label": "2026-03-30 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-07-01",
+          "train": 93936,
+          "train_positive": 8263,
+          "conditional_train": 47705,
+          "conditional_positive": 8263,
+          "test": 5428,
+          "latest_training_label": "2026-06-29 00:00:00",
+          "baseline_reused": true
+        },
+        {
+          "quarter": "2026-10-01",
+          "train": 106602,
+          "train_positive": 9121,
+          "conditional_train": 50821,
+          "conditional_positive": 9121,
+          "test": 776,
+          "latest_training_label": "2026-09-30 00:00:00",
+          "baseline_reused": true
+        }
+      ]
+    }
+  ],
+  "frozen_sha256": "a3f6cee9eb3c91aa08ae5cb6b5118c9e49e8b14b79b4fc764c5b14c8f1c1cc52",
+  "scoring_started": false
+}

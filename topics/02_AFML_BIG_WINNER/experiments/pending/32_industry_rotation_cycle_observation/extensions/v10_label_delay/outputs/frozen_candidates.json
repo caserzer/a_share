@@ -1,0 +1,33 @@
+{
+  "plan_sha256": "99916afd0b2e6f8025e2a58499c56d1bcfabaa2f454468b93647b3678bcf104f",
+  "code_sha256": "5944f700563de43e200524c69157450e8c7950b01390537b7276252569eef071",
+  "features": [
+    "state_direction",
+    "state_age",
+    "state_confirm_age",
+    "state_drawup",
+    "state_drawdown",
+    "state_previous_decline",
+    "state_excess",
+    "mom21",
+    "mom63",
+    "excess21",
+    "excess63",
+    "market21",
+    "market63",
+    "vol63",
+    "breadth21",
+    "breadth63",
+    "volume_ratio",
+    "threshold",
+    "benchmark_code"
+  ],
+  "candidates": [
+    "lag12_tree",
+    "lag24_tree",
+    "delay_weighted_tree"
+  ],
+  "minimum_delay_probability": 0.2,
+  "previous_prediction_receipt_sha256": "7411d8f61ed9d6740a6d76d19dccd13095edfd9b80a9a40118a32de6c4e62615",
+  "state_sha256": "8ca85aacba62ba6d53ea20424fd189c80b75b0c4113d7258224cd43d5da46f59"
+}

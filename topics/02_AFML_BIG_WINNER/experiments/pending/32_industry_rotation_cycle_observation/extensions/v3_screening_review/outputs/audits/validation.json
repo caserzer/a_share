@@ -1,0 +1,114 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "V1_all_bytes_unchanged",
+      "passed": true,
+      "files": 40
+    },
+    {
+      "name": "V2_all_bytes_unchanged",
+      "passed": true,
+      "files": 45
+    },
+    {
+      "name": "V2_panel_not_modified",
+      "passed": true
+    },
+    {
+      "name": "V2_members_not_modified",
+      "passed": true
+    },
+    {
+      "name": "all_consumed_raw_partitions_unchanged",
+      "passed": true,
+      "files": 3
+    },
+    {
+      "name": "all_original_notice_PDF_hashes",
+      "passed": true,
+      "documents": 4
+    },
+    {
+      "name": "all_eligible_industries_in_fixed_window_query",
+      "passed": true,
+      "industries": 386
+    },
+    {
+      "name": "same_requested_dates_for_every_benchmark",
+      "passed": true
+    },
+    {
+      "name": "incomplete_cap_does_not_drop_sector_observation",
+      "passed": true
+    },
+    {
+      "name": "CSI300_same_day_index_return",
+      "passed": true
+    },
+    {
+      "name": "CSI_ALL_same_day_index_return",
+      "passed": true
+    },
+    {
+      "name": "all_focus_stock_returns_and_excess_recomputed",
+      "passed": true,
+      "rows": 24,
+      "failures": []
+    },
+    {
+      "name": "all_sector_returns_independent_of_rank_gate",
+      "passed": true,
+      "rows": 772,
+      "failures": []
+    },
+    {
+      "name": "documented_marks_are_past_valuation_only",
+      "passed": true
+    },
+    {
+      "name": "halt_diagnostic_does_not_invent_trade",
+      "passed": true
+    },
+    {
+      "name": "optical_rank_gap_and_supported_diagnostic_both_visible",
+      "passed": true
+    },
+    {
+      "name": "industry_outperformance_not_confused_with_three_joint_success",
+      "passed": true
+    },
+    {
+      "name": "semiconductor_window_already_present_in_V2_detail",
+      "passed": true
+    },
+    {
+      "name": "january_semiconductor_entry_lost_to_nonleader_cap_gap",
+      "passed": true
+    },
+    {
+      "name": "open_and_over18_month_runs_retained",
+      "passed": true
+    },
+    {
+      "name": "optical_examples_not_relabelled_industry_top3",
+      "passed": true
+    },
+    {
+      "name": "all_local_report_links_valid",
+      "passed": true,
+      "links": 12,
+      "missing": []
+    },
+    {
+      "name": "valuation_temporal_tests",
+      "passed": true,
+      "output": "....                                                                     [100%]\n4 passed in 0.22s"
+    },
+    {
+      "name": "tracked_predecessors_unchanged",
+      "passed": true
+    }
+  ],
+  "validates": "review_and_fixed_window_not_prediction"
+}

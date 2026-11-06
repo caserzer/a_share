@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v21_long_context/src/experiment21.py", line 63, in <module>
+    if __name__=='__main__':run()
+                            ^^^^^
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v21_long_context/src/experiment21.py", line 37, in run
+    g[IDENTITY+features+['state_eligible']].to_parquet(CACHE/'features.parquet',index=False)
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/pandas/util/_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/pandas/core/frame.py", line 3124, in to_parquet
+    return to_parquet(
+           ^^^^^^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/pandas/io/parquet.py", line 482, in to_parquet
+    impl.write(
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/pandas/io/parquet.py", line 191, in write
+    table = self.api.Table.from_pandas(df, **from_pandas_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pyarrow/table.pxi", line 4768, in pyarrow.lib.Table.from_pandas
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/pyarrow/pandas_compat.py", line 608, in dataframe_to_arrays
+    convert_fields) = _get_columns_to_convert(df, schema, preserve_index,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/pyarrow/pandas_compat.py", line 388, in _get_columns_to_convert
+    raise ValueError(
+ValueError: Duplicate column names found: ['era', 'level', 'industry_code', 'date', 'threshold', 'benchmark', 'state_direction', 'state_age', 'state_confirm_age', 'state_drawup', 'state_drawdown', 'state_previous_decline', 'state_excess', 'mom21', 'mom63', 'excess21', 'excess63', 'market21', 'market63', 'vol63', 'breadth21', 'breadth63', 'volume_ratio', 'threshold', 'benchmark_code', 'risk_clock21', 'risk_clock63', 'risk_vol_accel', 'risk_drift', 'risk_distance', 'risk_progress', 'risk_excess', 'risk_age', 'mom5', 'mom126', 'mom252', 'dd21', 'dd63', 'dd126', 'dd252', 'vol21', 'excess126', 'excess252', 'market126', 'market252', 'market_dd126', 'market_dd252', 'market_vol63', 'peer_up126', 'peer_excess126_median', 'state_eligible']

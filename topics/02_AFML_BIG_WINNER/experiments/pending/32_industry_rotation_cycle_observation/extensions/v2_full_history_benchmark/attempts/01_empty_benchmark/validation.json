@@ -1,0 +1,168 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "full_117_months_from_2017_PIT_calendar_start",
+      "passed": true
+    },
+    {
+      "name": "panel_unique_identity_month",
+      "passed": true
+    },
+    {
+      "name": "no_future_shares_for_market_cap",
+      "passed": true
+    },
+    {
+      "name": "market_cap_uses_raw_not_adjusted_price",
+      "passed": true
+    },
+    {
+      "name": "unknown_known_at_not_upgraded",
+      "passed": true
+    },
+    {
+      "name": "taxonomy_never_backcast_or_spliced",
+      "passed": true
+    },
+    {
+      "name": "transition_month_has_no_industry_assignments",
+      "passed": true
+    },
+    {
+      "name": "membership_unique_per_level",
+      "passed": true
+    },
+    {
+      "name": "every_assignment_has_active_historical_interval",
+      "passed": true,
+      "rows": 1026061
+    },
+    {
+      "name": "all_entries_use_next_market_session",
+      "passed": true
+    },
+    {
+      "name": "every_top3_is_origin_market_cap_rank",
+      "passed": true,
+      "unique_origins": 32784
+    },
+    {
+      "name": "all_terminal_stock_returns_recomputed",
+      "passed": true,
+      "rows": 196704
+    },
+    {
+      "name": "CSI300_all_returns_same_entry_exit_dates",
+      "passed": true,
+      "rows": 65568
+    },
+    {
+      "name": "CSI_ALL_all_returns_same_entry_exit_dates",
+      "passed": true,
+      "rows": 65568
+    },
+    {
+      "name": "all_excess_is_cumulative_return_difference",
+      "passed": true
+    },
+    {
+      "name": "all_three_beat_not_confused_with_average",
+      "passed": true
+    },
+    {
+      "name": "missing_and_censored_not_market_zero",
+      "passed": true
+    },
+    {
+      "name": "path_unknown_not_a_failed_duration",
+      "passed": true
+    },
+    {
+      "name": "every_leader_also_beat_benchmark_in_past",
+      "passed": true
+    },
+    {
+      "name": "prefix_2020-12",
+      "passed": true
+    },
+    {
+      "name": "prefix_2024-12",
+      "passed": true
+    },
+    {
+      "name": "EW_same_fixed_universe_2018-06_9",
+      "passed": true
+    },
+    {
+      "name": "EW_same_fixed_universe_2018-06_12",
+      "passed": true
+    },
+    {
+      "name": "EW_same_fixed_universe_2020-03_9",
+      "passed": true
+    },
+    {
+      "name": "EW_same_fixed_universe_2020-03_12",
+      "passed": true
+    },
+    {
+      "name": "EW_same_fixed_universe_2024-09_9",
+      "passed": true
+    },
+    {
+      "name": "EW_same_fixed_universe_2024-09_12",
+      "passed": true
+    },
+    {
+      "name": "all_consumed_EP30_bytes_unchanged",
+      "passed": true,
+      "files": 11674
+    },
+    {
+      "name": "V1_manifest_and_every_artifact_unchanged",
+      "passed": true,
+      "files": 40
+    },
+    {
+      "name": "older_tracked_files_unchanged",
+      "passed": true
+    },
+    {
+      "name": "gzip_exact_industry_states.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_exact_top3_outcomes.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_exact_entry_stock_paths.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_exact_retrospective_long_segments.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_exact_origin_states.csv",
+      "passed": true
+    },
+    {
+      "name": "all_screened_rows_meet_claimed_excess_conditions",
+      "passed": true
+    },
+    {
+      "name": "all_report_links_exist",
+      "passed": true,
+      "links": 21,
+      "missing": []
+    },
+    {
+      "name": "temporal_and_benchmark_tests",
+      "passed": true,
+      "output": "............                                                             [100%]\n12 passed in 0.26s"
+    }
+  ],
+  "validates": "data_lineage_timing_arithmetic_not_prediction_or_business_cycle"
+}

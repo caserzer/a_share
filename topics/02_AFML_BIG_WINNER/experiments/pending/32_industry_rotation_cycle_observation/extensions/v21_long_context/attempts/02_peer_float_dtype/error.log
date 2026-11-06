@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v21_long_context/src/experiment21.py", line 63, in <module>
+    if __name__=='__main__':run()
+                            ^^^^^
+  File "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v21_long_context/src/experiment21.py", line 44, in run
+    model=LGBMClassifier(**PARAMS);model.fit(train[features],train.y,sample_weight=engine.date_weights(train))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/sklearn.py", line 1704, in fit
+    super().fit(
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/sklearn.py", line 1171, in fit
+    self._Booster = train(
+                    ^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/engine.py", line 296, in train
+    booster = Booster(params=params, train_set=train_set)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/basic.py", line 3758, in __init__
+    train_set.construct()
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/basic.py", line 2574, in construct
+    self._lazy_init(
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/basic.py", line 2101, in _lazy_init
+    data, feature_name, categorical_feature, self.pandas_categorical = _data_from_pandas(
+                                                                       ^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/basic.py", line 795, in _data_from_pandas
+    _pandas_to_numpy(data, target_dtype=target_dtype),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/basic.py", line 739, in _pandas_to_numpy
+    _check_for_bad_pandas_dtypes(data.dtypes)
+  File "/home/xiaolv/code/RD-Agent/.venv/lib/python3.11/site-packages/lightgbm/basic.py", line 730, in _check_for_bad_pandas_dtypes
+    raise ValueError(
+ValueError: pandas dtypes must be int, float or bool.
+Fields with bad pandas dtypes: peer_up126: object

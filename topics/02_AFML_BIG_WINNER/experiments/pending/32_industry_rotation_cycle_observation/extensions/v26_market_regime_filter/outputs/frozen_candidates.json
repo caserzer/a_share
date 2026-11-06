@@ -1,0 +1,32 @@
+{
+  "plan_sha256": "e6cda0307a107d7d61c3262678a91864f5c55fd0020b9bc0ef007a84e17e092a",
+  "code_sha256": "cc00965b5e1d89de798d65b1fd3d8b3cd8cc057025534ad63fc1cdf1c6babfea",
+  "models": [
+    "event_equal",
+    "risk_diffusion_min",
+    "event_equal__market63",
+    "event_equal__market126",
+    "event_equal__market_both",
+    "event_equal__market_breadth126",
+    "risk_diffusion_min__market63",
+    "risk_diffusion_min__market126",
+    "risk_diffusion_min__market_both",
+    "risk_diffusion_min__market_breadth126"
+  ],
+  "controls": [
+    "event_equal",
+    "risk_diffusion_min"
+  ],
+  "gates": [
+    "market63",
+    "market126",
+    "market_both",
+    "market_breadth126"
+  ],
+  "index_sha256": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+  "breadth_sha256": "5d250fc15005439adb15bde3e92c99d80b6c7f6a820e3ab99696b16d69df6ec9",
+  "source_versions": {
+    "event_equal": "v23_event_weighting",
+    "risk_diffusion_min": "v20_persistent_confirmation"
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "V1_bytes_preserved",
+      "passed": true,
+      "files": 40
+    },
+    {
+      "name": "V2_bytes_preserved",
+      "passed": true,
+      "files": 45
+    },
+    {
+      "name": "V3_bytes_preserved",
+      "passed": true,
+      "files": 24
+    },
+    {
+      "name": "panel_with_tail.parquet_identity",
+      "passed": true
+    },
+    {
+      "name": "valuation_marks.parquet_identity",
+      "passed": true
+    },
+    {
+      "name": "assignments_with_tail_return.parquet_identity",
+      "passed": true
+    },
+    {
+      "name": "all_consumed_daily_quote_partitions_unchanged",
+      "passed": true,
+      "files": 5834
+    },
+    {
+      "name": "full_calendar_and_partial_tail",
+      "passed": true
+    },
+    {
+      "name": "every_original_quote_entry_share_cap_preserved",
+      "passed": true,
+      "rows": 682461
+    },
+    {
+      "name": "no_future_valuation_marks",
+      "passed": true
+    },
+    {
+      "name": "exact_policy_matches_original_cap",
+      "passed": true
+    },
+    {
+      "name": "MARK_7D_uses_only_bounded_last_known_mark",
+      "passed": true
+    },
+    {
+      "name": "MARK_31D_uses_only_bounded_last_known_mark",
+      "passed": true
+    },
+    {
+      "name": "valuation_policy_coverage_nested",
+      "passed": true
+    },
+    {
+      "name": "industry_blocks_do_not_cross_taxonomy",
+      "passed": true
+    },
+    {
+      "name": "no_imputed_return_inside_price_blocks",
+      "passed": true
+    },
+    {
+      "name": "phase_ids_unique",
+      "passed": true
+    },
+    {
+      "name": "duration_uses_actual_phase_endpoints",
+      "passed": true
+    },
+    {
+      "name": "six_and_eighteen_bounds_are_inclusive",
+      "passed": true
+    },
+    {
+      "name": "long_stages_remain_present_not_cut_to_18",
+      "passed": true,
+      "max_months": 57
+    },
+    {
+      "name": "confirmed_end_is_peak_and_confirmation_is_later",
+      "passed": true
+    },
+    {
+      "name": "unconfirmed_tail_is_never_presented_as_completed",
+      "passed": true
+    },
+    {
+      "name": "partial_tail_never_a_confirmed_peak",
+      "passed": true
+    },
+    {
+      "name": "all_stage_gain_and_turn_confirmation_properties",
+      "passed": true,
+      "phases": 6444,
+      "failures": []
+    },
+    {
+      "name": "all_confirmed_price_prefixes_stable",
+      "passed": true,
+      "comparisons": 2010
+    },
+    {
+      "name": "every_phase_retained_under_every_policy_and_benchmark",
+      "passed": true
+    },
+    {
+      "name": "candidate_filter_only_duration_up_and_excess",
+      "passed": true
+    },
+    {
+      "name": "unranked_industry_candidates_retained",
+      "passed": true
+    },
+    {
+      "name": "all_rankings_frozen_at_natural_start",
+      "passed": true,
+      "unique_rank_keys": 9480,
+      "failures": []
+    },
+    {
+      "name": "all_stock_returns_use_original_open_and_stage_endpoint",
+      "passed": true,
+      "rows": 106536
+    },
+    {
+      "name": "no_valuation_price_used_as_trade_entry",
+      "passed": true
+    },
+    {
+      "name": "CSI300_phase_and_holding_benchmarks_same_dates",
+      "passed": true
+    },
+    {
+      "name": "CSI_ALL_phase_and_holding_benchmarks_same_dates",
+      "passed": true
+    },
+    {
+      "name": "every_portfolio_excess_is_a_return_difference",
+      "passed": true
+    },
+    {
+      "name": "three_joint_success_distinct_from_average",
+      "passed": true
+    },
+    {
+      "name": "unknown_rank_or_trade_not_failed_success",
+      "passed": true
+    },
+    {
+      "name": "unknown_paths_not_zero_duration",
+      "passed": true
+    },
+    {
+      "name": "screen_T10_only_confirmed_inrange_joint_success",
+      "passed": true
+    },
+    {
+      "name": "screened_stock_T10_matches_exact_selection_keys",
+      "passed": true
+    },
+    {
+      "name": "screen_T15_only_confirmed_inrange_joint_success",
+      "passed": true
+    },
+    {
+      "name": "screened_stock_T15_matches_exact_selection_keys",
+      "passed": true
+    },
+    {
+      "name": "screen_T20_only_confirmed_inrange_joint_success",
+      "passed": true
+    },
+    {
+      "name": "screened_stock_T20_matches_exact_selection_keys",
+      "passed": true
+    },
+    {
+      "name": "gzip_monthly_stock_paths_T20.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_stage_scores_T15.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_industry_monthly_returns.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_stock_scores_T15.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_stage_scores_T20.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_monthly_stock_paths_T15.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_screened_stocks_T15.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_stock_scores_T10.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_all_natural_stages.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_screened_stocks_T20.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_stock_scores_T20.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_stage_scores_T10.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_industry_price_paths.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_monthly_stock_paths_T10.csv",
+      "passed": true
+    },
+    {
+      "name": "gzip_screened_stocks_T10.csv",
+      "passed": true
+    },
+    {
+      "name": "all_local_report_links_valid",
+      "passed": true,
+      "links": 22,
+      "missing": []
+    },
+    {
+      "name": "natural_turn_and_valuation_contract_tests",
+      "passed": true,
+      "output": ".........                                                                [100%]\n9 passed in 0.26s"
+    },
+    {
+      "name": "tracked_predecessors_unchanged",
+      "passed": true
+    }
+  ],
+  "validates": "historical_stage_measurement_not_prediction"
+}

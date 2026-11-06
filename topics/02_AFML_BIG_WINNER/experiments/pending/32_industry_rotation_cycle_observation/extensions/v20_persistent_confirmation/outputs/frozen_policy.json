@@ -1,0 +1,107 @@
+{
+  "models": [
+    "risk_blend",
+    "rank_hedged",
+    "diffusion_tree",
+    "diffusion_confirmed",
+    "diffusion_median14",
+    "diffusion_median28",
+    "diffusion_median42",
+    "diffusion_up_median28",
+    "risk_diffusion_min",
+    "risk_diffusion_geomean"
+  ],
+  "policies": [
+    [
+      "top_0.01",
+      0.01,
+      0.0
+    ],
+    [
+      "top_0.025",
+      0.025,
+      0.0
+    ],
+    [
+      "top_0.05",
+      0.05,
+      0.0
+    ],
+    [
+      "top_0.075",
+      0.075,
+      0.0
+    ],
+    [
+      "top_0.1",
+      0.1,
+      0.0
+    ],
+    [
+      "all_p0.025",
+      1.0,
+      0.025
+    ],
+    [
+      "all_p0.05",
+      1.0,
+      0.05
+    ],
+    [
+      "all_p0.075",
+      1.0,
+      0.075
+    ],
+    [
+      "all_p0.1",
+      1.0,
+      0.1
+    ],
+    [
+      "all_p0.15",
+      1.0,
+      0.15
+    ],
+    [
+      "all_p0.2",
+      1.0,
+      0.2
+    ],
+    [
+      "top10_p0.025",
+      0.1,
+      0.025
+    ],
+    [
+      "top10_p0.05",
+      0.1,
+      0.05
+    ],
+    [
+      "top10_p0.075",
+      0.1,
+      0.075
+    ],
+    [
+      "top10_p0.1",
+      0.1,
+      0.1
+    ],
+    [
+      "top10_p0.15",
+      0.1,
+      0.15
+    ],
+    [
+      "top10_p0.2",
+      0.1,
+      0.2
+    ]
+  ],
+  "plan_sha256": "4547f88b4464a962fedf044f3b3fb40e42cc361945f6825af2d3cfc8c8c16f08",
+  "code_sha256": "b9e9dcca91114e32bacf41eeff3ed9d84df4750fdb59ca4c23279eab7ba47d95",
+  "labels_sha256": "9ff21cc8ba565cc6cd39d3e7c894e65f791b7890897eff2f5c313c4a98dfea32",
+  "phases_sha256": "bb6284195b28f7c49c53f095a22470733607daf8c5e3c5e1311dd783dcc3b5e0",
+  "target_precision": 0.235,
+  "target_event_recall": 0.4125
+}

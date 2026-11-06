@@ -1,0 +1,117 @@
+{
+  "models": [
+    "rank_half",
+    "rank_one",
+    "risk_prior_blend",
+    "pool_tree",
+    "rd_conditional",
+    "history_prior_blend",
+    "history_tree",
+    "rd_state",
+    "history_blend",
+    "context_tree",
+    "context_cap",
+    "pool_blend",
+    "delay_weighted_tree",
+    "lag12_tree",
+    "context_blend",
+    "lag24_tree",
+    "pool_logistic",
+    "static_tree",
+    "logistic",
+    "prior"
+  ],
+  "policies": [
+    [
+      "top_0.01",
+      0.01,
+      0.0
+    ],
+    [
+      "top_0.025",
+      0.025,
+      0.0
+    ],
+    [
+      "top_0.05",
+      0.05,
+      0.0
+    ],
+    [
+      "top_0.075",
+      0.075,
+      0.0
+    ],
+    [
+      "top_0.1",
+      0.1,
+      0.0
+    ],
+    [
+      "all_p0.025",
+      1.0,
+      0.025
+    ],
+    [
+      "all_p0.05",
+      1.0,
+      0.05
+    ],
+    [
+      "all_p0.075",
+      1.0,
+      0.075
+    ],
+    [
+      "all_p0.1",
+      1.0,
+      0.1
+    ],
+    [
+      "all_p0.15",
+      1.0,
+      0.15
+    ],
+    [
+      "all_p0.2",
+      1.0,
+      0.2
+    ],
+    [
+      "top10_p0.025",
+      0.1,
+      0.025
+    ],
+    [
+      "top10_p0.05",
+      0.1,
+      0.05
+    ],
+    [
+      "top10_p0.075",
+      0.1,
+      0.075
+    ],
+    [
+      "top10_p0.1",
+      0.1,
+      0.1
+    ],
+    [
+      "top10_p0.15",
+      0.1,
+      0.15
+    ],
+    [
+      "top10_p0.2",
+      0.1,
+      0.2
+    ]
+  ],
+  "plan_sha256": "d9347e8e4193837c143fc73d481db7322577c8b424f9d25394f94bf75787b429",
+  "code_sha256": "37a2ee0d33b079a9806470ee6ab0a547f79e259ba368c132f0e0f5cef8e98367",
+  "labels_sha256": "9ff21cc8ba565cc6cd39d3e7c894e65f791b7890897eff2f5c313c4a98dfea32",
+  "phases_sha256": "bb6284195b28f7c49c53f095a22470733607daf8c5e3c5e1311dd783dcc3b5e0",
+  "target_precision": 0.235,
+  "target_event_recall": 0.4125
+}
