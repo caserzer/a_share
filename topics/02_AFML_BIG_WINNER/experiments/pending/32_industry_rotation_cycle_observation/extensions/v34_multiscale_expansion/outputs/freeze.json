@@ -1,0 +1,34 @@
+{
+  "plan_sha256": "6f1786fbfe8b1f969b0c921a4b0ee4cc5f8e645d9e39947449652df682687561",
+  "groups": {
+    "levels": [
+      "turn_short",
+      "turn_medium",
+      "volume_short",
+      "turn_rank504",
+      "turn_rank756",
+      "share_short"
+    ],
+    "paths": [
+      "turn_slope63",
+      "turn_acceleration",
+      "turn_persistence",
+      "expansion_breadth",
+      "breadth_change21"
+    ],
+    "stage": [
+      "stage_turn_change",
+      "stage_share_change",
+      "stage_breadth_change",
+      "stage_turn_speed"
+    ]
+  },
+  "main_scope": {
+    "level": "L3",
+    "threshold": 0.15,
+    "benchmark": "CSI_ALL"
+  },
+  "input_quality": "Historical-proxy",
+  "strict_PIT": "BLOCKED_DATA",
+  "independent_holdout": false
+}

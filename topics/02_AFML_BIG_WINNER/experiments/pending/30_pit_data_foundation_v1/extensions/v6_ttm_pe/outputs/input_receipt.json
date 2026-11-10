@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-08T04:27:43.084685+00:00",
+  "inputs": [
+    {
+      "source": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/normalized/securities.parquet",
+      "target": "securities.parquet",
+      "sha256": "1fac43050af38c37b6753b5ba38a51fca8b0fa2f39e00fffe72e610e9f96f75e"
+    },
+    {
+      "source": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/normalized/code_intervals.parquet",
+      "target": "continuous_intervals.parquet",
+      "sha256": "3fe2abbac46400035847d0dd3f241972e554f2df2d91b542df702750aa5f96e2"
+    },
+    {
+      "source": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/code_intervals.parquet",
+      "target": "bse_intervals.parquet",
+      "sha256": "7808cb50a1c2c860743cab2938ffc6f6d2cd935643012ad2c651dab07a30bd56"
+    },
+    {
+      "source": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet",
+      "target": "calendar.parquet",
+      "sha256": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58"
+    }
+  ],
+  "primary_provider": "eastmoney",
+  "secondary_provider": "baostock",
+  "source_switching_allowed": false,
+  "strict_pit": "BLOCKED_DATA",
+  "source_choice_reason": "Broad historical coverage; fixed before any PE outcome analysis"
+}

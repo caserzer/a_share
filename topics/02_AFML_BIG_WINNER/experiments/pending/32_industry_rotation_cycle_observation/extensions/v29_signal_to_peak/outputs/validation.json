@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "checks": [
+    "V28 frozen artifacts unchanged",
+    "input hash historical_alerts.csv.gz",
+    "input hash stage_b_labels.parquet",
+    "input hash daily_phases.parquet",
+    "input hash daily_industries.parquet",
+    "original alert population",
+    "same known and unknown labels as acceptance",
+    "all 36 task event counts reproduce V28",
+    "only qualified confirmed phases",
+    "first hit within early 3 calendar months",
+    "peak is stage end",
+    "daily path keys unique",
+    "all price endpoints exist and positive",
+    "return matches independently stored whole-phase return",
+    "positive remaining duration and nonnegative return",
+    "all peaks equal maximum of original within-cycle daily path",
+    "exact-boundary union unique",
+    "V28 artifacts unchanged after analysis",
+    "input bytes unchanged after analysis"
+  ],
+  "checks_count": 19
+}

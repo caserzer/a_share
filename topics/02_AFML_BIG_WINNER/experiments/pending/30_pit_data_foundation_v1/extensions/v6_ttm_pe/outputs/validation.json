@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "all_months_attempted",
+      "passed": true
+    },
+    {
+      "check": "no_unresolved_primary_queries",
+      "passed": true
+    },
+    {
+      "check": "prior_research_unchanged",
+      "passed": true,
+      "files": 1662
+    },
+    {
+      "check": "release_all_hashes_match",
+      "passed": true,
+      "files": 4002
+    },
+    {
+      "check": "eastmoney_date_identity_provenance_and_values",
+      "passed": true,
+      "rows": 9606387,
+      "unmapped": 0,
+      "alias_conflicts": 0
+    },
+    {
+      "check": "baostock_date_identity_provenance_and_values",
+      "passed": true,
+      "rows": 735093,
+      "unmapped": 0,
+      "alias_conflicts": 0
+    },
+    {
+      "check": "strict_query_denies_vendor_pe",
+      "passed": true
+    },
+    {
+      "check": "historical_proxy_readable_offline",
+      "passed": true,
+      "pe": 6.30858713
+    },
+    {
+      "check": "historical_acquisition_not_backdated",
+      "passed": true
+    },
+    {
+      "check": "universe_2017-01-03",
+      "passed": true,
+      "members": 3019,
+      "positive": 0
+    },
+    {
+      "check": "universe_2021-01-04",
+      "passed": true,
+      "members": 4131,
+      "positive": 3249
+    },
+    {
+      "check": "universe_2024-06-28",
+      "passed": true,
+      "members": 5360,
+      "positive": 4112
+    },
+    {
+      "check": "universe_2026-10-21",
+      "passed": true,
+      "members": 5577,
+      "positive": 3939
+    },
+    {
+      "check": "all_sessions_audited",
+      "passed": true
+    },
+    {
+      "check": "semantic_regression_tests_pass",
+      "passed": true
+    }
+  ],
+  "totals": {
+    "eastmoney": {
+      "rows": 9606387,
+      "unmapped": 0,
+      "alias_conflicts": 0
+    },
+    "baostock": {
+      "rows": 735093,
+      "unmapped": 0,
+      "alias_conflicts": 0
+    }
+  },
+  "at": "2026-11-08T04:48:12.926901+00:00"
+}

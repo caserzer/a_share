@@ -1,0 +1,39 @@
+{
+  "version": "ep32-forward-v1",
+  "frozen_at": "2026-11-08T11:18:16.461726+08:00",
+  "client_audit_date": "2026-11-08",
+  "score_cutoff": 0.11,
+  "market_rule": "CSI_ALL close / close.shift(126) - 1 > 0",
+  "primary": {
+    "level": "L3",
+    "threshold": 0.15,
+    "benchmark": "CSI_ALL"
+  },
+  "frequencies": [
+    "W",
+    "BW",
+    "M"
+  ],
+  "fit_schedule": "quarterly; labels known strictly before quarter start",
+  "outcome_policy": "prediction-only snapshots; append later outcomes separately",
+  "maximum_recording_delay_days": 1,
+  "models": {
+    "risk": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v12_duration_risk/outputs/frozen_candidates.json",
+      "sha256": "3706ca8c7b995557461fa9fe9fac26d465f2d7ff687e1287d41ca4867987f530"
+    },
+    "diffusion": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v18_conditional_diffusion/outputs/frozen_candidates.json",
+      "sha256": "13a3f23ce5dc35fa511b8bb33ce5f384f5153356a8b4b6b994c39e91e3674541"
+    }
+  },
+  "historical_feature_quality": "Historical-proxy",
+  "strict_PIT": "BLOCKED_DATA",
+  "code_hashes": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v33_pit_forward_readiness/src/audit33.py": "21c6a30833bbd33833a8515be3bf63ce29e40fb1c9b25784dc50ce5b7e3df073",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v33_pit_forward_readiness/src/forward_gate.py": "974d65d885af7b8b45b610bc2debe06ab4afb59f3891ba0a59749c102b099afa"
+  },
+  "plan_sha256": "591de82c52aec9a3c1bac5b8f03ebd95c26a73bde819365d3f072a7588720e12",
+  "status": "SPECIFICATION_FROZEN_INPUTS_NOT_ADMITTED",
+  "identity_sha256": "9c9686842bc7da1c73e79c32641561b937dd01e5619ec2625ff3b2d3a749e9f3"
+}

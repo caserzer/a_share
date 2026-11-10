@@ -1,0 +1,25 @@
+{
+  "status": "POSITIVE_HISTORICAL_EXCESS_INCREMENT_NOT_ESTABLISHED",
+  "primary_scope": {
+    "level": "L3",
+    "threshold": 0.15,
+    "benchmark": "CSI_ALL",
+    "frequencies": [
+      "W",
+      "BW",
+      "M"
+    ]
+  },
+  "observation_window": [
+    "2021-01-01",
+    "2024-09-30"
+  ],
+  "entry": "next market trading day close",
+  "economic_unit": "first alert per industry per causal six-month observation lockout",
+  "positive_mean_excess_all_frequencies": true,
+  "increment_vs_matched_momentum_interval_positive_all_frequencies": false,
+  "strict_PIT": "BLOCKED_DATA",
+  "independent_forward_validation": "FORWARD_PENDING",
+  "unchanged_V28_acceptance": true,
+  "not_realized_strategy_returns": true
+}

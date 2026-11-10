@@ -1,0 +1,111 @@
+{
+  "plan_sha256": "0327f723019d9965f08f9503d318586df066fcba8be17b9c860c47b0b0a28629",
+  "PE": [
+    "pe_change21",
+    "pe_change63",
+    "pe_change126",
+    "pe_change252",
+    "pe_rank504",
+    "pe_rank756",
+    "pe_breadth21"
+  ],
+  "models": {
+    "pe": [
+      "pe_change21",
+      "pe_change63",
+      "pe_change126",
+      "pe_change252",
+      "pe_rank504",
+      "pe_rank756",
+      "pe_breadth21"
+    ],
+    "joint_levels": [
+      "turn_short",
+      "turn_medium",
+      "volume_short",
+      "turn_rank504",
+      "turn_rank756",
+      "share_short",
+      "pe_change21",
+      "pe_change63",
+      "pe_change126",
+      "pe_change252",
+      "pe_rank504",
+      "pe_rank756",
+      "pe_breadth21"
+    ],
+    "joint_paths": [
+      "turn_slope63",
+      "turn_acceleration",
+      "turn_persistence",
+      "expansion_breadth",
+      "breadth_change21",
+      "pe_change21",
+      "pe_change63",
+      "pe_change126",
+      "pe_change252",
+      "pe_rank504",
+      "pe_rank756",
+      "pe_breadth21"
+    ],
+    "joint_stage": [
+      "stage_turn_change",
+      "stage_share_change",
+      "stage_breadth_change",
+      "stage_turn_speed",
+      "pe_change21",
+      "pe_change63",
+      "pe_change126",
+      "pe_change252",
+      "pe_rank504",
+      "pe_rank756",
+      "pe_breadth21"
+    ],
+    "missing_levels": [
+      "turn_short",
+      "turn_medium",
+      "volume_short",
+      "turn_rank504",
+      "turn_rank756",
+      "share_short",
+      "pe_change21_missing",
+      "pe_change63_missing",
+      "pe_change126_missing",
+      "pe_change252_missing",
+      "pe_rank504_missing",
+      "pe_rank756_missing",
+      "pe_breadth21_missing"
+    ],
+    "missing_paths": [
+      "turn_slope63",
+      "turn_acceleration",
+      "turn_persistence",
+      "expansion_breadth",
+      "breadth_change21",
+      "pe_change21_missing",
+      "pe_change63_missing",
+      "pe_change126_missing",
+      "pe_change252_missing",
+      "pe_rank504_missing",
+      "pe_rank756_missing",
+      "pe_breadth21_missing"
+    ],
+    "missing_stage": [
+      "stage_turn_change",
+      "stage_share_change",
+      "stage_breadth_change",
+      "stage_turn_speed",
+      "pe_change21_missing",
+      "pe_change63_missing",
+      "pe_change126_missing",
+      "pe_change252_missing",
+      "pe_rank504_missing",
+      "pe_rank756_missing",
+      "pe_breadth21_missing"
+    ]
+  },
+  "pe_release": "/home/xiaolv/.cache/a_share/ep30_d2/ttm_pe_v6/releases/c7fd4a250c8a8558f0b8085e7798a4bf4f411b7573bee21eb1c516674d659b93",
+  "strict_PIT": "BLOCKED_DATA",
+  "quality": "Historical-proxy",
+  "independent_holdout": false
+}
