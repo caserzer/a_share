@@ -1,0 +1,203 @@
+{
+  "status": "LABEL_SUPPORT_NOT_METHOD_EFFECTIVENESS",
+  "annual": [
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "processes": 134,
+      "families": 119,
+      "warming": 118,
+      "heating": 16,
+      "left_uncertain": 5,
+      "history_proxy": 99,
+      "future_proxy": 94,
+      "any_proxy": 119,
+      "all_observed": 15,
+      "regimes": {
+        "UNKNOWN": 76,
+        "NONUP": 35,
+        "UP": 23
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "processes": 227,
+      "families": 226,
+      "warming": 225,
+      "heating": 2,
+      "left_uncertain": 2,
+      "history_proxy": 128,
+      "future_proxy": 131,
+      "any_proxy": 158,
+      "all_observed": 69,
+      "regimes": {
+        "NONUP": 223,
+        "UP": 4
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "processes": 189,
+      "families": 172,
+      "warming": 139,
+      "heating": 50,
+      "left_uncertain": 1,
+      "history_proxy": 82,
+      "future_proxy": 73,
+      "any_proxy": 117,
+      "all_observed": 72,
+      "regimes": {
+        "UP": 123,
+        "NONUP": 66
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "processes": 323,
+      "families": 197,
+      "warming": 191,
+      "heating": 132,
+      "left_uncertain": 0,
+      "history_proxy": 148,
+      "future_proxy": 156,
+      "any_proxy": 215,
+      "all_observed": 108,
+      "regimes": {
+        "UP": 238,
+        "NONUP": 85
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "processes": 272,
+      "families": 188,
+      "warming": 177,
+      "heating": 95,
+      "left_uncertain": 0,
+      "history_proxy": 110,
+      "future_proxy": 138,
+      "any_proxy": 180,
+      "all_observed": 92,
+      "regimes": {
+        "UP": 236,
+        "NONUP": 36
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "processes": 447,
+      "families": 413,
+      "warming": 408,
+      "heating": 39,
+      "left_uncertain": 172,
+      "history_proxy": 129,
+      "future_proxy": 130,
+      "any_proxy": 191,
+      "all_observed": 256,
+      "regimes": {
+        "NONUP": 433,
+        "UP": 14
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "processes": 245,
+      "families": 238,
+      "warming": 219,
+      "heating": 26,
+      "left_uncertain": 0,
+      "history_proxy": 63,
+      "future_proxy": 61,
+      "any_proxy": 101,
+      "all_observed": 144,
+      "regimes": {
+        "NONUP": 176,
+        "UP": 69
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "processes": 254,
+      "families": 203,
+      "warming": 200,
+      "heating": 54,
+      "left_uncertain": 0,
+      "history_proxy": 58,
+      "future_proxy": 52,
+      "any_proxy": 90,
+      "all_observed": 164,
+      "regimes": {
+        "NONUP": 232,
+        "UP": 22
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "processes": 413,
+      "families": 327,
+      "warming": 322,
+      "heating": 91,
+      "left_uncertain": 0,
+      "history_proxy": 134,
+      "future_proxy": 167,
+      "any_proxy": 224,
+      "all_observed": 189,
+      "regimes": {
+        "UP": 379,
+        "NONUP": 34
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "processes": 173,
+      "families": 173,
+      "warming": 170,
+      "heating": 3,
+      "left_uncertain": 0,
+      "history_proxy": 68,
+      "future_proxy": 17,
+      "any_proxy": 75,
+      "all_observed": 98,
+      "regimes": {
+        "UP": 130,
+        "NONUP": 43
+      }
+    }
+  ],
+  "regimes": {
+    "NONUP": 1363,
+    "UP": 1238,
+    "UNKNOWN": 76
+  },
+  "weeks": 498,
+  "weekly_origin_distribution": {
+    "count": 498.0,
+    "mean": 5.375502008032129,
+    "std": 15.68661793191404,
+    "min": 0.0,
+    "50%": 1.0,
+    "90%": 15.0,
+    "95%": 27.0,
+    "99%": 59.11999999999989,
+    "max": 201.0
+  },
+  "total_proxy": 1470,
+  "all_observed": 1207,
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_price_process_v03/processes.parquet": "bc246375fc4c4fb6edcd886424f321f0ed58276b945f307a1660f6e5dea3de8c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_coverage/evaluation_coverage.parquet": "970a9a9d7c36f4a3eb78806e1cf3e5ab44b95f299297c29f335e70224ee486bd",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/stratify_price_process_v03.py": "6d71a73259498068bb1765a2c5571af441ea3acbba2c2e2b2bd45dfb4a6f9974"
+  }
+}

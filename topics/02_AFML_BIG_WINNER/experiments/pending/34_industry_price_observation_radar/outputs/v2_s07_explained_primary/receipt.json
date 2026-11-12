@@ -1,0 +1,37 @@
+{
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/delivery/A/all_observations.parquet": "76a47d10d81d9e12eeb4b8d0bd401dcbc9092580517e566c52625dd430363ae3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/A/events.parquet": "464bb544e854171f4e64b92c9ffdaf642d38b07d77669f57bed76950dadc6499",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/v2_b06_replay.py": "6d626b2b0a39cbf3e717bacb2fbdc4f49196bc39509fbf636641c97bd1c37c70",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/v2_s07/plan.md": "1d153e6f8bb1041fe3bb7b467b020715458f37552de7b7ba59e609c4f1792acc",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/v2_s07_explain_catalog.py": "91cf95f73c4b5c6621c15bbd469741b29e4a51502545bcff0c4a0b7a508c75e1",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/weekly_catalog.parquet": "c140983c3407f05b56027d150912446b5e96c18bfa9faa5e9e6fca9a27591331"
+  },
+  "artifacts": {
+    "all_observations.parquet": "c2764eaf9f68c467a44bde9e64571139a914154b7e52be85deed563f67329455",
+    "latest_full_catalog.csv": "3bf67b6ba308e5a926ebee92c02c4e89049309688702900dc6b042fc0a56338a",
+    "summary.json": "03fcc61bfd2773df676bdf768ebe46e9f6d43a9867c4966403e70f7cc9ebdfbc",
+    "non_admission_counts.csv": "847631ebb96e7059ffeafed56eeeaf29cade3324b4664e6acf227e04b7c6c6a7"
+  },
+  "verification": {
+    "rows": 141872,
+    "original_columns_preserved": 34,
+    "verified_new_events": 1459,
+    "supported_weeks": 496,
+    "not_triggered_rows": 93847,
+    "latest_date": "2026-10-16",
+    "latest_state_counts": {
+      "NOT_TRIGGERED": 243,
+      "DATA_INSUFFICIENT": 83,
+      "TRACKING": 19,
+      "EXIT": 1,
+      "NEW": 1
+    },
+    "latest_tracking_evidence": {
+      "RISK_OR_NO_IMPROVEMENT": 17,
+      "POSITIVE_5D": 3
+    },
+    "interpretation": "Delivery explanations only; no signal, process, evaluation or event changes. Constraint overlap is not counterfactual performance."
+  }
+}

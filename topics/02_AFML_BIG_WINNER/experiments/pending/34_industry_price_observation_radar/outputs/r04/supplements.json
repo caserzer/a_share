@@ -1,0 +1,129 @@
+{
+  "results": {
+    "A": {
+      "late": {
+        "scope": "S01 post-result supplemental accounting; primary metrics unchanged",
+        "primary_alerts": 1843,
+        "reserved_primary_assignments": 96,
+        "residual_alerts": 1747,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 965,
+          "FIRST_FAILURE": 417,
+          "UNKNOWN": 172,
+          "DUPLICATE": 77,
+          "IMMATURE": 64,
+          "SUCCESS": 40,
+          "UNKNOWN_DUPLICATE": 9,
+          "IMMATURE_DUPLICATE": 3
+        },
+        "supplement_evaluable": 1499,
+        "late_success_alerts": 40,
+        "supplement_effectiveness": 0.0266844563042028,
+        "process_maturity_sessions": 125,
+        "process_denominator": 2365,
+        "primary_success_on_125day_denominator": 41,
+        "unique_added_late_coverage": 40,
+        "late_coverage": 0.016913319238900635,
+        "combined_coverage": 0.034249471458773786,
+        "unresolved_processes": 32,
+        "combined_coverage_upper": 0.04778012684989429,
+        "not125mature": 132,
+        "left_origin_unknown125": 180,
+        "repeat_known": 77,
+        "repeat_unknown": 9,
+        "operational": {
+          "status": "NOT_MODELED"
+        },
+        "timing_matched_late": {
+          "count": 628.0,
+          "mean": 37.738853503184714,
+          "std": 13.45007734184568,
+          "min": 11.0,
+          "10%": 19.0,
+          "50%": 38.0,
+          "90%": 56.0,
+          "95%": 59.0,
+          "max": 60.0
+        },
+        "inputs": {
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/s01_v1/seal.json": "1b6253f8ffccf715d2a6c7db50c77b15300f78575c90a77347c8709540b8e68d",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r04/A_evaluated.parquet": "1574317c3fa21e0ff8b419ecdf5ed060e1f0bc68cbbe307bdd4c564df713a274",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/s01_variants.py": "baf8aafdf819c702858bcd15d5427372329429e90b15df631a0702d941d4ea9a"
+        }
+      },
+      "lifetime": {
+        "total": 1843,
+        "known_repeat": 301,
+        "unknown_only_repeat": 4,
+        "mixed_first_repeat": 56,
+        "beyond60_known_repeat": 247,
+        "operational_status": "NOT_MODELED"
+      }
+    },
+    "B": {
+      "late": {
+        "scope": "S01 post-result supplemental accounting; primary metrics unchanged",
+        "primary_alerts": 1843,
+        "reserved_primary_assignments": 102,
+        "residual_alerts": 1741,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 947,
+          "FIRST_FAILURE": 435,
+          "UNKNOWN": 174,
+          "DUPLICATE": 74,
+          "IMMATURE": 63,
+          "SUCCESS": 36,
+          "UNKNOWN_DUPLICATE": 8,
+          "IMMATURE_DUPLICATE": 4
+        },
+        "supplement_evaluable": 1492,
+        "late_success_alerts": 36,
+        "supplement_effectiveness": 0.024128686327077747,
+        "process_maturity_sessions": 125,
+        "process_denominator": 2365,
+        "primary_success_on_125day_denominator": 38,
+        "unique_added_late_coverage": 36,
+        "late_coverage": 0.01522198731501057,
+        "combined_coverage": 0.03128964059196617,
+        "unresolved_processes": 31,
+        "combined_coverage_upper": 0.04439746300211417,
+        "not125mature": 132,
+        "left_origin_unknown125": 180,
+        "repeat_known": 74,
+        "repeat_unknown": 8,
+        "operational": {
+          "status": "NOT_MODELED"
+        },
+        "timing_matched_late": {
+          "count": 639.0,
+          "mean": 38.032863849765256,
+          "std": 13.26486330594181,
+          "min": 11.0,
+          "10%": 19.0,
+          "50%": 39.0,
+          "90%": 56.0,
+          "95%": 59.0,
+          "max": 60.0
+        },
+        "inputs": {
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/s01_v1/seal.json": "1b6253f8ffccf715d2a6c7db50c77b15300f78575c90a77347c8709540b8e68d",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r04/B_evaluated.parquet": "cb919ae51ca4626d360b01f85d22fd22cc8995b9de034f2548a72cf914250427",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+          "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/s01_variants.py": "baf8aafdf819c702858bcd15d5427372329429e90b15df631a0702d941d4ea9a"
+        }
+      },
+      "lifetime": {
+        "total": 1843,
+        "known_repeat": 288,
+        "unknown_only_repeat": 5,
+        "mixed_first_repeat": 47,
+        "beyond60_known_repeat": 231,
+        "operational_status": "NOT_MODELED"
+      }
+    }
+  },
+  "source_sha256": "38ba5975d7fe0c18104470b63a550b507aefd775d54242e49e8585610eae024a"
+}

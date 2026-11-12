@@ -1,0 +1,1622 @@
+{
+  "scope": "S03 supplemental descriptive timing",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/S03_timing_accounting_plan.md": "8614314564edcb84efa48eb9650e1969d7d28b87cf228f86fe29008307ae0cc6",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/configs/evaluation_registration.json": "18d8adf26d673d9f9afe991f1b2e0ec76723e9cb35cf099f9212ccba9dcf7f1f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r04/A_evaluated.parquet": "1574317c3fa21e0ff8b419ecdf5ed060e1f0bc68cbbe307bdd4c564df713a274",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/s01/variants/r04_A/r01_late_records.parquet": "c31149d47de0b5686f5e6700ee0946b0e21d4c31d40dde8f676146cc8a7ba4da",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r04/B_evaluated.parquet": "cb919ae51ca4626d360b01f85d22fd22cc8995b9de034f2548a72cf914250427",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/s01/variants/r04_B/r01_late_records.parquet": "306e3bcc767f557bc39ce6c834d05a95f72f5f283316c1bfca59c15a384d0c17"
+  },
+  "source_sha256": "02fd8d7faf71e73e1d1738f78cf282fc62d40200d9f3e6df69836f0731b9cca1",
+  "main_reproduction": null,
+  "results": {
+    "r04_A": {
+      "total": 1843,
+      "groups": {
+        "LATE|DUPLICATE": {
+          "total": 77,
+          "prior_gain_status": {
+            "COMPUTABLE": 77
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 37,
+            "REACHED": 31,
+            "PROCESS_ENDED": 9
+          },
+          "post_status": {
+            "PROCESS_ENDED": 54,
+            "POST_FAILED": 19,
+            "POST_VALID": 4
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 77,
+              "computable": 77,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 19.0,
+                "0.1": 29.6,
+                "0.5": 50.0,
+                "0.9": 59.0,
+                "0.95": 59.2,
+                "1.0": 60.0
+              }
+            },
+            "prior_gain": {
+              "total": 77,
+              "computable": 77,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.026329738800920488,
+                "0.1": 0.0932416625511225,
+                "0.5": 0.1752995819972769,
+                "0.9": 0.39873314510393165,
+                "0.95": 0.48678099926025986,
+                "1.0": 0.9138124504316294
+              }
+            },
+            "milestone_sessions": {
+              "total": 77,
+              "computable": 31,
+              "not_computable": 46,
+              "quantiles": {
+                "0.0": 1.0,
+                "0.1": 3.0,
+                "0.5": 10.0,
+                "0.9": 18.0,
+                "0.95": 19.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 77,
+              "computable": 4,
+              "not_computable": 73,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "LATE|FIRST_FAILURE": {
+          "total": 417,
+          "prior_gain_status": {
+            "COMPUTABLE": 417
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 278,
+            "REACHED": 114,
+            "PROCESS_ENDED": 25
+          },
+          "post_status": {
+            "PROCESS_ENDED": 244,
+            "POST_FAILED": 173
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 417,
+              "computable": 417,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 11.0,
+                "0.1": 19.0,
+                "0.5": 35.0,
+                "0.9": 55.0,
+                "0.95": 58.0,
+                "1.0": 60.0
+              }
+            },
+            "prior_gain": {
+              "total": 417,
+              "computable": 417,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.010656717113981307,
+                "0.1": 0.06664505057911466,
+                "0.5": 0.1534866266914845,
+                "0.9": 0.3298298654332974,
+                "0.95": 0.4085015614492742,
+                "1.0": 1.0577646552827646
+              }
+            },
+            "milestone_sessions": {
+              "total": 417,
+              "computable": 114,
+              "not_computable": 303,
+              "quantiles": {
+                "0.0": 1.0,
+                "0.1": 3.0,
+                "0.5": 8.0,
+                "0.9": 18.0,
+                "0.95": 19.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 417,
+              "computable": 0,
+              "not_computable": 417,
+              "quantiles": {}
+            }
+          }
+        },
+        "LATE|IMMATURE": {
+          "total": 26,
+          "prior_gain_status": {
+            "COMPUTABLE": 26
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 12,
+            "UNKNOWN_PROCESS_CENSORED": 9,
+            "REACHED": 5
+          },
+          "post_status": {
+            "IMMATURE": 26
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 26,
+              "computable": 26,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 12.0,
+                "0.1": 17.5,
+                "0.5": 41.5,
+                "0.9": 51.0,
+                "0.95": 55.5,
+                "1.0": 59.0
+              }
+            },
+            "prior_gain": {
+              "total": 26,
+              "computable": 26,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.03139796742428835,
+                "0.1": 0.05482699977586014,
+                "0.5": 0.13903619897980846,
+                "0.9": 0.23246419975777255,
+                "0.95": 0.25502891750382545,
+                "1.0": 0.2624695442395568
+              }
+            },
+            "milestone_sessions": {
+              "total": 26,
+              "computable": 5,
+              "not_computable": 21,
+              "quantiles": {
+                "0.0": 8.0,
+                "0.1": 11.6,
+                "0.5": 17.0,
+                "0.9": 17.6,
+                "0.95": 17.8,
+                "1.0": 18.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 26,
+              "computable": 0,
+              "not_computable": 26,
+              "quantiles": {}
+            }
+          }
+        },
+        "LATE|IMMATURE_DUPLICATE": {
+          "total": 3,
+          "prior_gain_status": {
+            "COMPUTABLE": 3
+          },
+          "milestone_status": {
+            "REACHED": 2,
+            "NOT_REACHED_FULL_WINDOW": 1
+          },
+          "post_status": {
+            "IMMATURE": 3
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 3,
+              "computable": 3,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 30.0,
+                "0.1": 31.0,
+                "0.5": 35.0,
+                "0.9": 47.8,
+                "0.95": 49.4,
+                "1.0": 51.0
+              }
+            },
+            "prior_gain": {
+              "total": 3,
+              "computable": 3,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.053052027460756435,
+                "0.1": 0.05920266776380192,
+                "0.5": 0.08380522897598386,
+                "0.9": 0.12698494135294586,
+                "0.95": 0.1323824054000661,
+                "1.0": 0.13777986944718634
+              }
+            },
+            "milestone_sessions": {
+              "total": 3,
+              "computable": 2,
+              "not_computable": 1,
+              "quantiles": {
+                "0.0": 12.0,
+                "0.1": 12.5,
+                "0.5": 14.5,
+                "0.9": 16.5,
+                "0.95": 16.75,
+                "1.0": 17.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 3,
+              "computable": 0,
+              "not_computable": 3,
+              "quantiles": {}
+            }
+          }
+        },
+        "LATE|SUCCESS": {
+          "total": 40,
+          "prior_gain_status": {
+            "COMPUTABLE": 40
+          },
+          "milestone_status": {
+            "REACHED": 40
+          },
+          "post_status": {
+            "POST_VALID": 40
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 40,
+              "computable": 40,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 11.0,
+                "0.1": 12.9,
+                "0.5": 31.0,
+                "0.9": 50.300000000000004,
+                "0.95": 55.0,
+                "1.0": 55.0
+              }
+            },
+            "prior_gain": {
+              "total": 40,
+              "computable": 40,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -0.023009380164819127,
+                "0.1": 0.030258604530657342,
+                "0.5": 0.10380854829589337,
+                "0.9": 0.3073573378909601,
+                "0.95": 0.34657841514121723,
+                "1.0": 0.36876823626040345
+              }
+            },
+            "milestone_sessions": {
+              "total": 40,
+              "computable": 40,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 2.0,
+                "0.1": 3.9000000000000004,
+                "0.5": 9.0,
+                "0.9": 19.0,
+                "0.95": 20.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 40,
+              "computable": 40,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "LATE|UNKNOWN": {
+          "total": 56,
+          "prior_gain_status": {
+            "COMPUTABLE": 56
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 30,
+            "REACHED": 23,
+            "PROCESS_ENDED": 3
+          },
+          "post_status": {
+            "PROCESS_ENDED": 31,
+            "UNKNOWN_MISSING_DATES": 11,
+            "POST_FAILED": 10,
+            "UNKNOWN_PRICE_PATH": 2,
+            "POST_VALID": 2
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 56,
+              "computable": 56,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 11.0,
+                "0.1": 20.5,
+                "0.5": 34.5,
+                "0.9": 56.5,
+                "0.95": 59.0,
+                "1.0": 60.0
+              }
+            },
+            "prior_gain": {
+              "total": 56,
+              "computable": 56,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.02667381450294104,
+                "0.1": 0.05931019086105149,
+                "0.5": 0.16412575128222717,
+                "0.9": 0.5046934232238521,
+                "0.95": 0.5864325116751069,
+                "1.0": 1.2083096300136575
+              }
+            },
+            "milestone_sessions": {
+              "total": 56,
+              "computable": 23,
+              "not_computable": 33,
+              "quantiles": {
+                "0.0": 3.0,
+                "0.1": 4.0,
+                "0.5": 11.0,
+                "0.9": 15.8,
+                "0.95": 16.0,
+                "1.0": 19.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 56,
+              "computable": 2,
+              "not_computable": 54,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "LATE|UNKNOWN_DUPLICATE": {
+          "total": 9,
+          "prior_gain_status": {
+            "COMPUTABLE": 9
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 4,
+            "PROCESS_ENDED": 4,
+            "REACHED": 1
+          },
+          "post_status": {
+            "PROCESS_ENDED": 8,
+            "UNKNOWN_MISSING_DATES": 1
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 9,
+              "computable": 9,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 30.0,
+                "0.1": 37.2,
+                "0.5": 54.0,
+                "0.9": 57.4,
+                "0.95": 58.2,
+                "1.0": 59.0
+              }
+            },
+            "prior_gain": {
+              "total": 9,
+              "computable": 9,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.15656759985787772,
+                "0.1": 0.21138885070078817,
+                "0.5": 0.4236980000741135,
+                "0.9": 0.6315556787428979,
+                "0.95": 0.6845608845550751,
+                "1.0": 0.7375660903672525
+              }
+            },
+            "milestone_sessions": {
+              "total": 9,
+              "computable": 1,
+              "not_computable": 8,
+              "quantiles": {
+                "0.0": 8.0,
+                "0.1": 8.0,
+                "0.5": 8.0,
+                "0.9": 8.0,
+                "0.95": 8.0,
+                "1.0": 8.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 9,
+              "computable": 0,
+              "not_computable": 9,
+              "quantiles": {}
+            }
+          }
+        },
+        "NONE|IMMATURE": {
+          "total": 38,
+          "prior_gain_status": {
+            "NO_REFERENCE": 38
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 15,
+            "ASOF_INCOMPLETE": 13,
+            "REACHED": 10
+          },
+          "post_status": {
+            "IMMATURE": 38
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 38,
+              "computable": 0,
+              "not_computable": 38,
+              "quantiles": {}
+            },
+            "prior_gain": {
+              "total": 38,
+              "computable": 0,
+              "not_computable": 38,
+              "quantiles": {}
+            },
+            "milestone_sessions": {
+              "total": 38,
+              "computable": 10,
+              "not_computable": 28,
+              "quantiles": {
+                "0.0": 2.0,
+                "0.1": 2.9,
+                "0.5": 5.5,
+                "0.9": 11.799999999999997,
+                "0.95": 15.399999999999991,
+                "1.0": 19.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 38,
+              "computable": 0,
+              "not_computable": 38,
+              "quantiles": {}
+            }
+          }
+        },
+        "NONE|UNKNOWN": {
+          "total": 84,
+          "prior_gain_status": {
+            "NO_REFERENCE": 84
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 45,
+            "REACHED": 21,
+            "UNKNOWN_PATH": 18
+          },
+          "post_status": {
+            "UNKNOWN_MISSING_DATES": 45,
+            "POST_FAILED": 19,
+            "UNKNOWN_PRICE_PATH": 19,
+            "POST_VALID": 1
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 84,
+              "computable": 0,
+              "not_computable": 84,
+              "quantiles": {}
+            },
+            "prior_gain": {
+              "total": 84,
+              "computable": 0,
+              "not_computable": 84,
+              "quantiles": {}
+            },
+            "milestone_sessions": {
+              "total": 84,
+              "computable": 21,
+              "not_computable": 63,
+              "quantiles": {
+                "0.0": 3.0,
+                "0.1": 4.0,
+                "0.5": 10.0,
+                "0.9": 15.0,
+                "0.95": 18.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 84,
+              "computable": 1,
+              "not_computable": 83,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "NONE|UNMATCHED_FAILURE": {
+          "total": 997,
+          "prior_gain_status": {
+            "NO_REFERENCE": 997
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 755,
+            "REACHED": 242
+          },
+          "post_status": {
+            "POST_FAILED": 975,
+            "POST_VALID": 22
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 997,
+              "computable": 0,
+              "not_computable": 997,
+              "quantiles": {}
+            },
+            "prior_gain": {
+              "total": 997,
+              "computable": 0,
+              "not_computable": 997,
+              "quantiles": {}
+            },
+            "milestone_sessions": {
+              "total": 997,
+              "computable": 242,
+              "not_computable": 755,
+              "quantiles": {
+                "0.0": 1.0,
+                "0.1": 2.0,
+                "0.5": 8.0,
+                "0.9": 18.0,
+                "0.95": 19.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 997,
+              "computable": 22,
+              "not_computable": 975,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "TIMELY|FIRST_FAILURE": {
+          "total": 52,
+          "prior_gain_status": {
+            "COMPUTABLE": 37,
+            "PRE_ORIGIN_NOT_APPLICABLE": 15
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 38,
+            "REACHED": 14
+          },
+          "post_status": {
+            "POST_FAILED": 45,
+            "PROCESS_ENDED": 7
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 52,
+              "computable": 52,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -5.0,
+                "0.1": -4.0,
+                "0.5": 5.0,
+                "0.9": 9.0,
+                "0.95": 10.0,
+                "1.0": 10.0
+              }
+            },
+            "prior_gain": {
+              "total": 52,
+              "computable": 37,
+              "not_computable": 15,
+              "quantiles": {
+                "0.0": 0.009175847450073826,
+                "0.1": 0.017607131610103542,
+                "0.5": 0.03886056724759768,
+                "0.9": 0.08793376048316759,
+                "0.95": 0.09816488298292984,
+                "1.0": 0.13291463672270964
+              }
+            },
+            "milestone_sessions": {
+              "total": 52,
+              "computable": 14,
+              "not_computable": 38,
+              "quantiles": {
+                "0.0": 3.0,
+                "0.1": 4.3,
+                "0.5": 13.5,
+                "0.9": 19.700000000000003,
+                "0.95": 20.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 52,
+              "computable": 0,
+              "not_computable": 52,
+              "quantiles": {}
+            }
+          }
+        },
+        "TIMELY|SUCCESS": {
+          "total": 42,
+          "prior_gain_status": {
+            "COMPUTABLE": 36,
+            "PRE_ORIGIN_NOT_APPLICABLE": 6
+          },
+          "milestone_status": {
+            "REACHED": 42
+          },
+          "post_status": {
+            "POST_VALID": 42
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 42,
+              "computable": 42,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -5.0,
+                "0.1": -2.0,
+                "0.5": 5.5,
+                "0.9": 9.0,
+                "0.95": 9.0,
+                "1.0": 10.0
+              }
+            },
+            "prior_gain": {
+              "total": 42,
+              "computable": 36,
+              "not_computable": 6,
+              "quantiles": {
+                "0.0": -0.016134808817152013,
+                "0.1": -0.0011999671265005007,
+                "0.5": 0.04037570077567498,
+                "0.9": 0.08861378581506518,
+                "0.95": 0.10411106495700212,
+                "1.0": 0.13781813182808356
+              }
+            },
+            "milestone_sessions": {
+              "total": 42,
+              "computable": 42,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 2.0,
+                "0.1": 3.0,
+                "0.5": 10.5,
+                "0.9": 18.0,
+                "0.95": 19.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 42,
+              "computable": 42,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "TIMELY|UNKNOWN": {
+          "total": 2,
+          "prior_gain_status": {
+            "COMPUTABLE": 1,
+            "PRE_ORIGIN_NOT_APPLICABLE": 1
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 2
+          },
+          "post_status": {
+            "POST_FAILED": 2
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 2,
+              "computable": 2,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -2.0,
+                "0.1": -1.2999999999999998,
+                "0.5": 1.5,
+                "0.9": 4.3,
+                "0.95": 4.6499999999999995,
+                "1.0": 5.0
+              }
+            },
+            "prior_gain": {
+              "total": 2,
+              "computable": 1,
+              "not_computable": 1,
+              "quantiles": {
+                "0.0": 0.04362648493089161,
+                "0.1": 0.04362648493089161,
+                "0.5": 0.04362648493089161,
+                "0.9": 0.04362648493089161,
+                "0.95": 0.04362648493089161,
+                "1.0": 0.04362648493089161
+              }
+            },
+            "milestone_sessions": {
+              "total": 2,
+              "computable": 0,
+              "not_computable": 2,
+              "quantiles": {}
+            },
+            "full_confirmation_sessions": {
+              "total": 2,
+              "computable": 0,
+              "not_computable": 2,
+              "quantiles": {}
+            }
+          }
+        }
+      }
+    },
+    "r04_B": {
+      "total": 1843,
+      "groups": {
+        "LATE|DUPLICATE": {
+          "total": 74,
+          "prior_gain_status": {
+            "COMPUTABLE": 74
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 44,
+            "REACHED": 21,
+            "PROCESS_ENDED": 9
+          },
+          "post_status": {
+            "PROCESS_ENDED": 51,
+            "POST_FAILED": 20,
+            "POST_VALID": 3
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 74,
+              "computable": 74,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 19.0,
+                "0.1": 29.6,
+                "0.5": 52.0,
+                "0.9": 59.0,
+                "0.95": 59.0,
+                "1.0": 60.0
+              }
+            },
+            "prior_gain": {
+              "total": 74,
+              "computable": 74,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.046707046153223075,
+                "0.1": 0.08170917801139292,
+                "0.5": 0.1681023213754883,
+                "0.9": 0.38028550423566654,
+                "0.95": 0.45752296395959474,
+                "1.0": 1.0577646552827646
+              }
+            },
+            "milestone_sessions": {
+              "total": 74,
+              "computable": 21,
+              "not_computable": 53,
+              "quantiles": {
+                "0.0": 1.0,
+                "0.1": 2.0,
+                "0.5": 9.0,
+                "0.9": 18.0,
+                "0.95": 19.0,
+                "1.0": 19.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 74,
+              "computable": 3,
+              "not_computable": 71,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "LATE|FIRST_FAILURE": {
+          "total": 435,
+          "prior_gain_status": {
+            "COMPUTABLE": 435
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 286,
+            "REACHED": 126,
+            "PROCESS_ENDED": 23
+          },
+          "post_status": {
+            "PROCESS_ENDED": 255,
+            "POST_FAILED": 180
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 435,
+              "computable": 435,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 11.0,
+                "0.1": 19.0,
+                "0.5": 36.0,
+                "0.9": 54.0,
+                "0.95": 58.0,
+                "1.0": 60.0
+              }
+            },
+            "prior_gain": {
+              "total": 435,
+              "computable": 435,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.014732051786705114,
+                "0.1": 0.06575467792838774,
+                "0.5": 0.15013678155593513,
+                "0.9": 0.31095077763497037,
+                "0.95": 0.4014000596469635,
+                "1.0": 0.6978988443122736
+              }
+            },
+            "milestone_sessions": {
+              "total": 435,
+              "computable": 126,
+              "not_computable": 309,
+              "quantiles": {
+                "0.0": 1.0,
+                "0.1": 3.0,
+                "0.5": 9.0,
+                "0.9": 17.0,
+                "0.95": 18.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 435,
+              "computable": 0,
+              "not_computable": 435,
+              "quantiles": {}
+            }
+          }
+        },
+        "LATE|IMMATURE": {
+          "total": 28,
+          "prior_gain_status": {
+            "COMPUTABLE": 28
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 13,
+            "UNKNOWN_PROCESS_CENSORED": 8,
+            "REACHED": 7
+          },
+          "post_status": {
+            "IMMATURE": 28
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 28,
+              "computable": 28,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 16.0,
+                "0.1": 18.0,
+                "0.5": 42.0,
+                "0.9": 53.0,
+                "0.95": 54.949999999999996,
+                "1.0": 59.0
+              }
+            },
+            "prior_gain": {
+              "total": 28,
+              "computable": 28,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.03104297773710374,
+                "0.1": 0.06476265936042147,
+                "0.5": 0.13807803005889696,
+                "0.9": 0.21076635920893239,
+                "0.95": 0.235804253392602,
+                "1.0": 0.258839319380477
+              }
+            },
+            "milestone_sessions": {
+              "total": 28,
+              "computable": 7,
+              "not_computable": 21,
+              "quantiles": {
+                "0.0": 3.0,
+                "0.1": 4.800000000000001,
+                "0.5": 17.0,
+                "0.9": 18.4,
+                "0.95": 18.7,
+                "1.0": 19.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 28,
+              "computable": 0,
+              "not_computable": 28,
+              "quantiles": {}
+            }
+          }
+        },
+        "LATE|IMMATURE_DUPLICATE": {
+          "total": 4,
+          "prior_gain_status": {
+            "COMPUTABLE": 4
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 3,
+            "REACHED": 1
+          },
+          "post_status": {
+            "IMMATURE": 4
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 4,
+              "computable": 4,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 30.0,
+                "0.1": 30.3,
+                "0.5": 33.0,
+                "0.9": 40.6,
+                "0.95": 41.8,
+                "1.0": 43.0
+              }
+            },
+            "prior_gain": {
+              "total": 4,
+              "computable": 4,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.041113643444866455,
+                "0.1": 0.04469515864963345,
+                "0.5": 0.06842862821837015,
+                "0.9": 0.19563705642497414,
+                "0.95": 0.2196010194497577,
+                "1.0": 0.2435649824745414
+              }
+            },
+            "milestone_sessions": {
+              "total": 4,
+              "computable": 1,
+              "not_computable": 3,
+              "quantiles": {
+                "0.0": 12.0,
+                "0.1": 12.0,
+                "0.5": 12.0,
+                "0.9": 12.0,
+                "0.95": 12.0,
+                "1.0": 12.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 4,
+              "computable": 0,
+              "not_computable": 4,
+              "quantiles": {}
+            }
+          }
+        },
+        "LATE|SUCCESS": {
+          "total": 36,
+          "prior_gain_status": {
+            "COMPUTABLE": 36
+          },
+          "milestone_status": {
+            "REACHED": 36
+          },
+          "post_status": {
+            "POST_VALID": 36
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 36,
+              "computable": 36,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 12.0,
+                "0.1": 13.5,
+                "0.5": 30.5,
+                "0.9": 53.5,
+                "0.95": 55.0,
+                "1.0": 55.0
+              }
+            },
+            "prior_gain": {
+              "total": 36,
+              "computable": 36,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -0.023009380164819127,
+                "0.1": 0.03376312369878254,
+                "0.5": 0.11330564842251234,
+                "0.9": 0.30153275173178684,
+                "0.95": 0.3445442547324429,
+                "1.0": 0.3555922707825616
+              }
+            },
+            "milestone_sessions": {
+              "total": 36,
+              "computable": 36,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 2.0,
+                "0.1": 3.5,
+                "0.5": 9.5,
+                "0.9": 18.0,
+                "0.95": 19.25,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 36,
+              "computable": 36,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "LATE|UNKNOWN": {
+          "total": 54,
+          "prior_gain_status": {
+            "COMPUTABLE": 54
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 28,
+            "REACHED": 23,
+            "PROCESS_ENDED": 3
+          },
+          "post_status": {
+            "PROCESS_ENDED": 31,
+            "UNKNOWN_MISSING_DATES": 11,
+            "POST_FAILED": 8,
+            "UNKNOWN_PRICE_PATH": 2,
+            "POST_VALID": 2
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 54,
+              "computable": 54,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 15.0,
+                "0.1": 21.3,
+                "0.5": 39.0,
+                "0.9": 55.0,
+                "0.95": 59.0,
+                "1.0": 60.0
+              }
+            },
+            "prior_gain": {
+              "total": 54,
+              "computable": 54,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.03343492556217309,
+                "0.1": 0.06421345851187109,
+                "0.5": 0.18222381313081715,
+                "0.9": 0.4076777921012164,
+                "0.95": 0.5650200046423356,
+                "1.0": 1.2083096300136575
+              }
+            },
+            "milestone_sessions": {
+              "total": 54,
+              "computable": 23,
+              "not_computable": 31,
+              "quantiles": {
+                "0.0": 3.0,
+                "0.1": 4.0,
+                "0.5": 8.0,
+                "0.9": 14.8,
+                "0.95": 15.899999999999999,
+                "1.0": 19.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 54,
+              "computable": 2,
+              "not_computable": 52,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "LATE|UNKNOWN_DUPLICATE": {
+          "total": 8,
+          "prior_gain_status": {
+            "COMPUTABLE": 8
+          },
+          "milestone_status": {
+            "PROCESS_ENDED": 4,
+            "NOT_REACHED_FULL_WINDOW": 3,
+            "REACHED": 1
+          },
+          "post_status": {
+            "PROCESS_ENDED": 7,
+            "UNKNOWN_MISSING_DATES": 1
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 8,
+              "computable": 8,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 30.0,
+                "0.1": 42.6,
+                "0.5": 55.0,
+                "0.9": 58.3,
+                "0.95": 58.65,
+                "1.0": 59.0
+              }
+            },
+            "prior_gain": {
+              "total": 8,
+              "computable": 8,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 0.15256113046324926,
+                "0.1": 0.15536565903948918,
+                "0.5": 0.43404081432784447,
+                "0.9": 0.6448069801959421,
+                "0.95": 0.6911865352815972,
+                "1.0": 0.7375660903672525
+              }
+            },
+            "milestone_sessions": {
+              "total": 8,
+              "computable": 1,
+              "not_computable": 7,
+              "quantiles": {
+                "0.0": 8.0,
+                "0.1": 8.0,
+                "0.5": 8.0,
+                "0.9": 8.0,
+                "0.95": 8.0,
+                "1.0": 8.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 8,
+              "computable": 0,
+              "not_computable": 8,
+              "quantiles": {}
+            }
+          }
+        },
+        "NONE|IMMATURE": {
+          "total": 35,
+          "prior_gain_status": {
+            "NO_REFERENCE": 35
+          },
+          "milestone_status": {
+            "ASOF_INCOMPLETE": 13,
+            "REACHED": 12,
+            "NOT_REACHED_FULL_WINDOW": 10
+          },
+          "post_status": {
+            "IMMATURE": 35
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 35,
+              "computable": 0,
+              "not_computable": 35,
+              "quantiles": {}
+            },
+            "prior_gain": {
+              "total": 35,
+              "computable": 0,
+              "not_computable": 35,
+              "quantiles": {}
+            },
+            "milestone_sessions": {
+              "total": 35,
+              "computable": 12,
+              "not_computable": 23,
+              "quantiles": {
+                "0.0": 2.0,
+                "0.1": 3.1,
+                "0.5": 6.5,
+                "0.9": 15.500000000000002,
+                "0.95": 17.349999999999998,
+                "1.0": 19.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 35,
+              "computable": 0,
+              "not_computable": 35,
+              "quantiles": {}
+            }
+          }
+        },
+        "NONE|UNKNOWN": {
+          "total": 81,
+          "prior_gain_status": {
+            "NO_REFERENCE": 81
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 44,
+            "UNKNOWN_PATH": 20,
+            "REACHED": 17
+          },
+          "post_status": {
+            "UNKNOWN_MISSING_DATES": 44,
+            "UNKNOWN_PRICE_PATH": 19,
+            "POST_FAILED": 18
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 81,
+              "computable": 0,
+              "not_computable": 81,
+              "quantiles": {}
+            },
+            "prior_gain": {
+              "total": 81,
+              "computable": 0,
+              "not_computable": 81,
+              "quantiles": {}
+            },
+            "milestone_sessions": {
+              "total": 81,
+              "computable": 17,
+              "not_computable": 64,
+              "quantiles": {
+                "0.0": 3.0,
+                "0.1": 4.0,
+                "0.5": 10.0,
+                "0.9": 18.0,
+                "0.95": 18.4,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 81,
+              "computable": 0,
+              "not_computable": 81,
+              "quantiles": {}
+            }
+          }
+        },
+        "NONE|UNMATCHED_FAILURE": {
+          "total": 986,
+          "prior_gain_status": {
+            "NO_REFERENCE": 986
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 752,
+            "REACHED": 234
+          },
+          "post_status": {
+            "POST_FAILED": 966,
+            "POST_VALID": 20
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 986,
+              "computable": 0,
+              "not_computable": 986,
+              "quantiles": {}
+            },
+            "prior_gain": {
+              "total": 986,
+              "computable": 0,
+              "not_computable": 986,
+              "quantiles": {}
+            },
+            "milestone_sessions": {
+              "total": 986,
+              "computable": 234,
+              "not_computable": 752,
+              "quantiles": {
+                "0.0": 1.0,
+                "0.1": 3.0,
+                "0.5": 8.0,
+                "0.9": 18.0,
+                "0.95": 19.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 986,
+              "computable": 20,
+              "not_computable": 966,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "TIMELY|FIRST_FAILURE": {
+          "total": 58,
+          "prior_gain_status": {
+            "COMPUTABLE": 40,
+            "PRE_ORIGIN_NOT_APPLICABLE": 18
+          },
+          "milestone_status": {
+            "NOT_REACHED_FULL_WINDOW": 40,
+            "REACHED": 18
+          },
+          "post_status": {
+            "POST_FAILED": 53,
+            "PROCESS_ENDED": 5
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 58,
+              "computable": 58,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -5.0,
+                "0.1": -3.3,
+                "0.5": 5.0,
+                "0.9": 9.0,
+                "0.95": 10.0,
+                "1.0": 10.0
+              }
+            },
+            "prior_gain": {
+              "total": 58,
+              "computable": 40,
+              "not_computable": 18,
+              "quantiles": {
+                "0.0": 0.009175847450073826,
+                "0.1": 0.015722007168626595,
+                "0.5": 0.03904443002294311,
+                "0.9": 0.07724544456607206,
+                "0.95": 0.12344902887038843,
+                "1.0": 0.15055994391010508
+              }
+            },
+            "milestone_sessions": {
+              "total": 58,
+              "computable": 18,
+              "not_computable": 40,
+              "quantiles": {
+                "0.0": 1.0,
+                "0.1": 3.7,
+                "0.5": 11.5,
+                "0.9": 19.3,
+                "0.95": 20.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 58,
+              "computable": 0,
+              "not_computable": 58,
+              "quantiles": {}
+            }
+          }
+        },
+        "TIMELY|SUCCESS": {
+          "total": 40,
+          "prior_gain_status": {
+            "COMPUTABLE": 34,
+            "PRE_ORIGIN_NOT_APPLICABLE": 6
+          },
+          "milestone_status": {
+            "REACHED": 40
+          },
+          "post_status": {
+            "POST_VALID": 40
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 40,
+              "computable": 40,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -5.0,
+                "0.1": -4.0,
+                "0.5": 6.0,
+                "0.9": 9.0,
+                "0.95": 9.0,
+                "1.0": 10.0
+              }
+            },
+            "prior_gain": {
+              "total": 40,
+              "computable": 34,
+              "not_computable": 6,
+              "quantiles": {
+                "0.0": -0.016134808817152013,
+                "0.1": -0.004801543921087891,
+                "0.5": 0.03685578230787767,
+                "0.9": 0.09900101803522031,
+                "0.95": 0.11396396577841303,
+                "1.0": 0.16422792230255157
+              }
+            },
+            "milestone_sessions": {
+              "total": 40,
+              "computable": 40,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 2.0,
+                "0.1": 3.0,
+                "0.5": 10.0,
+                "0.9": 18.1,
+                "0.95": 19.0,
+                "1.0": 20.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 40,
+              "computable": 40,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        },
+        "TIMELY|UNKNOWN": {
+          "total": 4,
+          "prior_gain_status": {
+            "COMPUTABLE": 3,
+            "PRE_ORIGIN_NOT_APPLICABLE": 1
+          },
+          "milestone_status": {
+            "REACHED": 2,
+            "NOT_REACHED_FULL_WINDOW": 2
+          },
+          "post_status": {
+            "POST_FAILED": 2,
+            "POST_VALID": 1,
+            "PROCESS_ENDED": 1
+          },
+          "distributions": {
+            "delta_from_origin": {
+              "total": 4,
+              "computable": 4,
+              "not_computable": 0,
+              "quantiles": {
+                "0.0": -2.0,
+                "0.1": -1.4,
+                "0.5": 2.5,
+                "0.9": 5.0,
+                "0.95": 5.0,
+                "1.0": 5.0
+              }
+            },
+            "prior_gain": {
+              "total": 4,
+              "computable": 3,
+              "not_computable": 1,
+              "quantiles": {
+                "0.0": 0.0,
+                "0.1": 0.003767892996868616,
+                "0.5": 0.01883946498434308,
+                "0.9": 0.038669080941581904,
+                "0.95": 0.04114778293623675,
+                "1.0": 0.04362648493089161
+              }
+            },
+            "milestone_sessions": {
+              "total": 4,
+              "computable": 2,
+              "not_computable": 2,
+              "quantiles": {
+                "0.0": 3.0,
+                "0.1": 4.1,
+                "0.5": 8.5,
+                "0.9": 12.9,
+                "0.95": 13.45,
+                "1.0": 14.0
+              }
+            },
+            "full_confirmation_sessions": {
+              "total": 4,
+              "computable": 1,
+              "not_computable": 3,
+              "quantiles": {
+                "0.0": 60.0,
+                "0.1": 60.0,
+                "0.5": 60.0,
+                "0.9": 60.0,
+                "0.95": 60.0,
+                "1.0": 60.0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "scope": "Post-result descriptive partition; not causal counterfactual or new labels",
+  "partition_order": [
+    "TIMELY_SUCCESS",
+    "UNRESOLVED",
+    "ASSIGNED_ALERT_FAILED",
+    "NEW_ASSIGNED_ELSEWHERE",
+    "POSITIVE_CAPACITY_EXCLUDED",
+    "ALREADY_TRACKING",
+    "COOLDOWN",
+    "POSITIVE_EXIT_OR_OTHER",
+    "NO_POSITIVE_REVIEW",
+    "ALL_REVIEWS_DATA_UNKNOWN",
+    "NO_REVIEW_IN_WINDOW"
+  ],
+  "mature_known": 2411,
+  "known_missed": 2373,
+  "categories": {
+    "NO_POSITIVE_REVIEW": 1200,
+    "POSITIVE_CAPACITY_EXCLUDED": 970,
+    "ALREADY_TRACKING": 127,
+    "COOLDOWN": 45,
+    "TIMELY_SUCCESS": 37,
+    "ASSIGNED_ALERT_FAILED": 31,
+    "UNRESOLVED": 1
+  },
+  "multi_reason_missed": {
+    "CAPACITY_NOT_SELECTED": 986,
+    "CONTINUING": 139,
+    "COOLDOWN": 71,
+    "DATA_UNKNOWN": 4,
+    "MAX_OBSERVATION_AGE": 0,
+    "NONPOSITIVE_MOMENTUM": 2080,
+    "POSITIVE_MOMENTUM_CAPACITY_RANK": 31,
+    "REPEATED_DATA_UNKNOWN": 0,
+    "SUSPENDED_UNKNOWN": 0
+  },
+  "window_rows": 8426,
+  "example_selection": "Earliest origin per era and omission category; examples do not establish effectiveness",
+  "examples": 10,
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/weekly_catalog.parquet": "c140983c3407f05b56027d150912446b5e96c18bfa9faa5e9e6fca9a27591331",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/evaluated_new_observations.parquet": "70cbab032714889e1a8ff47731aa86fabdc8bcfe35cc7596de4537d3667da0d3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r01_omissions.py": "cde363ff1c8ed1e5f0e33f255ccb3558941efa057a0bbd813ae9e9ed7cb2e8af"
+  }
+}

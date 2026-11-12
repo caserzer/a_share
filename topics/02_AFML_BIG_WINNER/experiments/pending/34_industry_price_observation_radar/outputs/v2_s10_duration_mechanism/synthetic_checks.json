@@ -1,0 +1,882 @@
+[
+  {
+    "name": "mild_monotone",
+    "expected_duration_confirmation": true,
+    "actual_duration_confirmation": true,
+    "first_confirmation": 16,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 0,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      0.003,
+      0.006,
+      0.009000000000000001,
+      0.012,
+      0.015,
+      0.018000000000000002,
+      0.021,
+      0.024,
+      0.027,
+      0.03,
+      0.033,
+      0.036000000000000004,
+      0.039,
+      0.042,
+      0.045,
+      0.048
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000004,
+        "level_gain": 0.019500000000000003,
+        "confirmed": true
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999999,
+        "level_gain": 0.0225,
+        "confirmed": true
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000002,
+        "level_gain": 0.025500000000000002,
+        "confirmed": true
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999997,
+        "level_gain": 0.028499999999999998,
+        "confirmed": true
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999997,
+        "level_gain": 0.0315,
+        "confirmed": true
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000004,
+        "level_gain": 0.0345,
+        "confirmed": true
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000004,
+        "level_gain": 0.037500000000000006,
+        "confirmed": true
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000004,
+        "level_gain": 0.0405,
+        "confirmed": true
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999997,
+        "level_gain": 0.0435,
+        "confirmed": true
+      }
+    ]
+  },
+  {
+    "name": "mild_with_retracement",
+    "expected_duration_confirmation": true,
+    "actual_duration_confirmation": true,
+    "first_confirmation": 16,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 0,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      0.004,
+      0.005,
+      0.010000000000000002,
+      0.011,
+      0.016,
+      0.017,
+      0.022000000000000002,
+      0.023,
+      0.028,
+      0.028999999999999998,
+      0.034,
+      0.035,
+      0.04,
+      0.041,
+      0.046,
+      0.047
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000002,
+        "level_gain": 0.019500000000000003,
+        "confirmed": true
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999999,
+        "level_gain": 0.0225,
+        "confirmed": true
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000002,
+        "level_gain": 0.025500000000000002,
+        "confirmed": true
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999997,
+        "level_gain": 0.028499999999999998,
+        "confirmed": true
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999997,
+        "level_gain": 0.0315,
+        "confirmed": true
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000004,
+        "level_gain": 0.0345,
+        "confirmed": true
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000004,
+        "level_gain": 0.037500000000000006,
+        "confirmed": true
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.012000000000000004,
+        "level_gain": 0.0405,
+        "confirmed": true
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.011999999999999997,
+        "level_gain": 0.0435,
+        "confirmed": true
+      }
+    ]
+  },
+  {
+    "name": "strong_monotone",
+    "expected_duration_confirmation": true,
+    "actual_duration_confirmation": true,
+    "first_confirmation": 16,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 1,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      0.02,
+      0.04,
+      0.06,
+      0.08,
+      0.1,
+      0.12,
+      0.14,
+      0.16,
+      0.18,
+      0.2,
+      0.22,
+      0.24,
+      0.26,
+      0.28,
+      0.3,
+      0.32
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.08,
+        "level_gain": 0.13,
+        "confirmed": true
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.08000000000000002,
+        "level_gain": 0.15000000000000002,
+        "confirmed": true
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.07999999999999999,
+        "level_gain": 0.16999999999999998,
+        "confirmed": true
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.08,
+        "level_gain": 0.19,
+        "confirmed": true
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.08000000000000002,
+        "level_gain": 0.21000000000000002,
+        "confirmed": true
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.07999999999999996,
+        "level_gain": 0.22999999999999998,
+        "confirmed": true
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.08000000000000002,
+        "level_gain": 0.25,
+        "confirmed": true
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.08000000000000002,
+        "level_gain": 0.27,
+        "confirmed": true
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.08000000000000002,
+        "level_gain": 0.29000000000000004,
+        "confirmed": true
+      }
+    ]
+  },
+  {
+    "name": "pulse_back_to_base",
+    "expected_duration_confirmation": false,
+    "actual_duration_confirmation": false,
+    "first_confirmation": null,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 0,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      0.05,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      }
+    ]
+  },
+  {
+    "name": "jump_then_flat",
+    "expected_duration_confirmation": false,
+    "actual_duration_confirmation": false,
+    "first_confirmation": null,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 0,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.01,
+        "confirmed": false
+      }
+    ]
+  },
+  {
+    "name": "stationary_alternation",
+    "expected_duration_confirmation": false,
+    "actual_duration_confirmation": false,
+    "first_confirmation": null,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 0,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      0.01,
+      0.03,
+      0.01,
+      0.03,
+      0.01,
+      0.03,
+      0.01,
+      0.03,
+      0.01,
+      0.03,
+      0.01,
+      0.03,
+      0.01,
+      0.03,
+      0.01,
+      0.03
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": true,
+        "block_increment": 0.0,
+        "level_gain": 0.02,
+        "confirmed": false
+      }
+    ]
+  },
+  {
+    "name": "flat",
+    "expected_duration_confirmation": false,
+    "actual_duration_confirmation": false,
+    "first_confirmation": null,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 0,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": 0.0,
+        "level_gain": 0.0,
+        "confirmed": false
+      }
+    ]
+  },
+  {
+    "name": "declining",
+    "expected_duration_confirmation": false,
+    "actual_duration_confirmation": false,
+    "first_confirmation": null,
+    "semantic_pass": true,
+    "scale_invariant": true,
+    "old_amplitude_confirmed": 0,
+    "log_prices": [
+      0.16,
+      0.12,
+      0.15,
+      0.09,
+      0.12,
+      0.06,
+      0.09,
+      0.03,
+      0.0,
+      -0.003,
+      -0.006,
+      -0.009000000000000001,
+      -0.012,
+      -0.015,
+      -0.018000000000000002,
+      -0.021,
+      -0.024,
+      -0.027,
+      -0.03,
+      -0.033,
+      -0.036000000000000004,
+      -0.039,
+      -0.042,
+      -0.045,
+      -0.048
+    ],
+    "duration_checks": [
+      {
+        "i": 16,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.012000000000000004,
+        "level_gain": -0.019500000000000003,
+        "confirmed": false
+      },
+      {
+        "i": 17,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.011999999999999999,
+        "level_gain": -0.0225,
+        "confirmed": false
+      },
+      {
+        "i": 18,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.012000000000000002,
+        "level_gain": -0.025500000000000002,
+        "confirmed": false
+      },
+      {
+        "i": 19,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.011999999999999997,
+        "level_gain": -0.028499999999999998,
+        "confirmed": false
+      },
+      {
+        "i": 20,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.011999999999999997,
+        "level_gain": -0.0315,
+        "confirmed": false
+      },
+      {
+        "i": 21,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.012000000000000004,
+        "level_gain": -0.0345,
+        "confirmed": false
+      },
+      {
+        "i": 22,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.012000000000000004,
+        "level_gain": -0.037500000000000006,
+        "confirmed": false
+      },
+      {
+        "i": 23,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.012000000000000004,
+        "level_gain": -0.0405,
+        "confirmed": false
+      },
+      {
+        "i": 24,
+        "known": true,
+        "all_above_reference": false,
+        "block_increment": -0.011999999999999997,
+        "level_gain": -0.0435,
+        "confirmed": false
+      }
+    ]
+  }
+]

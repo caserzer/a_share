@@ -1,0 +1,188 @@
+{
+  "status": "INCREMENT_UNCERTAIN",
+  "arms": {
+    "A": {
+      "summary": {
+        "unique_new_alerts": 1897,
+        "updates": 0,
+        "outcomes": {
+          "UNKNOWN": 145,
+          "UNMATCHED_FAILURE": 1584,
+          "FIRST_FAILURE": 53,
+          "SUCCESS": 48,
+          "IMMATURE": 67
+        },
+        "precision_numerator": 48,
+        "precision_denominator": 1685,
+        "precision": 0.028486646884272996,
+        "unknown_alerts": 145,
+        "immature_alerts": 67,
+        "precision_unknown_bounds": [
+          0.02622950819672131,
+          0.10546448087431694
+        ],
+        "process_catalog": 2677,
+        "mature_known_processes": 2411,
+        "mature_left_unknown": 180,
+        "immature_processes": 86,
+        "recall_numerator": 48,
+        "recall_lower": 0.019908751555371217,
+        "recall_upper": 0.02073828287017835,
+        "unresolved_processes": 2,
+        "known_not_recalled": 2361,
+        "family_denominator": 1935,
+        "family_numerator": 48,
+        "family_recall_lower": 0.024806201550387597,
+        "family_recall_upper": 0.025839793281653745
+      },
+      "matched_timing": {
+        "count": 110.0,
+        "mean": 3.9454545454545453,
+        "std": 4.5651981550818395,
+        "min": -5.0,
+        "10%": -3.0999999999999996,
+        "50%": 5.0,
+        "90%": 9.0,
+        "95%": 9.549999999999997,
+        "max": 10.0
+      },
+      "matched_prior_gain": {
+        "count": 85.0,
+        "mean": 0.04475199741371912,
+        "std": 0.0361080522399829,
+        "min": -0.016134808817152013,
+        "10%": 0.00010998338680661145,
+        "50%": 0.03886056724759768,
+        "90%": 0.08861551351727019,
+        "95%": 0.10556763697345656,
+        "max": 0.1749345629769523
+      }
+    },
+    "B": {
+      "summary": {
+        "unique_new_alerts": 1897,
+        "updates": 0,
+        "outcomes": {
+          "UNKNOWN": 149,
+          "UNMATCHED_FAILURE": 1560,
+          "FIRST_FAILURE": 72,
+          "SUCCESS": 49,
+          "IMMATURE": 67
+        },
+        "precision_numerator": 49,
+        "precision_denominator": 1681,
+        "precision": 0.029149315883402735,
+        "unknown_alerts": 149,
+        "immature_alerts": 67,
+        "precision_unknown_bounds": [
+          0.026775956284153007,
+          0.10819672131147541
+        ],
+        "process_catalog": 2677,
+        "mature_known_processes": 2411,
+        "mature_left_unknown": 180,
+        "immature_processes": 86,
+        "recall_numerator": 49,
+        "recall_lower": 0.020323517212774783,
+        "recall_upper": 0.021153048527581916,
+        "unresolved_processes": 2,
+        "known_not_recalled": 2360,
+        "family_denominator": 1935,
+        "family_numerator": 49,
+        "family_recall_lower": 0.025322997416020673,
+        "family_recall_upper": 0.02635658914728682
+      },
+      "matched_timing": {
+        "count": 132.0,
+        "mean": 4.045454545454546,
+        "std": 4.406559365385447,
+        "min": -5.0,
+        "10%": -3.0,
+        "50%": 5.0,
+        "90%": 9.0,
+        "95%": 9.0,
+        "max": 10.0
+      },
+      "matched_prior_gain": {
+        "count": 105.0,
+        "mean": 0.04311792993820351,
+        "std": 0.03488218211786687,
+        "min": -0.02306731035963494,
+        "10%": 0.00010998338680661145,
+        "50%": 0.037713097424437736,
+        "90%": 0.08118229472313951,
+        "95%": 0.1028624738916652,
+        "max": 0.1749345629769523
+      }
+    }
+  },
+  "paired_intervals": {
+    "A_precision": {
+      "interval": [
+        0.018423868781882024,
+        0.039428665310593025
+      ],
+      "defined_replicates": 2000,
+      "undefined_replicates": 0
+    },
+    "A_recall": {
+      "interval": [
+        0.014549736010222386,
+        0.025244995087612906
+      ],
+      "defined_replicates": 2000,
+      "undefined_replicates": 0
+    },
+    "B_precision": {
+      "interval": [
+        0.019036825770562493,
+        0.03935276319626713
+      ],
+      "defined_replicates": 2000,
+      "undefined_replicates": 0
+    },
+    "B_recall": {
+      "interval": [
+        0.01434919552827486,
+        0.02615867076039301
+      ],
+      "defined_replicates": 2000,
+      "undefined_replicates": 0
+    },
+    "B_minus_A_precision": {
+      "interval": [
+        -0.005741747815455165,
+        0.007064626675597806
+      ],
+      "defined_replicates": 2000,
+      "undefined_replicates": 0
+    },
+    "B_minus_A_recall": {
+      "interval": [
+        -0.003909304143862391,
+        0.005169238566718223
+      ],
+      "defined_replicates": 2000,
+      "undefined_replicates": 0
+    }
+  },
+  "paired_successes": {
+    "common": 34,
+    "B_added": 15,
+    "B_lost": 14
+  },
+  "equal_weekly_new_counts": true,
+  "new_per_arm": 1897,
+  "scope": "Historical information diagnostic; no operational-pool or independent forward validation",
+  "pending": [
+    "strata and secondary market-relative paths",
+    "case and missing-process review"
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r02/prediction_seal.json": "5c88f039142db4036df5ef73a7d99fe944aa04750b9fe21a1184c8deb8d26242",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r02_evaluate.py": "7240af3e30e2bc5942a0a2fdbb2d06debfb2f412e11ec80c91df8a08b2d229b6",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/paired_time_blocks.py": "efa50e3203805d4008a4757dc4babb606012e150bfff7cba55d6e6ad2fa07945"
+  }
+}

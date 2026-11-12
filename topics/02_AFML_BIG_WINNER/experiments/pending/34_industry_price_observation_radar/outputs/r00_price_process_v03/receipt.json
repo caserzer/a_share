@@ -1,0 +1,169 @@
+{
+  "status": "STRUCTURAL_INVARIANTS_PASS_REAL_CASE_REVIEW_PENDING",
+  "processes": 2677,
+  "families": 2196,
+  "kinds": {
+    "WARMING": 2169,
+    "HEATING": 508
+  },
+  "ends": {
+    "DRAWDOWN_BREACH": 2424,
+    "RIGHT_CENSORED": 116,
+    "CLASSIFICATION_BOUNDARY": 86,
+    "ORIGIN_FLOOR_BREACH": 39,
+    "INTERNAL_PRICE_BREAK": 12
+  },
+  "left_origin_uncertain": 180,
+  "candidate_days": 32986,
+  "independent_endpoint_checks": 2677,
+  "evidence_beyond_endpoint": 0,
+  "duration": {
+    "count": 2677.0,
+    "mean": 112.903623459096,
+    "std": 56.26802031513127,
+    "min": 60.0,
+    "50%": 93.0,
+    "90%": 191.0,
+    "95%": 231.0,
+    "99%": 291.9599999999991,
+    "max": 771.0
+  },
+  "assignment": {
+    "SAME_PROCESS": 30309,
+    "NEW_FAMILY": 2196,
+    "NEW_ENHANCEMENT": 481
+  },
+  "annual": [
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "kind": "HEATING",
+      "count": 16
+    },
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "kind": "WARMING",
+      "count": 118
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "kind": "HEATING",
+      "count": 2
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "kind": "WARMING",
+      "count": 225
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "kind": "HEATING",
+      "count": 50
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "kind": "WARMING",
+      "count": 139
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "kind": "HEATING",
+      "count": 132
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "kind": "WARMING",
+      "count": 191
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "kind": "HEATING",
+      "count": 95
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "kind": "WARMING",
+      "count": 177
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "kind": "HEATING",
+      "count": 39
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "kind": "WARMING",
+      "count": 408
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "kind": "HEATING",
+      "count": 26
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "kind": "WARMING",
+      "count": 219
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "kind": "HEATING",
+      "count": 54
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "kind": "WARMING",
+      "count": 200
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "kind": "HEATING",
+      "count": 91
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "kind": "WARMING",
+      "count": 322
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "kind": "HEATING",
+      "count": 3
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "kind": "WARMING",
+      "count": 170
+    }
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_process_draft_v02/candidate_metrics.parquet": "f930a7f22381aa0f4c0657e184da4a9b97bf38fa8797a38f0697c427b5c9c783",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/build_price_process_v03.py": "e2ec41497ec6a146116e37f71faa9e8eb70f9ab04a1e2b5a4647ca8b86d5db3d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/price_process_v03.py": "8044c474ab5811d1b48834a7ef7b3b1175f65f1f367cf8097f80f1df6d9d7bb7",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/R00_price_process_v03.md": "c72b5b70c377b8dc5b6fcd1df6d5adeab110bf56a8e76917298c9220a84cdb75"
+  },
+  "artifacts": {
+    "candidate_assignments.parquet": "10c0280b51978e61758c3602766b67aa1ae786f54b94e95f8727c5c236487584",
+    "processes.parquet": "bc246375fc4c4fb6edcd886424f321f0ed58276b945f307a1660f6e5dea3de8c"
+  }
+}

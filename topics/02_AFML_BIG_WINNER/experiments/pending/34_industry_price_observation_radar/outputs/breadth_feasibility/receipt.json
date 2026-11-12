@@ -1,0 +1,126 @@
+{
+  "scope": "Data feasibility only: no price-return signals or outcome evaluation",
+  "support_rule": "Descriptive candidate: at least 5 members with all 21 consecutive valid same-chain closes and >=80% of resolved plus unresolved members",
+  "strict_pit": false,
+  "membership_projection": [
+    "month",
+    "date",
+    "security_id",
+    "industry_code",
+    "unresolved",
+    "level",
+    "era"
+  ],
+  "price_partitions": 5798,
+  "price_rows": 10525027,
+  "conflicting_close_rows": 56,
+  "valid_chain_changes": 0,
+  "catalog_rows": 141872,
+  "membership_missing": 4926,
+  "price_eligible": 100982,
+  "common_support": 99553,
+  "annual": [
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "catalog_rows": 11577,
+      "membership_known": 10647,
+      "price_eligible": 5359,
+      "breadth_support5_80": 7032,
+      "common_support": 4817
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "catalog_rows": 11577,
+      "membership_known": 11577,
+      "price_eligible": 8362,
+      "breadth_support5_80": 8548,
+      "common_support": 7919
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "catalog_rows": 11577,
+      "membership_known": 11577,
+      "price_eligible": 9301,
+      "breadth_support5_80": 9237,
+      "common_support": 9206
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "catalog_rows": 11804,
+      "membership_known": 11804,
+      "price_eligible": 9430,
+      "breadth_support5_80": 9385,
+      "common_support": 9346
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "catalog_rows": 10669,
+      "membership_known": 10669,
+      "price_eligible": 8737,
+      "breadth_support5_80": 8749,
+      "common_support": 8684
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "catalog_rows": 17350,
+      "membership_known": 15401,
+      "price_eligible": 8747,
+      "breadth_support5_80": 11907,
+      "common_support": 8685
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "catalog_rows": 17350,
+      "membership_known": 16771,
+      "price_eligible": 13151,
+      "breadth_support5_80": 13157,
+      "common_support": 13102
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "catalog_rows": 17697,
+      "membership_known": 17175,
+      "price_eligible": 13416,
+      "breadth_support5_80": 13413,
+      "common_support": 13384
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "catalog_rows": 18391,
+      "membership_known": 17861,
+      "price_eligible": 13896,
+      "breadth_support5_80": 13905,
+      "common_support": 13866
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "catalog_rows": 13880,
+      "membership_known": 13464,
+      "price_eligible": 10583,
+      "breadth_support5_80": 10556,
+      "common_support": 10544
+    }
+  ],
+  "membership_rows": 513013,
+  "duplicate_member_rows": 0,
+  "multi_industry_identity_months": 0,
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/receipt.json": "bea4fab3ea19dd51b598f4cd47885368cd0de35548eb1b3a80c9cfe46b59bed5",
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet": "932e6c334860cf3cf9fe26e8cb3aa4359afdc60dd71cb147602f30eabd949f76",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/weekly_catalog.parquet": "c140983c3407f05b56027d150912446b5e96c18bfa9faa5e9e6fca9a27591331",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/audit_breadth_support.py": "5c93033705ddac416712bfe21d17b85eca10450c7323e32033c3906c8c8e7caa"
+  },
+  "price_hash_verification": "Every used partition matched P29 receipt price_reads",
+  "output_sha": "51496e0e9ddd0ea3afd708099d91fa3a3f5fe63f50926cdc6eaf5a81dfbe6268"
+}

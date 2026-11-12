@@ -1,0 +1,777 @@
+{
+  "tables": [
+    {
+      "arm": "A",
+      "dimension": "kind",
+      "stratum": "HEATING",
+      "new_alerts": 1263,
+      "evaluable": 1147,
+      "successes": 33,
+      "precision": 0.02877070619006103,
+      "known_processes": 507,
+      "recalled": 37,
+      "recall": 0.07297830374753451,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 1089,
+        "UNKNOWN": 82,
+        "IMMATURE": 34,
+        "SUCCESS": 33,
+        "FIRST_FAILURE": 25
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "kind",
+      "stratum": "WARMING",
+      "new_alerts": 634,
+      "evaluable": 538,
+      "successes": 15,
+      "precision": 0.027881040892193308,
+      "known_processes": 1904,
+      "recalled": 11,
+      "recall": 0.005777310924369748,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 495,
+        "UNKNOWN": 63,
+        "IMMATURE": 33,
+        "FIRST_FAILURE": 28,
+        "SUCCESS": 15
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2017",
+      "new_alerts": 135,
+      "evaluable": 108,
+      "successes": 5,
+      "precision": 0.046296296296296294,
+      "known_processes": 129,
+      "recalled": 5,
+      "recall": 0.03875968992248062,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 99,
+        "UNKNOWN": 27,
+        "SUCCESS": 5,
+        "FIRST_FAILURE": 4
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2018",
+      "new_alerts": 181,
+      "evaluable": 152,
+      "successes": 5,
+      "precision": 0.03289473684210526,
+      "known_processes": 225,
+      "recalled": 5,
+      "recall": 0.022222222222222223,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 142,
+        "UNKNOWN": 29,
+        "FIRST_FAILURE": 5,
+        "SUCCESS": 5
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2019",
+      "new_alerts": 162,
+      "evaluable": 157,
+      "successes": 1,
+      "precision": 0.006369426751592357,
+      "known_processes": 188,
+      "recalled": 1,
+      "recall": 0.005319148936170213,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 151,
+        "FIRST_FAILURE": 5,
+        "UNKNOWN": 5,
+        "SUCCESS": 1
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2020",
+      "new_alerts": 204,
+      "evaluable": 203,
+      "successes": 12,
+      "precision": 0.059113300492610835,
+      "known_processes": 323,
+      "recalled": 12,
+      "recall": 0.03715170278637771,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 187,
+        "SUCCESS": 12,
+        "FIRST_FAILURE": 4,
+        "UNKNOWN": 1
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2021",
+      "new_alerts": 206,
+      "evaluable": 142,
+      "successes": 10,
+      "precision": 0.07042253521126761,
+      "known_processes": 272,
+      "recalled": 10,
+      "recall": 0.03676470588235294,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 130,
+        "UNKNOWN": 64,
+        "SUCCESS": 10,
+        "FIRST_FAILURE": 2
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2022",
+      "new_alerts": 143,
+      "evaluable": 128,
+      "successes": 1,
+      "precision": 0.0078125,
+      "known_processes": 275,
+      "recalled": 1,
+      "recall": 0.0036363636363636364,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 122,
+        "UNKNOWN": 15,
+        "FIRST_FAILURE": 5,
+        "SUCCESS": 1
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2023",
+      "new_alerts": 237,
+      "evaluable": 235,
+      "successes": 1,
+      "precision": 0.00425531914893617,
+      "known_processes": 245,
+      "recalled": 1,
+      "recall": 0.004081632653061225,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 223,
+        "FIRST_FAILURE": 11,
+        "UNKNOWN": 2,
+        "SUCCESS": 1
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2024",
+      "new_alerts": 210,
+      "evaluable": 209,
+      "successes": 4,
+      "precision": 0.019138755980861243,
+      "known_processes": 254,
+      "recalled": 4,
+      "recall": 0.015748031496062992,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 199,
+        "FIRST_FAILURE": 6,
+        "SUCCESS": 4,
+        "UNKNOWN": 1
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2025",
+      "new_alerts": 245,
+      "evaluable": 245,
+      "successes": 7,
+      "precision": 0.02857142857142857,
+      "known_processes": 413,
+      "recalled": 7,
+      "recall": 0.01694915254237288,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 229,
+        "FIRST_FAILURE": 9,
+        "SUCCESS": 7
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "year",
+      "stratum": "2026",
+      "new_alerts": 174,
+      "evaluable": 106,
+      "successes": 2,
+      "precision": 0.018867924528301886,
+      "known_processes": 87,
+      "recalled": 2,
+      "recall": 0.022988505747126436,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 102,
+        "IMMATURE": 67,
+        "SUCCESS": 2,
+        "FIRST_FAILURE": 2,
+        "UNKNOWN": 1
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "market_regime",
+      "stratum": "NONUP",
+      "new_alerts": 823,
+      "evaluable": 711,
+      "successes": 22,
+      "precision": 0.030942334739803096,
+      "known_processes": 1145,
+      "recalled": 16,
+      "recall": 0.013973799126637555,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 660,
+        "IMMATURE": 67,
+        "UNKNOWN": 45,
+        "FIRST_FAILURE": 29,
+        "SUCCESS": 22
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "market_regime",
+      "stratum": "UNKNOWN",
+      "new_alerts": 38,
+      "evaluable": 23,
+      "successes": 1,
+      "precision": 0.043478260869565216,
+      "known_processes": 71,
+      "recalled": 2,
+      "recall": 0.028169014084507043,
+      "gate_status": "UNKNOWN_SEPARATE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 20,
+        "UNKNOWN": 15,
+        "FIRST_FAILURE": 2,
+        "SUCCESS": 1
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "market_regime",
+      "stratum": "UP",
+      "new_alerts": 1036,
+      "evaluable": 951,
+      "successes": 25,
+      "precision": 0.026288117770767613,
+      "known_processes": 1195,
+      "recalled": 30,
+      "recall": 0.02510460251046025,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 904,
+        "UNKNOWN": 85,
+        "SUCCESS": 25,
+        "FIRST_FAILURE": 22
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "history_quality",
+      "stratum": "NO_PRICE_PROXY_FLAG",
+      "new_alerts": 1210,
+      "evaluable": 1075,
+      "successes": 23,
+      "precision": 0.021395348837209303,
+      "known_processes": 1503,
+      "recalled": 22,
+      "recall": 0.014637391882900865,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 1017,
+        "UNKNOWN": 74,
+        "IMMATURE": 61,
+        "FIRST_FAILURE": 35,
+        "SUCCESS": 23
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "history_quality",
+      "stratum": "PROXY_FLAG",
+      "new_alerts": 687,
+      "evaluable": 610,
+      "successes": 25,
+      "precision": 0.040983606557377046,
+      "known_processes": 908,
+      "recalled": 26,
+      "recall": 0.028634361233480177,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 567,
+        "UNKNOWN": 71,
+        "SUCCESS": 25,
+        "FIRST_FAILURE": 18,
+        "IMMATURE": 6
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "era",
+      "stratum": "SW2014",
+      "new_alerts": 888,
+      "evaluable": 762,
+      "successes": 33,
+      "precision": 0.04330708661417323,
+      "known_processes": 1137,
+      "recalled": 33,
+      "recall": 0.029023746701846966,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 709,
+        "UNKNOWN": 126,
+        "SUCCESS": 33,
+        "FIRST_FAILURE": 20
+      }
+    },
+    {
+      "arm": "A",
+      "dimension": "era",
+      "stratum": "SW2021",
+      "new_alerts": 1009,
+      "evaluable": 923,
+      "successes": 15,
+      "precision": 0.016251354279523293,
+      "known_processes": 1274,
+      "recalled": 15,
+      "recall": 0.011773940345368918,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 875,
+        "IMMATURE": 67,
+        "FIRST_FAILURE": 33,
+        "UNKNOWN": 19,
+        "SUCCESS": 15
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "kind",
+      "stratum": "HEATING",
+      "new_alerts": 991,
+      "evaluable": 897,
+      "successes": 27,
+      "precision": 0.030100334448160536,
+      "known_processes": 507,
+      "recalled": 30,
+      "recall": 0.05917159763313609,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 844,
+        "UNKNOWN": 66,
+        "IMMATURE": 28,
+        "SUCCESS": 27,
+        "FIRST_FAILURE": 26
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "kind",
+      "stratum": "WARMING",
+      "new_alerts": 906,
+      "evaluable": 784,
+      "successes": 22,
+      "precision": 0.02806122448979592,
+      "known_processes": 1904,
+      "recalled": 19,
+      "recall": 0.009978991596638655,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 716,
+        "UNKNOWN": 83,
+        "FIRST_FAILURE": 46,
+        "IMMATURE": 39,
+        "SUCCESS": 22
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2017",
+      "new_alerts": 135,
+      "evaluable": 108,
+      "successes": 4,
+      "precision": 0.037037037037037035,
+      "known_processes": 129,
+      "recalled": 4,
+      "recall": 0.031007751937984496,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 101,
+        "UNKNOWN": 27,
+        "SUCCESS": 4,
+        "FIRST_FAILURE": 3
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2018",
+      "new_alerts": 181,
+      "evaluable": 155,
+      "successes": 6,
+      "precision": 0.03870967741935484,
+      "known_processes": 225,
+      "recalled": 6,
+      "recall": 0.02666666666666667,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 144,
+        "UNKNOWN": 26,
+        "SUCCESS": 6,
+        "FIRST_FAILURE": 5
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2019",
+      "new_alerts": 162,
+      "evaluable": 154,
+      "successes": 3,
+      "precision": 0.01948051948051948,
+      "known_processes": 188,
+      "recalled": 3,
+      "recall": 0.015957446808510637,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 144,
+        "UNKNOWN": 8,
+        "FIRST_FAILURE": 7,
+        "SUCCESS": 3
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2020",
+      "new_alerts": 204,
+      "evaluable": 202,
+      "successes": 8,
+      "precision": 0.039603960396039604,
+      "known_processes": 323,
+      "recalled": 8,
+      "recall": 0.02476780185758514,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 185,
+        "FIRST_FAILURE": 9,
+        "SUCCESS": 8,
+        "UNKNOWN": 2
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2021",
+      "new_alerts": 206,
+      "evaluable": 142,
+      "successes": 13,
+      "precision": 0.09154929577464789,
+      "known_processes": 272,
+      "recalled": 13,
+      "recall": 0.04779411764705882,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 124,
+        "UNKNOWN": 64,
+        "SUCCESS": 13,
+        "FIRST_FAILURE": 5
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2022",
+      "new_alerts": 143,
+      "evaluable": 127,
+      "successes": 0,
+      "precision": 0.0,
+      "known_processes": 275,
+      "recalled": 2,
+      "recall": 0.007272727272727273,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 120,
+        "UNKNOWN": 16,
+        "FIRST_FAILURE": 7
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2023",
+      "new_alerts": 237,
+      "evaluable": 235,
+      "successes": 3,
+      "precision": 0.01276595744680851,
+      "known_processes": 245,
+      "recalled": 1,
+      "recall": 0.004081632653061225,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 220,
+        "FIRST_FAILURE": 12,
+        "SUCCESS": 3,
+        "UNKNOWN": 2
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2024",
+      "new_alerts": 210,
+      "evaluable": 208,
+      "successes": 6,
+      "precision": 0.028846153846153848,
+      "known_processes": 254,
+      "recalled": 6,
+      "recall": 0.023622047244094488,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 192,
+        "FIRST_FAILURE": 10,
+        "SUCCESS": 6,
+        "UNKNOWN": 2
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2025",
+      "new_alerts": 245,
+      "evaluable": 245,
+      "successes": 3,
+      "precision": 0.012244897959183673,
+      "known_processes": 413,
+      "recalled": 3,
+      "recall": 0.007263922518159807,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 231,
+        "FIRST_FAILURE": 11,
+        "SUCCESS": 3
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "year",
+      "stratum": "2026",
+      "new_alerts": 174,
+      "evaluable": 105,
+      "successes": 3,
+      "precision": 0.02857142857142857,
+      "known_processes": 87,
+      "recalled": 3,
+      "recall": 0.034482758620689655,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 99,
+        "IMMATURE": 67,
+        "SUCCESS": 3,
+        "FIRST_FAILURE": 3,
+        "UNKNOWN": 2
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "market_regime",
+      "stratum": "NONUP",
+      "new_alerts": 823,
+      "evaluable": 712,
+      "successes": 22,
+      "precision": 0.03089887640449438,
+      "known_processes": 1145,
+      "recalled": 20,
+      "recall": 0.017467248908296942,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 653,
+        "IMMATURE": 67,
+        "UNKNOWN": 44,
+        "FIRST_FAILURE": 37,
+        "SUCCESS": 22
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "market_regime",
+      "stratum": "UNKNOWN",
+      "new_alerts": 38,
+      "evaluable": 21,
+      "successes": 0,
+      "precision": 0.0,
+      "known_processes": 71,
+      "recalled": 1,
+      "recall": 0.014084507042253521,
+      "gate_status": "UNKNOWN_SEPARATE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 19,
+        "UNKNOWN": 17,
+        "FIRST_FAILURE": 2
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "market_regime",
+      "stratum": "UP",
+      "new_alerts": 1036,
+      "evaluable": 948,
+      "successes": 27,
+      "precision": 0.028481012658227847,
+      "known_processes": 1195,
+      "recalled": 28,
+      "recall": 0.023430962343096235,
+      "gate_status": "FAIL_FLOORS",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 888,
+        "UNKNOWN": 88,
+        "FIRST_FAILURE": 33,
+        "SUCCESS": 27
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "history_quality",
+      "stratum": "NO_PRICE_PROXY_FLAG",
+      "new_alerts": 1219,
+      "evaluable": 1084,
+      "successes": 24,
+      "precision": 0.02214022140221402,
+      "known_processes": 1503,
+      "recalled": 23,
+      "recall": 0.015302727877578177,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 1010,
+        "UNKNOWN": 71,
+        "IMMATURE": 64,
+        "FIRST_FAILURE": 50,
+        "SUCCESS": 24
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "history_quality",
+      "stratum": "PROXY_FLAG",
+      "new_alerts": 678,
+      "evaluable": 597,
+      "successes": 25,
+      "precision": 0.04187604690117253,
+      "known_processes": 908,
+      "recalled": 26,
+      "recall": 0.028634361233480177,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 550,
+        "UNKNOWN": 78,
+        "SUCCESS": 25,
+        "FIRST_FAILURE": 22,
+        "IMMATURE": 3
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "era",
+      "stratum": "SW2014",
+      "new_alerts": 888,
+      "evaluable": 761,
+      "successes": 34,
+      "precision": 0.04467805519053877,
+      "known_processes": 1137,
+      "recalled": 34,
+      "recall": 0.02990325417766051,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 698,
+        "UNKNOWN": 127,
+        "SUCCESS": 34,
+        "FIRST_FAILURE": 29
+      }
+    },
+    {
+      "arm": "B",
+      "dimension": "era",
+      "stratum": "SW2021",
+      "new_alerts": 1009,
+      "evaluable": 920,
+      "successes": 15,
+      "precision": 0.016304347826086956,
+      "known_processes": 1274,
+      "recalled": 15,
+      "recall": 0.011773940345368918,
+      "gate_status": "DESCRIPTIVE",
+      "outcomes": {
+        "UNMATCHED_FAILURE": 862,
+        "IMMATURE": 67,
+        "FIRST_FAILURE": 43,
+        "UNKNOWN": 22,
+        "SUCCESS": 15
+      }
+    }
+  ],
+  "secondary": [
+    {
+      "arm": "A",
+      "total": 1897,
+      "known": 1743,
+      "unknown": 154,
+      "absolute_positive": 846,
+      "excess_positive": 769,
+      "both_positive": 618
+    },
+    {
+      "arm": "B",
+      "total": 1897,
+      "known": 1739,
+      "unknown": 158,
+      "absolute_positive": 848,
+      "excess_positive": 784,
+      "both_positive": 625
+    }
+  ],
+  "original_no_positive_cohort": {
+    "known_original_omissions": 1200,
+    "A_recalled": 5,
+    "B_recalled": 14,
+    "common_recalled": 4,
+    "B_added": 10,
+    "B_lost": 1
+  },
+  "scope": "Descriptive strata, no subset selection; precision at alert and recall at process origin",
+  "quality_scope": "Past 61 sessions price flags; no flags does not prove strict PIT",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r02/past_only_features.parquet": "d9bc5d7d2230b5ca3bb7d2bf22ecf8fec6bce2f13a8e778edb8cce67689c246c",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/process_window_audit.parquet": "6404240785642fe04216a6b9199a0840f7f486d98f265ed51a362032e36d5c2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r02/A_evaluated.parquet": "9586eff72c5e4a4199c14aed616188033e98370c1cb1ab7fcf350358dd0d924f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r02/B_evaluated.parquet": "a36718595bbd696c5ca56cdbf4cbed29ac5f1508ddc7fae69a65c8917913d8ad",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r02_strata.py": "1a86118b564fc943af173ad42935fd0e57cd75b80db6c75492797c2a49135a4f"
+  }
+}

@@ -1,0 +1,738 @@
+[
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2024Q1",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2024Q2",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2024Q3",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2024Q4",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2025Q1",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8085137805686161,
+        -0.34913743247339396
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6607166296577816,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.6552523210266799,
+        -0.5273052886001046,
+        0.8327692104691672,
+        -0.310554041032623,
+        0.2391663251039816
+      ],
+      "mean": [
+        0.26492484899564545,
+        0.006202737867839468,
+        -0.06530998748067712
+      ],
+      "scale": [
+        0.15539163119379037,
+        0.06671362281330795,
+        0.025373565321583108
+      ],
+      "loss": 0.5641332768104685,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2025Q2",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.9216035253979726,
+        -0.25745721407737177
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6353549077528823,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.8350473526120348,
+        -0.34803356204804403,
+        0.7334020025213563,
+        -0.2294015893018027,
+        0.0700220961801774
+      ],
+      "mean": [
+        0.36340136054421773,
+        -0.008720964516946157,
+        -0.06233802577156386
+      ],
+      "scale": [
+        0.25505096389647675,
+        0.07153069549539341,
+        0.03039568901373954
+      ],
+      "loss": 0.5593081923165059,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2025Q3",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8265552808229448,
+        -0.015113044897238907
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6550660987845331,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7667656045721606,
+        -0.0334028062806936,
+        0.4225754411297292,
+        -0.24203706039188838,
+        0.4084650914201661
+      ],
+      "mean": [
+        0.33409220261809897,
+        0.0003559321741654487,
+        -0.010944708804967106
+      ],
+      "scale": [
+        0.24848416811220722,
+        0.07157238996040959,
+        0.09227844030184186
+      ],
+      "loss": 0.5864901549009206,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2025Q4",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8413829623057714,
+        0.08807931382940117
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.651039784748196,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7756573020983712,
+        0.08667559299276499,
+        0.4050548309025319,
+        -0.21010621024992912,
+        0.35756483837017977
+      ],
+      "mean": [
+        0.3288051416885773,
+        0.0037122256542171978,
+        0.041686623986407816
+      ],
+      "scale": [
+        0.2460583975040746,
+        0.07272900407060183,
+        0.12963750430933718
+      ],
+      "loss": 0.5865735113619613,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2026Q1",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8538296593998207,
+        0.019940557698627705
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6590651543810866,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7878468904800807,
+        0.023500474400171723,
+        0.2725695990159062,
+        -0.19819354926609203,
+        0.32226118090077754
+      ],
+      "mean": [
+        0.33107769423558897,
+        0.003850594428087429,
+        0.032181663922361825
+      ],
+      "scale": [
+        0.24902486662671286,
+        0.07222433201588128,
+        0.12255136247416126
+      ],
+      "loss": 0.6097083505609012,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2026Q2",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8438831652998343,
+        0.009374600699856857
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6645439640835502,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.796807512068222,
+        -0.014127246441042645,
+        0.2289908127810342,
+        -0.1802188567508417,
+        0.2912047614671906
+      ],
+      "mean": [
+        0.33208760297367895,
+        0.00252362912462795,
+        0.035749727325199286
+      ],
+      "scale": [
+        0.2485695105311252,
+        0.07363364972218524,
+        0.12176787042264939
+      ],
+      "loss": 0.6190482988299524,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2026Q3",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.827237982021198,
+        -0.02375659696284608
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6719758129940973,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7894869668078272,
+        -0.08189950534427869,
+        0.24868784646867936,
+        -0.1433666129427859,
+        0.1738939975966047
+      ],
+      "mean": [
+        0.32895783611774065,
+        0.000536016737808581,
+        0.04628894620728172
+      ],
+      "scale": [
+        0.24703623909597255,
+        0.07356104302055612,
+        0.1259293824480369
+      ],
+      "loss": 0.6348235655576046,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_levels__identity",
+    "model": "logit_levels__event_context",
+    "fold": "2026Q4",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8350829956089164,
+        -0.12756544353917773
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6742851067019396,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7962502449021385,
+        -0.19598958106258124,
+        0.24349452327646712,
+        -0.11588733622877806,
+        0.0678959187202407
+      ],
+      "mean": [
+        0.32622391158976527,
+        -0.00017584683773445777,
+        0.057575747372905564
+      ],
+      "scale": [
+        0.24399365132064327,
+        0.07263799590728841,
+        0.1286819782892962
+      ],
+      "loss": 0.6496314178116941,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2024Q1",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2024Q2",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2024Q3",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2024Q4",
+    "supported": false,
+    "global_mapping": null,
+    "event_mapping": null
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2025Q1",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.6971845828779255,
+        -0.3242347161195918
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6792431141376689,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.5918244710315379,
+        -0.38571008516915894,
+        0.6340366203443172,
+        -0.2642305994902918,
+        0.4320539142692516
+      ],
+      "mean": [
+        0.24454365079365079,
+        -0.011048898053432114,
+        -0.07185936670862225
+      ],
+      "scale": [
+        0.13278742973628474,
+        0.07530552852519326,
+        0.03734681263578947
+      ],
+      "loss": 0.5907230389087905,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2025Q2",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8076728072238897,
+        -0.22799634524684556
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.65132783069122,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.6967129344036633,
+        -0.2502453589983169,
+        0.5744211642266086,
+        -0.1713040701417516,
+        0.30775191159495985
+      ],
+      "mean": [
+        0.32159565580618216,
+        -0.013810141194658013,
+        -0.06753324201914676
+      ],
+      "scale": [
+        0.23959387436279247,
+        0.07597784040224807,
+        0.04073016369319015
+      ],
+      "loss": 0.5875683216701948,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2025Q3",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.7580830706212996,
+        -0.007039113325854156
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.662316711642755,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7248499390639586,
+        -0.0397677253592118,
+        0.3356692345956571,
+        -0.04637805333375267,
+        0.23842079561368162
+      ],
+      "mean": [
+        0.32029478458049887,
+        -0.006441710263636668,
+        -0.028618720362554462
+      ],
+      "scale": [
+        0.2364821192351474,
+        0.07456944620302128,
+        0.08831559422222593
+      ],
+      "loss": 0.6133491238111879,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2025Q4",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.790047253368969,
+        0.077393018749059
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6542385807513711,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7312311280012251,
+        0.04618180939181568,
+        0.2451346653090069,
+        -0.10048545544460874,
+        0.21509200214839874
+      ],
+      "mean": [
+        0.33179878194983936,
+        0.0021694933686117303,
+        0.021091497422212932
+      ],
+      "scale": [
+        0.24839670100287065,
+        0.08024915604899265,
+        0.13182680983543757
+      ],
+      "loss": 0.6168453694963115,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2026Q1",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8060730412710321,
+        0.008132967522250664
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6616780727854861,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7517081318560065,
+        -0.06325518148083029,
+        0.2084079675956379,
+        -0.0974245795927631,
+        0.2145272667922551
+      ],
+      "mean": [
+        0.3342284282133907,
+        0.0023223769184990907,
+        0.0140978264242415
+      ],
+      "scale": [
+        0.2504612271626409,
+        0.07823392334550004,
+        0.12139156877283887
+      ],
+      "loss": 0.6331837243600787,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2026Q2",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.8011027876883623,
+        -0.004951057170713232
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6666300283616585,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7579731284620275,
+        -0.10327962186233773,
+        0.19123516190637246,
+        -0.11728256778680783,
+        0.1940398511897891
+      ],
+      "mean": [
+        0.3346592874437911,
+        0.0036091761200762063,
+        0.01771165589618762
+      ],
+      "scale": [
+        0.2500641152959372,
+        0.07964515817354102,
+        0.1211067787671202
+      ],
+      "loss": 0.6389733658437907,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2026Q3",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.7871071876125003,
+        -0.04076887561214094
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6740143751757034,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7528589062748359,
+        -0.15744106121012777,
+        0.24013536133185154,
+        -0.09173401722296959,
+        0.09081636429584945
+      ],
+      "mean": [
+        0.33157779240728547,
+        0.004246257016115153,
+        0.027844855618182094
+      ],
+      "scale": [
+        0.25200130166464313,
+        0.07888752271226275,
+        0.12657658687587708
+      ],
+      "loss": 0.6461638877566364,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  },
+  {
+    "base_model": "logit_second__identity",
+    "model": "logit_second__event_context",
+    "fold": "2026Q4",
+    "supported": true,
+    "global_mapping": {
+      "theta": [
+        0.7879891663294272,
+        -0.14652304143016262
+      ],
+      "mean": [],
+      "scale": [],
+      "loss": 0.6775701793586967,
+      "lambda": 0.05
+    },
+    "event_mapping": {
+      "theta": [
+        0.7590266497611491,
+        -0.28075599958042535,
+        0.2262672879919981,
+        -0.03476424206625968,
+        -0.03524232813578054
+      ],
+      "mean": [
+        0.3330005657049682,
+        0.002952989771083915,
+        0.0433635855180536
+      ],
+      "scale": [
+        0.25369231286036603,
+        0.07850458079495684,
+        0.13122769876982135
+      ],
+      "loss": 0.6574680935304473,
+      "lambda": 0.05,
+      "features": [
+        "delay_fraction",
+        "relative_move",
+        "market126"
+      ]
+    }
+  }
+]

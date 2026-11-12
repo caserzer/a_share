@@ -1,0 +1,101 @@
+{
+  "status": "ILLUSTRATIVE_NOT_REAL_DATA_LABELS_NOT_USER_ACCEPTED_THRESHOLDS",
+  "cases": [
+    {
+      "case_id": "C01",
+      "scenario": "真实改善、及时提示、后续温和延续",
+      "process_coverage": "ONE_TIMELY",
+      "observation_quality": "NEW_PRICE_EVIDENCE_AND_PROCESS_ALIGNED",
+      "post_path_quality": "MODEST_CONTINUATION",
+      "guardrail": "不得因未满足旧8%/60日条件撤销覆盖"
+    },
+    {
+      "case_id": "C02",
+      "scenario": "真实改善已被发现、随后中断",
+      "process_coverage": "ONE_COVERED",
+      "observation_quality": "ORIGINAL_EVIDENCE_RETAINED",
+      "post_path_quality": "INTERRUPTED",
+      "guardrail": "中断另记，不追溯成从未发现"
+    },
+    {
+      "case_id": "C03",
+      "scenario": "NEW误报后，合法阶段内UPDATE有据识别真实改善",
+      "process_coverage": "ONE_VIA_UPDATE",
+      "observation_quality": "ORIGINAL_NEW_FALSE_ALERT_RETAINED",
+      "post_path_quality": "SEPARATE_PATHS_PER_EVENT",
+      "guardrail": "新增正确次数不因UPDATE补成成功"
+    },
+    {
+      "case_id": "C04",
+      "scenario": "已在池，UPDATE指出新的增强证据",
+      "process_coverage": "ONE_VIA_UPDATE",
+      "observation_quality": "UPDATE_EVIDENCE_REVIEWED_SEPARATELY",
+      "post_path_quality": "INDEPENDENT_OUTCOME",
+      "guardrail": "没有NEW不等于没有发现"
+    },
+    {
+      "case_id": "C05",
+      "scenario": "已在池，只重复旧强势理由",
+      "process_coverage": "NOT_COVERED_NEW_ENHANCEMENT",
+      "observation_quality": "NO_NEW_ENHANCEMENT_EVIDENCE",
+      "post_path_quality": "FUTURE_GAIN_CANNOT_REPAIR_EVIDENCE",
+      "guardrail": "不靠长期占位覆盖一切"
+    },
+    {
+      "case_id": "C06",
+      "scenario": "真实过程在仍有用的后段才被有据提示",
+      "process_coverage": "ONE_LATE_NOT_TIMELY",
+      "observation_quality": "LATE_CLASS_SEPARATE_PENDING_VALIDITY_AGGREGATION",
+      "post_path_quality": "INDEPENDENT_OUTCOME",
+      "guardrail": "迟到不是未发现，也不能补及时覆盖"
+    },
+    {
+      "case_id": "C07",
+      "scenario": "当时短暂反弹，未形成有效参考过程",
+      "process_coverage": "NO_QUALIFIED_PROCESS_FROM_THIS_CASE",
+      "observation_quality": "TRANSIENT_REBOUND_NOT_AUTO_GENUINE_PROCESS",
+      "post_path_quality": "SHORT_LIVED",
+      "guardrail": "提示依据存在不等于事后一定有持续过程"
+    },
+    {
+      "case_id": "C08",
+      "scenario": "价格链缺失，过程和提示质量无法判定",
+      "process_coverage": "UNKNOWN_NOT_FAILURE",
+      "observation_quality": "UNKNOWN_NOT_ZERO",
+      "post_path_quality": "UNKNOWN",
+      "guardrail": "保留未知及其分母位置"
+    },
+    {
+      "case_id": "C09",
+      "scenario": "真实过程没有任何有效观察事件",
+      "process_coverage": "NOT_COVERED",
+      "observation_quality": "NO_ALERT_DOES_NOT_HIDE_OMISSION",
+      "post_path_quality": "REFERENCE_PROCESS_RETAINED",
+      "guardrail": "完整过程分母保留"
+    },
+    {
+      "case_id": "C10",
+      "scenario": "同一过程两次有效NEW",
+      "process_coverage": "ONE_ONLY",
+      "observation_quality": "ONE_EFFECTIVE_CREDIT_AND_REPEAT_BURDEN",
+      "post_path_quality": "SEPARATE_PATHS_PER_EVENT",
+      "guardrail": "不以重复增加正确次数"
+    },
+    {
+      "case_id": "C11",
+      "scenario": "提示时无价格依据，随后恰好上涨",
+      "process_coverage": "NOT_COVERED_BY_UNSUPPORTED_EVENT",
+      "observation_quality": "UNSUPPORTED_AT_TIME",
+      "post_path_quality": "LATER_UPSWING",
+      "guardrail": "未来表现不能补造当时依据"
+    },
+    {
+      "case_id": "C12",
+      "scenario": "过程本身已有可评价证据，提示后长期观察尚未成熟",
+      "process_coverage": "COVERAGE_AS_ESTABLISHED_BY_PROCESS_AND_EVENT",
+      "observation_quality": "KEEP_RELEVANT_MATURITY_STATUS_SEPARATE",
+      "post_path_quality": "IMMATURE",
+      "guardrail": "不得把一个后续结果的成熟等待套到全部台账"
+    }
+  ]
+}

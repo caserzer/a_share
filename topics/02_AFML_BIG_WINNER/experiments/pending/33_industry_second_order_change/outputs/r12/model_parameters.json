@@ -1,0 +1,1610 @@
+[
+  {
+    "fold": "2024Q1",
+    "model": "matured_base",
+    "matured_history_n": 18514,
+    "max_label_end": "2023-12-27 00:00:00"
+  },
+  {
+    "fold": "2024Q1",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.2149995120415411,
+      "loss": 0.6874027950182873
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2024Q1",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.21499024416689294,
+      "loss": 0.6874027950074577
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q1",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.2149901735913112,
+      "loss": 0.6874027950074568
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2024Q1",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.2149695230722411,
+      "loss": 0.6874027950600303
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q1",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.21498556497404497,
+      "loss": 0.6874027950100542
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2024Q2",
+    "model": "matured_base",
+    "matured_history_n": 21646,
+    "max_label_end": "2024-03-29 00:00:00"
+  },
+  {
+    "fold": "2024Q2",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.006712365908704636,
+      "intercept": -0.6473892701668504,
+      "loss": 0.6437856920331926
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2024Q2",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.21612023153134644,
+      "intercept": -0.7106230187908903,
+      "loss": 0.6420909254366768
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q2",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.13684092717884475,
+      "intercept": -0.6807682406289775,
+      "loss": 0.6426461672747686
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2024Q2",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.6446009367297934,
+      "loss": 0.6437867414252669
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q2",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.6445995950859534,
+      "loss": 0.6437867414254861
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2024Q3",
+    "model": "matured_base",
+    "matured_history_n": 24789,
+    "max_label_end": "2024-06-28 00:00:00"
+  },
+  {
+    "fold": "2024Q3",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.4824206947660842,
+      "intercept": -1.3502052921694911,
+      "loss": 0.5855302363636324
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2024Q3",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.4532282799866665,
+      "intercept": -1.3311964963957659,
+      "loss": 0.585604841463069
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q3",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.28903786827505856,
+      "intercept": -1.178823341156782,
+      "loss": 0.5863272518360274
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2024Q3",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.3490061833329301,
+      "intercept": -1.1466897204226392,
+      "loss": 0.5875366802055475
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q3",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.41224141829588873,
+      "intercept": -1.1856689477954963,
+      "loss": 0.5864951937256818
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2024Q4",
+    "model": "matured_base",
+    "matured_history_n": 28168,
+    "max_label_end": "2024-09-27 00:00:00"
+  },
+  {
+    "fold": "2024Q4",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.567205719268567,
+      "intercept": -1.639113635933211,
+      "loss": 0.5401481239475776
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2024Q4",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.4539669032471303,
+      "intercept": -1.5664280388281875,
+      "loss": 0.5420410021456751
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q4",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.4038229523769012,
+      "intercept": -1.5530098683338773,
+      "loss": 0.5415703391968139
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2024Q4",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.658430932669356,
+      "intercept": -1.677138999646625,
+      "loss": 0.5364585600288498
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2024Q4",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.636952136174778,
+      "intercept": -1.6569406854131583,
+      "loss": 0.5379603656293372
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q1",
+    "model": "matured_base",
+    "matured_history_n": 31544,
+    "max_label_end": "2024-12-26 00:00:00"
+  },
+  {
+    "fold": "2025Q1",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.9181016928182195,
+      "intercept": -1.3910012857185141,
+      "loss": 0.5893284884368611
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2025Q1",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.8154048823160558,
+      "intercept": -1.4326124759297711,
+      "loss": 0.5887679415305694
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q1",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.6839860023655403,
+      "intercept": -1.3566733353381013,
+      "loss": 0.5905889701572777
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q1",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.6389891780008424,
+      "intercept": -1.1952787247906889,
+      "loss": 0.5918163112233221
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q1",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.6720438589349259,
+      "intercept": -1.2087396006470652,
+      "loss": 0.5919189089719599
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q2",
+    "model": "matured_base",
+    "matured_history_n": 34667,
+    "max_label_end": "2025-03-31 00:00:00"
+  },
+  {
+    "fold": "2025Q2",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.7970737771594876,
+      "intercept": -0.6002151561943745,
+      "loss": 0.6711319796945758
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2025Q2",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.6114296643784689,
+      "intercept": -0.607061533596823,
+      "loss": 0.6736553076455585
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q2",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.5585297887216452,
+      "intercept": -0.6032499960416617,
+      "loss": 0.6731449088037573
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q2",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.10405967786743363,
+      "intercept": -0.2942618448684781,
+      "loss": 0.684931077919731
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q2",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.1720612530286749,
+      "intercept": -0.32308199194818055,
+      "loss": 0.6843423198046509
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q3",
+    "model": "matured_base",
+    "matured_history_n": 38066,
+    "max_label_end": "2025-06-26 00:00:00"
+  },
+  {
+    "fold": "2025Q3",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": 0.29520316676071146,
+      "loss": 0.6823714653624571
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2025Q3",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": 0.2952051101318876,
+      "loss": 0.6823714653621091
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q3",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": 0.29522994730668434,
+      "loss": 0.6823714654390228
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q3",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": 0.29522032924917696,
+      "loss": 0.6823714653913342
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q3",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": 0.2952225012004898,
+      "loss": 0.6823714654001249
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q4",
+    "model": "matured_base",
+    "matured_history_n": 41991,
+    "max_label_end": "2025-09-30 00:00:00"
+  },
+  {
+    "fold": "2025Q4",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.4106407685460906,
+      "intercept": 0.8731159874938182,
+      "loss": 0.6091673344806887
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2025Q4",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.3224565856815688,
+      "intercept": 0.8582868787578045,
+      "loss": 0.609582379543438
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q4",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.3744978951792135,
+      "intercept": 0.8553612264892144,
+      "loss": 0.6082752916498572
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2025Q4",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.14106561609060397,
+      "intercept": 0.8625699028173445,
+      "loss": 0.612388337369323
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2025Q4",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.17248405245948123,
+      "intercept": 0.8683579929372955,
+      "loss": 0.6121965879870908
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q1",
+    "model": "matured_base",
+    "matured_history_n": 45384,
+    "max_label_end": "2025-12-31 00:00:00"
+  },
+  {
+    "fold": "2026Q1",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.4219519363425762,
+      "intercept": 0.6627898714461522,
+      "loss": 0.6464595777453297
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2026Q1",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.2779064772854037,
+      "intercept": 0.6380572168721519,
+      "loss": 0.6480162388831068
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q1",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.2807609362328459,
+      "intercept": 0.629444551444319,
+      "loss": 0.6478040563328595
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q1",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.1216692444705854,
+      "intercept": 0.6531417533505048,
+      "loss": 0.6492265209794427
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q1",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.1045893511352113,
+      "intercept": 0.6458476292881118,
+      "loss": 0.6493363863488075
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q2",
+    "model": "matured_base",
+    "matured_history_n": 48255,
+    "max_label_end": "2026-03-30 00:00:00"
+  },
+  {
+    "fold": "2026Q2",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.44728646649931886,
+      "intercept": 0.2995789502740337,
+      "loss": 0.6792036025140734
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2026Q2",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.23331155414149563,
+      "intercept": 0.2911751582696441,
+      "loss": 0.6816981053315075
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q2",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.25245099669173715,
+      "intercept": 0.28143919901994335,
+      "loss": 0.6812423951661056
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q2",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": 0.2890537285180134,
+      "loss": 0.6828111993181448
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q2",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": 0.28905345851495134,
+      "loss": 0.6828111993181983
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q3",
+    "model": "matured_base",
+    "matured_history_n": 51632,
+    "max_label_end": "2026-06-26 00:00:00"
+  },
+  {
+    "fold": "2026Q3",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.16842046903512597,
+      "intercept": -0.07826986653975318,
+      "loss": 0.6921490381559725
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2026Q3",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.03368554518277492,
+      "intercept": -0.061731970367284214,
+      "loss": 0.6927149859919985
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q3",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.07105772992944762,
+      "intercept": -0.07040775685498231,
+      "loss": 0.6926057914458094
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q3",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.05706505756285486,
+      "loss": 0.6927402829080171
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q3",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.05706577603920336,
+      "loss": 0.6927402829079472
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q4",
+    "model": "matured_base",
+    "matured_history_n": 55298,
+    "max_label_end": "2026-09-30 00:00:00"
+  },
+  {
+    "fold": "2026Q4",
+    "model": "logit_price",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.6091406801044527,
+      "loss": 0.6488315535721321
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members"
+    ]
+  },
+  {
+    "fold": "2026Q4",
+    "model": "logit_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.609139245086635,
+      "loss": 0.6488315535723752
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q4",
+    "model": "logit_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.6091362755024741,
+      "loss": 0.6488315535743705
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  },
+  {
+    "fold": "2026Q4",
+    "model": "tree_levels",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.6091367490178455,
+      "loss": 0.6488315535739175
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage"
+    ]
+  },
+  {
+    "fold": "2026Q4",
+    "model": "tree_second",
+    "calibration": {
+      "slope": 0.0,
+      "intercept": -0.6091375475101004,
+      "loss": 0.6488315535732694
+    },
+    "features": [
+      "rate5",
+      "rate20",
+      "rate60",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "vol60",
+      "market126",
+      "market_breadth_up_fraction",
+      "coverage",
+      "members",
+      "growth",
+      "finance_coverage",
+      "rate_change",
+      "low_count_change",
+      "breadth_change5",
+      "breadth_change20",
+      "finance_acceleration"
+    ]
+  }
+]

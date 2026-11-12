@@ -1,0 +1,117 @@
+[
+  {
+    "source": "financial_original_value_candidates",
+    "rows": 8860,
+    "issuers": 343,
+    "columns": [
+      "field",
+      "candidate_value",
+      "source_literal",
+      "source_label_and_literal",
+      "unit",
+      "extraction_rule",
+      "physical_page",
+      "art_code",
+      "security_id",
+      "report_period",
+      "title",
+      "is_revision",
+      "notice_date",
+      "candidate_known_at",
+      "source_sha256",
+      "source_uri",
+      "index_sha256",
+      "quality_tier",
+      "transform_sha256"
+    ]
+  },
+  {
+    "source": "financial_reviewed_facts",
+    "rows": 15,
+    "issuers": 1,
+    "columns": [
+      "record_id",
+      "logical_key",
+      "security_id",
+      "field",
+      "value",
+      "event_time",
+      "effective_time",
+      "known_at",
+      "source_observed_at",
+      "ingested_at",
+      "vendor_revision_time",
+      "source_uri",
+      "source_path",
+      "source_sha256",
+      "unit",
+      "original_version",
+      "transform_sha256",
+      "quality_tier",
+      "publication_evidence",
+      "reconstruction",
+      "supersedes"
+    ]
+  },
+  {
+    "source": "financial_version_chains",
+    "rows": 32354,
+    "issuers": 614,
+    "columns": [
+      "security_id",
+      "art_code",
+      "title",
+      "notice_date",
+      "known_at",
+      "index_sha256",
+      "index_partition",
+      "report_period",
+      "form",
+      "is_revision",
+      "pre_revision_copy_designation",
+      "logical_report_key",
+      "prior_version_ids",
+      "original_report_present",
+      "first_original_notice_date",
+      "same_day_order_ambiguous",
+      "source_index_does_not_certify_numeric_fields",
+      "version_chain_status"
+    ]
+  },
+  {
+    "source": "distribution_contract_amounts",
+    "rows": 310,
+    "issuers": 144,
+    "columns": [
+      "field",
+      "value",
+      "physical_page",
+      "exact_clause",
+      "source_denominator_shares",
+      "effective_date",
+      "evidence_type",
+      "security_id",
+      "art_code",
+      "notice_date",
+      "source_sha256",
+      "source_uri",
+      "actual_payment_confirmed"
+    ]
+  },
+  {
+    "source": "corporate_actions",
+    "rows": 56965,
+    "issuers": 5442,
+    "known_at_nonnull": 0,
+    "observed_min": "2026-10-21T10:32:38.850189+00:00",
+    "observed_max": "2026-10-21T10:34:31.956532+00:00"
+  },
+  {
+    "source": "rights_issues",
+    "rows": 984,
+    "issuers": 641,
+    "known_at_nonnull": 0,
+    "observed_min": "2026-10-21T10:34:32.956623+00:00",
+    "observed_max": "2026-10-21T10:34:33.956708+00:00"
+  }
+]

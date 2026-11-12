@@ -1,0 +1,146 @@
+{
+  "tables": {
+    "market_regime": [
+      {
+        "stratum": "NONUP",
+        "new_alerts": 897,
+        "evaluable_alerts": 793,
+        "successes": 13,
+        "precision": 0.01639344262295082,
+        "known_processes": 1145,
+        "recalled": 12,
+        "recall": 0.010480349344978166,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 766,
+          "IMMATURE": 70,
+          "UNKNOWN": 34,
+          "FIRST_FAILURE": 14,
+          "SUCCESS": 13
+        }
+      },
+      {
+        "stratum": "UNKNOWN",
+        "new_alerts": 40,
+        "evaluable_alerts": 27,
+        "successes": 2,
+        "precision": 0.07407407407407407,
+        "known_processes": 71,
+        "recalled": 1,
+        "recall": 0.014084507042253521,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 24,
+          "UNKNOWN": 13,
+          "SUCCESS": 2,
+          "FIRST_FAILURE": 1
+        }
+      },
+      {
+        "stratum": "UP",
+        "new_alerts": 1042,
+        "evaluable_alerts": 965,
+        "successes": 22,
+        "precision": 0.022797927461139896,
+        "known_processes": 1195,
+        "recalled": 24,
+        "recall": 0.0200836820083682,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 927,
+          "UNKNOWN": 77,
+          "SUCCESS": 22,
+          "FIRST_FAILURE": 16
+        }
+      }
+    ],
+    "history_quality": [
+      {
+        "stratum": "NO_PRICE_PROXY_FLAG",
+        "new_alerts": 1246,
+        "evaluable_alerts": 1117,
+        "successes": 20,
+        "precision": 0.017905102954341987,
+        "known_processes": 1503,
+        "recalled": 18,
+        "recall": 0.011976047904191617,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 1074,
+          "UNKNOWN": 65,
+          "IMMATURE": 64,
+          "FIRST_FAILURE": 23,
+          "SUCCESS": 20
+        }
+      },
+      {
+        "stratum": "PROXY_FLAG",
+        "new_alerts": 733,
+        "evaluable_alerts": 668,
+        "successes": 17,
+        "precision": 0.025449101796407185,
+        "known_processes": 908,
+        "recalled": 19,
+        "recall": 0.02092511013215859,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 643,
+          "UNKNOWN": 59,
+          "SUCCESS": 17,
+          "FIRST_FAILURE": 8,
+          "IMMATURE": 6
+        }
+      }
+    ],
+    "era": [
+      {
+        "stratum": "SW2014",
+        "new_alerts": 953,
+        "evaluable_alerts": 848,
+        "successes": 23,
+        "precision": 0.027122641509433963,
+        "known_processes": 1137,
+        "recalled": 23,
+        "recall": 0.020228671943711522,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 811,
+          "UNKNOWN": 105,
+          "SUCCESS": 23,
+          "FIRST_FAILURE": 14
+        }
+      },
+      {
+        "stratum": "SW2021",
+        "new_alerts": 1026,
+        "evaluable_alerts": 937,
+        "successes": 14,
+        "precision": 0.014941302027748132,
+        "known_processes": 1274,
+        "recalled": 14,
+        "recall": 0.01098901098901099,
+        "outcomes": {
+          "UNMATCHED_FAILURE": 906,
+          "IMMATURE": 70,
+          "UNKNOWN": 19,
+          "FIRST_FAILURE": 17,
+          "SUCCESS": 14
+        }
+      }
+    ]
+  },
+  "quality_scope": "Prior 61 sessions only at alert/origin; no price proxy flag does not establish strict PIT",
+  "market_scope": "Prior 126 sessions, all 127 closes required; precision at alert, recall at process origin",
+  "secondary_scope": "60-session industry minus market return; descriptive only, not a success label or 63/126/252 investment tracking",
+  "secondary": {
+    "total": 1979,
+    "known": 1825,
+    "unknown": 154,
+    "positive_absolute": 868,
+    "positive_excess": 785,
+    "positive_both": 647
+  },
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/evaluated_new_observations.parquet": "70cbab032714889e1a8ff47731aa86fabdc8bcfe35cc7596de4537d3667da0d3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/past_only_features.parquet": "5863db141b8b4699b9c184b481c9bf909005508e6376abaddbb5eff00a37a99b",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r01_strata.py": "de327ff473c38518e2295d11e2b8b0eea71e497922e67370b82c3e23b653209a"
+  }
+}

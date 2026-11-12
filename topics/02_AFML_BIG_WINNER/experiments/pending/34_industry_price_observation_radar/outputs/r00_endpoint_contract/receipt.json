@@ -1,0 +1,50 @@
+{
+  "status": "EVIDENCE_OWNERSHIP_CHECKED_IDENTITY_STILL_UNRESOLVED",
+  "phases": 3491,
+  "outcomes": {
+    "OBSERVED_END_BEFORE_CONFIRMATION": 2417,
+    "WITHIN_PHASE_CONFIRMED": 739,
+    "SUPERSEDED_BEFORE_CONFIRMATION": 335
+  },
+  "suffix_mutations_checked": 6982,
+  "left_origin_cross_tab": [
+    {
+      "status": "OBSERVED_END_BEFORE_CONFIRMATION",
+      "left_origin_uncertain": false,
+      "count": 2316
+    },
+    {
+      "status": "OBSERVED_END_BEFORE_CONFIRMATION",
+      "left_origin_uncertain": true,
+      "count": 101
+    },
+    {
+      "status": "SUPERSEDED_BEFORE_CONFIRMATION",
+      "left_origin_uncertain": false,
+      "count": 333
+    },
+    {
+      "status": "SUPERSEDED_BEFORE_CONFIRMATION",
+      "left_origin_uncertain": true,
+      "count": 2
+    },
+    {
+      "status": "WITHIN_PHASE_CONFIRMED",
+      "left_origin_uncertain": false,
+      "count": 662
+    },
+    {
+      "status": "WITHIN_PHASE_CONFIRMED",
+      "left_origin_uncertain": true,
+      "count": 77
+    }
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_process_draft_v02/processes.parquet": "235efc250af271e57ec9723175217c28f29251e0e2604cd6a266c557ce578767",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/R00_endpoint_contract.md": "33814897eeef00ba507ce794b76aa20ccae87dcbf600227437dcce6e11bf3843",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/endpoint_contract.py": "c6c171911818c00a2208f26454c9dcba463ff3599b7c14cd7549b2569a781193",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/audit_endpoint_contract.py": "b6414fa8ba631fe1e76a9210ce0bbadf32b2fe88bea80aa1c761484a42164735"
+  },
+  "output_sha256": "16cd2410be6cb429cb572b78dd1e1f2a1efc39f7bad5b3a6f6569e51d516904e"
+}

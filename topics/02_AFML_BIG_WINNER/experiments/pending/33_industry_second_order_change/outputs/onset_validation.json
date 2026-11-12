@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "entry-stratified deterministic sample identities",
+      "cases": 18,
+      "registry_rows": 3230,
+      "status": "PASS"
+    },
+    {
+      "name": "immutable per-week chains and all checkpoint prefixes",
+      "records": 464,
+      "status": "PASS"
+    },
+    {
+      "name": "all cases replayed through intended interval; prefix recomputation",
+      "samples": 54,
+      "status": "PASS"
+    },
+    {
+      "name": "all process input hashes/current or archived source versions",
+      "unique_inputs": 18,
+      "status": "PASS"
+    },
+    {
+      "name": "development and common-endpoint outcomes independently recomputed",
+      "paired_events": 2914,
+      "status": "PASS"
+    },
+    {
+      "name": "temporal tests and repeat-checkpoint immutability",
+      "status": "PASS",
+      "test_output": ".........                                                                [100%]\n9 passed in 0.37s"
+    }
+  ],
+  "scope": "R06-R08 execution evidence, not full goal achievement or independent PIT/causal proof"
+}

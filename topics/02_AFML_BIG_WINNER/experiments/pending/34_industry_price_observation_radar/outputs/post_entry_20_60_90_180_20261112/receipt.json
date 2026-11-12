@@ -1,0 +1,17 @@
+{
+  "cutoff": "2026-10-21",
+  "scope": "All 1459 primary A NEW events, equal weight per entry, entry close to horizon close, regardless of exit; full same-chain path required; no fee deduction.",
+  "benchmark": "CSI_ALL; excess_return = industry_return - market_return; relative_return = (1+industry_return)/(1+market_return)-1",
+  "checks": "20/60 all-event statuses and absolute/relative returns exactly match existing frozen followup",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/A/events.parquet": "464bb544e854171f4e64b92c9ffdaf642d38b07d77669f57bed76950dadc6499",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/evaluation_versions/e02_20261021/version.json": "c90186b4cfeb5d5524d4b4dbc858a55289ca90f97d52277662162ebb181b23b4",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/post_entry_requested_horizons.py": "369af9e4a1c986e23440fa395d334cdcea0d7f95ae98daa4d4c88bd9d84b9dc2"
+  },
+  "artifacts": {
+    "all_entries.parquet": "649f49453f5b87d123be36dd9492c3b64e99ed06274357f2dff4894641f8307b",
+    "summary.csv": "a1b95ea58e9fb0437d09c5a8389e505c48339595c143a985ddfe1d4695943b5f"
+  }
+}

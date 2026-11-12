@@ -1,0 +1,39 @@
+{
+  "block_weeks": 13,
+  "repetitions": 2000,
+  "seed": 34080,
+  "main_grid": "q5_d0",
+  "meaning": "Historical paired calendar-block uncertainty; seeds share history and weights; not independent validation",
+  "results": {
+    "v2_b08": {
+      "parent_coverage": {
+        "a_minus_b": 0.0015627713144643063,
+        "interval95": [
+          -0.0026516191326805237,
+          0.005462667228165227
+        ]
+      },
+      "timely_parent_coverage": {
+        "a_minus_b": 0.000347282514325406,
+        "interval95": [
+          -0.0036838607072515227,
+          0.004216481111584249
+        ]
+      },
+      "child_coverage": {
+        "a_minus_b": 0.003676470588235281,
+        "interval95": [
+          -0.013793443514928899,
+          0.017545791792255957
+        ]
+      },
+      "new_effectiveness": {
+        "a_minus_b": 0.00784593437945802,
+        "interval95": [
+          0.0,
+          0.016736182053444966
+        ]
+      }
+    }
+  }
+}

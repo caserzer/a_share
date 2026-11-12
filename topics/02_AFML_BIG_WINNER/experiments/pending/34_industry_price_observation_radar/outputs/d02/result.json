@@ -1,0 +1,174 @@
+{
+  "status": "ORACLE_FEASIBLE_NOT_METHOD_VALIDATED",
+  "removed_non_nearest_edges": 0,
+  "remaining_edges": 3743,
+  "individual_bounds": [
+    {
+      "dimension": "ALL",
+      "stratum": "ALL",
+      "processes": 2411,
+      "required_hits": 724,
+      "maximum_hits": 916,
+      "recall_upper": 0.37992534218166735,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "kind",
+      "stratum": "HEATING",
+      "processes": 507,
+      "required_hits": 102,
+      "maximum_hits": 397,
+      "recall_upper": 0.7830374753451677,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "kind",
+      "stratum": "WARMING",
+      "processes": 1904,
+      "required_hits": 381,
+      "maximum_hits": 664,
+      "recall_upper": 0.3487394957983193,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2017",
+      "processes": 129,
+      "required_hits": 13,
+      "maximum_hits": 51,
+      "recall_upper": 0.3953488372093023,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2018",
+      "processes": 225,
+      "required_hits": 23,
+      "maximum_hits": 51,
+      "recall_upper": 0.22666666666666666,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2019",
+      "processes": 188,
+      "required_hits": 19,
+      "maximum_hits": 68,
+      "recall_upper": 0.3617021276595745,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2020",
+      "processes": 323,
+      "required_hits": 33,
+      "maximum_hits": 135,
+      "recall_upper": 0.4179566563467492,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2021",
+      "processes": 272,
+      "required_hits": 28,
+      "maximum_hits": 141,
+      "recall_upper": 0.5183823529411765,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2022",
+      "processes": 275,
+      "required_hits": 28,
+      "maximum_hits": 82,
+      "recall_upper": 0.29818181818181816,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2023",
+      "processes": 245,
+      "required_hits": 25,
+      "maximum_hits": 101,
+      "recall_upper": 0.4122448979591837,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2024",
+      "processes": 254,
+      "required_hits": 26,
+      "maximum_hits": 89,
+      "recall_upper": 0.35039370078740156,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2025",
+      "processes": 413,
+      "required_hits": 42,
+      "maximum_hits": 168,
+      "recall_upper": 0.4067796610169492,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "year",
+      "stratum": "2026",
+      "processes": 87,
+      "required_hits": 9,
+      "maximum_hits": 35,
+      "recall_upper": 0.40229885057471265,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "market_regime",
+      "stratum": "NONUP",
+      "processes": 1145,
+      "required_hits": 229,
+      "maximum_hits": 388,
+      "recall_upper": 0.3388646288209607,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "market_regime",
+      "stratum": "UNKNOWN",
+      "processes": 71,
+      "required_hits": null,
+      "maximum_hits": 24,
+      "recall_upper": 0.3380281690140845,
+      "individually_impossible": false
+    },
+    {
+      "dimension": "market_regime",
+      "stratum": "UP",
+      "processes": 1195,
+      "required_hits": 239,
+      "maximum_hits": 543,
+      "recall_upper": 0.45439330543933054,
+      "individually_impossible": false
+    }
+  ],
+  "solver_status": 0,
+  "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+  "witness": {
+    "hits": 916,
+    "recall": 0.37992534218166735,
+    "all_capacity_and_lower_bounds_verified": true,
+    "alert_weeks": 252
+  },
+  "relaxations": [
+    "uses future success",
+    "no operational pool or cooldown",
+    "no failure ownership",
+    "precision and confidence gates not proven",
+    "minimum sample and weeks gates not imposed"
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/process_strata.parquet": "645d5d48f970931f791234647568bd595d392add77e868596ec7cdba6cadab99",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/d01/valid_edges.parquet": "55f3d6c60a339c5af179bbf5c7d32742bc8b9e18697e5ce000ef843fddc55499",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/D02_joint_gate_bound_plan.md": "e7a51faf81852d8a5287916c383cbc0160c84ba466b71f61eb5301f3d7982d3a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/d02_joint_gate_bound.py": "4378bdd6425347b96ae8598a4514a7d2d6f7f68dcd932fa998939fb02ba0d25c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/configs/evaluation_registration.json": "18d8adf26d673d9f9afe991f1b2e0ec76723e9cb35cf099f9212ccba9dcf7f1f"
+  }
+}

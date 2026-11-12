@@ -1,0 +1,204 @@
+{
+  "date": "2026-11-11",
+  "goal_complete": false,
+  "approved_methods": 0,
+  "protocol_changed": false,
+  "scope": "Evidence routing map, not a new experiment or universal rejection of a hypothesis family",
+  "mechanisms": [
+    {
+      "mechanism": "市场趋势/参与度",
+      "rounds": "P17/P19/P35",
+      "status": "TESTED_NOT_SUPPORTED",
+      "finding": "简单趋势四格和参与度机会率模型未形成稳定事前环境识别。",
+      "limit": "不推论所有regime无效；不继续搜索该四格阈值。",
+      "evidence": [
+        {
+          "path": "p17/report.md",
+          "sha256": "b36fe0c9a5aa8d5c14caf932192d3e8c6896ab78f7ee5b80dd2ea9652b08edcd"
+        },
+        {
+          "path": "p19/report.md",
+          "sha256": "3ce86af358bd8b5fa3c0c7d938ace98c100fe18a14f0d84993182ba92b0813a9"
+        },
+        {
+          "path": "p35/report.md",
+          "sha256": "8bf501808f4e293c98f726835f41c893168477a77d25ad8103d10fbed0a0f336"
+        }
+      ]
+    },
+    {
+      "mechanism": "线性市场暴露/非线性抗跌",
+      "rounds": "P20/P37/P38",
+      "status": "TESTED_NOT_SUPPORTED",
+      "finding": "已测beta调整及涨跌日残差差，未形成稳定独立增量。",
+      "limit": "仅限冻结窗口及模型，不说明所有风险暴露信息无效。",
+      "evidence": [
+        {
+          "path": "p20/report.md",
+          "sha256": "53a826880b97d7553c9e77148fe9b9661b58fbf062b2115335e105c42a360782"
+        },
+        {
+          "path": "p37/report.md",
+          "sha256": "b0c2fb32efc22d6866aa99840808c4eef169f7dcc4cb310f5e9e71c1247b005d"
+        },
+        {
+          "path": "p38/report.md",
+          "sha256": "c5a0c4d00214060f8d23156afb5097e0ebd2eaf1c70b5531e936e71d8b638310"
+        }
+      ]
+    },
+    {
+      "mechanism": "行业间同类价格上下文",
+      "rounds": "P34/P36",
+      "status": "TESTED_NOT_SUPPORTED",
+      "finding": "联合同行上下文减已有市场上下文区间跨零。",
+      "limit": "仅限既有分类中同父级均值，不等于产业链关系被否定。",
+      "evidence": [
+        {
+          "path": "p36/report.md",
+          "sha256": "53721740a53fc0b05695f3e253f24f1d6edf6c38a1a3b46281a54109a7ccd3eb"
+        }
+      ]
+    },
+    {
+      "mechanism": "旧冲击退出滚动窗口",
+      "rounds": "P41/P42",
+      "status": "TESTED_NOT_SUPPORTED",
+      "finding": "分解准确，但新增退出窗口输入相对价格基线为负。",
+      "limit": "代数解释不等于预测信息；不扫描退出日期。",
+      "evidence": [
+        {
+          "path": "p41/report.md",
+          "sha256": "bf6c1bdc523bef7c90c5239b644b18a7696b499d59c68da6e21880cb039f365c"
+        },
+        {
+          "path": "p42/report.md",
+          "sha256": "b17404c75ed9a27d99d8d263f6d158afcd232e2079ce3b0347b167feaac6344c"
+        }
+      ]
+    },
+    {
+      "mechanism": "模型表达/结构输入修补",
+      "rounds": "P39/P46/P47",
+      "status": "TESTED_NOT_SUPPORTED",
+      "finding": "固定线性对照及结构/波动分别消融未带来稳定改进。",
+      "limit": "不将这几种表达失败外推所有价格模型；不无理由轮换算法。",
+      "evidence": [
+        {
+          "path": "p39/report.md",
+          "sha256": "fe8b05b2f0703abbb0f8b4b2f0c2afa092a0e9ec47bd6194f956563271e3a5a9"
+        },
+        {
+          "path": "p46/report.md",
+          "sha256": "bf56ea65fb6c8002752388f078da1c6f5d7dacf35b167e344fad28718b3420e2"
+        },
+        {
+          "path": "p47/report.md",
+          "sha256": "888246a9e74b0b4996771325320c5dfc6a684464af7acdf867940561c7d75102"
+        }
+      ]
+    },
+    {
+      "mechanism": "规模与宽基/大盘相对风格",
+      "rounds": "P49/P50/P51/P52",
+      "status": "LIMITED_POSITIVE_NOT_VALIDATED",
+      "finding": "三个完整年份P减B为正，逐块剔除均值仍正，但主区间跨零、事件51.10%，无整体提前证据。",
+      "limit": "不是纯小盘因子或经济交互证明，不校准、不按年份切换。",
+      "evidence": [
+        {
+          "path": "p49/report.md",
+          "sha256": "3d710e86b6bdb49bbac4c09ccf229d7da811e837e022b8944c79e64167134313"
+        },
+        {
+          "path": "p50/report.md",
+          "sha256": "f72c7430ea60e45923ddf03357490f96b86409da5da3bca1987716c666857f72"
+        },
+        {
+          "path": "p51/report.md",
+          "sha256": "d6df558503b9ccdb04c233de4565dcf368445bf23190067ac67d021907b056f2"
+        },
+        {
+          "path": "p52/report.md",
+          "sha256": "17e3348a47612d94b07255053dcdea80ec9193090e706d423ae5785075981e6f"
+        }
+      ]
+    },
+    {
+      "mechanism": "半年反馈延迟",
+      "rounds": "P43",
+      "status": "DESCRIPTIVE_ONLY",
+      "finding": "2023信号最早7月19日标签成熟，按季度10月才进训练。",
+      "limit": "不代表当时价格不可见，也不证明延迟是失败原因。",
+      "evidence": [
+        {
+          "path": "p43/report.md",
+          "sha256": "ed00372f32b8b410b3e98fb046a9e8090f78ac4d799fa005fa05593607b31b06"
+        }
+      ]
+    },
+    {
+      "mechanism": "输入迁移与固定映射失效",
+      "rounds": "P44/P45",
+      "status": "DESCRIPTIVE_ONLY",
+      "finding": "2023单变量未明显越界，固定映射AUC仍低于0.5。",
+      "limit": "条件关系变化尚未被因果识别；不倒置排序或删旧样本。",
+      "evidence": [
+        {
+          "path": "p44/report.md",
+          "sha256": "3ed01776aae8c8b959579c0e27311d413651d33efbd941657184ad0ea430e977"
+        },
+        {
+          "path": "p45/report.md",
+          "sha256": "1f16787db852b65d3938b10e3b97e3a81cb2995151aa65bbd0fe79b6bc6a823a"
+        }
+      ]
+    },
+    {
+      "mechanism": "分配计划公告出现",
+      "rounds": "P15/P16",
+      "status": "TESTED_NOT_SUPPORTED",
+      "finding": "发生日期代理在同日规模/分数对照后未建立稳定增量。",
+      "limit": "不代表所有事件内容无效，不将最终金额倒填计划日。",
+      "evidence": [
+        {
+          "path": "p15/report.md",
+          "sha256": "2a02c006b17758d71d161c22cab3d89d20d091f42039d24fa27ba1bb03a20d9c"
+        },
+        {
+          "path": "p16/report.md",
+          "sha256": "85449d03d12558e340969b3a2a47754c7e19457ae7289d7625ba92bae1b1a83e"
+        }
+      ]
+    },
+    {
+      "mechanism": "现有原公告内容",
+      "rounds": "P54",
+      "status": "LOCAL_COVERAGE_INSUFFICIENT",
+      "finding": "已提取343家发行人支持上限0.41%；全部614家版本链上限0.99%、6行业。",
+      "limit": "只限已核查本地资料，不是全盘无数据或所有事件无效。",
+      "evidence": [
+        {
+          "path": "p54/report.md",
+          "sha256": "c76014fcf2e18495ba55dd350512387e395bc2ed4bfaf8fb8bac5f4d55e8e258"
+        }
+      ]
+    },
+    {
+      "mechanism": "既有名单与未知结果",
+      "rounds": "P48/P53",
+      "status": "FIXED_SETS_CANNOT_REACH_TARGET",
+      "finding": "18组固定集合即使未知全成功，最终全集合胜率上界仍低于60%。",
+      "limit": "仅限既有集合；不等于未来新增机会或另一个方法不可能达标。",
+      "evidence": [
+        {
+          "path": "p48/report.md",
+          "sha256": "e2e318211f11c24a515318f94c40e720b5be9d1b64e5b89df42bb867c550ad9f"
+        },
+        {
+          "path": "p53/report.md",
+          "sha256": "5fb536ea99ce586f8507fa52e0e8a833be00e32c4714e7f060d9cb032ee385f4"
+        }
+      ]
+    }
+  ]
+}

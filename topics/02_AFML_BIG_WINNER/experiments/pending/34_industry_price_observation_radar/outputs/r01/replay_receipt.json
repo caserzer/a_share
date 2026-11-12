@@ -1,0 +1,32 @@
+{
+  "status": "HISTORICAL_REPLAY_NOT_VALIDATED_METHOD",
+  "data_asof": "2026-10-21",
+  "latest_review": "2026-10-16",
+  "catalog_rows": 141872,
+  "review_weeks": 496,
+  "new_observations": 1979,
+  "max_weekly_new": 5,
+  "max_in_pool": 30,
+  "latest_state_counts": {
+    "NOT_TRIGGERED": 239,
+    "DATA_INSUFFICIENT": 83,
+    "EXIT": 12,
+    "TRACKING": 8,
+    "NEW": 5
+  },
+  "transition_weeks": [
+    "2021-12-03",
+    "2021-12-10",
+    "2021-12-17",
+    "2021-12-24",
+    "2021-12-31"
+  ],
+  "pool_cap_provenance": "RESEARCH_ASSUMPTION_USER_REPLY_PENDING",
+  "prediction_seal_sha256": "c104889d291524b4039f4014bf7eea5496681f8642238837bb4dfea74a449572",
+  "artifacts": {
+    "weekly_catalog.parquet": "c140983c3407f05b56027d150912446b5e96c18bfa9faa5e9e6fca9a27591331",
+    "events.parquet": "a4220ce0fb7fbe06d9c41f41da6bc36eeac893d53317a53f957873ad4ace7716",
+    "weekly_workload.parquet": "0cbbdbeb1972eaeec6133cd98424305d1cc70d257a903862b91299cf5ca2d615",
+    "latest_observation_catalog.json": "19d1093629dee7d65b568fea24a2faeea9a0542d4ef87374208af2c2c40c3183"
+  }
+}

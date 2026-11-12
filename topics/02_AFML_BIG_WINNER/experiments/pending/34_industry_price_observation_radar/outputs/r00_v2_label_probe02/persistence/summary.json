@@ -1,0 +1,93 @@
+{
+  "scope": "Persistence diagnostic only; not frozen labels",
+  "original_candidates": 4438,
+  "status": {
+    "RETAINED": 2805,
+    "NOT_RETAINED": 1483,
+    "PARTIAL_WEEK_UNKNOWN": 150
+  },
+  "checks_met": 12,
+  "checks_total": 12,
+  "checks": [
+    {
+      "path": "flat",
+      "perturbed": false,
+      "kept": [],
+      "expectation_met": true
+    },
+    {
+      "path": "flat",
+      "perturbed": true,
+      "kept": [],
+      "expectation_met": true
+    },
+    {
+      "path": "warming",
+      "perturbed": false,
+      "kept": [
+        "WARMING"
+      ],
+      "expectation_met": true
+    },
+    {
+      "path": "warming",
+      "perturbed": true,
+      "kept": [
+        "WARMING"
+      ],
+      "expectation_met": true
+    },
+    {
+      "path": "heating",
+      "perturbed": false,
+      "kept": [
+        "HEATING"
+      ],
+      "expectation_met": true
+    },
+    {
+      "path": "heating",
+      "perturbed": true,
+      "kept": [
+        "HEATING"
+      ],
+      "expectation_met": true
+    },
+    {
+      "path": "pulse",
+      "perturbed": false,
+      "kept": [],
+      "expectation_met": true
+    },
+    {
+      "path": "pulse",
+      "perturbed": true,
+      "kept": [],
+      "expectation_met": true
+    },
+    {
+      "path": "steady_up",
+      "perturbed": false,
+      "kept": [],
+      "expectation_met": true
+    },
+    {
+      "path": "steady_up",
+      "perturbed": true,
+      "kept": [],
+      "expectation_met": true
+    },
+    {
+      "path": "slowing_decline",
+      "perturbed": false,
+      "kept": [],
+      "expectation_met": true
+    },
+    {
+      "path": "slowing_decline",
+      "perturbed": true,
+      "kept": [],
+      "expectation_met": true
+    }
+  ]
+}

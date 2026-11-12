@@ -1,0 +1,129 @@
+{
+  "round_id": "r00",
+  "scope": "v4 sealed reviewed finance and reader; EP32 industry_v1 members",
+  "release_path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v4/releases/a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6",
+  "strict_quote": {
+    "value": null,
+    "status": "UNKNOWN",
+    "reason": "RETROSPECTIVE_QUOTE_NOT_FIRST_VINTAGE_OR_OPEN_FILL"
+  },
+  "proxy_quote": {
+    "value": 9.68,
+    "status": "Historical-proxy",
+    "reason": "NO_OPEN_EXECUTION_ATTESTATION"
+  },
+  "membership": {
+    "rows": 7928,
+    "columns": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "ts_code",
+      "name",
+      "in_date",
+      "out_date",
+      "is_new"
+    ],
+    "has_known_at": false,
+    "note": "in/out effective dates do not establish vendor revision availability"
+  },
+  "reviewed_finance": {
+    "records": 30,
+    "securities": 3,
+    "quality_counts": {
+      "PIT-reconstructed": 30
+    },
+    "missing_known_at": 0,
+    "max_distinct_periods_per_security_metric": 1,
+    "series_with_at_least_three_periods": 0,
+    "period_count_distribution": {
+      "1": 15
+    }
+  },
+  "report_index": {
+    "rows": 33537,
+    "numeric_fields_unattested_rows": 33537
+  },
+  "decision": "BLOCKED_DATA_FOR_AUDITED_INDUSTRY_BRANCHES",
+  "limits": "Not a census of every archived PDF or older release; no return hypothesis tested.",
+  "evidence": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/30_pit_data_foundation_v1/outputs/pit_v4/release.json",
+      "sha256": "2cfc478c5130ba2f8a6d81241e4b42ffe2a07d6e42a4f72cb3b122f22bae6c41",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v4/releases/a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6/COMPLETE.json",
+      "sha256": "acd0fca925a0dbb35df1ad29ca24d8a3172108e395a997e99c909fef7b6e10f0",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v4/releases/a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6/FULL_MANIFEST.json",
+      "sha256": "a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6",
+      "sealed_hash_verified": true
+    },
+    {
+      "path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v4/releases/a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6/normalized/financial_reviewed_facts.parquet",
+      "sha256": "fa5b4d98af9002709f94f8b61a46a015ce299570e04a0a068a7bd74ab88c9510",
+      "sealed_hash_verified": true
+    },
+    {
+      "path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v4/releases/a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6/inputs/normalized/financial_reviewed_facts.parquet",
+      "sha256": "2599498720035f53f00c75458e1db3c36e42d87eecf85c4ccc78939325334c18",
+      "sealed_hash_verified": true
+    },
+    {
+      "path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v4/releases/a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6/normalized/financial_version_chains.parquet",
+      "sha256": "02e59b5c0215f4584b4c196d698e4673aa980468842ac56cfa52cc58a422bf6e",
+      "sealed_hash_verified": true
+    },
+    {
+      "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/members.parquet",
+      "sha256": "a527c5d9ae503f0f5dc439a4f32ccb89e7d67e07ad9c466b90486409d210922d",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/30_pit_data_foundation_v1/src/v4_dataset.py",
+      "sha256": "de3a1805bee6d6cdb5db055967ae7baad0079a11a34619df84eca45d05c3d8bb",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/30_pit_data_foundation_v1/src/pit.py",
+      "sha256": "4f8be8153027c15ac99943b0e70366f6992cdd6fbbd9e613a3b97f6f72c2b01a",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/30_pit_data_foundation_v1/outputs/pit_v4/domain_quality_gates.csv",
+      "sha256": "c9595fd2a649216363bba340fdc5574604037ea6371645408edf5f1c620f9621",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/30_pit_data_foundation_v1/outputs/pit_v5/release.json",
+      "sha256": "9d77893287c65cf9be72fcc7eaa29b9f07bd4a9748e420026e6a2bb209dea563",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/30_pit_data_foundation_v1/extensions/v6_ttm_pe/reports/ttm_pe_coverage.md",
+      "sha256": "1e0bfe447e02fb5bba31985526038eea397510809c2dd529248196f333c7187c",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/GOAL.md",
+      "sha256": "bf6f7d250faa19fae08103e1d805ae909b8cefe04d88d76b6bed4c9f055edfba",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/rounds/r00_plan.md",
+      "sha256": "d804c3c77f37d7f1686d3869de80098c65bc4b90099a946f2e28032fb3181333",
+      "sealed_hash_verified": false
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/src/audit_existing.py",
+      "sha256": "6cc8a36107f035a3c402d1f80bbd7fb26e6c891b8641eca8140bca5c4e83f4d1",
+      "sealed_hash_verified": false
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "all_parent_rows_verified": 7390,
+  "confirmed": 5800,
+  "confirmed_known_context": 5795,
+  "route_status_counts": [
+    {
+      "route": "AMPLITUDE",
+      "status": "CONFIRMED",
+      "count": 5721
+    },
+    {
+      "route": "AMPLITUDE",
+      "status": "RIGHT_UNKNOWN",
+      "count": 69
+    },
+    {
+      "route": "AMPLITUDE",
+      "status": "UNCONFIRMED_INTERRUPTED",
+      "count": 1521
+    },
+    {
+      "route": "DURATION8",
+      "status": "CONFIRMED",
+      "count": 79
+    }
+  ],
+  "candidate_status_counts": {
+    "PARENT_IDENTITY_PRECEDENCE": 4559,
+    "REFERENCE_LOST": 4340,
+    "DURATION_RIGHT_UNKNOWN": 62,
+    "DURATION_NOT_CONFIRMED": 41
+  },
+  "weekly_state_counts": {
+    "CONFIRMED": 66197,
+    "NO_IDENTIFIED_EXCURSION": 29597,
+    "UNCONFIRMED_INTERRUPTED": 5725,
+    "CONTEXT_INSUFFICIENT": 4667,
+    "RIGHT_CONTEXT_UNKNOWN": 1437,
+    "PARTIAL_WEEK_UNKNOWN": 1063,
+    "RIGHT_UNKNOWN": 281,
+    "DURATION_RIGHT_UNKNOWN": 143
+  },
+  "old_without_overlap": 0,
+  "new_without_overlap": 36,
+  "old_with_multiple_new": 0,
+  "new_with_multiple_old": 0,
+  "limits": "Process-definition audit only; no method evaluation. Overlap is not identity equivalence. Boundary states supersede raw core weekly states for this prototype."
+}

@@ -1,0 +1,118 @@
+{
+  "status": "RESEARCH_HANDOFF_NOT_VALIDATED",
+  "created": "2026-11-12",
+  "goal_version": "EP34-GOAL-v2.2",
+  "goal_sha256": "ef8b44beef25c7c33f74d6ff1f34def95849ef897f21999bb93957c46629099b",
+  "latest_observation_date": "2026-10-16",
+  "local_price_cutoff": "2026-10-21",
+  "primary": "raw_20d_standalone_A",
+  "references": {
+    "goal": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/GOAL_v2.md",
+      "sha256": "ef8b44beef25c7c33f74d6ff1f34def95849ef897f21999bb93957c46629099b"
+    },
+    "user_choice": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/v2_s03/user_choice.md",
+      "sha256": "d551505073e648b8beb013ad953b1245836c6954f4497e37b8d736a5e66dcc06"
+    },
+    "evaluation_protocol": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/v2_revaluation01/plan.md",
+      "sha256": "a0780254ecbc6398f4e6b5a3feb43014f710f1d8699fab40864886ae4946b3c5"
+    },
+    "primary_review": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/delivery/A/latest_review.md",
+      "sha256": "edd0dbb93e48456fec3c21f63707fbd7aee5043e2120172ca6e6ff219b2edfff"
+    },
+    "primary_catalog": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/delivery/A/latest_full_catalog.csv",
+      "sha256": "fc07d0f8b06d5c3c3d3664881460dfe586f14fb4afd50a6b74c444ae9bf9597a"
+    },
+    "primary_history": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/delivery/A/all_observations.parquet",
+      "sha256": "76a47d10d81d9e12eeb4b8d0bd401dcbc9092580517e566c52625dd430363ae3"
+    },
+    "control_review": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/delivery/B/latest_review.md",
+      "sha256": "7e3a5fa8a57e67eebdc1336f1c6b2b4d1ec4f1a38f78f591b5b248e785b96e38"
+    },
+    "calendar": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/refresh/s02_chain_safe_v2_20261112/calendar_coverage.csv",
+      "sha256": "f3478dbea846fed6b25790273b048ae7e3196ec8466405b85f9e65b4985a662c"
+    },
+    "primary_evaluation": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/evaluation_versions/s05_20261021/runs/A/summary.json",
+      "sha256": "dfd73bf9b24b42f568e3c7619a3a6148856d67742c3217561b6be8cbe471dfcf"
+    },
+    "primary_event_quality": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/evaluation_versions/s05_20261021/runs/A/event_quality.parquet",
+      "sha256": "93434487408a0e982e737746ed6a768c17024f6c5911f5cf097ce17563027354"
+    },
+    "primary_parent_coverage": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/evaluation_versions/s05_20261021/runs/A/parent_coverage.parquet",
+      "sha256": "399a570685f4175dc42aee4b9329caf696b23b7cbc5a99d5b4c1cd40e3bc2275"
+    },
+    "followup": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/followup_versions/s04_20261021/summary.csv",
+      "sha256": "63c52ed7fde6e690b9b53f5e749c0370b3738b689abb1885fa93466e19fa2c12"
+    },
+    "all_followup": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/followup_versions/s04_20261021/all_new_paths.parquet",
+      "sha256": "e2b2b6970972c45e510585c9402483c9b9749f8483057087248aba7190199f1e"
+    },
+    "b06": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_B06_result.md",
+      "sha256": "7d4ec2aecdb7d6f53d09411727311d2b30482d228d8f449c3682c7b23784fff0"
+    },
+    "b07": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_B07_result.md",
+      "sha256": "3636fc5931c1b89e2aea255c793362a5ef5e19765e5d85420be054d56e75cab7"
+    },
+    "b08": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_B08_market_adjustment_result.md",
+      "sha256": "8f9a1341ed688eab93e6a823976bcf10169a8bbba8151824a8ac0f065db8597f"
+    },
+    "protocol_correction": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_E01_corrected_revaluation.md",
+      "sha256": "3deffac307a08035025ce718d26efc8af40131d5494ab6386d30a2268a6ff068"
+    },
+    "omissions": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_S03_missed_process_decisions.md",
+      "sha256": "23ea552003719ce7e4bef2db7135ed7b7cebc81e4e1d29bc66f7ddb50829e668"
+    },
+    "strata": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_S06_business_strata.md",
+      "sha256": "3896554b4a199ef93f40a822f159ac2690c70ce81382365a4adab47f9c9ea861"
+    },
+    "completion_audit": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_S05_scope_and_completion_audit.md",
+      "sha256": "c9418c173a26a73ba7e11e1a5ecf430127cd1ccad23424a4226efde9259926d9"
+    },
+    "maturation": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/V2_S04_versioned_evaluation.md",
+      "sha256": "b87f8c82974e5b8ceb5d6a5e107ed4a56e1fed2fc021def814ba6da8d8ab8a0c"
+    },
+    "path_definition": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/R00_v2_L03_path_prototype.md",
+      "sha256": "27553aa4954602de3e8eed652f3a65f608462d228d467c2ef9fb56261996ee2e"
+    },
+    "enhancement_definition": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/reports/R00_v2_H03_enhancement_prototype.md",
+      "sha256": "e5e46bafa746244a22f6fee03ee04b614cc9e193b0eb05e7385dcc69d4c02c2c"
+    }
+  },
+  "verified_receipts": [
+    "outputs/refresh/s02_chain_safe_v2_20261112/receipt.json",
+    "outputs/refresh/s02_chain_safe_v2_20261112/delivery/receipt.json",
+    "outputs/evaluation_versions/s05_20261021/receipt.json",
+    "outputs/followup_versions/s04_20261021/receipt.json",
+    "outputs/v2_b08/replay_receipt.json",
+    "outputs/v2_b08/evaluation_parent_child/receipt.json",
+    "outputs/v2_s06_business_strata_corrected/receipt.json"
+  ],
+  "documents": {
+    "START_HERE.md": "41c6fa08eeea817359294c63218cc57dfa8d6d9bd0761d9a72a52082c803584d",
+    "README_before_handoff.md": "37bbc37065e15776c6a2e716908b438059924a3ceec005bbbd4618a8117495a0",
+    "METHOD_AND_METRICS.md": "ec864fa9f796635794262f5a12f822fbaa2adf4a2e57f28315b1fea3f189e570",
+    "EVIDENCE_AND_GAPS.md": "401a7310bafa46cd7d80e7ce1b37facc0c359fb7c15aaff0032bf4e3b40c7812"
+  }
+}

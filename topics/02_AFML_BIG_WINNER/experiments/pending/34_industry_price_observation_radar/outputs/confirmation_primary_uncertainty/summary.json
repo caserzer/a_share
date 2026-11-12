@@ -1,0 +1,51 @@
+{
+  "block_weeks": 13,
+  "repetitions": 2000,
+  "seed": 34090,
+  "results": {
+    "new_matching_rate": {
+      "numerator": 1260,
+      "denominator": 1435,
+      "point": 0.8780487804878049,
+      "interval95": [
+        0.848679791830322,
+        0.9048345490126312
+      ]
+    },
+    "parent_coverage": {
+      "numerator": 1360,
+      "denominator": 5759,
+      "point": 0.23615210974127454,
+      "interval95": [
+        0.21745727215924535,
+        0.2597934198223468
+      ]
+    },
+    "timely_parent_coverage": {
+      "numerator": 583,
+      "denominator": 5759,
+      "point": 0.10123285292585518,
+      "interval95": [
+        0.0875723467034854,
+        0.11733980240173959
+      ]
+    },
+    "late_parent_coverage": {
+      "numerator": 777,
+      "denominator": 5759,
+      "point": 0.13491925681541933,
+      "interval95": [
+        0.11959498027670903,
+        0.1520928563306612
+      ]
+    },
+    "unknown_identification_bounds": {
+      "total_new": 1459,
+      "unknown": 24,
+      "lower": 0.8636052090472927,
+      "upper": 0.8800548320767649,
+      "not_confidence_interval": true
+    }
+  },
+  "limits": "Conditional descriptive historical uncertainty; does not address label choice or reused history. No acceptance decision."
+}

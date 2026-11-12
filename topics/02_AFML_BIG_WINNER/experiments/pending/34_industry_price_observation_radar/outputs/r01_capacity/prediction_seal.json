@@ -1,0 +1,25 @@
+{
+  "caps": [
+    3,
+    5,
+    10
+  ],
+  "concurrency": 30,
+  "main_reproduction": "all non-boundary events and weekly counts equal",
+  "boundary_note": "Control boundary exits recorded at first next-era review; no new alerts at boundary; main uses explicit boundary date",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/weekly_catalog.parquet": "c140983c3407f05b56027d150912446b5e96c18bfa9faa5e9e6fca9a27591331",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/configs/r01_baseline.json": "329193640e7cb2860186ff45da52af0f778ca0a3e8275aa9afd14610fb33808a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r01_pool.py": "b903b58f3b4180ce371d8fd8f0bec6ce504848a77871580ee3caa597588d25ec",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r01_capacity_controls.py": "757ba780ec7d8969088681c5f975b7f68db3f794e97060aae5e3eb447bb60f3e",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/R01_capacity_control_plan.md": "e3ba520bca55202abd2d20a6a65baf1bd93a4ab63422670f01441b1e1949b248"
+  },
+  "artifacts": {
+    "cap3_events.parquet": "8fb45f65205e56f97d1a334953b49d40b9139f8305106d668cec1afdd066cefb",
+    "cap3_weeks.parquet": "b050682ed0362d449caee6d490150a4505031002e9e81cd515202f16226c5586",
+    "cap5_events.parquet": "3319c661fc88fd75c1f878e74de2953b06f824b298e865cf0e21591328719615",
+    "cap5_weeks.parquet": "b0673340d978a7bdb8aceddd52106d7d9c7035dae839bd8c73f6cad06c716b24",
+    "cap10_events.parquet": "a0efed49d25bf91c82ab899b3a46804941f84df6ad314bdb665e049c9f38b11e",
+    "cap10_weeks.parquet": "3457ca844b21e2333a78ec647c568d285297642d5a871b2b14bfb6aef16b3a97"
+  }
+}

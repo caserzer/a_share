@@ -1,0 +1,87 @@
+{
+  "protocol": "pool_metric_v1",
+  "thresholds_changed": false,
+  "models": [
+    {
+      "round": "r16",
+      "model": "logit_levels__event_offset",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r16",
+      "model": "logit_levels__event_platt",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r16",
+      "model": "logit_levels__state_oof",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r16",
+      "model": "logit_second__event_offset",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;recall10;known100;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r16",
+      "model": "logit_second__event_platt",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;recall10;known100;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r16",
+      "model": "logit_second__state_oof",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r17",
+      "model": "logit_levels__event_context",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r17",
+      "model": "logit_second__event_context",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r18",
+      "model": "logit_levels__event_context",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "production_authorized": false
+    },
+    {
+      "round": "r18",
+      "model": "logit_second__event_context",
+      "protocol": "pool_metric_v1",
+      "metric_pass": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "production_authorized": false
+    }
+  ],
+  "original_goal_complete": false
+}

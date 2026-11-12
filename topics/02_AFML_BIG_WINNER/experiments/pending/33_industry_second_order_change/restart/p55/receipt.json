@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "future_labels_read": false,
+  "columns_read": [
+    "era",
+    "industry_code",
+    "level",
+    "date",
+    "day_i",
+    "block",
+    "eligible",
+    "rate5",
+    "history_proxy60"
+  ],
+  "correlation_checks": 387,
+  "status_counts": {
+    "OK": 387,
+    "NON_FIVE_SESSION_GAP": 70,
+    "TOO_FEW_COMMON": 31
+  },
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p30/training_panel.parquet": "e94c478d7f1ba71a30ac21dd68b06610a1e15f9c4244238b00bcea8039bfe67d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/src/rank_stability.py": "1ad8e045ef4d936f4ec16d6663010a250d12aaee5f2e15ca7cfc3388c2e1303a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/P55_rank_stability_plan.md": "456f62e7b6a5c3308a14fb57056ce291cf8715b8d43b41ec5d0ad296ca4d4b40"
+  },
+  "outputs": {
+    "quarter.csv": "9137dee55eb6dbb00f362e8488450f2284aac6fd20c33cb048ba7ae6904f2c01",
+    "year.csv": "97ef752e3ebd37b63157c7ac9f0b94c95d4c97354fe44367a1750645dd1772c7",
+    "daily.csv": "2f8e8855e6e176f3e20c820a1e157d04d4c663fffd41ca371e72e732d0f6ee01"
+  }
+}

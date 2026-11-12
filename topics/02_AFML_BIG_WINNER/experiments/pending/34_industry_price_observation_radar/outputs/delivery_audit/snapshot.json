@@ -1,0 +1,74 @@
+{
+  "status": "GOAL_NOT_COMPLETE",
+  "methods": [
+    {
+      "round": "r01",
+      "arm": "main",
+      "status": "FAIL_MAIN_TARGET",
+      "new": 1979,
+      "precision": 0.02072829131652661,
+      "recall": 0.015346329323931979,
+      "process_denominator": 2411
+    },
+    {
+      "round": "r02",
+      "arm": "A",
+      "status": "INCREMENT_UNCERTAIN",
+      "new": 1897,
+      "precision": 0.028486646884272996,
+      "recall": 0.019908751555371217,
+      "process_denominator": 2411
+    },
+    {
+      "round": "r02",
+      "arm": "B",
+      "status": "INCREMENT_UNCERTAIN",
+      "new": 1897,
+      "precision": 0.029149315883402735,
+      "recall": 0.020323517212774783,
+      "process_denominator": 2411
+    },
+    {
+      "round": "r03",
+      "arm": "A",
+      "status": "STOP_MEMBER_BREADTH_BRANCH",
+      "new": 1890,
+      "precision": 0.026143790849673203,
+      "recall": 0.018249688925756947,
+      "process_denominator": 2411
+    },
+    {
+      "round": "r03",
+      "arm": "B",
+      "status": "STOP_MEMBER_BREADTH_BRANCH",
+      "new": 1890,
+      "precision": 0.021906453522794554,
+      "recall": 0.015346329323931979,
+      "process_denominator": 2411
+    }
+  ],
+  "latest_historical_review": "2026-10-16",
+  "latest_catalog": 347,
+  "historical_catalog_rows": 141872,
+  "historical_states": {
+    "NOT_TRIGGERED": 89365,
+    "DATA_INSUFFICIENT": 40883,
+    "TRACKING": 7709,
+    "NEW": 1979,
+    "EXIT": 1936
+  },
+  "r01_events": {
+    "UPDATE": 7716,
+    "NEW": 1979,
+    "EXIT": 1966
+  },
+  "boundary_exit_events": 30,
+  "note": "Snapshot audit; old evaluation pending fields are historical, current supplemental reports control completion status",
+  "unresolved": [
+    "validated price observation method",
+    "fully evaluated late coverage",
+    "complete repeat-versus-update attribution",
+    "validated operational catalog with all explanation fields",
+    "continuous local evaluation lifecycle"
+  ]
+}

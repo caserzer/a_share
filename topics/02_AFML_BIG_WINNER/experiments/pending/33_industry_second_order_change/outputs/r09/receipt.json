@@ -1,0 +1,23 @@
+{
+  "status": "EXECUTED_EXPLORATORY",
+  "checks": {
+    "sampled_raw_outcome_checks": 540,
+    "joint_label_verified": true,
+    "maturity_checked": true
+  },
+  "inputs": {
+    "/tmp/ep33_onset_panel.parquet": "4baca42e368b3ca0bee764b3f3375f83e87b8e7fe98127d3c9ba9709d8ff6801",
+    "/tmp/ep33_r01_panel.parquet": "aed0e5b4bbea64dbdb0d1fafdabb976e82634730d5ec7e4e4c7ddefb67166e9d",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet": "67bb7572e341399bf3e5cb845fd8d0fd1570232c2145697bafb4246d711a3e9e",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/rounds/r09_research_pool_plan.md": "9cd15d94fa13319d570d2ba4dd8a79a390ad3b66ccb9fc556020257d00195528",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/src/pool_evaluation.py": "d7d9500d957e8abb49edf1048ae6e3187e7f7de58f93f4d3663e3e51e8aeb613"
+  },
+  "horizons": [
+    63,
+    126,
+    252
+  ],
+  "bootstrap": "500 circular date-block draws, lengths13/25/50 weeks; descriptive intervals not multiplicity-adjusted",
+  "limits": "historical proxy; all dates previously seen; no independent validation; cooldown8 limited to 2021-2025 per R07"
+}

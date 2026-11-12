@@ -1,0 +1,396 @@
+[
+  {
+    "path": "flat",
+    "perturbed": false,
+    "kinds": [
+      "NON_RISING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 80,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      }
+    ]
+  },
+  {
+    "path": "flat",
+    "perturbed": true,
+    "kinds": [
+      "NON_RISING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 80,
+        "slope": 6.786091428710238e-06,
+        "intercept": -0.00014770854217596778,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      }
+    ]
+  },
+  {
+    "path": "warming",
+    "perturbed": false,
+    "kinds": [
+      "NON_RISING",
+      "WARMING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 40,
+        "slope": -0.005000000000000004,
+        "intercept": 7.771561172376095e-17,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      },
+      {
+        "start": 40,
+        "stop": 80,
+        "slope": 0.003000000000000023,
+        "intercept": -0.3150000000000014,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "WARMING",
+        "family": 1,
+        "previous_slope": -0.005000000000000004,
+        "up": true
+      }
+    ]
+  },
+  {
+    "path": "warming",
+    "perturbed": true,
+    "kinds": [
+      "NON_RISING",
+      "WARMING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 40,
+        "slope": -0.0049898806019394275,
+        "intercept": -0.0001943684371440324,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      },
+      {
+        "start": 40,
+        "stop": 80,
+        "slope": 0.002982949373070025,
+        "intercept": -0.3141540988077458,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "WARMING",
+        "family": 1,
+        "previous_slope": -0.0049898806019394275,
+        "up": true
+      }
+    ]
+  },
+  {
+    "path": "heating",
+    "perturbed": false,
+    "kinds": [
+      "LEFT_UNKNOWN",
+      "HEATING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 40,
+        "slope": 0.002999999999999999,
+        "intercept": 2.2204460492503132e-17,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "LEFT_UNKNOWN",
+        "family": 1,
+        "previous_slope": null,
+        "up": true
+      },
+      {
+        "start": 40,
+        "stop": 80,
+        "slope": 0.00899999999999994,
+        "intercept": -0.24299999999999647,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "HEATING",
+        "family": 1,
+        "previous_slope": 0.002999999999999999,
+        "up": true
+      }
+    ]
+  },
+  {
+    "path": "heating",
+    "perturbed": true,
+    "kinds": [
+      "LEFT_UNKNOWN",
+      "HEATING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 40,
+        "slope": 0.002986702582274915,
+        "intercept": 0.0002605824904648557,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "LEFT_UNKNOWN",
+        "family": 1,
+        "previous_slope": null,
+        "up": true
+      },
+      {
+        "start": 40,
+        "stop": 80,
+        "slope": 0.008974718375599565,
+        "intercept": -0.2417066071479869,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "HEATING",
+        "family": 1,
+        "previous_slope": 0.002986702582274915,
+        "up": true
+      }
+    ]
+  },
+  {
+    "path": "pulse",
+    "perturbed": false,
+    "kinds": [
+      "NON_RISING",
+      "WARMING",
+      "NON_RISING"
+    ],
+    "business_expectation_met": false,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 37,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      },
+      {
+        "start": 37,
+        "stop": 41,
+        "slope": 0.04500000000000011,
+        "intercept": -1.695000000000004,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "WARMING",
+        "family": 1,
+        "previous_slope": 0.0,
+        "up": true
+      },
+      {
+        "start": 41,
+        "stop": 80,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": 0.04500000000000011,
+        "up": false
+      }
+    ]
+  },
+  {
+    "path": "pulse",
+    "perturbed": true,
+    "kinds": [
+      "NON_RISING",
+      "WARMING",
+      "NON_RISING"
+    ],
+    "business_expectation_met": false,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 37,
+        "slope": -2.339680173936589e-05,
+        "intercept": 0.0004953474271497869,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      },
+      {
+        "start": 37,
+        "stop": 41,
+        "slope": 0.04562970911286648,
+        "intercept": -1.7192830186231405,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "WARMING",
+        "family": 1,
+        "previous_slope": -2.339680173936589e-05,
+        "up": true
+      },
+      {
+        "start": 41,
+        "stop": 80,
+        "slope": 1.831850539745828e-05,
+        "intercept": -0.0013589923843101977,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": 0.04562970911286648,
+        "up": false
+      }
+    ]
+  },
+  {
+    "path": "steady_up",
+    "perturbed": false,
+    "kinds": [
+      "LEFT_UNKNOWN"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 80,
+        "slope": 0.0030000000000000044,
+        "intercept": -1.9984014443252818e-16,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "LEFT_UNKNOWN",
+        "family": 1,
+        "previous_slope": null,
+        "up": true
+      }
+    ]
+  },
+  {
+    "path": "steady_up",
+    "perturbed": true,
+    "kinds": [
+      "LEFT_UNKNOWN"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 80,
+        "slope": 0.002999596421334279,
+        "intercept": -5.550909717855213e-06,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "LEFT_UNKNOWN",
+        "family": 1,
+        "previous_slope": null,
+        "up": true
+      }
+    ]
+  },
+  {
+    "path": "slowing_decline",
+    "perturbed": false,
+    "kinds": [
+      "NON_RISING",
+      "NON_RISING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 40,
+        "slope": -0.009000000000000005,
+        "intercept": 1.1102230246251565e-16,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      },
+      {
+        "start": 40,
+        "stop": 80,
+        "slope": -0.0020000000000000794,
+        "intercept": -0.27099999999999513,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": -0.009000000000000005,
+        "up": false
+      }
+    ]
+  },
+  {
+    "path": "slowing_decline",
+    "perturbed": true,
+    "kinds": [
+      "NON_RISING",
+      "NON_RISING"
+    ],
+    "business_expectation_met": true,
+    "segments": [
+      {
+        "start": 0,
+        "stop": 40,
+        "slope": -0.008991695529353479,
+        "intercept": -9.225343415493192e-05,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": null,
+        "up": false
+      },
+      {
+        "start": 40,
+        "stop": 80,
+        "slope": -0.002037252670332605,
+        "intercept": -0.26877202142696055,
+        "noise": 0.002,
+        "penalty": 5.258431961608657e-05,
+        "kind": "NON_RISING",
+        "family": null,
+        "previous_slope": -0.008991695529353479,
+        "up": false
+      }
+    ]
+  }
+]

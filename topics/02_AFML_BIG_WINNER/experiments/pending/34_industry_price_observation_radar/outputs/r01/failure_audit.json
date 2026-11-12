@@ -1,0 +1,57 @@
+{
+  "scope": "Descriptive timing attribution only; late references are not matched successes",
+  "arithmetic_checked": 1815,
+  "arithmetic_disagreements": 0,
+  "unmatched": 1717,
+  "cross_counts": [
+    {
+      "late_reference_exists": false,
+      "post_evaluation": "POST_FAILED",
+      "n": 981
+    },
+    {
+      "late_reference_exists": false,
+      "post_evaluation": "POST_VALID",
+      "n": 13
+    },
+    {
+      "late_reference_exists": true,
+      "post_evaluation": "POST_FAILED",
+      "n": 641
+    },
+    {
+      "late_reference_exists": true,
+      "post_evaluation": "POST_VALID",
+      "n": 82
+    }
+  ],
+  "late_delay": {
+    "count": 723.0,
+    "mean": 32.55739972337483,
+    "std": 14.28462008835137,
+    "min": 11.0,
+    "10%": 17.0,
+    "50%": 28.0,
+    "90%": 55.0,
+    "95%": 58.0,
+    "max": 60.0
+  },
+  "late_prior_gain": {
+    "count": 723.0,
+    "mean": 0.17531453362298502,
+    "std": 0.09822180139969697,
+    "min": 0.015450084350620452,
+    "10%": 0.07486065411523649,
+    "50%": 0.15250967127884119,
+    "90%": 0.308833156255732,
+    "95%": 0.36078406836199683,
+    "max": 0.6978988443122736
+  },
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/evaluation.json": "4fe6a89cf30bb2792b426a4de7522a45b4d813c0a316c5b6ba4d0f372ce74731",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/evaluated_new_observations.parquet": "70cbab032714889e1a8ff47731aa86fabdc8bcfe35cc7596de4537d3667da0d3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r01_failure_audit.py": "ed3da00e9354dd5f2c5d580d1de29c1de6c3798d97e10b56f0a7d87b3860677b"
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "protocol": "pool_metric_v1",
+  "models": [
+    {
+      "round": "r12",
+      "model": "logit_levels",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "known_entries": 71,
+      "success_rate": 0.2112676056338028
+    },
+    {
+      "round": "r12",
+      "model": "logit_price",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "known_entries": 89,
+      "success_rate": 0.2808988764044944
+    },
+    {
+      "round": "r12",
+      "model": "logit_second",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "known_entries": 93,
+      "success_rate": 0.1935483870967742
+    },
+    {
+      "round": "r12",
+      "model": "matured_base",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "known_entries": 0,
+      "success_rate": null
+    },
+    {
+      "round": "r12",
+      "model": "tree_levels",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "known_entries": 0,
+      "success_rate": null
+    },
+    {
+      "round": "r12",
+      "model": "tree_second",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;known100;ci_positive;calibration5pp",
+      "known_entries": 1,
+      "success_rate": 0.0
+    },
+    {
+      "round": "r13",
+      "model": "logit_levels__identity",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "known_entries": 1629,
+      "success_rate": 0.5610804174340086
+    },
+    {
+      "round": "r13",
+      "model": "logit_levels__shrink50",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "known_entries": 671,
+      "success_rate": 0.4694485842026825
+    },
+    {
+      "round": "r13",
+      "model": "logit_price__identity",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "known_entries": 1600,
+      "success_rate": 0.560625
+    },
+    {
+      "round": "r13",
+      "model": "logit_price__shrink50",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "known_entries": 522,
+      "success_rate": 0.4118773946360153
+    },
+    {
+      "round": "r13",
+      "model": "logit_second__identity",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "known_entries": 1737,
+      "success_rate": 0.5526770293609672
+    },
+    {
+      "round": "r13",
+      "model": "logit_second__shrink50",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "known_entries": 795,
+      "success_rate": 0.4465408805031446
+    },
+    {
+      "round": "r13",
+      "model": "tree_levels__identity",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "known_entries": 1813,
+      "success_rate": 0.5466078323221181
+    },
+    {
+      "round": "r13",
+      "model": "tree_levels__shrink50",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "known_entries": 832,
+      "success_rate": 0.4711538461538461
+    },
+    {
+      "round": "r13",
+      "model": "tree_second__identity",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "known_entries": 1833,
+      "success_rate": 0.5368248772504092
+    },
+    {
+      "round": "r13",
+      "model": "tree_second__shrink50",
+      "historical_metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "known_entries": 799,
+      "success_rate": 0.4730913642052565
+    }
+  ],
+  "no_automatic_deployment": true
+}

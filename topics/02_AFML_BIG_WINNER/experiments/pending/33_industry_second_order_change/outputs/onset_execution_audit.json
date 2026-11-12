@@ -1,0 +1,80 @@
+{
+  "status": "R06_R07_R08_EXECUTED_ORIGINAL_GOAL_OPEN",
+  "scope": "User requested execution of corrected onset-process research, not return-ranking optimization.",
+  "evidence": [
+    {
+      "requirement": "outcome-free cases and excluded strata",
+      "files": [
+        "outputs/r06/sample_registry.csv",
+        "outputs/r06/cases.csv",
+        "outputs/r06/sampling_receipt.json"
+      ],
+      "result": "3230 entry rows; 18 cases; empty 2022H1 retained"
+    },
+    {
+      "requirement": "prefix-only recorded observations and reflection before next reveal",
+      "files": [
+        "outputs/r06/checkpoint_04.json",
+        "outputs/r06/checkpoint_08.json",
+        "outputs/r06/checkpoint_12.json",
+        "outputs/r06/checkpoint_18.json",
+        "outputs/r06/checkpoint_26.json",
+        "outputs/r06/checkpoint_27.json",
+        "rounds/r06_checkpoint_04.md",
+        "rounds/r06_checkpoint_08.md",
+        "rounds/r06_checkpoint_12.md",
+        "rounds/r06_checkpoint_18.md",
+        "rounds/r06_tail_audit_note.md"
+      ],
+      "result": "464 records verified; four audit-added tail weeks disclosed"
+    },
+    {
+      "requirement": "case-driven hypotheses extended to panel, with counterexamples",
+      "files": [
+        "rounds/r06_reflection.md",
+        "rounds/r07_process_test_plan.md",
+        "outputs/r07/development_summary.csv",
+        "outputs/r07/reference_summary.csv",
+        "rounds/r07_reflection.md"
+      ],
+      "result": "Not a distinct independent holdout; sampled and outside-case results retained"
+    },
+    {
+      "requirement": "timing, omission and confirmation cost on common endpoint",
+      "files": [
+        "outputs/r08/common_endpoint_summary.csv",
+        "outputs/r08/common_endpoint_annual.csv",
+        "outputs/r08/short_reference_summary.csv",
+        "outputs/r08/unmatched_prompt_diagnostic.csv",
+        "rounds/r08_reflection.md"
+      ],
+      "result": "Shared endpoint prevents changing clocks from masquerading as improvement"
+    },
+    {
+      "requirement": "fundamental uncertainty and separate secondary payoff",
+      "files": [
+        "outputs/r08/nuisance_diagnostics.json",
+        "outputs/r08/secondary_payoff_appendix.csv",
+        "outputs/r08/secondary_receipt.json"
+      ],
+      "result": "Partial finance is not causal explanation; payoff read only after process reflection"
+    },
+    {
+      "requirement": "reproducible timelines and temporal checks",
+      "files": [
+        "reports/onset_process_report.md",
+        "reports/onset_casebook.md",
+        "outputs/onset_validation.json"
+      ],
+      "result": "9 tests; 54 prefix recomputations; 2914 common endpoints recomputed"
+    }
+  ],
+  "remaining_questions": [
+    "No unified earliest-change indicator established",
+    "No causal economic onset identified",
+    "Shared-market rebound vs industry-specific change",
+    "Rolling-window expiry vs genuinely new evidence",
+    "Independent forward validation"
+  ],
+  "no_goal_completion_claim": true
+}

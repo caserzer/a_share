@@ -1,0 +1,248 @@
+{
+  "status": "COVERAGE_LEDGER_BUILT_NOT_LABEL_PROTOCOL",
+  "eras": [
+    {
+      "era": "SW2014",
+      "catalog": 227,
+      "sessions": 1194,
+      "expected_rows": 271038
+    },
+    {
+      "era": "SW2021",
+      "catalog": 347,
+      "sessions": 1160,
+      "expected_rows": 402520
+    }
+  ],
+  "inputs": {
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/sources/L3_SW2014.json": "856f21ee7267051d61f5b1c7af3b3292629fa7934cef8ea074b4f4b48488a2e1",
+    "/home/xiaolv/.cache/a_share/ep32/industry_v1/L3.parquet": "b95a6ecf2599f26bb6316001604cdd4c9178c06afb12d8a64f4cbd12702d2d53",
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet": "932e6c334860cf3cf9fe26e8cb3aa4359afdc60dd71cb147602f30eabd949f76",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/build_coverage_ledger.py": "be3f4946482c81dcf442528361094dd1827a298cdfe5193878fe3a7819ba52ab"
+  },
+  "artifacts": {
+    "evaluation_coverage.parquet": "970a9a9d7c36f4a3eb78806e1cf3e5ab44b95f299297c29f335e70224ee486bd",
+    "catalog.json": "47a82e1981c532e6097e9a33153723ff0294c4b6a4b96e6d7ad2b0287870590c"
+  },
+  "source_rows": 650929,
+  "added_missing_rows": 22629,
+  "transition_dates": [
+    "2021-12-01",
+    "2021-12-02",
+    "2021-12-03",
+    "2021-12-06",
+    "2021-12-07",
+    "2021-12-08",
+    "2021-12-09",
+    "2021-12-10",
+    "2021-12-13",
+    "2021-12-14",
+    "2021-12-15",
+    "2021-12-16",
+    "2021-12-17",
+    "2021-12-20",
+    "2021-12-21",
+    "2021-12-22",
+    "2021-12-23",
+    "2021-12-24",
+    "2021-12-27",
+    "2021-12-28",
+    "2021-12-29",
+    "2021-12-30",
+    "2021-12-31"
+  ],
+  "annual": [
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "rows": 55388,
+      "source_rows": 51428,
+      "nav_rows": 39440,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 38239,
+          "INTERNAL_MISSING_PATH": 17149
+        },
+        "60": {
+          "VALUED_PATH": 36014,
+          "INTERNAL_MISSING_PATH": 19374
+        }
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "rows": 55161,
+      "source_rows": 55161,
+      "nav_rows": 43585,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 42582,
+          "INTERNAL_MISSING_PATH": 12579
+        },
+        "60": {
+          "VALUED_PATH": 41171,
+          "INTERNAL_MISSING_PATH": 13990
+        }
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "rows": 55388,
+      "source_rows": 55388,
+      "nav_rows": 44685,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 44545,
+          "INTERNAL_MISSING_PATH": 10843
+        },
+        "60": {
+          "VALUED_PATH": 44267,
+          "INTERNAL_MISSING_PATH": 11121
+        }
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "rows": 55161,
+      "source_rows": 55161,
+      "nav_rows": 44297,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 44297,
+          "INTERNAL_MISSING_PATH": 10864
+        },
+        "60": {
+          "VALUED_PATH": 44297,
+          "INTERNAL_MISSING_PATH": 10864
+        }
+      }
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "rows": 49940,
+      "source_rows": 49940,
+      "nav_rows": 41251,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 37451,
+          "INTERNAL_MISSING_PATH": 7949,
+          "CLASSIFICATION_BOUNDARY": 4540
+        },
+        "60": {
+          "VALUED_PATH": 29851,
+          "CLASSIFICATION_BOUNDARY": 13620,
+          "INTERNAL_MISSING_PATH": 6469
+        }
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "rows": 83974,
+      "source_rows": 74997,
+      "nav_rows": 58446,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 58266,
+          "INTERNAL_MISSING_PATH": 23288,
+          "NO_PRICE_IDENTITY": 2420
+        },
+        "60": {
+          "VALUED_PATH": 57926,
+          "INTERNAL_MISSING_PATH": 23628,
+          "NO_PRICE_IDENTITY": 2420
+        }
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "rows": 83974,
+      "source_rows": 81174,
+      "nav_rows": 63960,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 63880,
+          "INTERNAL_MISSING_PATH": 17674,
+          "NO_PRICE_IDENTITY": 2420
+        },
+        "60": {
+          "VALUED_PATH": 63757,
+          "INTERNAL_MISSING_PATH": 17797,
+          "NO_PRICE_IDENTITY": 2420
+        }
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "rows": 83974,
+      "source_rows": 81497,
+      "nav_rows": 63804,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 63704,
+          "INTERNAL_MISSING_PATH": 17850,
+          "NO_PRICE_IDENTITY": 2420
+        },
+        "60": {
+          "VALUED_PATH": 63504,
+          "INTERNAL_MISSING_PATH": 18050,
+          "NO_PRICE_IDENTITY": 2420
+        }
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "rows": 84321,
+      "source_rows": 81891,
+      "nav_rows": 63890,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 63890,
+          "INTERNAL_MISSING_PATH": 18001,
+          "NO_PRICE_IDENTITY": 2430
+        },
+        "60": {
+          "VALUED_PATH": 63886,
+          "INTERNAL_MISSING_PATH": 18005,
+          "NO_PRICE_IDENTITY": 2430
+        }
+      }
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "rows": 66277,
+      "source_rows": 64292,
+      "nav_rows": 50596,
+      "path_status": {
+        "20": {
+          "VALUED_PATH": 45276,
+          "INTERNAL_MISSING_PATH": 12351,
+          "RIGHT_CENSORED": 6740,
+          "NO_PRICE_IDENTITY": 1910
+        },
+        "60": {
+          "VALUED_PATH": 34640,
+          "RIGHT_CENSORED": 20220,
+          "INTERNAL_MISSING_PATH": 9507,
+          "NO_PRICE_IDENTITY": 1910
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Catalog snapshots do not certify historical active membership or PIT",
+    "Future eval fields must never enter online signals",
+    "Era dates follow existing local research policy, not official effective-date proof",
+    "20/60 windows are support diagnostics, not approved labels"
+  ]
+}

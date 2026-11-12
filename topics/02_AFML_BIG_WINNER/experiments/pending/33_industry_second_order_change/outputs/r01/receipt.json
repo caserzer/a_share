@@ -1,0 +1,20 @@
+{
+  "round_id": "r01",
+  "quality": "Historical-proxy",
+  "data_end": "2026-10-21 00:00:00",
+  "panel_rows": 72799,
+  "checks": {
+    "truncation_and_future_perturbation_groups": 20,
+    "independent_endpoint_checks": 30,
+    "membership_asof_check": true,
+    "continuous_block_and_unique_identity_checks": true,
+    "limits": "Derived-feature checks do not certify source PIT or economic significance."
+  },
+  "inputs": {
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet": "67bb7572e341399bf3e5cb845fd8d0fd1570232c2145697bafb4246d711a3e9e",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v5_rdagent_onset_forecast/outputs/daily_input_audit.json": "722b420958c09ef58a38beb2ebcbb6ab8c4976746a6149979f69e470d66edbf9",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/rounds/r01_plan.md": "70700c56d4ddaf7cfe27d066975929720e1b1c1da339810074e3affb077e7cdc",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/src/price_experiment.py": "c6d687668098076b411a146566f97573001a6b30b7aed3ccfa6e034818d4c1e9"
+  }
+}

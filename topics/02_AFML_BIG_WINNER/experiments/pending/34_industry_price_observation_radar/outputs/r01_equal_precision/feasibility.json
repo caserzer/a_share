@@ -1,0 +1,80 @@
+{
+  "reference_precision": 0.5,
+  "minimum_evaluable_alerts": 200,
+  "necessary_successes": 100,
+  "scope": "Fixed-sequence publication subsets only; unknown labels are not failures; no state-machine threshold rerun",
+  "versions": [
+    {
+      "version": "capacity3",
+      "mature_evaluable": 1219,
+      "successes": 26,
+      "necessary_successes": 100,
+      "ideal_subset_precision_upper": 0.13,
+      "unknown": 79,
+      "immature": 42,
+      "status": "INFEASIBLE_ON_EXISTING_KNOWN_ALERTS"
+    },
+    {
+      "version": "main5",
+      "mature_evaluable": 1785,
+      "successes": 37,
+      "necessary_successes": 100,
+      "ideal_subset_precision_upper": 0.185,
+      "unknown": 124,
+      "immature": 70,
+      "status": "INFEASIBLE_ON_EXISTING_KNOWN_ALERTS"
+    },
+    {
+      "version": "capacity10",
+      "mature_evaluable": 2288,
+      "successes": 39,
+      "necessary_successes": 100,
+      "ideal_subset_precision_upper": 0.195,
+      "unknown": 161,
+      "immature": 90,
+      "status": "INFEASIBLE_ON_EXISTING_KNOWN_ALERTS"
+    },
+    {
+      "version": "delay5",
+      "mature_evaluable": 1594,
+      "successes": 38,
+      "necessary_successes": 100,
+      "ideal_subset_precision_upper": 0.19,
+      "unknown": 103,
+      "immature": 70,
+      "status": "INFEASIBLE_ON_EXISTING_KNOWN_ALERTS"
+    },
+    {
+      "version": "delay10",
+      "mature_evaluable": 1450,
+      "successes": 33,
+      "necessary_successes": 100,
+      "ideal_subset_precision_upper": 0.165,
+      "unknown": 77,
+      "immature": 62,
+      "status": "INFEASIBLE_ON_EXISTING_KNOWN_ALERTS"
+    }
+  ],
+  "prefix_checks": 40,
+  "prefix_status_counts": {
+    "INSUFFICIENT_SUPPORT": 22,
+    "INSUFFICIENT_SUCCESSES": 18
+  },
+  "status": "TARGET_UNREACHABLE_FOR_REGISTERED_FIXED_VERSIONS_NO_EQUAL_PRECISION_RANKING",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/configs/evaluation_registration.json": "18d8adf26d673d9f9afe991f1b2e0ec76723e9cb35cf099f9212ccba9dcf7f1f",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/R01_equal_precision_plan.md": "73e9e3537cf3a772494a0a769a5fdfd07053656e1ff48d03f30045b58ab76a8f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r01_equal_precision_feasibility.py": "b44d26d02a242e72d6574197343c49ae5e284787aa2b7afab57f5f7e78629ed0",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_capacity/cap3_matched.parquet": "86832ff2a3f8f883737fd9e50a06025df0eda3d4beb70b4ea1cebe1ace150003",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_capacity/cap3_events.parquet": "8fb45f65205e56f97d1a334953b49d40b9139f8305106d668cec1afdd066cefb",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_capacity/cap5_matched.parquet": "e255c94e58de746144bf244ca93d3952c410c5121c51af08d9e18a4eeeca98a5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_capacity/cap5_events.parquet": "3319c661fc88fd75c1f878e74de2953b06f824b298e865cf0e21591328719615",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_capacity/cap10_matched.parquet": "fd254e5d897057f2db37c512b4e736972a911e971f34147811268329760f73fe",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_capacity/cap10_events.parquet": "a0efed49d25bf91c82ab899b3a46804941f84df6ad314bdb665e049c9f38b11e",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_delay/delay5_matched.parquet": "a0a00335febd5c917ddf403c01c29e41df36f14cccf55c1cdcf80c1b1cca2084",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_delay/delay5_events.parquet": "5c0c88a90c3ab4c29ecbe04400fa18558774af3fe83d0df05b2977574875fbe6",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_delay/delay10_matched.parquet": "8c6780a16771fd70f9abcb26665b38cd4d13ae084aad1ea8a1ba7bfbd25d6e7a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_delay/delay10_events.parquet": "080c82a524c2f20297bd249b1eea30b5aaf015025aa599ce0c58fde4fa001850"
+  }
+}

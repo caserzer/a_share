@@ -1,0 +1,157 @@
+{
+  "scope": "Feasibility only; no new predictions, outcome joins, or return evaluation",
+  "strict_pit": false,
+  "support_rule": "Descriptive 84 consecutive nonnegative nonconflicting field observations; prior63 denominator>0; >=5 valid members and >=80% resolved+unresolved prior-month members",
+  "partitions": 5798,
+  "raw_rows": 10525027,
+  "catalog_rows": 141872,
+  "missing_membership": 4926,
+  "price_eligible": 100982,
+  "common_support": {
+    "volume": 92153,
+    "money": 92187,
+    "turnover_rate": 70401
+  },
+  "common_ticket_denominator": 15644,
+  "supported_tickets": {
+    "volume": 14165,
+    "money": 14170,
+    "turnover_rate": 10833
+  },
+  "field_counts": {
+    "volume": {
+      "known": 10522094,
+      "conflict": 1974,
+      "zero": 236
+    },
+    "money": {
+      "known": 10522877,
+      "conflict": 1186,
+      "zero": 231
+    },
+    "turnover_rate": {
+      "known": 9281266,
+      "conflict": 2227,
+      "zero": 22
+    }
+  },
+  "vwap_unit_diagnostic": {
+    "comparable": 10520789,
+    "outside_low_high_with_1pct_tolerance": 761,
+    "interpretation": "Descriptive money/volume consistency only; not proof of historical units or PIT"
+  },
+  "provider_sets": {
+    "D2-v1": 9022818,
+    "BaoStock": 440399,
+    "BaoStock|D2-v1": 25699,
+    "Sina": 948629,
+    "BaoStock|Sina": 63027,
+    "D2-v1|Sina": 24447,
+    "BaoStock|D2-v1|Sina": 8
+  },
+  "annual": [
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "catalog_rows": 11577,
+      "price_eligible": 5359,
+      "volume_common_support": 2357,
+      "money_common_support": 2352,
+      "turnover_rate_common_support": 1883
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "catalog_rows": 11577,
+      "price_eligible": 8362,
+      "volume_common_support": 5610,
+      "money_common_support": 5612,
+      "turnover_rate_common_support": 4510
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "catalog_rows": 11577,
+      "price_eligible": 9301,
+      "volume_common_support": 8648,
+      "money_common_support": 8652,
+      "turnover_rate_common_support": 7495
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "catalog_rows": 11804,
+      "price_eligible": 9430,
+      "volume_common_support": 8878,
+      "money_common_support": 8879,
+      "turnover_rate_common_support": 7896
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "catalog_rows": 10669,
+      "price_eligible": 8737,
+      "volume_common_support": 8119,
+      "money_common_support": 8119,
+      "turnover_rate_common_support": 7307
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "catalog_rows": 17350,
+      "price_eligible": 8747,
+      "volume_common_support": 8409,
+      "money_common_support": 8409,
+      "turnover_rate_common_support": 6088
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "catalog_rows": 17350,
+      "price_eligible": 13151,
+      "volume_common_support": 12890,
+      "money_common_support": 12890,
+      "turnover_rate_common_support": 9129
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "catalog_rows": 17697,
+      "price_eligible": 13416,
+      "volume_common_support": 13254,
+      "money_common_support": 13268,
+      "turnover_rate_common_support": 9753
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "catalog_rows": 18391,
+      "price_eligible": 13896,
+      "volume_common_support": 13720,
+      "money_common_support": 13720,
+      "turnover_rate_common_support": 9822
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "catalog_rows": 13880,
+      "price_eligible": 10583,
+      "volume_common_support": 10268,
+      "money_common_support": 10286,
+      "turnover_rate_common_support": 6518
+    }
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/receipt.json": "bea4fab3ea19dd51b598f4cd47885368cd0de35548eb1b3a80c9cfe46b59bed5",
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet": "932e6c334860cf3cf9fe26e8cb3aa4359afdc60dd71cb147602f30eabd949f76",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/weekly_catalog.parquet": "c140983c3407f05b56027d150912446b5e96c18bfa9faa5e9e6fca9a27591331",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r02/common_catalog.parquet": "544ac58a524bc6139aeb949df98fdc8d25470b20c6aee1d75b41b201d818f55c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/audit_activity_support.py": "5aa7387a451b9cd57ae002deb9f3498ffba80af29168f34cd5845489679323a7"
+  },
+  "partition_hashes": "All partitions verified against P29 price_reads",
+  "outputs": {
+    "stock_coverage.parquet": "809d12d4cf71e496641374e283cbe2e4d2603e1689d364899f381b748da2f408",
+    "weekly_support.parquet": "cac0bd0cdaab7aaa44b42d3e26e87745781936674ce7e66d9bcb1ce500605abf"
+  }
+}

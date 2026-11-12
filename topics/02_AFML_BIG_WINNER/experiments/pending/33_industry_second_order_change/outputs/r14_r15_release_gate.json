@@ -1,0 +1,103 @@
+{
+  "protocol": "pool_metric_v1",
+  "thresholds_changed": false,
+  "models": [
+    {
+      "round": "r14",
+      "model": "logit_levels__identity",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r14",
+      "model": "logit_levels__ridge_global",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r14",
+      "model": "logit_levels__ridge_market",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r14",
+      "model": "logit_second__identity",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r14",
+      "model": "logit_second__ridge_global",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r14",
+      "model": "logit_second__ridge_market",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r15",
+      "model": "logit_levels__identity",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r15",
+      "model": "logit_levels__ridge_global",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r15",
+      "model": "logit_levels__ridge_market",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r15",
+      "model": "logit_second__identity",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r15",
+      "model": "logit_second__ridge_global",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;uplift5pp;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    },
+    {
+      "round": "r15",
+      "model": "logit_second__ridge_market",
+      "metric_pass": false,
+      "production_authorized": false,
+      "failed_gates": "win60;recall10;ci_positive;calibration5pp",
+      "protocol": "pool_metric_v1"
+    }
+  ],
+  "original_goal_complete": false
+}

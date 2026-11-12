@@ -1,0 +1,66 @@
+import sys,json
+from pathlib import Path
+import numpy as np,pandas as pd
+EP=Path(__file__).resolve().parents[2];sys.path.insert(0,str(EP/'src'))
+from pool_evaluation import sha
+OUT=EP/'restart/p24';OUT.mkdir(exist_ok=True);assert not (OUT/'receipt.json').exists(),'sealed'
+identityfile=EP.parent/'32_industry_rotation_cycle_observation/extensions/v4_adaptive_6_18_months/outputs/audits/inputs.json';identity=json.loads(identityfile.read_text());release=Path(identity['price_release']);assign=Path('/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet');raw=Path('/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet');calendar=release/'inputs/inputs/baseline/normalized/calendar.parquet'
+j=pd.read_parquet(assign);j=j[j.level.eq('L3')];days=pd.DatetimeIndex(pd.read_parquet(calendar).date).sort_values();months=days.to_period('M');anchors=pd.Series(np.arange(len(days)),index=months).groupby(level=0).max();ids=sorted(j.security_id.unique());sidmap={s:i for i,s in enumerate(ids)}
+prices=np.full((len(days),len(ids)),np.nan);chains=np.full(prices.shape,-1,dtype=np.int16);reads={}
+for i,sid in enumerate(ids):
+ rel='normalized/prices_qfq/'+sid+'.parquet';path=release/rel;h=sha(path);assert h==identity['daily_read_files'][rel];reads[str(path)]=h
+ b=pd.read_parquet(path,columns=['date','qfq_close','close_conflict','factor_chain_id']).set_index('date').reindex(days)
+ prices[:,i]=pd.to_numeric(b.qfq_close).where(b.close_conflict.eq(False)&b.qfq_close.gt(0));chains[:,i]=pd.factorize(b.factor_chain_id)[0]
+ if (i+1)%500==0:print('verified stock partitions',i+1,'/',len(ids),flush=True)
+def month_values(p,c,unresolved=0):
+ held=np.isfinite(p[0])&(c[0]>=0);coverage=held.sum()/(p.shape[1]+unresolved);eligible=p.shape[1]>=5 and coverage>=.8
+ vals=np.full(len(p),np.nan);valid=np.zeros(len(p),bool)
+ if eligible:
+  valid=(np.isfinite(p[:,held])&(c[:,held]==c[0,held])&(c[:,held]>=0)).all(axis=1)
+  vals[valid]=np.mean(p[valid][:,held]/p[0,held],axis=1)
+ return vals,held,coverage,eligible
+# Edge cases independent of return outcomes.
+p=np.ones((4,5));c=np.zeros((4,5),int);p[0,4]=np.nan;p[1:,4]=100
+v,h,cv,ok=month_values(p,c);assert ok and cv==.8 and h.sum()==4 and np.allclose(v,1)
+p=np.ones((4,5));p[2,0]=np.nan;v,*_=month_values(p,c);assert np.isnan(v[2]) and v[1]==1 and v[3]==1
+c[2,0]=1;p[2,0]=1;v,*_=month_values(p,c);assert np.isnan(v[2]);c[2,0]=0
+p[0,:2]=np.nan;v,*_=month_values(p,c);assert np.isnan(v).all()
+records=[];audit=[]
+for (era,code),g in j.groupby(['era','industry_code'],sort=True):
+ parts=[];last_i=None;last_nav=np.nan
+ for month,cohort in g.groupby('month',sort=True):
+  target=month+1
+  if (era=='SW2014' and target>pd.Period('2021-11')) or (era=='SW2021' and target<pd.Period('2022-01')):continue
+  ix=np.flatnonzero(months==target)
+  if not len(ix) or month not in anchors:continue
+  ai=int(anchors[month]);si=np.asarray([sidmap[s] for s in cohort.security_id]);ti=np.r_[ai,ix];p=prices[np.ix_(ti,si)];c=chains[np.ix_(ti,si)];unresolved=int(cohort.unresolved.max());v,held,cov,eligible=month_values(p,c,unresolved)
+  connected=last_i==ai and np.isfinite(last_nav);scale=last_nav if connected else 1.
+  if last_i!=ai:parts.append(pd.DataFrame(dict(date=[days[ai]],day_i=[ai],nav=[1. if eligible else np.nan],relative_nav=[1. if eligible else np.nan],anchor=[days[ai]],anchor_coverage=[cov],members=[len(si)],held_members=[int(held.sum())],status=['ORIGIN' if eligible else 'ANCHOR_INSUFFICIENT'])))
+  status=np.where(np.isfinite(v[1:]),'VALID','HELD_PRICE_UNKNOWN') if eligible else np.repeat('ANCHOR_INSUFFICIENT',len(ix))
+  parts.append(pd.DataFrame(dict(date=days[ix],day_i=ix,nav=v[1:]*scale,relative_nav=v[1:],anchor=days[ai],anchor_coverage=cov,members=len(si),held_members=int(held.sum()),status=status)))
+  # All original members priced through month: reproduce old mean without future selection.
+  complete=np.isfinite(p).all() and (c==c[0]).all() and (c>=0).all()
+  if complete and eligible:assert np.allclose(v,np.mean(p/p[0],axis=1))
+  audit.append(dict(era=era,industry_code=code,month=str(target),days=len(ix),known=int(np.isfinite(v[1:]).sum()),members=len(si),held=int(held.sum()),anchor_coverage=cov,eligible=eligible,complete=bool(complete),connected=connected))
+  last_i=int(ix[-1]);last_nav=float(v[-1]*scale)
+ if not parts:continue
+ f=pd.concat(parts,ignore_index=True).sort_values('date');assert not f.date.duplicated().any();known=f.nav.notna();starts=known&(~known.shift(fill_value=False)|f.day_i.diff().ne(1));f['block']=starts.cumsum().where(known).astype('Int64');f['era']=era;f['industry_code']=code;f['level']='L3';f['industry_name']=g.industry_name.iloc[-1];records.append(f)
+d=pd.concat(records,ignore_index=True);d.to_parquet(OUT/'daily_industries.parquet',index=False);pd.DataFrame(audit).to_csv(OUT/'month_audit.csv',index=False)
+for _,g in d[d.nav.notna()].groupby(['era','industry_code','block']):assert np.all(np.diff(g.day_i)==1)
+proto=pd.read_parquet(EP/'restart/p23/monthly_prototype.parquet');a=proto.merge(d[['era','industry_code','date','relative_nav']],on=['era','industry_code','date'],validate='one_to_one');assert len(a)==len(proto) and np.allclose(a.fixed_relative_nav,a.relative_nav,equal_nan=True)
+# Preserve unknown dates and catalog denominator; report path availability without return labels.
+week_s=pd.Series(days,index=days).groupby(days.to_period('W-FRI')).max();weeks=week_s[[p.end_time.normalize()<=days.max() for p in week_s.index]]
+rows=[]
+for _,g in d.groupby(['era','industry_code']):
+ g=g.sort_values('date').copy();g['history60']=g.nav.notna()&g.block.eq(g.block.shift(60))&g.day_i.sub(g.day_i.shift(60)).eq(60)&g.status.ne('ORIGIN');g['history60']=g.history60.fillna(False)
+ for h in [63,126,252]:
+  g[f'calendar_mature{h}']=g.day_i+h+1<len(days);g[f'path{h}']=(g.nav.notna()&g.block.eq(g.block.shift(-h-1))&g.day_i.shift(-h-1).sub(g.day_i).eq(h+1)).fillna(False)
+ rows.append(g[g.date.isin(weeks)])
+w=pd.concat(rows,ignore_index=True);w.to_parquet(OUT/'weekly_path_support.parquet',index=False)
+w.groupby(w.date.dt.year).agg(catalog_rows=('date','size'),known_nav=('nav','count'),history60=('history60','sum'),path63=('path63','sum'),path126=('path126','sum'),path252=('path252','sum')).to_csv(OUT/'annual_support.csv')
+old=pd.read_parquet(raw);old=old[old.level.eq('L3')].sort_values(['era','industry_code','block','date']);old['old_eligible']=old.groupby(['era','industry_code','block']).nav.shift(60).notna()&old.coverage.ge(.8)&old.members.ge(5);old=old[old.date.isin(weeks)]
+a=w.merge(old[['era','industry_code','date','old_eligible']],on=['era','industry_code','date'],how='outer',validate='one_to_one',indicator=True);a['old_eligible']=a.old_eligible.fillna(False).astype(bool);a['history60']=a.history60.fillna(False).astype(bool)
+a.groupby([a.date.dt.year,'old_eligible','history60'],observed=True).size().rename('rows').to_csv(OUT/'eligibility_transition.csv')
+inputs=[identityfile,assign,raw,calendar,EP/'restart/p23/monthly_prototype.parquet',Path(__file__),EP/'restart/P24_fixed_cohort_history_plan.md']
+(OUT/'receipt.json').write_text(json.dumps(dict(status='PASS',inputs={str(p):sha(p) for p in inputs},price_reads=reads,daily_rows=len(d),prototype_rows=len(proto),complete_months=int(pd.DataFrame(audit).complete.sum()),synthetic_cases=4,continuous_blocks_verified=True,artifacts={f.name:sha(f) for f in OUT.glob('*') if f.is_file()},no_return_outcomes_computed=True),indent=2)+'\n')
+print(pd.read_csv(OUT/'annual_support.csv').to_string(index=False));print('daily',len(d),'months',len(audit),'prototypes',len(proto),flush=True)

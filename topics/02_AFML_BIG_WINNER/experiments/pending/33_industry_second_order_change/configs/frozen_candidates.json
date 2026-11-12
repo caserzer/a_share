@@ -1,0 +1,45 @@
+{
+  "status": "FROZEN_AFTER_EXPLORATION_NOT_INDEPENDENTLY_VALIDATED",
+  "data_quality": "Historical-proxy",
+  "data_cutoff": "2026-10-21",
+  "schedule": "last trading day of completed W-FRI week",
+  "level": "L3",
+  "era_policy": "SW2014 and SW2021 separate; no price path across gaps",
+  "observations_from": "2021-01-01",
+  "research_budget_k": 10,
+  "price_base": {
+    "minimum_members": 5,
+    "minimum_price_coverage": 0.8,
+    "relative_log_price": "log(industry_nav/CSI_ALL_close)",
+    "velocity": "x_t-x_(t-21)",
+    "acceleration": "velocity_t-velocity_(t-21)"
+  },
+  "A": {
+    "base_history_sessions": 63,
+    "improving_state": "velocity >= 0 and acceleration > 0",
+    "minimum_improving_state_pool": 20,
+    "persistence": "at least 8 of last 10 sessions with acceleration > 0",
+    "diffusion": "breadth21_t-breadth21_(t-21)>0; this change minus its value 21 sessions ago >0",
+    "rank": "velocity descending then industry_code ascending",
+    "minimum_output": 0
+  },
+  "B": {
+    "base_history_sessions": 42,
+    "finance_min_members": 3,
+    "finance_min_coverage": 0.3,
+    "finance_max_report_age_calendar_days": 550,
+    "finance_signal": "quarterly revenue YoY change vs preceding quarter; positive prior-year base, nonnegative current revenue",
+    "availability": "next trading day strictly after max(NOTICE_DATE,UPDATE_DATE) over all dependencies",
+    "rank": "0.5*cross_section_percentile(velocity)+0.5*cross_section_percentile(finance_acceleration)",
+    "missing_policy": "retain full price universe in coverage; B ranks only common finance-available pool"
+  },
+  "evaluation": {
+    "primary_horizon_sessions": 126,
+    "start": "next session close",
+    "labels": "price inferred, not net executable",
+    "unknown": "NaN; keep censored separate from path/classification gap",
+    "primary_comparison": "date paired complete selected cohorts, monthly equal weights",
+    "uncertainty": "12 calendar-month circular blocks, 2000 bootstrap draws, seed33; exploratory"
+  },
+  "next_phase": "independent validation or explicit new exploratory revision; no automatic data collection"
+}

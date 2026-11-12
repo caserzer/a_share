@@ -1,0 +1,41 @@
+{
+  "scope": "Descriptive boundary accounting; no rule changes or causal attribution beyond fixed same-date rankings",
+  "full_processes": 2411,
+  "common_candidate_available": 1511,
+  "counts": {
+    "A": {
+      "CANDIDATE_NOT_SUCCESSFULLY_ASSIGNED": 1411,
+      "NO_COMMON_CANDIDATE_IN_WINDOW": 900,
+      "ASSIGNED_FAILURE": 54,
+      "SUCCESS": 44,
+      "UNRESOLVED": 2
+    },
+    "B": {
+      "CANDIDATE_NOT_SUCCESSFULLY_ASSIGNED": 1414,
+      "NO_COMMON_CANDIDATE_IN_WINDOW": 900,
+      "ASSIGNED_FAILURE": 58,
+      "SUCCESS": 37,
+      "UNRESOLVED": 2
+    }
+  },
+  "discordant_counts": [
+    {
+      "direction": "B_ADDED",
+      "reason": "OTHER_ARM_NO_TIMELY_ASSIGNMENT",
+      "n": 6
+    },
+    {
+      "direction": "B_LOST",
+      "reason": "OTHER_ARM_NO_TIMELY_ASSIGNMENT",
+      "n": 13
+    }
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r03/full_catalog.parquet": "93efbcd4196c5586dc06550729117af703a527ef69755460fd370411a8051f7c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r03/predictions.parquet": "dbee1f447a4220a221c2cb608a7ee5fa1db1cd423e31129690e8891ba97106af",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r03/A_evaluated.parquet": "dbebab16bc620921f4187722781e562f3de9240055a1fcb712f44ddf6c908e0a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r03/B_evaluated.parquet": "c9d9a6dd140c654156c545f797070b4085ca32c3620369ab9c454c76749212af",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r03_failure_boundary.py": "0849e6e5239634d06c07df0a2cc5455847e6051b1d03d67619cdff04f9087e12"
+  }
+}

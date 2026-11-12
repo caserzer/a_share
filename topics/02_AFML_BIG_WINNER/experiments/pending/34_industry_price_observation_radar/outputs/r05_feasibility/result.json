@@ -1,0 +1,43 @@
+{
+  "status": "STOP_ADMISSION_DRAFT_BEFORE_SIGNAL_EXPERIMENT",
+  "known_process_denominator": 2411,
+  "target_hits": 724,
+  "results": {
+    "A_independent_cap5": {
+      "candidate_rows": 38187,
+      "valid_edges": 878,
+      "reachable_processes": 507,
+      "maximum_hits": 388,
+      "recall_upper": 0.160929075072584
+    },
+    "A_common_static_cap": {
+      "candidate_rows": 38187,
+      "valid_edges": 878,
+      "reachable_processes": 507,
+      "maximum_hits": 388,
+      "recall_upper": 0.160929075072584
+    },
+    "B_independent_cap5": {
+      "candidate_rows": 49650,
+      "valid_edges": 1350,
+      "reachable_processes": 840,
+      "maximum_hits": 581,
+      "recall_upper": 0.24097884695147243
+    },
+    "B_common_static_cap": {
+      "candidate_rows": 49650,
+      "valid_edges": 1350,
+      "reachable_processes": 840,
+      "maximum_hits": 579,
+      "recall_upper": 0.24014931563666528
+    }
+  },
+  "rule": "Only past-only r20/delta20 determine eligibility; future paths used solely for optimistic bound",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r02/common_catalog.parquet": "544ac58a524bc6139aeb949df98fdc8d25470b20c6aee1d75b41b201d818f55c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/d02/nearest_valid_edges.parquet": "55f3d6c60a339c5af179bbf5c7d32742bc8b9e18697e5ce000ef843fddc55499",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/R05_admission_feasibility_plan.md": "b6f2b33ed328d36da4d0d8329cec6bcf11ad7900786a4033dc5e488485184a5b",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r05_admission_bound.py": "9a83cfd20145e5e89ad95ce39de4860aff722fded133624284529edc4a4535b5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/configs/evaluation_registration.json": "18d8adf26d673d9f9afe991f1b2e0ec76723e9cb35cf099f9212ccba9dcf7f1f"
+  }
+}

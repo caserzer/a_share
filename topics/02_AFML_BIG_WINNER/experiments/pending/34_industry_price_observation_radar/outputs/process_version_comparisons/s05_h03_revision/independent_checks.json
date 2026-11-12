@@ -1,0 +1,18 @@
+{
+  "A": "full evaluation and workload identical",
+  "B": "full evaluation and workload identical",
+  "scope_boundaries": "outside before/after, both shared endpoints, interior passed",
+  "lineage_tests": "renumber, boundary, split, merge, cross-block, deletion, addition passed",
+  "actual_status_transitions": [
+    {
+      "old_status": "NOT_RETAINED",
+      "new_status": "PATH_SUPPORTED",
+      "n": 30
+    },
+    {
+      "old_status": "NOT_RETAINED",
+      "new_status": "RIGHT_UNKNOWN",
+      "n": 2
+    }
+  ]
+}

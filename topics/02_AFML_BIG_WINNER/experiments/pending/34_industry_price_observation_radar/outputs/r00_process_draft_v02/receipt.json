@@ -1,0 +1,202 @@
+{
+  "status": "DRAFT_IDENTITY_NOT_FROZEN",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_coverage/evaluation_coverage.parquet": "970a9a9d7c36f4a3eb78806e1cf3e5ab44b95f299297c29f335e70224ee486bd",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/build_process_v02.py": "7e55f1ce56c66641eeeb3b8e1315b0f0c1174d26cab9e262330b9ad88c7e428f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/process_identity_v02.py": "492cb2e00ddbd01e3d388790fdf98b3b4c1d90a4aae1fdcc04dab6be4ecf0cbc",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/R00_process_identity_v02.md": "0b9d5e14d38594af6b7b82e24505ab63f9ecab3e11d29535a72806b5f66e3f9f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/rounds/R00_process_definition_draft.md": "ce49534f7c255dff2396961ba85e0643b815f000c24018c571fdca3bf9fb6180"
+  },
+  "support": {
+    "EVALUABLE": 446619,
+    "MISSING_PRICE": 148004,
+    "LEFT_BLOCK_WINDOW": 31320,
+    "TAIL_RIGHT_CENSORED": 15840,
+    "NO_PRICE_IDENTITY": 11600,
+    "TAIL_CLASSIFICATION_BOUNDARY": 11280,
+    "SHORT_BLOCK_BOTH_BOUNDARIES": 4695,
+    "TAIL_INTERNAL_PRICE_BREAK": 4200
+  },
+  "candidate_days": 32986,
+  "phases": 3491,
+  "parents": 3144,
+  "kinds": {
+    "WARMING": 2724,
+    "HEATING": 767
+  },
+  "ends": {
+    "DRAWDOWN8": 1907,
+    "PAUSE20": 1225,
+    "NEW_HEATING_PHASE": 347,
+    "RIGHT_CENSORED": 8,
+    "CLASSIFICATION_BOUNDARY": 2,
+    "INTERNAL_PRICE_BREAK": 2
+  },
+  "censored_phases": 12,
+  "first_evaluable_start": 180,
+  "assignment": {
+    "SAME_PHASE": 29072,
+    "NEW_PARENT": 3144,
+    "RESET_DAY_EXCLUDED": 423,
+    "NEW_HEATING_PHASE": 347
+  },
+  "duration": {
+    "count": 3491.0,
+    "mean": 45.08965912346033,
+    "std": 21.81844161410932,
+    "min": 1.0,
+    "50%": 43.0,
+    "90%": 72.0,
+    "95%": 82.0,
+    "99%": 117.0,
+    "max": 171.0
+  },
+  "annual": [
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "kind": "HEATING",
+      "phases": 19,
+      "parents": 19
+    },
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "kind": "WARMING",
+      "phases": 140,
+      "parents": 140
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "kind": "HEATING",
+      "phases": 1,
+      "parents": 1
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "kind": "WARMING",
+      "phases": 260,
+      "parents": 260
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "kind": "HEATING",
+      "phases": 56,
+      "parents": 54
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "kind": "WARMING",
+      "phases": 178,
+      "parents": 178
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "kind": "HEATING",
+      "phases": 161,
+      "parents": 136
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "kind": "WARMING",
+      "phases": 262,
+      "parents": 262
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "kind": "HEATING",
+      "phases": 140,
+      "parents": 115
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "kind": "WARMING",
+      "phases": 226,
+      "parents": 226
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "kind": "HEATING",
+      "phases": 56,
+      "parents": 56
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "kind": "WARMING",
+      "phases": 482,
+      "parents": 482
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "kind": "HEATING",
+      "phases": 52,
+      "parents": 52
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "kind": "WARMING",
+      "phases": 287,
+      "parents": 287
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "kind": "HEATING",
+      "phases": 49,
+      "parents": 49
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "kind": "WARMING",
+      "phases": 239,
+      "parents": 239
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "kind": "HEATING",
+      "phases": 226,
+      "parents": 203
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "kind": "WARMING",
+      "phases": 475,
+      "parents": 475
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "kind": "HEATING",
+      "phases": 7,
+      "parents": 7
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "kind": "WARMING",
+      "phases": 175,
+      "parents": 175
+    }
+  ],
+  "artifacts": {
+    "candidate_assignments.parquet": "bbe6350c90e75864ce95590eb3c2dbcf20fc85f3e2998b9868ac066953913958",
+    "candidate_metrics.parquet": "f930a7f22381aa0f4c0657e184da4a9b97bf38fa8797a38f0697c427b5c9c783",
+    "date_support.parquet": "927f5135e45edcf63438c16a5325a1a2bed90157c4827513ff76683e7df3c9cf",
+    "processes.parquet": "235efc250af271e57ec9723175217c28f29251e0e2604cd6a266c557ce578767"
+  }
+}

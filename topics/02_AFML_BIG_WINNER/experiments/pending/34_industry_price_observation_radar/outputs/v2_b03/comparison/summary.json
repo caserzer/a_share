@@ -1,0 +1,293 @@
+{
+  "scope": "Exploratory paired comparison; thresholds are research summaries, not user acceptance",
+  "bootstrap": {
+    "block_calendar_weeks": 13,
+    "draws": 2000,
+    "seed": 3403,
+    "main": {
+      "coverage": {
+        "B_minus_A": 0.0014409221902017266,
+        "interval_95": [
+          -0.005516321283210932,
+          0.00870650242502846
+        ]
+      },
+      "timely_coverage": {
+        "B_minus_A": 0.006844380403458208,
+        "interval_95": [
+          0.00046567471096238197,
+          0.012883889332292418
+        ]
+      },
+      "new_precision": {
+        "B_minus_A": 0.003850088105382843,
+        "interval_95": [
+          -0.009866223285993358,
+          0.017707472808444952
+        ]
+      }
+    }
+  },
+  "precision_floors": [
+    {
+      "delay": 0,
+      "precision_floor": 0.3,
+      "A": {
+        "quota": 5,
+        "delay": 0,
+        "arm": "A",
+        "new": 1445,
+        "unknown": 60,
+        "evaluable": 1385,
+        "effective": 457,
+        "precision": 0.32996389891696754,
+        "processes": 2776,
+        "covered": 543,
+        "coverage": 0.19560518731988472,
+        "timely": 235,
+        "mean_pool": 16.91532258064516,
+        "updates": 6945,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 5,
+        "delay": 0,
+        "arm": "B",
+        "new": 1445,
+        "unknown": 58,
+        "evaluable": 1387,
+        "effective": 463,
+        "precision": 0.3338139870223504,
+        "processes": 2776,
+        "covered": 547,
+        "coverage": 0.19704610951008644,
+        "timely": 254,
+        "mean_pool": 16.77217741935484,
+        "updates": 6874,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 0,
+      "precision_floor": 0.35,
+      "A": {
+        "quota": 3,
+        "delay": 0,
+        "arm": "A",
+        "new": 1257,
+        "unknown": 56,
+        "evaluable": 1201,
+        "effective": 426,
+        "precision": 0.3547044129891757,
+        "processes": 2776,
+        "covered": 495,
+        "coverage": 0.17831412103746397,
+        "timely": 220,
+        "mean_pool": 14.836693548387096,
+        "updates": 6102,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 3,
+        "delay": 0,
+        "arm": "B",
+        "new": 1257,
+        "unknown": 57,
+        "evaluable": 1200,
+        "effective": 422,
+        "precision": 0.3516666666666667,
+        "processes": 2776,
+        "covered": 486,
+        "coverage": 0.17507204610951008,
+        "timely": 229,
+        "mean_pool": 14.6875,
+        "updates": 6028,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 0,
+      "precision_floor": 0.4,
+      "A": null,
+      "B": null
+    },
+    {
+      "delay": 1,
+      "precision_floor": 0.3,
+      "A": {
+        "quota": 5,
+        "delay": 1,
+        "arm": "A",
+        "new": 1269,
+        "unknown": 60,
+        "evaluable": 1209,
+        "effective": 452,
+        "precision": 0.3738626964433416,
+        "processes": 2776,
+        "covered": 508,
+        "coverage": 0.1829971181556196,
+        "timely": 162,
+        "mean_pool": 14.913306451612904,
+        "updates": 6128,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 5,
+        "delay": 1,
+        "arm": "B",
+        "new": 1269,
+        "unknown": 63,
+        "evaluable": 1206,
+        "effective": 422,
+        "precision": 0.34991708126036486,
+        "processes": 2776,
+        "covered": 485,
+        "coverage": 0.17471181556195967,
+        "timely": 204,
+        "mean_pool": 15.002016129032258,
+        "updates": 6172,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 1,
+      "precision_floor": 0.35,
+      "A": {
+        "quota": 5,
+        "delay": 1,
+        "arm": "A",
+        "new": 1269,
+        "unknown": 60,
+        "evaluable": 1209,
+        "effective": 452,
+        "precision": 0.3738626964433416,
+        "processes": 2776,
+        "covered": 508,
+        "coverage": 0.1829971181556196,
+        "timely": 162,
+        "mean_pool": 14.913306451612904,
+        "updates": 6128,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 3,
+        "delay": 1,
+        "arm": "B",
+        "new": 1121,
+        "unknown": 48,
+        "evaluable": 1073,
+        "effective": 385,
+        "precision": 0.35880708294501396,
+        "processes": 2776,
+        "covered": 442,
+        "coverage": 0.15922190201729106,
+        "timely": 186,
+        "mean_pool": 13.372983870967742,
+        "updates": 5512,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 1,
+      "precision_floor": 0.4,
+      "A": {
+        "quota": 1,
+        "delay": 1,
+        "arm": "A",
+        "new": 433,
+        "unknown": 16,
+        "evaluable": 417,
+        "effective": 167,
+        "precision": 0.40047961630695444,
+        "processes": 2776,
+        "covered": 189,
+        "coverage": 0.0680835734870317,
+        "timely": 66,
+        "mean_pool": 5.201612903225806,
+        "updates": 2147,
+        "sample_support": true
+      },
+      "B": null
+    }
+  ],
+  "confirmation_cost": [
+    {
+      "quota": 1,
+      "arm": "A",
+      "lost": 68,
+      "gained": 78,
+      "common": 111,
+      "common_delay_quantiles": {
+        "0.1": 0.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -19
+    },
+    {
+      "quota": 1,
+      "arm": "B",
+      "lost": 62,
+      "gained": 61,
+      "common": 116,
+      "common_delay_quantiles": {
+        "0.1": 0.0,
+        "0.5": 0.0,
+        "0.9": 0.0
+      },
+      "timely_change": -13
+    },
+    {
+      "quota": 3,
+      "arm": "A",
+      "lost": 186,
+      "gained": 147,
+      "common": 309,
+      "common_delay_quantiles": {
+        "0.1": -1.3999999999999986,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -71
+    },
+    {
+      "quota": 3,
+      "arm": "B",
+      "lost": 158,
+      "gained": 114,
+      "common": 328,
+      "common_delay_quantiles": {
+        "0.1": 0.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -43
+    },
+    {
+      "quota": 5,
+      "arm": "A",
+      "lost": 207,
+      "gained": 172,
+      "common": 336,
+      "common_delay_quantiles": {
+        "0.1": -9.5,
+        "0.5": 0.0,
+        "0.9": 9.5
+      },
+      "timely_change": -73
+    },
+    {
+      "quota": 5,
+      "arm": "B",
+      "lost": 211,
+      "gained": 149,
+      "common": 336,
+      "common_delay_quantiles": {
+        "0.1": -5.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -50
+    }
+  ]
+}

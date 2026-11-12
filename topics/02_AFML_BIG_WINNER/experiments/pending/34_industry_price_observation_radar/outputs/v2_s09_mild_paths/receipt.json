@@ -1,0 +1,74 @@
+{
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_v2_path_probe03_symmetric_calendar_corrected/weekly_evaluation_states.parquet": "ba35732b73742df888341317a8a6e7434700fafaa3de4037e98d5b80bca731be",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_v2_path_probe03_symmetric_calendar_corrected/processes.parquet": "7ae50c75073b85f539498cd06447979985ec057f94eb0204ce9fd820f985cae9",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/v2_s09/plan.md": "51edfe4d8f8b5237d02600e20be02039eae72236dab9b377f3e0e6e047293ffe",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/v2_s09_mild_paths.py": "c9aca19e8ab170f21106a4bdf89e7b0f379d6d88468ed9efba102edd6032022a",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58"
+  },
+  "summary": {
+    "supported_windows": 98897,
+    "mild_windows": 2207,
+    "selected_cases": 8,
+    "counts": [
+      {
+        "era": "SW2014",
+        "volatility_band": "HIGH",
+        "overlap": false,
+        "overlapping_windows": 19
+      },
+      {
+        "era": "SW2014",
+        "volatility_band": "HIGH",
+        "overlap": true,
+        "overlapping_windows": 382
+      },
+      {
+        "era": "SW2014",
+        "volatility_band": "LOW",
+        "overlap": false,
+        "overlapping_windows": 3
+      },
+      {
+        "era": "SW2014",
+        "volatility_band": "LOW",
+        "overlap": true,
+        "overlapping_windows": 79
+      },
+      {
+        "era": "SW2021",
+        "volatility_band": "HIGH",
+        "overlap": false,
+        "overlapping_windows": 40
+      },
+      {
+        "era": "SW2021",
+        "volatility_band": "HIGH",
+        "overlap": true,
+        "overlapping_windows": 693
+      },
+      {
+        "era": "SW2021",
+        "volatility_band": "LOW",
+        "overlap": false,
+        "overlapping_windows": 5
+      },
+      {
+        "era": "SW2021",
+        "volatility_band": "LOW",
+        "overlap": true,
+        "overlapping_windows": 135
+      }
+    ],
+    "limits": "Overlapping descriptive windows, not new process labels or method recall. No signal-list input."
+  },
+  "artifacts": {
+    "diagnostic_counts.csv": "f3b857c482998d5b8b9949916283e0b63841b5fcd832b172bae6085347263b1a",
+    "all_diagnostic_windows.parquet": "399b503bc91496dc314d73cbf2ccf0f504b53887c4a59aa1a53e6a1d32d0529e",
+    "selected_case_paths.parquet": "311d17fe11d387d5f5f4cb8257eef4ef861726b2fffa3dd0ce50296b5708d4b4",
+    "cases.png": "6d7aa5bb6ca13493e231304618517bc092a1115e438d5c48ee92d7bbfafd69db",
+    "selected_cases.csv": "a275d4f4a3546312c9c7cf740a038cf2611d21110176bab281bc33075c6ad45c",
+    "scale_quartiles.csv": "f97b7e328250deeb812089b5b776f45d8e365cd126259ea2fe54deb110c19bf6"
+  }
+}

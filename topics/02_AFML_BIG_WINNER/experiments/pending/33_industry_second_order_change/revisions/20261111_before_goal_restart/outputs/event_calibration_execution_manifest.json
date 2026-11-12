@@ -1,0 +1,363 @@
+{
+  "status": "R16_R17_R18_EXECUTED_NO_APPROVED_MODELS",
+  "protocol_unchanged": true,
+  "original_goal_complete": false,
+  "tests_passed": 28,
+  "files": [
+    {
+      "path": "configs/pool_metric_v1.json",
+      "sha256": "3d76e9fb47a0afc4d714aff8d39a418be0fa7c3954937a6cfbc7e663ff445db8",
+      "bytes": 2025
+    },
+    {
+      "path": "GOAL.md",
+      "sha256": "45c7d5e6a7ec186356f9c7941f2277834777d1390553d40f017a0d3be55ec5c1",
+      "bytes": 22780
+    },
+    {
+      "path": "README.md",
+      "sha256": "f4e7172eba0256da783b751e74c04dd4adcef6055884d534f7a89c45bf8b4a39",
+      "bytes": 10207
+    },
+    {
+      "path": "outputs/event_probability_industry_scores.csv",
+      "sha256": "379eff5fde61392a1197e9676904d87d4560855a48490c50d0eea2e3c91b207f",
+      "bytes": 789264
+    },
+    {
+      "path": "outputs/event_probability_quarters.csv",
+      "sha256": "8581d3d82f19effd28e7d0cad2b9d39f3597f6c0d6d2d1bb4ad9ca38d78f82c9",
+      "bytes": 9834
+    },
+    {
+      "path": "outputs/event_probability_release_gate.json",
+      "sha256": "0cedf464f8f121db9ae22d0c90ae9ca612fa1f3f8bd069057e9b82ac2b02565b",
+      "bytes": 2729
+    },
+    {
+      "path": "outputs/event_probability_reliability.csv",
+      "sha256": "c7fbd95311e16a32dc1c77f3b2ebc062f0ef68754bf4bd8ac7d4d8b0472363e7",
+      "bytes": 7294
+    },
+    {
+      "path": "outputs/r16/annual.csv",
+      "sha256": "66c86e5f9d03adae30a35b0d976d327a944d4fad7557e26f63c6a573d48a55c2",
+      "bytes": 9917
+    },
+    {
+      "path": "outputs/r16/calibration_bins.csv",
+      "sha256": "29296ae12f58f04261d8359436ca09d1334d75ebc2d3a64d2813106359e5424f",
+      "bytes": 7907
+    },
+    {
+      "path": "outputs/r16/calibration_folds.csv",
+      "sha256": "e4dc91a106395b1e5450018999168450f59b9b8ae278da42cc6d1b2470a51989",
+      "bytes": 1881
+    },
+    {
+      "path": "outputs/r16/calibration_rows.csv.gz",
+      "sha256": "32025153e938939339a41dc63de218612baa984b615db3fd7231333da390cbe7",
+      "bytes": 787522
+    },
+    {
+      "path": "outputs/r16/evaluation_receipt.json",
+      "sha256": "da1d267477445c79c6252852f66a8fe5ae1df4ce46e1cdb5f0a5330b6fd197ab",
+      "bytes": 758
+    },
+    {
+      "path": "outputs/r16/event_calibration_diagnostics.csv",
+      "sha256": "bae4221103bcb9a593dce57a0b5557f4aae8fea1970b6663c402384f18de6228",
+      "bytes": 2231
+    },
+    {
+      "path": "outputs/r16/mapping_parameters.json",
+      "sha256": "3861d513782c160d5c13af04b5df14e3b7473d8e580a3a0122aad621ddfece93",
+      "bytes": 31954
+    },
+    {
+      "path": "outputs/r16/momentum_controls.csv.gz",
+      "sha256": "c4661c9c5e6b90e1bc00cd86213fb033d755d37fecd62a971a1f1820420d2f46",
+      "bytes": 15857
+    },
+    {
+      "path": "outputs/r16/prediction_seal.json",
+      "sha256": "d93965a7f72f2af223d3273e2adcb60269b01b26a0d0129eadca571e0f8c17f9",
+      "bytes": 2135
+    },
+    {
+      "path": "outputs/r16/same_period_comparison.csv",
+      "sha256": "0d0d16b1fbed5360e8c2f5aa11dcee97d9e75c172cc76001baa37a4a504a392f",
+      "bytes": 2110
+    },
+    {
+      "path": "outputs/r16/scored_outcomes.parquet",
+      "sha256": "b86b4b8793248d1d57f1653fec74357a3a3a140130aa0cf3c5698131f437f923",
+      "bytes": 9718418
+    },
+    {
+      "path": "outputs/r16/sealed_predictions.parquet",
+      "sha256": "099df194b8c94f4a2cd6538cca29ae20de83519e377a9e6db6cd94650f31dfd5",
+      "bytes": 4609966
+    },
+    {
+      "path": "outputs/r16/summary.csv",
+      "sha256": "e2747822188b7c14e68227296a539948e2fbd8673805ae4147dad67670d8b334",
+      "bytes": 18606
+    },
+    {
+      "path": "outputs/r16/validation.json",
+      "sha256": "0b252aaeef449ef4b45e541cc5e0d6f84e1bb811ee75f3eeb3a29bed948e0f8f",
+      "bytes": 279
+    },
+    {
+      "path": "outputs/r16/weekly_metrics.csv.gz",
+      "sha256": "8d084246c32937b423cdacbf1744cb45e9692ff88108bab48320c1fbd39dfead",
+      "bytes": 41716
+    },
+    {
+      "path": "outputs/r17/annual.csv",
+      "sha256": "af3e4a80939fe3f211765126f3062a63402a9db62c84e2a829d790581a02424f",
+      "bytes": 3502
+    },
+    {
+      "path": "outputs/r17/calibration_bins.csv",
+      "sha256": "f743397a53243a97ec1b8740e24466aa25bcddb32634187990af3a7a1dc9d052",
+      "bytes": 3916
+    },
+    {
+      "path": "outputs/r17/calibration_folds.csv",
+      "sha256": "e4dc91a106395b1e5450018999168450f59b9b8ae278da42cc6d1b2470a51989",
+      "bytes": 1881
+    },
+    {
+      "path": "outputs/r17/calibration_rows.csv.gz",
+      "sha256": "b57f6efb2d410fc8a472c468018d988bbaf44f6481eb6ae876b838414e2ada59",
+      "bytes": 787522
+    },
+    {
+      "path": "outputs/r17/coverage_ceiling_audit.csv",
+      "sha256": "25393150bc400fdb6ec0175c6a235b5f595c99bc06ea0afacc71cce11306b400",
+      "bytes": 232
+    },
+    {
+      "path": "outputs/r17/evaluation_receipt.json",
+      "sha256": "fe69ffeb7ea1cfceee9f3d98f61921f0976d0f244481ed917d9f0065faadc11d",
+      "bytes": 754
+    },
+    {
+      "path": "outputs/r17/event_calibration_diagnostics.csv",
+      "sha256": "26e6c05afec39ebfd032c9049a8d5b8ed9653252361174f30fd75ac158a7b879",
+      "bytes": 782
+    },
+    {
+      "path": "outputs/r17/event_features.parquet",
+      "sha256": "645189f40fe66b2d1724c0044e8401793b9172e592935dd67521e4068f69de2f",
+      "bytes": 23945
+    },
+    {
+      "path": "outputs/r17/mapping_parameters.json",
+      "sha256": "f5a6243e11e1c13f1f296956af11e4d9732f0e131830a6cad72a732cd163e5db",
+      "bytes": 16381
+    },
+    {
+      "path": "outputs/r17/momentum_controls.csv.gz",
+      "sha256": "678a3047b55544f4bfccf4abcd9e7bbed3bb8b82e90a87aca2ff612198d7b014",
+      "bytes": 10127
+    },
+    {
+      "path": "outputs/r17/prediction_seal.json",
+      "sha256": "5adc56918d57f0ff0021b64062e1a5f126d8e4c0975032704be2d9a2947bd1e5",
+      "bytes": 2542
+    },
+    {
+      "path": "outputs/r17/same_period_comparison.csv",
+      "sha256": "8fdb4f9987f1dfae9793f92b575cec925cee671256ec6a43f97476bebb7a5ee7",
+      "bytes": 762
+    },
+    {
+      "path": "outputs/r17/scored_outcomes.parquet",
+      "sha256": "54931f53d72ec9cbb609fa40d86c38a40b9633f4347d055ce217659f0fa6df49",
+      "bytes": 5725325
+    },
+    {
+      "path": "outputs/r17/sealed_predictions.parquet",
+      "sha256": "8cf05066cb73080b03df636cedbd95d98744ca402e9bd7312304e7402b737aea",
+      "bytes": 2656314
+    },
+    {
+      "path": "outputs/r17/summary.csv",
+      "sha256": "d6921c5418bcd05419dcf876b18afa9010576636196f5ad5c0b44d397b90adfa",
+      "bytes": 6530
+    },
+    {
+      "path": "outputs/r17/validation.json",
+      "sha256": "c068071572950fdc017a545a96b908fb4fdeeef63ed3277bf9c80ccb1d274c8a",
+      "bytes": 278
+    },
+    {
+      "path": "outputs/r17/weekly_metrics.csv.gz",
+      "sha256": "fe430e3785e0bc0152d718f09c47dc7226474837bd4a70eddc1fa1460ab8623c",
+      "bytes": 17531
+    },
+    {
+      "path": "outputs/r18/annual.csv",
+      "sha256": "dade4c0c837d77d4c8a20db871944a9bc849311b153e2f22e2e8cca9b03528a0",
+      "bytes": 3487
+    },
+    {
+      "path": "outputs/r18/calibration_bins.csv",
+      "sha256": "385f591972a3b49f1d43d1e911769706f8acbcc4dd7ba3fbd3ac2b28da17244c",
+      "bytes": 3244
+    },
+    {
+      "path": "outputs/r18/calibration_folds.csv",
+      "sha256": "299071ea161aeea5938908a826de775af4c0ec116ac33cceb5755c42892039da",
+      "bytes": 1885
+    },
+    {
+      "path": "outputs/r18/calibration_rows.csv.gz",
+      "sha256": "421803f569bf153d8c27c65feae9c38f2cd5ca25b76f0c717bfa019629e67e9f",
+      "bytes": 791693
+    },
+    {
+      "path": "outputs/r18/candidate_parent.parquet",
+      "sha256": "895a15678e8896d908d7af3bf53996e7708b90491f0b8ac24a5fbe1efa05ee76",
+      "bytes": 3513138
+    },
+    {
+      "path": "outputs/r18/coverage_ceiling_audit.csv",
+      "sha256": "30d017b2113ab4af61a02f875502f40858a20a558eab9f49be2910caac13ab97",
+      "bytes": 201
+    },
+    {
+      "path": "outputs/r18/evaluation_receipt.json",
+      "sha256": "80e373534805bcc19bcddcca69ae972d30294ba14d22d49a207764e48509c268",
+      "bytes": 998
+    },
+    {
+      "path": "outputs/r18/event_calibration_diagnostics.csv",
+      "sha256": "621e34f3e8353fdcc887f383b5fc3616266cfb18206350d13ce4edf8fad4c51c",
+      "bytes": 789
+    },
+    {
+      "path": "outputs/r18/event_features.parquet",
+      "sha256": "e5acf27be7efc0dd2853d8af110a3156f21b9144ec177a1b2306a9da1b295245",
+      "bytes": 31457
+    },
+    {
+      "path": "outputs/r18/mapping_parameters.json",
+      "sha256": "a457e7cace79fe6864d20b5faee3b42b696d57bf41145cd1be3b4d5141694af6",
+      "bytes": 16400
+    },
+    {
+      "path": "outputs/r18/momentum_controls.csv.gz",
+      "sha256": "ba3b94ea616cbb4f70834755b67f60b9e1fa6f7e7aca753bf0cb3d6c8619133c",
+      "bytes": 6810
+    },
+    {
+      "path": "outputs/r18/prediction_seal.json",
+      "sha256": "9b338caf86464eb837fe1d5cc08e4b5aec8fd6e6db2f6b51b6195c8a939ea40c",
+      "bytes": 4007
+    },
+    {
+      "path": "outputs/r18/same_period_comparison.csv",
+      "sha256": "7b862d98dcfc2bddbae3e73239e4958961220b65c604e9583c00646a86fc5c8a",
+      "bytes": 773
+    },
+    {
+      "path": "outputs/r18/scored_outcomes.parquet",
+      "sha256": "4d24cad847e41ea21913a2d086b29e52dd13f3820b06877f78c5b8432491d161",
+      "bytes": 5744974
+    },
+    {
+      "path": "outputs/r18/sealed_predictions.parquet",
+      "sha256": "31f969d9114d1cfa955165acc1cec57c3a6963e3182d392514a43eb35439a0f6",
+      "bytes": 2675971
+    },
+    {
+      "path": "outputs/r18/summary.csv",
+      "sha256": "77fdd34e6dd127f1640d4e1d19551cb6bf42a349ec2168407ed3a659931b32a9",
+      "bytes": 6486
+    },
+    {
+      "path": "outputs/r18/validation.json",
+      "sha256": "c0af3ba43995c0f6fc08edfeabc3939c30b5a2add6272956d40e133db15170dd",
+      "bytes": 278
+    },
+    {
+      "path": "outputs/r18/weekly_metrics.csv.gz",
+      "sha256": "521ed8cb3f79c703c61cc1e096f6cf9ebaf791ad3510461b3c0c58ddb9bcd999",
+      "bytes": 15488
+    },
+    {
+      "path": "reports/event_calibration_r16_r18.md",
+      "sha256": "efbf6695b06a444fab60e4c241092dbef371b9b4b08e9bfa555b68233b2df730",
+      "bytes": 7703
+    },
+    {
+      "path": "rounds/r16_event_calibration_plan.md",
+      "sha256": "15eca218d315ef2f42035b783be87ccd28dc0f34c2304dfc6a997a85f8ebb5c3",
+      "bytes": 3295
+    },
+    {
+      "path": "rounds/r16_reflection.md",
+      "sha256": "c8dd00b59950e9968cc00c235194e64d83b68cedf3ea542e55bd86cfcb378c7a",
+      "bytes": 1713
+    },
+    {
+      "path": "rounds/r17_event_context_plan.md",
+      "sha256": "e53f3ff2ec658e019df4d2e002db9360de831a2d02466e34d25f300cfa3d573d",
+      "bytes": 1837
+    },
+    {
+      "path": "rounds/r17_reflection.md",
+      "sha256": "fec8bf46aceb34f5425f1c1c138ad25433605a2f6c7960c88f9a71d73d91d510",
+      "bytes": 1621
+    },
+    {
+      "path": "rounds/r18_broad_event_plan.md",
+      "sha256": "e51cc3f448c35ccd032054a686dc46430227a2ce13c47ec6429ed8dc4c181dbe",
+      "bytes": 2108
+    },
+    {
+      "path": "rounds/r18_reflection.md",
+      "sha256": "d7a1b6d4964e62f70155d3e6abd06124bf70da6ea527e9f51ec9bad27847348e",
+      "bytes": 1784
+    },
+    {
+      "path": "src/audit_event_probability.py",
+      "sha256": "68dd668780b50e14e5be556822dbc8fe6052c1cdd714d79256846a6a1e38df1e",
+      "bytes": 6166
+    },
+    {
+      "path": "src/broad_event_pool.py",
+      "sha256": "9d89697a0f544326b2033c1eb46fa45c321d9da4eb1e3e447175e6663908edf1",
+      "bytes": 2324
+    },
+    {
+      "path": "src/event_context_pool.py",
+      "sha256": "dbb5082afd853321d7009cc93242a836b1acb4dc965488657d6484186344bb25",
+      "bytes": 6174
+    },
+    {
+      "path": "src/event_probability_pool.py",
+      "sha256": "b488e2a9ab82ea5647128917b038da5d9e93f1ddb6c3916c0bd2dd68e88f1bed",
+      "bytes": 7162
+    },
+    {
+      "path": "src/report_event_calibration.py",
+      "sha256": "236d4f9121c5a52e54386b82f494c89097e75524ee0547eb4eb80a25734febcb",
+      "bytes": 10123
+    },
+    {
+      "path": "tests/test_event_context.py",
+      "sha256": "89d021e188054071f9efc81880f667fbab8d2a3a01b8620bbcd40723af2057dc",
+      "bytes": 1077
+    },
+    {
+      "path": "tests/test_event_probability.py",
+      "sha256": "a54f2eba682eefc3812ecace365d5215902b4fd83de8d65c83d83f6cd686e951",
+      "bytes": 1860
+    }
+  ]
+}

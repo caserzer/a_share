@@ -1,0 +1,304 @@
+{
+  "selection": "Earliest date then alert ID per era/category; categories may overlap; not effectiveness evidence",
+  "short_rebound_definition": "Descriptive only: failed post path, peak20 >=8%, and terminal60 <5% or retained days <40",
+  "late_scope": "Reference only, not one-to-one validated late success",
+  "cases": [
+    {
+      "category": "TIMELY_SUCCESS",
+      "era": "SW2014",
+      "industry_code": "850321.SI",
+      "industry_name": "纯碱",
+      "alert_id": "b24178d6eb8e34b1d0593d9e",
+      "date": "2017-06-30",
+      "day": 118,
+      "outcome": "SUCCESS",
+      "post_evaluation": "POST_VALID",
+      "label_coverage_known": true,
+      "origin_day": 115,
+      "delta": 3,
+      "metrics": {
+        "peak_return": 0.16662311379476713,
+        "terminal_return": 0.13804959764358915,
+        "retained_days": 57.0,
+        "floor_return": 0.004761350798736963,
+        "max_drawdown": -0.10379451539535456
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "MATCHED_POST_FAILURE",
+      "era": "SW2014",
+      "industry_code": "857241.SI",
+      "industry_name": "钢结构",
+      "alert_id": "7658ee5a6eca84686d0e08d6",
+      "date": "2017-05-26",
+      "day": 95,
+      "outcome": "FIRST_FAILURE",
+      "post_evaluation": "POST_FAILED",
+      "label_coverage_known": true,
+      "origin_day": 92,
+      "delta": 3,
+      "metrics": {
+        "peak_return": 0.02375168133993788,
+        "terminal_return": 0.12945774245263042,
+        "retained_days": 17.0,
+        "floor_return": -0.06382439569350828,
+        "max_drawdown": -0.106035785585188
+      },
+      "failed_conditions": [
+        "peak",
+        "retained",
+        "floor"
+      ],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "SHORT_REBOUND",
+      "era": "SW2014",
+      "industry_code": "851122.SI",
+      "industry_name": "其它视听器材",
+      "alert_id": "5a098f90968346d15e67973e",
+      "date": "2017-06-23",
+      "day": 113,
+      "outcome": "UNMATCHED_FAILURE",
+      "post_evaluation": "POST_FAILED",
+      "label_coverage_known": true,
+      "origin_day": null,
+      "delta": null,
+      "metrics": {
+        "peak_return": 0.08194597041784535,
+        "terminal_return": -0.02499352380828357,
+        "retained_days": 9.0,
+        "floor_return": -0.09543931456951082,
+        "max_drawdown": -0.16395022472226628
+      },
+      "failed_conditions": [
+        "terminal",
+        "retained",
+        "floor",
+        "drawdown"
+      ],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "PROCESS_INTERRUPTED",
+      "era": "SW2014",
+      "industry_code": "850381.SI",
+      "industry_name": "复合肥",
+      "alert_id": "81811e3bbf4d9e7bbcc0cc05",
+      "date": "2019-01-25",
+      "day": 504,
+      "outcome": "FIRST_FAILURE",
+      "post_evaluation": "PROCESS_ENDED",
+      "label_coverage_known": true,
+      "origin_day": 496,
+      "delta": 8,
+      "metrics": {
+        "peak_return": null,
+        "terminal_return": null,
+        "retained_days": null,
+        "floor_return": null,
+        "max_drawdown": null
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "LATE_REFERENCE_POST_VALID",
+      "era": "SW2014",
+      "industry_code": "850221.SI",
+      "industry_name": "煤炭开采",
+      "alert_id": "d72b11e599ec3545e1d3274f",
+      "date": "2017-06-16",
+      "day": 108,
+      "outcome": "UNMATCHED_FAILURE",
+      "post_evaluation": "POST_VALID",
+      "label_coverage_known": true,
+      "origin_day": 92,
+      "delta": 16,
+      "metrics": {
+        "peak_return": 0.11855473506945247,
+        "terminal_return": 0.29142655428382125,
+        "retained_days": 54.0,
+        "floor_return": -0.0036905672897551423,
+        "max_drawdown": -0.10435097104154156
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "UNKNOWN_BOUNDARY",
+      "era": "SW2014",
+      "industry_code": "850616.SI",
+      "industry_name": "管材",
+      "alert_id": "307c364cea6f659d0001f730",
+      "date": "2017-05-05",
+      "day": 80,
+      "outcome": "UNKNOWN",
+      "post_evaluation": "UNKNOWN_PRICE_PATH",
+      "label_coverage_known": false,
+      "origin_day": null,
+      "delta": null,
+      "metrics": {
+        "peak_return": null,
+        "terminal_return": null,
+        "retained_days": null,
+        "floor_return": null,
+        "max_drawdown": null
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 77
+    },
+    {
+      "category": "TIMELY_SUCCESS",
+      "era": "SW2021",
+      "industry_code": "857674.SI",
+      "industry_name": "门户网站",
+      "alert_id": "504a8608e27b7a2212eec1c2",
+      "date": "2022-12-02",
+      "day": 1438,
+      "outcome": "SUCCESS",
+      "post_evaluation": "POST_VALID",
+      "label_coverage_known": true,
+      "origin_day": 1431,
+      "delta": 7,
+      "metrics": {
+        "peak_return": 0.1546827367103989,
+        "terminal_return": 0.18388618122543643,
+        "retained_days": 53.0,
+        "floor_return": -0.019077906560016955,
+        "max_drawdown": -0.09087824918181475
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "MATCHED_POST_FAILURE",
+      "era": "SW2021",
+      "industry_code": "851491.SI",
+      "industry_name": "其他家居用品",
+      "alert_id": "9493982caa9fe73a2fd04537",
+      "date": "2023-09-01",
+      "day": 1621,
+      "outcome": "FIRST_FAILURE",
+      "post_evaluation": "POST_FAILED",
+      "label_coverage_known": true,
+      "origin_day": 1614,
+      "delta": 7,
+      "metrics": {
+        "peak_return": 0.02784625973754662,
+        "terminal_return": 0.05477122156111314,
+        "retained_days": 17.0,
+        "floor_return": -0.09009231075687829,
+        "max_drawdown": -0.11474339608390427
+      },
+      "failed_conditions": [
+        "peak",
+        "retained",
+        "floor"
+      ],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "SHORT_REBOUND",
+      "era": "SW2021",
+      "industry_code": "851783.SI",
+      "industry_name": "中间产品及消费品供应链服务",
+      "alert_id": "df7808d96e9b05f7686d65a0",
+      "date": "2022-05-06",
+      "day": 1295,
+      "outcome": "UNKNOWN",
+      "post_evaluation": "POST_FAILED",
+      "label_coverage_known": false,
+      "origin_day": null,
+      "delta": null,
+      "metrics": {
+        "peak_return": 0.13167169917256394,
+        "terminal_return": 0.0408287112702137,
+        "retained_days": 57.0,
+        "floor_return": 0.003584066489237925,
+        "max_drawdown": -0.11318444454957999
+      },
+      "failed_conditions": [
+        "terminal"
+      ],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "PROCESS_INTERRUPTED",
+      "era": "SW2021",
+      "industry_code": "857251.SI",
+      "industry_name": "园林工程",
+      "alert_id": "14718066ba8480a541b48d4a",
+      "date": "2022-05-20",
+      "day": 1305,
+      "outcome": "UNKNOWN",
+      "post_evaluation": "PROCESS_ENDED",
+      "label_coverage_known": true,
+      "origin_day": 1295,
+      "delta": 10,
+      "metrics": {
+        "peak_return": null,
+        "terminal_return": null,
+        "retained_days": null,
+        "floor_return": null,
+        "max_drawdown": null
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "LATE_REFERENCE_POST_VALID",
+      "era": "SW2021",
+      "industry_code": "852062.SI",
+      "industry_name": "跨境电商",
+      "alert_id": "a0183cf6933c9431060957d1",
+      "date": "2022-12-30",
+      "day": 1458,
+      "outcome": "UNMATCHED_FAILURE",
+      "post_evaluation": "POST_VALID",
+      "label_coverage_known": true,
+      "origin_day": 1398,
+      "delta": 60,
+      "metrics": {
+        "peak_return": 0.10457273556669744,
+        "terminal_return": 0.25415956536337636,
+        "retained_days": 50.0,
+        "floor_return": -0.009901693559987934,
+        "max_drawdown": -0.09799975731987343
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 126
+    },
+    {
+      "category": "UNKNOWN_BOUNDARY",
+      "era": "SW2021",
+      "industry_code": "851612.SI",
+      "industry_name": "水力发电",
+      "alert_id": "9b6fc797e386a60f80fe52cf",
+      "date": "2022-05-06",
+      "day": 1295,
+      "outcome": "UNKNOWN",
+      "post_evaluation": "POST_VALID",
+      "label_coverage_known": false,
+      "origin_day": null,
+      "delta": null,
+      "metrics": {
+        "peak_return": 0.10124726519075256,
+        "terminal_return": 0.13509377547144408,
+        "retained_days": 59.0,
+        "floor_return": 0.019176545203093642,
+        "max_drawdown": -0.0984067269872193
+      },
+      "failed_conditions": [],
+      "same_block_price_rows": 126
+    }
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01/evaluated_new_observations.parquet": "70cbab032714889e1a8ff47731aa86fabdc8bcfe35cc7596de4537d3667da0d3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/r01_path_cases.py": "d3629e77ff5290804a66f30d4b2751ab05c8af28071d8601b7d72271cb1a26cc"
+  }
+}

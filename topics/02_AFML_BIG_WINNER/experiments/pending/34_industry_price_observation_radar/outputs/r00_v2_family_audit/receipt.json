@@ -1,0 +1,21 @@
+{
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_v2_label_probe02/segments.parquet": "0e7ebe34f62fdd8e1e36a3de1b1a6a4b93076a50065be3cf2edeabda943620db",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/r00_v2/family_audit/plan.md": "9e541d8b70febd7601943352f5ebeab5edf87abcddaa5b0fea95efac9cb23040",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/v2_label_probe02_persistence.py": "156c7bc16d1bdb742a67bc15c151d8b9cd86f606f1c2cdea35b34d9ea2221191",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/v2_family_audit.py": "2585f65d9dae4d5c423b2d656fd669d278721d6bd1445a6b03ab3f25092341f6"
+  },
+  "checks": [
+    "all up stages accounted for once",
+    "all families accounted for",
+    "daily paths contiguous",
+    "all orphan continuations preceded by NON_RISING"
+  ],
+  "artifacts": {
+    "annual.csv": "c11431f57dcfa82de1ef92e34d556e24c597d81dae55d81cfb5a060388a59052",
+    "summary.json": "7aa02cdcb03b83673e30283fb306cc08713182c06426746405b6234afa0bdddf",
+    "all_families.parquet": "bf99d36ac8ee537917e370b9f8f180fa449390cccc645cdbbee5dc0bbad79179",
+    "orphan_continuations.csv": "e3512e4a8703159096320ab4da07433d0c8307220725e59bd3152814bcf051ab"
+  }
+}

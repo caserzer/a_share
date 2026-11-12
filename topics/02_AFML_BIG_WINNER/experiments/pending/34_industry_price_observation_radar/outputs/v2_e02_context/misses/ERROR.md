@@ -1,0 +1,1 @@
+Incomplete attempt: old fixed expected omission counts 4399/4484 remained in copied audit. Replace the assertion with the current frozen coverage ledger count. Per-process coverage reconstruction passed up to that assertion; no labels/events modified. Use misses_complete.

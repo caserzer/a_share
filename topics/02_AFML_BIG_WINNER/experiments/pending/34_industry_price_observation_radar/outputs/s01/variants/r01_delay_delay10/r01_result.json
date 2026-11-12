@@ -1,0 +1,55 @@
+{
+  "scope": "S01 post-result supplemental accounting; primary metrics unchanged",
+  "primary_alerts": 1589,
+  "reserved_primary_assignments": 66,
+  "residual_alerts": 1523,
+  "outcomes": {
+    "UNMATCHED_FAILURE": 734,
+    "FIRST_FAILURE": 502,
+    "UNKNOWN": 168,
+    "IMMATURE": 61,
+    "SUCCESS": 54,
+    "DUPLICATE": 3,
+    "IMMATURE_DUPLICATE": 1
+  },
+  "supplement_evaluable": 1293,
+  "late_success_alerts": 54,
+  "supplement_effectiveness": 0.04176334106728538,
+  "process_maturity_sessions": 125,
+  "process_denominator": 2365,
+  "primary_success_on_125day_denominator": 33,
+  "unique_added_late_coverage": 54,
+  "late_coverage": 0.022832980972515855,
+  "combined_coverage": 0.03678646934460888,
+  "unresolved_processes": 39,
+  "combined_coverage_upper": 0.053276955602537,
+  "not125mature": 132,
+  "left_origin_unknown125": 180,
+  "repeat_known": 3,
+  "repeat_unknown": 0,
+  "operational": {
+    "updates": 5873,
+    "unknown_suspended_updates": 3,
+    "reentry_new_alerts": 1154,
+    "reentries_with_process_reference": 499
+  },
+  "timing_matched_late": {
+    "count": 661.0,
+    "mean": 33.726172465960666,
+    "std": 12.60455889245001,
+    "min": 11.0,
+    "10%": 19.0,
+    "50%": 31.0,
+    "90%": 54.0,
+    "95%": 58.0,
+    "max": 60.0
+  },
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/s01_v1/seal.json": "1b6253f8ffccf715d2a6c7db50c77b15300f78575c90a77347c8709540b8e68d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/s01/variants/r01_delay_delay10_normalized.parquet": "b2337bea0a7d9af3c4d8864d692c39b1fe93e4b37c956205298870139f02d4d0",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_metric_denominators/full_process_registry.parquet": "1d7bf58868098de64370fc46b2fc94b02ce34266546fec537e4ce47834541a2c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/restart/p29/daily_industries.parquet": "3e44de9a81eb2baf101bf45b9f456f99c8935e1edd02252771179edbb794fc66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r01_delay/delay10_events.parquet": "080c82a524c2f20297bd249b1eea30b5aaf015025aa599ce0c58fde4fa001850",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/s01_variants.py": "baf8aafdf819c702858bcd15d5427372329429e90b15df631a0702d941d4ea9a"
+  }
+}

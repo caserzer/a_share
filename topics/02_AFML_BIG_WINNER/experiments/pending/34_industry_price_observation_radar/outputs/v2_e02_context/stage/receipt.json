@@ -1,0 +1,35 @@
+{
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/v2_revaluation02/runs/refresh/s02_chain_safe_v2_20261112/A/event_quality.parquet": "dd86acd0405c77e4b20aec7cde5cdee2fb077366193e065ddd1c5fc6783c0dbf",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/v2_s12_full_directory_duration/processes.parquet": "c7ab2e3ef677209293cf6b29e6df8adf66292689b3f0d6f7408fb90898d3b5a0",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/v2_s13_duration_enhancements/children.parquet": "73ba9f07919d350f803eb68db61647409ec728a5501b748d1deec542af6c0b9a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/followup_versions/s04_20261021/all_new_paths.parquet": "e2b2b6970972c45e510585c9402483c9b9749f8483057087248aba7190199f1e",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/protocols/v2_e02_context/plan.md": "89a415b7deee403fc749deed491d4c4c68fbc45b756dbb73c5db35ed1227c9df",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/v2_e02_context_stage.py": "ac614d97a628f17f346957aea3548c34a05a91f65e3390c901213b649a8a1295",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/inputs/inputs/baseline/normalized/calendar.parquet": "b285f5f72678c3dbb41b8752c85c0b346073a879e3f52aeb4692de10f7c8ad58"
+  },
+  "artifacts": {
+    "stage_summary.csv": "14bc40234c9ff90136e81679b6c947a7b7ad8ea31fe3288ac038bac0335489ae",
+    "all_new_stages.parquet": "7eafe3ecb60c22ddf4409bbe965fef2f0ace6b755b5de16184d1234b795f1d7a",
+    "followup_summary.csv": "8fa87534208a6f255d8bc88ccf0904fbd7fd45248de4056c7f099ce6c55e4563",
+    "staged_followup.parquet": "dd5f59e2b0d66fd722ba6c782e37d30933a387e54fe23c09a12a2f3d99d7944c"
+  },
+  "verification": {
+    "new_total": 1459,
+    "covered_total": 1262,
+    "stage_counts": {
+      "AFTER_REFERENCE_CONFIRMATION": 539,
+      "BEFORE_REFERENCE_CONFIRMATION": 505,
+      "ON_REFERENCE_CONFIRMATION": 218,
+      "SHORT_OR_UNCONFIRMED_PROCESS": 76,
+      "REPEAT": 49,
+      "NO_PROCESS": 47,
+      "UNKNOWN_PROCESS": 16,
+      "UNKNOWN_DATA_OR_CONTEXT": 8,
+      "RIGHT_CONTEXT_UNKNOWN": 1
+    },
+    "confirmation_delay_verified": 1262,
+    "followup_rows": 2918,
+    "limits": "Historical descriptive partition. Reference confirmation is retrospective, not online availability. No method or label change."
+  }
+}

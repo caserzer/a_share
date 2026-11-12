@@ -1,0 +1,325 @@
+{
+  "scope": "Exploratory paired comparison; thresholds are research summaries, not user acceptance",
+  "bootstrap": {
+    "block_calendar_weeks": 13,
+    "draws": 2000,
+    "seed": 3402,
+    "main": {
+      "coverage": {
+        "B_minus_A": -0.019452449567723323,
+        "interval_95": [
+          -0.030906173476065002,
+          -0.007965211121641096
+        ]
+      },
+      "timely_coverage": {
+        "B_minus_A": -0.005403458213256482,
+        "interval_95": [
+          -0.013158617698091395,
+          0.0016143789025598804
+        ]
+      },
+      "new_precision": {
+        "B_minus_A": -0.03310583080552748,
+        "interval_95": [
+          -0.05503036360906453,
+          -0.012894119186788214
+        ]
+      }
+    }
+  },
+  "precision_floors": [
+    {
+      "delay": 0,
+      "precision_floor": 0.3,
+      "A": {
+        "quota": 5,
+        "delay": 0,
+        "arm": "A",
+        "new": 1439,
+        "unknown": 59,
+        "evaluable": 1380,
+        "effective": 499,
+        "precision": 0.3615942028985507,
+        "processes": 2776,
+        "covered": 578,
+        "coverage": 0.20821325648414984,
+        "timely": 186,
+        "mean_pool": 16.725806451612904,
+        "updates": 6857,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 5,
+        "delay": 0,
+        "arm": "B",
+        "new": 1439,
+        "unknown": 63,
+        "evaluable": 1376,
+        "effective": 452,
+        "precision": 0.32848837209302323,
+        "processes": 2776,
+        "covered": 524,
+        "coverage": 0.18876080691642652,
+        "timely": 171,
+        "mean_pool": 16.471774193548388,
+        "updates": 6731,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 0,
+      "precision_floor": 0.35,
+      "A": {
+        "quota": 5,
+        "delay": 0,
+        "arm": "A",
+        "new": 1439,
+        "unknown": 59,
+        "evaluable": 1380,
+        "effective": 499,
+        "precision": 0.3615942028985507,
+        "processes": 2776,
+        "covered": 578,
+        "coverage": 0.20821325648414984,
+        "timely": 186,
+        "mean_pool": 16.725806451612904,
+        "updates": 6857,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 3,
+        "delay": 0,
+        "arm": "B",
+        "new": 1254,
+        "unknown": 58,
+        "evaluable": 1196,
+        "effective": 429,
+        "precision": 0.358695652173913,
+        "processes": 2776,
+        "covered": 494,
+        "coverage": 0.17795389048991356,
+        "timely": 164,
+        "mean_pool": 14.528225806451612,
+        "updates": 5952,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 0,
+      "precision_floor": 0.4,
+      "A": {
+        "quota": 1,
+        "delay": 0,
+        "arm": "A",
+        "new": 463,
+        "unknown": 15,
+        "evaluable": 448,
+        "effective": 188,
+        "precision": 0.41964285714285715,
+        "processes": 2776,
+        "covered": 222,
+        "coverage": 0.07997118155619597,
+        "timely": 70,
+        "mean_pool": 5.443548387096774,
+        "updates": 2237,
+        "sample_support": true
+      },
+      "B": null
+    },
+    {
+      "delay": 1,
+      "precision_floor": 0.3,
+      "A": {
+        "quota": 5,
+        "delay": 1,
+        "arm": "A",
+        "new": 1252,
+        "unknown": 53,
+        "evaluable": 1199,
+        "effective": 450,
+        "precision": 0.37531276063386154,
+        "processes": 2776,
+        "covered": 516,
+        "coverage": 0.18587896253602307,
+        "timely": 164,
+        "mean_pool": 14.818548387096774,
+        "updates": 6098,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 5,
+        "delay": 1,
+        "arm": "B",
+        "new": 1252,
+        "unknown": 52,
+        "evaluable": 1200,
+        "effective": 447,
+        "precision": 0.3725,
+        "processes": 2776,
+        "covered": 510,
+        "coverage": 0.18371757925072046,
+        "timely": 152,
+        "mean_pool": 14.752016129032258,
+        "updates": 6065,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 1,
+      "precision_floor": 0.35,
+      "A": {
+        "quota": 5,
+        "delay": 1,
+        "arm": "A",
+        "new": 1252,
+        "unknown": 53,
+        "evaluable": 1199,
+        "effective": 450,
+        "precision": 0.37531276063386154,
+        "processes": 2776,
+        "covered": 516,
+        "coverage": 0.18587896253602307,
+        "timely": 164,
+        "mean_pool": 14.818548387096774,
+        "updates": 6098,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 5,
+        "delay": 1,
+        "arm": "B",
+        "new": 1252,
+        "unknown": 52,
+        "evaluable": 1200,
+        "effective": 447,
+        "precision": 0.3725,
+        "processes": 2776,
+        "covered": 510,
+        "coverage": 0.18371757925072046,
+        "timely": 152,
+        "mean_pool": 14.752016129032258,
+        "updates": 6065,
+        "sample_support": true
+      }
+    },
+    {
+      "delay": 1,
+      "precision_floor": 0.4,
+      "A": {
+        "quota": 1,
+        "delay": 1,
+        "arm": "A",
+        "new": 431,
+        "unknown": 15,
+        "evaluable": 416,
+        "effective": 180,
+        "precision": 0.4326923076923077,
+        "processes": 2776,
+        "covered": 213,
+        "coverage": 0.07672910662824207,
+        "timely": 65,
+        "mean_pool": 5.100806451612903,
+        "updates": 2099,
+        "sample_support": true
+      },
+      "B": {
+        "quota": 1,
+        "delay": 1,
+        "arm": "B",
+        "new": 431,
+        "unknown": 13,
+        "evaluable": 418,
+        "effective": 175,
+        "precision": 0.41866028708133973,
+        "processes": 2776,
+        "covered": 200,
+        "coverage": 0.07204610951008646,
+        "timely": 53,
+        "mean_pool": 5.07258064516129,
+        "updates": 2085,
+        "sample_support": true
+      }
+    }
+  ],
+  "confirmation_cost": [
+    {
+      "quota": 1,
+      "arm": "A",
+      "lost": 43,
+      "gained": 34,
+      "common": 179,
+      "common_delay_quantiles": {
+        "0.1": 0.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -5
+    },
+    {
+      "quota": 1,
+      "arm": "B",
+      "lost": 49,
+      "gained": 44,
+      "common": 156,
+      "common_delay_quantiles": {
+        "0.1": 0.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -13
+    },
+    {
+      "quota": 3,
+      "arm": "A",
+      "lost": 108,
+      "gained": 64,
+      "common": 403,
+      "common_delay_quantiles": {
+        "0.1": 0.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -37
+    },
+    {
+      "quota": 3,
+      "arm": "B",
+      "lost": 142,
+      "gained": 105,
+      "common": 352,
+      "common_delay_quantiles": {
+        "0.1": 0.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -39
+    },
+    {
+      "quota": 5,
+      "arm": "A",
+      "lost": 169,
+      "gained": 107,
+      "common": 409,
+      "common_delay_quantiles": {
+        "0.1": -5.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -22
+    },
+    {
+      "quota": 5,
+      "arm": "B",
+      "lost": 163,
+      "gained": 149,
+      "common": 361,
+      "common_delay_quantiles": {
+        "0.1": -5.0,
+        "0.5": 0.0,
+        "0.9": 5.0
+      },
+      "timely_change": -19
+    }
+  ]
+}

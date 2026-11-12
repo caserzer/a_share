@@ -1,0 +1,15 @@
+import sys,json
+from pathlib import Path
+import pandas as pd
+EP=Path(__file__).resolve().parents[2];sys.path.insert(0,str(EP/'src'))
+from pool_evaluation import sha
+OUT=EP/'restart/p54';OUT.mkdir(exist_ok=True);assert not (OUT/'receipt.json').exists()
+root=Path('/home/xiaolv/.cache/a_share/ep30_d2');names=['financial_original_value_candidates','financial_reviewed_facts','financial_version_chains','distribution_contract_amounts'];inventory=[];inputs=[];cohort=None
+for name in names:
+ f=root/'pit_v3/normalized'/f'{name}.parquet';a=pd.read_parquet(f);inputs.append(f);inventory.append(dict(source=name,rows=len(a),issuers=a.security_id.nunique(),columns=a.columns.tolist()))
+ if name=='financial_original_value_candidates':cohort=set(a.security_id.dropna());a.groupby(['field','quality_tier']).size().rename('rows').to_csv(OUT/'candidate_field_quality.csv')
+for name in ['corporate_actions','rights_issues']:
+ f=root/'backfill_v2/normalized'/f'{name}.parquet';a=pd.read_parquet(f);inputs.append(f);inventory.append(dict(source=name,rows=len(a),issuers=a.security_id.nunique(),known_at_nonnull=int(a.known_at.notna().sum()),observed_min=str(a.source_observed_at.min()),observed_max=str(a.source_observed_at.max())))
+af=Path('/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet');pf=EP/'restart/p30/training_panel.parquet';a=pd.read_parquet(af,columns=['era','level','industry_code','month','security_id']);a=a[a.level.eq('L3')];a['in_candidate_cohort']=a.security_id.isin(cohort);keys=['era','industry_code','month'];assert not a.duplicated(keys+['security_id']).any();g=a.groupby(keys).agg(members=('security_id','size'),candidate_members=('in_candidate_cohort','sum')).reset_index();g['coverage_upper']=g.candidate_members/g.members
+p=pd.read_parquet(pf,columns=['era','industry_code','date','eligible']);p=p[p.eligible&p.date.ge('2023-01-01')].copy();p['month']=p.date.dt.to_period('M')-1;p=p.merge(g,on=keys,how='left',validate='many_to_one');assert p.members.notna().all();p['support_upper']=p.candidate_members.ge(3)&p.coverage_upper.ge(.3);p['any_candidate']=p.candidate_members.gt(0);p.to_parquet(OUT/'coverage_upper.parquet',index=False)
+c=p.groupby(p.date.dt.year).agg(rows=('date','size'),any_candidate=('any_candidate','sum'),supported_upper=('support_upper','sum'),median_coverage_upper=('coverage_upper','median'));c.to_csv(OUT/'annual_coverage_upper.csv');(OUT/'inventory.json').write_text(json.dumps(inventory,ensure_ascii=False,indent=2)+'\n');inputs += [af,pf,Path(__file__),EP/'restart/P54_event_content_inventory_plan.md',EP.parent/'30_pit_data_foundation_v1/src/v3_announcements.py'];(OUT/'receipt.json').write_text(json.dumps(dict(status='PASS',candidate_issuers=len(cohort),price_rows=len(p),supported_upper_rows=int(p.support_upper.sum()),cohort_uses_all_dates_for_upper_bound_only=True,no_historical_signal_produced=True,inputs={str(f):sha(f) for f in inputs},artifacts={f.name:sha(f) for f in OUT.iterdir() if f.is_file()}),indent=2)+'\n');print(c.to_string());print('total',int(p.support_upper.sum()),len(p),'latest',p[p.date.eq(p.date.max())].support_upper.sum())

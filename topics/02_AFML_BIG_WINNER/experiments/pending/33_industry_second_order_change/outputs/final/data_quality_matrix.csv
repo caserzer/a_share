@@ -1,0 +1,9 @@
+domain,quality,used,time_rule,limitation,evidence
+industry_members,Historical-proxy,YES,previous month members and era separation,vendor revision availability unproven,r00 audit; EP32 daily source audit
+industry_price,Historical-proxy,YES,continuous blocks; 80% endpoints; t features only,not total wealth or executable industry product,r01 receipt
+market_benchmark,Historical-proxy,YES,same session and horizon,inherited vendor history,r01 receipt
+breadth,Historical-proxy,YES,backward 21-day differences; no fill,member/price missingness inherited,r01/r02 receipts
+reviewed_finance,PIT-reconstructed partial,AUDITED_NOT_MAIN,known_at retained,30 records/3 identities not a sufficient panel,r00 evidence
+vendor_finance,Historical-proxy partial,YES,announcement/update plus dependency max; next session,1647-stock cache; revisions and nonrandom missing coverage,r04/r05 receipts
+PE,Historical-proxy,NOT_USED,not used as earnings or expectation proxy,financial denominator vintages unproven,EP30 V6 report
+external_expectations,NOT_AVAILABLE_IN_THIS_EXPERIMENT,NOT_TESTED,no synthetic expectations,no direct expectation revision experiment,GOAL section2

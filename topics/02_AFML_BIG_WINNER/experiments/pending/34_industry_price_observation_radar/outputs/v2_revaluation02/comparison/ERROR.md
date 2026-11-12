@@ -1,0 +1,1 @@
+Incomplete comparison attempt: inherited confirmation-cost loop assumed a q5_d1 wait arm exists for every family. B07/B08/B09 only registered q5_d0. Preserve partial files; use comparison_complete after correction. Evaluation ledgers and hashes were unaffected.

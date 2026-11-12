@@ -1,0 +1,17 @@
+{
+  "stage": "PREDICTIONS_AND_ADMISSION_POLICY_SEALED_BEFORE_EVALUATION",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/outputs/r14/sealed_predictions.parquet": "d033b4a92554fb3d230cc44eb7fd2648c924db681feac25116ff4747cc210198",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/rounds/r15_single_reconfirmation_plan.md": "d833439f07951b9ebc8cdc72045a6ef346cb43dc00c2fb5f3a8047867cbb5a9c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/rounds/r14_reflection.md": "135d95cc71a5403c4afe7fd0dccec109624297ca473636ee200bab4be754c517",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/configs/pool_metric_v1.json": "3d76e9fb47a0afc4d714aff8d39a418be0fa7c3954937a6cfbc7e663ff445db8",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/src/probability_pool.py": "50310849bacb6c442221a56106618e281d86a10f8f5fda4ec4939d5c247b6dc1",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/33_industry_second_order_change/src/single_reconfirmation_pool.py": "c808b39b5f9ab8c64447065e8459c6c01342e5ea45ff6f1d188e9abe14c3ee24"
+  },
+  "artifacts": {
+    "sealed_predictions.parquet": "aad1c5c6da522fd5dcbb9d67334c76f4d4d6e8d48b5b90270d5db2ef94207298"
+  },
+  "adaptive_exploration": true,
+  "primary_entry": "one second confirmation per prefix-defined opportunity; later updates never count again",
+  "future_labels_in_prediction_file": false
+}

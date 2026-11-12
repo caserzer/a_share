@@ -1,0 +1,136 @@
+{
+  "status": "EVALUATOR_SUPPORT_ONLY_NOT_SIGNAL_RESULTS",
+  "rows": 673558,
+  "asof_day": 2376,
+  "asof_date": "2026-10-21",
+  "post_status": {
+    "POST_FAILED": 439168,
+    "UNKNOWN_PRICE_PATH": 159390,
+    "POST_VALID": 38825,
+    "IMMATURE": 22555,
+    "UNKNOWN_MISSING_DATES": 13620
+  },
+  "label_neighborhood_known": 438881,
+  "direct_sample_checks": 280,
+  "annual": [
+    {
+      "era": "SW2014",
+      "year": 2017,
+      "rows": 55388,
+      "post_status": {
+        "POST_FAILED": 34471,
+        "UNKNOWN_PRICE_PATH": 19374,
+        "POST_VALID": 1543
+      },
+      "label_neighborhood_known": 22292
+    },
+    {
+      "era": "SW2014",
+      "year": 2018,
+      "rows": 55161,
+      "post_status": {
+        "POST_FAILED": 38774,
+        "UNKNOWN_PRICE_PATH": 13990,
+        "POST_VALID": 2397
+      },
+      "label_neighborhood_known": 37238
+    },
+    {
+      "era": "SW2014",
+      "year": 2019,
+      "rows": 55388,
+      "post_status": {
+        "POST_FAILED": 42332,
+        "UNKNOWN_PRICE_PATH": 11121,
+        "POST_VALID": 1935
+      },
+      "label_neighborhood_known": 44017
+    },
+    {
+      "era": "SW2014",
+      "year": 2020,
+      "rows": 55161,
+      "post_status": {
+        "POST_FAILED": 38703,
+        "UNKNOWN_PRICE_PATH": 10864,
+        "POST_VALID": 5594
+      },
+      "label_neighborhood_known": 44027
+    },
+    {
+      "era": "SW2014",
+      "year": 2021,
+      "rows": 49940,
+      "post_status": {
+        "POST_FAILED": 25673,
+        "UNKNOWN_MISSING_DATES": 13620,
+        "UNKNOWN_PRICE_PATH": 6469,
+        "POST_VALID": 4178
+      },
+      "label_neighborhood_known": 28593
+    },
+    {
+      "era": "SW2021",
+      "year": 2022,
+      "rows": 83974,
+      "post_status": {
+        "POST_FAILED": 51233,
+        "UNKNOWN_PRICE_PATH": 26048,
+        "POST_VALID": 6693
+      },
+      "label_neighborhood_known": 39046
+    },
+    {
+      "era": "SW2021",
+      "year": 2023,
+      "rows": 83974,
+      "post_status": {
+        "POST_FAILED": 61068,
+        "UNKNOWN_PRICE_PATH": 20217,
+        "POST_VALID": 2689
+      },
+      "label_neighborhood_known": 63440
+    },
+    {
+      "era": "SW2021",
+      "year": 2024,
+      "rows": 83974,
+      "post_status": {
+        "POST_FAILED": 60385,
+        "UNKNOWN_PRICE_PATH": 20470,
+        "POST_VALID": 3119
+      },
+      "label_neighborhood_known": 63312
+    },
+    {
+      "era": "SW2021",
+      "year": 2025,
+      "rows": 84321,
+      "post_status": {
+        "POST_FAILED": 54175,
+        "UNKNOWN_PRICE_PATH": 20435,
+        "POST_VALID": 9711
+      },
+      "label_neighborhood_known": 63681
+    },
+    {
+      "era": "SW2021",
+      "year": 2026,
+      "rows": 66277,
+      "post_status": {
+        "POST_FAILED": 32354,
+        "IMMATURE": 22555,
+        "UNKNOWN_PRICE_PATH": 10402,
+        "POST_VALID": 966
+      },
+      "label_neighborhood_known": 33235
+    }
+  ],
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/outputs/r00_coverage/evaluation_coverage.parquet": "970a9a9d7c36f4a3eb78806e1cf3e5ab44b95f299297c29f335e70224ee486bd",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/configs/evaluation_registration.json": "18d8adf26d673d9f9afe991f1b2e0ec76723e9cb35cf099f9212ccba9dcf7f1f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/post_alert_evaluation.py": "019d58308936792590b4f654dbf4e93fbe979b719368e573fad32b8fd2b71a55",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/34_industry_price_observation_radar/src/build_evaluation_support.py": "61a557ab4ce2ba7bf680c69b2e3e3cb579f21a2a4ce6deaadaca04dced6ffc48"
+  },
+  "output_sha256": "33c90142740a3e9a10a3e0707d730b1dce83d9fbc521665f3b179f3a236a27da"
+}

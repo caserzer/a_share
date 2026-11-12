@@ -1,0 +1,12 @@
+{
+  "version": "EP34-USER-CAPACITY-v2",
+  "date": "2026-11-11",
+  "weekly_unique_new_industry_cap": 5,
+  "concurrent_observation_pool_cap": 20,
+  "provenance": "USER_EXPLICITLY_CONFIRMED",
+  "user_reply": "最多 20 个",
+  "supersedes": "R01 pool_cap=30 was an unconfirmed research assumption",
+  "does_not_change": ["price process definition", "success labels", "matching windows", "precision or recall targets"],
+  "historical_artifacts": "R01 and delivery_v1 with pool cap30 remain historical records; do not relabel as cap20",
+  "required_next_action": "Replay the same frozen R01 rules with a separately versioned cap20 configuration before issuing a capacity-conforming evidence catalogue"
+}
