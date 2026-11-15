@@ -1,0 +1,17 @@
+{
+  "question": "Can fixed prior-month industry members support consecutive monthly disclosed financial TTM change under both proxy clocks, without PE selection?",
+  "hypothesis": "Newly visible earnings improvement may support sustained fundamentals; first audit breadth/coverage, not forecast efficacy",
+  "sources": [
+    "outputs/r117/linked_monthly.parquet",
+    "outputs/r108/member_ledger.parquet",
+    "outputs/r108/industry_features.parquet"
+  ],
+  "period": "All81 financial month-end dates2020-01..2026-09; first month has unknown prior endpoint, no backfill",
+  "stock_rule": "Exact prior calendar month by security_id and clock; both financial_snapshot_linked/known_ttm, finite profit, report/component availability<=endpoint date; no price, cap, PE or comparison_eligible filtering",
+  "metric": "2*(current-prior)/(abs(current)+abs(prior)); bothzero=0. Negative profits valid, range[-2,2]. This is bounded change, not conventional profit growth.",
+  "transition": "Known pairs classified same/advanced/regressed report period; unknown latest does not fall back. Unchanged report values legitimately imply0 only when both endpoints known.",
+  "membership": "R108 prior-month members, unfiltered by cap ranking, price return or leader readiness; exact signal/origin dates; named+unresolved full denominator",
+  "aggregation": "Each clock independent; >=5 total members and known>=80% full denominator for subset mean/breadth; strict100 separately. No threshold search. Noneligible featuresNaN, coverage retained. Full-population mean onlystrict.",
+  "outputs": "Stock endpoints/status; full member ledger perclock; full industry grid perclock; coverage byera/level/year/clock, common eligibility, source hashes",
+  "limits": "No future targets, no models, no clock selection, no PE match filter, no strictPIT or causal/investment claim. If coverage insufficient report it; do not lower threshold."
+}

@@ -1,0 +1,9 @@
+{
+  "question": "Does repaired segment structure change original R54 126-session market controls or the FSMD common input cohort?",
+  "sources": "R129 daily L2/L3 and R130 feature-only monthly columns; unchanged R05 L1 daily/monthly and R30 size control; same CSI_ALL. No outcomes read.",
+  "formula": "Original market_controls_r54.features unchanged;127 contiguous prices in same segment for126 paired arithmetic returns; ddof1 beta/residual-vol252; no fill/window tuning.",
+  "comparison": "Outer identity comparison of control values/completeness, unchanged L1 exact check; FSMD cohort identity/raw/rank changes with breadth merged feature-only. No model fit here.",
+  "verification": "Independent direct127price windows; abs tolerance beta1e-8/residual1e-10 for numerical verification, exact missing masks/counts.",
+  "maintenance": "R132 dependency inventory is a bounded current index. Archive its pre-update JSON in r133 and refresh after source/registry changes; preserve actual experiment data and original ranking outputs.",
+  "bounds": "Historical-proxy, incomplete style controls; altered downstream models not presumed valid until separately rechecked."
+}

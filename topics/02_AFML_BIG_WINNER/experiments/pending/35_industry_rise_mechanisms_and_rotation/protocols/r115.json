@@ -1,0 +1,10 @@
+{
+  "question": "Does the existing independent financial cache contain the cumulative components needed for TTM parent profit, and when can those cached components be placed on alternative proxy clocks?",
+  "scope": "All1647 local EP30 financial partitions, retain all raw rows; candidate periods2020..2026; source complete calendar quarter ends only. No PE fit or price outcome read.",
+  "formula": "Annual December31 uses that annual parent profit. Other quarter ends: current year cumulative + prior December annual - prior same-quarter cumulative. Never annualize YTD or substitute latest available fiscal year. Negative and zero profits valid.",
+  "validation_rules": "Exact SECUCODE identity/file agreement, CNY, REPORT_TYPE matches quarter end, finite parent profit; all rows for a company/period retained. Conflicting values or invalid rows make component unknown, no choosing version to match PE.",
+  "clocks": "Component notice proxy=max NOTICE_DATE across its retained matching rows; missing or before report period invalid. Update-aware proxy=max NOTICE_DATE and UPDATE_DATE, all update dates required. TTM clock=max required component clocks. Conservative next benchmark trading day strictly after normalized proxy date. Known_at/first vintage absent => strictPIT false; update clock is sensitivity not certification.",
+  "outputs": "Raw normalized lineage, all target period candidates and required component references/statuses, per-year/formula/clock coverage; monthly latest-period/identity join to price is subsequent work after ingredients verified.",
+  "verification": "Independently reread every partition field and identity, recompute every ingredient set, arithmetic, clocks and summary; test missing prior quarter, conflicting version, negative profits, update delay and next-session boundary",
+  "stop_rule": "Do not compare annual actual to arbitrary PE TTM; no threshold/window search or adoption"
+}

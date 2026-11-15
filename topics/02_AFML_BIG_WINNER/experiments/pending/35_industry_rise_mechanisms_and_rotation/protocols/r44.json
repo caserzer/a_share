@@ -1,0 +1,14 @@
+{
+  "round": "R44",
+  "task": "local-only financing source and industry coverage audit before feature/model design",
+  "source": "EP24 outputs/local_cache/r27_margin_snapshots normalized detail, market and original body/receipt pairs",
+  "hypothesis": "Financing demand can follow past prices or convey independent future demand; inventory is prerequisite",
+  "no_network": true,
+  "read_columns": "normalized raw financing fields and prior-month industry membership only; no returns read",
+  "identity": "instrument plus monthly security identity; overlapping industry levels kept separate; ETF rows not assigned to stock industries",
+  "timing": "source snapshot two trading sessions before original monthly signal; exact calendar lag checked against existing market calendar; fetched_at not first release",
+  "missing": "absent security is unknown, never zero; actual disclosed zero retained",
+  "coverage": "show known/all prior-month members; >=5 and80% is coverage diagnostic inherited from EP35, not a new acceptance claim",
+  "verification": "every cached body hash/length/status; Shanghai raw json financing and buy exact matching; Shenzhen metadata displayed subset checked at published precision, Excel exact units inherited not independently reparsed",
+  "output": "source receipt, raw checks, industry coverage; no model or performance conclusion"
+}

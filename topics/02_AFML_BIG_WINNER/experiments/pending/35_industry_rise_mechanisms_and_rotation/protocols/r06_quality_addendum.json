@@ -1,0 +1,9 @@
+{
+ "id":"EP35-R06-Q1", "registered_on":"2026-11-13",
+ "basis":"R06 strict full-path simulation found only25 complete interval valuations and no full portfolio path. Distinguish missing intra-period marks from missing endpoints and quantify affected portfolio weight.",
+ "unchanged":"all R06 industry/stock selections and weights; no replacements or filtering of unknown assets",
+ "diagnostics":"per stock and scheduled interval: complete positive nonconflicting daily closes; stable observed chain; same-chain usable entry/exit marks; endpoint versus intra-period missingness",
+ "aggregation":"sum original weights, never renormalize available subset. Report known weighted endpoint-return contribution and unknown weight. Conditional long-only loss floor = known contribution - unknown weight; there is no finite upper bound assumed.",
+ "limits":"loss floor assumes conceptual fixed-weight fully funded long-only holdings; does not establish entry fill. No CAGR/drawdown built from bounds or endpoint-only data; no revised R06 result.",
+ "stop":"do not infer missing asset returns from peers, last close, zero, or selected successful periods"
+}

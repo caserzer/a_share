@@ -1,0 +1,30 @@
+{
+  "schema": "ep35.regime_research_monitor.v1",
+  "required": [
+    "as_of",
+    "clock",
+    "state_date",
+    "known_at_proxy",
+    "source_last_date",
+    "regime",
+    "state_status",
+    "features",
+    "state_dummies",
+    "model_eligibility",
+    "prediction",
+    "adoption",
+    "production_enabled",
+    "strict_pit",
+    "source"
+  ],
+  "unknown_rule": "regime null and state_dummies null; not reference-state zeros",
+  "source_end_rule": "not current date; reject beyond frozen source, never substitute latest silently",
+  "scope": "State inspection only; model predictions, per-state fit support and calibrated action outputs require separate gated evidence",
+  "interfaces": {
+    "signal_close": "monthly price models",
+    "prior_close": "R205 event state"
+  },
+  "macro_boundary": "This daily monitor does not reconstruct R202 monthly training lags",
+  "update": "explicit invocation/date/output only; new source needs new lineage/version; no scheduler",
+  "next_action": "inspect existing per-model state support before exposing any model score"
+}

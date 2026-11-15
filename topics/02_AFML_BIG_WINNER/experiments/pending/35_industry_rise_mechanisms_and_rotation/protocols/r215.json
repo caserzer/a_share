@@ -1,0 +1,8 @@
+{
+  "round": 215,
+  "scope": "All R197 fixed-FY EPS raw/share-context and profit expectations predictions, every offset/population/method/horizon. No pooling fixed FY offsets; current fitted forecasts partial diagnostic only.",
+  "rules": "R194 complete-month signal, next close entry, next monthly entry exit, top20% equal initial weights, drifted turnover, 0/20/50 bps per traded notional, initial/final fees, no full curve on any missing interval; base/state/interaction plus same-universe mom60/equal",
+  "identity": "family enriched with fy_offset and population; original source family preserved. Compare price_plus_expectation to price_only, expectation_only to price_only separately.",
+  "meaning": "Monthly rebalanced index simulation; forecast horizon is model training target, not forced 20/60-day holding; no execution certification or adoption",
+  "verification": "All selections and paths/turnover independently recalculated; daily wealth and risk checks"
+}

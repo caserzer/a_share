@@ -1,0 +1,263 @@
+{
+  "as_of": "2026-11-13",
+  "overall_status": "active_not_complete",
+  "items": [
+    {
+      "requirement": "为什么上涨：经济机制与反证",
+      "status": "partial_hypotheses_and_macro_proxy_tested",
+      "evidence": [
+        "reports/研究假说与数据缺口.md",
+        "outputs/factor_dictionary.csv",
+        "protocols/r13.json",
+        "outputs/r13/increments.csv",
+        "outputs/r13/verification.json",
+        "reports/R19_五份经营原文复核.md",
+        "reports/R20_经营事实的身份时点与覆盖.md",
+        "outputs/r20/verification.json"
+      ],
+      "remaining": "宏观两状态代理未确立排序增量；五公司事实原文已核验但非因果证据，产业供需连续变量和真实修订时点仍缺"
+    },
+    {
+      "requirement": "何时启动：领先与及时性",
+      "status": "partial_daily_price_confirmation_replay",
+      "evidence": [
+        "protocols/r02.json",
+        "outputs/r02/summary.csv",
+        "outputs/r09/summary.csv",
+        "outputs/r09/verification.json"
+      ],
+      "remaining": "经济启动与真实产业拐点未证实；日频校准与前瞻验证未完成；提示频率改善不等于模型增量"
+    },
+    {
+      "requirement": "上涨持续性",
+      "status": "partial_price_followup_complete",
+      "evidence": [
+        "reports/R03_财务数据补充与初步对照.md",
+        "outputs/r10/followup_summary.csv",
+        "outputs/r10/verification.json"
+      ],
+      "remaining": "盈利与预期兑现、经济机制失效及前瞻验证"
+    },
+    {
+      "requirement": "何时结束：风险和错误退出",
+      "status": "partial_monthly_baseline",
+      "evidence": [
+        "outputs/r02/summary.csv",
+        "outputs/r02/calibration.csv",
+        "outputs/r10/exit_summary_dates.csv",
+        "reports/R32_启动反转的规模控制.md",
+        "outputs/r32/verification.json",
+        "reports/R33_规模控制反转提示的退出代价.md",
+        "outputs/r33/verification.json"
+      ],
+      "remaining": "实际成交、全风格控制与独立前瞻；固定提示退出诊断未显示改善；R32规模控制分类已执行，尚需固定提示退出代价核查；R33新增模型固定退出代价已核查，未建立改善；真实成交/回撤路径与前瞻仍未证明"
+    },
+    {
+      "requirement": "配置价值与风险",
+      "status": "partial_synthetic_portfolios",
+      "evidence": [
+        "outputs/r04/summary.csv",
+        "outputs/r04/missing_path_audit.csv",
+        "outputs/r06/intervals.csv",
+        "outputs/r06/mark_weight_audit.csv",
+        "reports/R17_一级月度组合与风险.md",
+        "outputs/r17/risk_by_origin.csv",
+        "outputs/r17/membership_concentration.csv"
+      ],
+      "remaining": "一级合成前6未优于等权，实际股票路径/成交仍有缺口；内部股票换手、全风格归因与真实投资可实现性尚未证明"
+    },
+    {
+      "requirement": "一级二级三级分别研究",
+      "status": "partial_l1_three_tasks_executed",
+      "evidence": [
+        "outputs/universe_current.csv",
+        "outputs/r05/receipt.json",
+        "outputs/r13/summary.csv",
+        "protocols/r16.json",
+        "outputs/r16/fold_ledger.csv",
+        "outputs/r16/verification.json",
+        "outputs/r17/summary.csv",
+        "outputs/r17/verification.json"
+      ],
+      "remaining": "SW2014一级缺失；一级分类校准样本不足；一级合成组合已运行但实际交易映射未证明"
+    },
+    {
+      "requirement": "原报告因子与基准核对",
+      "status": "partial_official_summary_verified",
+      "evidence": [
+        "reports/方正来源核对.md"
+      ],
+      "remaining": "完整69项定义、开盘口径、五类/双拥挤完整可复现比较"
+    },
+    {
+      "requirement": "基准因子增量优先实验",
+      "status": "partial_available_factor_tests_done",
+      "evidence": [
+        "outputs/r01/paired_increments.csv",
+        "outputs/r02/paired_increments.csv",
+        "reports/R30_规模控制来源与覆盖.md",
+        "outputs/r30/verification.json",
+        "reports/R31_扩散增量的规模控制.md",
+        "outputs/r31/verification.json",
+        "outputs/r31/metrics_verification.json"
+      ],
+      "remaining": "非价格多因子覆盖、严格时点验证与更多独立样本；R30规模控制数据已构建并核查，尚待同母体增量比较；R31规模控制的收益对照已完成但未建立稳定增量，独立分类任务与完整风格仍缺"
+    },
+    {
+      "requirement": "预期与价格先后关系优先实验",
+      "status": "partial_snapshot_events_and_barrier_sensitivity_done",
+      "evidence": [
+        "reports/研究假说与数据缺口.md",
+        "outputs/r11/receipt.json",
+        "outputs/r11/revision_coverage.csv",
+        "protocols/r12.json",
+        "outputs/r12/receipt.json",
+        "outputs/r12/verification.json",
+        "reports/R12_固定年度预期与价格对照.md",
+        "protocols/r14.json",
+        "outputs/r14/receipt.json",
+        "outputs/r14/verification.json",
+        "reports/R14_预期修正事件与价格先后.md",
+        "protocols/r15.json",
+        "outputs/r15/data_verification.json",
+        "outputs/r15/verification.json",
+        "reports/R15_完整报告屏障与月末敏感性.md",
+        "outputs/r24/source_review.json",
+        "outputs/r24/verification.json",
+        "outputs/r25/verification.json",
+        "outputs/r25/impact_receipt.json",
+        "outputs/r26/verification.json",
+        "outputs/r26/impact_receipt.json",
+        "outputs/r26/unknown_control_receipt.json",
+        "outputs/r27/verification.json",
+        "outputs/r27/manual_review_receipt.json",
+        "outputs/r28/verification.json",
+        "outputs/r28/training_gates.csv",
+        "reports/R28_EPS与利润共同样本覆盖.md",
+        "reports/R29_EPS与价格同样本增量.md",
+        "outputs/r29/verification.json",
+        "outputs/r29/paired_increments.csv"
+      ],
+      "remaining": "严格覆盖不足；未确立独立领先；真实完整事件/修订记录、全风格控制和前瞻验证仍缺；R24发现原利润单位无效/部分EPS年度冲突，已隔离6值，R25月末行业/模型重放完成；R26事件分支已重放并增加未知对照敏感性；R27固定单位/年度规则已全库检查；股本语义、其它原文错误和原始版本链仍未全面认证；R28共同样本训练不足，EPS自身部分覆盖仅有训练资格，尚未检验增量；R29 EPS自身同样本收益实验已执行，主20日误差均未改善，未建立稳定增量，停止当前参数扩展"
+    },
+    {
+      "requirement": "产业领先变量优先实验",
+      "status": "partial_five_company_primary_facts_reviewed",
+      "evidence": [
+        "reports/研究假说与数据缺口.md",
+        "outputs/r08/mechanism_evidence_staging.csv",
+        "outputs/r19/review_receipt.json",
+        "reports/R19_五份经营原文复核.md",
+        "reports/R20_经营事实的身份时点与覆盖.md",
+        "outputs/r20/verification.json",
+        "reports/R35_电池产业线索时点与重复审计.md",
+        "outputs/r35/verification.json",
+        "reports/R36_商业航天来源与序列审计.md",
+        "outputs/r36/verification.json",
+        "reports/R37_本地原文恢复与产业补充请求.md",
+        "outputs/r37/verification.json"
+      ],
+      "remaining": "13条单期原文事实已按前月成员和三种时钟连接；连续可比产业序列、代表性、价格控制的领先性增量检验仍未完成；R35电池新线索去重仅两期月度装车量且缺原文存证，未形成因子；R36航天8个结构化指标各1期，待恢复原文与更长同口径序列；限定本地哈希恢复无匹配，已请求额外公开历史产业数据采集授权"
+    },
+    {
+      "requirement": "三类任务冻结协议和时序验证",
+      "status": "partial_baselines_verified",
+      "evidence": [
+        "protocols/r02.json",
+        "outputs/verification.json",
+        "outputs/test_receipt.txt",
+        "outputs/r16/verification.json"
+      ],
+      "remaining": "各层级未确立稳定增量、校准和前瞻；一级分类无合格校准输出，不混用原始分数"
+    },
+    {
+      "requirement": "数据可追溯与PIT补充",
+      "status": "partial",
+      "evidence": [
+        "outputs/r01/source_inventory.json",
+        "outputs/r03/archive_receipt.json",
+        "outputs/r05/receipt.json",
+        "outputs/r07/receipt.json",
+        "outputs/r08/candidate_relevance.csv",
+        "outputs/r08/external_document_request.json",
+        "outputs/r11/receipt.json",
+        "outputs/r11/verification.json",
+        "outputs/r14/event_ledger.csv",
+        "outputs/r15/data_receipt.json",
+        "outputs/r15/data_verification.json",
+        "outputs/r08/authorized_download_receipt.json",
+        "outputs/r19/reviewed_operating_observations.json",
+        "outputs/r24/source_review.json",
+        "outputs/r24/verification.json",
+        "outputs/r25/verification.json",
+        "outputs/r25/impact_receipt.json",
+        "outputs/r26/verification.json",
+        "outputs/r26/impact_receipt.json",
+        "outputs/r26/unknown_control_receipt.json",
+        "outputs/r27/verification.json",
+        "outputs/r27/manual_review_receipt.json"
+      ],
+      "remaining": "财报初发与修订仍非完整PIT；本地候选无法扩充当前在市历史成员；5份经营原文已授权下载及复核，但初发/修订链未认证；原数值长表未包含不可解析中间报告，R14屏障已修正事件配对，旧月末分数完整报告屏障敏感性已由R15运行，覆盖收缩；真实初发/修订版本仍不足；R24发现原利润单位无效/部分EPS年度冲突，已隔离6值，R25月末行业/模型重放完成；R26事件分支已重放并增加未知对照敏感性；R27固定单位/年度规则已全库检查；股本语义、其它原文错误和原始版本链仍未全面认证"
+    },
+    {
+      "requirement": "经济假说与完整因子字典交付",
+      "status": "unified_eight_module_dictionary_with_explicit_gaps",
+      "evidence": [
+        "outputs/factor_dictionary.csv",
+        "outputs/r12/factor_dictionary.csv",
+        "outputs/r13/factor_dictionary.csv",
+        "outputs/r23/current_factor_dictionary.json",
+        "outputs/r23/verification.json",
+        "reports/R23_八模块字典与证据边界.md",
+        "outputs/r34/current_factor_dictionary.json",
+        "reports/R34_目标缺口与当前证据校正.md"
+      ],
+      "remaining": "R34当前17条字典已纳入EPS和规模对照；完整69项定义、未实现模块可比序列与独立验证仍缺"
+    },
+    {
+      "requirement": "多模型完整结果与消融成本交付",
+      "status": "partial",
+      "evidence": [
+        "reports/R01_固定排序与增量.md",
+        "reports/R02_三任务模型与校准.md",
+        "reports/R04_月度换手成本与风险.md",
+        "reports/R06_股票持仓估值与数据边界.md",
+        "reports/R07_财务披露延迟与冲突.md",
+        "reports/R09_提示及时性与研究负担.md",
+        "reports/R12_固定年度预期与价格对照.md",
+        "reports/R13_宏观状态与行业敏感度.md"
+      ],
+      "remaining": "业务目标全部任务的主检验、风险、失效与多层级归因"
+    },
+    {
+      "requirement": "行业监控与更新流程",
+      "status": "partial_versioned_multidimensional_historical_monitor",
+      "evidence": [
+        "outputs/historical_monitor.csv",
+        "src/run_local.py",
+        "reports/R18_版本化观察与成熟标签.md",
+        "outputs/r18/replay_receipt.json",
+        "outputs/r18/verification.json",
+        "reports/R20_经营事实的身份时点与覆盖.md",
+        "outputs/r20/verification.json",
+        "reports/R21_分维度监控与失效检查.md",
+        "outputs/r21/verification.json",
+        "reports/R22_三任务输出与校准状态.md",
+        "outputs/r22/verification.json"
+      ],
+      "remaining": "冻结三任务输出与校准状态已接入历史监控；宏观、完整阶段识别、真实前瞻和新来源自动更新仍缺"
+    },
+    {
+      "requirement": "失败尝试及持续研究记录",
+      "status": "current_round_recorded",
+      "evidence": [
+        "RESEARCH_LOG.md",
+        "STATUS.md",
+        "outputs/r02/fold_ledger.csv"
+      ],
+      "remaining": "后续轮次继续追加记录"
+    }
+  ],
+  "blocking_whole_project": false,
+  "reason_to_continue": "用户已批准R37限定公开产业数据采集；R38已存3份月报，继续补2020-01至2026-09月份和来源/时点核查，未完成产业序列。"
+}

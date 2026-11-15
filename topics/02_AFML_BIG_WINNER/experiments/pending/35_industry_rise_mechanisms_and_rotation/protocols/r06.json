@@ -1,0 +1,14 @@
+{
+ "id":"EP35-R06", "registered_on":"2026-11-13",
+ "question":"保持R04行业选择不变，改为真实列明股票和固定持有期估值，能否区分研究样本门槛缺口与真实价格/交易缺口？",
+ "source":"R04 saved industry holdings and intervals, EP32 verified monthly assignments and original normalized stocks",
+ "selection":"exact saved R04 choices, including missing-path intervals; no re-ranking, no replacement, no future-price filtering",
+ "mapping":"use latest membership observed at signal month-end (assignment.month=origin month), equal industry weights and equal stocks within each selected industry; hold shares fixed from next-close entry to next monthly entry; aggregate duplicate stock weights before turnover",
+ "difference_from_R04":"new stock instrument mapping and latest available membership differ from the changing synthetic industry NAV; a distinct experiment, not repaired or overwritten R04 returns",
+ "valuation":"one or more assigned stocks can be valued even if industry later falls below5 members; every selected stock requires positive, non-conflicting QFQ closes and a stable nonmissing factor chain for the entire held period. Unknown member identities or any missing asset path invalidate the interval; no zero fill or weight renormalization",
+ "trading":"separately record endpoint volume and source can_buy/can_sell. Missing gates mean executability unproven, not approval. Price-only returns remain conditional valuation simulations, never investable performance",
+ "cost":"0/20/50bps per side times stock-weight L1 turnover using drifted old weights; initial entry1 and final liquidation1; fee deduction from wealth research convention, no liquidity impact claim",
+ "evaluation":"all scheduled intervals and reasons, paired R04/R06 gross values on identical intervals, stock concentration/effective count/turnover, full CAGR/drawdown/beta only if no invalid interval after portfolio start",
+ "inference":"descriptive mapping/quality audit, no new signal efficacy test; no window/threshold/weight search",
+ "limits":"classification and financial histories remain Historical-proxy; QFQ economic returns and real fills/corporate-action cash accounting are not certified"
+}

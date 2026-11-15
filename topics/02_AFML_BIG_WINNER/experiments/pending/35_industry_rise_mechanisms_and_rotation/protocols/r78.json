@@ -1,0 +1,9 @@
+{
+  "round": "R78",
+  "purpose": "Diagnose every failed R77 stock/interval, not remove securities or optimize selection",
+  "population": "all R77 rows with invalid price or factor chain",
+  "categories": "absent raw date, missing/nonpositive raw close, raw close conflict or unknown flag, missing/nonpositive adjusted close, missing chain, multiple observed chains; overlapping counts retained",
+  "concentration": "security frequency across method/interval versus deduplicated origin/security; no independence assumption",
+  "scope": "frozen normalized source rows and metadata; no quote fill, chain repair, external collection or trading",
+  "next": "identify evidence needed for source/identity repairs, never assert missing day means suspension/delisting without supporting metadata"
+}

@@ -1,0 +1,9 @@
+{
+  "question": "Distinguish latest observed disclosed period within frozen source from current natural-quarter requirement without bypassing conflicts or coverage",
+  "scope": "R72 selected fields and R73 industry/member evidence, six frozen snapshots, only2026Q1/H1 with prior-year comparisons; not complete disclosure history",
+  "selection": "For each industry/snapshot choose latest2026 economic period with any current-period selected field for a member, including conflict/missing statuses. Never select an older passing period to bypass latest failure. Financial/unknown-identity members excluded from mechanism ratios, all source statuses retained.",
+  "aggregation": "Original R73>=5 joint-known and80%denominator rule, same nonfinancial scope and source values. Only if chosen period passes show ratios.",
+  "time": "Record selected period, snapshot, proxy availability range, period age and source snapshot age. At requested date without exact snapshot label older_source_snapshot_not_current and expose only last-observed fields.",
+  "integration": "Append latest-source-period fields to all R93 rows, preserve every prior value and conservative current-quarter status; no model training or final actuals",
+  "limitations": "latest within this limited source does not establish latest actual public disclosure or strictPIT; no market outcome experiment"
+}

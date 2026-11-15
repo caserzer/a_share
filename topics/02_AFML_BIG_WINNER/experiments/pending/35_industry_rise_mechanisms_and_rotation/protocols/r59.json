@@ -1,0 +1,11 @@
+{
+ "round":"R59",
+ "task":"Read-only audit of local operational ETF share observations",
+ "scope":"golden_loop_artifacts/a_share_market_radar/reports/long_opportunities/2026/*.md formal dated reports only; exclude test_runs and other prose",
+ "parse":"LONG_OPPORTUNITY_STATE JSON; recursively collect dicts explicitly containing fund_share_units and ETF instrument_type; retain JSON path and report hash",
+ "identity":"instrument_code + fund_share_as_of; duplicate references not independent observations; conflicting values quarantine",
+ "timing":"report target_date versus share economic as_of; publication/acquisition time not inferred from filename or mtime",
+ "semantics":"share units are quantities; share*close is size proxy, not net creations cashflow; changes may include splits; current selected candidates do not form historical full ETF universe",
+ "mapping":"operational industry_code/index_code retained as provenance, not silently mapped to Shenwan",
+ "outputs":"raw extracted references, deduplicated observations/conflicts, coverage and source receipt; no outcomes, fitting, fetching, deployment or production edits"
+}

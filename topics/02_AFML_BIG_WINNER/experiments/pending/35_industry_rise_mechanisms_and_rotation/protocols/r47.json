@@ -1,0 +1,18 @@
+{
+  "round": "R47",
+  "question": "Does financing intensity improve calibrated onset/reversal probabilities after price and size?",
+  "registered_before_fit": true,
+  "cohort": "R46 common FS/E cohort; same-date ranks before task eligibility; eras/levels separate",
+  "methods": [
+    "FS",
+    "FSE"
+  ],
+  "labels": "exact frozen R02 onset/reversal and20/60 horizons; no threshold change",
+  "model": "LogisticRegression C1, max_iter2000, seed3502; train-only scaler; date balanced; Platt LogisticRegression C1 on prior July-Dec calibration",
+  "gates": "train >=300 rows/18months and each class>=30; calibration>=100rows/4months and each class>=10; fit maturity<prior July1; calibration maturity<Jan1; no raw fallback",
+  "evaluation": "date-equal Brier reduction FS minus FSE primary20; pooled discrimination/calibration and annual only if fitted",
+  "uncertainty": "calendar Bartlett HAC lag3/6; 99.5% normal reference intervals across ten primary era/level/task comparisons (Bonferroni); >=24 dates and lower bound>0 required for historical support; no future holdout claim",
+  "limitations": "selected historical research, size effective-date proxy not full styles/PIT; research probability not causal stage or trading recommendation",
+  "stop": "no loosening calibration, label tuning or raw probability substitution on skipped folds",
+  "selection_audit": "same dates compare selected vs other price+size complete industries using within-date size ranks; descriptive, no causal attribution"
+}

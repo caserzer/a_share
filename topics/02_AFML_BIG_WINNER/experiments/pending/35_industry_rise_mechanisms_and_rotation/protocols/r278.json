@@ -1,0 +1,17 @@
+{
+  "round": 278,
+  "previous_turn": "progress: denominator controlled experiments completed and verified",
+  "question": "Can archived direct power-export amounts reconcile with later reported same-month YoY under displayed rounding?",
+  "inputs": "R276 exact accepted direct-power quotes only and underlying81 frozen originals; no targets/model fits",
+  "pairing": "Each current direct power amount with previous-year same calendar month direct power amount; do not substitute enterprise exports or mixed totals",
+  "interval_rule": "Displayed numeral v with d decimal places gives conservative closed interval [v-0.5*10^-d,v+0.5*10^-d]; positive export intervals only. For signed rate r percentage points apply same rounding unit then /100. Derived ratio range [current_low/prior_high-1,current_high/prior_low-1]. Disjoint closed intervals indicate cannot be explained by this rounding assumption.",
+  "interpretation": "Disagreement does not identify whether revision, changed scope, editorial error or other cause; overlap does not certify truth or PIT",
+  "prohibited": [
+    "backfill implied prior denominator",
+    "overwrite source values",
+    "remove conflicting observations and refit",
+    "tune rounding tolerance",
+    "claim causality or adopt model"
+  ],
+  "next": "Use audit in factor dictionary and research boundary integration; source inconsistencies require publication/revision evidence to resolve"
+}

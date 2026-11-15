@@ -1,0 +1,16 @@
+{
+ "id":"EP35-R09", "registered_on":"2026-11-13",
+ "question":"已有月末启动模型在日频重放时，能否更早覆盖价格确认事件，代价是多少重复研究提示？",
+ "model":"frozen R02 cohort F/method F/task onset/horizon20 annual models and calibration parameters; no refit, no threshold or ranking change; daily scores not presumed calibrated because training used monthly origins",
+ "universe":"all R01 price-ready SW2014/SW2021 L2/L3 industries on each day; same feature and centered rank transforms as R02 before weak-state eligibility; no EP34 pool",
+ "signals":"eligible past_excess20<=0; highest20% scores per era/level/date, ceil counts and industry_code tie break. Compare monthly-end only, all daily, daily with20-session same-industry cooldown; cooldown suppresses top candidates without filling with lower ranks",
+ "events":"price confirmation date when trailing20 absolute return>=5% and trailing20 return minus CSI_ALL>=3%, with >=20 sessions since previous qualifying confirmation date (new cluster if gap>20); use continuous block only. Economic onset is not asserted",
+ "event_denominator":"all confirmation starts with price-ready features and frozen model available, including events with zero weak-eligible candidate dates; require a full20-session preceding window in the same continuous block and scored-model calendar; left-censored events separately listed",
+ "hits":"at least one selected alert in previous20 trading sessions, strictly before confirmation; report earliest lead and previous absolute gain at alert versus new performance after next-close entry",
+ "precision":"R02 future20 fixed-end label (absolute>=5%, excess>=3%) on mature alert origins; unknown outcomes excluded and counted, not failures. Event-window alignment distinct from fixed-horizon precision",
+ "burden":"alert count, unique industry-months, repeated same-industry alerts, alerts/month, recall per alert. No portfolio return interpretation",
+ "calibration":"report daily eligible mature sample Brier/PR-AUC/ROC for frozen score as a distribution-shift diagnostic, not recertified probability",
+ "verification":"monthly signal-date predictions must match stored R02 exactly before interpreting daily comparison; keep all event and alert records",
+ "inference":"descriptive historical replay, not a new model success search or forward test; dates/industries correlated, no independent-sample significance claims",
+ "remaining":"true economic phase/industry mechanism and alternative process definitions not resolved; no new external data or deployment"
+}

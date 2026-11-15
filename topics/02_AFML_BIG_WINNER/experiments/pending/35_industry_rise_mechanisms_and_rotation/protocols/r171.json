@@ -1,0 +1,8 @@
+{
+  "question": "Complete fixed L2 top10 vs top20 risk diagnostics omitted by R169",
+  "sources": "Frozen R169 and R137 holdings, intervals, daily portfolio returns; R129 price paths and CSI_ALL calendar",
+  "prior": "Original R17 last63 benchmark sessions through signal close, >=42 jointly observed returns. For each selected industry only adjacent benchmark sessions in its origin continuous block; no cross-block return or old-block history",
+  "risk": "Target HHI, prior equal-weight annualized volatility and mean pairwise correlation; valid interval maximum drifted weight and HHI; same-origin top10 minus top20 matched finite comparisons",
+  "tails": "Only whole-path-valid portfolios: fixed daily5percent quantile and lower-tail mean, min day, negative-market-day mean; annual returns with calendar-day counts; report gross/net20/net50 unchanged. No stitching invalid paths",
+  "boundary": "Descriptive no optimization/selection, no predictive adoption; nominal industry weights are not actual stock holdings, no stock-level overlap certification, internal turnover/fees and full style risk unresolved"
+}

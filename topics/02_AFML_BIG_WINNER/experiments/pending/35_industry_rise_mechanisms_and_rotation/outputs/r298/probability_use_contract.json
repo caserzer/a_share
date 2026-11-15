@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scope": "Original all-family R239 archive remains unchanged; R295 daily calibration applies only to21 core F/F reversal20 models",
+  "archive_audit": [
+    {
+      "date": "2026-08-31",
+      "rows": 101744,
+      "classifier_rows": 15816,
+      "explicit_frequency_column": false,
+      "path": "outputs/r239/2026-08-31/historical_score_view.parquet",
+      "sha256": "fa34956099da95ea7141773d1fe194c21cd53163da661e25ea9d21cc6686d800"
+    },
+    {
+      "date": "2026-09-30",
+      "rows": 104082,
+      "classifier_rows": 18342,
+      "explicit_frequency_column": false,
+      "path": "outputs/r239/2026-09-30/historical_score_view.parquet",
+      "sha256": "30371b30e0e24a14a896bf5ff1564637fbaaea4abed4652e646000c6bf60a8c2"
+    }
+  ],
+  "archive_interpretation": "Research scores already disclaim state-certified probability; calibration frequency is not a dedicated archive field. Original source rounds remain authoritative. Do not silently replace archive values with R295.",
+  "monthly_probability": "Frozen original monthly Platt output replayed daily; no daily reliability certification",
+  "daily_probability": "R295 previous-year mature daily Platt calibration, historical repeated evaluation, not a certified economic reversal probability",
+  "action_equivalence": "R297 only existing ranked ceil20%, completed-month-end and cooldown selections; no probability-threshold or sizing extrapolation",
+  "adoption": false,
+  "strict_pit": false,
+  "future_outcomes_allowed_in_reader": false,
+  "next_reader_required": true
+}

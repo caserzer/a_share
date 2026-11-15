@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "groups": 222,
+  "reference_events": 3717,
+  "event_records": 215127,
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r221/actions.parquet": "f8e3d818e7700074629cca58b9f69c05188906b7cd68551239ab99cd1abf737d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r155/evaluation/outputs/r09/confirmation_events.csv": "d8a529d598da43a3311372d967fe6bf3927f206d8bad0205ae7d07205da802ac",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r129/daily_2026-10-21.parquet": "449e93eb403a31b8827b770633c547628d6b2ab91c2686bddbbea74a2c9291c3",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r227.json": "51f20b2c27ae823ab8fcc119292341e2b05becd3ec8319dfcad2ae434e238d4b",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/regime_monthly_process_r227.py": "f37e9ff344c68b8f40e21c30e0bb510a85b2df048da4c55fcd64778dd268b0aa"
+  },
+  "outputs": {
+    "event_matches.parquet": "00f0fac77ce168cbb83728cd6e4ca120441cb17994adb23041143f61d17b5520",
+    "summary.csv": "afa01d3b119265738c4ac3226bdda5509151eb7c335a82f621fd93a1c0fd39ad",
+    "signal_inventory.parquet": "873e5bae77a7928d05b06b01562c45e4a0c2f707c9544747bee0c1708b0afd80",
+    "comparisons.csv": "b3dae1342306db34f14aef10c3ce9572cce74085438bad04b578c4dba7eba50f"
+  },
+  "adoption": false,
+  "scope": "Monthly process detection conditional on frozen R155 reference event catalogue; not economic phase or daily prediction"
+}

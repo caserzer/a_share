@@ -1,0 +1,8 @@
+{
+  "question": "Does corrected basket pricing change fixed-fiscal-year EPS expectation comparison R29?",
+  "scope": "Both raw_proxy/share_context_guard, strict and partial diagnostic, offsets0/1, all original levels and horizons; no coverage or threshold changes",
+  "inputs": "R130 corrected monthly panel plus unchanged L1 and original EPS coverage; EPS aggregation is price-independent and retains original membership and vintages",
+  "execution": "Original R29 three-method annual Ridge alpha10 unchanged in isolated root; full fit/skip ledger and associations retained",
+  "verification": "Compare full eligible cohort identities and all numerical features/labels; independent weighted normal equations, same-cohort metrics and source aggregation; compare old/new results with row_id treated only as positional metadata",
+  "boundary": "Historical-proxy, partial diagnostic cannot establish full-universe efficacy; no new tuning or external collection"
+}

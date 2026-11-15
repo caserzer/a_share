@@ -1,0 +1,55 @@
+{
+  "routes": {
+    "macro_repair_comparison": [
+      "outputs/r158/comparison.json",
+      "outputs/r158/verification.json",
+      "fixed_macro_interactions_no_predictive_acceptance"
+    ],
+    "l1_raw_onset_process": [
+      "outputs/r159/annual_process.csv",
+      "outputs/r159/verification.json",
+      "uncalibrated_price_onset_not_economic_stage"
+    ],
+    "l1_onset_calibration_gates": [
+      "outputs/r159/original_calibration_gates.csv",
+      "outputs/r159/verification.json",
+      "original_calibration_gate_failed_not_relaxed"
+    ],
+    "l1_process_baselines": [
+      "outputs/r160/summary.csv",
+      "outputs/r160/verification.json",
+      "same_population_burden_precision_recall_tradeoff"
+    ],
+    "l1_process_uncertainty": [
+      "outputs/r161/summary.csv",
+      "outputs/r161/verification.json",
+      "all_family_intervals_include_zero"
+    ],
+    "profit_expectation_repair": [
+      "outputs/r162/comparison.json",
+      "outputs/r162/verification.json",
+      "unchanged_short_sample_not_full_industry_acceptance"
+    ],
+    "early_financial_repair": [
+      "outputs/r165/comparison.json",
+      "outputs/r165/verification.json",
+      "unchanged_short_sample_no_strict_archive_clock"
+    ],
+    "l1_raw_reversal_exits": [
+      "outputs/r166/date_summary.csv",
+      "outputs/r166/verification.json",
+      "six_mature_months_uncalibrated_not_adopted"
+    ],
+    "l1_raw_reversal_paths": [
+      "outputs/r166/followup.parquet",
+      "outputs/r166/verification.json",
+      "91_origins_56_mature_35_unknown_synthetic_paths"
+    ]
+  },
+  "base": "R157",
+  "dictionary_update": [
+    "dedt_change",
+    "margin_delta"
+  ],
+  "boundary": "No prediction adoption; preserve every prior route and original definition; current evidence differs from legacy source slots"
+}

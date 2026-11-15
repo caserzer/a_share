@@ -1,0 +1,10 @@
+{
+  "round": 219,
+  "scope": "All R205 post and matched_post predictions, all three source families and horizons; original event IDs retained",
+  "decision": "Frozen predicted relative return>0 chooses event industry, otherwise original reference (CSI_ALL for post, non-event same-quintile equal industry basket for matched_post)",
+  "controls": "Reconstruct R26 matched control sets; unknown_controls removes original R14-to-R26 lost source events, >=3 complete controls, never select by future outcomes",
+  "dates": "Original entry and horizon maturity, original R144 daily snapshot, full paths mandatory, preserve original unknown labels",
+  "cost": "Independent full opening/closing every event interval, rates0/.002/.005 per traded notional; same fees for either side. No inter-event netting or portfolio compounding",
+  "aggregation": "Paired event differences, then equal signal-date mean; fiscal-year duplicates and sensitivity versions not independent evidence",
+  "limits": "Not causal matching, not certified no-news/PIT/executable strategy. Zero boundary diagnostic new protocol, no threshold search, no adoption."
+}

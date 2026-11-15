@@ -1,0 +1,93 @@
+{
+  "family": "financing",
+  "adoption": false,
+  "stop_unsupported_search": true,
+  "rounds": [
+    260,
+    261,
+    262,
+    263,
+    264,
+    265
+  ],
+  "conclusions": [
+    "Intensity can rise with nonincreasing balance",
+    "No stable return increment in qualified comparisons",
+    "Classifier local Brier/label improvements do not establish exit value",
+    "All frozen versions below hold on observed paths and below uniform selection on complete dates"
+  ],
+  "reopen": [
+    "Independent mature new period",
+    "Concrete source/implementation defect",
+    "Grounded omitted comparison"
+  ],
+  "next": "核对融资快照日与信号日两交易日差对分母拆解的影响；先核查本地原始价格和股本精确日期覆盖，不前移信号、不填缺失。",
+  "evidence": [
+    {
+      "path": "outputs/r260/summary.json",
+      "sha256": "3978858b3cb75da659675def408d7fed2c6dd3a2dcba7735cad0c1c0eb83c02f",
+      "verification": {
+        "path": "outputs/r260/independent_verification.json",
+        "sha256": "aa245f344c93aaa16a5c4611f8d5b6e27d8c50dd9f63d4403df682b98df96c9e"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r261/summary.csv",
+      "sha256": "4b0b87391cd7ffdb9f0f87901059807f3d9d42e22f4b897cf3c3dea1b23d9d7f",
+      "verification": {
+        "path": "outputs/r261/independent_verification.json",
+        "sha256": "7c989e5ecf7d4741f05cf5769de5272083943f505b08e64358e013a10cb34f37"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r262/summary.csv",
+      "sha256": "8384d312ba9609f57c33971ee142c7eec03c272691f65dbfdf880518220d229a",
+      "verification": {
+        "path": "outputs/r262/independent_verification.json",
+        "sha256": "6f71cd1342ce01fc0f8cef68a7309729474e0020d079a86ed2af637bfbf39498"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r263/summary.csv",
+      "sha256": "cd6e5df991331262f0013974c7bcdc26c52adf8595d99a53f8f39fad65c8caa1",
+      "verification": {
+        "path": "outputs/r263/independent_verification.json",
+        "sha256": "c2c1da1e547fae00dee8b2ba0940059be36d2c4447858345393306fb64df7d04"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r264/summary.csv",
+      "sha256": "3c1be59523a2445fd014629cb796c8ccf4b6ee5564c5f6f1637190db1934bfda",
+      "verification": {
+        "path": "outputs/r264/independent_verification.json",
+        "sha256": "ac74eb5f82c6749a811b5be7bdd6594159320fc3a3d475000a264f459d6ba63e"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r265/summary.csv",
+      "sha256": "7cec69b7f4fb4d73fa44711d1a7180fef25199c73b13a2793a43cde7a04d8869",
+      "verification": {
+        "path": "outputs/r265/independent_verification.json",
+        "sha256": "fd012685c30372880d7cff79773fbb6564c23215286750276b00fe8c918c4f48"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "question": "Propagate the audited basket repair to R55/R56 fixed models and original evaluation",
+  "scope": "Exactly the 60 refits frozen in R134; preserve all other parameters and prediction payloads",
+  "parameters": {
+    "ridge_alpha": 10,
+    "logit_C": 1,
+    "max_iter": 2000,
+    "random_state": 3502,
+    "calibration": "original prior July-December Platt C=1",
+    "weights": "equal dates",
+    "scaler": "unweighted training only"
+  },
+  "evaluation": "Unchanged R55/R56 evaluators and their original confidence and stability gates; all horizons and groups, no selection by outcome",
+  "verification": "Independent matrix inference, ridge normal equations and logistic gradients; exact preservation outside scope; independent per-date metrics",
+  "boundary": "Historical-proxy repeated-history repair; no production adoption, external acquisition, or threshold tuning"
+}

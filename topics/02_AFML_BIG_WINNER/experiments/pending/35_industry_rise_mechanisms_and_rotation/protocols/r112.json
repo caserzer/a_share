@@ -1,0 +1,7 @@
+{
+  "purpose": "Register R108-R111 without predictive promotion; audit existing raw PE/month-end price for necessary price/valuation/implied-earnings distinction",
+  "dictionary": "Preserve all24 R107 entries verbatim; append one leader_spread definition with full metadata, stopped-no-stable-increment status",
+  "requirements": "Preserve16 names/order and original evidence, append relevant source/results and keep all completion_proven false",
+  "source_audit": "Read exact-date single-source stock_pe_panel and extension_v2 monthly stock columns only; no future labels, no new collection. Count positive finite PE/raw price/cap and consecutive monthly pairs; preserve nonpositive PE and unmatched source statuses.",
+  "interpretation": "P/PE is vendor-implied EPS, not certified reported earnings; cap/PE similarly cannot silently substitute actual profit. Corporate actions/share basis and release timing require next protocol. No causal/forecast/portfolio claim."
+}

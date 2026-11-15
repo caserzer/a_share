@@ -1,0 +1,24 @@
+{
+  "question": "Do new regime targets change nominal stock concentration and overlap?",
+  "rounds": [
+    210,
+    211,
+    212,
+    214,
+    215,
+    216,
+    217
+  ],
+  "source": "existing L2/L3 assignments and original derived L1 assignments; historical proxy",
+  "construction": "R172 nominal equal members within industry, original industry target weights; known and unresolved denominator; missing/future snapshot full unknown",
+  "scope": "target exposures not actual price-supported holdings or tradable stocks; L1 absent child catalogue gap remains",
+  "metrics": [
+    "industry HHI",
+    "known stock HHI",
+    "conditional HHI bounds using unknown mass",
+    "largest weight bounds",
+    "same-date known overlap and bounds vs original controls"
+  ],
+  "pairs": "deduplicate cost variants; same original comparison target dates, unmatched counted; no path-return eligibility filter",
+  "no_search": true
+}

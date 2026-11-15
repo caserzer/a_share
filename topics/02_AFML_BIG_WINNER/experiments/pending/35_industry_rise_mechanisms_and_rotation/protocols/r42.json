@@ -1,0 +1,24 @@
+{
+  "round": "R42",
+  "registered_before_calculation": true,
+  "questions": [
+    "Is available installation log-yoy associated with past rather than future relative returns?",
+    "Can frozen R02/R32 calibrated onset/reversal models be evaluated on this industry cohort?"
+  ],
+  "data": "R40 frozen source and R41 same complete price/size/battery cohort; no new samples",
+  "association": "Spearman log_yoy versus past_excess20/60 and future excess20/60 on same finite paired rows for each horizon, separate industries; full period and each calendar year; descriptive only, including previously trained periods",
+  "no_causal_claim": "past association does not establish market anticipation or information causality; future correlation does not establish controlled prediction",
+  "classifier": "exact R02 labels and eligibility; annual fit before prior July1 and calibration July-Dec with maturity before Jan1",
+  "gates": {
+    "train_rows": 300,
+    "train_months": 18,
+    "train_each_class": 30,
+    "cal_rows": 100,
+    "cal_months": 4,
+    "cal_each_class": 10
+  },
+  "scope": "compatibility audit of existing calibrated framework, not a new single-industry classifier with revised gates",
+  "report_all_failures": true,
+  "stop": "no lowering gates or raw probability substitution; report structural incompatibility if six-month monthly calibration cannot meet100 rows",
+  "next_if_ineligible": "descriptive label prevalence remains valid; separate future single-industry classification design requires justified calibration strategy, not current gate relaxation"
+}

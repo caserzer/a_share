@@ -1,0 +1,19 @@
+{
+  "revision": "R256",
+  "question": "Does past daily calibration improve frozen regime onset probabilities, and does regime beat daily-calibrated base?",
+  "scope": "24 R196 core F/F onset20 models; 8 era/level/year contexts x3 variants",
+  "calibration": "Original R97: previous July1 toDec31, weak eligible, maturity strictly before test Jan1, >=4 calendar months,100 rows,10 each class. Full daily price-ready ranks before eligibility; original R196 monthly calibration row count as total date-equal weight. Platt C1 max_iter2000 random_state3502. No base refit.",
+  "comparisons": [
+    "daily-monthly within each variant",
+    "state daily-base daily",
+    "interaction daily-base daily"
+  ],
+  "checks": [
+    "reconstruct monthly train/cal split and compare R196 ledger",
+    "fit maximum maturity before calibration start",
+    "R253 exact eligible test keys and monthly probabilities",
+    "independent optimizer check and probability arithmetic",
+    "date-equal Brier/logloss/gap; fixed10 bins, unknown separate"
+  ],
+  "boundaries": "Exploratory historical repeat; no adoption on point estimate; overlapping labels require separate time-block uncertainty, not independent row significance. No state-specific calibrator or parameter search."
+}

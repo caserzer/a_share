@@ -1,0 +1,13 @@
+{
+  "question": "Propagate corrected features and R131 formal coefficients into historical three-task inference and model explanations",
+  "dates": [
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "features": "R129 feature-only cutoff-specific outputs plus unchanged L1 monthly features; exact-date only; never read outcomes at inference",
+  "models": "R131 R02 replacement plus unchanged R16 L1; F/FD own cohorts only; use R130 new fold ledger and unchanged R16",
+  "rules": "Original infer gates, full source rank denominator including outside-current-catalogue identities, no stale date fallback, no uncalibrated output",
+  "outputs": "New immutable research bundles, comparison to R101, additive model terms, exact-date operating-evidence join; old snapshots retained",
+  "verification": "All catalogue/status identities, direct rank/model arithmetic, additive reconstruction, evidence joins and bundle hashes",
+  "boundary": "Historical-proxy repeated-history repair, not live or forward capture; no production deployment, no global source-pointer replacement until dependency review"
+}

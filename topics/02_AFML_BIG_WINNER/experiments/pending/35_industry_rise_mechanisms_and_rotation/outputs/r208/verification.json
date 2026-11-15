@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "predictions": 660537,
+  "summary_rows": 3027,
+  "reconstruction_max_error": 4.440892098500626e-16,
+  "coverage": [
+    {
+      "round": 196,
+      "classifier_predictions": 182451
+    },
+    {
+      "round": 199,
+      "classifier_predictions": 332598
+    },
+    {
+      "round": 200,
+      "classifier_predictions": 145488
+    },
+    {
+      "round": 201,
+      "classifier_predictions": 0
+    }
+  ],
+  "adoption": false,
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r196/predictions.parquet": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r196/fold_ledger.json": "5c8d30a173bcdf825b24cf608534baad15414111f5ffb11143064a2b123c3460",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r199/predictions.parquet": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r199/fold_ledger.json": "8664b70da7b686d929492c030ae8e1ffe04533fa73476bc01bfb7ecae162acbb",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r200/predictions.parquet": "edba4f119fbab8f8a472d49779b87344afae9a2bc1cdd26ff8caad35bc10e383",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r200/fold_ledger.json": "ca3684718fa4d1bedeaccb69108d4e9440207fb07700c75a67a45156c821045a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r201/predictions.parquet": "cd3d3fdd0d97954b763c141faf7a80fdda3b5f1a639e300a769e4819e0844e5f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r201/fold_ledger.json": "5c4a4804e8f9e647c78a7207fcd8c512ceb110358c95522ad5d1d2e0a155f495",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r208.json": "61974738b9668b8788e1bafb1b04ae834b6f4d8fe3580440b2869e2d7a41fcec",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/regime_calibration_r208.py": "ab9311861e03e43d480e1c8ef225967f107df29f7e0ede91e5cef5dfc81a60f2"
+  },
+  "outputs": {
+    "calibration.csv": "6738d9d564638ae11808210893a6a5fca565d77bee7ed6a3fb342fd359879712",
+    "reliability_bins.csv": "f3af85890d8153cfc6d529e00a7e1cdc50d4f86f184fbc057fa0df3dd1111940",
+    "state_support.csv": "ec9c8f3c0a790dc236a26e6d6baf133f98d2001bdefa34ad160fc02ec001273d",
+    "paired_calibration.csv": "710c7337292216be357b3a60c41b9f95fa81abcb13aa1b8674660fd4c7e035e2"
+  }
+}

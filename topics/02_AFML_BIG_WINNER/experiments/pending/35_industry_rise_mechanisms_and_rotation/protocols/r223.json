@@ -1,0 +1,8 @@
+{
+  "round": 223,
+  "scope": "Frozen portfolio intervals R210/211/212/214/215/216/217, all direct regime/control contrasts, original fixed anchor216, original price anchor215 and original same-regime mechanism pairs",
+  "metrics": "Gross/net20/net50 paired monthly interval return differences; per-interval operating fees included, end-of-experiment final liquidation excluded from these interval means (full curves prior rounds include it)",
+  "inference": "R207 fixed calendar-lag6 Bartlett HAC, normal approximation; >=24 observed months >=3 calendar years, nondegenerate SE and BOTH full original scheduled paths required. Bonferroni across all contrasts incl gaps/ineligible. Positive screen also each year fragment positive.",
+  "missing": "Outer join every planned origin, unknown if either invalid; no filling/compressing gaps, incomplete cases retained descriptive only",
+  "limits": "Historical reuse, survivor selection, correlated methods; no causal or untouched holdout evidence, no selection/adoption based on screening. Overlapping event and single-industry decisions remain separate."
+}

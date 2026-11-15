@@ -1,0 +1,18 @@
+{
+  "round": "r264",
+  "source": "r263 frozen predictions",
+  "question": "Do financing components and regime improve reversal decisions at identical alert counts?",
+  "selection": "Top ceil(0.2*N) on each date within method/variant, probability descending then industry_code; select before outcome filtering",
+  "scope": "All fitted reversal branches in R263; no new fitting",
+  "outcomes": "Reuse R220 paths with exact era/level/code/date/horizon joins; independently reconstruct required paths from R129 and CSI_ALL",
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "cashflow": "R220/R10 sale, switch and terminal liquidation convention, cost per operation; hypothetical index policies not execution",
+  "primary": "20-day, cost .005; cash and market policy gain, label precision/recall, wrong exits; date-equal and annual",
+  "comparisons": "Within variant four R262 mechanism pairs; within method state/base and interaction/base",
+  "uncertainty": "Only 16 months/two years: descriptive; no stable adoption claim",
+  "secondary_verification": "Independently verify R263 AUC via pairwise ties, AP via score groups"
+}

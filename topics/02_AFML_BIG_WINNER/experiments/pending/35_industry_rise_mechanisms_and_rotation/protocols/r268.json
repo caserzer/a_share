@@ -1,0 +1,15 @@
+{
+  "round": "r268",
+  "question": "Does exact financing snapshot-date denominator change industry decomposition on identical companies?",
+  "inputs": [
+    "outputs/r261/industry_pairs.parquet",
+    "outputs/r261/common_company_links.parquet",
+    "outputs/r267/endpoints.parquet"
+  ],
+  "cohort": "R261 common company links, both endpoints R267 common_valid and identical instrument/security; compare signal and snapshot on exactly same surviving companies",
+  "gates": "Both original industry endpoints; >=5 and >=80 percent of each original endpoint membership; preserve failed rows null",
+  "decomposition": "Original symmetric median B/M decomposition; no changed formula",
+  "outcomes": "No targets, models or new thresholds; signs use original >0 rule",
+  "boundaries": "Historical-proxy; share publication unknown; same signal date; membership unchanged",
+  "next": "If changes persist at industry level, evaluate fixed original models on same qualified cohort with both clock definitions, never select winning clock"
+}

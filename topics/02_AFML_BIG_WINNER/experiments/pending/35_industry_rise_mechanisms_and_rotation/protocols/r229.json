@@ -1,0 +1,10 @@
+{
+  "round": 229,
+  "question": "What time until first original relative-trough breach is available after frozen reversal alerts, and what is missed?",
+  "sources": "R220 all reversal20 predictions/alerts; R129 daily; CSI_ALL",
+  "label": "original entry-normalized industry/market wealth <=0.92 within20 trading sessions; entry signal next close; not peak-to-trough nor absolute drawdown",
+  "unknown": "require full original path, preserve incomplete unknown even if partial crossing visible",
+  "metrics": "first breach offset from entry and from signal; true/false alert, missed positive per date; common-origin hit overlap and gained/lost hit",
+  "comparison": "state-base,interaction-base; same source/cohort/method; date-equal precision/recall; conditional lead distributions descriptive",
+  "boundary": "same origin means identical breach timing mechanically; cannot prove earlier alerting from same-origin comparison; overlapping origins not independent economic events; no new threshold/clustering/refit/adoption"
+}

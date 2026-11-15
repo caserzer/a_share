@@ -1,0 +1,15 @@
+{
+  "round": "R39",
+  "task": "freeze partial battery series and audit feature availability before outcomes",
+  "hypothesis": "Domestic power battery installation growth proxies realized end demand; volume growth may support battery sales but need not imply margins or equity returns",
+  "refutation": "price already anticipates growth; base effects, falling prices, inventory and excess supply break profit linkage",
+  "scope": "SW2021 L2 battery 801737.SI and L3 lithium battery 857371.SI separately; no L1 extrapolation; no chemical or fuel-cell assignment",
+  "primary_feature": "log(V_m/V_(m-12)); both explicitly reported monthly total GWh; missing remains missing",
+  "timing": "max reviewed republication dates of numerator and denominator; conservative next calendar day 00:00; historical proxy only",
+  "selection": "latest economic month whose growth is available by signal date and age<=2 calendar months; no backdating late republications",
+  "controls": "existing frozen price fields and size; coverage audit reads no labels",
+  "comparison": "same dates and identity for with/without feature; model experiment protocol to follow coverage audit",
+  "sources": "snapshot R38 extraction and reviewed publication dates with source hashes",
+  "quality": "not first-release PIT; displayed-date proxy; no imputation",
+  "created_before_outcome_analysis": true
+}

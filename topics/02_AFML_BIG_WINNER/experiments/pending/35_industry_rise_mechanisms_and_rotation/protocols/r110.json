@@ -1,0 +1,12 @@
+{
+  "question": "Does a positive prior-ranked leader spread precede follower catch-up, distinguished from leader decline?",
+  "reason": "R109 industry prediction does not directly measure within-industry follower catch-up; necessary mechanism comparison, no tuning",
+  "signal": "R108 fixed origin-month membership/top3 cap ranks, original available spread, strict100 signal sensitivity kept separate",
+  "timing": "Use existing exact calendar month endpoints: signal t, entry end t+1, exit end t+2; deliberate one-full-month delay because monthly source has no next-day execution price. This is a delayed monthly diagnostic, NOT original 20/60-day label or trading simulation. All endpoints must exist on benchmark month-end and same nonempty chain.",
+  "future_missing": "Both groups require ALL original members valid at entry/exit; no survivor reweighting. Keep every signal and future failure. Maturity date exit expected; unavailable calendar marked immature, missing observed endpoint separate.",
+  "outcomes": "Equal-weight future follower return, leader return, catchup=follower-leader; distinguish leader decline and positive follower return. No post-signal reranking or membership substitution.",
+  "comparison": "All available signals and strict100 sensitivity; positive/nonpositive lag spread strata, group annual/date summaries; same-date rank correlation spread versus catchup only >=20 complete industries and nonconstant. Descriptive associations only, no causal or independent increment claim.",
+  "inference": "No parameter/model search or adoption. Report date-equal means, annual heterogeneity and coverage. No significance claim from pooled member count. A positive catchup driven by leader loss is not evidence of follower rise.",
+  "scope": "local frozen prices only, five era/level populations separately, all catalogue rows retained via R108 table",
+  "validation": "independent source lookup for every endpoint, exact group membership/ranks retained, aggregate and date/year summaries recomputed; hash inputs and outputs"
+}

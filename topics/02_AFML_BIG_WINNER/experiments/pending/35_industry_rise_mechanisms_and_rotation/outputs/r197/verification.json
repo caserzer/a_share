@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "models": 180,
+  "predictions": 15102,
+  "fit_folds": 20,
+  "skip_folds": 156,
+  "normal_equation_error": 5.620504062164855e-16,
+  "original_control_rows": 5034,
+  "original_control_error": 0.0,
+  "adoption": false,
+  "all_families_complete": false,
+  "inputs": {
+    "outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "data/l1_monthly_panel.parquet": "3ec486135e6018ca900a53da38078609d682a6b67b78ffbff882fba2ac7f0766",
+    "outputs/r195/market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "protocols/r197.json": "2b6f96d2acdd0e153ed56936cec45c21e2ff5489b6983c0c92c9c27104466315",
+    "src/regime_expectations_r197.py": "4b8fc5e0e5dcdb5245ed8502ad91ae6afd366c88e21ba562e9d32f3531d128cd",
+    "src/regime_core_r196.py": "728714621888b16e0c36758ac23ac31681eb6f7b6eb4b84a2ce8077d48620bbc",
+    "src/expectation_r29.py": "0fcb9c1664e4b2dca8e42687dc9bd5f5a61807628e5bc8d431ab5e9517670229",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808",
+    "data/r29_raw_proxy_coverage.parquet": "42841ed126d9dc37193240205bc7b0554a7e85f29f8937c07af33fee5e107c87",
+    "outputs/r141/evaluation/outputs/r29/raw_proxy/predictions.parquet": "459a41c02a778b8c8b952a2aa485f24b179ad6dba24da9b414489877a1c5c72b",
+    "data/r29_share_context_guard_coverage.parquet": "8b2fe9d708b0d93523ace63e06634df639ee6d6583f7c697941a74a660018eff",
+    "outputs/r141/evaluation/outputs/r29/share_context_guard/predictions.parquet": "6b9b633d97b6617011582d4d734f3bd12a86b104946b53e7265873241f5eb868",
+    "data/r25_revision_coverage.parquet": "aa5cc69d69d3ddc90785c8065a8105d160b09c9f5ea9201414538bed4f934b88",
+    "outputs/r162/evaluation/outputs/r25/predictions.parquet": "559143fc7d4f18f1a85e75d2ad0c4a9da1c167a13feae88b1c2c6fe84bc3808b"
+  },
+  "outputs": {
+    "predictions.parquet": "c0d9ce2d5e02a5f8035f79d0553a77ed03b11122e1a4d0fcc0bea05b56e257c1",
+    "models.json": "ea8e3c0c0322da4a664a444cab38510d9106e8c68a5f02c88b608cecc4fa0b2f",
+    "fold_ledger.json": "76e89c3f87ba367840bd026c0e73c1d38b02b105e55f4cfb69251bc7d1604131",
+    "date_metrics.csv": "beb3147c77f90fded5414f5a8c68ee3559ec1fe9cc2c7399e89ef027e8dec60e",
+    "summary.csv": "f09c4313739df3cdcfe6aaa94ae5359215a35ae91f68c1f3481c185d8ca7b5cc"
+  }
+}

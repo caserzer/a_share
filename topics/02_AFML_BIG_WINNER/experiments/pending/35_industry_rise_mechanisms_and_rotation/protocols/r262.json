@@ -1,0 +1,24 @@
+{
+  "revision": "R262",
+  "hypothesis": "Balance contribution contains incremental next-period return information after price,size and market-cap contribution, possibly also after original financing intensity level.",
+  "scope": "All5 existing era/level groups, original20 primary/60 auxiliary horizons; base/state/interaction versions retained for user all-mechanism scope. Return task only this round; no classification claim.",
+  "cohort": "R261 qualified common companies, original R143 financing level and size complete, R130/L1 price_ready, known R195 state. Same rows/ranks for all methods. Missing stays missing.",
+  "methods": {
+    "FS": "price+size",
+    "FSE": "FS+original financing level",
+    "FSC": "FS+cap contribution",
+    "FSCB": "FSC+balance contribution",
+    "FSEC": "FSE+cap contribution",
+    "FSECB": "FSEC+balance contribution"
+  },
+  "comparisons": [
+    "FSE-FS",
+    "FSCB-FSC",
+    "FSECB-FSEC",
+    "FSEC-FSE"
+  ],
+  "primary_mechanism_comparison": "FSCB-FSC; FSECB-FSEC necessary original-level control",
+  "estimator": "R46 Ridge alpha10, original annualJan1 mature labels, >=300rows18dates, full common-cohort centered ranks then training-only scaler and date-equal weights; R195 frozen state/interactions, no tuning",
+  "uncertainty": "Calendar-month Bartlett HAC lag3/6 normal reference; all5groups*2horizons*3variants*4comparisons=120 planned IC comparisons, Bonferroni95% family, preserve no-fit groups. Support requires>=24 IC dates,>=3years and all annual mean IC deltas positive, adjusted lower>0. Auxiliary never replaces primary.",
+  "guardrails": "Historical proxy, no causal/portfolio claim, classification gates later only if justified, no threshold search."
+}

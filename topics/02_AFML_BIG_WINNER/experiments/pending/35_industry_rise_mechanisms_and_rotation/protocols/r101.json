@@ -1,0 +1,15 @@
+{
+  "kind": "immutable historical three-task inference, no refitting",
+  "dates": [
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "models": "frozen formal R02/R16 F and FD on their own cohorts; no R97 replacement",
+  "population": "full SW2021 catalogue, three levels, three tasks, horizons20/60",
+  "inputs": "feature-only exact-date snapshots; no outcomes or stored predictions; rank full ready cohort before task eligibility",
+  "gates": "original train/calibration gates and strict maturity boundaries; missing/invalid models never produce probabilities; no stale fallback",
+  "identity": "asof plus copied input, model, fold, catalogue, provenance, protocol and code hashes; historical only",
+  "validation": "compare all identities, statuses and predictions with frozen R22; absolute tolerance1e-10; mutation/idempotence/corruption and invalid-input tests",
+  "limits": "does not establish strictPIT, new source acquisition, forward validity or investment value",
+  "rank_population_clarification": "Before first successful run: source contains850412.SI outside current catalogue; retain in frozen full-source rank denominator and explicitly quarantine from emitted catalogue outputs. Initial reject aborted before results; no outcome-based change."
+}

@@ -1,0 +1,15 @@
+{
+  "revision": "R253",
+  "question": "Does frozen regime conditioning improve daily onset discovery under original R09 event and burden rules?",
+  "inputs": [
+    "outputs/r155/evaluation/data/r09_daily_scores.parquet",
+    "outputs/r155/evaluation/outputs/r09/confirmation_events.csv",
+    "outputs/r196/models.json",
+    "outputs/r196/predictions.parquet",
+    "outputs/r195/market_regimes.parquet"
+  ],
+  "scope": "core F/F onset20, all eight available era/level/year folds, base/state/interaction; not all16 families refitted",
+  "rules": "Rank all price-ready industries before weak eligibility. Fixed monthly-trained scalers and Platt scores. Top ceil20%, industry-code tie; daily, completed month-end, original >20-session cooldown without refill. Fixed R155 events, full preceding20 scored days. No refitting or parameter search. Unknown future outcomes excluded and counted.",
+  "acceptance": "Monthly predictions match R196 <1e-10; equal daily candidate/event denominators across variants; independent scalar prediction and event-hit reconstruction. Descriptive replay only, daily probabilities not recertified.",
+  "comparison": "Each variant vs base within identical era/level/strategy, report precision/recall/lead/burden together; no adoption on descriptive improvement."
+}

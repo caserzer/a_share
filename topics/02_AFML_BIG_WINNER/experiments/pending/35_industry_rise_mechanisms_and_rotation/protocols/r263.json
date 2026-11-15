@@ -1,0 +1,31 @@
+{
+  "round": "r263",
+  "question": "Do balance changes add onset/reversal information beyond price, size and market-cap changes?",
+  "source": "outputs/r262/panel.parquet",
+  "tasks": [
+    "onset",
+    "reversal"
+  ],
+  "horizons": [
+    20,
+    60
+  ],
+  "methods": [
+    "FS",
+    "FSE",
+    "FSC",
+    "FSCB",
+    "FSEC",
+    "FSECB"
+  ],
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "gates": "Original R02/R47: fit >=300 rows,18 dates,30 each class; calibration previous July-Dec with mature labels >=100 rows,4 dates,10 each class; no relaxation",
+  "estimator": "LogisticRegression C=1 max_iter=2000 random_state=3502; past Platt same estimator; date-equal weights; ranks before task eligibility, scaler train only",
+  "primary": "20-day calibrated date-equal Brier improvement FSCB versus FSC; FSECB versus FSEC necessary control",
+  "secondary": "60-day, AUC/AP and regime contrasts descriptive; no adoption without time uncertainty and action validation",
+  "scope": "All five era/level groups; keep no-fit outcomes; Historical-proxy; no external collection"
+}

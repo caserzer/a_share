@@ -1,0 +1,20 @@
+{
+  "question": "Do immutable observation and outcome replays connect correctly to repaired R129 daily baskets?",
+  "dates": [
+    "2026-06-30",
+    "2026-09-30"
+  ],
+  "evaluation_asof": "2026-10-21",
+  "versions": [
+    "legacy forecast_v5 plus original L1",
+    "R129 daily_2026-10-21 plus unchanged L1"
+  ],
+  "method": "Existing R18 capture and evaluate rules, isolated store; old snapshot evaluated with old and repaired source; repaired snapshot with repaired source; exact idempotence and immutable hashes",
+  "comparisons": [
+    "status",
+    "features",
+    "price score and rank",
+    "maturity and outcome revisions"
+  ],
+  "boundaries": "historical replay only; no new market data; no model change; preserve R18 originals; no adoption"
+}

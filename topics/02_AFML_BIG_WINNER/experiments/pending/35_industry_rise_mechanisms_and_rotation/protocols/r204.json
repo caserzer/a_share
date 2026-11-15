@@ -1,0 +1,9 @@
+{
+  "scope": "All R132 fixed ranking methods/cohorts, original scores preserved",
+  "experiment": "Single original score calibrated to excess20/60 using pooled Ridge; base/state/score-state interaction vs raw fixed score",
+  "parameters": "alpha10, date weights, train StandardScaler, annual2020..2026, mature labels, 300rows18months; R195 states unchanged",
+  "ranking_implication": "One score affine calibration can preserve/reverse/tie ranks, not learn new component weights; raw score not a return forecast so do not compare raw MSE",
+  "metrics": "IC min20; full selected top20% outcomes unknown if any selected missing; within same test dates and cohort",
+  "boundary": "Exploratory Historical-proxy, no adoption; costs/uncertainty pending",
+  "numerical_amendment": "After failed exact affine-rank verification, compute rankings using sign(state slope)*original score, before revised metrics; retain original float-ranked attempt; no fit/threshold changes"
+}

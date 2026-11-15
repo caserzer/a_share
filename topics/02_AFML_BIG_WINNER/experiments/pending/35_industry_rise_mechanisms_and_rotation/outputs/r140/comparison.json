@@ -1,0 +1,64 @@
+{
+  "artifacts": [
+    {
+      "family": "r64",
+      "artifact": "fold_ledger",
+      "old_rows": 20,
+      "new_rows": 20,
+      "exactly_equal": true
+    },
+    {
+      "family": "r64",
+      "artifact": "model_parameters",
+      "old_rows": 32,
+      "new_rows": 32,
+      "exactly_equal": true
+    },
+    {
+      "family": "r64",
+      "artifact": "predictions",
+      "old_rows": 336,
+      "new_rows": 336,
+      "exactly_equal": true
+    },
+    {
+      "family": "r64",
+      "artifact": "metrics",
+      "old_rows": 24,
+      "new_rows": 24,
+      "exactly_equal": true
+    },
+    {
+      "family": "r65",
+      "artifact": "fold_ledger",
+      "old_rows": 40,
+      "new_rows": 40,
+      "exactly_equal": true
+    },
+    {
+      "family": "r65",
+      "artifact": "eligible_labels",
+      "old_rows": 184,
+      "new_rows": 184,
+      "exactly_equal": true
+    }
+  ],
+  "old_coverage_rows": 114,
+  "new_coverage_rows": 114,
+  "old_cohort_rows": 100,
+  "new_cohort_rows": 100,
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r133/market_controls.parquet": "79aed2b74ed1045bb8e2559025aa4c3ff3c10cfa17aef8ccf76a0d418e22388a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r30_size_control.parquet": "64a08e64dec6a5fb21c858df8f17897529a9a5a7c4e91f70bb3d588455318d89",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r60/frozen_monthly_series.json": "23edd0a348f831c964165936c3a0be605cbeaa5eea2653c4d31b5aeff210fc22",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r64.json": "3b3ad61083201a02bf9a619afaea045d6d162d605ed4a6cd564fd249ca69cc35",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r65.json": "b3bdeb9e3056396630babe53923192a161a800b57731a55eb81363b779bbbc6f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/battery_pilot_r64.py": "add23ae0b2b4f54fde60c2cbdad0776073adbf33557560ab6a6901e7a913ee1e",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/repair_battery_r140.py": "09a076b6affc1798829dfc7f980fb21849674db0e66e9c85c7b6e723916560d8",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/battery_classification_gates_r65.py": "954df9a2563f76b9eb8d75be5954956399bd2be2f5233521492980c6dd23c31a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r140.json": "40867b620bffa796e155ee605439cbca6d0f81ba0674e490721c059681e29389"
+  },
+  "boundary": "Fixed original rules, old results retained"
+}

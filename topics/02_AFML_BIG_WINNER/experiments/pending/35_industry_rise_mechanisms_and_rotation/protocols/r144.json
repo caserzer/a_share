@@ -1,0 +1,13 @@
+{
+  "question": "Does corrected daily basket construction change report-event price timing and fixed-horizon contrasts?",
+  "scope": "Replay original R26 and R91 unchanged against R129 daily baskets; preserve originals",
+  "fixed": [
+    "all report barriers and publication proxy clock",
+    "historical membership",
+    "event revisions and current/next FY pairs",
+    "20/60-session windows and complete-block rule",
+    "matching quintiles and missing-control rules"
+  ],
+  "comparison": "Outer identity joins, field missingness/value changes, paired summary changes, all raw price windows and matched control arithmetic",
+  "acceptance": "No predictive claim: descriptive Historical-proxy only. No tuning, external acquisition or deployment."
+}

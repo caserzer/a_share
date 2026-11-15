@@ -1,0 +1,29 @@
+{
+  "round": 226,
+  "question": "Do mechanisms improve classifier action economics within each frozen regime, and does regime improve that increment?",
+  "sources": [
+    220,
+    221
+  ],
+  "pairs": "R199 and R200 original PAIRS; R196 each cohort FC/FD/FDG/FG vs its same-cohort F",
+  "metrics": [
+    "cash_policy_gain",
+    "market_policy_gain",
+    "precision",
+    "recall"
+  ],
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "comparisons": "mechanism variant minus control same variant; state/interaction increment minus base increment",
+  "invariants": "identical industry/date label/path universe and alert budget across methods and variants; no refit or reranking",
+  "uncertainty": "R222 fixed calendar HAC6, min24 months/3 years/nondegenerate; Bonferroni all cases; complete cases no zero filling",
+  "scope": "historical proxy; classification20 only where fitted; not causal or adopted"
+}

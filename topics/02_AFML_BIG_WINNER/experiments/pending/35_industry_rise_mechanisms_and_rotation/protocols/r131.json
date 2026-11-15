@@ -1,0 +1,9 @@
+{
+  "question": "Does the audited deterministic basket repair change original R02 fixed-parameter predictions and paired increment conclusions?",
+  "scope": "Exact R130 retrain_scope:52folds80models refit;4folds reevaluate fixed coefficients; all other original models/predictions preserved by identity. Re-evaluate full original R02 dataset.",
+  "parameters": "Ridge alpha10; Logit C1 max_iter2000 random_state3502, unchanged training/calibration windows, date-equal weights and gates. No search.",
+  "comparison": "Identity outer join, raw/calibrated prediction and training mean differences; use stable era/level/code/date key, never old positional row_id. Reconcile preserved model/prediction scope.",
+  "evaluation": "Original evaluate_r02.py and evaluate_r01.bootstrap unchanged; 20-day primary and60-day descriptive,48-comparison correction,min24months unchanged. Use isolated evaluation root under r131, no writes to original R02.",
+  "verification": "All output predictions directly recomputed from saved coefficients/ranks; Ridge weighted normal equation and Logit fit/calibration objective gradient diagnostics; unchanged models exactly preserved. Full original evaluation comparisons retained.",
+  "boundaries": "No new independent holdout, causal/production claim or downstream-wide certification. Local historical research repair."
+}

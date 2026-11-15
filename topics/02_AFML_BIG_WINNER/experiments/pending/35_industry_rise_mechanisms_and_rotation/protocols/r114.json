@@ -1,0 +1,14 @@
+{
+  "question": "What industry coverage and algebra survive fixed prior-member aggregation, and how different is mean log growth from equal-weight arithmetic growth?",
+  "source": "R108 full catalogue/source grid and prior-month member identities only; exact security_id/signal_month and date join to R113 validated stock basis. No ranking or future labels used.",
+  "bases": {
+    "raw": "common log_raw/log_pe/log_implied_eps",
+    "total": "common total_basis_ready log_cap/log_pe/log_implied_total/log_implied_eps/log_shares",
+    "adjusted": "common adjusted_basis_ready log_qfq/log_raw/log_pe/log_implied_eps/adjustment_wedge"
+  },
+  "coverage": "Keep all grid rows and full named+unresolved denominator; missing unresolved count invalidates gate. Minimum5 total members and known>=80% total for covered-subset diagnostics; strict_complete means known==total and unresolved==0. No unknown filled/reallocated as if full industry.",
+  "aggregation": "Within each basis use one common valid member set for all terms. Equal mean logs retain identity. exp(mean log)-1 is geometric growth, NOT equal-weight basket return. mean(exp(log)-1) is covered-subset arithmetic growth. Publish full_basket_arithmetic only for strict_complete rows. gap=log1p(arithmetic)-mean_log, Jensen>=0 within numeric tolerance. Total cap growth is NOT investment return.",
+  "summary": "Report era/level/basis separately with catalogue/source-only/observed flags and missing/status counts. Date-equal mean growth/Jensen across eligible rows, strict coverage separately. No headline pooled across hierarchies.",
+  "limitations": "positive PE selection, current historical member/price/PE proxy, unvalidated actual profit and corporate actions; no causal attribution, prediction or portfolio adoption",
+  "validation": "independent prior membership and all source joins; recompute group denominators/masks/means/all statuses and monthly summaries; synthetic heterogeneous returns demonstrates Jensen gap, missing/negative PE cannot become full return, unresolved member denominator kept"
+}

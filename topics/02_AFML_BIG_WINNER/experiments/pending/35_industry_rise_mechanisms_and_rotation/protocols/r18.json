@@ -1,0 +1,14 @@
+{
+  "scope": "Local immutable observation snapshots and separate outcome versions; no network or deployment",
+  "features": "R01 price features recomputed only from prefix, complete catalog retained; no future labels in observation export",
+  "frequency": "explicit observation dates; daily research ranks not validated by monthly results",
+  "clock": "actual UTC capture; forward intent same Shanghai date after15:00 only; no CLI backdating",
+  "sources": "content-addressed copies and method hashes; new sources create new versions, old observations unchanged",
+  "evaluation": "20/60 session next-close labels only after maturity; pending distinct from missing path; prefix price revisions counted",
+  "limitations": [
+    "Historical-proxy sources, not vendor original-release PIT certification",
+    "no prospective performance until real forward observations and later outcomes",
+    "stage/expectation/mechanism claims left unverified in this baseline snapshot"
+  ],
+  "catalogue": "unknown identities quarantined separately and excluded from ranking, never silently merged into known catalog; missing known identities retained"
+}

@@ -1,0 +1,10 @@
+{
+  "kind": "cutoff-only daily-to-monthly feature regeneration and frozen inference",
+  "cutoffs": ["2026-09-30", "2026-10-21"],
+  "sources": "local daily baskets and CSI_ALL only; original monthly panels used solely as validation references",
+  "features": "same causal price windows and block resets as R01/R05; past excess from aligned benchmark; existing breadth and membership inherited as historical proxies",
+  "frequency": "completed calendar months only, selected from prefix benchmark sessions; non-month-end cutoff never promotes partial month or stale month into exact-date inference",
+  "validation": "all regenerated completed-month rows against frozen panels through cutoff; full-source versus prefix invariance; exact-date frozen inference versus R101",
+  "tests": "future perturbation isolation, discontinuity reset, weekend month-end completion, duplicate identity rejection",
+  "limits": "does not reconstitute stock baskets, establish initial-publication PIT, collect new data, refit or deploy"
+}

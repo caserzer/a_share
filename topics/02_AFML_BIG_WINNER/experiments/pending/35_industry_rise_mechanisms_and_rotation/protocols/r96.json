@@ -1,0 +1,19 @@
+{
+  "question": "Necessary same-date comparison and pre-alert balance diagnostic for R95 monthly positive versus negative accounting coherence",
+  "population": "All1565 original monthly alerts retained; R95 frozen sign grouping unchanged; zero and unknown retained in census but not relabeled as controls",
+  "pairing": "era/level/exact alert date; positive and negative each>=1. No propensity fit or nearest-neighbor tuning. Dates selected without future outcomes",
+  "balance": [
+    "past_excess20",
+    "past_excess60",
+    "mom20",
+    "mom60",
+    "vol20",
+    "dd60",
+    "breadth21",
+    "members"
+  ],
+  "metrics": "excess20 primary; return20 and continuation_excess20_60 descriptive secondary",
+  "missing": "A contrast for each metric exists only if every positive and negative group member has the metric. Otherwise whole date/metric unknown. Separate metric maturity ledgers. No zero fill",
+  "aggregation": "within-group equal industries then positive-minus-negative perdate; equal complete dates. Report unmatched dates, zero/unknown cohort, source periods and signs. No p-values or predictive acceptance with at most one year/two economic periods",
+  "conclusion": "same date controls calendar only; preexisting price imbalance, identity selection and full styles remain. If sparse or unstable stop short-source branch rather than tune"
+}

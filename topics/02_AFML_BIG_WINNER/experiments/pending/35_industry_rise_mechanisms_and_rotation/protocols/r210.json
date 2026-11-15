@@ -1,0 +1,8 @@
+{
+  "round": 210,
+  "scope": "All R196 return and rank-target models, core and L1, all cohorts/methods and 20/60 horizons. Further mechanism portfolio branches remain separate required work.",
+  "rules": "R194 complete-month signal, next close entry, next monthly entry exit, top20% equal initial weights, drifted turnover, 0/20/50 bps per traded notional, initial/final fees, no full curve on any missing interval; base/state/interaction plus same-universe mom60/equal",
+  "identity": "Composite family__objective__cohort__method; source frozen R196",
+  "meaning": "Monthly rebalanced index simulation; forecast horizon is model training target, not forced 20/60-day holding; no execution certification or adoption",
+  "verification": "All selections and paths/turnover independently recalculated; daily wealth and risk checks"
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "report": "RPT_F10_EH_HOLDERNUM",
+    "rows": 10,
+    "counts": {
+      "600236.SH": 1,
+      "605123.SH": 1,
+      "300411.SZ": 1,
+      "300693.SZ": 1,
+      "002832.SZ": 1,
+      "003021.SZ": 1,
+      "600955.SH": 1,
+      "002948.SZ": 1,
+      "920407.BJ": 1,
+      "002406.SZ": 1
+    },
+    "http": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_fundamental_review_20261114/RPT_F10_EH_HOLDERNUM_http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_HOLDERNUM&columns=SECUCODE,END_DATE,HOLDER_TOTAL_NUM,TOTAL_NUM_RATIO,AVG_FREE_SHARES,AVG_HOLD_AMT,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(SECUCODE%20in%20(%22600236.SH%22%2C%22605123.SH%22%2C%22300411.SZ%22%2C%22300693.SZ%22%2C%22002832.SZ%22%2C%22003021.SZ%22%2C%22600955.SH%22%2C%22002948.SZ%22%2C%22920407.BJ%22%2C%22002406.SZ%22))(END_DATE=%272026-06-30%27)",
+        "status": 200,
+        "path": "data/cnequity_fundamental_review_20261114/RPT_F10_EH_HOLDERNUM_http_1.bin",
+        "sha256": "bf85e47d1a7324b89666b178c64f9449654fd21cb12cec312f2613c6c4ae31d9"
+      }
+    ]
+  },
+  {
+    "report": "RPT_F10_EH_HOLDERS",
+    "rows": 114,
+    "counts": {
+      "600236.SH": 10,
+      "605123.SH": 10,
+      "300411.SZ": 10,
+      "300693.SZ": 10,
+      "002832.SZ": 10,
+      "003021.SZ": 10,
+      "600955.SH": 24,
+      "002948.SZ": 10,
+      "920407.BJ": 10,
+      "002406.SZ": 10
+    },
+    "http": [
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_HOLDERS&columns=SECUCODE,END_DATE,HOLDER_NAME,HOLD_NUM,HOLD_NUM_RATIO,HOLDER_RANK,IS_HOLDORG&pageSize=500&pageNumber=1&filter=(SECUCODE%20in%20(%22600236.SH%22%2C%22605123.SH%22%2C%22300411.SZ%22%2C%22300693.SZ%22%2C%22002832.SZ%22%2C%22003021.SZ%22%2C%22600955.SH%22%2C%22002948.SZ%22%2C%22920407.BJ%22%2C%22002406.SZ%22))(END_DATE=%272026-06-30%27)",
+        "status": 200,
+        "path": "data/cnequity_fundamental_review_20261114/RPT_F10_EH_HOLDERS_http_0.bin",
+        "sha256": "c0323c8701f86c302731127d0c208b1b0a4d973582715864c9425037f49fd98c"
+      }
+    ]
+  },
+  {
+    "report": "RPT_F10_EH_FREEHOLDERS",
+    "rows": 114,
+    "counts": {
+      "600236.SH": 10,
+      "605123.SH": 10,
+      "300411.SZ": 10,
+      "300693.SZ": 10,
+      "002832.SZ": 10,
+      "003021.SZ": 10,
+      "600955.SH": 24,
+      "002948.SZ": 10,
+      "920407.BJ": 10,
+      "002406.SZ": 10
+    },
+    "http": [
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_FREEHOLDERS&columns=SECUCODE,END_DATE,HOLDER_NAME,HOLD_NUM,FREE_HOLDNUM_RATIO,HOLDER_RANK,IS_HOLDORG,HOLDER_TYPE,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(SECUCODE%20in%20(%22600236.SH%22%2C%22605123.SH%22%2C%22300411.SZ%22%2C%22300693.SZ%22%2C%22002832.SZ%22%2C%22003021.SZ%22%2C%22600955.SH%22%2C%22002948.SZ%22%2C%22920407.BJ%22%2C%22002406.SZ%22))(END_DATE=%272026-06-30%27)",
+        "status": 200,
+        "path": "data/cnequity_fundamental_review_20261114/RPT_F10_EH_FREEHOLDERS_http_0.bin",
+        "sha256": "c456fdf63e4068956ac364e4c7ff8d1ae64675f25bbea39f7b9ed19c1b510699"
+      }
+    ]
+  }
+]

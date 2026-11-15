@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "date_cost_checks": 912,
+  "direct_price_windows": 100,
+  "source_daily_sha256": "67bb7572e341399bf3e5cb845fd8d0fd1570232c2145697bafb4246d711a3e9e",
+  "checks": [
+    "source hashes",
+    "top20 selection before outcomes",
+    "equal eligible universe and alert count",
+    "complete-universe policy denominator",
+    "terminal cash/market accounting",
+    "avoided loss minus missed gain identity",
+    "100 direct daily price windows"
+  ],
+  "limitation": "not actual fills, financing, drawdown protection or continuous portfolio"
+}

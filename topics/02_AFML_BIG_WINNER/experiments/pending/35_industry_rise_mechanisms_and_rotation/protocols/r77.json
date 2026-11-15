@@ -1,0 +1,10 @@
+{
+  "round": "R77",
+  "question": "Can fixed stocks replicate frozen R17 synthetic basket intervals, without dropping missing or unknown positions?",
+  "holdings": "R76 nominal positions and unknown mass, R17 selection/next-close entry/exit unchanged",
+  "valuation": "requires zero unresolved weight and all positive nonconflicting daily qfq prices on benchmark calendar, single nonmissing factor_chain_id for each held stock over interval; no fill or renormalization",
+  "return": "sum fixed entry weights * exit/entry price minus1 only if full path/identity passes; compare R17 same interval gross return; no splicing across failed intervals",
+  "execution": "endpoint volume and can_buy/can_sell tri-state diagnostics for standalone buy-all/sell-all interval only, not actual net rebalance execution",
+  "cost": "no additional net-return curve until full holdings drift and execution established",
+  "boundary": "Historical proxy membership and prices, no trades/deployment; synthetic price-covered weights may differ from fixed nominal stocks"
+}

@@ -1,0 +1,2826 @@
+{
+  "scope": "EP35 src top-level Python literals; all prior outputs JSON except progress_manifest; excludes external/indirect/dynamic path resolution",
+  "seeds": {
+    "old_monthly": {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/monthly_panel.parquet",
+      "sha256": "77fb54406345c8a09d90b9f827cc252bf8ff764af4ba8de25b8ee62e6abb2816"
+    },
+    "old_daily": {
+      "path": "/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet",
+      "sha256": "67bb7572e341399bf3e5cb845fd8d0fd1570232c2145697bafb4246d711a3e9e"
+    }
+  },
+  "python_files": 333,
+  "source_reference_files": 101,
+  "source_lines": [
+    {
+      "path": "src/accounting_pairs_r96.py",
+      "line": 6,
+      "text": "out=ROOT/'outputs/r96';out.mkdir(exist_ok=True);ap=ROOT/'outputs/r95/alerts.parquet';pp=ROOT/'data/monthly_panel.parquet';a=pd.read_parquet(ap);a=a[a.strategy.eq('monthly')].copy();panel=pd.read_parquet(pp);d=a.merge(panel[KEY+['date']+FEATURES],on=KEY+['date'],how='left',validate='one_to_one');d.to_parquet(out/'monthly_alerts.parquet',index=False);ledger=[];contrasts=[]",
+      "sha256": "bb1333821781d8324dc02d22729a88d3265a3c3f6f083995b492f409cc44e644",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/audit_local.py",
+      "line": 8,
+      "text": "daily=CACHE/'forecast_v5/daily_industries.parquet'",
+      "sha256": "151374a3f66c8ebe91e95702b796732adc32d4ecf5a6ed83016a16a7d89646fc",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/audit_local.py",
+      "line": 15,
+      "text": "names=['forecast_v5/daily_industries.parquet','forecast_v5/CSI_ALL.parquet','joint_pe_v35/daily_expansion.parquet',",
+      "sha256": "151374a3f66c8ebe91e95702b796732adc32d4ecf5a6ed83016a16a7d89646fc",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/audit_portfolio_gaps.py",
+      "line": 8,
+      "text": "d=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet')",
+      "sha256": "3f2228c662cbcf56fa278f322e523c0f66974793668a38f49bf769d91b7ad14f",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/barrier_sensitivity_r15.py",
+      "line": 33,
+      "text": "dates=sorted(pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=['date']).date.unique())",
+      "sha256": "a1a24622d31fedeb4c5b15c4006c6581695d86471aaee13ca801bebbf22007c8",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/basket_inference_impact_r129.py",
+      "line": 8,
+      "text": "out=ROOT/'outputs/r129';newp=out/'features_2026-10-21.parquet';oldp=ROOT/'data/monthly_panel.parquet';l1p=ROOT/'data/l1_monthly_panel.parquet'",
+      "sha256": "b9444670484bfb532accb787b001d0de10715b6c65b31b8355bedc6cf0df924e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/basket_replay_r128.py",
+      "line": 75,
+      "text": "audit=EP32/'extensions/v5_rdagent_onset_forecast/outputs/daily_input_audit.json';refp=CACHE/'forecast_v5/daily_industries.parquet'",
+      "sha256": "e54021eca8f2ee0c86b295e8ad223e8aff4acd392fc1d73abf28049ee6e62317",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_coverage_r39.py",
+      "line": 32,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=signal_cols)",
+      "sha256": "ceca1c2dbd70a6182e28e0004d12a7e0449b8b3131b463f3ee43c0dfebae727e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_coverage_r39.py",
+      "line": 46,
+      "text": "inputs=[source,dates,ROOT/f'protocols/{round_id}.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',Path(__file__)]",
+      "sha256": "ceca1c2dbd70a6182e28e0004d12a7e0449b8b3131b463f3ee43c0dfebae727e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_coverage_r52.py",
+      "line": 9,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=signal_cols)",
+      "sha256": "f04a7655887e238e9bb351cbc70844fb81ee4a28c02b0a34c77fe47d47669112",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_coverage_r52.py",
+      "line": 23,
+      "text": "inputs=[source,ROOT/'protocols/r52.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',Path(__file__)]",
+      "sha256": "f04a7655887e238e9bb351cbc70844fb81ee4a28c02b0a34c77fe47d47669112",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_coverage_r61.py",
+      "line": 9,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=signal_cols)",
+      "sha256": "4bb24cb4a2af1bb845ed02a532e5405c375d61039d753cf27785c09c0b3682f2",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_coverage_r61.py",
+      "line": 23,
+      "text": "inputs=[source,ROOT/'protocols/r61.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',Path(__file__)]",
+      "sha256": "4bb24cb4a2af1bb845ed02a532e5405c375d61039d753cf27785c09c0b3682f2",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_diagnostics_r42.py",
+      "line": 31,
+      "text": "paths=[ROOT/'protocols/r42.json',ROOT/'outputs/r40/signal_coverage.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'src/battery_pilot_r41.py',ROOT/'src/train_r02.py',Path(__file__)]",
+      "sha256": "507ada2f4f168899c30f45cbe4a8d4bb22293e82ebc68cb6b238ce7e29ea3aeb",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r41.py",
+      "line": 10,
+      "text": "p=pd.read_parquet(ROOT/'data/monthly_panel.parquet');p['log_members']=np.log(p.members)",
+      "sha256": "ed97139b555f759bb5c208940848574b8d73274d482adf1233a3a0be7764d09d",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r41.py",
+      "line": 39,
+      "text": "paths=[ROOT/'protocols/r41.json',ROOT/'outputs/r40/signal_coverage.json',ROOT/'outputs/r40/frozen_monthly_series.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',Path(__file__),ROOT/'src/train_r02.py']",
+      "sha256": "ed97139b555f759bb5c208940848574b8d73274d482adf1233a3a0be7764d09d",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r53.py",
+      "line": 10,
+      "text": "p=pd.read_parquet(ROOT/'data/monthly_panel.parquet');p['log_members']=np.log(p.members)",
+      "sha256": "5fd65f72e0b0cd295b66e192cc039589a8a458ffba30848a0c99cded66e00dd2",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r53.py",
+      "line": 39,
+      "text": "paths=[ROOT/'protocols/r53.json',ROOT/'outputs/r52/signal_coverage.json',ROOT/'outputs/r51/frozen_monthly_series.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',Path(__file__),ROOT/'src/train_r02.py']",
+      "sha256": "5fd65f72e0b0cd295b66e192cc039589a8a458ffba30848a0c99cded66e00dd2",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r62.py",
+      "line": 10,
+      "text": "p=pd.read_parquet(ROOT/'data/monthly_panel.parquet');p['log_members']=np.log(p.members)",
+      "sha256": "8caf1c8abaea47d4377d14eb6effa70b60cbb7b1c376cf1ea9f30ede93cd75f9",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r62.py",
+      "line": 39,
+      "text": "paths=[ROOT/'protocols/r62.json',ROOT/'outputs/r61/signal_coverage.json',ROOT/'outputs/r60/frozen_monthly_series.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',Path(__file__),ROOT/'src/train_r02.py']",
+      "sha256": "8caf1c8abaea47d4377d14eb6effa70b60cbb7b1c376cf1ea9f30ede93cd75f9",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r64.py",
+      "line": 10,
+      "text": "p=pd.read_parquet(ROOT/'data/monthly_panel.parquet');p['log_members']=np.log(p.members)",
+      "sha256": "add23ae0b2b4f54fde60c2cbdad0776073adbf33557560ab6a6901e7a913ee1e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/battery_pilot_r64.py",
+      "line": 41,
+      "text": "paths=[ROOT/'data/r54_market_controls.parquet',ROOT/'protocols/r64.json',ROOT/'outputs/r61/signal_coverage.json',ROOT/'outputs/r60/frozen_monthly_series.json',ROOT/'data/monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',Path(__file__),ROOT/'src/train_r02.py']",
+      "sha256": "add23ae0b2b4f54fde60c2cbdad0776073adbf33557560ab6a6901e7a913ee1e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/build_l1.py",
+      "line": 71,
+      "text": "panel.to_parquet(ROOT/'data/l1_monthly_panel.parquet',index=False)",
+      "sha256": "e786e4ab2161cce1a4e71cc507e15ad80aad2f3c258df3966fd50e068158fc2b",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/build_panel.py",
+      "line": 35,
+      "text": "d=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet')",
+      "sha256": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/build_panel.py",
+      "line": 49,
+      "text": "panel.to_parquet(ROOT/'data/monthly_panel.parquet',index=False)",
+      "sha256": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/build_panel.py",
+      "line": 57,
+      "text": "sha256=sha(ROOT/'data/monthly_panel.parquet'),protocol_sha256=sha(ROOT/'protocols/r01.json'),",
+      "sha256": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/capital_coverage_r68.py",
+      "line": 5,
+      "text": "paths=[ROOT/'outputs/r67/same_period_pairs.json',CACHE/'extension_v2/products/assignments.parquet',ROOT/'data/l1_assignments.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'protocols/r68.json']",
+      "sha256": "5fff0e028a07ca4265fe84150325fe6f54cf2f86ecf04d88390512ee996c829e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/capital_monthly_r73.py",
+      "line": 4,
+      "text": "out=ROOT/'outputs/r73';out.mkdir(exist_ok=True);paths=[ROOT/'outputs/r72/company_pairs.parquet',CACHE/'extension_v2/products/assignments.parquet',ROOT/'data/l1_assignments.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'protocols/r73.json',Path(__file__)]",
+      "sha256": "166f1143cf43c77acf15bac6d0d72514ddf89ee388fb5a624931a2b906d7f43a",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/classifiers_margin_r47.py",
+      "line": 56,
+      "text": "js(out/'run_receipt.json',dict(protocol_sha256=sha(ROOT/'protocols/r47.json'),panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),",
+      "sha256": "51e7333716e2dd3305307d307329693bb75aab46411584a9d4b1008efd4397b7",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/classifiers_margin_r47.py",
+      "line": 57,
+      "text": "code_sha256=sha(__file__),feature_sha256=sha(ROOT/'data/r45_financing_intensity.parquet'),size_sha256=sha(ROOT/'data/r30_size_control.parquet'),l1_sha256=sha(ROOT/'data/l1_monthly_panel.parquet'),common_sha256=sha(ROOT/'src/common.py'),prediction_sha256=sha(out/'predictions.parquet'),rows=len(result),",
+      "sha256": "51e7333716e2dd3305307d307329693bb75aab46411584a9d4b1008efd4397b7",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/classifiers_size_r32.py",
+      "line": 56,
+      "text": "js(out/'run_receipt.json',dict(protocol_sha256=sha(ROOT/'protocols/r32.json'),panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),",
+      "sha256": "f7e8f1144d8e77d8a3ab30921f479eb0df147f1ab718fa7bccd1d1a33536ccb4",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/classifiers_style_r56.py",
+      "line": 56,
+      "text": "js(out/'run_receipt.json',dict(protocol_sha256=sha(ROOT/'protocols/r56.json'),panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),",
+      "sha256": "a1c4b95fd19dcc81ea72f9b2af32a8619d4e869bd5fbd6ffbe84650ec773b2f2",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/coverage_r11.py",
+      "line": 26,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=KEY+['date'])",
+      "sha256": "89380f48c100b7d23b6b4fb9d931cbf43cc06f3e290cc0fae05b2dfb68f9ee05",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/cutoff_features_r102.py",
+      "line": 29,
+      "text": "inputs=[CACHE/'forecast_v5/daily_industries.parquet',ROOT/'data/l1_daily.parquet',CACHE/'forecast_v5/CSI_ALL.parquet']",
+      "sha256": "cfa0d59ae2475d3c0574bfce0dca1ad70b48788ca57355f642e5ec74da0f3772",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/daily_calibration_r97.py",
+      "line": 9,
+      "text": "out=ROOT/'outputs/r97';out.mkdir(exist_ok=True);dp=CACHE/'forecast_v5/daily_industries.parquet';bp=CACHE/'forecast_v5/CSI_ALL.parquet';mp=ROOT/'outputs/r02/model_parameters.json';sp=ROOT/'data/r09_daily_scores.parquet';daily=pd.read_parquet(dp);market=pd.read_parquet(bp).close;parts=[]",
+      "sha256": "f07b462714d6c473c44d09f30da4a5380d969baf2b37ae4d0fea3b6187d4d766",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/diagnose_constituent_gaps.py",
+      "line": 10,
+      "text": "d=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet')",
+      "sha256": "e65cd9ec0cea6f049100ed2579ed68bd7debcad0236a890384b7f8915fc66a95",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/eps_coverage_r28.py",
+      "line": 53,
+      "text": "paths=[ROOT/'data/r24_source_exclusion_overlay.parquet',ROOT/'data/r25_company_broker_revisions.parquet',ROOT/'outputs/r27/share_action_review.json',ep/'validated_extractions.parquet',ep/'selected_reports.parquet',CACHE/'extension_v2/products/assignments.parquet',ROOT/'data/l1_assignments.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'protocols/r28.json',Path(__file__)]",
+      "sha256": "e8ed36156c8e579f6a0293c483c358e4eb5566d82b563989aa70fe74264fa4e0",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/evaluate_r01.py",
+      "line": 27,
+      "text": "assert sha(ROOT/'data/monthly_panel.parquet')==json.loads((out/'panel_receipt.json').read_text())['sha256']",
+      "sha256": "0afc7bec0184d85d748eb1cda9a209d8118999166126f3439b7cb6cf80099256",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/evaluate_r01.py",
+      "line": 28,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet')",
+      "sha256": "0afc7bec0184d85d748eb1cda9a209d8118999166126f3439b7cb6cf80099256",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/evaluate_r01.py",
+      "line": 71,
+      "text": "js(out/'run_receipt.json',dict(protocol_sha256=sha(ROOT/'protocols/r01.json'),panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),",
+      "sha256": "0afc7bec0184d85d748eb1cda9a209d8118999166126f3439b7cb6cf80099256",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/evaluate_r03.py",
+      "line": 7,
+      "text": "d=pd.read_parquet(ROOT/'data/financial_monthly_panel.parquet');rows=[]",
+      "sha256": "d4c320e28bf569c9b1002d3680aa45719e4668d2001b3cad99cac0e87d7ac9bb",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/evaluate_r03.py",
+      "line": 22,
+      "text": "js(ROOT/'outputs/r03/evaluation_receipt.json',dict(code_sha256=sha(__file__),panel_sha256=sha(ROOT/'data/financial_monthly_panel.parquet'),",
+      "sha256": "d4c320e28bf569c9b1002d3680aa45719e4668d2001b3cad99cac0e87d7ac9bb",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/events_r14.py",
+      "line": 77,
+      "text": "daily=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet')",
+      "sha256": "26c3068dac2c9347c11c6ae95ec2770566b4e63587e08d79946f4dd5b3dddb85",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/events_r14.py",
+      "line": 107,
+      "text": "sources={str(p):sha(p) for p in [source,extraction,metadata,CACHE/'extension_v2/products/assignments.parquet',CACHE/'forecast_v5/daily_industries.parquet',CACHE/'forecast_v5/CSI_ALL.parquet']},",
+      "sha256": "26c3068dac2c9347c11c6ae95ec2770566b4e63587e08d79946f4dd5b3dddb85",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/events_r26.py",
+      "line": 77,
+      "text": "daily=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet')",
+      "sha256": "b5350e3f0e08294e20875457d6e94dd6fc13b09baa8775725776da45e53b7700",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/events_r26.py",
+      "line": 107,
+      "text": "sources={str(p):sha(p) for p in [source,extraction,metadata,CACHE/'extension_v2/products/assignments.parquet',CACHE/'forecast_v5/daily_industries.parquet',CACHE/'forecast_v5/CSI_ALL.parquet']},",
+      "sha256": "b5350e3f0e08294e20875457d6e94dd6fc13b09baa8775725776da45e53b7700",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/evidence_monitor_r21.py",
+      "line": 61,
+      "text": "p=capture(ROOT/'data/update_store',[CACHE/'forecast_v5/daily_industries.parquet',ROOT/'data/l1_daily.parquet'],CACHE/'forecast_v5/CSI_ALL.parquet',ROOT/'outputs/universe_current.csv',date)",
+      "sha256": "ece982420cfc2e3ff14748bc79c3c87ee170f0f20d628721d5b866cc4a63ec24",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/exits_margin_r48.py",
+      "line": 7,
+      "text": "paths=[ROOT/'outputs/r47/predictions.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'protocols/r48.json',ROOT/'src/followup_r10.py',Path(__file__)]",
+      "sha256": "fff490a33ea91f0ae78009709893e298ff9389375844be7d3d810dfe6ac0351a",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/exits_size_r33.py",
+      "line": 7,
+      "text": "paths=[ROOT/'outputs/r32/predictions.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'protocols/r33.json',ROOT/'src/followup_r10.py',Path(__file__)]",
+      "sha256": "a3d9bb4e2aaa90e8e9f45469a70db5c00305377779cc24d490542675b097152f",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/exits_style_r57.py",
+      "line": 7,
+      "text": "paths=[ROOT/'outputs/r56/predictions.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'protocols/r57.json',ROOT/'src/followup_r10.py',Path(__file__)]",
+      "sha256": "625efe2e83e3b52583977d6de7682eaf9f77a38942f356a6d28982041ed1dac2",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r12.py",
+      "line": 14,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "d8a0aa1a79590dd59cccd11b144e79e2ad9492206598853ad5b1a37ec0c308ba",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r12.py",
+      "line": 66,
+      "text": "panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),coverage_sha256=sha(ROOT/'data/r11_revision_coverage.parquet'),prediction_sha256=sha(out/'predictions.parquet'),",
+      "sha256": "d8a0aa1a79590dd59cccd11b144e79e2ad9492206598853ad5b1a37ec0c308ba",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r15.py",
+      "line": 14,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "ba42c2560b3192bb83db4e22dfaaaabbf6901c7e5fe00cd3b408cfcc3b3b2f3f",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r15.py",
+      "line": 66,
+      "text": "panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),coverage_sha256=sha(ROOT/'data/r15_revision_coverage.parquet'),prediction_sha256=sha(out/'predictions.parquet'),",
+      "sha256": "ba42c2560b3192bb83db4e22dfaaaabbf6901c7e5fe00cd3b408cfcc3b3b2f3f",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r25.py",
+      "line": 14,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "7aadfb0b480f0781dbdf8522ba119278e4bb76e4c0c8ee8655724cf80c2d03cd",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r25.py",
+      "line": 66,
+      "text": "panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),coverage_sha256=sha(ROOT/'data/r25_revision_coverage.parquet'),prediction_sha256=sha(out/'predictions.parquet'),",
+      "sha256": "7aadfb0b480f0781dbdf8522ba119278e4bb76e4c0c8ee8655724cf80c2d03cd",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r29.py",
+      "line": 14,
+      "text": "panel=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True);panel['log_members']=np.log(panel.members)",
+      "sha256": "0fcb9c1664e4b2dca8e42687dc9bd5f5a61807628e5bc8d431ab5e9517670229",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/expectation_r29.py",
+      "line": 66,
+      "text": "panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),coverage_sha256=sha(ROOT/f'data/r29_{variant}_coverage.parquet'),prediction_sha256=sha(out/'predictions.parquet'),",
+      "sha256": "0fcb9c1664e4b2dca8e42687dc9bd5f5a61807628e5bc8d431ab5e9517670229",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/financial_delay_r07.py",
+      "line": 54,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel=panel[panel.era.eq('SW2021')&panel.date.between('2026-04-01','2026-09-30')]",
+      "sha256": "efdc4db208fde3c9e00ab4677aaaf7b98c8044ef345ff0f1198b74906c42e5d5",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/financial_delay_r07.py",
+      "line": 93,
+      "text": "source_hashes={str(p):sha(p) for p in [raw_path,ROOT/'data/monthly_panel.parquet',CACHE/'extension_v2/products/assignments.parquet',ROOT/'src/supplement_financials.py',ROOT/'src/evaluate_r01.py']},",
+      "sha256": "efdc4db208fde3c9e00ab4677aaaf7b98c8044ef345ff0f1198b74906c42e5d5",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/financial_folds_r121.py",
+      "line": 10,
+      "text": "paths=[ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'data/r54_market_controls.parquet',ROOT/'outputs/r120/industry_changes.parquet']",
+      "sha256": "c9f150d629d579c25f2550305e2c0fce56f725d20dc39c86c49368f04b7a1f95",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/followup_r10.py",
+      "line": 34,
+      "text": "out=ROOT/'outputs/r10';source=CACHE/'forecast_v5/daily_industries.parquet';d=pd.read_parquet(source)",
+      "sha256": "e3d2d5fbeb3e9a5cf0d27bb6ae032e4d2c30d377fded85a12b6eb2948c0fa62a",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/inference_bundle_r101.py",
+      "line": 105,
+      "text": "panels=[ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet']",
+      "sha256": "320cdd412e6cd5de6572f6b88db64c41ac2c86248aa00b167a57e0af0c73243b",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/l1_raw_r16.py",
+      "line": 10,
+      "text": "out=ROOT/'outputs/r16';panel=pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "eca8556a16920095e3283bc0c5c87e14465f6d5b17b87b29a509a488ac0d2751",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/l1_raw_r16.py",
+      "line": 42,
+      "text": "js(out/'raw_receipt.json',dict(protocol_sha256=sha(ROOT/'protocols/r16.json'),code_sha256=sha(__file__),panel_sha256=sha(ROOT/'data/l1_monthly_panel.parquet'),rows=len(d),score_meaning='uncalibrated Logit research score; not substituted for missing calibrated predictions'))",
+      "sha256": "eca8556a16920095e3283bc0c5c87e14465f6d5b17b87b29a509a488ac0d2751",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/label_fold_audit_r130.py",
+      "line": 64,
+      "text": "dp=ROOT/'outputs/r129/daily_2026-10-21.parquet';bp=CACHE/'forecast_v5/CSI_ALL.parquet';ep=CACHE/'joint_pe_v35/daily_expansion.parquet';op=ROOT/'data/monthly_panel.parquet'",
+      "sha256": "edf7f8b4f74890899b2456e64ca70ee2143cd7b629fccb69ae6d07ad4bd34d82",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/label_fold_audit_r130.py",
+      "line": 72,
+      "text": "pp=out/'monthly_panel.parquet';p.to_parquet(pp,index=False)",
+      "sha256": "edf7f8b4f74890899b2456e64ca70ee2143cd7b629fccb69ae6d07ad4bd34d82",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/leader_feature_r108.py",
+      "line": 45,
+      "text": "paths=[CACHE/'extension_v2/products/panel.parquet',CACHE/'extension_v2/products/assignments.parquet',ROOT/'data/l1_assignments.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'outputs/universe_current.csv',CACHE/'forecast_v5/CSI_ALL.parquet']",
+      "sha256": "5cb54bd8f4e31ae04c319d29c19cfa3ba3d443b1236e183c1fa21d61b9e424e5",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/leader_models_r109.py",
+      "line": 13,
+      "text": "paths=[ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'data/r54_market_controls.parquet',ROOT/'outputs/r108/industry_features.parquet']",
+      "sha256": "90a88431da19c740ba4ce30e46768cc9a71763776ebdfceb00fbda92afa0446d",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/macro_r13.py",
+      "line": 30,
+      "text": "panel=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True)",
+      "sha256": "15e941b8bf742770ef0b62a229322471d68e5c77325f41b8596f04baeb46a4d5",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/macro_r13.py",
+      "line": 82,
+      "text": "sources={str(p):sha(p) for p in [ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r11_macro_observations.parquet']},",
+      "sha256": "15e941b8bf742770ef0b62a229322471d68e5c77325f41b8596f04baeb46a4d5",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_factor_r45.py",
+      "line": 19,
+      "text": "panel=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=cols),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet',columns=cols)],ignore_index=True);panel['log_members']=np.log(panel.members)",
+      "sha256": "dedeb903f9e709dcae56a69b94f6934a8c166e5c75824869864fb339fbef6fbc",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_factor_r45.py",
+      "line": 30,
+      "text": "paths=[SOURCE/'normalized_detail.parquet',CACHE/'extension_v2/products/assignments.parquet',CACHE/'extension_v2/products/panel.parquet',ROOT/'data/l1_assignments.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'protocols/r45.json',Path(__file__)]",
+      "sha256": "dedeb903f9e709dcae56a69b94f6934a8c166e5c75824869864fb339fbef6fbc",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_inventory_r44.py",
+      "line": 36,
+      "text": "signals=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=KEY+['date']),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet',columns=KEY+['date'])]);signals=signals[signals.date.isin(market.date)].copy();signals['month']=signals.date.dt.to_period('M')-1",
+      "sha256": "d120e41ad673806cb1351d6a78c06d9776197477f4185c65dbd9f4689223dcc1",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_inventory_r44.py",
+      "line": 40,
+      "text": "reads=[CACHE/'forecast_v5/CSI_ALL.parquet',SOURCE/'normalized_detail.parquet',SOURCE/'normalized_market.parquet',CACHE/'extension_v2/products/assignments.parquet',ROOT/'data/l1_assignments.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'protocols/r44.json',Path(__file__)]",
+      "sha256": "d120e41ad673806cb1351d6a78c06d9776197477f4185c65dbd9f4689223dcc1",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_models_r46.py",
+      "line": 10,
+      "text": "p=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True);p['log_members']=np.log(p.members)",
+      "sha256": "0b5dc90f9341491e7256c969676213a23db2077fd370281b54b6e42af9dd571d",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_models_r46.py",
+      "line": 38,
+      "text": "paths=[ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'data/r45_financing_intensity.parquet',ROOT/'protocols/r46.json',ROOT/'src/train_r02.py',ROOT/'src/evaluate_size_r31.py',Path(__file__)]",
+      "sha256": "0b5dc90f9341491e7256c969676213a23db2077fd370281b54b6e42af9dd571d",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_selection_r47.py",
+      "line": 8,
+      "text": "p=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=cols),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet',columns=cols)]);p['log_members']=np.log(p.members)",
+      "sha256": "cc823a1064cd8ef9ca3de59964357a818b452977f3aee31e00292b2c2a199403",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/margin_selection_r47.py",
+      "line": 18,
+      "text": "paths=[ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'data/r45_financing_intensity.parquet',ROOT/'protocols/r47.json',Path(__file__)]",
+      "sha256": "cc823a1064cd8ef9ca3de59964357a818b452977f3aee31e00292b2c2a199403",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/market_controls_r54.py",
+      "line": 16,
+      "text": "paths=[CACHE/'forecast_v5/daily_industries.parquet',ROOT/'data/l1_daily.parquet',CACHE/'forecast_v5/CSI_ALL.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'protocols/r54.json',Path(__file__)]",
+      "sha256": "2f9e30d8ee134915fe639b40e76d367f78def57f7db1ad9daa9bdbb8a422c2d3",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/portfolio_l1_r17.py",
+      "line": 19,
+      "text": "out=ROOT/'outputs/r17'; panel=pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')",
+      "sha256": "9d30b94f2a0b69437ddc1867c54f69bdb2a4ad56b5df989383e6950429bf9a5c",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/portfolio_l1_r17.py",
+      "line": 93,
+      "text": "panel_sha256=sha(ROOT/'data/l1_monthly_panel.parquet'),price_sha256=sha(ROOT/'data/l1_daily.parquet'),",
+      "sha256": "9d30b94f2a0b69437ddc1867c54f69bdb2a4ad56b5df989383e6950429bf9a5c",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/portfolio_r04.py",
+      "line": 19,
+      "text": "out=ROOT/'outputs/r04'; panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet')",
+      "sha256": "65681a3bd2f3e7e8226eb3c0d8ad718f620075a6cf0a9415972f96f20039996e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/portfolio_r04.py",
+      "line": 20,
+      "text": "d=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet')",
+      "sha256": "65681a3bd2f3e7e8226eb3c0d8ad718f620075a6cf0a9415972f96f20039996e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/portfolio_r04.py",
+      "line": 93,
+      "text": "panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),price_sha256=sha(CACHE/'forecast_v5/daily_industries.parquet'),",
+      "sha256": "65681a3bd2f3e7e8226eb3c0d8ad718f620075a6cf0a9415972f96f20039996e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/process_replay_r09.py",
+      "line": 20,
+      "text": "out=ROOT/'outputs/r09';source=CACHE/'forecast_v5/daily_industries.parquet';d=pd.read_parquet(source)",
+      "sha256": "5c089499e3b96c91515c154afdfd4ed45838614f60cf1ffcecdc7901997c8db8",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/ranking_repair_r132.py",
+      "line": 10,
+      "text": "source=ROOT/'outputs/r130/monthly_panel.parquet';shutil.copyfile(source,sandbox/'data/monthly_panel.parquet')",
+      "sha256": "5cfadade2b87ca9cb03cea4f96e2fb12206b75243fa934c3b4423ed950c14790",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/refit_r131.py",
+      "line": 25,
+      "text": "pp=ROOT/'outputs/r130/monthly_panel.parquet';sp=ROOT/'outputs/r130/retrain_scope.json';mp=ROOT/'outputs/r02/model_parameters.json';op=ROOT/'outputs/r02/predictions.parquet';lp=ROOT/'outputs/r130/fold_ledger.csv'",
+      "sha256": "64bd154a993eedd48e3c3a730b3437fe18dd1b5ba830307854f45b193c3add87",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/repair_dependencies_r132.py",
+      "line": 20,
+      "text": "seeds={'old_monthly':ROOT/'data/monthly_panel.parquet','old_daily':CACHE/'forecast_v5/daily_industries.parquet'};targets={}",
+      "sha256": "7216a9708f2298c8aee1eb38c794ebf6cfd5b21247d6e08559b190e5b05be8a0",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/repair_dependencies_r132.py",
+      "line": 23,
+      "text": "targets['data/monthly_panel.parquet']='old_monthly:relative_path';targets['forecast_v5/daily_industries.parquet']='old_daily:relative_path'",
+      "sha256": "7216a9708f2298c8aee1eb38c794ebf6cfd5b21247d6e08559b190e5b05be8a0",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/repair_dependencies_r132.py",
+      "line": 27,
+      "text": "if 'monthly_panel.parquet' in line or 'daily_industries.parquet' in line:",
+      "sha256": "7216a9708f2298c8aee1eb38c794ebf6cfd5b21247d6e08559b190e5b05be8a0",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/replay_update_flow.py",
+      "line": 8,
+      "text": "inputs=[CACHE/'forecast_v5/daily_industries.parquet',ROOT/'data/l1_daily.parquet']",
+      "sha256": "8f9d2a3d228d264701d11ee2003ddabcfccb8f89b8816bda1d2ed790c3e64638",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/report_progress.py",
+      "line": 142,
+      "text": "base=pd.read_parquet(ROOT/'data/monthly_panel.parquet');l1=pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')",
+      "sha256": "ff20002e88fa16a100fb5ab6ca0583ec8107bdf3c876b878ca866c8fe09d03fb",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/size_control_r30.py",
+      "line": 8,
+      "text": "paths=[CACHE/'extension_v2/products/panel.parquet',CACHE/'extension_v2/products/assignments.parquet',ROOT/'data/l1_assignments.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'protocols/r30.json',Path(__file__),EP32/'extensions/v2_full_history_benchmark/src/core.py',EP32/'src/observe.py']",
+      "sha256": "c37677aeee3df5341cf0b5df7e7f7ef75710f4212fd608ea768344d07f7b0863",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/size_models_r31.py",
+      "line": 9,
+      "text": "p=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True);p['log_members']=np.log(p.members)",
+      "sha256": "83823a307bab4ac5d98cbee2f1505f08e90aa7bfe133640a466416bbdb6a46a5",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/size_models_r31.py",
+      "line": 30,
+      "text": "paths=[ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'protocols/r31.json',Path(__file__),ROOT/'src/common.py',ROOT/'src/train_r02.py']",
+      "sha256": "83823a307bab4ac5d98cbee2f1505f08e90aa7bfe133640a466416bbdb6a46a5",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/source_monitor_r25.py",
+      "line": 61,
+      "text": "p=capture(ROOT/'data/update_store',[CACHE/'forecast_v5/daily_industries.parquet',ROOT/'data/l1_daily.parquet'],CACHE/'forecast_v5/CSI_ALL.parquet',ROOT/'outputs/universe_current.csv',date)",
+      "sha256": "b54c04db3cdacb1c1516cadd1debe36817461d7fdec5ee8e13ce6f9885ecf68c",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/source_sensitivity_r25.py",
+      "line": 33,
+      "text": "dates=sorted(pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=['date']).date.unique())",
+      "sha256": "ba5cd7692f50d449de4a9faead13e9aaa8ada7598dc68b6e84b034b9fecf3cac",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/style_models_r55.py",
+      "line": 10,
+      "text": "p=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True);p['log_members']=np.log(p.members)",
+      "sha256": "3ba1f0a974b00bb75d6bb6e63f588bea8443df4e6cc2468a35c5d70a1e2879fb",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/style_models_r55.py",
+      "line": 32,
+      "text": "paths=[ROOT/'data/r54_market_controls.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'protocols/r55.json',Path(__file__),ROOT/'src/common.py',ROOT/'src/train_r02.py']",
+      "sha256": "3ba1f0a974b00bb75d6bb6e63f588bea8443df4e6cc2468a35c5d70a1e2879fb",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/supplement_financials.py",
+      "line": 59,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel=panel[panel.era.eq('SW2021')&panel.date.between('2026-04-01','2026-09-30')]",
+      "sha256": "c7c2cb3a80261c70d35cb9fe1d1609a0bf6841a4eef0f3d2eeed847312baa08e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/supplement_financials.py",
+      "line": 89,
+      "text": "result.to_parquet(ROOT/'data/financial_monthly_panel.parquet',index=False)",
+      "sha256": "c7c2cb3a80261c70d35cb9fe1d1609a0bf6841a4eef0f3d2eeed847312baa08e",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/train_l1_r16.py",
+      "line": 38,
+      "text": "out=ROOT/'outputs/r16'; panel=pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')",
+      "sha256": "d31751743e47cefcaf613c74a0edfb8b8662bf1bd9a852441775ddc3b25350aa",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/train_l1_r16.py",
+      "line": 39,
+      "text": "assert sha(ROOT/'data/l1_monthly_panel.parquet')==json.loads((ROOT/'protocols/r16.json').read_text())['panel_sha256']",
+      "sha256": "d31751743e47cefcaf613c74a0edfb8b8662bf1bd9a852441775ddc3b25350aa",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/train_l1_r16.py",
+      "line": 85,
+      "text": "js(out/'run_receipt.json',dict(protocol_sha256=sha(ROOT/'protocols/r16.json'),panel_sha256=sha(ROOT/'data/l1_monthly_panel.parquet'),",
+      "sha256": "d31751743e47cefcaf613c74a0edfb8b8662bf1bd9a852441775ddc3b25350aa",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/train_r02.py",
+      "line": 38,
+      "text": "out=ROOT/'outputs/r02'; panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet')",
+      "sha256": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/train_r02.py",
+      "line": 39,
+      "text": "assert sha(ROOT/'data/monthly_panel.parquet')==json.loads((ROOT/'outputs/r01/panel_receipt.json').read_text())['sha256']",
+      "sha256": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/train_r02.py",
+      "line": 85,
+      "text": "js(out/'run_receipt.json',dict(protocol_sha256=sha(ROOT/'protocols/r02.json'),panel_sha256=sha(ROOT/'data/monthly_panel.parquet'),",
+      "sha256": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/training_gates_r28.py",
+      "line": 7,
+      "text": "cov=pd.read_parquet(ROOT/'data/r28_common_coverage.parquet');panel=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True);panel['log_members']=np.log(panel.members)",
+      "sha256": "efe76a7f375aec92c678cc0e64a3282a8594f5a763a2dc09813dc2d5ab069409",
+      "classification": "candidate_reference"
+    },
+    {
+      "path": "src/verify_accounting_pairs_r96.py",
+      "line": 8,
+      "text": "a=pd.read_parquet(ROOT/'outputs/r95/alerts.parquet');a=a[a.strategy.eq('monthly')].reset_index(drop=True);d=pd.read_parquet(out/'monthly_alerts.parquet');assert_frame_equal(d[a.columns],a);features=['past_excess20','past_excess60','mom20','mom60','vol20','dd60','breadth21','members'];panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet').set_index(KEY+['date']);assert panel.index.is_unique",
+      "sha256": "8d71c76ec8e60009b1012425fe1a54de4364dd038792ec53d74d4941d5445d86",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_inference_r129.py",
+      "line": 14,
+      "text": "modelmap={digest_json(m):m for m in models};l1=pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet',columns=INPUT)",
+      "sha256": "2d23e86be4d79592fa63cbcae1c34896fb64253029a8d5f4bfc7bcd13911cb0c",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_inference_r129.py",
+      "line": 15,
+      "text": "sources={'old':ROOT/'data/monthly_panel.parquet','new':out/'features_2026-10-21.parquet'};maxerr=0.;checked=0",
+      "sha256": "2d23e86be4d79592fa63cbcae1c34896fb64253029a8d5f4bfc7bcd13911cb0c",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_repair_r129.py",
+      "line": 10,
+      "text": "ref=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet',columns=DAILY)",
+      "sha256": "e1346845cc3354c2e845fa3495538c978ac701a6cfd97e81549685bd8fd82e76",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_repair_r129.py",
+      "line": 12,
+      "text": "monthly=pd.read_parquet(ROOT/'data/monthly_panel.parquet');keys=KEY+['date'];prev=None;prev_features=None;previous_date=None;results=[]",
+      "sha256": "e1346845cc3354c2e845fa3495538c978ac701a6cfd97e81549685bd8fd82e76",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_repair_r129.py",
+      "line": 45,
+      "text": "js(out/'verification.json',dict(status='PASS',results=results,scope='five local cutoffs; no silent market-row rewrite; documented new anchors allowed',legacy_monthly_sha256=sha(ROOT/'data/monthly_panel.parquet')))",
+      "sha256": "e1346845cc3354c2e845fa3495538c978ac701a6cfd97e81549685bd8fd82e76",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_replay_r128.py",
+      "line": 21,
+      "text": "ref=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet',columns=DAILY)",
+      "sha256": "7ba080ad5702ec7e0dae9d29408c764437e94d24416be4a9070ffdf9758d052e",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_replay_r128.py",
+      "line": 22,
+      "text": "monthly=pd.read_parquet(ROOT/'data/monthly_panel.parquet');results=[];previous=None;previous_date=None;keys=KEY+['date']",
+      "sha256": "7ba080ad5702ec7e0dae9d29408c764437e94d24416be4a9070ffdf9758d052e",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_basket_replay_r128.py",
+      "line": 52,
+      "text": "js(out/'verification.json',dict(status='PASS',append_safety='NOT_ESTABLISHED',results=results,reference_monthly_sha256=sha(ROOT/'data/monthly_panel.parquet'),meaning='Independent counts and values verified; historical identity/block changes remain unresolved'))",
+      "sha256": "7ba080ad5702ec7e0dae9d29408c764437e94d24416be4a9070ffdf9758d052e",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_classifiers_margin_r47.py",
+      "line": 34,
+      "text": "paths=[ROOT/'data/r45_financing_intensity.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'src/train_r02.py',ROOT/'src/margin_models_r46.py',ROOT/'src/classifiers_margin_r47.py',ROOT/'src/evaluate_classifiers_margin_r47.py',ROOT/'protocols/r47.json']",
+      "sha256": "1ccd834dc432d30144ac8b931f168c2ba15668b2e94a2975f110f1bff61d4db1",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_classifiers_r32.py",
+      "line": 34,
+      "text": "paths=[ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'src/train_r02.py',ROOT/'src/size_models_r31.py',ROOT/'src/classifiers_size_r32.py',ROOT/'src/evaluate_classifiers_r32.py',ROOT/'protocols/r32.json']",
+      "sha256": "9b6728231b675a5d01c8c7cf787e2f69c0950c50d2559b711a82ed8ba66b624f",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_classifiers_r56.py",
+      "line": 10,
+      "text": "for field,path in [('protocol_sha256',ROOT/'protocols/r56.json'),('panel_sha256',ROOT/'data/monthly_panel.parquet'),('code_sha256',ROOT/'src/classifiers_style_r56.py'),('common_sha256',ROOT/'src/common.py'),('prediction_sha256',out/'predictions.parquet')]:assert receipt[field]==sha(path)",
+      "sha256": "c3f9b6c1c48b070839104f0babad11c9715d404ae784c2e56178a3f25bb01984",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_classifiers_r56.py",
+      "line": 36,
+      "text": "paths=[ROOT/'data/r54_market_controls.parquet',ROOT/'data/monthly_panel.parquet',ROOT/'data/l1_monthly_panel.parquet',ROOT/'data/r30_size_control.parquet',ROOT/'src/train_r02.py',ROOT/'src/style_models_r55.py',ROOT/'src/classifiers_style_r56.py',ROOT/'src/evaluate_classifiers_r56.py',ROOT/'protocols/r56.json']",
+      "sha256": "c3f9b6c1c48b070839104f0babad11c9715d404ae784c2e56178a3f25bb01984",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_cutoff_r102.py",
+      "line": 11,
+      "text": "daily=pd.concat([pd.read_parquet(p,columns=DAILY) for p in [CACHE/'forecast_v5/daily_industries.parquet',ROOT/'data/l1_daily.parquet']],ignore_index=True)",
+      "sha256": "5b3fcf9c1c73a0f41e945afe3c7b0deb92049b7f854e39526e165deeb9413a5e",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_daily_calibration_r97.py",
+      "line": 8,
+      "text": "raw=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet');market=pd.read_parquet(CACHE/'forecast_v5/CSI_ALL.parquet').close;parts=[];cols=['mom20','mom60','vol20','dd60','past_excess20','past_excess60','log_members']",
+      "sha256": "c2dd62b96644965cefb2679d8d1202c5549ebbfae69fe6fb23ebb3ec4a329302",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_dependencies_r132.py",
+      "line": 8,
+      "text": "targets['data/monthly_panel.parquet']='old_monthly:relative_path';targets['forecast_v5/daily_industries.parquet']='old_daily:relative_path'",
+      "sha256": "14a9ce71ee63b6ad2083b640493ca6f7c1db0f9eda12081eaa86c9b0bfec09a9",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_dependencies_r132.py",
+      "line": 12,
+      "text": "if 'monthly_panel.parquet' in line or 'daily_industries.parquet' in line:expected.append((str(p.relative_to(ROOT)),n,line.strip()))",
+      "sha256": "14a9ce71ee63b6ad2083b640493ca6f7c1db0f9eda12081eaa86c9b0bfec09a9",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_exits_margin_r48.py",
+      "line": 22,
+      "text": "source=CACHE/'forecast_v5/daily_industries.parquet';daily=pd.read_parquet(source);market=pd.read_parquet(CACHE/'forecast_v5/CSI_ALL.parquet').close;lookup={k:g.sort_values('date').reset_index(drop=True) for k,g in daily.groupby(KEY)};n=0",
+      "sha256": "5a51a48eb58fa6e19e7b55f097961be4402e400c2bf78e59169fad86a8e679ce",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_exits_r33.py",
+      "line": 22,
+      "text": "source=CACHE/'forecast_v5/daily_industries.parquet';daily=pd.read_parquet(source);market=pd.read_parquet(CACHE/'forecast_v5/CSI_ALL.parquet').close;lookup={k:g.sort_values('date').reset_index(drop=True) for k,g in daily.groupby(KEY)};n=0",
+      "sha256": "4cb039d52e26ad155218a43efc72d94025d49a64d0d202d34a7c630ff24fce0a",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_exits_style_r57.py",
+      "line": 22,
+      "text": "source=CACHE/'forecast_v5/daily_industries.parquet';daily=pd.read_parquet(source);market=pd.read_parquet(CACHE/'forecast_v5/CSI_ALL.parquet').close;lookup={k:g.sort_values('date').reset_index(drop=True) for k,g in daily.groupby(KEY)};n=0",
+      "sha256": "f8082db03e09cd633f60220b7f83a4335f7a1de5ea9c6d46be7a8f81e45fdbdf",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_financial_folds_r121.py",
+      "line": 13,
+      "text": "raw=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True)",
+      "sha256": "a0e38520ecceda35807905d075664da6bc9df18ef529cb4eed923800f5a3b63b",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_horizon_prices_r91.py",
+      "line": 10,
+      "text": "if p.endswith(('assignments.parquet','daily_industries.parquet','CSI_ALL.parquet')):assert sha(p)==h,p",
+      "sha256": "473967dfc5dd58b768d0344707ce03ef617eb5df3602e25a2c84fa68735a2e85",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_horizon_prices_r91.py",
+      "line": 22,
+      "text": "daily=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet');paths={k:g.sort_values('date').reset_index(drop=True) for k,g in daily.groupby(KEY+['block'])};index={k:{d:i for i,d in enumerate(g.date)} for k,g in paths.items()};events=pd.read_parquet(out/'industry_events.parquet');assert len(events)==len(eg);dg=defaultdict(list)",
+      "sha256": "473967dfc5dd58b768d0344707ce03ef617eb5df3602e25a2c84fa68735a2e85",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_l1_models.py",
+      "line": 6,
+      "text": "out=ROOT/'outputs/r16';panel=pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "79cd7916fd700a10707d19afa925d49d17a497414075b477ad2b57f9034dfea4",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_l1_models.py",
+      "line": 7,
+      "text": "assert sha(ROOT/'data/l1_monthly_panel.parquet')==json.loads((ROOT/'protocols/r16.json').read_text())['panel_sha256']",
+      "sha256": "79cd7916fd700a10707d19afa925d49d17a497414075b477ad2b57f9034dfea4",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_label_fold_r130.py",
+      "line": 26,
+      "text": "pp=out/'monthly_panel.parquet';assert sha(pp)==receipt['panel_sha256'];panel=pd.read_parquet(pp)",
+      "sha256": "f3b5928316aa67329bfec2929220b661e06e18b8c235f720acb90d2760436c31",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_label_fold_r130.py",
+      "line": 47,
+      "text": "deltas=json.loads((out/'fold_payload_deltas.json').read_text());delta_map={tuple(x[k] for k in FK)+(x['role'],):x for x in deltas};panels={'old':pd.read_parquet(ROOT/'data/monthly_panel.parquet'),'new':panel};cache={};role_checks=0",
+      "sha256": "f3b5928316aa67329bfec2929220b661e06e18b8c235f720acb90d2760436c31",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_margin_selection_r47.py",
+      "line": 8,
+      "text": "cols=KEY+['date','price_ready','members']+F[:-1];p=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=cols),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet',columns=cols)]);p['log_members']=np.log(p.members)",
+      "sha256": "eb894526b7904f64da11d8b60931740c80fefdcd265174d8d41d34447fe7d46d",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_market_controls_r54.py",
+      "line": 11,
+      "text": "d=pd.concat([pd.read_parquet(x,columns=KEY+['date','block','nav']) for x in [CACHE/'forecast_v5/daily_industries.parquet',ROOT/'data/l1_daily.parquet']],ignore_index=True)",
+      "sha256": "b661ecf1ac66762463f441e1a331ab4cfd894dfaf8ac879483b859a9310088e2",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_pipeline.py",
+      "line": 15,
+      "text": "assert receipt['panel_sha256']==sha(ROOT/'data/monthly_panel.parquet')",
+      "sha256": "312b2a20c0e9c6705c1e969c457e7b3cde14f9c47aa2e6357fcf582c9171718d",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_pipeline.py",
+      "line": 22,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "312b2a20c0e9c6705c1e969c457e7b3cde14f9c47aa2e6357fcf582c9171718d",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_portfolio_l1.py",
+      "line": 8,
+      "text": "panel=pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet');p=pd.read_parquet(ROOT/'data/l1_daily.parquet').pivot(index='date',columns='industry_code',values='nav')",
+      "sha256": "65a725647107abebbc1a9acae24adbee38eb82156eb6333b25f0a3689817abae",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r11.py",
+      "line": 37,
+      "text": "sources={str(p):sha(p) for p in [ROOT/'data/r11_analyst_forecasts.parquet',ROOT/'data/monthly_panel.parquet',CACHE/'extension_v2/products/assignments.parquet']},",
+      "sha256": "73c9635733c1387e6400ba0e406a4b6fdb7ce380b19f37d0af32fef386427985",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r12.py",
+      "line": 9,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "01db1d50935272969c94bbae4928909f88577451d8a59ae6e5073331604b01f5",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r13.py",
+      "line": 10,
+      "text": "panel=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet',columns=cols),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet',columns=cols)],ignore_index=True)",
+      "sha256": "6f7b4f7c5ac87635d724e6f53e56310d38cfa54db39c361c752a80bdb75f16eb",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r14.py",
+      "line": 23,
+      "text": "d=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet');market=pd.read_parquet(CACHE/'forecast_v5/CSI_ALL.parquet').close",
+      "sha256": "9c87f23072a1fe556864dc932362e4d5071716fb9165157536f75ee2f65f64d9",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r15.py",
+      "line": 26,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "1caa6da8d080156f19f34310f79c77f5ddb1124b3c6099cb823f571edf32febd",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r25.py",
+      "line": 26,
+      "text": "panel=pd.read_parquet(ROOT/'data/monthly_panel.parquet');panel['log_members']=np.log(panel.members)",
+      "sha256": "16deffadc435d45ff16601d2a141b99062f2efe9fd576055505c5932dd126010",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r26.py",
+      "line": 23,
+      "text": "d=pd.read_parquet(CACHE/'forecast_v5/daily_industries.parquet');market=pd.read_parquet(CACHE/'forecast_v5/CSI_ALL.parquet').close",
+      "sha256": "d1da3fbba479a175211a424666acec44a59ef13adb5437453becf8f55a245c51",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_r29.py",
+      "line": 9,
+      "text": "panel=pd.concat([pd.read_parquet(ROOT/'data/monthly_panel.parquet'),pd.read_parquet(ROOT/'data/l1_monthly_panel.parquet')],ignore_index=True);panel['log_members']=np.log(panel.members)",
+      "sha256": "d2afb326719659e3656dc33d8953e34831eafbf3d03846c46123325495c5f400",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_ranking_r132.py",
+      "line": 12,
+      "text": "dest=out/'evaluation/outputs/r01';panel=pd.read_parquet(ROOT/'outputs/r130/monthly_panel.parquet');metrics=pd.read_csv(dest/'date_metrics.csv',parse_dates=['date']);selection=pd.read_parquet(dest/'selections.parquet');coverage=pd.read_csv(dest/'paired_coverage.csv',parse_dates=['date'])",
+      "sha256": "92023542e046b46f3521529d01451fa528cbe30e25b581665284a35f92000b5c",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/verify_refit_r131.py",
+      "line": 15,
+      "text": "panel=pd.read_parquet(ROOT/'outputs/r130/monthly_panel.parquet');pred=pd.read_parquet(out/'predictions.parquet');oldpred=pd.read_parquet(ROOT/'outputs/r02/predictions.parquet')",
+      "sha256": "b42c5fb50d92567dd9f8a1e6ed2e3f77a2bce9ac18eae6ff587991769e2c2adf",
+      "classification": "verifier"
+    },
+    {
+      "path": "src/versioned_observations.py",
+      "line": 161,
+      "text": "parser.add_argument('--daily',nargs='+',default=[str(CACHE/'forecast_v5/daily_industries.parquet'),str(ROOT/'data/l1_daily.parquet')])",
+      "sha256": "e1a8575ce274bf99c446133da3fb1e25ebf84209978af6b1f59007cc4f506e5e",
+      "classification": "candidate_reference"
+    }
+  ],
+  "prior_json_files": 647,
+  "json_files": [
+    "outputs/cnequity_fundamental_review_20261114/disclosure_date_crosscheck.json",
+    "outputs/cnequity_fundamental_review_20261114/holder_receipts.json",
+    "outputs/cnequity_fundamental_review_20261114/local_crosscheck.json",
+    "outputs/cnequity_fundamental_review_20261114/manifest.json",
+    "outputs/cnequity_fundamental_review_20261114/original_receipts.json",
+    "outputs/cnequity_fundamental_review_20261114/pdf_candidates.json",
+    "outputs/cnequity_fundamental_review_20261114/protocol.json",
+    "outputs/cnequity_fundamental_review_20261114/ratio_basis_findings.json",
+    "outputs/cnequity_fundamental_review_20261114/reviewed_financial_cells.json",
+    "outputs/cnequity_fundamental_review_20261114/reviewed_holder_counts.json",
+    "outputs/cnequity_fundamental_review_20261114/share_baseline_crosscheck.json",
+    "outputs/cnequity_fundamental_review_20261114/top_holder_crosscheck.json",
+    "outputs/cnequity_fundamental_review_20261114/top_holder_reviewed.json",
+    "outputs/cnequity_fundamental_review_20261114/verification.json",
+    "outputs/cnequity_probe_20261114/audit.json",
+    "outputs/cnequity_probe_20261114/demo_command.json",
+    "outputs/cnequity_probe_20261114/demo_exit.json",
+    "outputs/cnequity_probe_20261114/environment.json",
+    "outputs/cnequity_probe_20261114/factor_audit.json",
+    "outputs/cnequity_probe_20261114/financial_protocol.json",
+    "outputs/cnequity_probe_20261114/financial_results.json",
+    "outputs/cnequity_probe_20261114/manifest.json",
+    "outputs/cnequity_probe_20261114/protocol.json",
+    "outputs/cnequity_probe_20261114/results.json",
+    "outputs/cnequity_probe_20261114/sample.json",
+    "outputs/completion_audit.json",
+    "outputs/current_sources.json",
+    "outputs/data_supplement/local_mechanism_inventory.json",
+    "outputs/followup_verification.json",
+    "outputs/local_run.json",
+    "outputs/r01/data_audit.json",
+    "outputs/r01/financial_timing_audit.json",
+    "outputs/r01/panel_receipt.json",
+    "outputs/r01/run_receipt.json",
+    "outputs/r01/source_inventory.json",
+    "outputs/r02/evaluation_receipt.json",
+    "outputs/r02/model_parameters.json",
+    "outputs/r02/run_receipt.json",
+    "outputs/r03/archive_receipt.json",
+    "outputs/r03/evaluation_receipt.json",
+    "outputs/r04/constituent_gap_receipt.json",
+    "outputs/r04/missing_path_receipt.json",
+    "outputs/r04/receipt.json",
+    "outputs/r05/receipt.json",
+    "outputs/r05/verification.json",
+    "outputs/r06/mark_quality_receipt.json",
+    "outputs/r06/receipt.json",
+    "outputs/r07/receipt.json",
+    "outputs/r08/authorized_download_attempt1.json",
+    "outputs/r08/authorized_download_receipt.json",
+    "outputs/r08/external_document_request.json",
+    "outputs/r08/receipt.json",
+    "outputs/r09/receipt.json",
+    "outputs/r09/verification.json",
+    "outputs/r10/receipt.json",
+    "outputs/r10/verification.json",
+    "outputs/r100/executable_gap.json",
+    "outputs/r100/full_verify_receipt.json",
+    "outputs/r100/receipt.json",
+    "outputs/r100/requirements_evidence.json",
+    "outputs/r100/verification.json",
+    "outputs/r101/bundles.json",
+    "outputs/r101/feature_provenance.json",
+    "outputs/r101/verification.json",
+    "outputs/r102/bundles.json",
+    "outputs/r102/provenance_2026-09-30.json",
+    "outputs/r102/provenance_2026-10-21.json",
+    "outputs/r102/verification.json",
+    "outputs/r103/rank_redundancy.json",
+    "outputs/r103/receipt.json",
+    "outputs/r103/verification.json",
+    "outputs/r104/receipt.json",
+    "outputs/r104/summary.json",
+    "outputs/r104/verification.json",
+    "outputs/r105/evaluation_receipt.json",
+    "outputs/r105/metric_verification.json",
+    "outputs/r105/model_parameters.json",
+    "outputs/r105/model_verification.json",
+    "outputs/r105/receipt.json",
+    "outputs/r106/drift_receipt.json",
+    "outputs/r106/drift_summary.json",
+    "outputs/r106/drift_verification.json",
+    "outputs/r106/evaluation_receipt.json",
+    "outputs/r106/metric_verification.json",
+    "outputs/r106/model_parameters.json",
+    "outputs/r106/model_verification.json",
+    "outputs/r106/receipt.json",
+    "outputs/r107/current_factor_dictionary.json",
+    "outputs/r107/next_path_source_audit.json",
+    "outputs/r107/receipt.json",
+    "outputs/r107/requirements_evidence.json",
+    "outputs/r107/verification.json",
+    "outputs/r108/receipt.json",
+    "outputs/r108/summary.json",
+    "outputs/r108/verification.json",
+    "outputs/r109/evaluation_receipt.json",
+    "outputs/r109/integration_receipt.json",
+    "outputs/r109/metric_verification.json",
+    "outputs/r109/model_parameters.json",
+    "outputs/r109/model_verification.json",
+    "outputs/r109/receipt.json",
+    "outputs/r109/test_receipt.json",
+    "outputs/r11/coverage_receipt.json",
+    "outputs/r11/receipt.json",
+    "outputs/r11/verification.json",
+    "outputs/r110/integration_receipt.json",
+    "outputs/r110/receipt.json",
+    "outputs/r110/verification.json",
+    "outputs/r111/integration_receipt.json",
+    "outputs/r111/model_parameters.json",
+    "outputs/r111/receipt.json",
+    "outputs/r111/verification.json",
+    "outputs/r112/branch_evidence.json",
+    "outputs/r112/current_factor_dictionary.json",
+    "outputs/r112/integration_receipt.json",
+    "outputs/r112/receipt.json",
+    "outputs/r112/requirements_evidence.json",
+    "outputs/r112/valuation_source_audit.json",
+    "outputs/r112/verification.json",
+    "outputs/r113/implementation_notes.json",
+    "outputs/r113/integration_receipt.json",
+    "outputs/r113/receipt.json",
+    "outputs/r113/summary.json",
+    "outputs/r113/verification.json",
+    "outputs/r114/integration_receipt.json",
+    "outputs/r114/receipt.json",
+    "outputs/r114/verification.json",
+    "outputs/r115/implementation_notes.json",
+    "outputs/r115/integration_receipt.json",
+    "outputs/r115/receipt.json",
+    "outputs/r115/summary.json",
+    "outputs/r115/verification.json",
+    "outputs/r116/integration_receipt.json",
+    "outputs/r116/receipt.json",
+    "outputs/r116/summary.json",
+    "outputs/r116/verification.json",
+    "outputs/r117/integration_receipt.json",
+    "outputs/r117/receipt.json",
+    "outputs/r117/summary.json",
+    "outputs/r117/verification.json",
+    "outputs/r118/integration_receipt.json",
+    "outputs/r118/receipt.json",
+    "outputs/r118/verification.json",
+    "outputs/r119/branch_evidence.json",
+    "outputs/r119/current_factor_dictionary.json",
+    "outputs/r119/integration_receipt.json",
+    "outputs/r119/receipt.json",
+    "outputs/r119/requirements_evidence.json",
+    "outputs/r119/verification.json",
+    "outputs/r12/model_parameters.json",
+    "outputs/r12/receipt.json",
+    "outputs/r12/verification.json",
+    "outputs/r120/implementation_notes.json",
+    "outputs/r120/integration_receipt.json",
+    "outputs/r120/receipt.json",
+    "outputs/r120/verification.json",
+    "outputs/r121/integration_receipt.json",
+    "outputs/r121/receipt.json",
+    "outputs/r121/verification.json",
+    "outputs/r122/integration_receipt.json",
+    "outputs/r122/model_parameters.json",
+    "outputs/r122/receipt.json",
+    "outputs/r122/verification.json",
+    "outputs/r123/implementation_notes.json",
+    "outputs/r123/integration_receipt.json",
+    "outputs/r123/model_parameters.json",
+    "outputs/r123/receipt.json",
+    "outputs/r123/verification.json",
+    "outputs/r124/branch_evidence.json",
+    "outputs/r124/current_factor_dictionary.json",
+    "outputs/r124/integration_receipt.json",
+    "outputs/r124/receipt.json",
+    "outputs/r124/requirements_evidence.json",
+    "outputs/r124/source_audit.json",
+    "outputs/r124/verification.json",
+    "outputs/r125/file_ledger.json",
+    "outputs/r125/integration_receipt.json",
+    "outputs/r125/occurrences.json",
+    "outputs/r125/receipt.json",
+    "outputs/r125/share_levels.json",
+    "outputs/r125/summary.json",
+    "outputs/r125/verification.json",
+    "outputs/r126/code_coverage.json",
+    "outputs/r126/data_gap.json",
+    "outputs/r126/integration_receipt.json",
+    "outputs/r126/intervals.json",
+    "outputs/r126/mapping_evidence.json",
+    "outputs/r126/receipt.json",
+    "outputs/r126/summary.json",
+    "outputs/r126/verification.json",
+    "outputs/r127/implementation_notes.json",
+    "outputs/r127/integration_receipt.json",
+    "outputs/r127/receipt.json",
+    "outputs/r127/verification.json",
+    "outputs/r128/integration_receipt.json",
+    "outputs/r128/ready_feature_changes.json",
+    "outputs/r128/ready_feature_changes_2026-09-30.json",
+    "outputs/r128/receipt.json",
+    "outputs/r128/sort_diagnostic.json",
+    "outputs/r128/verification.json",
+    "outputs/r129/amendment_evidence.json",
+    "outputs/r129/implementation_notes.json",
+    "outputs/r129/inference_impact.json",
+    "outputs/r129/inference_verification.json",
+    "outputs/r129/initial_candidate/receipt.json",
+    "outputs/r129/integration_receipt.json",
+    "outputs/r129/protocol_initial.json",
+    "outputs/r129/receipt.json",
+    "outputs/r129/verification.json",
+    "outputs/r13/receipt.json",
+    "outputs/r13/verification.json",
+    "outputs/r130/fold_payload_deltas.json",
+    "outputs/r130/implementation_notes.json",
+    "outputs/r130/integration_receipt.json",
+    "outputs/r130/receipt.json",
+    "outputs/r130/retrain_scope.json",
+    "outputs/r130/scope_verification.json",
+    "outputs/r130/verification.json",
+    "outputs/r131/actions.json",
+    "outputs/r131/evaluation/outputs/r02/evaluation_receipt.json",
+    "outputs/r131/evaluation/outputs/r02/run_receipt.json",
+    "outputs/r131/evaluation_summary.json",
+    "outputs/r131/evaluation_verification.json",
+    "outputs/r131/implementation_notes.json",
+    "outputs/r131/integration_receipt.json",
+    "outputs/r131/model_parameters.json",
+    "outputs/r131/run_receipt.json",
+    "outputs/r131/verification.json",
+    "outputs/r14/initial_unreviewed/protocol.json",
+    "outputs/r14/initial_unreviewed/receipt.json",
+    "outputs/r14/receipt.json",
+    "outputs/r14/verification.json",
+    "outputs/r15/data_receipt.json",
+    "outputs/r15/data_verification.json",
+    "outputs/r15/model_parameters.json",
+    "outputs/r15/receipt.json",
+    "outputs/r15/verification.json",
+    "outputs/r16/evaluation_receipt.json",
+    "outputs/r16/model_parameters.json",
+    "outputs/r16/raw_parameters.json",
+    "outputs/r16/raw_receipt.json",
+    "outputs/r16/run_receipt.json",
+    "outputs/r16/verification.json",
+    "outputs/r17/receipt.json",
+    "outputs/r17/risk_receipt.json",
+    "outputs/r17/verification.json",
+    "outputs/r18/replay_receipt.json",
+    "outputs/r18/verification.json",
+    "outputs/r19/review_receipt.json",
+    "outputs/r19/reviewed_operating_observations.json",
+    "outputs/r20/receipt.json",
+    "outputs/r20/verification.json",
+    "outputs/r21/receipt.json",
+    "outputs/r21/verification.json",
+    "outputs/r22/receipt.json",
+    "outputs/r22/verification.json",
+    "outputs/r23/current_factor_dictionary.json",
+    "outputs/r23/receipt.json",
+    "outputs/r23/supersession.json",
+    "outputs/r23/verification.json",
+    "outputs/r24/receipt.json",
+    "outputs/r24/source_review.json",
+    "outputs/r24/verification.json",
+    "outputs/r25/data_receipt.json",
+    "outputs/r25/data_verification.json",
+    "outputs/r25/impact_receipt.json",
+    "outputs/r25/model_parameters.json",
+    "outputs/r25/monitor/receipt.json",
+    "outputs/r25/monitor/verification.json",
+    "outputs/r25/monitor_comparison.json",
+    "outputs/r25/receipt.json",
+    "outputs/r25/verification.json",
+    "outputs/r26/impact_receipt.json",
+    "outputs/r26/receipt.json",
+    "outputs/r26/unknown_control_receipt.json",
+    "outputs/r26/verification.json",
+    "outputs/r27/explicit_share_action_candidates.json",
+    "outputs/r27/manual_review_receipt.json",
+    "outputs/r27/receipt.json",
+    "outputs/r27/report_level_year_sets.json",
+    "outputs/r27/review_flags.json",
+    "outputs/r27/share_action_review.json",
+    "outputs/r27/verification.json",
+    "outputs/r28/receipt.json",
+    "outputs/r28/verification.json",
+    "outputs/r29/data_receipt.json",
+    "outputs/r29/raw_proxy/model_parameters.json",
+    "outputs/r29/raw_proxy/receipt.json",
+    "outputs/r29/share_context_guard/model_parameters.json",
+    "outputs/r29/share_context_guard/receipt.json",
+    "outputs/r29/source_manifest.json",
+    "outputs/r29/verification.json",
+    "outputs/r30/receipt.json",
+    "outputs/r30/verification.json",
+    "outputs/r31/metrics_verification.json",
+    "outputs/r31/model_parameters.json",
+    "outputs/r31/receipt.json",
+    "outputs/r31/verification.json",
+    "outputs/r32/model_parameters.json",
+    "outputs/r32/run_receipt.json",
+    "outputs/r32/verification.json",
+    "outputs/r33/receipt.json",
+    "outputs/r33/verification.json",
+    "outputs/r34/current_factor_dictionary.json",
+    "outputs/r34/full_verify_receipt.json",
+    "outputs/r34/local_theme_candidates.json",
+    "outputs/r34/receipt.json",
+    "outputs/r34/requirements_evidence.json",
+    "outputs/r34/verification.json",
+    "outputs/r35/existing_numeric_observations.json",
+    "outputs/r35/monthly_lead_groups.json",
+    "outputs/r35/receipt.json",
+    "outputs/r35/verification.json",
+    "outputs/r36/local_file_manifest.json",
+    "outputs/r36/local_source_recovery_queue.json",
+    "outputs/r36/numeric_observations.json",
+    "outputs/r36/receipt.json",
+    "outputs/r36/verification.json",
+    "outputs/r37/external_data_request.json",
+    "outputs/r37/file_hashes.json",
+    "outputs/r37/matches.json",
+    "outputs/r37/receipt.json",
+    "outputs/r37/skips.json",
+    "outputs/r37/verification.json",
+    "outputs/r38/download_ledger.json",
+    "outputs/r38/download_queue.json",
+    "outputs/r38/download_verification.json",
+    "outputs/r38/extractions.json",
+    "outputs/r38/extractions_before_parser_v2.json",
+    "outputs/r38/extractions_before_parser_v3.json",
+    "outputs/r38/extractions_before_parser_v4.json",
+    "outputs/r38/extractions_before_parser_v5.json",
+    "outputs/r38/initial_extractions.json",
+    "outputs/r38/month_coverage.json",
+    "outputs/r38/next_download_candidates.json",
+    "outputs/r38/parser_v2_audit.json",
+    "outputs/r38/parser_v3_audit.json",
+    "outputs/r38/parser_v4_audit.json",
+    "outputs/r38/parser_v5_audit.json",
+    "outputs/r38/progress.json",
+    "outputs/r38/reviewed_publication_dates.json",
+    "outputs/r39/coverage_summary.json",
+    "outputs/r39/frozen_monthly_series.json",
+    "outputs/r39/inputs/extractions.json",
+    "outputs/r39/inputs/reviewed_publication_dates.json",
+    "outputs/r39/signal_coverage.json",
+    "outputs/r39/verification.json",
+    "outputs/r40/coverage_summary.json",
+    "outputs/r40/frozen_monthly_series.json",
+    "outputs/r40/inputs/extractions.json",
+    "outputs/r40/inputs/reviewed_publication_dates.json",
+    "outputs/r40/signal_coverage.json",
+    "outputs/r40/verification.json",
+    "outputs/r41/fold_ledger.json",
+    "outputs/r41/metrics.json",
+    "outputs/r41/model_parameters.json",
+    "outputs/r41/predictions.json",
+    "outputs/r41/receipt.json",
+    "outputs/r41/verification.json",
+    "outputs/r42/associations.json",
+    "outputs/r42/class_prevalence.json",
+    "outputs/r42/classifier_gates.json",
+    "outputs/r42/paired_observations.json",
+    "outputs/r42/receipt.json",
+    "outputs/r42/verification.json",
+    "outputs/r43/current_factor_dictionary.json",
+    "outputs/r43/full_validation.json",
+    "outputs/r43/receipt.json",
+    "outputs/r43/requirements_evidence.json",
+    "outputs/r43/verification.json",
+    "outputs/r44/calendar_lags.json",
+    "outputs/r44/coverage_summary.json",
+    "outputs/r44/implementation_notes.json",
+    "outputs/r44/receipt.json",
+    "outputs/r44/source_receipts.json",
+    "outputs/r44/verification.json",
+    "outputs/r45/annual_coverage.json",
+    "outputs/r45/coverage_summary.json",
+    "outputs/r45/receipt.json",
+    "outputs/r45/verification.json",
+    "outputs/r46/annual_increments.json",
+    "outputs/r46/fold_ledger.json",
+    "outputs/r46/implementation_notes.json",
+    "outputs/r46/increments.json",
+    "outputs/r46/model_parameters.json",
+    "outputs/r46/receipt.json",
+    "outputs/r46/verification.json",
+    "outputs/r47/model_parameters.json",
+    "outputs/r47/run_receipt.json",
+    "outputs/r47/selection_receipt.json",
+    "outputs/r47/selection_summary.json",
+    "outputs/r47/selection_verification.json",
+    "outputs/r47/verification.json",
+    "outputs/r48/receipt.json",
+    "outputs/r48/verification.json",
+    "outputs/r49/current_factor_dictionary.json",
+    "outputs/r49/full_validation.json",
+    "outputs/r49/receipt.json",
+    "outputs/r49/requirements_evidence.json",
+    "outputs/r49/verification.json",
+    "outputs/r50/coverage.json",
+    "outputs/r50/receipt.json",
+    "outputs/r50/verification.json",
+    "outputs/r51/changes.json",
+    "outputs/r51/frozen_monthly_series.json",
+    "outputs/r51/receipt.json",
+    "outputs/r51/verification.json",
+    "outputs/r52/coverage_summary.json",
+    "outputs/r52/selection_changes.json",
+    "outputs/r52/signal_coverage.json",
+    "outputs/r52/verification.json",
+    "outputs/r53/fold_ledger.json",
+    "outputs/r53/impact_receipt.json",
+    "outputs/r53/impact_verification.json",
+    "outputs/r53/metrics.json",
+    "outputs/r53/model_parameters.json",
+    "outputs/r53/predictions.json",
+    "outputs/r53/receipt.json",
+    "outputs/r53/source_impact.json",
+    "outputs/r53/verification.json",
+    "outputs/r54/coverage.json",
+    "outputs/r54/receipt.json",
+    "outputs/r54/verification.json",
+    "outputs/r55/metrics_verification.json",
+    "outputs/r55/model_parameters.json",
+    "outputs/r55/receipt.json",
+    "outputs/r55/stability_decisions.json",
+    "outputs/r55/verification.json",
+    "outputs/r56/model_parameters.json",
+    "outputs/r56/run_receipt.json",
+    "outputs/r56/verification.json",
+    "outputs/r57/full_validation.json",
+    "outputs/r57/receipt.json",
+    "outputs/r57/verification.json",
+    "outputs/r58/current_factor_dictionary.json",
+    "outputs/r58/receipt.json",
+    "outputs/r58/requirements_evidence.json",
+    "outputs/r58/verification.json",
+    "outputs/r59/coverage.json",
+    "outputs/r59/implementation_notes.json",
+    "outputs/r59/observations.json",
+    "outputs/r59/receipt.json",
+    "outputs/r59/summary.json",
+    "outputs/r59/verification.json",
+    "outputs/r60/changes.json",
+    "outputs/r60/frozen_monthly_series.json",
+    "outputs/r60/receipt.json",
+    "outputs/r60/reviewed_additions.json",
+    "outputs/r60/verification.json",
+    "outputs/r61/coverage_summary.json",
+    "outputs/r61/selection_changes.json",
+    "outputs/r61/signal_coverage.json",
+    "outputs/r61/verification.json",
+    "outputs/r62/fold_ledger.json",
+    "outputs/r62/impact_receipt.json",
+    "outputs/r62/impact_verification.json",
+    "outputs/r62/metrics.json",
+    "outputs/r62/model_parameters.json",
+    "outputs/r62/predictions.json",
+    "outputs/r62/receipt.json",
+    "outputs/r62/source_impact.json",
+    "outputs/r62/training_changes.json",
+    "outputs/r62/verification.json",
+    "outputs/r63/coverage.json",
+    "outputs/r63/receipt.json",
+    "outputs/r63/source_changes.json",
+    "outputs/r63/verification.json",
+    "outputs/r64/cohort_audit.json",
+    "outputs/r64/fold_ledger.json",
+    "outputs/r64/metrics.json",
+    "outputs/r64/model_parameters.json",
+    "outputs/r64/predictions.json",
+    "outputs/r64/receipt.json",
+    "outputs/r64/verification.json",
+    "outputs/r65/eligible_labels.json",
+    "outputs/r65/fold_ledger.json",
+    "outputs/r65/full_validation.json",
+    "outputs/r65/receipt.json",
+    "outputs/r65/verification.json",
+    "outputs/r66/current_factor_dictionary.json",
+    "outputs/r66/receipt.json",
+    "outputs/r66/requirements_evidence.json",
+    "outputs/r66/verification.json",
+    "outputs/r67/coverage.json",
+    "outputs/r67/receipt.json",
+    "outputs/r67/same_period_pairs.json",
+    "outputs/r67/selected_facts.json",
+    "outputs/r67/summary.json",
+    "outputs/r67/verification.json",
+    "outputs/r68/identity_quarantine.json",
+    "outputs/r68/implementation_notes.json",
+    "outputs/r68/industry_coverage.json",
+    "outputs/r68/receipt.json",
+    "outputs/r68/summary.json",
+    "outputs/r68/verification.json",
+    "outputs/r69/cashflow_facts.json",
+    "outputs/r69/industry_evidence.json",
+    "outputs/r69/receipt.json",
+    "outputs/r69/summary.json",
+    "outputs/r69/verification.json",
+    "outputs/r70/industry_evidence.json",
+    "outputs/r70/profit_facts.json",
+    "outputs/r70/receipt.json",
+    "outputs/r70/summary.json",
+    "outputs/r70/verification.json",
+    "outputs/r71/industry_contrasts.json",
+    "outputs/r71/receipt.json",
+    "outputs/r71/summary.json",
+    "outputs/r71/verification.json",
+    "outputs/r72/archive_clock.json",
+    "outputs/r72/coverage.json",
+    "outputs/r72/implementation_notes.json",
+    "outputs/r72/receipt.json",
+    "outputs/r72/verification.json",
+    "outputs/r73/industry_evidence.json",
+    "outputs/r73/receipt.json",
+    "outputs/r73/summary.json",
+    "outputs/r73/verification.json",
+    "outputs/r74/coverage.json",
+    "outputs/r74/monthly_observations.json",
+    "outputs/r74/receipt.json",
+    "outputs/r74/verification.json",
+    "outputs/r75/current_factor_dictionary.json",
+    "outputs/r75/full_validation.json",
+    "outputs/r75/receipt.json",
+    "outputs/r75/requirements_evidence.json",
+    "outputs/r75/verification.json",
+    "outputs/r76/receipt.json",
+    "outputs/r76/summary.json",
+    "outputs/r76/target_coverage.json",
+    "outputs/r76/transitions.json",
+    "outputs/r76/verification.json",
+    "outputs/r77/intervals.json",
+    "outputs/r77/receipt.json",
+    "outputs/r77/summary.json",
+    "outputs/r77/verification.json",
+    "outputs/r78/factor_gap_evidence.json",
+    "outputs/r78/gap_rows.json",
+    "outputs/r78/receipt.json",
+    "outputs/r78/security_concentration.json",
+    "outputs/r78/summary.json",
+    "outputs/r78/verification.json",
+    "outputs/r79/intervals.json",
+    "outputs/r79/missing_dates.json",
+    "outputs/r79/receipt.json",
+    "outputs/r79/summary.json",
+    "outputs/r79/upstream_matches.json",
+    "outputs/r79/upstream_receipt.json",
+    "outputs/r79/verification.json",
+    "outputs/r80/date_audit.json",
+    "outputs/r80/receipt.json",
+    "outputs/r80/sources.json",
+    "outputs/r80/summary.json",
+    "outputs/r80/verification.json",
+    "outputs/r81/date_audit.json",
+    "outputs/r81/receipt.json",
+    "outputs/r81/sources.json",
+    "outputs/r81/summary.json",
+    "outputs/r81/verification.json",
+    "outputs/r82/intervals.json",
+    "outputs/r82/receipt.json",
+    "outputs/r82/summary.json",
+    "outputs/r82/verification.json",
+    "outputs/r83/intervals.json",
+    "outputs/r83/receipt.json",
+    "outputs/r83/summary.json",
+    "outputs/r83/verification.json",
+    "outputs/r84/annual_actual_candidates.json",
+    "outputs/r84/receipt.json",
+    "outputs/r84/summary.json",
+    "outputs/r84/verification.json",
+    "outputs/r85/broker_snapshots.json",
+    "outputs/r85/company_years.json",
+    "outputs/r85/coverage.json",
+    "outputs/r85/receipt.json",
+    "outputs/r85/summary.json",
+    "outputs/r85/verification.json",
+    "outputs/r86/broker_pairs.json",
+    "outputs/r86/company_pairs.json",
+    "outputs/r86/coverage.json",
+    "outputs/r86/coverage_matrix.json",
+    "outputs/r86/receipt.json",
+    "outputs/r86/summary.json",
+    "outputs/r86/verification.json",
+    "outputs/r87/changed_cases.json",
+    "outputs/r87/classification_matrix.json",
+    "outputs/r87/company_metrics.json",
+    "outputs/r87/receipt.json",
+    "outputs/r87/summary.json",
+    "outputs/r87/verification.json",
+    "outputs/r88/by_year.json",
+    "outputs/r88/paired_overlap.json",
+    "outputs/r88/receipt.json",
+    "outputs/r88/summary.json",
+    "outputs/r88/verification.json",
+    "outputs/r89/annual_actuals.json",
+    "outputs/r89/by_year.json",
+    "outputs/r89/direction_matrix.json",
+    "outputs/r89/receipt.json",
+    "outputs/r89/summary.json",
+    "outputs/r89/verification.json",
+    "outputs/r90/company_years.json",
+    "outputs/r90/coverage.json",
+    "outputs/r90/event_accuracy.json",
+    "outputs/r90/joint_matrix.json",
+    "outputs/r90/receipt.json",
+    "outputs/r90/summary.json",
+    "outputs/r90/verification.json",
+    "outputs/r91/coverage.json",
+    "outputs/r91/date_scores.json",
+    "outputs/r91/receipt.json",
+    "outputs/r91/summary.json",
+    "outputs/r91/verification.json",
+    "outputs/r92/current_factor_dictionary.json",
+    "outputs/r92/receipt.json",
+    "outputs/r92/requirements_evidence.json",
+    "outputs/r92/verification.json",
+    "outputs/r93/coverage.json",
+    "outputs/r93/receipt.json",
+    "outputs/r93/verification.json",
+    "outputs/r94/coverage.json",
+    "outputs/r94/observations.json",
+    "outputs/r94/receipt.json",
+    "outputs/r94/verification.json",
+    "outputs/r95/coverage.json",
+    "outputs/r95/receipt.json",
+    "outputs/r95/summary.json",
+    "outputs/r95/verification.json",
+    "outputs/r96/contrasts.json",
+    "outputs/r96/date_ledger.json",
+    "outputs/r96/receipt.json",
+    "outputs/r96/summary.json",
+    "outputs/r96/verification.json",
+    "outputs/r97/bins.json",
+    "outputs/r97/folds.json",
+    "outputs/r97/receipt.json",
+    "outputs/r97/summary.json",
+    "outputs/r97/verification.json",
+    "outputs/r98/receipt.json",
+    "outputs/r98/summary.json",
+    "outputs/r98/verification.json",
+    "outputs/r99/calendar_blocks.json",
+    "outputs/r99/date_differences.json",
+    "outputs/r99/receipt.json",
+    "outputs/r99/summary.json",
+    "outputs/r99/verification.json",
+    "outputs/verification.json"
+  ],
+  "provenance_reference_files": 69,
+  "provenance": [
+    {
+      "path": "outputs/r01/panel_receipt.json",
+      "sha256": "7a57e21f1e3d2c0e5438ed78cb7b57ded07c395380a2c2f9bdf75bcbca434dfa",
+      "matches": [
+        {
+          "pointer": "/sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r01/run_receipt.json",
+      "sha256": "41add9856c4b2adc041be61c963d657a112e047771144b2e740aa1fbcd5b45b9",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r01/source_inventory.json",
+      "sha256": "41f528a6dd07a61af532787482e03811ca10e0bada5b212e80dd3fde33ff4bbf",
+      "matches": [
+        {
+          "pointer": "/2/path",
+          "location": "value",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/2/sha256",
+          "location": "value",
+          "target": "old_daily:sha256"
+        },
+        {
+          "pointer": "/2/role",
+          "location": "value",
+          "target": "old_daily:relative_path"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r02/run_receipt.json",
+      "sha256": "9479efa1d7cdd36f29fd377d50dc60f34b1188edf59fc0d7e29b0d7f715f29cf",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r04/receipt.json",
+      "sha256": "f49f0e2afb348686e3029d592f5c9c60e7286418ad375b0084444328f3bdabb3",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        },
+        {
+          "pointer": "/price_sha256",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r07/receipt.json",
+      "sha256": "f7caefe93070f543d82d9c52adbf121b6c4de9c81f4327dc1411ef581329b9e7",
+      "matches": [
+        {
+          "pointer": "/source_hashes/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/source_hashes/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r09/receipt.json",
+      "sha256": "0c0213a450951ec4e30b5e7907272e21475692c2d8418471699ce7c917335ea4",
+      "matches": [
+        {
+          "pointer": "/source_hashes/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/source_hashes/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r10/receipt.json",
+      "sha256": "d32f9585227bf9e2ad17743075526417ac4b5741dc2673c58a777654296189b3",
+      "matches": [
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r101/feature_provenance.json",
+      "sha256": "6ee292c395cc215628ae9b752a74d18a4536dd1afcc327eb23ad772d9aaf04c8",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r102/provenance_2026-09-30.json",
+      "sha256": "6ea545098960a5635b762030be5b2695dbfdde224c4e2adf1df2db95fd20f501",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r102/provenance_2026-10-21.json",
+      "sha256": "1e59c1f053c2046fa68ff136eaa408c187ea727b79ce8dd0e387669894c20802",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r102/verification.json",
+      "sha256": "500562fa115189eec27f020c43a7a65b89eca472a81834080172ff3c243b83ef",
+      "matches": [
+        {
+          "pointer": "/reference_panels/monthly_panel",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r104/receipt.json",
+      "sha256": "d2ba6ab564e39154739a32e4df986ccd0061b957da1fed2166c08ca8a9d850e4",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r105/receipt.json",
+      "sha256": "5594cee2a4e4b651a669b238be2fd6fef2c07b385a1aa6e4f953fcffd980d72c",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r106/receipt.json",
+      "sha256": "f6aee362f8c7cbf922eed79c9bebb36226c2b3e3ce6931daabb173588baae2d4",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r108/receipt.json",
+      "sha256": "a604f706dc63b9e6e70fd6610b297fe0b68185e5ba7224b157541d9ef01a4816",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r109/receipt.json",
+      "sha256": "5fd509460b3c651a0c19115ce095e4f7fd057bc705a8cd88a23d72b09355ec18",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r11/coverage_receipt.json",
+      "sha256": "53ce1ea4d8653d20f94417ed6d6e354afaf69d03d811077bc70bc55123c92939",
+      "matches": [
+        {
+          "pointer": "/sources/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/sources/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r12/receipt.json",
+      "sha256": "318252445fcb0450ac012eef2f85121283a66285f8ca74a96950136d3275db8a",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r121/receipt.json",
+      "sha256": "f2a0b66b5cee745dca42d673f23234c64cb8bcb8f8d3c3f9399a3497f5948d25",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r128/receipt.json",
+      "sha256": "216bdc706b0adde72ddbcdfb66430007c61382ead9bc07724b04974bb82bf482",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r128/verification.json",
+      "sha256": "70a1e52a633095dcaba3e3b1332789e10f4ddbfcc17d3ea8957dd66b3747b6d0",
+      "matches": [
+        {
+          "pointer": "/reference_monthly_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r129/inference_impact.json",
+      "sha256": "3fd25237a7c1c1e81132d50b3ce37edf3b703e6592056c38b2d8f3bcd012e197",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r129/verification.json",
+      "sha256": "ccf8b87a88b13313b40fec5cfbb222ac9fb9f1529588babb880702e627235bca",
+      "matches": [
+        {
+          "pointer": "/legacy_monthly_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r13/receipt.json",
+      "sha256": "67c30057e449ef05a6769f2a2ca6f2c3e1d980ef87e33c5379062d5a263330e8",
+      "matches": [
+        {
+          "pointer": "/sources/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/sources/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r130/receipt.json",
+      "sha256": "bd19fb5c969ed44188dc52af0804617eb68d23366cac9a3e74d7b9cb988a7f47",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r14/initial_unreviewed/receipt.json",
+      "sha256": "3639f64ff176c6dca2ade3cf9a73afc0087534c639d10490a2fb59969439859b",
+      "matches": [
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r14/receipt.json",
+      "sha256": "a7566fb6ce80cae337ed878662e33a3cd79dcf4ead77278b98e14a61900a062a",
+      "matches": [
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r15/receipt.json",
+      "sha256": "edf4a12da5311c5c52f3ac13579eae36ed18bb51ce1f90f4dad0590f20116912",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r22/receipt.json",
+      "sha256": "114eaa0a7cd64e27eb2e15c99ff443c605c2bd7d0ac94c88d726cfdef35d9e11",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r25/receipt.json",
+      "sha256": "0aad01b9456970475c3f973b0172f2bb5e73108f118e81b25f7a2beda4b97cc0",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r26/receipt.json",
+      "sha256": "aae0afe20f210680b6d287400c1092ba10cf3910c372f7f2039f52fec024c75e",
+      "matches": [
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/sources/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r28/receipt.json",
+      "sha256": "2284111c7917f561a4b784771c026890de39d1a4d6b60161f4b1e4cc0d45bcda",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r29/raw_proxy/receipt.json",
+      "sha256": "30708b6aa4369a48324ebcc085be42485f4808748744a6232919f23a44c8172b",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r29/share_context_guard/receipt.json",
+      "sha256": "029d777426c72d9f6b103a1d3744383c5876516900458e50695b70418f9d90d5",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r29/source_manifest.json",
+      "sha256": "3efa0ef3d764df2158184cb8953644c5f5d43c44f6c460d30d28525850ae3575",
+      "matches": [
+        {
+          "pointer": "/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r30/receipt.json",
+      "sha256": "cbe6cb224875130f1a47490d66f57a28afc6a49f94efbc21fc84e1ea56c54f1f",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r31/receipt.json",
+      "sha256": "956b124d0155bcb68892da57fcac64bea2d842128633e6ee461068ccce43c0c0",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r32/run_receipt.json",
+      "sha256": "fd9766823af8d32a5830b3c9b11ab0cf7d91ef44669c8b4e6d31002d5356d112",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r32/verification.json",
+      "sha256": "4747d2f3c24c98a5736e9d87ad662027c26f15617be3bedb232edce7e5eab812",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r33/receipt.json",
+      "sha256": "9a97b8de0bd23e735be6521d1148a426abe5768f37fc0fcbcb0027a859861dcb",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r33/verification.json",
+      "sha256": "12378b2d4108c5073db251404658c4a58e0facf3ea5880cc26e546fca51d8b6c",
+      "matches": [
+        {
+          "pointer": "/source_daily_sha256",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r39/coverage_summary.json",
+      "sha256": "69fb4e4ae93fe4ab51ecbbae43c9d3ad8db0ca6f6e557778c3f6686cf7c604f2",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r40/coverage_summary.json",
+      "sha256": "5d4388eb070df1766949f50749d002564a34dd07f3d0c3cdaad563f890c86ddd",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r41/receipt.json",
+      "sha256": "bfcb737745e9c15cb161546a12e67a441f0d362eb64aa0d57516b1f03850bdf6",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r42/receipt.json",
+      "sha256": "49f4d5d9f77b93b63e56fc13edde9f60da01cb0fe0d52f58d56f07bd01a1e312",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r44/receipt.json",
+      "sha256": "8b0289ff8e59394ad524d37f03318a59ef8e50805887413ca8a69dc1579a54a7",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r45/receipt.json",
+      "sha256": "99e41d6b791f34a9e00d08b18d3fc0861a61933f16ce73f94238dd5672acc554",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r46/receipt.json",
+      "sha256": "59867fb86a8c12cb5e2888717bccf7d8b72e28f659fc2659e17eb03254f9040c",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r47/run_receipt.json",
+      "sha256": "078818c2589cba0d7d0d4f535932d769e266edefce687fbadb7b8e7f55f0338a",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r47/selection_receipt.json",
+      "sha256": "a38a8c74f2c9a27f5ff91622e2bb9decbc5b58199aaacfaefbfc270d09c3c21d",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r47/verification.json",
+      "sha256": "49383f2d51c8c3991c1dc3147a16dcee6a72a61dfc29ad32ab36d12b79d40708",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r48/receipt.json",
+      "sha256": "5bc83546f7e6f8e2a835b1662361e5f4207fc077b9b4365db9b444126e396fc2",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r48/verification.json",
+      "sha256": "3c22aa29382d2baf7be2ef3ccb8308e015f7de0f2ac2780264efc5bdc1172c98",
+      "matches": [
+        {
+          "pointer": "/source_daily_sha256",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r52/coverage_summary.json",
+      "sha256": "4fa4e1b555f3104221ff1304dad0555e370381aee8ee334efce7b506bf593f13",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r53/receipt.json",
+      "sha256": "f9af137b9766eacb14d197bc6ea89125c64cc6f0bed4ec2e460e6a5b0b8667f6",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r54/receipt.json",
+      "sha256": "c5e142ccd36353dd2f6a86e36bf1855384a882f85367514413d47a9d588aac8a",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r55/receipt.json",
+      "sha256": "e95b83a1ea69dc2eb77c452a955abf4845d51e785aee40fe0c58ee11bc1539b5",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r56/run_receipt.json",
+      "sha256": "d640b3d2bc497045af156608b8ab80e4e4f4fac37de6a3a7d9fd32c85a1de43e",
+      "matches": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r56/verification.json",
+      "sha256": "7c7358b43e224735fc4d0feac17ab7c384d5da911a4de48a0bac09c866c3cab0",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r57/receipt.json",
+      "sha256": "f2f0593cd241d18a151dc86b0794b60d6c726f5944eed889bd8e973764d8d5ac",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r57/verification.json",
+      "sha256": "12378b2d4108c5073db251404658c4a58e0facf3ea5880cc26e546fca51d8b6c",
+      "matches": [
+        {
+          "pointer": "/source_daily_sha256",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r61/coverage_summary.json",
+      "sha256": "d8d0061a850ba7043d1172587e032de427d174a68bdca08dfbbf48c2ab94e988",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r62/receipt.json",
+      "sha256": "4767b3c73fb6f1faff9d1c2c5df14fe496cfbcb987c2708604bd1b1487ff81a2",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r64/receipt.json",
+      "sha256": "d36e526637feda9731757e00675dd0563c20b0ae84d0e80594dcb1db6eda30b4",
+      "matches": [
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/inputs/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r68/receipt.json",
+      "sha256": "ee6c69955be47a3952ead76c1d676be623f4df5cb0199724287281971541bdc3",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r73/receipt.json",
+      "sha256": "14a5f936068951ad93f4ab880a00c6afa1eebe6391ca79cdb92ac76a3229d495",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r96/receipt.json",
+      "sha256": "ce2c607cbd5e4b37439fa04d5081dd81ae9983697acafcb5fe83b84debde6a57",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ]
+    },
+    {
+      "path": "outputs/r97/receipt.json",
+      "sha256": "7b5d460ace9d98b2dedeebdd7a60c1813b02b08dafdd3c321cdc4ebd243722f9",
+      "matches": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ]
+    }
+  ],
+  "parse_errors": [],
+  "reviewed_consumers": [
+    {
+      "script": "src/portfolio_r04.py",
+      "script_sha256": "65681a3bd2f3e7e8226eb3c0d8ad718f620075a6cf0a9415972f96f20039996e",
+      "receipt": "outputs/r04/receipt.json",
+      "receipt_exists": true,
+      "receipt_sha256": "f49f0e2afb348686e3029d592f5c9c60e7286418ad375b0084444328f3bdabb3",
+      "exact_old_source_evidence": [
+        {
+          "pointer": "/panel_sha256",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        },
+        {
+          "pointer": "/price_sha256",
+          "location": "value",
+          "target": "old_daily:sha256"
+        }
+      ],
+      "role": "upstream-read consumer; original artifacts retained",
+      "status": "requires_input_and_output_impact_review",
+      "scope": "synthetic portfolio paths"
+    },
+    {
+      "script": "src/market_controls_r54.py",
+      "script_sha256": "2f9e30d8ee134915fe639b40e76d367f78def57f7db1ad9daa9bdbb8a422c2d3",
+      "receipt": "outputs/r54/receipt.json",
+      "receipt_exists": true,
+      "receipt_sha256": "c5e142ccd36353dd2f6a86e36bf1855384a882f85367514413d47a9d588aac8a",
+      "exact_old_source_evidence": [
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "key",
+          "target": "old_daily:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1.cache~1a_share~1ep32~1forecast_v5~1daily_industries.parquet",
+          "location": "value",
+          "target": "old_daily:sha256"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "key",
+          "target": "old_monthly:path"
+        },
+        {
+          "pointer": "/reads/~1home~1xiaolv~1code~1a_share~1topics~102_AFML_BIG_WINNER~1experiments~1pending~135_industry_rise_mechanisms_and_rotation~1data~1monthly_panel.parquet",
+          "location": "value",
+          "target": "old_monthly:sha256"
+        }
+      ],
+      "role": "upstream-read consumer; original artifacts retained",
+      "status": "requires_input_and_output_impact_review",
+      "scope": "market beta/residual volatility controls"
+    }
+  ],
+  "conclusion": "References include frozen audits and comparison baselines; not all hits are active consumers or require rerunning. No whole-dependency completion claim."
+}

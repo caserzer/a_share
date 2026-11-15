@@ -1,0 +1,17 @@
+{
+  "round": "R63",
+  "purpose": "Integrate frozen battery and financing observations into historical monitoring without promoting unsuccessful models",
+  "base": "R25 evidence matrix, unchanged rows, scores and price ranks",
+  "battery_scope": {
+    "SW2021/L2/801737.SI": "battery",
+    "SW2021/L3/857371.SI": "lithium battery"
+  },
+  "battery_selection": "latest economic month with available_at <= snapshot; never backfill a missing latest YoY with an older known YoY; growth_available_at must also be <= snapshot",
+  "financing_selection": "latest industry decision date <= snapshot; current factor only when decision date equals snapshot and original coverage gate passes; older values retained as last observation only",
+  "clock_scope": "all added dimensions historical proxy; company-fact clocks do not certify battery or financing acquisition timing",
+  "changes": "descriptive last-observation changes with source dates and stale flags; not stage transitions",
+  "prediction_policy": "no rank, stage, probability or allocation change; no outcome columns read",
+  "next_update": "manual versioned source refresh and verification, no scheduler or network",
+  "source": "R60 full reviewed monthly series; source version refresh of R50, no method or ranking change",
+  "prior": "R50 preserved; new current key complete_battery_historical_monitor"
+}

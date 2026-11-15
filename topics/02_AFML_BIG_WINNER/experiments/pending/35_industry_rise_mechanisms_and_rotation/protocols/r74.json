@@ -1,0 +1,11 @@
+{
+  "round": "R74",
+  "purpose": "Versioned historical operating evidence monitor with explicit economic-period and snapshot freshness",
+  "expected_period": "latest calendar quarter-end <= snapshot; conservative research freshness convention, not statutory disclosure deadline",
+  "selection": "only exact expected economic period in same R73 snapshot can supply current evidence; absent period=period_not_in_source; insufficient coverage stays unknown; never fall back to previous good quarter",
+  "last_observation": "retain latest coverage-passing economic period separately as historical context, not current or stage probability",
+  "scope": "nonfinancial accounting only; financial or unknown identity remains inapplicable/unknown",
+  "integration": "R63 base unchanged; attach most recent R73 snapshot <= base asof; older snapshot may only populate last-observation metadata, all current ratios null",
+  "ratios": "capex_up/joint_known, both_improve/capex_up, both_decline/capex_up; zero denominator unknown",
+  "limits": "quarter-end policy deliberately exposes reporting lag; no live collection, ranks, probability, deployment or forecast"
+}

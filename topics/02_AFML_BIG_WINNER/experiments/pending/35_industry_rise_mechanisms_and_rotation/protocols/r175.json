@@ -1,0 +1,155 @@
+{
+  "routes": {
+    "l1_followup_baseline_summary": [
+      "outputs/r170/followup_summary.csv",
+      "outputs/r170/verification.json",
+      "frozen_candidates_different_alert_selections_descriptive"
+    ],
+    "l1_followup_baseline_continuation": [
+      "outputs/r170/continuation.csv",
+      "outputs/r170/verification.json",
+      "conditional_success_known_only_after20_not_alpha"
+    ],
+    "l1_followup_date_comparisons": [
+      "outputs/r170/date_comparisons.csv",
+      "outputs/r170/verification.json",
+      "common_complete_date_selection_not_causal_increment"
+    ],
+    "l2_top10_portfolio_summary": [
+      "outputs/r169/evaluation/outputs/r04/summary.csv",
+      "outputs/r169/verification.json",
+      "synthetic_simplified_reference_not_original_report_replication"
+    ],
+    "l2_top10_pair_comparison": [
+      "outputs/r169/paired_summary.csv",
+      "outputs/r169/verification.json",
+      "recent_top10_cost_returns_worse_no_adoption"
+    ],
+    "l2_top10_prior_and_drift_risk": [
+      "outputs/r171/risk_by_origin.csv",
+      "outputs/r171/verification.json",
+      "industry_risk_not_stock_execution"
+    ],
+    "l2_top10_tail_risk": [
+      "outputs/r171/tail_risk.csv",
+      "outputs/r171/verification.json",
+      "only_whole_valid_synthetic_paths"
+    ],
+    "l2_top10_annual_returns": [
+      "outputs/r171/annual.csv",
+      "outputs/r171/verification.json",
+      "partial_years_and_synthetic_costs_explicit"
+    ],
+    "l2_member_concentration": [
+      "outputs/r172/concentration.csv",
+      "outputs/r172/verification.json",
+      "nominal_weights_preserve_unknown_mass"
+    ],
+    "l2_stock_target_distances": [
+      "outputs/r172/target_transitions.csv",
+      "outputs/r172/verification.json",
+      "structural_target_distance_not_executed_turnover"
+    ],
+    "l2_endpoint_price_support": [
+      "outputs/r173/portfolio_endpoints.csv",
+      "outputs/r173/verification.json",
+      "endpoint_support_not_full_stock_path"
+    ],
+    "l2_fixed_stock_intervals": [
+      "outputs/r174/intervals.csv",
+      "outputs/r174/verification.json",
+      "49of880_complete_no_executable_net_curve"
+    ],
+    "l2_fixed_stock_summary": [
+      "outputs/r174/summary.csv",
+      "outputs/r174/verification.json",
+      "all20_strategy_groups_have_path_gaps_permission_unknown"
+    ]
+  },
+  "requirement_updates": {
+    "R03": {
+      "verified_scope": "R168补齐一级跟踪；R170同母体冻结基准比较未显示模型持续性优势。",
+      "unresolved": "未来独立样本及经济持续性证据未完成；不再搜索冷却窗口或条件。",
+      "next_dependency": "prospective",
+      "routes": [
+        "l1_followup_baseline_summary",
+        "l1_followup_baseline_continuation",
+        "l1_followup_date_comparisons"
+      ]
+    },
+    "R05": {
+      "verified_scope": "R169二级前10简化对照、R171风险、R172成员、R173计价端点、R174固定路径均已执行。",
+      "unresolved": "880区间仅49全路径完整；20组均有缺口，许可字段未知，无可执行净曲线。",
+      "next_dependency": "data",
+      "routes": [
+        "l2_top10_portfolio_summary",
+        "l2_top10_prior_and_drift_risk",
+        "l2_member_concentration",
+        "l2_fixed_stock_summary"
+      ]
+    },
+    "R06": {
+      "verified_scope": "一级已有原基线与启动/退出/持续性；二级本轮补齐前10及股票层覆盖。",
+      "unresolved": "一级校准、全层真实执行与跨期前瞻仍不足，不互相外推。",
+      "next_dependency": "data_and_prospective",
+      "routes": [
+        "l1_followup_baseline_summary",
+        "l2_fixed_stock_summary"
+      ]
+    },
+    "R07": {
+      "verified_scope": "R169补齐二级前10简化参考比较；原定义、开盘及双拥挤差异完整披露。",
+      "unresolved": "完整69项原文与五大类/双拥挤/开盘源仍缺，不能称原报告复现。",
+      "next_dependency": "data",
+      "routes": [
+        "l2_top10_portfolio_summary",
+        "l2_top10_pair_comparison"
+      ]
+    },
+    "R08": {
+      "verified_scope": "原固定排序与控制修复完成，R169近期前10成本后配对收益均下降。",
+      "unresolved": "不再搜索选择数量；可靠独立增量与未使用时期仍未证明。",
+      "next_dependency": "prospective",
+      "routes": [
+        "l2_top10_pair_comparison"
+      ]
+    },
+    "R12": {
+      "verified_scope": "R172/R173/R174记录名义成员、计价资格及完整路径的不同覆盖；原源哈希核验。",
+      "unresolved": "未解析身份、缺失日价格/链和许可语义仍需精确新证据；旧最终缓存不能升级PIT。",
+      "next_dependency": "data",
+      "routes": [
+        "l2_member_concentration",
+        "l2_endpoint_price_support",
+        "l2_fixed_stock_intervals"
+      ]
+    },
+    "R14": {
+      "verified_scope": "R168—R174补齐必要对照和风险/复制失败，全部可重跑且保留失败。",
+      "unresolved": "没有整体成本后可执行价值或独立前瞻认证，完整股票路径不足。",
+      "next_dependency": "data_and_prospective",
+      "routes": [
+        "l1_followup_date_comparisons",
+        "l2_fixed_stock_summary"
+      ]
+    },
+    "R15": {
+      "verified_scope": "默认入口统一到R175；历史推断网格仍保持原截至日和模型。",
+      "unresolved": "入口更新不等于新行情更新；上游增量源、修订处理与前瞻未认证。",
+      "next_dependency": "engineering_and_data",
+      "routes": [
+        "l2_fixed_stock_summary"
+      ]
+    },
+    "R16": {
+      "verified_scope": "本轮整合近期实验、负结果和未知边界，历史版本保留。",
+      "unresolved": "下一项按失败股票/日期/字段生成本地缺口及可替代源清单，不降门槛。",
+      "next_dependency": "local_source_audit",
+      "routes": [
+        "l2_fixed_stock_intervals"
+      ]
+    }
+  },
+  "base": "R167",
+  "adoption": false
+}

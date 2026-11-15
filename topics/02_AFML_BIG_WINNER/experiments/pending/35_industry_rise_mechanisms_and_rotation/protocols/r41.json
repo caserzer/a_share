@@ -1,0 +1,48 @@
+{
+  "round": "R41",
+  "type": "exploratory single-industry time-series pilot, not cross-sectional ranking replication",
+  "data": "R40 frozen 68-month installation series and signal coverage",
+  "hypothesis": "Installation log-yoy adds future relative-return information after past price and size controls",
+  "primary_horizon": 20,
+  "secondary_horizon": 60,
+  "target": "existing excess20/excess60 against CSI_ALL, same next-close conventions as frozen monthly_panel",
+  "population": [
+    "SW2021/L2/801737.SI",
+    "SW2021/L3/857371.SI"
+  ],
+  "model": "Ridge alpha10, unchanged across all folds/methods; separate industry models; StandardScaler fitted only on training data; no cross-sectional rank for singleton",
+  "methods": {
+    "FS": [
+      "mom20",
+      "mom60",
+      "vol20",
+      "dd60",
+      "past_excess20",
+      "past_excess60",
+      "log_members",
+      "size_control"
+    ],
+    "FSB": [
+      "mom20",
+      "mom60",
+      "vol20",
+      "dd60",
+      "past_excess20",
+      "past_excess60",
+      "log_members",
+      "size_control",
+      "log_yoy"
+    ],
+    "mean": "same training targets mean"
+  },
+  "split": "annual refit Jan1, expanding prior dates with labels matured strictly before boundary; predictions through2026",
+  "minimum_train_months": 24,
+  "minimum_rationale": "two calendar years of monthly time-series observations; pilot regularized estimation only, distinct from300-row full-industry model gate",
+  "missing": "same complete-feature dates for all methods; no imputation or economic-month backdating",
+  "metrics": "paired squared error improvement FS minus FSB, MAE, mean-benchmark MSE, annual split; primary20 secondary60 kept separate",
+  "inference": "descriptive pilot; no significance or investment claim; stable predictive evidence requires >=24 evaluated OOS dates across>=3 calendar years plus predeclared independent future confirmation; unmet gates remain unmet",
+  "stop": "one fixed feature and alpha, no optimizing windows or labels from results; if no increment retain failure",
+  "cost": "prediction experiment only, no allocation or return after fees claim",
+  "classification": "onset and reversal not evaluated by this return experiment",
+  "before_outcome_read": true
+}

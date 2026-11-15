@@ -1,0 +1,15 @@
+{
+ "id":"EP35-R10", "registered_on":"2026-11-13",
+ "questions":["提示后5/20/60交易日表现、回撤和扩散如何演化？20日成功之后是否继续改善？","固定反转风险警报的避损收益是否足以补偿错误退出与交易成本？"],
+ "sources":"all frozen R09 alert strategies; R02 full-price-cohort reversal predictions at20/60; audited EP32 daily continuous blocks and CSI_ALL",
+ "selection":"no new model or threshold. Keep every existing R09 alert; R02 risk highest20% per date/era/level/horizon selected before outcomes, ceil count and industry_code tie break",
+ "entry":"signal next benchmark session close; no return earned on signal-to-entry day",
+ "followup":"5/20/60 session absolute and CSI_ALL-relative returns, maximum drawdown from within-window running high including entry, minimum return from entry, breadth21 change from signal to20-day endpoint",
+ "continuation":"incremental return from entry+20 to entry+60 minus same-period market return. Report ALL complete60 alerts and conditional R02-success20 subset (absolute>=5% and excess>=3%) separately. Conditional selection becomes observable only after20, not original-signal predictive evidence",
+ "missing":"all endpoints and paths must be in same continuous block; report missing/immature counts, never zero fill or label missing as failure. Repeated and overlapping alerts not independent trials",
+ "exit_comparison":"existing holding at signal, sell at next-close and remain cash vs hold to horizon then liquidate; terminal cash normalized to1 at entry, rate c per side: cash=1-c, hold=(1+industry_return)*(1-c). Market switch=sell holding,buy benchmark at entry,sell benchmark at horizon: (1-c)^3*(1+market_return). Compare identical alert origins, no new buys/exits inferred for missing outcomes",
+ "cost_rates":[0,0.002,0.005],
+ "risk_metrics":"risk-label precision, absolute-positive and excess-positive wrong-exit shares, missed positive absolute gain, avoided negative absolute loss, net cash/market improvement, date-equal means; full eligible trend cohort as context, not causal control",
+ "inference":"historical descriptive followup. Do not equate high risk AUC with profitable exits, negative benchmark-relative return with absolute loss, or conditional success persistence with unconditional alpha",
+ "scope_limits":"synthetic baskets; R06 trading gates unproven; no executable portfolio or economic-stage claim; no model retraining or parameter search"
+}

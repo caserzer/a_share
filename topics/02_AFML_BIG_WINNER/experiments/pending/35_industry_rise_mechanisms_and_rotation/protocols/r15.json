@@ -1,0 +1,13 @@
+{
+  "question": "How do complete cached-report barriers change frozen monthly fixed-FY revisions, coverage and R12 comparisons?",
+  "reason": "R14 found missing/conflicted intermediate reports absent from valid-value table; no outcome-based rule change",
+  "rules": [
+    "retain R11/R12 originals",
+    "same latest-report age180 and prior gap365, fixed FY0/FY1, publication strictly before signal",
+    "all same-broker cached reports present; missing or conflicting current/immediate predecessor =>unknown",
+    "same prior-month members, >=5 and80% strict gate, partial diagnostic separate",
+    "company/broker paired value and missingness changes reported before model results"
+  ],
+  "model": "exact R12 rules, alpha10, year folds,300rows/18months,price/expectation/combined; no tuning; corrected own-cohort results not directly comparable to old own-cohort performance",
+  "status": "data integrity sensitivity; no automatic positive acceptance"
+}

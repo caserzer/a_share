@@ -1,0 +1,178 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "cutoff": "2021-11-30",
+      "rows": 326913,
+      "anchors": 3589,
+      "ready": 14495,
+      "legacy_daily": {
+        "shared": 324240,
+        "missing": 0,
+        "extra": 2673,
+        "different_shared_rows": 0
+      },
+      "legacy_features": {
+        "shared": 16802,
+        "missing": 0,
+        "extra": 2673,
+        "different_shared_rows": 49
+      },
+      "legacy_feature_fields": {
+        "price_ready": 30,
+        "mom20": 15,
+        "mom60": 31,
+        "vol20": 15,
+        "dd60": 5,
+        "past_excess20": 15,
+        "past_excess60": 31,
+        "members": 0,
+        "breadth21": 0,
+        "breadth63": 0
+      },
+      "transition": null
+    },
+    {
+      "cutoff": "2021-12-31",
+      "rows": 326913,
+      "anchors": 3589,
+      "ready": 14495,
+      "legacy_daily": {
+        "shared": 324240,
+        "missing": 0,
+        "extra": 2673,
+        "different_shared_rows": 0
+      },
+      "legacy_features": {
+        "shared": 16802,
+        "missing": 0,
+        "extra": 2673,
+        "different_shared_rows": 49
+      },
+      "legacy_feature_fields": {
+        "price_ready": 30,
+        "mom20": 15,
+        "mom60": 31,
+        "vol20": 15,
+        "dd60": 5,
+        "past_excess20": 15,
+        "past_excess60": 31,
+        "members": 0,
+        "breadth21": 0,
+        "breadth63": 0
+      },
+      "transition": {
+        "unchanged_prior_rows": 326913,
+        "inserted_anchors": 0,
+        "unchanged_ready_features": 14495
+      }
+    },
+    {
+      "cutoff": "2022-01-31",
+      "rows": 326913,
+      "anchors": 3589,
+      "ready": 14495,
+      "legacy_daily": {
+        "shared": 324240,
+        "missing": 466,
+        "extra": 2673,
+        "different_shared_rows": 0
+      },
+      "legacy_features": {
+        "shared": 16802,
+        "missing": 466,
+        "extra": 2673,
+        "different_shared_rows": 49
+      },
+      "legacy_feature_fields": {
+        "price_ready": 30,
+        "mom20": 15,
+        "mom60": 31,
+        "vol20": 15,
+        "dd60": 5,
+        "past_excess20": 15,
+        "past_excess60": 31,
+        "members": 0,
+        "breadth21": 0,
+        "breadth63": 0
+      },
+      "transition": {
+        "unchanged_prior_rows": 326913,
+        "inserted_anchors": 0,
+        "unchanged_ready_features": 14495
+      }
+    },
+    {
+      "cutoff": "2026-09-30",
+      "rows": 769803,
+      "anchors": 8447,
+      "ready": 34951,
+      "legacy_daily": {
+        "shared": 763634,
+        "missing": 1,
+        "extra": 6169,
+        "different_shared_rows": 0
+      },
+      "legacy_features": {
+        "shared": 39853,
+        "missing": 1,
+        "extra": 6169,
+        "different_shared_rows": 64
+      },
+      "legacy_feature_fields": {
+        "price_ready": 31,
+        "mom20": 19,
+        "mom60": 33,
+        "vol20": 19,
+        "dd60": 16,
+        "past_excess20": 19,
+        "past_excess60": 33,
+        "members": 0,
+        "breadth21": 0,
+        "breadth63": 0
+      },
+      "transition": {
+        "unchanged_prior_rows": 326913,
+        "inserted_anchors": 466,
+        "unchanged_ready_features": 14495
+      }
+    },
+    {
+      "cutoff": "2026-10-21",
+      "rows": 773762,
+      "anchors": 8526,
+      "ready": 34951,
+      "legacy_daily": {
+        "shared": 767515,
+        "missing": 0,
+        "extra": 6247,
+        "different_shared_rows": 0
+      },
+      "legacy_features": {
+        "shared": 39854,
+        "missing": 0,
+        "extra": 6247,
+        "different_shared_rows": 64
+      },
+      "legacy_feature_fields": {
+        "price_ready": 31,
+        "mom20": 19,
+        "mom60": 33,
+        "vol20": 19,
+        "dd60": 16,
+        "past_excess20": 19,
+        "past_excess60": 33,
+        "members": 0,
+        "breadth21": 0,
+        "breadth63": 0
+      },
+      "transition": {
+        "unchanged_prior_rows": 769803,
+        "inserted_anchors": 79,
+        "unchanged_ready_features": 34951
+      }
+    }
+  ],
+  "scope": "five local cutoffs; no silent market-row rewrite; documented new anchors allowed",
+  "legacy_monthly_sha256": "77fb54406345c8a09d90b9f827cc252bf8ff764af4ba8de25b8ee62e6abb2816"
+}

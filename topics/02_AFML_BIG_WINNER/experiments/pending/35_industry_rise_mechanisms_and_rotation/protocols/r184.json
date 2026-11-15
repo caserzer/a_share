@@ -1,0 +1,19 @@
+{
+  "task": "Single explicit historical replay CLI",
+  "actions": [
+    "capture",
+    "evaluate",
+    "verify"
+  ],
+  "requirements": [
+    "explicit source manifest and cutoff",
+    "hash-checked immutable source copies",
+    "known_at and membership adapter",
+    "no future date beyond supplied source maximum",
+    "sealed driver/code/source envelope",
+    "evaluation takes validated capture envelope",
+    "idempotence and preservation"
+  ],
+  "validation": "Real June30 capture, October21 evaluation, July15 historical rollback; compare R181/R182 full frames; reject corrupt source, missing cutoff and cutoff after source maximum",
+  "forward_enabled": false
+}

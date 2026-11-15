@@ -1,0 +1,11 @@
+{
+ "question":"Does equal L2 penalty per unique standardized direction change three-task results relative to the duplicate-rank baseline? Model assumption, not new information.",
+ "scope":"all76 frozen R02/R16 formal F/F and FD/FD models and identical98113 test identities; original skipped folds retained",
+ "change":"remove past_excess20/60 from model columns only, no sqrt2 compensation; retain raw eligibility rules and original complete cohort",
+ "fixed":"original rank populations, scaler fit, date-equal sample weights, maturity splits, train/cal gates, Ridge alpha10, Logit C1 max_iter2000 seed3502; refit Platt on same past calibration rows",
+ "diagnostic":"also apply original frozen Platt to new base decisions to separate calibration response; not a separately selected variant",
+ "evaluation":"same-date same-known-label pairs: return Spearman IC with >=20 rows, classification Brier and logloss; dates equal, annual breakdown; original top20% ceil/code tie selection overlap without claiming realized strategy benefit",
+ "uncertainty":"calendar-month Bartlett lag3 for20days and lag6 for60days; normal approximate95% and Bonferroni family60 intervals on primary IC/Brier improvements; preserve missing calendar gaps; 20primary60secondary",
+ "decision":"descriptive necessary comparison; no adoption from this experiment alone, no threshold/regularization sweep; future validation and portfolio effects separate",
+ "validation":"independent source ranks/labels/masks, original fold identities and counts, serialized parameter predictions, penalized optimum gradients, complete paired metrics and calendar covariance"
+}

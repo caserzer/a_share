@@ -1,0 +1,14 @@
+{
+  "question": "Can all local SW2014/SW2021 L2/L3 stock baskets be reconstructed causally at classification and recent cutoffs, without hidden historical anchors?",
+  "cutoffs": [
+    "2021-11-30",
+    "2021-12-31",
+    "2022-01-31",
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "scope": "Existing local stock partitions and original assignments, complete available catalog; no acquisition, labels or model tuning.",
+  "rules": "EP32 float64 relative returns and float32 breadth; prior-month membership; SW2014 targets through 2021-11, SW2021 targets from 2022-01; min5 and coverage80; exact same gap/anchor rules. Slice stock/calendar at cutoff and assignments strictly before cutoff month.",
+  "comparison": "Outer identity comparison vs frozen full-history daily prefixes; report missing/extra keys, compare shared values at 1e-12, never silently insert future anchors. Compare sequential reconstruction prefixes separately.",
+  "decision": "Any retroactive full-history anchor is a causal-source limitation requiring explicit versioning; no patch to original research artifacts. No predictive capability claim."
+}

@@ -1,0 +1,11 @@
+{
+  "question": "Does positive H1 cumulative year-on-year change persist in derived Q2, or can it be carried by Q1?",
+  "primary_cutoff": "2026-09-30",
+  "other_cutoffs": "Original R72 six snapshots, availability diagnostics only; no independent-period multiplication.",
+  "source": "R72 selected fields plus original raw latest-version metadata, no external collection. 2025Q1/H1 and 2026Q1/H1 for capex cash payment, operating cash flow, parent-attributable net income.",
+  "eligibility": "Per issuer/field/cutoff four values, all R72 available; all latest raw rows report_type1/comp_type1 for both APIs; all proxy dates <= cutoff. Same cutoff for both quarters and years. Negative derived Q2 capex in either year => nonmonotone_cumulative, no clipping or backfill. Negative operating cash or net profit valid.",
+  "formulas": "Q2_y=H1_y-Q1_y; deltas amount (2026-2025), not growth rates. Delta_H1=Delta_Q1+Delta_Q2. Decimal arithmetic and zero sign thresholds only. Q1/H1 independently qualified when their own two inputs valid; Q2 requires four.",
+  "evaluation": "Primary descriptive counts/sign transition and H1-positive with Q2-positive/zero/negative/unknown; all three-field joint coherent Q1/Q2 comparison retained as measurement, no pricing or causal claim. Missing/conflict/type/revision uncertainties separate.",
+  "boundary": "Derived quarter values under provider cumulative convention, not individually original-report reconciled; mixed report versions may not be restatement-consistent; archive clock later than historical cutoffs remains proxy. No model fitting, significance, parameter search or adoption.",
+  "verification": "Reconstruct latest metadata and field statuses from raw source independently, exact Decimal identities, source-code/hash lineage, cutoff preservation and all status denominators."
+}

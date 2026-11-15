@@ -1,0 +1,115 @@
+{
+  "prior": "R175",
+  "routes": {
+    "exact_stock_gap_summary": [
+      "outputs/r176/summary.json",
+      "outputs/r176/verification.json",
+      "Exact missing dates/fields; no price restoration or execution certification"
+    ],
+    "sina_gap_lookup": [
+      "outputs/r177/summary.json",
+      "outputs/r177/verification.json",
+      "Bounded local archive lookup; zero matches does not establish suspension"
+    ],
+    "exchange_gap_lookup": [
+      "outputs/r178/summary.json",
+      "outputs/r178/verification.json",
+      "Raw JSON checked; zero matches; historical first version not certified"
+    ],
+    "failed_update_replay": [
+      "outputs/r179/summary.json",
+      "outputs/r179/verification.json",
+      "FAILED_INPUT_CLOCK: integrity and replay arithmetic only; superseded by R181/R182"
+    ],
+    "update_revision_audit": [
+      "outputs/r180/summary.json",
+      "outputs/r180/verification.json",
+      "Field representation and schema changes; historical rollback only"
+    ],
+    "update_clock_failure": [
+      "outputs/r180/clock_audit.json",
+      "outputs/r183/clock_verification.json",
+      "Confirmed future-known anchors and absent membership dates in R179; failure retained"
+    ],
+    "clock_safe_observation_runs": [
+      "outputs/r181/runs.json",
+      "outputs/r181/verification.json",
+      "Three repaired historical snapshots; source membership dates are not publication timestamps"
+    ],
+    "clock_safe_observation_comparison": [
+      "outputs/r181/comparison.parquet",
+      "outputs/r181/verification.json",
+      "78/79 status changes; no score or rank change at tested dates"
+    ],
+    "clock_safe_evaluation": [
+      "outputs/r182/outcomes.parquet",
+      "outputs/r182/verification.json",
+      "4088 historical outcomes; 2044 paired results unchanged; no forward certification"
+    ],
+    "clock_safe_evaluation_status": [
+      "outputs/r182/status_summary.csv",
+      "outputs/r182/verification.json",
+      "Mature, pending and missing separated; no executable strategy claim"
+    ]
+  },
+  "requirement_updates": {
+    "R05": {
+      "verified_scope": "R176—R178定位固定股票复制缺口并检查限定本地来源，未恢复价格。",
+      "unresolved": "股票完整路径、历史买卖许可、成本冲击与独立前瞻仍不足。",
+      "next_dependency": "data_and_prospective",
+      "routes": [
+        "l2_fixed_stock_summary",
+        "exact_stock_gap_summary",
+        "sina_gap_lookup",
+        "exchange_gap_lookup"
+      ]
+    },
+    "R12": {
+      "verified_scope": "精确股票日期字段、来源哈希及修复观测的成员来源和可知时间已核查。",
+      "unresolved": "严格PIT、原始修订历史与缺失价格权限仍缺；适配修复不补齐上游。",
+      "next_dependency": "data",
+      "routes": [
+        "exact_stock_gap_summary",
+        "clock_safe_observation_runs"
+      ]
+    },
+    "R14": {
+      "verified_scope": "R179接入失败未隐藏，R180诊断，R181/R182在固定历史截点验证修复；缺失不补零。",
+      "unresolved": "固定重放不证明独立前瞻或成本后可执行价值。",
+      "next_dependency": "data_and_prospective",
+      "routes": [
+        "failed_update_replay",
+        "update_clock_failure",
+        "clock_safe_evaluation"
+      ]
+    },
+    "R15": {
+      "verified_scope": "R183整合时点失败及修复证据；3个修复观测、4个评价版本，日期回退不覆盖。",
+      "unresolved": "当前修复仍由固定实验脚本串联；通用本地更新入口、增量源及前瞻未完成。",
+      "next_dependency": "engineering_and_data",
+      "routes": [
+        "clock_safe_observation_runs",
+        "clock_safe_evaluation_status",
+        "update_revision_audit"
+      ]
+    },
+    "R16": {
+      "verified_scope": "近期来源失败、输入时点失败及修复均有协议、代码、结果、验证与中文报告。",
+      "unresolved": "继续补齐可操作的修复更新入口；不能仅凭归档声明整体完成。",
+      "next_dependency": "local_engineering",
+      "routes": [
+        "update_clock_failure",
+        "clock_safe_observation_comparison",
+        "clock_safe_evaluation"
+      ]
+    }
+  },
+  "next_local": [
+    {
+      "priority": 1,
+      "task": "Expose a single explicit historical replay entry for corrected local capture/evaluation",
+      "basis": "R181 and R182 are fixed-date experimental runners; callers can still accidentally use legacy R18 CLI defaults",
+      "boundary": "Local existing inputs and explicit cutoffs; no new data collection, forward certification, scheduler or deployment"
+    }
+  ]
+}

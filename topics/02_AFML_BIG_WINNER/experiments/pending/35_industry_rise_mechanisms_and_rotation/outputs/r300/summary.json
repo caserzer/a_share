@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "new_manifest_hash_checks": 94,
+  "reviewed_facts": 70,
+  "issuers": 10,
+  "report_periods": [
+    "2026Q2"
+  ],
+  "anomaly_cases": 162,
+  "anomaly_issuer_overlap": [],
+  "new_model_training_periods_certified": 0,
+  "original_families": 16,
+  "requirements": 16,
+  "next": [
+    {
+      "task": "核对新增本地10份2026半年报中的2025同期利润/现金流/资本支付比较列，连接旧2025归档并区分原值与重述；仅本地原文，先识别列和期间，未知保留。",
+      "acceptance": "每个字段独立页码/单位/期间/来源版本；不把2026披露比较值当成2025已知值，不追加训练资格"
+    }
+  ],
+  "adoption": false,
+  "goal_complete": false
+}

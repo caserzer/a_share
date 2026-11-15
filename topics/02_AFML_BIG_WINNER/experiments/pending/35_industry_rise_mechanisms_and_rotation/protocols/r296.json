@@ -1,0 +1,9 @@
+{
+  "revision": "R296",
+  "question": "Time-block uncertainty for all frozen R295 Brier comparisons",
+  "comparisons": "7 contexts x (3 within-variant daily-minus-monthly + state daily-minus-base daily + interaction daily-minus-base daily) =35; no pooled selection",
+  "rule": "R99 calendar-year aligned nonoverlapping21-session blocks; date-equal Brier differences, preserve missing calendar blocks; >=8 observed blocks. Resample observed blocks with replacement, ratio summed differences/summed observed dates. 20000 replicates, seed35099.",
+  "multiplicity": "Two-sided percentile95%; Bonferroni tails .05/(2*35), all35 retained in family even if ineligible",
+  "limits": "Exploratory approximate bootstrap, few blocks and extreme-tail Monte Carlo resolution; not independent untouched validation; no fit, block-length search, adoption or deployment.",
+  "verification": "Independent per-row loss/date aggregation, calendar positions, multinomial block-count resample reconstruction and quantiles; compare points to R295."
+}

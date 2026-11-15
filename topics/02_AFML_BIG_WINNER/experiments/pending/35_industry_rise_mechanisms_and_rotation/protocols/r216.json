@@ -1,0 +1,8 @@
+{
+  "round": 216,
+  "scope": "All R204 fixed score calibration predictions, original fixed rule plus base/state/interaction, same universe momentum/equal. Original fixed rule primary anchor.",
+  "rules": "R194 complete-month signal, next close entry, next monthly entry exit, top20% equal initial weights, drifted turnover, 0/20/50 bps per traded notional, initial/final fees, no full curve on any missing interval; base/state/interaction plus same-universe mom60/equal",
+  "identity": "Original cohort/method/horizon; scalar slope changes preserve/reverse/tie original ranks. Use sign(slope)*score as in R204 to avoid affine floating-point tie perturbations. Numeric model prediction retained separately.",
+  "meaning": "Monthly rebalanced index simulation; forecast horizon is model training target, not forced 20/60-day holding; no execution certification or adoption",
+  "verification": "All selections and paths/turnover independently recalculated; daily wealth and risk checks"
+}

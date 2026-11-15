@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "asof": "2026-06-30",
+      "snapshot": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/update_store/observations/a1ddd183a0553df6894e7cbc30a0e2a71341062de0a9c14f45798fba74a01f4c",
+      "evaluation": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/update_store/evaluations/666d10c3ecd4dea83c03debbe5fccecfbb510cc861c80c58e0fc5fc5b73bc264",
+      "snapshot_sha256": "e90a8ec0f2166bef133757ad9b329782f493f441f63358150b96bf1166166e23",
+      "rows": 511,
+      "ready": 418,
+      "quarantined": 1,
+      "statuses": [
+        {
+          "horizon": 20,
+          "status": "mature",
+          "rows": 418
+        },
+        {
+          "horizon": 20,
+          "status": "missing_identity",
+          "rows": 13
+        },
+        {
+          "horizon": 20,
+          "status": "missing_or_discontinuous_price_path",
+          "rows": 80
+        },
+        {
+          "horizon": 60,
+          "status": "mature",
+          "rows": 418
+        },
+        {
+          "horizon": 60,
+          "status": "missing_identity",
+          "rows": 13
+        },
+        {
+          "horizon": 60,
+          "status": "missing_or_discontinuous_price_path",
+          "rows": 80
+        }
+      ]
+    },
+    {
+      "asof": "2026-09-30",
+      "snapshot": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/update_store/observations/37e95f01a3d57f92a0f6f14cc2cfd682b1230c5e1e2e2f964570bd9e74469ab7",
+      "evaluation": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/update_store/evaluations/54e5a939bbf2fdae5fdb4e74df1ae8a49fe676e3daf560601fe20ad15ba63d43",
+      "snapshot_sha256": "19510e5980c9cf8d93e6acb3511d497dcee5e21a34f5587ae722f80dc3e3ce9e",
+      "rows": 511,
+      "ready": 418,
+      "quarantined": 1,
+      "statuses": [
+        {
+          "horizon": 20,
+          "status": "pending_market_sessions",
+          "rows": 511
+        },
+        {
+          "horizon": 60,
+          "status": "pending_market_sessions",
+          "rows": 511
+        }
+      ]
+    }
+  ],
+  "prospective_records": 0,
+  "code_sha256": "8f9d2a3d228d264701d11ee2003ddabcfccb8f89b8816bda1d2ed790c3e64638",
+  "limitation": "historical sources exercise engineering only; no actual new-market update or deployment"
+}

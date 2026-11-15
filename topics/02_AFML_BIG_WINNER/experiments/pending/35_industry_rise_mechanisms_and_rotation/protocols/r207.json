@@ -1,0 +1,9 @@
+{
+  "scope": "All fitted R196-202,R204-205 direct regime contrasts, all methods/cohorts and available dated metrics; R203/206 insufficient-history diagnostics retained separately",
+  "comparisons": "state-base and interaction-base; R204 additionally interaction-fixed, since base is learned score calibration",
+  "estimand": "Mean paired date utility; daily events first paired by date then averaged within calendar month, equal-month estimand explicitly differs from R205 equal-event-date",
+  "uncertainty": "Exploratory post-outcome audit: calendar-month Bartlett HAC lag6, normal approximate95% and Bonferroni over ALL contrasts in this audit across horizons/metrics incl insufficient groups; not exact finite-sample coverage",
+  "minimum": "24 valid calendar months and 3 calendar years; missing months not compressed; degenerate standard error not positive evidence",
+  "stability": "Annual means, all years positive required for provisional screen; no adoption and no retuning",
+  "limitations": "Repeated historical researcher selection not removed by correction; scope excludes yet-uncomputed probability calibration and portfolio costs"
+}

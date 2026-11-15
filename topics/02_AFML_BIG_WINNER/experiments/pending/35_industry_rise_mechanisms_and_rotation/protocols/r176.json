@@ -1,0 +1,13 @@
+{
+  "question": "Precisely identify failed L2 stock days/fields and test bounded local source alternatives",
+  "valuation": "All R174 price/chain-failed unique stock entry-exit windows; original R78 reason flags plus exact dates; absence and missing adjusted price remain distinct; listing/delist metadata only proxies",
+  "permissions": "Deduplicate every R174 unknown can_buy entry and can_sell exit into stock/date/field requests, preserve unknown, not infer from OHLC",
+  "local_sources": [
+    "exact normalized partition",
+    "same release immediate normalized input",
+    "same release baseline normalized input",
+    "existing backfill_v2/acquired/daily archives and original receipt-verified payloads"
+  ],
+  "bounds": "No unbounded filesystem search, no external collection or writes upstream; raw matches by observed aliases are candidates not repairs; no price/chain/permission inference",
+  "output": "Exact gap ledgers, bounded source matches and restoration conditions; no model rerun, new threshold or adoption"
+}

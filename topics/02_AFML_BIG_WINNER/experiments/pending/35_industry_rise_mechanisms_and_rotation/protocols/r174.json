@@ -1,0 +1,8 @@
+{
+  "question": "Can frozen nominal L2 positions reproduce complete monthly stock paths and synthetic interval returns?",
+  "sources": "R172 positions and coverage; R169 top10/R137 top20 intervals; exact R129 stock-source partitions and CSI_ALL calendar",
+  "valuation": "R77 fixed initial weights, all positive conflict-free daily qfq prices, single nonmissing chain over every benchmark session; unknown identity weight zero within1e-12 and all known weights sum1; no imputation/renormalization",
+  "outcomes": "Full path and endpoint-only gates separately; fixed gross=sum weight*exit/entry-1 only on full path; same-interval synthetic difference; no compounding through failures",
+  "execution": "R77 standalone buy-all at entry/sell-all at exit diagnostic: can_buy/can_sell tri-state and positive nonconflicting endpoint volume; not net rebalance execution, not an order or liquidity certificate",
+  "boundaries": "No net strategy curve or assumed fill; qfq historical proxy does not certify dividend cashflows/strict PIT; taxonomy and methods separately, no parameter choice"
+}

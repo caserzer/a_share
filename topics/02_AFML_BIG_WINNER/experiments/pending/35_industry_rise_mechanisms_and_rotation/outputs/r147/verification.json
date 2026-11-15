@@ -1,0 +1,161 @@
+{
+  "status": "PASS",
+  "comparisons": [
+    {
+      "round": 68,
+      "old": 1680,
+      "new": 1992,
+      "added": 312,
+      "removed": 0,
+      "common_field_changes": {
+        "resolved_members": 0,
+        "unresolved": 0,
+        "denominator": 0,
+        "known": 0,
+        "coverage": 0,
+        "coverage_gate": 0,
+        "no_pair": 0,
+        "current_conflicts": 0,
+        "prior_conflicts": 0
+      },
+      "added_gate_pass": 0
+    },
+    {
+      "round": 69,
+      "old": 840,
+      "new": 996,
+      "added": 156,
+      "removed": 0,
+      "common_field_changes": {
+        "denominator": 0,
+        "joint_known": 0,
+        "coverage": 0,
+        "coverage_gate": 0,
+        "capex_up": 0,
+        "capex_up_ocf_up": 0,
+        "capex_up_ocf_down": 0,
+        "capex_up_ocf_flat": 0,
+        "negative_ocf": 0,
+        "cash_spending_gap": 0
+      },
+      "added_gate_pass": 0
+    },
+    {
+      "round": 70,
+      "old": 840,
+      "new": 996,
+      "added": 156,
+      "removed": 0,
+      "common_field_changes": {
+        "scope": 0,
+        "denominator": 0,
+        "joint_known": 0,
+        "coverage_gate": 0,
+        "capex_up": 0,
+        "both_improve": 0,
+        "both_decline": 0,
+        "cash_down_profit_up": 0,
+        "cash_up_profit_down": 0,
+        "either_flat": 0
+      },
+      "added_gate_pass": 0
+    },
+    {
+      "round": 71,
+      "old": 1680,
+      "new": 1992,
+      "added": 312,
+      "removed": 0,
+      "common_field_changes": {
+        "n_up": 0,
+        "n_other": 0,
+        "events_up": 0,
+        "events_other": 0,
+        "rate_up": 0,
+        "rate_other": 0,
+        "eligible": 0,
+        "reasons": 0
+      },
+      "added_gate_pass": 0
+    },
+    {
+      "round": 73,
+      "old": 5060,
+      "new": 5980,
+      "added": 920,
+      "removed": 0,
+      "common_field_changes": {
+        "member_month": 0,
+        "members": 0,
+        "denominator": 0,
+        "joint_known": 0,
+        "coverage_gate": 0,
+        "financial_excluded": 0,
+        "identity_unknown": 0,
+        "capex_up": 0,
+        "both_improve": 0,
+        "both_decline": 0
+      },
+      "added_gate_pass": 0
+    },
+    {
+      "round": 74,
+      "old": 2530,
+      "new": 2990,
+      "added": 460,
+      "removed": 0,
+      "common_field_changes": {
+        "expected_period": 0,
+        "status": 0,
+        "selected_period": 0,
+        "current_joint_known": 0,
+        "current_denominator": 0,
+        "current_capex_up_fraction": 0,
+        "current_both_improve_fraction": 0,
+        "current_both_decline_fraction": 0,
+        "last_covered_period": 0,
+        "last_joint_known": 0,
+        "last_capex_up": 0,
+        "last_both_improve": 0,
+        "last_both_decline": 0
+      },
+      "added_gate_pass": null
+    }
+  ],
+  "monitor": {
+    "rows": 12264,
+    "changed_fields": {
+      "evidence_operating_status": 1836,
+      "evidence_operating_snapshot": 1896,
+      "evidence_operating_last_covered_period": 24
+    },
+    "all_original_task_columns_unchanged": true,
+    "states_old": {
+      "older_snapshot_not_current": 5148,
+      "period_not_in_source": 4836,
+      "no_snapshot": 2088,
+      "financial_excluded": 192
+    },
+    "states_new": {
+      "older_snapshot_not_current": 5988,
+      "period_not_in_source": 5712,
+      "no_snapshot": 312,
+      "financial_excluded": 252
+    }
+  },
+  "monitor_reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r138/predictions.parquet": "03f473517d362f54d65a809105105bf57ae9b4722a2e894ed6d8112946eb3a3d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r147/evaluation/outputs/r74/evidence_matrix.parquet": "b0ad6fa27c627b1588cd82cd53507041738f0daf02e6e42cd62e2ed785777d7a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r138/task_evidence.parquet": "608cd63b24c51b0dd272f706bb7ef57af6e573c00e65d63f5dec0546f9513421",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/integrated_monitor_r93.py": "8b67bae44baba2d815ab285aec083a3435fb0ac709f2f4616b5cdacc386c2749"
+  },
+  "subchecks": {
+    "outputs/r74/verification.json": "203100ca9ffd1520e7d63ba969ceb173250cdbe2ec3e9a237112c4725319eeff",
+    "outputs/r69/verification.json": "f9e78e6f9a0398f83a3921f0502a709ad1d48784074879592dbc3ad5fa03f07f",
+    "outputs/r68/verification.json": "3e96446556f5be3ffe15814a745c78abca30b45a6c13115fb417b92b047b4583",
+    "outputs/r71/verification.json": "2a2caa06a5a56deb73ae7baaf8fac29980770adb008dfd90b27f53effa2161b0",
+    "outputs/r70/verification.json": "c1ade1e09d2447c297b3d089050066771bb0b87cf6250b0f46da5c3626733151",
+    "outputs/r73/verification.json": "c752687cf9e8f48b10d5a4adf133f496aa891c7d870a797005d4ece804a92fe2"
+  },
+  "verifier_sha256": "9127fd64a6c7ab41ee0ef13973537f38a74d350381d3301942728ec8df98e0b6"
+}

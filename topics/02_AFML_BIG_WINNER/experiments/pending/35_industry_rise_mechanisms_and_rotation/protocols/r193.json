@@ -1,0 +1,11 @@
+{
+  "question": "How sensitive are frozen rank-target IC and top-outcome improvements to serial dependence and multiplicity?",
+  "timing": "Registered after R192 point estimates were inspected; exploratory uncertainty only, not confirmatory holdout",
+  "scope": "28 era/level/cohort/method groups per horizon x raw/momentum baselines x IC/top metrics =112 comparisons per horizon; primary20, secondary60",
+  "resampling": "Circular moving blocks of6 actual calendar months, full first-to-last signal monthly grid including unknown months; 20000 draws seed35193; same indices for methods on each grid; average only paired finite values in each resample, preserve missing denominator",
+  "gate": "At least24 paired known months; any zero-denominator resample makes intervals unavailable; no relaxed gate",
+  "intervals": "95percent percentile and 1-.05/112 family percentile intervals; adjusted extremes exploratory and finite-draw precision limited; corrections do not cover whole EP35 search",
+  "records": "All means, coverage, skipped reasons, zero denominators, yearly point differences; no inference treating folds or industries independent",
+  "verification": "Independent resample count-weight computation of all replicate means plus scalar sorted quantiles; reconcile R192 paired means",
+  "stop": "No block-length, threshold or transform search, no automatic adoption even if lower bound positive"
+}

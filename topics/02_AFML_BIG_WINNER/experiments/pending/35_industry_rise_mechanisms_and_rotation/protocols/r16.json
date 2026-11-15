@@ -1,0 +1,12 @@
+{
+  "question": "Independent SW2021 L1 return/onset/reversal baselines and diffusion increment; do L2/L3 sample gates admit calibrated L1 models?",
+  "population": "R05 31 synthetic L1 baskets; no SW2014 extrapolation or level pooling",
+  "panel_sha256": "3ec486135e6018ca900a53da38078609d682a6b67b78ffbff882fba2ac7f0766",
+  "rules": "R02 exact targets, features F, FD breadth only, annual time split, maturity purge, Ridge10, Logit1, Platt1, train18months/300rows/classes30, calibration4months/100rows/classes10",
+  "missing_modules": "L1 PE/trading crowding sources not reconstructed; FC/FG/FDG excluded explicitly, not silently imputed",
+  "primary": "20 sessions;60 secondary; exact paired F/FD cohorts",
+  "calibrated_models": "retain original R02 skip gates; insufficient calibration cannot become calibrated output",
+  "diagnostic": "separate raw Logit score for binary tasks whenever train gates pass even if calibration fails; same pre-calibration fitting window; score distributions/AUC/PR/Brier against prevalence but uncalibrated label explicit, no probability claim",
+  "acceptance": "R02 date metrics and24months minimum; multiplicity .05/3 for this one extension x3tasks,60 descriptive; historical reuse remains not independent holdout",
+  "risk": "wrong exits diagnostic inherited; no tradable allocation claim; L1 proxy membership limits persist"
+}

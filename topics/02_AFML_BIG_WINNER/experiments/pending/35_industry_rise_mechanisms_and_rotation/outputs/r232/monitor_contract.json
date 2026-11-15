@@ -1,0 +1,16 @@
+{
+  "schema": "ep35.model_qualification_archive.v1",
+  "state_monitor": "src/regime_monitor_r231.py",
+  "join_boundary": "State knowledge must never imply model qualification; this archive is not as-of availability and does not autojoin a live state",
+  "records": "qualification_records.parquet",
+  "fields": {
+    "fit_gate_passed": "native planned/shared gate only",
+    "convergence": "not assessed here; model artifact required",
+    "calibration_status": "pooled gate only, not reliability guarantee",
+    "train_STATE/cal_STATE": "0 only when original map exists and state absent; null when map unavailable",
+    "source_reason": "original reason or failed_gates, never guessed"
+  },
+  "prediction_exposure": "none",
+  "adoption": false,
+  "production_enabled": false
+}

@@ -1,0 +1,14 @@
+{
+  "question": "Can price changes be algebraically separated into vendor PE and implied earnings without confusing per-share, total-share and adjusted-price bases?",
+  "scope": "Exact preceding calendar month per security, retain all R112 monthly rows and statuses; no industry aggregation or forward prediction in this basis audit",
+  "identities": [
+    "dlog(raw_price)=dlog(PE)+dlog(raw_price/PE)",
+    "dlog(cap)=dlog(PE)+dlog(cap/PE)",
+    "dlog(cap/PE)=dlog(raw_price/PE)+dlog(total_shares), conditional on cap=raw_price*total_shares",
+    "dlog(qfq_price)=dlog(raw_price)+adjustment_wedge, only same nonempty close_chain"
+  ],
+  "validity": "Both months completed benchmark month ends, listed and finite positive raw price/PE. Total basis additionally finite positive cap/shares, effective_share_date <= date and cap identity; qfq additionally positive finite and same nonmissing chain. Retain failure status; no forward fill, no dropping nonpositive PE from full stock denominator.",
+  "flags": "Share change and adjustment wedge marked at fixed numerical abs(logchange)>1e-10, not trading/selection thresholds; report cross-tab and absolute wedge quantiles, annual counts; direction disagreement per-share vs total implied earnings using numerical zero band1e-10",
+  "interpretation": "All identities are algebra, not causal evidence. P/PE and cap/PE are vendor-implied quantities, not validated actual earnings; adjustment wedge not automatically cash dividends or certified total return. Historical proxy, no initial-publication PIT.",
+  "validation": "Independent exact source reindex, all status masks, log difference identities and summaries; synthetic split and cash-distribution examples, chain break, negative PE and missing preceding month; no model fitting/search"
+}

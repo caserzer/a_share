@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "folds_checked": 76,
+  "prediction_rows": 1910,
+  "max_replay_error_upper_bound": 1e-12,
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r45_financing_intensity.parquet": "fc01b4a441cddb51c2f2d7ab41dc06a31424ca1ac1490a85d550b4f3dd186841",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/monthly_panel.parquet": "77fb54406345c8a09d90b9f827cc252bf8ff764af4ba8de25b8ee62e6abb2816",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_monthly_panel.parquet": "3ec486135e6018ca900a53da38078609d682a6b67b78ffbff882fba2ac7f0766",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r30_size_control.parquet": "64a08e64dec6a5fb21c858df8f17897529a9a5a7c4e91f70bb3d588455318d89",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/margin_models_r46.py": "0b5dc90f9341491e7256c969676213a23db2077fd370281b54b6e42af9dd571d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/classifiers_margin_r47.py": "51e7333716e2dd3305307d307329693bb75aab46411584a9d4b1008efd4397b7",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/evaluate_classifiers_margin_r47.py": "e89a7f024035eec76fd02c436fb570539bb36a9c4bd8562a7b2a9e59baadb9ac",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r47.json": "edbf77034994f321af7f832ea2588a783870801418452799611b8bf3207ad091"
+  },
+  "checks": [
+    "all fit/skip counts and class/calibration gates",
+    "two methods same test identities/labels",
+    "no uncalibrated fallback",
+    "all stored logistic and Platt predictions",
+    "all date Brier scores",
+    "all calendar covariance intervals"
+  ]
+}

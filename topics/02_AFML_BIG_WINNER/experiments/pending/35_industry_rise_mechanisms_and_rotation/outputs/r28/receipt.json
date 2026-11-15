@@ -1,0 +1,40 @@
+{
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r24_source_exclusion_overlay.parquet": "54312d4d4a26d2a32950ded2cf8cd62e520606bfb62ece2834ff46191329e0ac",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r25_company_broker_revisions.parquet": "bed3f0f50e8bab3b0238aec6161940b9bb546afa159833c4db12480097ad97a3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r27/share_action_review.json": "6aa438a0fca0123e422e184622216bc340891d6cfb1f692c92b872a32db46598",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r19_eps_expectations/validated_extractions.parquet": "068387d133737b62f88344fa9d4a3ccd114826bcd5fd3f09a1926098e784b5aa",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r19_eps_expectations/selected_reports.parquet": "470ce0e0cadb159ace0e692dfdce6beea7572c4183aa1bf97c308e96ffd8a374",
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet": "932e6c334860cf3cf9fe26e8cb3aa4359afdc60dd71cb147602f30eabd949f76",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_assignments.parquet": "c39450a47394587d21b7b1c585a30e181ce9494975ccf5b75a407f549a32992d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/monthly_panel.parquet": "77fb54406345c8a09d90b9f827cc252bf8ff764af4ba8de25b8ee62e6abb2816",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r28.json": "f09413a33c34f2ff24fdcec0c59c3b73554d3d6a55586e06626634557683d6b4",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/eps_coverage_r28.py": "e8ed36156c8e579f6a0293c483c358e4eb5566d82b563989aa70fe74264fa4e0"
+  },
+  "counts": [
+    {
+      "variant": "raw_proxy",
+      "monthly_rows": 206668,
+      "valid_eps": 19440,
+      "common_broker_rows": 7676,
+      "date_mismatches": 0
+    },
+    {
+      "variant": "share_context_guard",
+      "monthly_rows": 206668,
+      "valid_eps": 19422,
+      "common_broker_rows": 7658,
+      "date_mismatches": 0
+    }
+  ],
+  "withheld_reports": [
+    "AP202108191511032397",
+    "AP202110261525109860",
+    "AP202209031578000868",
+    "AP202308291596615707",
+    "AP202507091705938431"
+  ],
+  "industry_rows": 142032,
+  "coverage_sha256": "8c993d00ca40d74ed89992d5587552b293567b4c7b07a39377b83b816eda8422",
+  "quality": "Historical-proxy selected-report sample; guard not complete share-base certification"
+}

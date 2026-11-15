@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "predictions": 368061,
+  "alerts": 75507,
+  "unique_paths": 7629,
+  "valid_paths": 7458,
+  "known_label_checks": 359598,
+  "coverage": [
+    {
+      "round": 196,
+      "onset_predictions": 101277
+    },
+    {
+      "round": 199,
+      "onset_predictions": 185310
+    },
+    {
+      "round": 200,
+      "onset_predictions": 81474
+    },
+    {
+      "round": 201,
+      "onset_predictions": 0
+    }
+  ],
+  "adoption": false,
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r196/predictions.parquet": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r199/predictions.parquet": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r200/predictions.parquet": "edba4f119fbab8f8a472d49779b87344afae9a2bc1cdd26ff8caad35bc10e383",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r201/predictions.parquet": "cd3d3fdd0d97954b763c141faf7a80fdda3b5f1a639e300a769e4819e0844e5f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r129/daily_2026-10-21.parquet": "449e93eb403a31b8827b770633c547628d6b2ab91c2686bddbbea74a2c9291c3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_daily.parquet": "354dc6534490dda7b2f12231a6a165ec916cc2e5708db96cf44d568ee76bb04b",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r221.json": "2ef91cf77adcf738d25cc36b3389b1af05e9531262ff4fe023c59ac31e68ffd5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/regime_onset_actions_r221.py": "81d34583cf7675bd8752728d75dc7fb5f1bcffb303fbe0a395c721cdd3bfd9e3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/followup_r10.py": "e3d2d5fbeb3e9a5cf0d27bb6ae032e4d2c30d377fded85a12b6eb2948c0fa62a"
+  },
+  "outputs": {
+    "paths.parquet": "2206fae8a5dffa4ef9bc4d3a408c471c11d2f6f921875dbaf43c8a8fc1021473",
+    "actions.parquet": "f8e3d818e7700074629cca58b9f69c05188906b7cd68551239ab99cd1abf737d",
+    "date_metrics.csv": "d68e046c49b27f5308f82647ba8d56a2962347d598019c4aeb9fdc27a7238929",
+    "summary.csv": "42da8bb34446a6c74216f2fa66a712c3fec8aa71ae24a30f5da61cbaf1d30619",
+    "comparisons.csv": "b42a7a0b6803159a5ff8e9ab207eac0be87ac77050f8b6719b965f1ba924e7c2"
+  }
+}

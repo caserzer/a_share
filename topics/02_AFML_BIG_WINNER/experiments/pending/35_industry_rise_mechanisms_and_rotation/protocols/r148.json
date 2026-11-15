@@ -1,0 +1,86 @@
+{
+  "scope": "Extend corrected local research entry with sealed R140-R147 outputs; replace integrated monitoring with R147",
+  "routes": {
+    "battery_repair_evidence": [
+      "outputs/r140/comparison.json",
+      "outputs/r140/verification.json"
+    ],
+    "expectation_repair_evidence": [
+      "outputs/r141/comparison.json",
+      "outputs/r141/verification.json"
+    ],
+    "size_repair_evidence": [
+      "outputs/r142/summary.json",
+      "outputs/r142/verification.json"
+    ],
+    "financing_repair_evidence": [
+      "outputs/r143/summary.json",
+      "outputs/r143/verification.json"
+    ],
+    "event_repair_evidence": [
+      "outputs/r144/summary.json",
+      "outputs/r144/verification.json"
+    ],
+    "leader_repair_evidence": [
+      "outputs/r145/summary.json",
+      "outputs/r145/verification.json"
+    ],
+    "financial_repair_evidence": [
+      "outputs/r146/summary.json",
+      "outputs/r146/verification.json"
+    ],
+    "capital_repair_evidence": [
+      "outputs/r147/summary.json",
+      "outputs/r147/verification.json"
+    ],
+    "battery_source_completion_pilot": [
+      "outputs/r140/evaluation/outputs/r64/metrics.json",
+      "outputs/r140/verification.json"
+    ],
+    "latest_battery_classification_gates": [
+      "outputs/r140/evaluation/outputs/r65/fold_ledger.json",
+      "outputs/r140/verification.json"
+    ],
+    "financing_industry_factor": [
+      "outputs/r143/evaluation/data/r45_financing_intensity.parquet",
+      "outputs/r143/verification.json"
+    ],
+    "fixed_rule_profit_events": [
+      "outputs/r144/evaluation/data/r26_industry_events.parquet",
+      "outputs/r144/verification.json"
+    ],
+    "unknown_control_event_sensitivity": [
+      "outputs/r144/evaluation/data/r26_unknown_control_sensitivity.parquet",
+      "outputs/r144/verification.json"
+    ],
+    "forecast_horizon_price_comparison": [
+      "outputs/r144/evaluation/outputs/r91/summary.json",
+      "outputs/r144/verification.json"
+    ],
+    "accounting_historical_monitor": [
+      "outputs/r147/evaluation/outputs/r74/evidence_matrix.parquet",
+      "outputs/r147/verification.json"
+    ],
+    "accounting_monthly_evidence": [
+      "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+      "outputs/r147/verification.json"
+    ],
+    "accounting_contemporaneous_controls": [
+      "outputs/r147/evaluation/outputs/r71/summary.json",
+      "outputs/r147/verification.json"
+    ],
+    "integrated_historical_task_evidence": [
+      "outputs/r147/task_evidence.parquet",
+      "outputs/r147/verification.json"
+    ]
+  },
+  "quality": "Historical-proxy",
+  "overall_status": "active_not_complete",
+  "rules": [
+    "Each route and PASS verification must match frozen R147 progress manifest",
+    "Preserve original registry slots and old release for explicit replay",
+    "Never infer predictive success from artifact adoption",
+    "No implicit legacy fallback",
+    "Maintenance must restore R148 after old registry checks"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r129/daily_2026-10-21.parquet": "449e93eb403a31b8827b770633c547628d6b2ab91c2686bddbbea74a2c9291c3",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "/home/xiaolv/.cache/a_share/ep32/joint_pe_v35/daily_expansion.parquet": "5b26c7121fe0a669ef15d13a28a4d7bc6259652ec38904ef4078a61ac51602d2",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/monthly_panel.parquet": "77fb54406345c8a09d90b9f827cc252bf8ff764af4ba8de25b8ee62e6abb2816",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/label_fold_audit_r130.py": "edf7f8b4f74890899b2456e64ca70ee2143cd7b629fccb69ae6d07ad4bd34d82",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/build_panel.py": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r130.json": "ae469f10c2bd6c86680198644d444855f4496b147c406ec1f5a77cd7a7640a00"
+  },
+  "panel_sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+  "rows": 46101,
+  "price_ready": 34951,
+  "label_diff": {
+    "old_rows": 39854,
+    "new_rows": 46101,
+    "added": 6247,
+    "removed": 0,
+    "changed_common": 2,
+    "fields": {
+      "entry_date": 0,
+      "maturity20": 1,
+      "return20": 1,
+      "market_return20": 1,
+      "excess20": 1,
+      "rel_trough20": 1,
+      "maturity60": 1,
+      "return60": 1,
+      "market_return60": 1,
+      "excess60": 1,
+      "rel_trough60": 1
+    }
+  },
+  "folds_per_version": 840,
+  "affected_roles": 338,
+  "status_changes": 0,
+  "quality": "Historical-proxy; no retraining"
+}

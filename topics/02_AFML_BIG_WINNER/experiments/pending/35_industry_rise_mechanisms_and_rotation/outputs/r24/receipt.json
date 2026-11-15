@@ -1,0 +1,37 @@
+{
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r11_analyst_forecasts.parquet": "60e5046995940f1ff33769d5c288c94f367ba89e2a04097dd5df7463a93dfff5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r19_eps_expectations/validated_extractions.parquet": "068387d133737b62f88344fa9d4a3ccd114826bcd5fd3f09a1926098e784b5aa",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/24_conditional_return_distribution_exploration/outputs/r19_eps_expectations/selected_reports.parquet": "470ce0e0cadb159ace0e692dfdce6beea7572c4183aa1bf97c308e96ffd8a374",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r24.json": "6919b54d8286b70a0f67a7e824005081b8fa050de730b768ebb446cbf3532ab8",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/eps_comparability_r24.py": "64053f26d4b3f8638c0bef0b41afefb1bbc317750e01700faf866cc6c8de122a"
+  },
+  "report_fy_pairs": 26411,
+  "pair_status": {
+    "missing_or_conflicting_basis": 19053,
+    "positive_pair": 7354,
+    "nonpositive_pair": 4
+  },
+  "sequence_rows": 13549,
+  "sequence_status": {
+    "unknown_or_nonpositive_pair": 9123,
+    "prior_older_than365": 2718,
+    "positive_comparable_candidate": 1708
+  },
+  "opposite_revision_signs": 34,
+  "share_ratio_quantiles": {
+    "0.0": 0.2726230602083939,
+    "0.01": 0.9659001107163144,
+    "0.1": 0.9945732225678003,
+    "0.5": 1.0,
+    "0.9": 1.012255643975563,
+    "0.99": 1.5007432342687517,
+    "1.0": 10001.74496967363
+  },
+  "outputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r24_report_pairs.parquet": "f1cce845f840d8baa672cff519076afa2e6ed3c0d72cf738e906e02e29acee97",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r24/revision_pairs.csv": "3273bc1d5e2c6140dbbf73c6d438423c499b80a8809858dbe1aa2528345ec3d8",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r24/extreme_examples.csv": "2596463f703716a91339c7818f2d619e331e97f2ef049ccda997aae57aea18ff"
+  },
+  "limitation": "implied denominator diagnostic only; neither actual shares nor split/definition comparability verified"
+}

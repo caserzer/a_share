@@ -1,0 +1,9 @@
+{
+  "scope": "R144 profit fixedFY events, unknown-control sensitivity, current-next paired events",
+  "model": "New explicit exploratory predictive extension to original descriptive event studies: price pre20/pre60 vs plus revision or current/next; raw features train standardized Ridge alpha10,date-equal weights",
+  "state": "R195 previous trading close strictly before signal_date; avoids reaction-day state leakage; base/state/interaction",
+  "targets": "post20/post60; fixedFY also matched_post20/matched_post60 using original same-day controls; current-next raw post only",
+  "gate": "Annual2020..2026, >=300 mature rows and >=18 distinct calendar months, event date and maturity before Jan1; same complete feature population, target missing retained in predictions",
+  "metrics": "Date-equal MSE, no IC claim for sparse per-date event sets; compare regime and revision increment",
+  "boundary": "Exploratory Historical-proxy, selected reports and non-news-control uncertainty retained; no trading or adoption"
+}

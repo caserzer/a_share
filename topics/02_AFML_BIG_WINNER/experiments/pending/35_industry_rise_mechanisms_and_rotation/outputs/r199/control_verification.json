@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "family": "market_style",
+      "tasks": [
+        "return"
+      ],
+      "original_rows": 120688,
+      "new_rows": 120688,
+      "paired_rows": 120688,
+      "unchanged_training_rows": 120688,
+      "max_control_error": 0.0,
+      "source": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r135/r55/predictions.parquet",
+      "source_sha256": "7ec76beae562b232042224a3a79991a5a5d749f7ea50b7d81ede042bc5ffbd04"
+    },
+    {
+      "family": "market_style",
+      "tasks": [
+        "onset",
+        "reversal"
+      ],
+      "original_rows": 54308,
+      "new_rows": 54308,
+      "paired_rows": 54308,
+      "unchanged_training_rows": 54308,
+      "max_control_error": 0.0,
+      "source": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r135/r56/predictions.parquet",
+      "source_sha256": "66280e195e5c7f2b72afdba560a3ad952e698ac08f3ff3bcb6e8fb24dc760b35"
+    },
+    {
+      "family": "size_diffusion",
+      "tasks": [
+        "return"
+      ],
+      "original_rows": 141428,
+      "new_rows": 141428,
+      "paired_rows": 141428,
+      "unchanged_training_rows": 90212,
+      "max_control_error": 0.0,
+      "source": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r142/evaluation/outputs/r31/predictions.parquet",
+      "source_sha256": "6389d537cf16ca3f85f5181443f78da5a0fd0c1fa894416bd63b2924103bb7eb"
+    },
+    {
+      "family": "size_diffusion",
+      "tasks": [
+        "onset",
+        "reversal"
+      ],
+      "original_rows": 54648,
+      "new_rows": 54648,
+      "paired_rows": 54648,
+      "unchanged_training_rows": 31240,
+      "max_control_error": 0.0,
+      "source": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r142/evaluation/outputs/r32/predictions.parquet",
+      "source_sha256": "ba6a9581e4bbc4a735d798f99d82da73beb2083382f677424f22a4b888ea2d52"
+    },
+    {
+      "family": "financing",
+      "tasks": [
+        "return"
+      ],
+      "original_rows": 7700,
+      "new_rows": 7700,
+      "paired_rows": 7700,
+      "unchanged_training_rows": 7700,
+      "max_control_error": 0.0,
+      "source": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r143/evaluation/outputs/r46/predictions.parquet",
+      "source_sha256": "e224352d9796079a74b9741c46fa762036d30e8698a71d4664e07b078f2fa4ae"
+    },
+    {
+      "family": "financing",
+      "tasks": [
+        "onset",
+        "reversal"
+      ],
+      "original_rows": 1910,
+      "new_rows": 1910,
+      "paired_rows": 1910,
+      "unchanged_training_rows": 1910,
+      "max_control_error": 0.0,
+      "source": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r143/evaluation/outputs/r47/predictions.parquet",
+      "source_sha256": "f2e518fd70a698b51f3918a8f0e31ad9235f6ef4e825e8324e7bbbdd9b381a7d"
+    }
+  ],
+  "boundary": "Original control equality tested only when state filter removes no training rows; state-filtered early fits are matched new comparisons"
+}

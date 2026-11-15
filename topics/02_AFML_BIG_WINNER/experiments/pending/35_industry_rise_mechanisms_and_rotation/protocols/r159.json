@@ -1,0 +1,11 @@
+{
+  "question": "Can frozen uncalibrated L1 onset scores provide price-event coverage, lead time and manageable burden under the existing daily process rules?",
+  "models": "R16 F cohort F method onset20, 2025 and 2026 only; no refit",
+  "score": "raw Logit research score, explicitly not calibrated probability",
+  "calibration_missing": "original monthly calibration gates remain failed; no lowered gates",
+  "rules": "R09 top ceil20%, monthly/daily/cooldown20, original price confirmation and preceding20 session window",
+  "adapter": "R16 coef/intercept renamed to R09 coefficient/intercept; identity calibration mapping only implements raw sigmoid, not fitting; monthly raw_score renamed to prediction for exact reconstruction check",
+  "data": "existing L1 daily baskets separately verified in R127; CSI_ALL calendar",
+  "evaluation": "event coverage, prior lead, precision and workload, original pooled and annual breakdown",
+  "limits": "no economic onset, no cost/execution or independent signal increment claim; SW2014 L1 and calibrated L1 remain missing"
+}

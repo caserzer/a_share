@@ -1,0 +1,14 @@
+{
+  "scope": "R158/R13 macro rolling sensitivity and fixed rankings, lag45/75",
+  "mechanism": "Regime modifies PMI/M2 sensitivity; previous monthly signal regime paired with original lagged macro predictors, never current realized-return state",
+  "window": "Original prior36months minimum24; same known-state training sample all variants; alpha1; unweighted macro train standardization unchanged",
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "conditioned_score": "Prediction relative to training predictor centroid, excluding intercept; original base exactly coef dot standardized current macro; static exposure=mean original macro slopes reference-state, diagnostic only",
+  "rank": "Original F and 50/50 macro-rank mixture, fixed top20%, both lags and all variants same complete cohort, min20 industries",
+  "metrics": "IC and complete selected forward excess20/60; fixed roundtrip costs original .004/.01 diagnostic only, no turnover simulation",
+  "boundary": "Historical-proxy exploratory; no adoption, no window/threshold search"
+}

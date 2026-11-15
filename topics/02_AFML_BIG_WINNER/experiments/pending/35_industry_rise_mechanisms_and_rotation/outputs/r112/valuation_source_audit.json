@@ -1,0 +1,27 @@
+{
+  "status": "local_exact_endpoint_path_exists_not_earnings_verified",
+  "stock_rows": 682461,
+  "months": 117,
+  "pe_dates": 2377,
+  "pe_securities": 5798,
+  "exact_identity_date": 678366,
+  "finite_pe": 473294,
+  "nonpositive_pe": 92556,
+  "positive_endpoint": 378238,
+  "consecutive_positive_pairs": 368952,
+  "sources": {
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/panel.parquet": "c225e35e20c521e294de2aa6b645880dbcccb56ffdf364a10a104ff7f50d3a8e",
+    "/home/xiaolv/.cache/a_share/ep32/joint_pe_v35/stock_pe_panel.parquet": "00037e479eb5e47d5c6093a3c46e96d2c64ea8990d7eaadcb58d4e547354d840",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v35_pe_activity_joint/src/build35.py": "21c8660e891b09bd23019621fee8d38d403cc701df5cc2ada8002a3e97675ea5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v35_pe_activity_joint/outputs/feature_receipt.json": "52849262d4622dd5b846fd02c5a6774138821c5fc79bfe7b6be19e199c6a407e"
+  },
+  "coverage_sha256": "e07a3cf784f8baa6c94c0db66d2a5686e0f2e6ec0e227cec79273f2ad2ed1e0a",
+  "limits": [
+    "vendor known_at absent per upstream code",
+    "PE positive selection must not delete loss-making members from full denominator",
+    "raw price / PE is implied per-share earnings, not independently observed actual earnings",
+    "corporate actions, changing shares, dilution and vendor basis can move implied earnings",
+    "No price outcome model or causal attribution run"
+  ],
+  "next": "Register exact two-endpoint algebra with raw prices and vendor PE, separate share changes and coverage; reconcile corporate-action basis before economic interpretation"
+}

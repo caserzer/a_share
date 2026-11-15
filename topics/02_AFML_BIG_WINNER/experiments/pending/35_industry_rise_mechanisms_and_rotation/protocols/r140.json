@@ -1,0 +1,8 @@
+{
+  "question": "Does the basket repair alter the fixed battery YoY return experiment or classification eligibility?",
+  "scope": "R61 coverage, R64 fixed FS/FSB/FSM/FSMB Ridge and R65 gates, both original battery industries, horizons20/60; original publication clocks and age<=2 months",
+  "inputs": "R130 monthly panel and R133 market controls, unchanged R30 size and authorized R60 series; no new external data",
+  "execution": "Rebuild all-date coverage including new synthetic origins; original R64/R65 model and gate code in isolated root; no changes to thresholds, penalties or evidence gates",
+  "verification": "Independent as-of selection and cohort reconstruction, normal-equation model reproduction and all metrics, independent classification labels and gates, old/new keyed comparison",
+  "boundary": "Historical-proxy repeated-history pilot, not current trading advice or new efficacy finding"
+}

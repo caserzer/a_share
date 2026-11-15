@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "variant": "raw_proxy",
+      "rows": 2202,
+      "fits": 8,
+      "skips": 56,
+      "normal_equation_prediction_error": 4.163336342344337e-17
+    },
+    {
+      "variant": "share_context_guard",
+      "rows": 2190,
+      "fits": 8,
+      "skips": 56,
+      "normal_equation_prediction_error": 4.163336342344337e-17
+    }
+  ],
+  "checks": [
+    "source hashes",
+    "R28 fold identities and counts",
+    "same three-method cohorts and targets",
+    "strict label maturity",
+    "independent weighted Ridge solution",
+    "80 direct EPS industry aggregations",
+    "all per-date metrics recomputed"
+  ],
+  "code_sha256": "d2afb326719659e3656dc33d8953e34831eafbf3d03846c46123325495c5f400"
+}

@@ -1,0 +1,9 @@
+{
+  "question": "Do retained machine-readable states inside formal long-opportunity Markdown contain reusable ETF share observations?",
+  "scope": "Formal reports/long_opportunities/2026/*.md only, no test_runs; inspect explicit runtime paths from code read-only; no API/network calls",
+  "parser": "Exactly one LONG_OPPORTUNITY_STATE_BEGIN per file; support modern and legacy comment forms; raw_decode JSON followed only by valid matching marker, unknown malformed retained in ledger",
+  "extraction": "Recursively enumerate dicts containing fund_share_units; preserve report path/hash,JSON pointer, state target_date, instrument_code,ts_code,type,share_as_of and raw value; no narrative numbers",
+  "normalization": "Finite positive ETF values and valid exact share date with share_date<=report target; group by ts_code/share_date, all unique values retained. Multiple positive values conflict, no averaging or choosing latest. Repeated appearances not independent dates.",
+  "limits": "Selected recommendation records are not full ETF universe; share levels not flows, current mapping not historical mapping, no strictPIT from report date or filemtime. Zero observations/missing runtime is source gap, not economic rejection.",
+  "outputs": "Source hashes, parse/file coverage, raw occurrence provenance, deduplicated unique/conflict groups, concrete runtime existence and recovery conditions"
+}

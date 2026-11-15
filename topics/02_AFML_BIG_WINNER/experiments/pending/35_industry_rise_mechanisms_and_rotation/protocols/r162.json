@@ -1,0 +1,13 @@
+{
+  "question": "Does R130 price-panel repair change frozen R25 fixed-FY profit revision comparisons?",
+  "reason": "Overall requirement audit found original-only profit_model_predictions; R141 repaired EPS R29, not this profit-value branch",
+  "frozen": "R25 source quarantine, FY0/FY1, prior membership,5/80 strict gate, partial >=5, Ridge alpha10,300rows/18months, original maturity rules",
+  "replace": "only monthly price panel with R130; verify identical date calendars to justify reusing price-independent company revision and membership coverage tables",
+  "comparisons": [
+    "fold and cohort counts",
+    "prediction membership, labels and values",
+    "date metrics and lead-lag correlations"
+  ],
+  "no_new_source_or_threshold_search": true,
+  "quality": "Historical-proxy partial coverage; no full-industry acceptance"
+}

@@ -1,0 +1,10 @@
+{
+  "question": "How do latest observed report selection and TTM availability differ under notice and update proxy clocks?",
+  "universe": "All1647 local financial companies cross every completed benchmark month Jan2020..Sep2026, both clocks; not listed A-share/security universe, not industry coverage. R115 observed candidate periods2020..2026 only, no pre2020 fallback.",
+  "selection": "Build current-report visibility from its own source-row dates regardless of component validity. Normalize day and move strictly to next benchmark session. Each month select greatest report_period whose current report is visible; never select latest successful TTM instead.",
+  "value_gate": "After latest period chosen require R115 status valid_components and respective all-component available_at <= month end. Otherwise explicit latest_components_invalid, latest_components_not_yet_available, or unknown_component_clock, with value missing; no fallback. No age cutoff; report age in days.",
+  "clocks": "Notice current=max notices; update current=max notices and updates. Invalid/missing notice or update has unknown visibility, retained events; not assumed visible or strictPIT. Version history still absent. Do not optimize clock against PE.",
+  "comparison": "Pair by company/month, report coverage transitions, chosen-period differences and value changes on both-known rows; unknown not zero. Full monthly denominators and source refs retained.",
+  "validation": "independent raw date aggregation/session lookup, exhaustive company-month maximum-period and component gates, values, transitions and summaries; tests latest invalid barrier, component lag, same-day boundary, revised old-period versus newer-period precedence",
+  "limitations": "Neither initial-publication PIT nor PE denominator certification. Separate stock identity mapping and PE comparison only after this layer is verified."
+}

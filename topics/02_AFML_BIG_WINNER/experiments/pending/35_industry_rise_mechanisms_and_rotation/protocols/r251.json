@@ -1,0 +1,13 @@
+{
+  "question": "Do bounded local financial archive locations contain genuinely new periods/fields relative to existing R115 and R03 sources?",
+  "roots": [
+    "/home/xiaolv/.cache/a_share",
+    "/home/xiaolv/code/golden_loop_artifacts",
+    "/home/xiaolv/code/golden_loop",
+    "/home/xiaolv/code/a_share"
+  ],
+  "discovery": "rg filename paths for financial/income/cashflow parquet/csv, query_receipts.json, provider_responses.zip; EP35 replay outputs excluded from extra repository search. Filename-bounded inventory is not exhaustive filesystem proof.",
+  "method": "Inspect Parquet/CSV schemas; read only available report/clock/target-field metadata for relevant financial files. Content hashes deduplicate current/release copies. Compare all EP30 proxy issuer hashes to frozen R115 receipt. Inspect query-receipt API/period/retrieved_at metadata without refetch.",
+  "boundaries": "mtime is not acquired_at. Notice/update dates are not archive clocks. Missing target capex/total-OCF cannot be supplied by per-share or ratio fields. Announcement indexes are not numeric statements. No training or external collection.",
+  "stop": "If discovered financial bytes match already-used archive, do not count newer path/release names as new evidence; record bounded coverage and close search branch."
+}

@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "comparisons": [
+    {
+      "cutoff": "2026-09-30",
+      "daily_rows": 35092,
+      "feature_rows": 1767,
+      "status": "PASS"
+    },
+    {
+      "cutoff": "2026-10-21",
+      "daily_rows": 35402,
+      "feature_rows": 1767,
+      "status": "PASS"
+    }
+  ],
+  "references": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_daily.parquet": "354dc6534490dda7b2f12231a6a165ec916cc2e5708db96cf44d568ee76bb04b",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r102/features_2026-09-30.parquet": "bd96b13764648270f0e915849352e70a736ea6c7c240230e5f5700514f0de1dc",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r102/features_2026-10-21.parquet": "bd96b13764648270f0e915849352e70a736ea6c7c240230e5f5700514f0de1dc"
+  },
+  "limitation": "Existing-source replay only; L2/L3 and real new-data acquisition unverified"
+}

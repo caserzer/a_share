@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "scope": "Maturity, shared cohort and state-known gates; independent linear normal equations; nonlinear fitting not independently certified",
+  "models": 540,
+  "skipped_folds": 352,
+  "nonconverged_models": 0,
+  "linear_max_prediction_error": 1.1553258350005535e-15,
+  "prediction_rows": 625098,
+  "all_independent_mechanisms_complete": false,
+  "adoption": false,
+  "inputs": {
+    "outputs/r145/evaluation/outputs/r109/joined_panel.parquet": "dbcf533c38ed27c9a1f8e5008c538707d19f624fd5ff4754c0d6def449d38560",
+    "outputs/r145/evaluation/outputs/r111/joined_panel.parquet": "7be35252b01973c206209d8702255856309a7b54e40b90a06252d92ad7e52e2f",
+    "outputs/r195/market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "protocols/r200.json": "1178597d5130aa5f49254d10e70c11fde4e2ac7690bb7a1adbf361406425b767",
+    "src/regime_leader_r200.py": "29f2a89b6c819d0ee55b72dacc34f842a24b7e1154b94ceaafb81dd3f4d3b3bb",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808",
+    "src/leader_models_r109.py": "90a88431da19c740ba4ce30e46768cc9a71763776ebdfceb00fbda92afa0446d",
+    "src/catchup_models_r111.py": "31262e1975bc86d34eb9cc030541e09f9f1029d1caff18af3a055dcc0214eb65"
+  },
+  "outputs": {
+    "predictions.parquet": "edba4f119fbab8f8a472d49779b87344afae9a2bc1cdd26ff8caad35bc10e383",
+    "models.json": "447b582cd477fa5cb84a432aceb99bf5eac7b0292af5b903fe692d257e6e10fb",
+    "fold_ledger.json": "ca3684718fa4d1bedeaccb69108d4e9440207fb07700c75a67a45156c821045a",
+    "date_metrics.csv": "e08f4d957be4a4b8ba9dabe7d0c1e8f199ef9db54d50d46cf812ae731d550456",
+    "summary.csv": "78f60bbc159df392891eb7d57aec7c3c99a402e910088e52db4bf604b4d4f870"
+  }
+}

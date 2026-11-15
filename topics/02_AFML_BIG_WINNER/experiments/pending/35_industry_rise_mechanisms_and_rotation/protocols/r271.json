@@ -1,0 +1,15 @@
+{
+  "round": "r271",
+  "question": "Does clock alignment change frozen reversal action value?",
+  "predictions": "R270 signal and snapshot; no new fits",
+  "rules": "R264 top ceil(.2*N), descending probability then industry code, select before outcome completeness",
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "comparators": "Hold, exact expected uniform K of N, and other clock on identical industry dates",
+  "missing": "Original unknown path remains unknown; known-path conditional and whole complete-date subset separate. Cross-clock full-cohort difference represented as constant plus coefficient times unknown policy gain.",
+  "scope": "All qualified reversal versions, no extrapolation to failed tasks/levels",
+  "inference": "Descriptive, short Historical-proxy history, no selection of favorable clock"
+}

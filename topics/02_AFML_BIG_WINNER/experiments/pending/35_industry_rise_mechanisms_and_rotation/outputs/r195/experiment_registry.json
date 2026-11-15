@@ -1,0 +1,266 @@
+{
+  "scope": "All core and independent mechanism families explicitly requested by user",
+  "families": [
+    {
+      "family": "core_three_tasks",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r131/model_parameters.json",
+          "sha256": "f809d75eabac8ca32631253f30e847a0fdb3c229834aa6420caa52b52f727754"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r196/verification.json",
+      "regime_evidence_sha256": "20ffc6c6715a52264a0bcec404f19b02bbaaecc0ede9f04f3e20c1bbb01dcde4"
+    },
+    {
+      "family": "l1_three_tasks",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r16/model_parameters.json",
+          "sha256": "c180bf05070e04047a754a2d45d3de8fbe557a4afb7bba9b49d808f00c1264b7"
+        },
+        {
+          "path": "outputs/r16/raw_parameters.json",
+          "sha256": "b95c1d25f29e670bc9114758e637e7e70eb120e6177fe4e9230a70c5c3fd7860"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r196/verification.json",
+      "regime_evidence_sha256": "20ffc6c6715a52264a0bcec404f19b02bbaaecc0ede9f04f3e20c1bbb01dcde4"
+    },
+    {
+      "family": "rank_target",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r192/models.json",
+          "sha256": "ceead620fa4aad1667b393ffb0cb96119cfae833ff940612dfee234e1e549b1e"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r196/verification.json",
+      "regime_evidence_sha256": "20ffc6c6715a52264a0bcec404f19b02bbaaecc0ede9f04f3e20c1bbb01dcde4"
+    },
+    {
+      "family": "market_style",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r135/r55/model_parameters.json",
+          "sha256": "5647700674b2e9b9d6f3b73092b08c8bef0a32ab9488cebf7c7d59aedc5e3184"
+        },
+        {
+          "path": "outputs/r135/r56/model_parameters.json",
+          "sha256": "46830800951253d5ecf3990cc893ceaf83696a3d4d318c07365670fe79121946"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r199/verification.json",
+      "regime_evidence_sha256": "5afdb1756d290a1e807b4a61f6fa728b9d1f1b8a0e2851c460304212b36d4ed5"
+    },
+    {
+      "family": "battery",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r140/evaluation/outputs/r64/model_parameters.json",
+          "sha256": "0bf4a330d465dc6d8ba68d08a1d03a546569f5a2f4145a46868c0b22a21105a5"
+        },
+        {
+          "path": "outputs/r140/evaluation/outputs/r65/fold_ledger.json",
+          "sha256": "e847871715f1ab5e6debb06e8032a0873b4ec432616687cfb642cc51b820cf09"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r198/verification.json",
+      "regime_evidence_sha256": "69e211e397b26dc4e3ff31510676c346998adfedece6651fac9be9d1e922ea57"
+    },
+    {
+      "family": "eps_expectations",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r141/evaluation/outputs/r29/raw_proxy/model_parameters.json",
+          "sha256": "466344875f58045a2643b80b488df9217c588b75dd9fa459fce184afc844a595"
+        },
+        {
+          "path": "outputs/r141/evaluation/outputs/r29/share_context_guard/model_parameters.json",
+          "sha256": "4efac648d44a56362cea19950aca19f5d9908d21f0646cfff3c14b8c6e058252"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r197/verification.json",
+      "regime_evidence_sha256": "7da35c6d6bf55cbe535fd4078c57f41b4e2bfbe13b02a94c64feab3900c78d09"
+    },
+    {
+      "family": "size_diffusion",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r142/evaluation/outputs/r31/model_parameters.json",
+          "sha256": "46a57da816fe0fd806104f9ff6dca30089506f3df6e2a80b6622d1b872ce1802"
+        },
+        {
+          "path": "outputs/r142/evaluation/outputs/r32/model_parameters.json",
+          "sha256": "6554fa3e4f240caf7a27bde73e579f0850b1813ad92f5d62e8a3e0052934fb5a"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r199/verification.json",
+      "regime_evidence_sha256": "5afdb1756d290a1e807b4a61f6fa728b9d1f1b8a0e2851c460304212b36d4ed5"
+    },
+    {
+      "family": "financing",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r143/evaluation/outputs/r46/model_parameters.json",
+          "sha256": "689b1b8362387e97ed23cdf57e1d5298108be3e699a6ea89dfd1d002aebae546"
+        },
+        {
+          "path": "outputs/r143/evaluation/outputs/r47/model_parameters.json",
+          "sha256": "0b03147450b7dc66b0e011ce00436f42207c44ebf51500b8b26f640fb1ca051b"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r199/verification.json",
+      "regime_evidence_sha256": "5afdb1756d290a1e807b4a61f6fa728b9d1f1b8a0e2851c460304212b36d4ed5"
+    },
+    {
+      "family": "profit_events",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r144/summary.json",
+          "sha256": "ba5b22fdeea384e4badb2b68ae81d62e790687515014c7115c55ea43cd3340b2"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r205/verification.json",
+      "regime_evidence_sha256": "b73495afe462e427b3280f746181e4e5e04d034c63b3fd13eefa1c60776e39f7"
+    },
+    {
+      "family": "leader_catchup",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r145/evaluation/outputs/r109/model_parameters.json",
+          "sha256": "1d740a7fc2cf51256df89e6913449b14b593d3175e4e4d3417c252e713af0e3f"
+        },
+        {
+          "path": "outputs/r145/evaluation/outputs/r111/model_parameters.json",
+          "sha256": "d48c64fa13d8d199ac6bf3adb48654c4d1d7aaaa39999d64c44c8e0c29085f41"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r200/verification.json",
+      "regime_evidence_sha256": "2bf7b680b5637451d0b145b9b28510e579a134257e0a9ae3bc9cf114ae0b81ee"
+    },
+    {
+      "family": "financial_dual_clock",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r146/evaluation/outputs/r122/model_parameters.json",
+          "sha256": "f8bbf75f3503a15515589eea15854d2469c138917384430a59875f2b2c3fef70"
+        },
+        {
+          "path": "outputs/r146/evaluation/outputs/r123/model_parameters.json",
+          "sha256": "961e6ef441fb681b07b56fec87a7bbe2ffa710baf9fdf66e46e398639b335dcd"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r201/verification.json",
+      "regime_evidence_sha256": "086e6cbf572edc76a08abcb4d72ebd1f70d9ace21d63a2f17baecbf98329c208"
+    },
+    {
+      "family": "capital_accounting",
+      "status": "regime_diagnostic_complete_insufficient_training_history",
+      "inputs": [
+        {
+          "path": "outputs/r147/summary.json",
+          "sha256": "39eb9a6c452d15d3de4d52ed0acf071134111b914923f0b27e20e8ca4e6cbe7d"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r206/verification.json",
+      "regime_evidence_sha256": "6bd2a140d0580f4a45de78a3da7afceacbd352cdec27de14dc427199b0cdc2b8"
+    },
+    {
+      "family": "macro_interaction",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r158/comparison.json",
+          "sha256": "8a013ee42ea5ee6a61604b35faa44a53c5ad204d3716a4ccf9892caaf2aaec7d"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r202/verification.json",
+      "regime_evidence_sha256": "a0bbdd4a4f90c8f9916bf6dd4cb221cb68ed1eabc040ba553af174924cfd3e7a"
+    },
+    {
+      "family": "profit_expectations",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r162/evaluation/outputs/r25/model_parameters.json",
+          "sha256": "9ead8ae021cca017b73ae8a6ea7988d730ab97cdca46bfb5fbe9be9cedd2e221"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r197/verification.json",
+      "regime_evidence_sha256": "7da35c6d6bf55cbe535fd4078c57f41b4e2bfbe13b02a94c64feab3900c78d09"
+    },
+    {
+      "family": "early_financial",
+      "status": "regime_diagnostic_complete_insufficient_training_history",
+      "inputs": [
+        {
+          "path": "outputs/r165/comparison.json",
+          "sha256": "2f233b013bf135ca1e851b3d67033773973c9beed3a76607a78e773d47135dd0"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r203/verification.json",
+      "regime_evidence_sha256": "f0481bd314aa9516ac429dc775405fa87ce7513b6ff664224e75bb50a38e34eb"
+    },
+    {
+      "family": "fixed_factor_rank",
+      "status": "first_regime_fit_and_metrics_complete_pending_full_evaluation",
+      "inputs": [
+        {
+          "path": "outputs/r132/verification.json",
+          "sha256": "8052b421d01de892a6c8cb3c848143505c523922adae330ccf4a727af4e17393"
+        }
+      ],
+      "must_include": true,
+      "notes": "Unsupported fitting remains in coverage/gate ledger; no branch omitted for negative result or scarce data",
+      "regime_evidence": "outputs/r204/verification.json",
+      "regime_evidence_sha256": "bb5e5b53932047f8c06e6242665f4cbae0da6a9bbc3ecf4337bd5f6e95c8c30c"
+    }
+  ],
+  "exhaustiveness": "Current corrected active families; historical superseded fits are lineage rather than separately counted models",
+  "all_regime_experiments_complete": false,
+  "first_pass_scope_covered": true,
+  "full_evaluation_complete": false,
+  "adoption": false
+}

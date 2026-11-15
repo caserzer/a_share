@@ -1,0 +1,18 @@
+{
+  "round": 277,
+  "previous_turn": "progress: export models and source audit completed",
+  "hypothesis": "Does export information improve on price, market, installation growth and domestic installation level, or is ratio behavior attributable to denominator?",
+  "input": "Frozen R276 panel and registry, identical eligibility and folds",
+  "methods": "Retain FS/FSB/FSX/FSBX controls; D=FSB+log_installation; DX=D+log_export primary; DR=D+export_log_ratio coordinate diagnostic",
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "fit": "Unchanged R198/R276 annualJan1 mature labels,24months,Ridge10,training-only scaling,20primary60secondary",
+  "evaluation": "Primary DX vs D paired MSE; DR vs D and D vs FSB diagnostic; report same8/6 mature dates, no stable claim before24dates3years",
+  "invariance": "log_ratio=log_export-log_installation; D+ratio and D+export span identical linear functions with state interactions. Ordinary independently standardized Ridge is NOT coordinate invariant; fitted performance differences do not prove new information. Verify coefficient basis conversion of fitted DR predictions without refitting.",
+  "stop": "No alpha/window/threshold choice, no coordinate winner adoption, no claim seasonal/causal identification",
+  "classification": "Existing insufficient support unchanged; no rows added",
+  "before_new_outcome_comparison": true
+}

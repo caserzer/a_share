@@ -1,0 +1,62 @@
+{
+  "question": "Can current research consumers access the repaired process and followup evidence without confusing verified provenance with predictive acceptance?",
+  "routes": {
+    "daily_process_summary": [
+      "outputs/r155/evaluation/outputs/r09/summary.csv",
+      "outputs/r155/verification.json",
+      "price_process_not_economic_onset"
+    ],
+    "daily_calibration_diagnostics": [
+      "outputs/r155/evaluation/outputs/r97/summary.json",
+      "outputs/r155/verification.json",
+      "recent_calibration_increment_inconclusive"
+    ],
+    "daily_calibrated_alert_evaluation": [
+      "outputs/r155/evaluation/outputs/r98/summary.json",
+      "outputs/r155/verification.json",
+      "research_burden_tradeoff_not_adoption"
+    ],
+    "daily_calibration_uncertainty": [
+      "outputs/r155/evaluation/outputs/r99/summary.json",
+      "outputs/r155/verification.json",
+      "recent_calibration_increment_inconclusive"
+    ],
+    "alert_followup_summary": [
+      "outputs/r156/evaluation/outputs/r10/followup_summary.csv",
+      "outputs/r156/verification.json",
+      "descriptive_post_alert_paths"
+    ],
+    "alert_followup_annual": [
+      "outputs/r156/evaluation/outputs/r10/followup_annual.csv",
+      "outputs/r156/verification.json",
+      "descriptive_post_alert_paths"
+    ],
+    "conditional_continuation": [
+      "outputs/r156/evaluation/outputs/r10/continuation.csv",
+      "outputs/r156/verification.json",
+      "condition_known_only_after_20_sessions"
+    ],
+    "reversal_exit_economics": [
+      "outputs/r156/evaluation/outputs/r10/exit_summary_dates.csv",
+      "outputs/r156/verification.json",
+      "exit_value_not_supported"
+    ],
+    "alert_followup_paths": [
+      "outputs/r156/evaluation/data/r10_alert_followup.parquet",
+      "outputs/r156/verification.json",
+      "descriptive_post_alert_paths"
+    ],
+    "reversal_followup_paths": [
+      "outputs/r156/evaluation/data/r10_risk_followup.parquet",
+      "outputs/r156/verification.json",
+      "exit_value_not_supported"
+    ]
+  },
+  "checks": [
+    "prior sealed artifact hashes",
+    "all existing routes preserved",
+    "no model adoption or production",
+    "historical entries resolvable",
+    "all new routes resolve to verified repaired sources"
+  ]
+}

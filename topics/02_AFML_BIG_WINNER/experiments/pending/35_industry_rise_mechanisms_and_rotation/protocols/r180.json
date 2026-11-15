@@ -1,0 +1,18 @@
+{
+  "question": "Record field-level source revisions and explicit historical evaluation date regression",
+  "inputs": "R179 sealed snapshots and evaluations",
+  "fields": [
+    "nav",
+    "block",
+    "day_i",
+    "coverage",
+    "members",
+    "membership_asof",
+    "breadth21",
+    "breadth63"
+  ],
+  "rules": "Exact equality with paired nulls equal; added/removed rows separate from common-row cell changes; block identifiers may be renumbered, not economic events",
+  "date_rule": "Earlier evaluation allowed only as explicit historical replay, never before observation origin; preserve later bundle; no current pointer mutation",
+  "rollback_asof": "2026-07-15",
+  "prospective_records": 0
+}

@@ -1,0 +1,36 @@
+{
+  "revision": "R282",
+  "freeze_recorded_at": "2026-11-14T12:28:08.040410+00:00",
+  "previous_turn": "progress: fixed seasonal experiment completed with independent reconstruction",
+  "family": "battery",
+  "selected_winner": null,
+  "model_scope": "All120 frozen R281 fitted models, ten feature methods x3regime variants x2industries x2horizons; not120 independent experiments",
+  "frozen_inputs": {
+    "outputs/r281/predictions.parquet": "8ac4bb8ec67e93e64abaded94d919d5db5cb30a19abf595d1f72128d5c8b286e",
+    "outputs/r281/models.json": "d0b166ed9959b81fc6d11e0de24165d913d8cec174bb3279a12287a6e451de99",
+    "outputs/r281/fold_ledger.json": "fec67dff9913b0582b4a9648464504ceed269c935f4e45d83ca1292ab26e86ff",
+    "outputs/r281/panel.parquet": "2743be048250f2d14a1a4e9512b1285e3b6ec441918ed677ae4954c96906bf1e",
+    "protocols/r281.json": "457816f6c829b2818d55d993d80e4621cd8868ed7c1844a78026bc59ff6b02bc",
+    "protocols/r64.json": "3b3ad61083201a02bf9a619afaea045d6d162d605ed4a6cd564fd249ca69cc35",
+    "protocols/r65.json": "b3bdeb9e3056396630babe53923192a161a800b57731a55eb81363b779bbbc6f",
+    "outputs/r195/market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "src/battery_seasonal_r281.py": "49b41865ed6a6715be731cd5173df89965be2faad2b7c1d5efcbbb6c9cf424d3",
+    "src/regime_core_r196.py": "728714621888b16e0c36758ac23ac31681eb6f7b6eb4b84a2ce8077d48620bbc",
+    "outputs/r278/comparisons.json": "c2ed99113920a7832cc2d41491c504e33f0c4953a2e420e028afac18ed12bbab",
+    "outputs/r280/records.json": "8cc3b35a7daa01af78c393c3c82a104622681dc0022481cb186c2641871d9298"
+  },
+  "prospective_requirement": "Signal timestamp strictly after freeze; source and feature known_at <= signal cutoff; model/rule artifact recorded before signal; prediction recorded before entry and before any target observation; immutable event receipt required. Future timestamp in supplied data alone is not proof.",
+  "old_missing_labels": "Previously generated signals with missing label remain delayed historical evaluation; never prospective merely because label arrived later. NaT maturity means missing calendar/label evidence, not confirmed future maturity.",
+  "parameter_validity": "Existing parameters are2026 annual fits;2027 and later require actual prior-mature-label annual refit receipt under frozen rules, no reuse as current annual fit",
+  "evaluation": "Same population/date/entry/exit pair;20primary60secondary; original24 matured dates and3calendar years necessary but not sufficient; report all ten methods and three regimes, no best variant selection",
+  "source_revision": "Keep13 export and1 installation inconsistencies unresolved; original-vintage and revised-vintage records separated; no backfilling available_at",
+  "adoption": false,
+  "production_enabled": false,
+  "missing_requirements": [
+    "Future signal receipts",
+    "Future point-in-time inputs and data authorization when outside scope",
+    "Mature future outcomes with actual trading calendar",
+    "Source revision/definition evidence",
+    "Cost/execution evidence before configuration use"
+  ]
+}

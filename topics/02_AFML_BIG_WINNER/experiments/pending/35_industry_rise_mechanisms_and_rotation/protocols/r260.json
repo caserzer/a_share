@@ -1,0 +1,10 @@
+{
+  "revision": "R260",
+  "question": "Does rising financing intensity necessarily represent increased financing balance?",
+  "identity": "For positive exact adjacent monthly endpoints: delta log(B/(P*S)) = delta log B - delta log P - delta log S",
+  "scope": "Existing R44 monthly financing source, original prior-month assignments and same signal-date stock denominator; company-level descriptive attribution only, not industry factor replacement",
+  "eligibility": "Only consecutive calendar-month source dates. Prior-month instrument/security mapping must be unique each endpoint. listed true, positive finite raw_close/total_shares/financing, share_effective_date<=signal_date. Nonpositive/missing/ambiguous remain unavailable. No forward fill.",
+  "clocks": "Financing snapshots are original two-session-lag source; denominator price signal date. Preserve both clocks; not contemporaneous funding-flow identity, publication/revision PIT uncertified.",
+  "summaries": "All date pairs; complete pairs, signs of ratio/balance/price/share changes; ratio-up with balance flat/down; missing endpoints and invalid input coverage. Do not claim causal contribution from log identity or sum component medians.",
+  "verification": "Exact endpoint source equality and independent ratio multiplication identity; separate failure reasons; no future labels, no model/threshold search."
+}

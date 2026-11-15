@@ -1,0 +1,22 @@
+{
+  "scope": [
+    "eps_raw_proxy",
+    "eps_share_context_guard",
+    "profit_expectations"
+  ],
+  "regime": "R195 fixed four states; shared known-state cohort",
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "methods": [
+    "price_only",
+    "expectation_only",
+    "price_plus_expectation"
+  ],
+  "gate": "Original 300 rows / 18 months, same FY and strict/partial populations; mature training labels only",
+  "alpha": 10,
+  "comparisons": "Paired date MSE and original IC minimum 5; compare both regime and incremental expectation under each regime variant",
+  "limitations": "Historical-proxy exploratory reused history; no adoption; no threshold search"
+}

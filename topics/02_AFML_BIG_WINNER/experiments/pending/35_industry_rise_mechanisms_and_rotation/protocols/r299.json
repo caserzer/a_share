@@ -1,0 +1,27 @@
+{
+  "question": "Expose exact-date retrospective reversal calibration outputs without future labels or implicit latest fallback",
+  "sources": [
+    "outputs/r295/predictions.parquet",
+    "outputs/r295/independent_verification.json",
+    "outputs/r298/probability_use_contract.json"
+  ],
+  "fields": [
+    "era",
+    "level",
+    "industry_code",
+    "date",
+    "year",
+    "variant",
+    "monthly_probability",
+    "daily_probability"
+  ],
+  "date": "Required strict YYYY-MM-DD; valid dates without rows return empty explicitly, including beyond archive range; no forward fill",
+  "checks": [
+    "Source/proof hash validation",
+    "Exact equality with original on both monitor dates",
+    "All source dates and rows via projection, unknown outcomes never gate selection",
+    "Reject malformed dates and changed source bytes",
+    "CLI read-only with strict JSON output"
+  ],
+  "scope": "21 core reversal20 models only; Historical-proxy, not production or strict PIT; old all16 archives unchanged"
+}

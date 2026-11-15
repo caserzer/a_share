@@ -1,0 +1,18 @@
+{
+  "scope": "local EP24 source recovery and coverage, no outcome evaluation",
+  "question": "Can original dated earnings forecasts and macro responses support EP35 priority tasks?",
+  "rules": [
+    "verify all original HTML hashes against extraction and retrieval receipt",
+    "verify parser hash and preserve source exclusions",
+    "explicit fiscal years only; EPS and profit remain separate; ambiguous EPS 2027 token excluded",
+    "publication proxy strictly before decisions; actual retrieval time retained separately",
+    "do not import EP24 model labels or forecasts",
+    "prior monthly industry membership; report full denominator, no 80% threshold relaxation",
+    "macro 45-day lag remains an assumption, revised history not strict PIT"
+  ],
+  "limitations": [
+    "selected monthly-latest reports for EP24 universe, not all analysts or all A shares",
+    "HTML extraction remains machine-derived; document-wide human verification incomplete"
+  ],
+  "next": "same-broker fixed-FY profit revision coverage before registering predictive comparisons"
+}

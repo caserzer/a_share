@@ -1,0 +1,432 @@
+{
+  "revision": "R175",
+  "status": "active_not_complete",
+  "goal_sha256": "3cc7d95faed3507c3530451eb4c5e585d9a4eb73225c63edbbc714960ba8ef27",
+  "scope": "Current requirement crosswalk; all completion claims remain unproven",
+  "items": [
+    {
+      "id": "R01",
+      "requirement": "为什么上涨：经济机制与反证",
+      "verified_scope": "已执行宏观、龙头、财务与资本代理固定对照；无可靠机制认证。",
+      "unresolved": "连续价差/库存/产能和首次发布修订证据仍缺；相关与预测不证明因果。",
+      "next_dependency": "data_and_prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "macro_repair_comparison",
+          "path": "outputs/r158/comparison.json",
+          "sha256": "8a013ee42ea5ee6a61604b35faa44a53c5ad204d3716a4ccf9892caaf2aaec7d"
+        },
+        {
+          "route": "leader_repair_evidence",
+          "path": "outputs/r145/summary.json",
+          "sha256": "9d92ef4c81a74acfe9e21c933be743359c50605f589171f02a69812bb6f1ce55"
+        },
+        {
+          "route": "financial_repair_evidence",
+          "path": "outputs/r146/summary.json",
+          "sha256": "952106521840fddd5f9147205eead324f354580e959f181ac40259b12e39215a"
+        },
+        {
+          "route": "capital_repair_evidence",
+          "path": "outputs/r147/summary.json",
+          "sha256": "39eb9a6c452d15d3de4d52ed0acf071134111b914923f0b27e20e8ca4e6cbe7d"
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "requirement": "何时启动：领先与及时性",
+      "verified_scope": "二三级日频及一级原始启动过程已评价；稳定增量未证实。",
+      "unresolved": "经济启动及独立前瞻未知，一级原校准门槛未通过。",
+      "next_dependency": "prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "daily_process_summary",
+          "path": "outputs/r155/evaluation/outputs/r09/summary.csv",
+          "sha256": "7965effae5f149841b5dd5fcbc078900eb80f426e4c5a973d96c0b667ba17a66"
+        },
+        {
+          "route": "daily_calibration_uncertainty",
+          "path": "outputs/r155/evaluation/outputs/r99/summary.json",
+          "sha256": "5d9de0085849c08e3d2f73f2cc7436368ab1bd14943688ed225d753b9dca4dd7"
+        },
+        {
+          "route": "l1_process_uncertainty",
+          "path": "outputs/r161/summary.csv",
+          "sha256": "7d9069a15545991f6358aef4c27b751fe6896221a850d45e8e4a568bbd4c4c60"
+        }
+      ]
+    },
+    {
+      "id": "R03",
+      "requirement": "上涨持续性",
+      "verified_scope": "R168补齐一级跟踪；R170同母体冻结基准比较未显示模型持续性优势。",
+      "unresolved": "未来独立样本及经济持续性证据未完成；不再搜索冷却窗口或条件。",
+      "next_dependency": "prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l1_followup_baseline_summary",
+          "path": "outputs/r170/followup_summary.csv",
+          "sha256": "0641907b5cde6f608c772b14add120ce225c5c452e76ca544761f495008ae743"
+        },
+        {
+          "route": "l1_followup_baseline_continuation",
+          "path": "outputs/r170/continuation.csv",
+          "sha256": "05862520945648d89dcdb6dbe68461c8b8fc59ee55b464317feb79b050e0d228"
+        },
+        {
+          "route": "l1_followup_date_comparisons",
+          "path": "outputs/r170/date_comparisons.csv",
+          "sha256": "1596de2cdedab4bbc9868c39e57f31b4d13381b01e523220529142f20b077d3e"
+        }
+      ]
+    },
+    {
+      "id": "R04",
+      "requirement": "何时结束：风险和错误退出",
+      "verified_scope": "二三级退出和一级60日原始风险退出已评价。",
+      "unresolved": "一级仅6成熟月且未校准；实际退出成交及独立样本未知。",
+      "next_dependency": "data_and_prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "market_control_exit_metrics",
+          "path": "outputs/r136/evaluation/outputs/r57/summary.csv",
+          "sha256": "68f70473725de1d8de6575d223ca146966a431d27896545af43fb056a08ed11b"
+        },
+        {
+          "route": "reversal_exit_economics",
+          "path": "outputs/r156/evaluation/outputs/r10/exit_summary_dates.csv",
+          "sha256": "daa44aa3f611ea198e145e8ce3befb88762e3fa89b4a51aba47259dd8c5952a6"
+        },
+        {
+          "route": "l1_raw_reversal_exits",
+          "path": "outputs/r166/date_summary.csv",
+          "sha256": "07f980cc0f2c8ad312079254f28d5f49a8c689172e34e310a584168f729cb26c"
+        }
+      ]
+    },
+    {
+      "id": "R05",
+      "requirement": "配置价值与风险",
+      "verified_scope": "R169二级前10简化对照、R171风险、R172成员、R173计价端点、R174固定路径均已执行。",
+      "unresolved": "880区间仅49全路径完整；20组均有缺口，许可字段未知，无可执行净曲线。",
+      "next_dependency": "data",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l2_top10_portfolio_summary",
+          "path": "outputs/r169/evaluation/outputs/r04/summary.csv",
+          "sha256": "3f9f56560b0f5453a1f2e6fadd72bd5eac607626473ddbaec70a11645f36dd31"
+        },
+        {
+          "route": "l2_top10_prior_and_drift_risk",
+          "path": "outputs/r171/risk_by_origin.csv",
+          "sha256": "472474373256364c35df19e896e85828bfe4f9fe1db1010e6e7ada6960846147"
+        },
+        {
+          "route": "l2_member_concentration",
+          "path": "outputs/r172/concentration.csv",
+          "sha256": "bb73b63b8eb4c7e0f746313331532c6bf0df31ff636fb35f389fb16192a449cf"
+        },
+        {
+          "route": "l2_fixed_stock_summary",
+          "path": "outputs/r174/summary.csv",
+          "sha256": "37a03310249acfa527e8e5f94d26b4d218efe23b5ae568a52dc218e79737109e"
+        }
+      ]
+    },
+    {
+      "id": "R06",
+      "requirement": "一级二级三级分别研究",
+      "verified_scope": "一级已有原基线与启动/退出/持续性；二级本轮补齐前10及股票层覆盖。",
+      "unresolved": "一级校准、全层真实执行与跨期前瞻仍不足，不互相外推。",
+      "next_dependency": "data_and_prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l1_followup_baseline_summary",
+          "path": "outputs/r170/followup_summary.csv",
+          "sha256": "0641907b5cde6f608c772b14add120ce225c5c452e76ca544761f495008ae743"
+        },
+        {
+          "route": "l2_fixed_stock_summary",
+          "path": "outputs/r174/summary.csv",
+          "sha256": "37a03310249acfa527e8e5f94d26b4d218efe23b5ae568a52dc218e79737109e"
+        }
+      ]
+    },
+    {
+      "id": "R07",
+      "requirement": "原报告因子与基准核对",
+      "verified_scope": "R169补齐二级前10简化参考比较；原定义、开盘及双拥挤差异完整披露。",
+      "unresolved": "完整69项原文与五大类/双拥挤/开盘源仍缺，不能称原报告复现。",
+      "next_dependency": "data",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l2_top10_portfolio_summary",
+          "path": "outputs/r169/evaluation/outputs/r04/summary.csv",
+          "sha256": "3f9f56560b0f5453a1f2e6fadd72bd5eac607626473ddbaec70a11645f36dd31"
+        },
+        {
+          "route": "l2_top10_pair_comparison",
+          "path": "outputs/r169/paired_summary.csv",
+          "sha256": "4c4feb9654f80363c8dda7339806dc50e4e00b2b7ec6c3485d37c4822f31216c"
+        }
+      ]
+    },
+    {
+      "id": "R08",
+      "requirement": "基准因子增量优先实验",
+      "verified_scope": "原固定排序与控制修复完成，R169近期前10成本后配对收益均下降。",
+      "unresolved": "不再搜索选择数量；可靠独立增量与未使用时期仍未证明。",
+      "next_dependency": "prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l2_top10_pair_comparison",
+          "path": "outputs/r169/paired_summary.csv",
+          "sha256": "4c4feb9654f80363c8dda7339806dc50e4e00b2b7ec6c3485d37c4822f31216c"
+        }
+      ]
+    },
+    {
+      "id": "R09",
+      "requirement": "预期与价格先后关系优先实验",
+      "verified_scope": "EPS、利润预期、固定年度与兑现价格比较已修复。",
+      "unresolved": "有限覆盖和源语义/修订时点不足，不证明普遍领先。",
+      "next_dependency": "data_and_prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "expectation_repair_evidence",
+          "path": "outputs/r141/comparison.json",
+          "sha256": "c06e17ee912329a556e6025494f00866f130032bf9d577649c400760a4a0e73b"
+        },
+        {
+          "route": "event_repair_evidence",
+          "path": "outputs/r144/summary.json",
+          "sha256": "ba5b22fdeea384e4badb2b68ae81d62e790687515014c7115c55ea43cd3340b2"
+        },
+        {
+          "route": "profit_expectation_repair",
+          "path": "outputs/r162/comparison.json",
+          "sha256": "1f7ac109ed7644ac0c92404ec08d00a54fbad8ebd99ac2cb80362e6be13df41d"
+        },
+        {
+          "route": "forecast_horizon_price_comparison",
+          "path": "outputs/r144/evaluation/outputs/r91/summary.json",
+          "sha256": "b14477bd68c83ca1a9bd0385de20f8ce48d47a4049792ad4723e953ec1825bcd"
+        }
+      ]
+    },
+    {
+      "id": "R10",
+      "requirement": "产业领先变量优先实验",
+      "verified_scope": "81月装车量和69同比来源已齐；收益对照无稳定增量，分类门槛不足。",
+      "unresolved": "仍缺其它产业连续变量和修订首发链；不降低样本门槛。",
+      "next_dependency": "data_and_prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "battery_source_completion_pilot",
+          "path": "outputs/r140/evaluation/outputs/r64/metrics.json",
+          "sha256": "19fe3e5c09d49720e4b96b6204ecb988becf35e8c8a3e0a534ce7fe49cfa8efb"
+        },
+        {
+          "route": "latest_battery_classification_gates",
+          "path": "outputs/r140/evaluation/outputs/r65/fold_ledger.json",
+          "sha256": "e847871715f1ab5e6debb06e8032a0873b4ec432616687cfb642cc51b820cf09"
+        }
+      ]
+    },
+    {
+      "id": "R11",
+      "requirement": "三类任务冻结协议和时序验证",
+      "verified_scope": "三任务有独立定义及时间验证；未通过的折和校准门槛保留。",
+      "unresolved": "成熟样本、全市场独立验证与未使用时期不足。",
+      "next_dependency": "prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "three_task_price_models",
+          "path": "outputs/r131/model_parameters.json",
+          "sha256": "f809d75eabac8ca32631253f30e847a0fdb3c229834aa6420caa52b52f727754"
+        },
+        {
+          "route": "three_task_prediction_evaluation",
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0"
+        },
+        {
+          "route": "l1_onset_calibration_gates",
+          "path": "outputs/r159/original_calibration_gates.csv",
+          "sha256": "950d96625e5b3128a7dbc35adff5c8b3c12030f08539582ca1c0641419f6a531"
+        }
+      ]
+    },
+    {
+      "id": "R12",
+      "requirement": "数据可追溯与PIT补充",
+      "verified_scope": "R172/R173/R174记录名义成员、计价资格及完整路径的不同覆盖；原源哈希核验。",
+      "unresolved": "未解析身份、缺失日价格/链和许可语义仍需精确新证据；旧最终缓存不能升级PIT。",
+      "next_dependency": "data",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l2_member_concentration",
+          "path": "outputs/r172/concentration.csv",
+          "sha256": "bb73b63b8eb4c7e0f746313331532c6bf0df31ff636fb35f389fb16192a449cf"
+        },
+        {
+          "route": "l2_endpoint_price_support",
+          "path": "outputs/r173/portfolio_endpoints.csv",
+          "sha256": "3a730f1fdb90fa4d49fc4abacdd2758301de33ac8a3dedad32d9850be412d02a"
+        },
+        {
+          "route": "l2_fixed_stock_intervals",
+          "path": "outputs/r174/intervals.csv",
+          "sha256": "fa217bd2cecc868f55746db329a5d39eff2141761e9bb998857dc0a411297c79"
+        }
+      ]
+    },
+    {
+      "id": "R13",
+      "requirement": "经济假说与完整因子字典交付",
+      "verified_scope": "28项原定义与时点/缺失/反证保存，两项财务修复状态更新。",
+      "unresolved": "不是28个有效因子；原69项完整定义和候选变量仍有限。",
+      "next_dependency": "data",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "versioned_factor_dictionary",
+          "path": "outputs/r167/factor_dictionary.json",
+          "sha256": "1a2283db6428aa580657b51ce1b73bdd3fe30b5dfbbed8ee50142a0f34161081"
+        }
+      ]
+    },
+    {
+      "id": "R14",
+      "requirement": "多模型完整结果与消融成本交付",
+      "verified_scope": "R168—R174补齐必要对照和风险/复制失败，全部可重跑且保留失败。",
+      "unresolved": "没有整体成本后可执行价值或独立前瞻认证，完整股票路径不足。",
+      "next_dependency": "data_and_prospective",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l1_followup_date_comparisons",
+          "path": "outputs/r170/date_comparisons.csv",
+          "sha256": "1596de2cdedab4bbc9868c39e57f31b4d13381b01e523220529142f20b077d3e"
+        },
+        {
+          "route": "l2_fixed_stock_summary",
+          "path": "outputs/r174/summary.csv",
+          "sha256": "37a03310249acfa527e8e5f94d26b4d218efe23b5ae568a52dc218e79737109e"
+        }
+      ]
+    },
+    {
+      "id": "R15",
+      "requirement": "行业监控与更新流程",
+      "verified_scope": "默认入口统一到R175；历史推断网格仍保持原截至日和模型。",
+      "unresolved": "入口更新不等于新行情更新；上游增量源、修订处理与前瞻未认证。",
+      "next_dependency": "engineering_and_data",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l2_fixed_stock_summary",
+          "path": "outputs/r174/summary.csv",
+          "sha256": "37a03310249acfa527e8e5f94d26b4d218efe23b5ae568a52dc218e79737109e"
+        }
+      ]
+    },
+    {
+      "id": "R16",
+      "requirement": "失败尝试及持续研究记录",
+      "verified_scope": "本轮整合近期实验、负结果和未知边界，历史版本保留。",
+      "unresolved": "下一项按失败股票/日期/字段生成本地缺口及可替代源清单，不降门槛。",
+      "next_dependency": "local_source_audit",
+      "completion_proven": false,
+      "evidence": [
+        {
+          "route": "l2_fixed_stock_intervals",
+          "path": "outputs/r174/intervals.csv",
+          "sha256": "fa217bd2cecc868f55746db329a5d39eff2141761e9bb998857dc0a411297c79"
+        }
+      ]
+    }
+  ],
+  "explicit_target_crosswalk": {
+    "five_questions": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05"
+    ],
+    "three_tasks": [
+      "R02",
+      "R04",
+      "R10",
+      "R14"
+    ],
+    "three_priorities": [
+      "R08",
+      "R09",
+      "R10"
+    ],
+    "four_deliverables": [
+      "R12",
+      "R13",
+      "R14",
+      "R15"
+    ]
+  },
+  "extra_evidence": [
+    {
+      "path": "outputs/r168/verification.json",
+      "sha256": "167926a24c8af2f4bffff1318aaa1c8f018ae93caef2db74164427cac947a346"
+    },
+    {
+      "path": "outputs/r168/continuation.csv",
+      "sha256": "d009e714be1adb7255904c975fbc1e822894ec134ee251b13d08ab887a73e025"
+    },
+    {
+      "path": "outputs/r125/verification.json",
+      "sha256": "8fd6fce2c289d0ab7be0e1859edfd1ac3b7cb174ab48f41c713ccaa24c06dfc5"
+    },
+    {
+      "path": "outputs/r126/verification.json",
+      "sha256": "ee701b2b392a91e47abc8719a10ae0020bf850fb1e2d70d1926e70a5c7cd2f62"
+    },
+    {
+      "path": "reports/方正来源核对.md",
+      "sha256": "7be70d5140b7cffc3cc024b23caf12bfa010403117ce9817928c58728ff43bb2"
+    },
+    {
+      "path": "protocols/r17.json",
+      "sha256": "4bc57614079e0e1114e920437100eac18594a534c1d05366eb26466c407faefc"
+    },
+    {
+      "path": "outputs/r160/alerts.parquet",
+      "sha256": "60f56fa9cd99f96cd8eafcca25bd04247ed9d23e5b3a639846aa1554aa62dd7e"
+    }
+  ],
+  "next_local": [
+    {
+      "priority": 1,
+      "task": "Exact failed stock/date/field and bounded local alternative-source audit",
+      "basis": "R174 retains every failed stock interval but source restoration needs exact missing dates and field causes",
+      "inputs": [
+        "outputs/r174/stock_interval_audit.parquet",
+        "outputs/r174/receipt.json"
+      ],
+      "boundary": "Read existing local sources only; no external procurement/download or permissive missing-value substitution"
+    }
+  ],
+  "full_completion_proven": false
+}

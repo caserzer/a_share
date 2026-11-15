@@ -1,0 +1,8 @@
+{
+  "question": "Which sparse ETF observations form adjacent exchange sessions, and do retained mappings support EP35 historical industry assignment?",
+  "source": "R125 unique share levels and original occurrence pointers; existing CSI_ALL benchmark calendar only",
+  "intervals": "For each code chronological neighboring observed dates; record calendar/trading gap and missing intermediate sessions; endpoint change and fraction are descriptive only. No interpolation or per-day division. Split/merge verification absent => all flow_eligible false.",
+  "mapping": "For each eligible occurrence preserve raw board/index/industry labels, exposure, mapping source, index_weight_as_of, cache_refs, selection status and dates. No inferred SW code; no extrapolation of TTL into historical validity.",
+  "dedup": "Map evidence occurrence-level, group distinct code/date signatures; repeat references not independent mapping evidence. Compare endpoints for raw index and board identifiers only.",
+  "decision": "No forecast/flow model from short selected panel. Freeze concrete data requirements and source-scope limits, stop this source branch absent new verified evidence; other goal requirements remain active."
+}

@@ -1,0 +1,17 @@
+{
+  "question": "Do regime portfolio risk changes reflect less downside loss and foregone upside?",
+  "rounds": [
+    210,
+    211,
+    212,
+    214,
+    215,
+    216,
+    217
+  ],
+  "pairs": "all saved paired_risk comparisons, original costs and control methods",
+  "eligibility": "both original full paths only; exact same dates and benchmark; incomplete retained without stress estimates",
+  "split": "source benchmark daily return <0, >0, ==0; zero includes original initialization convention",
+  "metrics": "date-mean portfolio return, negative-return fraction, lower partial second moment sqrt(mean(min(r,0)^2)), conditional beta if >=2 and variance>0",
+  "boundary": "ex-post contemporaneous market attribution, not forecast/timing; arithmetic daily means not compounded conditional strategy; no stress threshold search or significance claim"
+}

@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "variant": "raw_proxy",
+      "old_candidate_rows": 19739,
+      "new_candidate_rows": 19743,
+      "added_candidates": 4,
+      "removed_candidates": 0,
+      "cohorts_checked": 20,
+      "predictions": 2202
+    },
+    {
+      "variant": "share_context_guard",
+      "old_candidate_rows": 19739,
+      "new_candidate_rows": 19743,
+      "added_candidates": 4,
+      "removed_candidates": 0,
+      "cohorts_checked": 20,
+      "predictions": 2190
+    }
+  ],
+  "independent_model_audit_sha256": "999caf6e3810326b94b0ef368a9364e12e3e737fee76703d02aefc52077d9c8f",
+  "verifier_sha256": "d6ef722122192b13ef463998fa6948313aeea2e68eb6af344070cf07886b65a6",
+  "conclusion": "Candidate coverage changes are separated from unchanged actual model cohorts; both variants retain identical model inputs, gates, coefficients, predictions and metrics; original strict/partial limits remain"
+}

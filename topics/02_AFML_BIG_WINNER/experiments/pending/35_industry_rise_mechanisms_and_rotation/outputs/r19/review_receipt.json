@@ -1,0 +1,79 @@
+{
+  "status": "PASS_WITH_SCOPE_LIMITS",
+  "reviewed_at": "2026-11-13T09:20:02.874588+00:00",
+  "authorization": "explicit user approval for these five PDFs only",
+  "documents": 5,
+  "facts": 13,
+  "source_csv": "/home/xiaolv/code/golden_loop_artifacts/a_share_market_radar/reports/fixed_industry_pool/20261010-data-v1/operating_observations.csv",
+  "source_csv_sha256": "53312ff44dfb4821a73c71daeceeac457e0b592e0f1381993aa5f7f3406511a1",
+  "download_receipt_sha256": "38d15f451ef2c63e5c7708611f5f498052dc60b845c1d9d5a68ee551943c6a78",
+  "reviewed_facts_sha256": "791afb908427981a56346186547459c3b41ef60495d8a39c958464c30164760d",
+  "images": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/002466_10.png",
+      "sha256": "c628ce00c2b6c20e8f6423f356a4d4e032e500a1853b3358daba91184b8d163e",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/002466_39.png",
+      "sha256": "5e3f6fe40641ab091497a17366b838a0077a45cfcf3322169e9e53e4451fcccd",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/300124_23.png",
+      "sha256": "b1a76a9c54aebc75c403acd418f48f49b75f73992edebade3b6ed5194f46c9dd",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/300124_28.png",
+      "sha256": "4da3c42c7cbf90b9ff8c2aed7b355fbf6b6c602bba93d564af23658a60025a3e",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/600030_10.png",
+      "sha256": "9cb97f5fabf3efd4d5c8bc04411515bb7630bf05665a08c23f508b0994c562cc",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/600487_30.png",
+      "sha256": "e7fa9d98645a0fa140692954c5d4d6c380b914966821ff9a5f9c25c907a2e045",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/688111_27.png",
+      "sha256": "18667f41cb60e6b2cf102606325a3add3f8791f40ef83c9aeef5ee0da4949fdf",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/688111_28.png",
+      "sha256": "64e56679c76f0d065e8f9050651817b54d08d7ae435a0440deb25ad41eb3af04",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/688111_29.png",
+      "sha256": "26d9c8375ad154f3aac9c52adc3f1a2ff7fff1f2ae62073d1fce6bf9cb6163a2",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/688111_6.png",
+      "sha256": "d8c2bcabebe86cd95a5ef9da319668962d0c63c38afe48c3512f80b748f1af29",
+      "full_page_visually_reviewed": true
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/pdf_review/688111_8.png",
+      "sha256": "8d0e21d87372e3f116dc4ecf0a4417c231fea4aa6f3614070de4d2422fef247e",
+      "full_page_visually_reviewed": true
+    }
+  ],
+  "checks": [
+    "five PDF hashes match prior receipts",
+    "11 complete pages visually inspected",
+    "units, segment names, lower bounds and footnotes checked"
+  ],
+  "limitations": [
+    "first release/version timing not certified",
+    "five selected issuers and one half-year; no industry-leading time series",
+    "management explanations not independently established causality",
+    "no new publication, deployment or extra downloads"
+  ]
+}

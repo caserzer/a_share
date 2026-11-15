@@ -1,0 +1,11 @@
+{
+  "round": "R76",
+  "question": "Do frozen R17 industry target allocations conceal stock target changes from monthly membership?",
+  "source": "R17 holdings unchanged, R05 L1 assignments at origin month as used by R17 risk diagnostics",
+  "weights": "industry target weight/(resolved unique members+unresolved); unresolved mass retained; no renormalization",
+  "distance": "sum abs(new nominal stock target minus old nominal stock target), no price drift; initial entry and final liquidation separate",
+  "unknown_bounds": "known-coordinate L1 d with unresolved mass u_old,u_new: max(0,d-u_old-u_new) to min(2,d+u_old+u_new); conservative identity-overlap uncertainty",
+  "comparison": "same adjacent origins industry target-to-target L1; R17 turnover is drift-adjusted industry measure and is not subtracted as equivalent",
+  "controls": "detect calendar gaps, no continuity assumption across missing origins; equal/momentum/F/FD separate; no optimization",
+  "limits": "nominal diagnostic only, not realized turnover or incremental fees; changing price-covered constituents and monthly synthetic reset remain unreplicated"
+}

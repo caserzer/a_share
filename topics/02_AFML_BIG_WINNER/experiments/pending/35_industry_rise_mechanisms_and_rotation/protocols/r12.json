@@ -1,0 +1,42 @@
+{
+  "question": "Does fixed-fiscal-year broker profit revision precede or follow industry price, and add to fixed price controls?",
+  "main": {
+    "population": "R11 >=5 known companies and >=80% all historical members; no relaxation",
+    "fy_offset": 1,
+    "horizon": 20
+  },
+  "secondary": {
+    "fy_offset": 0,
+    "horizon": 60
+  },
+  "separate_diagnostic": {
+    "population": ">=5 covered companies but <80% full members",
+    "meaning": "covered-company forecast median vs full industry return; selection diagnostic only, never a full-industry factor",
+    "acceptance_allowed": false
+  },
+  "revision": "R11 latest same-broker same-explicit-FY profit signed symmetric change; latest <=180 calendar days old, prior within365; no EPS levels",
+  "controls": [
+    "mom20",
+    "mom60",
+    "vol20",
+    "dd60",
+    "past_excess20",
+    "past_excess60",
+    "log_members"
+  ],
+  "methods": [
+    "price_only",
+    "expectation_only",
+    "price_plus_expectation"
+  ],
+  "fits": "annual expanding 2021..2026; maturity strictly before January1, >=18 training months and >=300 rows; date equal weights; Ridge alpha10; training-only scaler; contemporaneous ranks within fixed cohort; omit dates with fewer than2 industries",
+  "labels": "unchanged R01 t+1 close to t+h+1 close excess vs CSI_ALL",
+  "diagnostics": "per-date Spearman revision vs past20/60 and future20/60, >=5 industries and nonconstant; means descriptive only, no causal claims",
+  "comparisons": "matched industry-date-target across all3 methods; monthly equal MSE and RankIC; all unknown targets retained; annual summaries",
+  "inference": "No positive acceptance from partial diagnostic. Strict cohort requires >=24 scored months and >=3 calendar years before an incremental claim; insufficient sample remains unproven. No threshold/window tuning.",
+  "limitations": [
+    "revision archive selected EP24 universe, reconstructed publication timing not immutable PIT",
+    "same-month ranks and targets describe full industry while diagnostic forecast reflects selected firms",
+    "price controls do not establish full style control or causality"
+  ]
+}

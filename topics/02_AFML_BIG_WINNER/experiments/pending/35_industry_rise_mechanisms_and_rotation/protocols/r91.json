@@ -1,0 +1,9 @@
+{
+  "question": "Necessary omitted comparison: current versus next FY revisions on identical report events and industry price windows",
+  "population": "All 2313 R89 pairs, including 595 next-actual immature events; never condition on final profit or R90 accuracy",
+  "mapping": "Reuse R26 prior-month membership and signal first session strictly after publication; median brokers per company then median companies per industry/signal/publication-year, same constituents for both horizons",
+  "outcomes": "R26 pre20/pre60/reaction/post20/post60 market excess paths, entry signal+1 close and exit +21/+61 within continuous block; post20 primary, post60 secondary",
+  "contrast": "sign(current median)*excess minus sign(next median)*excess, flat=0; both sign scores on same known price rows; date-equal means by era/level/year and pooled. This is a directional association score, not a portfolio return or predictive increment. Prewindows diagnose anticipation, no controls claimed. No final actual used.",
+  "coverage": "All paired mapped rows and unmatched rows retained; unknown price never zero; hierarchy separate; company/date overlap not independent",
+  "inference": "Descriptive historical comparison only, no p-values or model selection. Existing repeated-use history, proxy clock, source selection, styles and news confounding remain. No claim of causal or investment value."
+}

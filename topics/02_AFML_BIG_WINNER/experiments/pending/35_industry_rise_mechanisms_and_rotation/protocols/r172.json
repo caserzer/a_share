@@ -1,0 +1,9 @@
+{
+  "question": "Translate fixed L2 industry targets into nominal member concentration and structural target changes",
+  "sources": "R169 top10 and R137 top20 L2 holdings; existing extension_v2 monthly assignments",
+  "clock": "Origin month snapshot only, every source date <= origin; missing or future source means whole industry allocation unknown; no next_return/entry-price fields used",
+  "weights": "Each industry weight divided by unique known member count + unresolved count. Aggregate security_id across industries. Keep unresolved weight; never renormalize known names",
+  "risk": "known-stock HHI and largest known weight; conservative total HHI [knownHHI,knownHHI+2*maxKnown*unknown+unknown^2] and maxweight [maxKnown,maxKnown+unknown], capped at1. Bounds not imputation",
+  "turnover": "R76 target-to-target structural distance bounds max(0,knownL1-u-v),min(2,knownL1+u+v); compare industry target L1, consecutive months only summaries; no drift/price/actual execution claim",
+  "scope": "Nominal historical member mapping, not actual priced basket or executable holdings; taxonomies separate; no adoption or strict PIT"
+}

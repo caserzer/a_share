@@ -1,0 +1,12 @@
+{
+ "id":"EP35-R05", "registered_on":"2026-11-13", "question":"补齐申万一级研究母体，检查二三级结果能否在一级成立而非直接外推",
+ "universe":"31 SW2021 L1 catalog; Jan2022 onward only; no SW2014 L1 taxonomy in local registered inputs",
+ "membership":"union each L1's mapped L2 monthly historical assignments, unique security per month; current SW2021 taxonomy parent map is Historical-proxy, not certified parent history; unresolved child counts summed conservatively",
+ "prices":"read verified raw normalized qfq stock partitions referenced by EP32 daily input audit; factor_chain_id and close_conflict guards; equal-weight month-start fixed basket, next month uses previous month assignments; >=5 members and >=80% daily coverage; no bridging missing blocks",
+ "features":"R01 mom20,mom60,vol20,dd60 and constituent breadth21,breadth63; absent PE/trading-crowding remain missing, not synthesized from other levels",
+ "targets":"R01 next-close delayed20/60 relative returns vs CSI_ALL; monthly completed origins",
+ "comparisons":"F vs momentum; F vs FD on identical feature-ready universe; centered ranks and group equal weighting exactly R01; min20 industries; L1 top6 ranked basket diagnostic, no costs beyond R01 fixed-entry-exit convention",
+ "evaluation":"date IC, yearly stability, paired date IC difference,6-month block bootstrap2000; primary20,secondary60 descriptive; separate experiment family, historical simulation not independent holdout",
+ "acceptance":"deltaIC positive with95% lower bound>0, >=24months and >=2/3 eligible years positive; cannot establish investability or mechanism from this result",
+ "provenance":"new files inside EP35 only; no edits to EP32/33/34; stock file hashes saved"
+}

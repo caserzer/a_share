@@ -1,0 +1,53 @@
+{
+  "revision": "R252",
+  "purpose": "Consolidate already verified standalone research into current local entry; no model adoption or production",
+  "routes": {
+    "regime_family_catalog": [
+      "outputs/r230/family_catalog.json",
+      "outputs/r230/verification.json"
+    ],
+    "regime_branch_decisions": [
+      "outputs/r238/branch_decisions.json",
+      "outputs/r238/independent_verification.json"
+    ],
+    "regime_dictionary": [
+      "outputs/r231/factor_dictionary_extension.json",
+      "outputs/r231/verification.json"
+    ],
+    "historical_archive_validation": [
+      "outputs/r239/verification.json",
+      "outputs/r239/verification.json"
+    ],
+    "risk_state_contract": [
+      "outputs/r245/risk_field_contract.json",
+      "outputs/r245/independent_verification.json"
+    ],
+    "operating_repaired_followup": [
+      "outputs/r246/research_route_extension.json",
+      "outputs/r246/independent_verification.json"
+    ],
+    "operating_quarter_entry": [
+      "outputs/r250/research_entry.json",
+      "outputs/r250/independent_verification.json"
+    ],
+    "financial_archive_inventory": [
+      "outputs/r251/summary.json",
+      "outputs/r251/independent_verification.json"
+    ],
+    "reversal_gate_negative_result": [
+      "outputs/r244/verification.json",
+      "outputs/r244/verification.json"
+    ]
+  },
+  "preserve": "All R183 routes and all non-entry source pointers; old audit kept under explicit version",
+  "validation": [
+    "prior route equality",
+    "route and proof hashes",
+    "nested referenced evidence hashes",
+    "all16 no adoption",
+    "all16 requirements remain incomplete",
+    "candidate load before pointer switch",
+    "current CLI after switch"
+  ],
+  "next": "Audit daily regime onset applicability against existing daily model protocol, without relaxing gates or repeating monthly fits."
+}

@@ -1,0 +1,14 @@
+{
+  "scope": "All battery return methods and onset/reversal eligibility",
+  "source": "R140 repaired cohort",
+  "state": "R195 fixed four states, observed signal close",
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "models": "R64 unchanged raw features, StandardScaler training only, unweighted Ridge alpha10, 24 training months",
+  "classification": "R65 unchanged gates, shared state-known sample; no gate relaxation",
+  "metrics": "paired MSE/MAE state increment and battery increment, annual and per-state; original stable gate 24 mature dates and 3 years",
+  "inference": "Exploratory Historical-proxy; no adoption; no parameter search"
+}

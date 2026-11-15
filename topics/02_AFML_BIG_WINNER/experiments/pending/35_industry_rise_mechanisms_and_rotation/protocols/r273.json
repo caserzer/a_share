@@ -1,0 +1,9 @@
+{
+  "round": "r273",
+  "question": "Can archived battery reports support a comparable supply-demand variable?",
+  "scope": "Exactly81 month/source records already frozen in R60, Jan2020-Sep2026; local original bytes only",
+  "method": "Inventory verbatim production/export/sales sentences and GWh amounts; classify explicit mixed versus power scope and cumulative markers; all candidate values pending review, no automatic model-ready series",
+  "rules": "Do not subtract installations from mixed production; no inventory accounting inference; no cumulative-to-monthly or export balancing without explicit matched definitions; no new fetch",
+  "clock": "Preserve original page date, available_at and raw source hash; not first-release PIT",
+  "output": "Per-source candidate sentences, coverage and scope-change evidence; no new predictive results"
+}

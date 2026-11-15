@@ -1,0 +1,19 @@
+{
+  "round": "R46",
+  "registered_before_fit": true,
+  "hypothesis": "Financing intensity adds future relative-return ranking information after prices and size; could instead proxy eligibility or lagged demand",
+  "data": "R45 strict5/80% financing intensity with existing F and size complete same-cohort dates, eras/levels separate",
+  "methods": [
+    "FS",
+    "FSE"
+  ],
+  "primary_horizon": 20,
+  "secondary_horizon": 60,
+  "model": "Ridge alpha10; same-date within era/level common-cohort centered ranks; training-only StandardScaler; date-equal weights",
+  "split": "annualJan1 expanding, labels maturity strictly beforeJan1",
+  "gates": ">=300 training rows and18 unique dates, no relaxed fallback",
+  "evaluation": "date equal MSE, Spearman IC only>=5 mature industries; paired FSE-FS IC primary and FS-FSE MSE improvement descriptive; annual results",
+  "uncertainty": "calendar Bartlett HAC lag3/6,99% normal reference intervals across five primary era/level comparisons; historical support requires IC lower>0 and>=24 IC dates and>=3 evaluated years with positive annual mean IC increments",
+  "stop": "one factor, one alpha, no search after results; no allocation claim or first-release certification",
+  "limitations": "selected high margin coverage, denominator share known_at missing, old source ends2026-04; history repeatedly researched"
+}

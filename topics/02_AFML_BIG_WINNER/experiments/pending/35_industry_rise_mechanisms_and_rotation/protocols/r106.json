@@ -1,0 +1,7 @@
+{
+ "kind":"numerical precision check of fixed duplicate/unique penalty hypotheses",
+ "scope":"same76 model folds and98113 paired test identities as R105; Ridge unchanged; both classifier base and Platt refit with C1, lbfgs tol1e-10 max_iter10000 seed3502",
+ "invariants":"same sources, original complete rank cohorts, eligibility, labels, maturity windows, scaler and date-equal weights; no hyperparameter search",
+ "checks":"compare default versus tight predictions separately for both hypotheses, recompute R105 paired utilities and family60 intervals; independently reconstruct matrices and verify normalized penalized gradient <=1e-6",
+ "decision":"retain all original versions, report sign or interval changes; no deployment/adoption; stop precision branch if gradients pass and characterize uncertainty rather than chase an optimum tolerance"
+}

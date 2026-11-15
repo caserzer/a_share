@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "prediction_rows": 159870,
+  "unique_industry_signals": 13725,
+  "complete": 11239,
+  "known": 11239,
+  "unknown_entry": 413,
+  "unknown_exit": 827,
+  "entry": "next calendar month final trading close",
+  "exit": "following calendar month final trading close",
+  "target": "fixed member follower mean return minus leader mean return; not industry-index return",
+  "next_required": "Evaluate original stock-side baskets with original delayed dates; monthly endpoints do not prove intramonth drawdown or executable shorting",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r200/predictions.parquet": "edba4f119fbab8f8a472d49779b87344afae9a2bc1cdd26ff8caad35bc10e383",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r145/evaluation/outputs/r110/industry_outcomes.parquet": "d470c8f004b35166e5d94afc016156c8bc7f2687f76c3fd9be383accfa749cc2",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r145/evaluation/outputs/r110/member_outcomes.parquet": "cb3229557a9b1da779cac06de480ac9369c270badd676be8cb08e45fea2e9a7e"
+  },
+  "output_sha256": "2172bc7c1457080ea07e8900bdf36c27cfbcd2ecbe12257026c98451a2c162c3",
+  "code_sha256": "9161ccff3972d5679353d325b0bb0ca25fcdf29d04499f5a3162dc38a453b249"
+}

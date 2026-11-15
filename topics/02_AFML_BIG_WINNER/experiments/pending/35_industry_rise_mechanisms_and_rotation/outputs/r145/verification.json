@@ -1,0 +1,162 @@
+{
+  "status": "PASS",
+  "metric_comparisons": [
+    {
+      "round": 109,
+      "old": 36,
+      "new": 36,
+      "added": 0,
+      "removed": 0,
+      "changes": {
+        "months": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "mean_delta": {
+          "changed": 8,
+          "max_abs": 0.0007886851727198999
+        },
+        "standard_error": {
+          "changed": 8,
+          "max_abs": 0.00018492368124429885
+        },
+        "low95": {
+          "changed": 8,
+          "max_abs": 0.0006978833053086003
+        },
+        "high95": {
+          "changed": 8,
+          "max_abs": 0.0010163863906794968
+        },
+        "family60_low": {
+          "changed": 8,
+          "max_abs": 0.0006338828619425006
+        },
+        "family60_high": {
+          "changed": 8,
+          "max_abs": 0.0012718545647917995
+        },
+        "positive_years": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "evaluated_years": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "mean_mse_reduction": {
+          "changed": 8,
+          "max_abs": 1.0099169117000093e-05
+        },
+        "mean_logloss_reduction": {
+          "changed": 4,
+          "max_abs": 4.557992254860003e-05
+        },
+        "selected": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "shared_selected": {
+          "changed": 7,
+          "max_abs": 6.0
+        }
+      },
+      "support_changes": 0,
+      "new_support": 0
+    },
+    {
+      "round": 110,
+      "old": 30,
+      "new": 30,
+      "added": 0,
+      "removed": 0,
+      "changes": {
+        "leader": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "follower": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "catchup": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "follower_positive": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "catchup_positive": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "catchup_with_follower_rise": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "ic": {
+          "changed": 0,
+          "max_abs": 0.0
+        }
+      },
+      "support_changes": null,
+      "new_support": null
+    },
+    {
+      "round": 111,
+      "old": 20,
+      "new": 20,
+      "added": 0,
+      "removed": 0,
+      "changes": {
+        "months": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "mean_delta": {
+          "changed": 4,
+          "max_abs": 0.0005472954319740999
+        },
+        "standard_error": {
+          "changed": 4,
+          "max_abs": 0.0004984127650924999
+        },
+        "low95": {
+          "changed": 4,
+          "max_abs": 0.0012429891398082005
+        },
+        "high95": {
+          "changed": 4,
+          "max_abs": 0.0007107888993543986
+        },
+        "family20_low": {
+          "changed": 4,
+          "max_abs": 0.001772972087026101
+        },
+        "family20_high": {
+          "changed": 4,
+          "max_abs": 0.0012407718465721994
+        },
+        "years": {
+          "changed": 0,
+          "max_abs": 0.0
+        },
+        "positive_years": {
+          "changed": 1,
+          "max_abs": 1.0
+        }
+      },
+      "support_changes": 0,
+      "new_support": 0
+    }
+  ],
+  "subchecks": {
+    "outputs/r108/verification.json": "3dc42037281941db9a1fbe113b85419007e22e6b6557127107fdb320bd67ca65",
+    "outputs/r110/verification.json": "a5b719f22aa33ed5ac1278f616bb3ace397c18fa56f68381c9567ad3fbba6b26",
+    "outputs/r111/verification.json": "b3a9a3fa0f9a939ac1da1e0f4b727f80818cc15429287930502c504b5d333e51",
+    "outputs/r109/metric_verification.json": "5d38f640e5b517013f9babb6ab71cb718b130f0b1d0ddf8ecd76b3eac6418608",
+    "outputs/r109/model_verification.json": "1bb601e4b9a5a4c0296d9cf2c0900ad27e87c97ea63c9683c95fc7bbb500a265"
+  },
+  "verifier_sha256": "fbc51d37a948479100639746246c29460fbe8dc5f5c8d01bd31465d9b4c2b1b5"
+}

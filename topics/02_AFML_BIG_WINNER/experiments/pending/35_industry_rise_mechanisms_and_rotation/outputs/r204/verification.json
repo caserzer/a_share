@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "models": 360,
+  "prediction_rows": 743440,
+  "normal_equation_error": 1.141448047192739e-14,
+  "adoption": false,
+  "inputs": {
+    "outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "outputs/r195/market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "protocols/r204.json": "b0aca11170371ad7ed90992190000120737020fd638a495364e544dac625fc2c",
+    "src/regime_fixed_rank_r204.py": "05c89d49ba683841d52bcf61e530bd8bb1a216080520d91cd28062b9cf7e98ca",
+    "src/evaluate_r01.py": "0afc7bec0184d85d748eb1cda9a209d8118999166126f3439b7cb6cf80099256",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/regime_core_r196.py": "728714621888b16e0c36758ac23ac31681eb6f7b6eb4b84a2ce8077d48620bbc",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808"
+  },
+  "outputs": {
+    "scored_panel.parquet": "f05d2804920c487b85fe42f49a0027cfc2698f91c9f5cc19f7b095b946dbf414",
+    "predictions.parquet": "52d987acdabb6b77bffc4c1e97606f0aa8de06bcbb7ffa92e931af592bdf0196",
+    "models.json": "bdd8d20b5f1e7eefc45ccfa491ea72d63a4ee36e51d96d2fddf28842f87e0e7f",
+    "fold_ledger.json": "04588aef66121b8c6fc7af3989bce29584fee481a772e0047ed8b049c1ae374b",
+    "date_metrics.csv": "d764b1f7d8e79425ad595ec49405f8cb7c859296878590e0b4458190bc9cfcb8",
+    "summary.csv": "350247cbc5951fd9e063cdcda077c0ac8d5f96d58bf739c98940dd47366536c9"
+  }
+}

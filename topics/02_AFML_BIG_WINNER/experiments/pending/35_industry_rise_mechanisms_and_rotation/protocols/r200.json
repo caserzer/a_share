@@ -1,0 +1,10 @@
+{
+  "scope": "R145 repaired leader three tasks plus delayed catchup, both main80 and strict100",
+  "state": "R195 fixed four states, base/state/interaction",
+  "features": "R109 BASE versus ALL, original date ranks before target eligibility, original coverage",
+  "targets": "Return/onset/reversal20/60 and catchup original next-month-end to following-month-end target; horizon0 is calendar-target identifier, not zero-day return",
+  "gates": "Original 300rows18months and classifier train30 each/cal100rows4months10each; no relaxed support",
+  "models": "Ridge10, date weights, Logit C1 tol1e-10 max_iter10000 plus held-past Platt with same settings",
+  "metrics": "IC min20, MSE or Brier; paired regime and leader increments; all periods retained",
+  "boundary": "Exploratory Historical-proxy; no adoption or tuning"
+}

@@ -1,0 +1,17 @@
+{
+  "question": "Propagation of corrected basket construction into financial TTM-change cohorts and dual-clock inference",
+  "scope": "Original R120-R123 full isolated replay, unchanged source financial snapshots, notice/update clocks, losses and denominator rules",
+  "replacements": [
+    "R145 repaired R108 feature grid/member ledger",
+    "R130 monthly panel",
+    "R133 market controls"
+  ],
+  "fixed": [
+    "80 percent and strict100 coverage",
+    "all three task gates and maturity clocks",
+    "ridge penalty and centered ranks",
+    "original family correction and support gates"
+  ],
+  "checks": "Full source aggregation, 840 task folds, model and prediction arithmetic, common clock samples and metrics, outer old/new comparison",
+  "limitations": "Historical-proxy; no new sources, no tuning, no production adoption"
+}

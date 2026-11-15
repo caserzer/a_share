@@ -1,0 +1,8 @@
+{
+  "question": "Does nominal L2 membership coincide with actual R129 priced support at entry and next-rebalance endpoints?",
+  "scope": "Every selected industry entry and exit from R169 top10/R137 top20, current endpoint previous-month membership; inspect source_kind anchors separately; no whole-path execution certification",
+  "source": "Exact R129 receipt stock partitions and hashes; positive conflict-free qfq endpoint and prior-calendar-month-end price, nonmissing equal factor chains",
+  "diagnostics": "Counts of eligible, invalid price, missing/mismatched chain; complete denominator known+unresolved. Compare reconstructed coverage to observed R129 rows; missing/anchor separate. Entry excluded nominal mass includes unresolved and known-unpriced, no zero filling",
+  "membership": "Compare signal-month nominal membership to endpoint previous-month price membership; exit may reflect next snapshot, not fixed stock holdings",
+  "boundary": "Source support and algebra audit, not new prediction/cost model; daily membership eligibility and executed quantities remain unproven"
+}

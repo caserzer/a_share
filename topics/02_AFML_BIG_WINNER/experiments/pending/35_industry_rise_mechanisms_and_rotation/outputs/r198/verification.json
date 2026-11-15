@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "models": 96,
+  "predictions": 1008,
+  "fit_folds": 8,
+  "skip_folds": 12,
+  "classification_folds": 40,
+  "classification_eligible": 0,
+  "normal_equation_error": 1.8041124150158794e-16,
+  "manual_prediction_error": 5.551115123125783e-17,
+  "original_control_rows": 336,
+  "original_control_error": 0.0,
+  "adoption": false,
+  "inputs": {
+    "outputs/r140/cohort_new.parquet": "20a32c65057097eee628149fcaac4d2056ad26b30a8fed156f45f9418b9660aa",
+    "outputs/r140/evaluation/outputs/r64/predictions.json": "0f56f312e0bd26cfb4f94cfc507a23f9f4686b96494ac3d48bdaeb223a0c7050",
+    "outputs/r195/market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "protocols/r64.json": "3b3ad61083201a02bf9a619afaea045d6d162d605ed4a6cd564fd249ca69cc35",
+    "protocols/r65.json": "b3bdeb9e3056396630babe53923192a161a800b57731a55eb81363b779bbbc6f",
+    "protocols/r198.json": "f10a2b89a5032f836e815f1aeab0660fc781b5e03cd80e94d54724f8563ac0d4",
+    "src/regime_battery_r198.py": "cb3fca91c2400da6837a9a88cc87f3f34933debcaf3fb153c4f2e858f23965ee",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/regime_core_r196.py": "728714621888b16e0c36758ac23ac31681eb6f7b6eb4b84a2ce8077d48620bbc",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808"
+  },
+  "outputs": {
+    "predictions.parquet": "35f7d7febcc877a3601e2af889bb3ab40d108f75bbdae77f6f309eda80837059",
+    "models.json": "3e9499de5e46351f116f43b99227b580c5efc5b8cdfa98ef0a7e0b4108e51246",
+    "fold_ledger.json": "3bd7acbc8bdde771dbcc067993da92b86bfa1b7eda849878daba35733de6202c",
+    "classification_ledger.json": "9be5835435c81dfa21566c9c3f3f2e9a49adc97e3311a5584a098d18132756c4",
+    "metrics.csv": "d3ee443c2b2e7db249b205faaf927319dbba04bcd799c6603db7c3be16406f39"
+  }
+}

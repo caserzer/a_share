@@ -1,0 +1,43 @@
+{
+  "adoption": false,
+  "models_refit": 0,
+  "independent_prospective": 0,
+  "stop_parameter_search": true,
+  "scope": "Core F/F reversal20 daily and month-end; all16 families retained",
+  "evidence": [
+    {
+      "path": "outputs/r295/summary.json",
+      "sha256": "88dde77b95abc77ff46c034f2a21016662a3ab19f1c5eca457a6c8ef63e3567d",
+      "verification": {
+        "path": "outputs/r295/independent_verification.json",
+        "sha256": "375a74505c199b147ff28b869ce1175277bd33cf2b16475ec900ccc71876da0f"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r296/summary.csv",
+      "sha256": "4195797e2abfdcc4992c66d53ba64345a9970f568cb852461b1a98a7dd757994",
+      "verification": {
+        "path": "outputs/r296/independent_verification.json",
+        "sha256": "a555c01e7a3620c1194aa4860e57ee5ea470d8e7e1296c56b19d588139670327"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r297/summary.json",
+      "sha256": "fc9c178db57be7d7009f60e86315ca6b8b2db9698094339c4ab31274398f844a",
+      "verification": {
+        "path": "outputs/r297/independent_verification.json",
+        "sha256": "990a855700e32cc78ce758ebdae66517d40d3017741df0c36ec49055a2975876"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    }
+  ],
+  "interpretation": "Calibration changes probabilities, not original ranked alerts; no stable regime increment"
+}

@@ -1,0 +1,16 @@
+{
+  "question": "Does frozen L1 raw Logit sorting outperform original F and 60-day momentum under identical process availability and rules?",
+  "source": "R159 all ready daily scores, same eligible flag, events and years; no extra rows",
+  "scores": {
+    "raw_logit": "original R159 score",
+    "F": "((rank(mom20)+rank(mom60))/2-rank(vol20)+rank(dd60))/3",
+    "momentum": "rank(mom60)"
+  },
+  "ranking_population": "all R159 price-ready rows before weak eligibility, same as raw model feature ranking",
+  "selection": "top ceil20% weak eligible per date; monthly,daily,cooldown20 exactly R09",
+  "primary": "raw_logit versus F, daily_cooldown20; report recall, precision, burden, leads in both years",
+  "secondary": "momentum comparator and other frequencies, no winner selection",
+  "acceptance": "descriptive omitted baseline comparison only; no predictive certification from two reused historical years; no parameter search",
+  "unknown": "retain unknown alert outcomes and six left-censored events; each strategy shares same event denominator",
+  "post_result_missingness_addendum": "Different cooldown selections have different unknown-outcome counts. Report deterministic full-alert success bounds [known_success/all_alerts,(known_success+unknown)/all_alerts] for every method/year/strategy; no label imputation or optimized choice."
+}

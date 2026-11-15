@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "scope": "Maturity, shared cohort and state-known gates; independent linear normal equations; nonlinear fitting not independently certified",
+  "models": 960,
+  "skipped_folds": 820,
+  "nonconverged_models": 0,
+  "linear_max_prediction_error": 6.702971511174383e-15,
+  "prediction_rows": 1142046,
+  "all_independent_mechanisms_complete": false,
+  "adoption": false,
+  "inputs": {
+    "outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "data/l1_monthly_panel.parquet": "3ec486135e6018ca900a53da38078609d682a6b67b78ffbff882fba2ac7f0766",
+    "data/r30_size_control.parquet": "64a08e64dec6a5fb21c858df8f17897529a9a5a7c4e91f70bb3d588455318d89",
+    "outputs/r133/market_controls.parquet": "79aed2b74ed1045bb8e2559025aa4c3ff3c10cfa17aef8ccf76a0d418e22388a",
+    "outputs/r143/evaluation/data/r45_financing_intensity.parquet": "46e32a312a2a5e3dd139db960046dc01e6a2e7a29f2417af32a01c12a177de9a",
+    "outputs/r195/market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "protocols/r199.json": "23dcc2170f32e6e54de6a955cbf8d22285905ba760b46900e12f4b707abb6f36",
+    "src/regime_mechanisms_r199.py": "603fedd39168b4077724b0c48ccba48a1a52586cd7f42b2e5e12f525d70d2270",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808",
+    "src/style_models_r55.py": "3ba1f0a974b00bb75d6bb6e63f588bea8443df4e6cc2468a35c5d70a1e2879fb",
+    "src/size_models_r31.py": "83823a307bab4ac5d98cbee2f1505f08e90aa7bfe133640a466416bbdb6a46a5",
+    "src/margin_models_r46.py": "0b5dc90f9341491e7256c969676213a23db2077fd370281b54b6e42af9dd571d"
+  },
+  "outputs": {
+    "predictions.parquet": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+    "models.json": "00beb8b87f3cfddedea2a9df309ba209999d28dd1670a759320145e28c73ba1a",
+    "fold_ledger.json": "8664b70da7b686d929492c030ae8e1ffe04533fa73476bc01bfb7ecae162acbb",
+    "date_metrics.csv": "5925ea3b6f616f94bfac2d4b2405dcb40d60558187fc3f0163ff87e9a2613a09",
+    "summary.csv": "d81e61cc9104f18edb279008fbd362a5885f49e6d80fe617de9f29fea29e8b1a"
+  }
+}

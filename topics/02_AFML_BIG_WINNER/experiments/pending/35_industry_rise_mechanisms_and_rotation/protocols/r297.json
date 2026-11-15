@@ -1,0 +1,11 @@
+{
+  "question": "Does R295 daily calibration alter actual R287 fixed-capacity alerts?",
+  "inputs": [
+    "outputs/r295/predictions.parquet",
+    "outputs/r287/alerts.parquet",
+    "outputs/r287/origins.parquet",
+    "outputs/r295/folds.json"
+  ],
+  "rules": "All21 frozen variants; rank descending probability then ascending industry_code within era/level/date; ceil20% before outcomes. Monthly completed benchmark month ends; cooldown original >20 sessions no refill. Compare full alert identity, including unknown paths, and event annotations.",
+  "decision": "Identical lists permit conditional reuse of R287-R293 action results, no new predictive evidence; any discrepancy saved before evaluating it. No tuning or fit."
+}

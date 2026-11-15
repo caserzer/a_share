@@ -1,0 +1,9 @@
+{
+  "revision": "R286",
+  "question": "冻结core F/F反转模型能否在修复日频价格母体重放，并精确复现原月末预测？",
+  "scope": "R196已有core/F/F/reversal全部模型与期限资格；不将没有合格参数的60日补拟合。其他机制保留原范围，本轮只检验日频应用依赖。",
+  "inputs": ["outputs/r196/models.json", "outputs/r196/predictions.parquet", "outputs/r196/fold_ledger.json", "outputs/r155/evaluation/data/r09_daily_scores.parquet", "outputs/r195/market_regimes.parquet", "protocols/r242.json", "outputs/r242/episodes.parquet"],
+  "rules": "先在全部price_ready日频母体做原横截面秩；仅使用保存标准化、Logit和Platt参数；按年度和层级选模型。覆盖旧启动eligible/y，反转资格past_excess60>0且mom60>0；原20日标签rel_trough20<=-0.08且目标已知。状态只映射原R195日期。",
+  "evaluation": "先验证共同母体、原月末预测与标签精确重现；日频Brier按日期等权描述，不能称日频校准已认证。没有新状态、阈值或窗口。",
+  "next": "资格及数值重建通过后，沿R242冻结8%相对财富峰值过程定义和次收盘后1..20日匹配，比较日频/月末及去重提示的召回、共同事件提前量与负担。峰值过程不等于原entry-based标签或经济反转。"
+}

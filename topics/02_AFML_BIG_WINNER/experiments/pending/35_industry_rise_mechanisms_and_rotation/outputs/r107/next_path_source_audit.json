@@ -1,0 +1,68 @@
+{
+  "status": "local_source_path_exists_not_factor_validated",
+  "stock_rows": 682461,
+  "stock_months": 117,
+  "first_date": "2017-01-26",
+  "last_date": "2026-09-30",
+  "valid_cap_rows": 518656,
+  "valid_price_rows": 519450,
+  "source_columns": [
+    "month",
+    "date",
+    "security_id",
+    "qfq_close",
+    "close_chain",
+    "raw_close",
+    "total_shares",
+    "share_effective_date",
+    "cap",
+    "listed"
+  ],
+  "source_hashes": {
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/panel.parquet": "c225e35e20c521e294de2aa6b645880dbcccb56ffdf364a10a104ff7f50d3a8e",
+    "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet": "932e6c334860cf3cf9fe26e8cb3aa4359afdc60dd71cb147602f30eabd949f76",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_assignments.parquet": "c39450a47394587d21b7b1c585a30e181ce9494975ccf5b75a407f549a32992d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/size_control_r30.py": "c37677aeee3df5341cf0b5df7e7f7ef75710f4212fd608ea768344d07f7b0863",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v2_full_history_benchmark/src/core.py": "e0be8b3f7e433983d6ba3afad84c50c37209ec40916294d667893a7ba9262522"
+  },
+  "coverage": [
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "industry_months": 6131,
+      "ranking_candidates": 3830
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "industry_months": 13388,
+      "ranking_candidates": 8295
+    },
+    {
+      "era": "SW2021",
+      "level": "L1",
+      "industry_months": 1767,
+      "ranking_candidates": 1209
+    },
+    {
+      "era": "SW2021",
+      "level": "L2",
+      "industry_months": 7467,
+      "ranking_candidates": 6365
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "industry_months": 19159,
+      "ranking_candidates": 14294
+    }
+  ],
+  "limitations": [
+    "month-end capitalization is a proxy for economic leadership",
+    "share effective date is not initial known_at",
+    "all prices are current historical caches, not certified vintage data",
+    "ranking candidate count does not establish lagged common-chain return coverage",
+    "future next_return and entry price columns not read"
+  ],
+  "next_action": "Register prior-month top3 cap versus remaining-member prior-price lead proxy; audit exact consecutive months and chain consistency before outcome comparison; preserve unknown rank members and full industry catalogue"
+}

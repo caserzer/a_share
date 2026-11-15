@@ -1,0 +1,8 @@
+{
+  "question": "Are the154 primary-cutoff nonmonotone capex cases explained by local ingestion/selection errors, observable version changes, or unresolved cross-report source values?",
+  "scope": "Exactly R247 Sep30 capex status nonmonotone; all four source periods and all archived cashflow records for these issuers, original ZIP bytes/receipt hashes; read-only local.",
+  "checks": "Reconcile query_id/source_row/page hash, issuer/period/statement type/capex amount and archive timestamps; rederive latest eligible proxy date and selected value for each period; count distinct local amount vintages, update flags, later Q1 clocks, nonmonotone years.",
+  "classification": "If local values differ, record whether any archived earlier eligible Q1/H1 combination is nonnegative, but never choose older versions to remove anomaly. Identical local values cannot explain true reporting cause. Missing annual-report/revision evidence remains unresolved.",
+  "boundary": "Provider raw response is not company original report. No external downloads, editing raw archive, inferred corrections, financial ranking or model adoption.",
+  "verification": "Independent ZIP decoding with Decimal and selected-date/amount reconstruction; exact issuer set and allcase/year identity checks."
+}

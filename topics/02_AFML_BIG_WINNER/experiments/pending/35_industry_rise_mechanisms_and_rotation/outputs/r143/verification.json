@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "factor_shared_changes": {
+    "members": 0,
+    "margin_known": 0,
+    "cap_known": 0,
+    "ratio_known": 0,
+    "raw_median": 0,
+    "coverage": 0,
+    "financing_intensity": 0
+  },
+  "added_factor_rows": 4657,
+  "added_price_ready": 0,
+  "identical_model_cohort_rows": 4729,
+  "metric_comparisons": [
+    {
+      "family": "r46",
+      "rows": 4,
+      "numeric_equal_1e_12": true,
+      "max_numeric_change": 0.0,
+      "non_numeric_equal": true
+    },
+    {
+      "family": "r47",
+      "rows": 2,
+      "numeric_equal_1e_12": true,
+      "max_numeric_change": 8.673617379884035e-19,
+      "non_numeric_equal": true
+    },
+    {
+      "family": "r48",
+      "rows": 6,
+      "numeric_equal_1e_12": true,
+      "max_numeric_change": 0.0,
+      "non_numeric_equal": true
+    }
+  ],
+  "all_exit_outcomes_checked": 896,
+  "subchecks": {
+    "evaluation/outputs/r45/verification.json": "2beac4f2126ed81ba54ab2c5750501ba24f9ab4577d0eefc46810f2f0d921e42",
+    "evaluation/outputs/r46/verification.json": "222c64a2fdcfd41fb29176721b41cc716f03c2859d7481b07b720b05652597f3",
+    "evaluation/outputs/r47/verification.json": "7969ef24680b415c71c0df7235acf46065a4ca30620791482b96fdf0d6bc224d",
+    "evaluation/outputs/r47/selection_verification.json": "c09901beb09e687a26b7d19794df586e6663124d91954cf823d3d07fb8106a1b",
+    "evaluation/outputs/r48/verification.json": "793379fd7f7e79b561b0e6c60eeacebc8ee0982662e80abdb04fe2baecb3509a"
+  },
+  "direct_price_source_sha256": "a899a28df794d9b4a1c33ca3020659cf9e41ab57f3403ea7cfe22db3bbcca6ac",
+  "verifier_sha256": "fdf53465660527e6cb5e9967d85ef46bcbd1049c1c48d70d5e0e4858eb3834a3"
+}

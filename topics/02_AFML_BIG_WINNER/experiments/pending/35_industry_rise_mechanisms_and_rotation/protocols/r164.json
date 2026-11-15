@@ -1,0 +1,239 @@
+{
+  "question": "Can all 28 definitions retain historical meaning while exposing current repaired evidence and unclosed source gaps?",
+  "policy": "preserve original dictionary byte snapshot; wrap original entry rather than silently rewrite formula/source; per-factor current lineage and interpretation; no model adoption",
+  "mappings": {
+    "mom20/mom60": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "vol20": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "dd60": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "breadth21/breadth63": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "turn_rank504": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "pe_rank504": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "past_excess20/past_excess60": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "log_members": {
+      "status": "repaired_inputs_verified",
+      "interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "evidence": [
+        "outputs/r130/monthly_panel.parquet",
+        "outputs/r131/evaluation_summary.json",
+        "outputs/r132/evaluation/outputs/r01/date_metrics.csv"
+      ]
+    },
+    "dedt_change": {
+      "status": "price_repair_followup_pending",
+      "interpretation": "原R03/R07短样本与时钟限制保留；R146的TTM变化不是本因子的修复证据。",
+      "evidence": [
+        "outputs/r03/summary.csv",
+        "outputs/r07/receipt.json"
+      ]
+    },
+    "margin_delta": {
+      "status": "price_repair_followup_pending",
+      "interpretation": "原R03/R07短样本与时钟限制保留；R146的TTM变化不是本因子的修复证据。",
+      "evidence": [
+        "outputs/r03/summary.csv",
+        "outputs/r07/receipt.json"
+      ]
+    },
+    "industry_spread_inventory": {
+      "status": "continuous_source_missing",
+      "interpretation": "产品价差/供需库存连续序列未补齐；会计库存和公司现金流不能替代。",
+      "evidence": [
+        "outputs/r19/review_receipt.json",
+        "outputs/r153/verification.json"
+      ]
+    },
+    "fixed_fy_eps_revision": {
+      "status": "replayed_no_adoption",
+      "interpretation": "R141修复的是固定财年EPS分支，R162利润值分支另列，不合并称同一实验。",
+      "evidence": [
+        "outputs/r141/comparison.json"
+      ]
+    },
+    "fund_etf_allocation": {
+      "status": "mapping_and_flow_semantics_missing",
+      "interpretation": "R125/126定位有限份额端点，但无合格资金流间隔，历史申万映射未认证。",
+      "evidence": [
+        "outputs/r125/verification.json",
+        "outputs/r126/verification.json"
+      ]
+    },
+    "same_broker_fixed_FY_profit_revision": {
+      "status": "replayed_no_adoption",
+      "interpretation": "R162利润修正12模型642预测不变；严格母体不足，局部诊断非全行业增量。",
+      "evidence": [
+        "outputs/r162/comparison.json",
+        "outputs/r162/verification.json"
+      ]
+    },
+    "PMI_M2_prior_sensitivity_interaction": {
+      "status": "replayed_no_adoption",
+      "interpretation": "R158全量宏观敏感度复核；10主比较无通过项，不调窗口。",
+      "evidence": [
+        "outputs/r158/evaluation/data/r13_sensitivities.parquet",
+        "outputs/r158/evaluation/outputs/r13/increments.csv"
+      ]
+    },
+    "reviewed_company_operating_evidence": {
+      "status": "case_evidence_not_predictor",
+      "interpretation": "原五公司13观测保留；R149至R154的另10公司材料是单独案例，非严格PIT或连续产业数据。",
+      "evidence": [
+        "outputs/r19/review_receipt.json",
+        "outputs/r149/verification.json",
+        "outputs/r153/verification.json",
+        "outputs/r154/basis_contract.json"
+      ]
+    },
+    "typical_member_log_market_cap": {
+      "status": "replayed_no_adoption",
+      "interpretation": "R142规模控制修复并保留微小结果变号，未确立稳定独立增量。",
+      "evidence": [
+        "outputs/r142/summary.json"
+      ]
+    },
+    "china_power_battery_installation_log_yoy": {
+      "status": "replayed_no_adoption",
+      "interpretation": "完整装车量源不因价格修复改变；R140重放收益/分类，样本与增量限制保留。",
+      "evidence": [
+        "outputs/r60/frozen_monthly_series.json",
+        "outputs/r140/comparison.json"
+      ]
+    },
+    "industry_financing_balance_intensity": {
+      "status": "replayed_no_adoption",
+      "interpretation": "R143融资修复，覆盖母体与模型结果另列，不代表资金因果。",
+      "evidence": [
+        "outputs/r143/summary.json",
+        "outputs/r143/evaluation/data/r45_financing_intensity.parquet"
+      ]
+    },
+    "market_beta126": {
+      "status": "repaired_controls_not_full_style",
+      "interpretation": "R133/R135/R136重放共同控制与退出，仍非完整风格控制或有效择时。",
+      "evidence": [
+        "outputs/r133/market_controls.parquet",
+        "outputs/r135/evaluation/outputs/r55/increments.csv",
+        "outputs/r136/evaluation/outputs/r57/summary.csv"
+      ]
+    },
+    "residual_vol126": {
+      "status": "repaired_controls_not_full_style",
+      "interpretation": "R133/R135/R136重放共同控制与退出，仍非完整风格控制或有效择时。",
+      "evidence": [
+        "outputs/r133/market_controls.parquet",
+        "outputs/r135/evaluation/outputs/r55/increments.csv",
+        "outputs/r136/evaluation/outputs/r57/summary.csv"
+      ]
+    },
+    "long_asset_cash_spending_yoy_direction": {
+      "status": "repaired_accounting_evidence",
+      "interpretation": "R147修复会计母体；R154明确现金流与归母利润方向比较不是利润现金含量比率或因果。",
+      "evidence": [
+        "outputs/r147/summary.json",
+        "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+        "outputs/r154/basis_contract.json"
+      ]
+    },
+    "inventory_turnover_days_yoy_evidence": {
+      "status": "repaired_accounting_evidence",
+      "interpretation": "R147修复会计母体；R154明确现金流与归母利润方向比较不是利润现金含量比率或因果。",
+      "evidence": [
+        "outputs/r147/summary.json",
+        "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+        "outputs/r154/basis_contract.json"
+      ]
+    },
+    "capital_cashflow_profit_joint_evidence": {
+      "status": "repaired_accounting_evidence",
+      "interpretation": "R147修复会计母体；R154明确现金流与归母利润方向比较不是利润现金含量比率或因果。",
+      "evidence": [
+        "outputs/r147/summary.json",
+        "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+        "outputs/r154/basis_contract.json"
+      ]
+    },
+    "prior_ranked_leader_follower_return_spread": {
+      "status": "replayed_no_adoption",
+      "interpretation": "R145重放事前规模龙头/跟随者，未获得稳定独立增量，停止变体搜索。",
+      "evidence": [
+        "outputs/r145/summary.json"
+      ]
+    },
+    "price_pe_implied_earnings_decomposition": {
+      "status": "basis_diagnostic_not_economic_attribution",
+      "interpretation": "价格/PE/股本恒等与财务口径核验保留；不能代替现金流驱动证据。",
+      "evidence": [
+        "outputs/r119/branch_evidence.json"
+      ]
+    },
+    "reported_ttm_vs_pe_implied_profit_diagnostic": {
+      "status": "basis_diagnostic_not_economic_attribution",
+      "interpretation": "价格/PE/股本恒等与财务口径核验保留；不能代替现金流驱动证据。",
+      "evidence": [
+        "outputs/r119/branch_evidence.json"
+      ]
+    },
+    "consecutive_reported_ttm_bounded_change": {
+      "status": "replayed_no_adoption",
+      "interpretation": "R146重放TTM盈利变化；模型结果不变，严格覆盖及二元任务样本不足。",
+      "evidence": [
+        "outputs/r146/summary.json"
+      ]
+    }
+  }
+}

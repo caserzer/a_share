@@ -1,0 +1,16 @@
+{
+  "question": "Does H1 versus derived Q2 operating breadth differ within identical historical industry/company membership, and what is lost to coverage?",
+  "source": "R147 repaired R73 full industry/member census; R247 same-cutoff quarter field signs. Primary 2026-09-30, earlier snapshots availability diagnostics only.",
+  "membership": "Original previous-month members, original financial/unknown-identity exclusion and unresolved-count denominator unchanged. Do not restrict to industries that pass.",
+  "variants": [
+    "h1_native: all three H1 signs known under R247 type/clock rules",
+    "h1_common: same companies with all three Q1/Q2 signs known",
+    "q1_common: identical common company sample",
+    "q2_common: identical common company sample"
+  ],
+  "gates": "Original at least5 known and >=80 percent of members+unresolved. Unknowns never zero. Fractions only if gate passes; capex-conditioned coherence additionally requires positive capex-up denominator.",
+  "metrics": "Equal-company capex/ocf/profit up fractions; all-three-up share; original capex-up-conditioned (both ocf/profit up minus both down)/capex-up. Amount deltas sign only, no new thresholds.",
+  "comparisons": "H1_common minus H1_native isolates available-company selection on same H1 measurement. Q2_common minus H1_common and Q2_common minus Q1_common compare measurements on same known companies. Retain both-gate-fail and capex-zero reasons.",
+  "boundary": "Derived proxy and unverified restatement consistency inherited. Cross-industry overlap and one quarter transition prevent independence/stability claims. No prices, fitting, weights, adoption or causal inference.",
+  "verification": "All membership identities, original catalogue/denominators and scalar source-sign recomputation; all group fractions and paired differences; preserve full census."
+}

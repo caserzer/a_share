@@ -1,0 +1,19 @@
+# R139 修复研究统一入口
+
+想验证什么：近期R129—R138修复结果已经逐项验证，但current_sources的旧槽位仍指向原实验。直接覆盖会破坏旧实验验证器对历史产物的约束。需要一个可实际读取新版本、拒绝损坏输入、并明确未重验范围的本地入口。
+
+实现：保留42项旧槽位和路径，新增corrected_research_entry指向outputs/r139/release.json。修复入口覆盖14项数据、模型、排序、共同控制、分类、退出、组合、不可变推断、贡献与证据产物。每项必须匹配R138封存快照的SHA256，且关联的独立验证状态为PASS。每次读取都重新检查产物和验证记录哈希；不因文件名相同或记录写有PASS而跳过内容检查。
+
+实际调用：项目Python运行src/run_local.py current可读修复版本摘要；src/research_entry_r139.py --key integrated_historical_task_evidence解析到R138监控，--key three_task_price_models解析到R131模型。未被采用的键拒绝查询，不自动回落旧版本。入口只读取本地研究产物，不训练、不联网、不调度或部署。
+
+结果：14项修复路径通过校验；42项旧来源路径保留，其中34项不属于已采用的替换范围，逐项列为retained_historical_not_revalidated_by_basket_repair。该标签不是34个模型失败，也不是34项都必须重跑。字典和总体要求仍沿用R124历史证据，16项整体要求没有因入口接通变为完成。
+
+验证：实际执行本地current命令，并独立核查路径、封存哈希、旧来源路径保留及不替换未审查来源。新增测试覆盖正常读取、数据被修改、验证文件缺失、验证失败但哈希更新、请求未采用旧键这五种情形。后四种必须拒绝，而不能显示旧结果。
+
+反思：本轮解决版本使用和可追溯性，不增加经济机制、领先预测或成本后配置证据。全部输出仍Historical-proxy，模型修复不等于参数有效。既有原始脚本保留其历史输入语义，current是明确的修复读取入口，而非声称所有实验自动迁移。
+
+剩余工作的直接证据：battery_pilot_r64.py第10、13行分别读旧data/monthly_panel.parquet和data/r54_market_controls.parquet，expectation_r29.py第14行也读旧月度面板。下一轮优先对R64冻结母体和拟合输入做修复影响检查，再按证据决定是否重跑；仍不得按效果改窗口或阈值。
+
+产物：release.json包含已采用映射及未重验旧路径；prior_current_sources.json、prior_progress_manifest.json保留采用前证据；receipt.json、verification.json记录检查。整体active_not_complete。
+
+集成中发现常规维护会重写总体要求证据的哈希，初次检查将这一合法刷新误当作旧路径被替换。已改为强制保持旧路径、校验最新内容哈希，并在legacy_registry_refreshes逐项记录采用前后哈希；失败日志保留。未放宽已采用修复产物的封存哈希约束。

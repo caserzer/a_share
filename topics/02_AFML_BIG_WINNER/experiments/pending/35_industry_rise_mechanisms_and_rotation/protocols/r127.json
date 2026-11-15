@@ -1,0 +1,12 @@
+{
+  "question": "Can a cutoff-bounded SW2021 L1 basket rebuild reproduce R05 and append October without rewriting September?",
+  "scope": "All existing L1 assignments and verified normalized stock partitions; existing local sources only. No labels, fitting or acquisition. L2/L3 update not implemented in this round.",
+  "cutoffs": [
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "rules": "Preserve R05 prior-month membership, unresolved denominator, 80% coverage, minimum five members, float32 stock relative returns, chain/conflict rules, anchor and gap blocks. Use only stock/calendar rows <= cutoff and assignments from months strictly before cutoff month.",
+  "comparison": "All DAILY columns and keys vs R05 prefix; R102 regenerated features vs existing R102 outputs, 1e-12 tolerance. Any differences are failures, not tuned away.",
+  "append": "Identity-key merge accepts exact duplicate rows; rejects changed historical rows and unseen rows on/before previous max date. New source revisions require a separate full version.",
+  "boundaries": "Historical-proxy and local replay; no new market data, no first-vintage certification, no deployment or model adoption. Full-prefix rebuild is not efficient incremental computation."
+}

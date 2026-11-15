@@ -1,0 +1,14 @@
+{
+ "round":"R54",
+ "task":"Build missing market exposure controls before any outcome comparison",
+ "rationale":"Size alone cannot exclude high market beta or idiosyncratic volatility as explanations for diffusion/industry signals. Existing PE historical percentile measures within-company valuation position, not cross-industry value, so it is not silently relabeled a full value style control.",
+ "population":"All existing SW2014/SW2021 L1/L2/L3 monthly identities, separately; no new membership",
+ "inputs":"Frozen industry daily NAV, CSI_ALL close, existing monthly dates and size control; read feature-only columns",
+ "window":126,
+ "formula":"126 paired one-session arithmetic returns: beta=cov(industry,market)/var(market), residual_vol=sqrt(max(var(industry)-cov^2/var(market),0)*252), ddof1",
+ "timing":"inclusive signal close, next-close entry in later experiments; need127 contiguous common-market-session prices within same industry block; no forward fill",
+ "missing":"any missing return, gap, nonpositive price, insufficient window or nonpositive market variance gives unknown; no threshold optimization",
+ "coverage":"full catalogue denominator; price complete, size complete, beta/vol complete and joint coverage separately",
+ "limits":"historical reconstructed NAV and membership, not strict PIT; beta/idiosyncratic volatility plus size are partial controls, not complete value/growth/liquidity/profitability styles",
+ "next":"same-cohort FS versus FS+beta+residual-vol, then diffusion incremental comparison under frozen R31 labels and fitting rules; protocol before outcomes"
+}

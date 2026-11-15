@@ -1,0 +1,16 @@
+{
+  "question": "Does total return MSE hide cross-sectional predictive information?",
+  "scope": "All R131 frozen return test predictions; same cohorts, years, horizons; no fitting or selection",
+  "identity": "mean((p-y)^2)=(mean(p)-mean(y))^2+mean(((p-mean(p))-(y-mean(y)))^2)",
+  "baseline": "R131 fixed training mean; centered baseline is zero, centered baseline MSE=population variance(y)",
+  "aggregation": "Industry equal within date, date equal within fold; same mature identities for baseline and model; unknown outcomes counted separately",
+  "comparison": "Each extension versus F within exact same cohort/fold/date/identity, report centered and common error improvements separately",
+  "primary_horizon": 20,
+  "secondary_horizon": 60,
+  "limits": [
+    "Ex-post centering of targets is diagnostic only, never deployable mean correction",
+    "Centered magnitude MSE is not identical to ranking; report Spearman IC separately",
+    "Folds correlated; no win counts as success probability",
+    "Repeated historical data, no new prospective evidence"
+  ]
+}

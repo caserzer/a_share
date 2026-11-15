@@ -1,0 +1,16 @@
+{
+  "question": "Do repaired observations retain correct mature outcomes with evaluation-time availability filtering?",
+  "origins": [
+    "2026-06-30",
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "evaluation_asof": "2026-10-21",
+  "historical_regression": {
+    "origin": "2026-06-30",
+    "asof": "2026-07-15"
+  },
+  "rules": "Adapt R129 per evaluation cutoff; truncate L1 and market by date; fail on future/unknown clocks; same 20/60 next-close outcomes; preserve snapshots and later evaluations",
+  "baseline": "R179 repaired evaluations retained as historical comparison only",
+  "prospective_records": 0
+}

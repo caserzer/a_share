@@ -1,0 +1,35 @@
+{
+  "factor": "capital_cashflow_profit_joint_evidence",
+  "version": "R154 basis addendum",
+  "numerical_definition_unchanged": true,
+  "cashflow": {
+    "field": "n_cashflow_act",
+    "basis": "consolidated_operating_cashflow",
+    "comparison": "same-report-period current versus prior year, signed amount comparison"
+  },
+  "profit": {
+    "field": "n_income_attr_p",
+    "basis": "parent_attributable_net_profit",
+    "comparison": "same-report-period current versus prior year, signed amount comparison"
+  },
+  "capital_spending": {
+    "field": "c_pay_acq_const_fiolta",
+    "basis": "consolidated_cash_paid_for_long_term_assets",
+    "comparison": "current greater than prior, nonnegative amount required"
+  },
+  "aggregation": "Counts and proportions of common eligible nonfinancial issuer members; at least 5 and 80 percent coverage",
+  "ratio_of_cashflow_to_profit": false,
+  "meaning": "Co-direction or divergence of two explicitly different accounting measures; not profit-to-cashflow reconciliation",
+  "prohibited_interpretations": [
+    "consolidated profit conversion ratio",
+    "cash attributable to parent shareholders",
+    "accounting identity",
+    "causal investment payoff",
+    "predictive probability"
+  ],
+  "negative_profit": "valid signed comparison, not percentage growth",
+  "small_or_zero_profit": "no profit denominator used",
+  "strict_pit_certified": false,
+  "historical_model_admitted": false,
+  "local_pdf_substitution": false
+}

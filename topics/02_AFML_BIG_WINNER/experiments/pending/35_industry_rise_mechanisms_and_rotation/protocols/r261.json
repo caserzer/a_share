@@ -1,0 +1,15 @@
+{
+  "revision": "R261",
+  "question": "On identical industry members, does the financing-intensity median increase reflect balance or market-cap changes?",
+  "sources": [
+    "outputs/r143/evaluation/data/r45_financing_intensity.parquet",
+    "outputs/r260/pairs.parquet",
+    "data/l1_assignments.parquet"
+  ],
+  "population": "Union of exact consecutive source-month industry rows; separate eras/levels. Same instrument and security must belong to that industry under each endpoint prior-month membership. R260 positive complete endpoints; zero balances excluded explicitly vs original R45.",
+  "gate": "At least5 complete common companies AND common_count/original_previous_members>=0.8 AND common_count/original_current_members>=0.8; preserve all failed rows. Original member denominator verified against membership source.",
+  "decomposition": "On fixed complete common set, f_ij=median(B_i/M_j), M=P*S. Balance=.5[(f10-f00)+(f11-f01)]; cap=.5[(f01-f00)+(f11-f10)]; sum exactly f11-f00. This is symmetric algebraic decomposition, not causal attribution or sum of medians of log changes.",
+  "comparison": "Preserve native endpoint medians and eligibility separately, common endpoint median changes, native/common change discrepancy and membership exits/entries. No predictive label reads or model fit.",
+  "limits": "Historical-proxy, lagged financing snapshot vs signal-date cap, uncertain share publication. Common gate strengthens endpoint qualification; no implicit coverage relaxation.",
+  "source_presence_clarification": "Both native industry endpoint rows required for common qualification; union-only rows remain unknown even when membership history exists. Clarified during pre-verification, initial summary preserved."
+}

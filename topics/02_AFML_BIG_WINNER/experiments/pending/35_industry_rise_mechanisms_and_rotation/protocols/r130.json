@@ -1,0 +1,9 @@
+{
+  "question": "How does the deterministic basket repair change delayed outcomes, three-task labels and original R02 fold eligibility/payloads?",
+  "scope": "R129 full daily version through 2026-10-21, all SW2014/SW2021 L2/L3; original R02 five cohorts and years2020..2026. L1 unchanged and excluded. No retraining this round.",
+  "labels": "Original next-close entry and h20/60 maturity, return/excess/relative trough computed within repaired continuous segments; reset boundaries never bridged; unknown remains unknown.",
+  "folds": "Original target(), train_masks(), all18month/300row/class/calibration gates; record no-test folds explicitly. Compare date/identity, y, maturity and cross-sectional ranked inputs in fit/cal/test.",
+  "controls": "Original market and existing PE/turnover expansion fields reused unchanged; no new factor/threshold tuning.",
+  "verification": "Direct calendar-index outcome formulas independent of rolling/shift label implementation, all monthly records; reproduce original fold ledger counts/status on baseline where original has test rows.",
+  "decision": "Identify necessary retraining/evaluation scope, do not infer unaffected training from unchanged current frozen predictions. Historical-proxy remains."
+}

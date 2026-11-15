@@ -1,0 +1,17 @@
+{
+  "round": "R65",
+  "question": "Can the completed battery series support the independently defined onset and reversal tasks?",
+  "data": "R64 complete controls panel; separate L2 battery and L3 lithium battery; do not pool overlapping industries",
+  "labels": "unchanged R02 onset/reversal20/60",
+  "split": "unchanged R02 annual fit maturity before prior July1, calibration prior July-Dec mature before Jan1",
+  "gates": {
+    "train_rows": 300,
+    "train_months": 18,
+    "train_each_class": 30,
+    "cal_rows": 100,
+    "cal_months": 4,
+    "cal_each_class": 10
+  },
+  "purpose": "Feasibility audit, not a classifier fit or a negative predictive finding",
+  "stop": "Report every failed gate; do not reduce class/calibration thresholds or emit uncalibrated probabilities. A short singleton return pilot does not authorize weaker classification gates."
+}

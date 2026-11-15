@@ -1,0 +1,27 @@
+{
+  "question": "Impact of R24 source-field exclusions on frozen R14 events and controls",
+  "estimand": "industry price around observed broker report revisions; not an industry consensus factor and not a capacity-constrained strategy",
+  "scope": "R11 locally cached selected reports, profit_cny only, same stock/broker/explicit FY; FY=publication year+1 main; L2/L3 separately",
+  "events": "each unique stock/broker/FY/publication date; simultaneous unequal values invalid; predecessor is immediately preceding observed date, <=365 days; do not skip invalid predecessor; signed symmetric revision, zero stays flat",
+  "timing": "signal = first exchange session strictly after proxy publication date; prior window ends prior session; reaction=signal close/prior close; entry next session close; post20/60 from entry; no same-day claim",
+  "mapping": "signal prior-calendar-month historical membership, no current membership; median brokers within company, then median companies per industry/signal date/FY; denominator and simultaneous-event firms retained",
+  "windows": "pre20/pre60 ending signal-1; reaction1; post20 main/post60 secondary from signal+1; require full continuous basket block, unknown not zero",
+  "comparators": "all industry-date price contexts; exact era/level/signal date; prior20 excess quintiles formed without outcomes; non-event industries in same quintile with >=3 complete controls; report pre60, reaction and future; no replacement or averaging incomplete controls",
+  "aggregation": "up/down/flat; industry-event means and date-equal means separately, dates/industries/year coverage; FY and hierarchy overlap disclosed",
+  "inference": "descriptive mechanism timing audit, not causal inference or predictive acceptance; no threshold optimization; no new positive model claim",
+  "limitations": [
+    "selected monthly-latest archived reports are not complete broker event history",
+    "not all revisions within365 days are observed; predecessor means previous cached report",
+    "publication clock reconstructed from body/list; archived2026-10",
+    "matching prior20 only does not control all style, fundamentals or anticipation"
+  ],
+  "pre_result_integrity_addendum": "Before inspecting initial event outcomes: raw extraction has33 profit-conflict reports and many missing fields; include every cached same-company/broker report date as a barrier for each observed fiscal year. Missing, excluded or conflicted profit is NaN. A usable event cannot skip an intervening unusable report, even if the older usable value is within365days. Initial unreviewed run preserved, not used for selection.",
+  "source_overlay": "data/r24_source_exclusion_overlay.parquet",
+  "constraints": [
+    "Keep all report barriers",
+    "Exact R14 source code apart from source/output/protocol routing",
+    "No tuning or new outcome-conditioned selection",
+    "Compare event membership and values, remaining controls and summaries, preserve originals"
+  ],
+  "baseline_code_sha256": "26c3068dac2c9347c11c6ae95ec2770566b4e63587e08d79946f4dd5b3dddb85"
+}

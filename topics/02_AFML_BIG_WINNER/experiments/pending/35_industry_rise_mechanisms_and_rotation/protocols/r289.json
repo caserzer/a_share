@@ -1,0 +1,7 @@
+{
+  "question": "原入场后20日相对最低回报标签和峰值回撤事件如何重叠，是否导致对随机参照的评价方向不同？",
+  "inputs": ["outputs/r287/origins.parquet", "outputs/r287/alerts.parquet", "outputs/r288/random_reference.csv", "outputs/r288/comparisons.csv"],
+  "design": "冻结全部每日/月末候选和提示；分别给label=0/1/unknown与event=0/1/unknown九格计数。event只有complete_path时可判0或1，其余unknown。全候选、同容量随机期望与base/state/interaction同时列出。",
+  "metrics": "原标签已知提示命中率；完整路径条件的原标签命中率；随机率用期望正例数/期望已知数，明确不是随机精度比值的期望。按日期ceil(N/5)/N加权，未知不能归零。只描述与原标签的一致性，不宣称新能力。",
+  "no_change": "不更换训练标签、不修改原事件、不调整阈值或提示容量，不重新拟合。"
+}

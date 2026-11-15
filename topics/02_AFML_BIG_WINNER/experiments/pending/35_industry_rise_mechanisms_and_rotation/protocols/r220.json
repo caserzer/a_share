@@ -1,0 +1,9 @@
+{
+  "round": 220,
+  "scope": "All frozen reversal predictions R196/R199/R200, every original model identity/horizon and regime. R201 classifier gates remain failed.",
+  "selection": "R10/R166 highest ceil20% probability per date/model, industry-code tie break, before future coverage filtering",
+  "economics": "Existing holding normalized1 at next close. Hold liquidation=(1+R)*(1-c); exit cash=1-c; market switch=(1-c)^3*(1+M). c=0/.002/.005; no future reentry inferred.",
+  "paths": "Original monthly next close to horizon, R129+L1 continuous blocks and CSI_ALL. Original known y reconciled using min relative wealth; preserve unknown labels and paths.",
+  "metrics": "Policy gain per eligible industry (unalerted zero action), alert-only gain, precision/recall among known labels, unknown counts, alert workload, wrong absolute/relative exits, missed positive gains and avoided losses; date equal.",
+  "limits": "Overlapping independent holding decisions not continuous portfolio, no compounding or deployable exit recommendation; no threshold/model search."
+}

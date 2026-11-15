@@ -1,0 +1,585 @@
+[
+  {
+    "family": "core_three_tasks",
+    "source": "outputs/r196/predictions.parquet",
+    "source_sha256": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+    "rows": 650337,
+    "task_horizon_counts": [
+      {
+        "task": "onset",
+        "horizon": 20,
+        "rows": 101277
+      },
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 269691
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 198195
+      },
+      {
+        "task": "reversal",
+        "horizon": 20,
+        "rows": 81174
+      }
+    ],
+    "tasks": [
+      "onset",
+      "return",
+      "reversal"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2020-01-23 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2014",
+      "SW2021"
+    ],
+    "known_targets": 598722
+  },
+  {
+    "family": "l1_three_tasks",
+    "source": "outputs/r196/predictions.parquet",
+    "source_sha256": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+    "rows": 15066,
+    "task_horizon_counts": [
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 9207
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 5859
+      }
+    ],
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2024-01-31 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L1"
+    ],
+    "eras": [
+      "SW2021"
+    ],
+    "known_targets": 13950
+  },
+  {
+    "family": "rank_target",
+    "source": "outputs/r196/predictions.parquet",
+    "source_sha256": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+    "rows": 482952,
+    "task_horizon_counts": [
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 278898
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 204054
+      }
+    ],
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2020-01-23 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2014",
+      "SW2021"
+    ],
+    "known_targets": 438534
+  },
+  {
+    "family": "market_style",
+    "source": "outputs/r199/predictions.parquet",
+    "source_sha256": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+    "rows": 524988,
+    "task_horizon_counts": [
+      {
+        "task": "onset",
+        "horizon": 20,
+        "rows": 90780
+      },
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 181032
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 181032
+      },
+      {
+        "task": "reversal",
+        "horizon": 20,
+        "rows": 72144
+      }
+    ],
+    "tasks": [
+      "onset",
+      "return",
+      "reversal"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2020-01-23 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2014",
+      "SW2021"
+    ],
+    "known_targets": 480552
+  },
+  {
+    "family": "battery",
+    "source": "outputs/r198/predictions.parquet",
+    "source_sha256": "35f7d7febcc877a3601e2af889bb3ab40d108f75bbdae77f6f309eda80837059",
+    "rows": 1008,
+    "task_horizon_counts": null,
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2025-01-27 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2021"
+    ],
+    "known_targets": 912
+  },
+  {
+    "family": "eps_expectations",
+    "source": "outputs/r197/predictions.parquet",
+    "source_sha256": "c0d9ce2d5e02a5f8035f79d0553a77ed03b11122e1a4d0fcc0bea05b56e257c1",
+    "rows": 13176,
+    "task_horizon_counts": null,
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2025-01-27 00:00:00",
+    "date_max": "2026-07-31 00:00:00",
+    "levels": [
+      "L1"
+    ],
+    "eras": [
+      "SW2021"
+    ],
+    "known_targets": 13140
+  },
+  {
+    "family": "size_diffusion",
+    "source": "outputs/r199/predictions.parquet",
+    "source_sha256": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+    "rows": 588228,
+    "task_horizon_counts": [
+      {
+        "task": "onset",
+        "horizon": 20,
+        "rows": 91488
+      },
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 242196
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 182088
+      },
+      {
+        "task": "reversal",
+        "horizon": 20,
+        "rows": 72456
+      }
+    ],
+    "tasks": [
+      "onset",
+      "return",
+      "reversal"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2020-01-23 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2014",
+      "SW2021"
+    ],
+    "known_targets": 543432
+  },
+  {
+    "family": "financing",
+    "source": "outputs/r199/predictions.parquet",
+    "source_sha256": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+    "rows": 28830,
+    "task_horizon_counts": [
+      {
+        "task": "onset",
+        "horizon": 20,
+        "rows": 3042
+      },
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 14622
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 8478
+      },
+      {
+        "task": "reversal",
+        "horizon": 20,
+        "rows": 2688
+      }
+    ],
+    "tasks": [
+      "onset",
+      "return",
+      "reversal"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2024-01-31 00:00:00",
+    "date_max": "2026-04-30 00:00:00",
+    "levels": [
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2021"
+    ],
+    "known_targets": 28788
+  },
+  {
+    "family": "profit_events",
+    "source": "outputs/r205/predictions.parquet",
+    "source_sha256": "299c7f871772a0c06980f4ffb5a7641a881106f105d15545791677c4d949c5d2",
+    "rows": 107232,
+    "task_horizon_counts": null,
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2024-01-02 00:00:00",
+    "date_max": "2026-04-30 00:00:00",
+    "levels": [
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2021"
+    ],
+    "known_targets": 105408
+  },
+  {
+    "family": "leader_catchup",
+    "source": "outputs/r200/predictions.parquet",
+    "source_sha256": "edba4f119fbab8f8a472d49779b87344afae9a2bc1cdd26ff8caad35bc10e383",
+    "rows": 625098,
+    "task_horizon_counts": [
+      {
+        "task": "catchup",
+        "horizon": 0,
+        "rows": 159870
+      },
+      {
+        "task": "onset",
+        "horizon": 20,
+        "rows": 81474
+      },
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 159870
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 159870
+      },
+      {
+        "task": "reversal",
+        "horizon": 20,
+        "rows": 64014
+      }
+    ],
+    "tasks": [
+      "catchup",
+      "onset",
+      "return",
+      "reversal"
+    ],
+    "horizons": [
+      0,
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2020-01-23 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2014",
+      "SW2021"
+    ],
+    "known_targets": 554520
+  },
+  {
+    "family": "financial_dual_clock",
+    "source": "outputs/r201/predictions.parquet",
+    "source_sha256": "cd3d3fdd0d97954b763c141faf7a80fdda3b5f1a639e300a769e4819e0844e5f",
+    "rows": 6297,
+    "task_horizon_counts": [
+      {
+        "task": "return",
+        "horizon": 20,
+        "rows": 3951
+      },
+      {
+        "task": "return",
+        "horizon": 60,
+        "rows": 2346
+      }
+    ],
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2025-01-27 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L3"
+    ],
+    "eras": [
+      "SW2021"
+    ],
+    "known_targets": 5283
+  },
+  {
+    "family": "macro_interaction",
+    "source": "outputs/r202/scores.parquet",
+    "source_sha256": "d2cf27be9a0d3d3ebe4706f366e80f27d599b0e3142d1941fb68716b09e4a7e4",
+    "rows": 358182,
+    "task_horizon_counts": null,
+    "tasks": [
+      "rolling_score"
+    ],
+    "horizons": [
+      "shared_score_for20_and60"
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2019-09-30 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2014",
+      "SW2021"
+    ],
+    "known_targets": null
+  },
+  {
+    "family": "profit_expectations",
+    "source": "outputs/r197/predictions.parquet",
+    "source_sha256": "c0d9ce2d5e02a5f8035f79d0553a77ed03b11122e1a4d0fcc0bea05b56e257c1",
+    "rows": 1926,
+    "task_horizon_counts": null,
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2026-01-30 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L2"
+    ],
+    "eras": [
+      "SW2021"
+    ],
+    "known_targets": 1782
+  },
+  {
+    "family": "fixed_factor_rank",
+    "source": "outputs/r204/predictions.parquet",
+    "source_sha256": "52d987acdabb6b77bffc4c1e97606f0aa8de06bcbb7ffa92e931af592bdf0196",
+    "rows": 743440,
+    "task_horizon_counts": null,
+    "tasks": [
+      "return"
+    ],
+    "horizons": [
+      20,
+      60
+    ],
+    "variants": [
+      "base",
+      "fixed",
+      "interaction",
+      "state"
+    ],
+    "date_min": "2020-01-23 00:00:00",
+    "date_max": "2026-09-30 00:00:00",
+    "levels": [
+      "L2",
+      "L3"
+    ],
+    "eras": [
+      "SW2014",
+      "SW2021"
+    ],
+    "known_targets": 674552
+  },
+  {
+    "family": "capital_accounting",
+    "rows": 0,
+    "tasks": [],
+    "horizons": [],
+    "reason": "Original six-period data fail prior training history; state diagnostics retained"
+  },
+  {
+    "family": "early_financial",
+    "rows": 0,
+    "tasks": [],
+    "horizons": [],
+    "reason": "Original six-period data fail prior training history; state diagnostics retained"
+  }
+]

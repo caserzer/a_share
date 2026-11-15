@@ -1,0 +1,9 @@
+{
+  "question": "R78缺失行情日期处于源行情覆盖边界还是内部，是否超出本地上市退市元数据日期？",
+  "scope": "全部absent_dates>0的去重origin/security_id；冻结R17选择、R77价格与交易日历",
+  "geometry": "before_first_observation / after_last_observation / internal；互斥逐缺失日期",
+  "metadata": "独立标记missing_date<listing_date和missing_date>delist_date；等于退市日不作排除；日期冲突保留，不以首个报价推定上市",
+  "prohibitions": "不填价、不剔除持仓、不推定停牌、不以Historical-proxy日期证明可交易或严格PIT",
+  "verification": "全部缺失股票日期逐日独立复核，核验输入哈希及R78缺失计数；报告股票日期去重与股票交易日去重",
+  "next_decision": "内部缺口需要原始行情或交易状态证据；边界问题先追身份/来源而非收益调参"
+}

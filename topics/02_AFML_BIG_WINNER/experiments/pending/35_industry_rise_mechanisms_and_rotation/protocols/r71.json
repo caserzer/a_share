@@ -1,0 +1,13 @@
+{
+  "round": "R71",
+  "purpose": "Missing contemporaneous comparison for R70; observational not causal",
+  "population": "R70 nonfinancial jointly observed members; same industry/period and same complete data for both groups",
+  "groups": "capex_current>capex_prior versus <=; no threshold optimization",
+  "outcomes": [
+    "both_improve",
+    "both_decline"
+  ],
+  "report": "pooled rates across all complete members; within-industry contrasts for R70 coverage gate pass AND >=5 companies in each group; retain all industry records and reasons",
+  "standardization": "eligible industries weighted by their total joint sample size, same weights for both groups; also equal-industry mean contrast; separately pooled rates on same eligible industries",
+  "limits": "no causal adjustment for size/selection or investment timing; no p-values for correlated/nested periods and levels; no future returns, model or trading"
+}

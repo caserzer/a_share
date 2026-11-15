@@ -1,0 +1,45 @@
+"""Verify selections independently of portfolio engine, including unknown paths."""
+from common import *
+import pandas as pd
+
+def run():
+ out=ROOT/'outputs/r189';proof=json.loads((out/'verification.json').read_text())
+ for path,h in proof['inputs'].items():assert sha(path)==h
+ for path,h in proof['outputs'].items():assert sha(out/path)==h
+ p=pd.read_parquet(ROOT/'outputs/r131/predictions.parquet');p=p[p.task.eq('return')]
+ prices=pd.read_parquet(ROOT/'outputs/r129/daily_2026-10-21.parquet');market=pd.read_parquet(CACHE/'forecast_v5/CSI_ALL.parquet').close
+ cal=pd.DatetimeIndex(market.index);lookup={k:v.set_index('date') for k,v in prices.groupby(KEY)}
+ holdings=pd.read_parquet(out/'holdings.parquet');intervals=pd.read_csv(out/'intervals.csv',parse_dates=['origin','entry','exit']);checked=0
+ k=['era','level','cohort','horizon','method']
+ for key,g in intervals.groupby(k):
+  drift={}
+  for rec in g.sort_values('origin').to_dict('records'):
+   s=p
+   for c in ['era','level','cohort','horizon']:s=s[s[c].eq(rec[c])]
+   s=s[s.date.eq(rec['origin'])&s.method.eq('F' if rec['method']=='equal' else rec['method'])]
+   hh=holdings
+   for c in k:hh=hh[hh[c].eq(rec[c])]
+   hh=hh[hh.origin.eq(rec['origin'])]
+   if s.empty:assert rec['status']=='missing_prediction' and hh.empty;drift={};continue
+   ordered=sorted(s.to_dict('records'),key=lambda x:(-x['prediction'],x['industry_code']))
+   selected=ordered if rec['method']=='equal' else ordered[:max(1,int(np.ceil(len(s)*.2)))]
+   codes={x['industry_code'] for x in selected};assert codes==set(hh.industry_code);assert np.allclose(hh.weight,1/len(codes))
+   dates=cal[(cal>=rec['entry'])&(cal<=rec['exit'])];factors={};bad=[]
+   for c in codes:
+    a=lookup.get((rec['era'],rec['level'],c))
+    if a is None:bad.append(c);continue
+    a=a.reindex(dates)
+    if a.nav.isna().any() or len(set(a.block.dropna()))!=1:bad.append(c);continue
+    factors[c]=float(a.nav.iloc[-1]/a.nav.iloc[0])
+   if bad:assert rec['status']=='missing_selected_path';drift={};continue
+   assert rec['status']=='valid'
+   end=sum(factors.values())/len(codes)
+   buy=sum(max(1/len(codes)-drift.get(c,0),0) for c in codes)
+   sell=sum(max(w-(1/len(codes) if c in codes else 0),0) for c,w in drift.items())
+   t=buy+sell
+   assert abs(t-rec['turnover'])<1e-12 and abs(end-1-rec['gross'])<1e-12
+   for cost,rate in [('net20',.002),('net50',.005)]:assert abs((1-rate*t)*end-1-rec[cost])<1e-12
+   drift={c:f/len(codes)/end for c,f in factors.items()};checked+=1
+ js(out/'independent_verification.json',dict(status='PASS',valid_intervals_checked=checked,scope='Independent selection sorting, full calendar path coverage/block, endpoint value, buys plus sells and fee algebra',verifier_sha256=sha(__file__),receipt_sha256=sha(out/'verification.json')))
+ print('PASS',checked)
+if __name__=='__main__':run()

@@ -1,0 +1,21 @@
+{
+  "round": 307,
+  "prior_turn": "progress: R306 completed conditional risk contrasts, identified changing onset cohorts",
+  "question": "Holding base onset alerts fixed, does reversal state/interaction improve risk separation?",
+  "rules": [
+    "Use R306 base onset observations, dual eligibility and common source dates; keep every unknown outcome",
+    "Attach original R287 reversal membership separately for base/state/interaction with same strategy; do not recompute ranking or capacity",
+    "Calculate alerted minus unalerted mean for7 frozen metrics; common primary dates require all3 variants have both groups and every fixed-cohort path complete",
+    "Save per-variant support and all-date coverage; missing comparison remains unknown",
+    "Compare state-base and interaction-base contrast on identical common dates, equal-date and annual summaries; retain24month/3year qualification",
+    "Larger risk/hit contrast indicates better historical separation only; terminal-return contrast not trading PnL. No cost or causal claim",
+    "Same global reversal capacity does not imply same count within base-onset subset; record counts, no silent rebalance",
+    "No new training, parameter search, adoption or external collection"
+  ],
+  "inputs": [
+    "outputs/r306/alert_observations.parquet",
+    "outputs/r306/independent_verification.json",
+    "outputs/r287/alerts.parquet",
+    "outputs/r306/date_contrasts.parquet"
+  ]
+}

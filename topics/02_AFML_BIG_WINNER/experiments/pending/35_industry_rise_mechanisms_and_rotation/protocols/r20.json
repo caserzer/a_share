@@ -1,0 +1,17 @@
+{
+  "question": "Can reviewed company facts be attached to historical industry identities without treating selected issuer disclosures as full-industry or leading evidence?",
+  "scope": "13 reviewed facts, five issuers, SW2021 full L1/L2/L3 catalogue; no new collection or outcome-fitting",
+  "asofs": ["2026-09-30", "2026-10-21"],
+  "clocks": {
+    "publication_proxy": "inherited publication date strictly before observation date; first-release chain not certified",
+    "inherited_archive": "original recorded_at before Shanghai end-of-day; historical archive metadata not equivalent to current verified possession",
+    "ep35_acquisition": "actual EP35 fetched_at before Shanghai end-of-day"
+  },
+  "identity": "previous calendar-month membership only, exact exchange-qualified instrument; issuer-to-industry membership is not business-segment-to-industry assignment; ambiguous issuer identities remain unmapped",
+  "coverage": "distinct observed issuers / distinct identified member security IDs; report known-member and unresolved counts separately; missing membership denominator stays unknown; selected sample coverage is not representativeness",
+  "aggregation": "retain all facts and company directions separately, no aggregate score or industry stage probability, no sector extrapolation, no multiplication of independent sample count across hierarchy",
+  "economics": "observed period is 2026 H1, not publication-month economic activity; positive and negative/company explanation facts can coexist",
+  "counterfactual": "if exact identity missing, ambiguous or outside catalogue, retain failure ledger; if chosen clock is later than asof, exclude fact and retain zero eligible count",
+  "validation": "full catalogue retained, numerator deduplicated by security_id, future fields excluded, all source hashes, direct mapping checks, clock boundary and ambiguity tests",
+  "decision": "company fact evidence only; continuous comparable industry variables and independent price-controlled incremental tests remain necessary"
+}

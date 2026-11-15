@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "scope": "Same cohorts/maturity gates, scaler and original prediction reproduction, independent weighted normal equations both targets",
+  "new_rank_models": 122,
+  "raw_control_refits": 122,
+  "prediction_rows": 155962,
+  "max_normal_equation_prediction_error": 4.3021142204224816e-16,
+  "max_saved_raw_prediction_error": 0.0,
+  "adoption": false,
+  "inputs": {
+    "outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "outputs/r131/model_parameters.json": "f809d75eabac8ca32631253f30e847a0fdb3c229834aa6420caa52b52f727754",
+    "outputs/r131/predictions.parquet": "88ed17561a1ca71b571c1daf084e8a1b0900a9c3722ee0f66138f787281997de",
+    "protocols/r192.json": "da7de2d7c09b84bbb6527a48f4832bb2ca47630b1a9e6d5d611c37fe4c3a3707",
+    "src/rank_target_r192.py": "0c98c72a6914e90819228c1a2449976036c3e892a025365c77a54b15e23c9d0f",
+    "src/refit_r131.py": "64bd154a993eedd48e3c3a730b3437fe18dd1b5ba830307854f45b193c3add87",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808"
+  },
+  "outputs": {
+    "predictions.parquet": "2106563f130ce3644c68516f3a4fa05558a94bf33157d8bebab6dee24c0efb52",
+    "models.json": "ceead620fa4aad1667b393ffb0cb96119cfae833ff940612dfee234e1e549b1e",
+    "fold_ledger.csv": "697ec88ca07cf7d3f5ec10a72a2cde3b44b5793b94c8b2f593ee44f8f16154ea",
+    "date_metrics.csv": "cd1bde6efbeb5c494131115fe43e70b9142898fe94ddc970b79fc53acfdd4579",
+    "summary.csv": "ddb7261f06f0089bc8f2c9ebc106f384ac5d521c83c4395bb4f7483b2bbbe023"
+  }
+}

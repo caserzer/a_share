@@ -1,0 +1,18 @@
+{
+  "id": "EP35-R169",
+  "question": "Close the goal-specified L2 top10 simplified reference comparator omission",
+  "hypothesis": "Fixed top10 may change concentration and turnover relative to existing top20percent; this is a reference breadth comparison, not new factor information",
+  "sources": "R130 corrected monthly L2 panel, R129 daily, CSI_ALL, R137 original corrected top20percent results",
+  "methods": [
+    "equal",
+    "momentum",
+    "F",
+    "FD",
+    "FC"
+  ],
+  "frozen": "Original R04 common price-ready+breadth21+breadth63+turn_rank504 universe, at least20; original centered ranks and group weights; ranked methods choose exactly10 code-tied; equal holds whole same universe",
+  "schedule": "Original month ends; next benchmark close to next rebalance close; separate SW2014/SW2021 and original era guards",
+  "cost": "R04 drift-adjusted L1 turnover,0/.002/.005 per weight traded, final liquidation; selected-path gap withholds whole-path CAGR/drawdown, no zero fill",
+  "comparison": "Same-date same-era top10 vs original top20percent; identical equal control; own coverage and matched valid intervals; no choose-best-era/method/cost",
+  "limits": "Not original69factors26groups5classes, not dual crowding, not official indices/open entry, not executable portfolio or strict PIT; no predictive adoption"
+}

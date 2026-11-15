@@ -1,0 +1,9 @@
+{
+  "question": "Can monthly TTM be linked to PE/capitalization without using current display codes as historical codes?",
+  "sources": "EP30 pit_v5 securities and explicit code intervals, verified release manifest; R112 complete monthly stocks, R116 two-clock financial snapshots",
+  "identity": "For security_id with explicit intervals use exactly one interval valid_from inclusive and end exclusive at month end; missing/overlap remains unknown. For others use unique master instrument as static historical proxy, not certified full code history. Listing gate from master listing/bse_listing_proxy and exclusive delist; identity_date_conflict invalid. Check agreement with frozen stock listed flag.",
+  "join": "Full stock monthly rows for R116 dates, both clocks. Active instrument SH/SZ/BJ+6digit -> exact SECUCODE; collision among listed active IDs quarantined. No current-alias fallback. Record canonical financial partition availability separately. Exact secucode/date/clock join; no PE-based identity selection.",
+  "outputs": "All stock rows with source identity flags, active/canonical codes, financial status and fields, raw PE/cap. Missing identity/notlisted/no_partition/no_visible/invalid/lag retained; no unknown zero. Positive and nonpositive PE kept. Candidate comparison eligibility requires known TTM, finite positive cap/raw/shares and effective share date<=date, cap identity, finite nonzero PE; negative PE permitted, zero PE unknown.",
+  "scope": "Source/identity and same-month join only; do not declare vendor PE denominator matches financial TTM. No predictive model, clock choice, fee or deployment claim.",
+  "verification": "Independent release hashes, every interval/master/listing/collision selection, all financial/price fields and statuses, monthly denominator; cutover/boundary/missing/overlap tests"
+}

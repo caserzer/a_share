@@ -1,0 +1,958 @@
+{
+  "overall_status": "active_not_complete",
+  "items": [
+    {
+      "requirement": "为什么上涨：经济机制与反证",
+      "status": "partial_hypotheses_and_macro_proxy_tested",
+      "evidence": [
+        {
+          "path": "reports/研究假说与数据缺口.md",
+          "exists": true,
+          "sha256": "ef0d5f2c9e236a51788dac0e43ae6e0f9cf0515eeb5817f896a1f5901f901252"
+        },
+        {
+          "path": "outputs/factor_dictionary.csv",
+          "exists": true,
+          "sha256": "1bd6b69e0d2fde7e1033eba781a1077f229a402f5c1e54bb33bc9b4b760ada8e"
+        },
+        {
+          "path": "protocols/r13.json",
+          "exists": true,
+          "sha256": "f7facd44fa7aee754b4e2241f304ddf5e1cf585d104b05a79fef49bec5ae73a9"
+        },
+        {
+          "path": "outputs/r13/increments.csv",
+          "exists": true,
+          "sha256": "ea65f51cb2357e4e4e9ed9c28fa935c1c8222caf3a9fc2302fe55e485a8c0f2f"
+        },
+        {
+          "path": "outputs/r13/verification.json",
+          "exists": true,
+          "sha256": "c008a97452b2e9980be73270dc2286fb803156712cd405f811d9dc6c7df813b1"
+        },
+        {
+          "path": "reports/R19_五份经营原文复核.md",
+          "exists": true,
+          "sha256": "164364aa03ef0d7463b89f0f65103492b29ba3e5da7f0e12edba29ba6432d0a8"
+        },
+        {
+          "path": "reports/R20_经营事实的身份时点与覆盖.md",
+          "exists": true,
+          "sha256": "bf8dee67af3f5e980f1639af49f72ca12b4f12dea957c5fe150a456dbb2923d6"
+        },
+        {
+          "path": "outputs/r20/verification.json",
+          "exists": true,
+          "sha256": "33b5ed87811f45e6bbcbb95fa81ebce6730f3f7f708e5e11c784c3c36f694b6b"
+        }
+      ],
+      "unresolved": "宏观两状态代理未确立排序增量；五公司事实原文已核验但非因果证据，产业供需连续变量和真实修订时点仍缺",
+      "completion_proven": false
+    },
+    {
+      "requirement": "何时启动：领先与及时性",
+      "status": "partial_daily_price_confirmation_replay",
+      "evidence": [
+        {
+          "path": "protocols/r02.json",
+          "exists": true,
+          "sha256": "131bbd4898e32da7a458bca00f05077e6e45f565a8929e34b7ef1fbd689f330e"
+        },
+        {
+          "path": "outputs/r02/summary.csv",
+          "exists": true,
+          "sha256": "2a78c3820bf30f7ba4a9cdf40627accece4f7442e8d4499c4820afaec1f23ae1"
+        },
+        {
+          "path": "outputs/r09/summary.csv",
+          "exists": true,
+          "sha256": "bae4a97f70e16d0d2f0199a4db4c0a8ab8013ec749f4d1c7e8fd87d85b63d305"
+        },
+        {
+          "path": "outputs/r09/verification.json",
+          "exists": true,
+          "sha256": "5daecbe25cfbb68f7efee7d7175e4d9b804a1173bb697fa5f7229052e3caf3e2"
+        },
+        {
+          "path": "outputs/r42/class_prevalence.json",
+          "exists": true,
+          "sha256": "f421557fb7353f98dd0de52c0ebb314701cc013e67ce199a211e28e3727216dc"
+        },
+        {
+          "path": "outputs/r42/classifier_gates.json",
+          "exists": true,
+          "sha256": "19b83a4dedfdefdd9607bcdc662bf4b2b5aa4a088584b64acca0682af442b863"
+        },
+        {
+          "path": "outputs/r46/verification.json",
+          "exists": true,
+          "sha256": "222c64a2fdcfd41fb29176721b41cc716f03c2859d7481b07b720b05652597f3"
+        },
+        {
+          "path": "outputs/r47/verification.json",
+          "exists": true,
+          "sha256": "49383f2d51c8c3991c1dc3147a16dcee6a72a61dfc29ad32ab36d12b79d40708"
+        },
+        {
+          "path": "outputs/r48/verification.json",
+          "exists": true,
+          "sha256": "3c22aa29382d2baf7be2ef3ccb8308e015f7de0f2ac2780264efc5bdc1172c98"
+        }
+      ],
+      "unresolved": "经济启动与真实产业拐点未证实；日频校准与前瞻验证未完成；提示频率改善不等于模型增量",
+      "completion_proven": false,
+      "latest_progress": "产业子样本启动正例少，原跨行业校准框架结构不适用；未输出产业概率",
+      "financing_progress": "R44-R48数据/收益/分类/固定退出已实际检验，未建立增量或配置价值；覆盖选择偏大规模，未外推全行业"
+    },
+    {
+      "requirement": "上涨持续性",
+      "status": "partial_price_followup_complete",
+      "evidence": [
+        {
+          "path": "reports/R03_财务数据补充与初步对照.md",
+          "exists": true,
+          "sha256": "c2184cd9ca4c286a8da655b95a8517d4448b513d8ac456586c763be56cf9b578"
+        },
+        {
+          "path": "outputs/r10/followup_summary.csv",
+          "exists": true,
+          "sha256": "eab02de7929df185fddd5a2f505be6e324e23d3af94a5390bdfc3078e9d742dd"
+        },
+        {
+          "path": "outputs/r10/verification.json",
+          "exists": true,
+          "sha256": "36906e64cc8a4abf14858eb5cefb66a533cf37ca960126c5ebd4407a371b5d1f"
+        }
+      ],
+      "unresolved": "盈利与预期兑现、经济机制失效及前瞻验证",
+      "completion_proven": false
+    },
+    {
+      "requirement": "何时结束：风险和错误退出",
+      "status": "partial_monthly_baseline",
+      "evidence": [
+        {
+          "path": "outputs/r02/summary.csv",
+          "exists": true,
+          "sha256": "2a78c3820bf30f7ba4a9cdf40627accece4f7442e8d4499c4820afaec1f23ae1"
+        },
+        {
+          "path": "outputs/r02/calibration.csv",
+          "exists": true,
+          "sha256": "9cb00708a21e6342d43f9bffcdb6a5d28863f2ceeec896348da38d2ca616289b"
+        },
+        {
+          "path": "outputs/r10/exit_summary_dates.csv",
+          "exists": true,
+          "sha256": "42515abf907f645e977dacbbfd6d553632941bd47799de2df6c5334d9457d1fb"
+        },
+        {
+          "path": "reports/R32_启动反转的规模控制.md",
+          "exists": true,
+          "sha256": "bb39897832e4af21e72d51913d4153d379522b8d50dd01b26c3e705aee6e7233"
+        },
+        {
+          "path": "outputs/r32/verification.json",
+          "exists": true,
+          "sha256": "4747d2f3c24c98a5736e9d87ad662027c26f15617be3bedb232edce7e5eab812"
+        },
+        {
+          "path": "reports/R33_规模控制反转提示的退出代价.md",
+          "exists": true,
+          "sha256": "67a3c2eb1bbd8a7cd91667477376d78834654945f7bbfc0fd25aa4d723a58dbd"
+        },
+        {
+          "path": "outputs/r33/verification.json",
+          "exists": true,
+          "sha256": "12378b2d4108c5073db251404658c4a58e0facf3ea5880cc26e546fca51d8b6c"
+        },
+        {
+          "path": "outputs/r42/classifier_gates.json",
+          "exists": true,
+          "sha256": "19b83a4dedfdefdd9607bcdc662bf4b2b5aa4a088584b64acca0682af442b863"
+        },
+        {
+          "path": "outputs/r46/verification.json",
+          "exists": true,
+          "sha256": "222c64a2fdcfd41fb29176721b41cc716f03c2859d7481b07b720b05652597f3"
+        },
+        {
+          "path": "outputs/r47/verification.json",
+          "exists": true,
+          "sha256": "49383f2d51c8c3991c1dc3147a16dcee6a72a61dfc29ad32ab36d12b79d40708"
+        },
+        {
+          "path": "outputs/r48/verification.json",
+          "exists": true,
+          "sha256": "3c22aa29382d2baf7be2ef3ccb8308e015f7de0f2ac2780264efc5bdc1172c98"
+        }
+      ],
+      "unresolved": "实际成交、全风格控制与独立前瞻；固定提示退出诊断未显示改善；R32规模控制分类已执行，尚需固定提示退出代价核查；R33新增模型固定退出代价已核查，未建立改善；真实成交/回撤路径与前瞻仍未证明",
+      "completion_proven": false,
+      "latest_progress": "产业子样本反转原校准门槛未满足，不能用收益试验代替",
+      "financing_progress": "R44-R48数据/收益/分类/固定退出已实际检验，未建立增量或配置价值；覆盖选择偏大规模，未外推全行业"
+    },
+    {
+      "requirement": "配置价值与风险",
+      "status": "partial_synthetic_portfolios",
+      "evidence": [
+        {
+          "path": "outputs/r04/summary.csv",
+          "exists": true,
+          "sha256": "4578c78179ee4328eec3002b80749359176b04dc0310950030e0bcaa9ec467a3"
+        },
+        {
+          "path": "outputs/r04/missing_path_audit.csv",
+          "exists": true,
+          "sha256": "b4c67574e33cbfa8221bddd4e62c71347c1658b690700e70b0b22ec9a6dec481"
+        },
+        {
+          "path": "outputs/r06/intervals.csv",
+          "exists": true,
+          "sha256": "11bdee35be74857a61e9c551161820408bf68b838b8f0abfb7a3c156abcb0946"
+        },
+        {
+          "path": "outputs/r06/mark_weight_audit.csv",
+          "exists": true,
+          "sha256": "0cf9887c9816e003b62b2d2bddbfdcd014834ed73bc0ceed78412657376c3251"
+        },
+        {
+          "path": "reports/R17_一级月度组合与风险.md",
+          "exists": true,
+          "sha256": "2dbb1e28905462608b09eaaaa5178d0fecb961bfa3d92eb1963bb8b7818ec74f"
+        },
+        {
+          "path": "outputs/r17/risk_by_origin.csv",
+          "exists": true,
+          "sha256": "e9dbe51078f5b5da0845d4e59531c6aa25ff4c8afe606f6288607ac205b0a1ca"
+        },
+        {
+          "path": "outputs/r17/membership_concentration.csv",
+          "exists": true,
+          "sha256": "06e4793bc14e2f2545db6e7d070ed97b444d6400db685deb1a87033907d6689e"
+        }
+      ],
+      "unresolved": "一级合成前6未优于等权，实际股票路径/成交仍有缺口；内部股票换手、全风格归因与真实投资可实现性尚未证明",
+      "completion_proven": false
+    },
+    {
+      "requirement": "一级二级三级分别研究",
+      "status": "partial_l1_three_tasks_executed",
+      "evidence": [
+        {
+          "path": "outputs/universe_current.csv",
+          "exists": true,
+          "sha256": "946cacfd5ac79d0c0f021178aa7ffa226869f4f49d369803329932472f1d7ac1"
+        },
+        {
+          "path": "outputs/r05/receipt.json",
+          "exists": true,
+          "sha256": "5a7164b203a55812cb88d8aebef2fac54770db0014477f543adba19605a46cb9"
+        },
+        {
+          "path": "outputs/r13/summary.csv",
+          "exists": true,
+          "sha256": "c2b289a9315e2ae1dea3f17dad3cf47545dde8983e8e202625a0f277d33fec54"
+        },
+        {
+          "path": "protocols/r16.json",
+          "exists": true,
+          "sha256": "a6fcbdc4b31e2ba4b3935dd654091f27c90cf89534ae6f68b60dfec296e0f491"
+        },
+        {
+          "path": "outputs/r16/fold_ledger.csv",
+          "exists": true,
+          "sha256": "991f931f8ee7bfaa74419f03a19831d01a43b327b42d41ef80103549b915b7f6"
+        },
+        {
+          "path": "outputs/r16/verification.json",
+          "exists": true,
+          "sha256": "2da27099214d105c92d6d0784adcf156d8cbbe5455f310bfe5e4d65bfc7c80a3"
+        },
+        {
+          "path": "outputs/r17/summary.csv",
+          "exists": true,
+          "sha256": "79cb753b4d6b0a18a6fb09b7c495abfbcf3ff292443881a95c453c0c10d01cfa"
+        },
+        {
+          "path": "outputs/r17/verification.json",
+          "exists": true,
+          "sha256": "c6cf6e5eb2ed29e7a0b105c5edc3c7007452e922af70ccdd3669780e1c335019"
+        }
+      ],
+      "unresolved": "SW2014一级缺失；一级分类校准样本不足；一级合成组合已运行但实际交易映射未证明",
+      "completion_proven": false
+    },
+    {
+      "requirement": "原报告因子与基准核对",
+      "status": "partial_official_summary_verified",
+      "evidence": [
+        {
+          "path": "reports/方正来源核对.md",
+          "exists": true,
+          "sha256": "7be70d5140b7cffc3cc024b23caf12bfa010403117ce9817928c58728ff43bb2"
+        }
+      ],
+      "unresolved": "完整69项定义、开盘口径、五类/双拥挤完整可复现比较",
+      "completion_proven": false
+    },
+    {
+      "requirement": "基准因子增量优先实验",
+      "status": "partial_available_factor_tests_done",
+      "evidence": [
+        {
+          "path": "outputs/r01/paired_increments.csv",
+          "exists": true,
+          "sha256": "93bcc972b705ae99b8c7d6009968b30996c8d2484b3a23c946bdf2a54bcdd9c6"
+        },
+        {
+          "path": "outputs/r02/paired_increments.csv",
+          "exists": true,
+          "sha256": "74f4aa9b3abcae64a93c9945b97d98e65ae6dad38815adf4b55322ef39a95c63"
+        },
+        {
+          "path": "reports/R30_规模控制来源与覆盖.md",
+          "exists": true,
+          "sha256": "8ea7e1c67b4292fd0e537e3b51760888926b0d375cdfb2a7ee8ae0092585cef0"
+        },
+        {
+          "path": "outputs/r30/verification.json",
+          "exists": true,
+          "sha256": "cbb01b31f654c23cd4ea3db1c0e9800d557a78d22eb3a087c934d4ff2d108af3"
+        },
+        {
+          "path": "reports/R31_扩散增量的规模控制.md",
+          "exists": true,
+          "sha256": "bc837cde4b482326619c92a81e8f0c8f49fd9949fe322f28fc5c6e7b49125ec5"
+        },
+        {
+          "path": "outputs/r31/verification.json",
+          "exists": true,
+          "sha256": "5b0763d17662717fed95942b704587c4fc3a42c697989b55888c1f61ade85dea"
+        },
+        {
+          "path": "outputs/r31/metrics_verification.json",
+          "exists": true,
+          "sha256": "3e3104f15e1d1cc65753aa9c91215679feaba4878c68c5dc9fe2137b78f80485"
+        },
+        {
+          "path": "outputs/r46/verification.json",
+          "exists": true,
+          "sha256": "222c64a2fdcfd41fb29176721b41cc716f03c2859d7481b07b720b05652597f3"
+        },
+        {
+          "path": "outputs/r47/verification.json",
+          "exists": true,
+          "sha256": "49383f2d51c8c3991c1dc3147a16dcee6a72a61dfc29ad32ab36d12b79d40708"
+        },
+        {
+          "path": "outputs/r48/verification.json",
+          "exists": true,
+          "sha256": "3c22aa29382d2baf7be2ef3ccb8308e015f7de0f2ac2780264efc5bdc1172c98"
+        }
+      ],
+      "unresolved": "非价格多因子覆盖、严格时点验证与更多独立样本；R30规模控制数据已构建并核查，尚待同母体增量比较；R31规模控制的收益对照已完成但未建立稳定增量，独立分类任务与完整风格仍缺",
+      "completion_proven": false,
+      "financing_progress": "R44-R48数据/收益/分类/固定退出已实际检验，未建立增量或配置价值；覆盖选择偏大规模，未外推全行业"
+    },
+    {
+      "requirement": "预期与价格先后关系优先实验",
+      "status": "partial_snapshot_events_and_barrier_sensitivity_done",
+      "evidence": [
+        {
+          "path": "reports/研究假说与数据缺口.md",
+          "exists": true,
+          "sha256": "ef0d5f2c9e236a51788dac0e43ae6e0f9cf0515eeb5817f896a1f5901f901252"
+        },
+        {
+          "path": "outputs/r11/receipt.json",
+          "exists": true,
+          "sha256": "11dccd928f960d7522838abd41f9ceee9a8a08f71ec1c1d614adfa64388453ed"
+        },
+        {
+          "path": "outputs/r11/revision_coverage.csv",
+          "exists": true,
+          "sha256": "ba0c5964944717eaa64ffb1c480d9068138c02dd40278bf758ff212dba896a21"
+        },
+        {
+          "path": "protocols/r12.json",
+          "exists": true,
+          "sha256": "a745f865d8fee3e395860ce1ceada95018942e057bd87c4746571155d8f158de"
+        },
+        {
+          "path": "outputs/r12/receipt.json",
+          "exists": true,
+          "sha256": "318252445fcb0450ac012eef2f85121283a66285f8ca74a96950136d3275db8a"
+        },
+        {
+          "path": "outputs/r12/verification.json",
+          "exists": true,
+          "sha256": "b2756068081d22db925462e0c67471c1000b26d94404becc2acee13a0f46374b"
+        },
+        {
+          "path": "reports/R12_固定年度预期与价格对照.md",
+          "exists": true,
+          "sha256": "6a8ffa0794aa2a6e002bb75dd37374709c042610efe136082b05f9bcdf8fecef"
+        },
+        {
+          "path": "protocols/r14.json",
+          "exists": true,
+          "sha256": "20457ac7d26d7e88d651ca32851caad5d810fe2d1ed551dab39aa75b606f3eef"
+        },
+        {
+          "path": "outputs/r14/receipt.json",
+          "exists": true,
+          "sha256": "a7566fb6ce80cae337ed878662e33a3cd79dcf4ead77278b98e14a61900a062a"
+        },
+        {
+          "path": "outputs/r14/verification.json",
+          "exists": true,
+          "sha256": "900696770d2fa2dc32e400194ffb01aeab6615f3e5e4ecc1604412163f04d9c7"
+        },
+        {
+          "path": "reports/R14_预期修正事件与价格先后.md",
+          "exists": true,
+          "sha256": "7888997c02a9a56fd0280c44a682d8787c40f8fa1459054e4f72154a2075d024"
+        },
+        {
+          "path": "protocols/r15.json",
+          "exists": true,
+          "sha256": "73c54aabeceb568840799f620b6fac282826eb2b9a3d44cfc2a4f8b069b087ce"
+        },
+        {
+          "path": "outputs/r15/data_verification.json",
+          "exists": true,
+          "sha256": "a7fb6f26531edbf910642cd75af84be2789806fecefa5ed13338e7427c6484b1"
+        },
+        {
+          "path": "outputs/r15/verification.json",
+          "exists": true,
+          "sha256": "a67bd85b5ed96521320e30f236503eba76c132e71c4e6c9c1c2a0ecc639b3a56"
+        },
+        {
+          "path": "reports/R15_完整报告屏障与月末敏感性.md",
+          "exists": true,
+          "sha256": "fdce257acb4bd9ede3bea72caa306a59999dcd51445aa272dc95ef868485564b"
+        },
+        {
+          "path": "outputs/r24/source_review.json",
+          "exists": true,
+          "sha256": "685009fa8ba746f29f5611716a1a6b2ddefe6291cb0db5e9b96417323434d577"
+        },
+        {
+          "path": "outputs/r24/verification.json",
+          "exists": true,
+          "sha256": "556cf8bf745cc1cd8ec60322ac5bc28d81c2edf808aabccedb82d015825caccb"
+        },
+        {
+          "path": "outputs/r25/verification.json",
+          "exists": true,
+          "sha256": "a67bd85b5ed96521320e30f236503eba76c132e71c4e6c9c1c2a0ecc639b3a56"
+        },
+        {
+          "path": "outputs/r25/impact_receipt.json",
+          "exists": true,
+          "sha256": "1d58422c5f85462891ffae5c33a8de64287aaa7fd274474b652d72064025bff7"
+        },
+        {
+          "path": "outputs/r26/verification.json",
+          "exists": true,
+          "sha256": "4c550fd5c78e2348118c25a9b8e8d21a287e672e8253d447fc180a0e4646ddfc"
+        },
+        {
+          "path": "outputs/r26/impact_receipt.json",
+          "exists": true,
+          "sha256": "6c11b85bbeb3ef9812365ac8056f23282bc9f8ca33ffdb5fe8d1d7b08c93c222"
+        },
+        {
+          "path": "outputs/r26/unknown_control_receipt.json",
+          "exists": true,
+          "sha256": "4bfcf88df0cab05e22c30ad1dca89ce2cfe8f1b0e0abdd6fc178b114d7b731ec"
+        },
+        {
+          "path": "outputs/r27/verification.json",
+          "exists": true,
+          "sha256": "b4417c81cbd8ba2a653d4d1b8adc749a942139b697d27f544ded6d675df97ee8"
+        },
+        {
+          "path": "outputs/r27/manual_review_receipt.json",
+          "exists": true,
+          "sha256": "00d8c07fb24967bcc46d05aa3253fe3ad78d96a1edba8442671b740f3bf8d88d"
+        },
+        {
+          "path": "outputs/r28/verification.json",
+          "exists": true,
+          "sha256": "8113e3f12fa4bbd9e1eda53200575802b5ccbe306c909c85fe3691436bb1a864"
+        },
+        {
+          "path": "outputs/r28/training_gates.csv",
+          "exists": true,
+          "sha256": "eced7eec0ea3bd83d5cd6104a1180b550d66c0ac2c251ed7c6194371cd65bfaa"
+        },
+        {
+          "path": "reports/R28_EPS与利润共同样本覆盖.md",
+          "exists": true,
+          "sha256": "9aa2475f2483fe2f0b4765275c3e3bde1f734c31c9b894dcc3364961ed6fc6d8"
+        },
+        {
+          "path": "reports/R29_EPS与价格同样本增量.md",
+          "exists": true,
+          "sha256": "d3fad95f70990968674c9725cf69ba42e8554f7ad33d7e3479aea399a9682076"
+        },
+        {
+          "path": "outputs/r29/verification.json",
+          "exists": true,
+          "sha256": "999caf6e3810326b94b0ef368a9364e12e3e737fee76703d02aefc52077d9c8f"
+        },
+        {
+          "path": "outputs/r29/paired_increments.csv",
+          "exists": true,
+          "sha256": "c8c9a123e01bc8758aab81f26d29471245949fe892ffad432092a80bfed1b9b7"
+        }
+      ],
+      "unresolved": "严格覆盖不足；未确立独立领先；真实完整事件/修订记录、全风格控制和前瞻验证仍缺；R24发现原利润单位无效/部分EPS年度冲突，已隔离6值，R25月末行业/模型重放完成；R26事件分支已重放并增加未知对照敏感性；R27固定单位/年度规则已全库检查；股本语义、其它原文错误和原始版本链仍未全面认证；R28共同样本训练不足，EPS自身部分覆盖仅有训练资格，尚未检验增量；R29 EPS自身同样本收益实验已执行，主20日误差均未改善，未建立稳定增量，停止当前参数扩展",
+      "completion_proven": false
+    },
+    {
+      "requirement": "产业领先变量优先实验",
+      "status": "partial_five_company_primary_facts_reviewed",
+      "evidence": [
+        {
+          "path": "reports/研究假说与数据缺口.md",
+          "exists": true,
+          "sha256": "ef0d5f2c9e236a51788dac0e43ae6e0f9cf0515eeb5817f896a1f5901f901252"
+        },
+        {
+          "path": "outputs/r08/mechanism_evidence_staging.csv",
+          "exists": true,
+          "sha256": "ae5e6e966f08009e596ade15d4931b83fd077b415ca3155c1cbba0ee6bb42d13"
+        },
+        {
+          "path": "outputs/r19/review_receipt.json",
+          "exists": true,
+          "sha256": "d3e8d0e7c9b6f94281c7b4a795006cc81e7a789c8219152e437d988feceeabc2"
+        },
+        {
+          "path": "reports/R19_五份经营原文复核.md",
+          "exists": true,
+          "sha256": "164364aa03ef0d7463b89f0f65103492b29ba3e5da7f0e12edba29ba6432d0a8"
+        },
+        {
+          "path": "reports/R20_经营事实的身份时点与覆盖.md",
+          "exists": true,
+          "sha256": "bf8dee67af3f5e980f1639af49f72ca12b4f12dea957c5fe150a456dbb2923d6"
+        },
+        {
+          "path": "outputs/r20/verification.json",
+          "exists": true,
+          "sha256": "33b5ed87811f45e6bbcbb95fa81ebce6730f3f7f708e5e11c784c3c36f694b6b"
+        },
+        {
+          "path": "reports/R35_电池产业线索时点与重复审计.md",
+          "exists": true,
+          "sha256": "e4afa2bce9402b4734acadcac8ec56908bb0f6d32fe042b9c88e5f11d92c0157"
+        },
+        {
+          "path": "outputs/r35/verification.json",
+          "exists": true,
+          "sha256": "3261aa3b607586912af4a990aae0ac03be8286314dfbaf57289ddcea41b8b25d"
+        },
+        {
+          "path": "reports/R36_商业航天来源与序列审计.md",
+          "exists": true,
+          "sha256": "60a0b296756eea82aa92a2ef0025a86d4140b270fd2b349ca2f9fbaf100f8aab"
+        },
+        {
+          "path": "outputs/r36/verification.json",
+          "exists": true,
+          "sha256": "bf8404e4d83f472885b78aa9a8e1a2c6b8d7b0d28be95274770ccb40c8b49fa4"
+        },
+        {
+          "path": "reports/R37_本地原文恢复与产业补充请求.md",
+          "exists": true,
+          "sha256": "946e8deae84c7643d8313843676ba8946c88a2f265eddd8cf57b3640d318dc0c"
+        },
+        {
+          "path": "outputs/r37/verification.json",
+          "exists": true,
+          "sha256": "4ddc02b79525e910014a8dda437163a006460171c692f8f66d9d86268873ca08"
+        },
+        {
+          "path": "outputs/r40/verification.json",
+          "exists": true,
+          "sha256": "06d7d89b86ea1d6a0781afdde82d4408ddb304766ac19ea4cfdd258643c209d2"
+        },
+        {
+          "path": "outputs/r41/verification.json",
+          "exists": true,
+          "sha256": "056775632e9d169fe678c1cc4b26aebe216562e5125286b0fe2024960a8b821e"
+        },
+        {
+          "path": "outputs/r42/verification.json",
+          "exists": true,
+          "sha256": "90148cfbd1d351e25bc637860d19def98fc1787c7b5fb6894e3bcc7ee6cc3ad9"
+        }
+      ],
+      "unresolved": "13条单期原文事实已按前月成员和三种时钟连接；连续可比产业序列、代表性、价格控制的领先性增量检验仍未完成；R35电池新线索去重仅两期月度装车量且缺原文存证，未形成因子；R36航天8个结构化指标各1期，待恢复原文与更长同口径序列；限定本地哈希恢复无匹配，已请求额外公开历史产业数据采集授权",
+      "completion_proven": false,
+      "latest_progress": "R40连续部分序列及R41收益试验已执行；R42关联/分类资格已审计，尚无稳定主期限增量"
+    },
+    {
+      "requirement": "三类任务冻结协议和时序验证",
+      "status": "partial_baselines_verified",
+      "evidence": [
+        {
+          "path": "protocols/r02.json",
+          "exists": true,
+          "sha256": "131bbd4898e32da7a458bca00f05077e6e45f565a8929e34b7ef1fbd689f330e"
+        },
+        {
+          "path": "outputs/verification.json",
+          "exists": true,
+          "sha256": "a005a3d249bc595bc66f0a8134fb7a2bf6fd1a3becc346abb14be955910c03a4"
+        },
+        {
+          "path": "outputs/test_receipt.txt",
+          "exists": true,
+          "sha256": "5479ca2168126b5d29d2c29ba1a266e568c10537043c27597c2c218ab0967756"
+        },
+        {
+          "path": "outputs/r16/verification.json",
+          "exists": true,
+          "sha256": "2da27099214d105c92d6d0784adcf156d8cbbe5455f310bfe5e4d65bfc7c80a3"
+        }
+      ],
+      "unresolved": "各层级未确立稳定增量、校准和前瞻；一级分类无合格校准输出，不混用原始分数",
+      "completion_proven": false
+    },
+    {
+      "requirement": "数据可追溯与PIT补充",
+      "status": "partial",
+      "evidence": [
+        {
+          "path": "outputs/r01/source_inventory.json",
+          "exists": true,
+          "sha256": "41f528a6dd07a61af532787482e03811ca10e0bada5b212e80dd3fde33ff4bbf"
+        },
+        {
+          "path": "outputs/r03/archive_receipt.json",
+          "exists": true,
+          "sha256": "bfee8aca2e9e6a634b5171c3db76becb4f1db1eca0691450b8428f483e815d7d"
+        },
+        {
+          "path": "outputs/r05/receipt.json",
+          "exists": true,
+          "sha256": "5a7164b203a55812cb88d8aebef2fac54770db0014477f543adba19605a46cb9"
+        },
+        {
+          "path": "outputs/r07/receipt.json",
+          "exists": true,
+          "sha256": "f7caefe93070f543d82d9c52adbf121b6c4de9c81f4327dc1411ef581329b9e7"
+        },
+        {
+          "path": "outputs/r08/candidate_relevance.csv",
+          "exists": true,
+          "sha256": "f7733c9c10b7697e6e9473af6da1765b5a9948d69b3a9b4fe81b4ad1e2901df5"
+        },
+        {
+          "path": "outputs/r08/external_document_request.json",
+          "exists": true,
+          "sha256": "236a29a94f754ae2dc6e419aeec2b9ad810b54e244235c194e233728664b6840"
+        },
+        {
+          "path": "outputs/r11/receipt.json",
+          "exists": true,
+          "sha256": "11dccd928f960d7522838abd41f9ceee9a8a08f71ec1c1d614adfa64388453ed"
+        },
+        {
+          "path": "outputs/r11/verification.json",
+          "exists": true,
+          "sha256": "546ce63c97435e26f302cf6a5319a495ddbeb36ef4fa28f161a2fe560239451f"
+        },
+        {
+          "path": "outputs/r14/event_ledger.csv",
+          "exists": true,
+          "sha256": "3aa794f92b39fe4e5814a437c1d74b8e022711144981b4d0f7f1ad61bc0b0f82"
+        },
+        {
+          "path": "outputs/r15/data_receipt.json",
+          "exists": true,
+          "sha256": "04eed237a9ad7eda2f69bd0d23dcd36531e1b1046b547aa5e3029c4cbc0c40c2"
+        },
+        {
+          "path": "outputs/r15/data_verification.json",
+          "exists": true,
+          "sha256": "a7fb6f26531edbf910642cd75af84be2789806fecefa5ed13338e7427c6484b1"
+        },
+        {
+          "path": "outputs/r08/authorized_download_receipt.json",
+          "exists": true,
+          "sha256": "38d15f451ef2c63e5c7708611f5f498052dc60b845c1d9d5a68ee551943c6a78"
+        },
+        {
+          "path": "outputs/r19/reviewed_operating_observations.json",
+          "exists": true,
+          "sha256": "791afb908427981a56346186547459c3b41ef60495d8a39c958464c30164760d"
+        },
+        {
+          "path": "outputs/r24/source_review.json",
+          "exists": true,
+          "sha256": "685009fa8ba746f29f5611716a1a6b2ddefe6291cb0db5e9b96417323434d577"
+        },
+        {
+          "path": "outputs/r24/verification.json",
+          "exists": true,
+          "sha256": "556cf8bf745cc1cd8ec60322ac5bc28d81c2edf808aabccedb82d015825caccb"
+        },
+        {
+          "path": "outputs/r25/verification.json",
+          "exists": true,
+          "sha256": "a67bd85b5ed96521320e30f236503eba76c132e71c4e6c9c1c2a0ecc639b3a56"
+        },
+        {
+          "path": "outputs/r25/impact_receipt.json",
+          "exists": true,
+          "sha256": "1d58422c5f85462891ffae5c33a8de64287aaa7fd274474b652d72064025bff7"
+        },
+        {
+          "path": "outputs/r26/verification.json",
+          "exists": true,
+          "sha256": "4c550fd5c78e2348118c25a9b8e8d21a287e672e8253d447fc180a0e4646ddfc"
+        },
+        {
+          "path": "outputs/r26/impact_receipt.json",
+          "exists": true,
+          "sha256": "6c11b85bbeb3ef9812365ac8056f23282bc9f8ca33ffdb5fe8d1d7b08c93c222"
+        },
+        {
+          "path": "outputs/r26/unknown_control_receipt.json",
+          "exists": true,
+          "sha256": "4bfcf88df0cab05e22c30ad1dca89ce2cfe8f1b0e0abdd6fc178b114d7b731ec"
+        },
+        {
+          "path": "outputs/r27/verification.json",
+          "exists": true,
+          "sha256": "b4417c81cbd8ba2a653d4d1b8adc749a942139b697d27f544ded6d675df97ee8"
+        },
+        {
+          "path": "outputs/r27/manual_review_receipt.json",
+          "exists": true,
+          "sha256": "00d8c07fb24967bcc46d05aa3253fe3ad78d96a1edba8442671b740f3bf8d88d"
+        },
+        {
+          "path": "outputs/r40/coverage_summary.json",
+          "exists": true,
+          "sha256": "5d4388eb070df1766949f50749d002564a34dd07f3d0c3cdaad563f890c86ddd"
+        }
+      ],
+      "unresolved": "财报初发与修订仍非完整PIT；本地候选无法扩充当前在市历史成员；5份经营原文已授权下载及复核，但初发/修订链未认证；原数值长表未包含不可解析中间报告，R14屏障已修正事件配对，旧月末分数完整报告屏障敏感性已由R15运行，覆盖收缩；真实初发/修订版本仍不足；R24发现原利润单位无效/部分EPS年度冲突，已隔离6值，R25月末行业/模型重放完成；R26事件分支已重放并增加未知对照敏感性；R27固定单位/年度规则已全库检查；股本语义、其它原文错误和原始版本链仍未全面认证",
+      "completion_proven": false,
+      "latest_progress": "授权采集、源文哈希与独立冻结序列已补充；首发修订尚未认证"
+    },
+    {
+      "requirement": "经济假说与完整因子字典交付",
+      "status": "unified_eight_module_dictionary_with_explicit_gaps",
+      "evidence": [
+        {
+          "path": "outputs/factor_dictionary.csv",
+          "exists": true,
+          "sha256": "1bd6b69e0d2fde7e1033eba781a1077f229a402f5c1e54bb33bc9b4b760ada8e"
+        },
+        {
+          "path": "outputs/r12/factor_dictionary.csv",
+          "exists": true,
+          "sha256": "6ce92a8d02b58ddb585b7d107eeba7cda638122a43d67405af56dfb4e2ff6b60"
+        },
+        {
+          "path": "outputs/r13/factor_dictionary.csv",
+          "exists": true,
+          "sha256": "67c495fc5d2a8ca1d36792484260a50c3748e5f9c557390f7d4103284c2e1eb8"
+        },
+        {
+          "path": "outputs/r23/current_factor_dictionary.json",
+          "exists": true,
+          "sha256": "f65ee7d736e48683105e9f112d2672a87aca4a4ed0e267ba1b1ee9df0277e92b"
+        },
+        {
+          "path": "outputs/r23/verification.json",
+          "exists": true,
+          "sha256": "275e2d8a924dd9c004a58b6a668251d86179d467681b073dff294b45532b9c93"
+        },
+        {
+          "path": "reports/R23_八模块字典与证据边界.md",
+          "exists": true,
+          "sha256": "fbd4469489243221a1f9cfb2cdd090180b0def0cd6e9139d9a62de646464c711"
+        },
+        {
+          "path": "outputs/r34/current_factor_dictionary.json",
+          "exists": true,
+          "sha256": "c28b1b45b951a4a7265337c9df2780f9d4067080756f43dc5b22c5c67b004946"
+        },
+        {
+          "path": "reports/R34_目标缺口与当前证据校正.md",
+          "exists": true,
+          "sha256": "5111b6f5e77b0b4f3cf541711fdd71a5223580a980b6370bbbd92c02284fd600"
+        },
+        {
+          "path": "outputs/r43/current_factor_dictionary.json",
+          "exists": true,
+          "sha256": "e8b631a5539938cc5dfcd561aa7f4860cdd3f483f4d08b5a4eef98cf5c629d0a"
+        },
+        {
+          "path": "outputs/r46/verification.json",
+          "exists": true,
+          "sha256": "222c64a2fdcfd41fb29176721b41cc716f03c2859d7481b07b720b05652597f3"
+        },
+        {
+          "path": "outputs/r47/verification.json",
+          "exists": true,
+          "sha256": "49383f2d51c8c3991c1dc3147a16dcee6a72a61dfc29ad32ab36d12b79d40708"
+        },
+        {
+          "path": "outputs/r48/verification.json",
+          "exists": true,
+          "sha256": "3c22aa29382d2baf7be2ef3ccb8308e015f7de0f2ac2780264efc5bdc1172c98"
+        }
+      ],
+      "unresolved": "R34当前17条字典已纳入EPS和规模对照；完整69项定义、未实现模块可比序列与独立验证仍缺",
+      "completion_proven": false,
+      "latest_progress": "新增装车量同比第18条；不改变价差/订单/库存因子的缺失状态",
+      "financing_progress": "R44-R48数据/收益/分类/固定退出已实际检验，未建立增量或配置价值；覆盖选择偏大规模，未外推全行业"
+    },
+    {
+      "requirement": "多模型完整结果与消融成本交付",
+      "status": "partial",
+      "evidence": [
+        {
+          "path": "reports/R01_固定排序与增量.md",
+          "exists": true,
+          "sha256": "1b7945db4e90efcc66591e5ae6156638e076234d065b42384cadca5dea3a137c"
+        },
+        {
+          "path": "reports/R02_三任务模型与校准.md",
+          "exists": true,
+          "sha256": "896819dd53a9ef6d27d99ba91a7c875a720f4ae7eaff5a321ef0db8b15d61180"
+        },
+        {
+          "path": "reports/R04_月度换手成本与风险.md",
+          "exists": true,
+          "sha256": "b6c699726e11faf2698bf1b78346f04f5125d498cffb9eceafc4345f15c1cacc"
+        },
+        {
+          "path": "reports/R06_股票持仓估值与数据边界.md",
+          "exists": true,
+          "sha256": "8891aadd4c509626d05515ebc681c5d1aa0387afadfb01b7045a7d41202354fc"
+        },
+        {
+          "path": "reports/R07_财务披露延迟与冲突.md",
+          "exists": true,
+          "sha256": "aa8342c8c0e699a011f938a3428fe48d44961e21f9854b4e3c7352bed33e1f4b"
+        },
+        {
+          "path": "reports/R09_提示及时性与研究负担.md",
+          "exists": true,
+          "sha256": "4fbd1fc00a507cc28cc5196003a6cb1b96a4d4f7dd75bd14ac2a702dff9a36cf"
+        },
+        {
+          "path": "reports/R12_固定年度预期与价格对照.md",
+          "exists": true,
+          "sha256": "6a8ffa0794aa2a6e002bb75dd37374709c042610efe136082b05f9bcdf8fecef"
+        },
+        {
+          "path": "reports/R13_宏观状态与行业敏感度.md",
+          "exists": true,
+          "sha256": "12001cda89ab230dd9c6274db2f117bc7db723d04cb163860b43bf260f37e103"
+        }
+      ],
+      "unresolved": "业务目标全部任务的主检验、风险、失效与多层级归因",
+      "completion_proven": false
+    },
+    {
+      "requirement": "行业监控与更新流程",
+      "status": "partial_versioned_multidimensional_historical_monitor",
+      "evidence": [
+        {
+          "path": "outputs/historical_monitor.csv",
+          "exists": true,
+          "sha256": "30d21afc60abee4f1d676b0b2108e27a7267a4009304e541b0b2e6123579a665"
+        },
+        {
+          "path": "src/run_local.py",
+          "exists": true,
+          "sha256": "e313e842c358abe3aeafdc2215f309af02b6ce3e857910daf9fbd96b2dba5b7c"
+        },
+        {
+          "path": "reports/R18_版本化观察与成熟标签.md",
+          "exists": true,
+          "sha256": "6b8763140368a201a7dd8535f970e91be777c6f9285b56c4d5cfdb6ba964a83b"
+        },
+        {
+          "path": "outputs/r18/replay_receipt.json",
+          "exists": true,
+          "sha256": "1b2ccff5314780919b30c971c6395f2c55269a974050195cd44e2bbc83d0ea9e"
+        },
+        {
+          "path": "outputs/r18/verification.json",
+          "exists": true,
+          "sha256": "30b08f51e97e7b4e4acae6fc483928354fc01c8cc49b56dc2131426dc10bcb76"
+        },
+        {
+          "path": "reports/R20_经营事实的身份时点与覆盖.md",
+          "exists": true,
+          "sha256": "bf8dee67af3f5e980f1639af49f72ca12b4f12dea957c5fe150a456dbb2923d6"
+        },
+        {
+          "path": "outputs/r20/verification.json",
+          "exists": true,
+          "sha256": "33b5ed87811f45e6bbcbb95fa81ebce6730f3f7f708e5e11c784c3c36f694b6b"
+        },
+        {
+          "path": "reports/R21_分维度监控与失效检查.md",
+          "exists": true,
+          "sha256": "773d648e76e38eed468b83eb6e9146a2ee96e9f3b7658f9bdec77aba695a7a35"
+        },
+        {
+          "path": "outputs/r21/verification.json",
+          "exists": true,
+          "sha256": "9d40386ae9191c1f06e3fe34d15b817595fee84bdf6f5c4cdeff5d4e7963a1ad"
+        },
+        {
+          "path": "reports/R22_三任务输出与校准状态.md",
+          "exists": true,
+          "sha256": "85df35953aa652928f7b7a9f9e6c11cd0aa5bb2eca9aba5ff414b6da81e2cad8"
+        },
+        {
+          "path": "outputs/r22/verification.json",
+          "exists": true,
+          "sha256": "52f0b00699367584ddac96bfebccf095ac5076d394dace362dcac7ea496e7976"
+        }
+      ],
+      "unresolved": "冻结三任务输出与校准状态已接入历史监控；宏观、完整阶段识别、真实前瞻和新来源自动更新仍缺",
+      "completion_proven": false
+    },
+    {
+      "requirement": "失败尝试及持续研究记录",
+      "status": "current_round_recorded",
+      "evidence": [
+        {
+          "path": "RESEARCH_LOG.md",
+          "exists": true,
+          "sha256": "e09f6597f36d17b66fa789a7cd315a862274affbee53f3c19a5a402639dd7823"
+        },
+        {
+          "path": "STATUS.md",
+          "exists": true,
+          "sha256": "37132ccf7435f2221c8120e27967e4d6f69bcfdffbe4d9743e3cd5fcd1b1db7e"
+        },
+        {
+          "path": "outputs/r02/fold_ledger.csv",
+          "exists": true,
+          "sha256": "43cb65792c6324b641eba547ae7658651501014deb521a7fed4a37fb61491af8"
+        }
+      ],
+      "unresolved": "后续轮次继续追加记录",
+      "completion_proven": false
+    }
+  ],
+  "interpretation": "R43 updates partial battery research evidence; existing unresolved scope remains; no whole-goal completion or PIT promotion"
+}

@@ -1,0 +1,75 @@
+{
+  "comparisons": [
+    {
+      "path": "outputs/r68/member_links.parquet",
+      "old": 65696,
+      "new": 66600,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r73/member_evidence.parquet",
+      "old": 195764,
+      "new": 198376,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r74/evidence_matrix.parquet",
+      "old": 3066,
+      "new": 3066,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r68/industry_coverage.json",
+      "old": 1680,
+      "new": 1992,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r68/summary.json",
+      "old": 12,
+      "new": 12,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r73/industry_evidence.json",
+      "old": 5060,
+      "new": 5980,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r73/summary.json",
+      "old": 36,
+      "new": 36,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r74/monthly_observations.json",
+      "old": 2530,
+      "new": 2990,
+      "exactly_equal": false
+    },
+    {
+      "path": "outputs/r74/coverage.json",
+      "old": 15,
+      "new": 15,
+      "exactly_equal": false
+    }
+  ],
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_monthly_panel.parquet": "3ec486135e6018ca900a53da38078609d682a6b67b78ffbff882fba2ac7f0766",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_assignments.parquet": "c39450a47394587d21b7b1c585a30e181ce9494975ccf5b75a407f549a32992d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r67/same_period_pairs.json": "a8ced3fc5b992f369f9261fee6642c0ce0dd7822aa9f98dc2b6a4f24ba1f0bfd",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r72/company_pairs.parquet": "aad4f678a1720b43fe1500c478c0a13cc2854bc823565fc2af845754b44ea65c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r63/evidence_matrix.parquet": "b1350186995f6579de40b5813b1e813b3949cf66ed2d3ed02bc5ffb39eb3e54e",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r68.json": "c9ec81f32b8af0cd1975ea7a0d6b233f4fad8b1b6847e42cafede6ee233565a3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r73.json": "2030f31330c1fdba57cc76b9ebaf1b9ca311caa5c91f588ea45d0a01235b29dc",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r74.json": "b20c60cc02ff8de4d1ed5dbfd42359ea8575d37e517852c1ee3ea11699f953e4",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/repair_capital_r147.py": "bd4b6e3057c8a653e358efea2416b7e211df9fcf4b9e941dba478a300c636210",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r147.json": "e5ca5880777337d4afa3051fe477be63a11d368a874310aaa321d2d2d70ba507",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/capital_coverage_r68.py": "5fff0e028a07ca4265fe84150325fe6f54cf2f86ecf04d88390512ee996c829e",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/capital_monthly_r73.py": "166f1143cf43c77acf15bac6d0d72514ddf89ee388fb5a624931a2b906d7f43a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/capital_monitor_r74.py": "06f5def465c2d4d5a849efeb7c6e2e2ced73bc82b0fcf8e5a559b45362ad7d89"
+  },
+  "quality": "Historical-proxy; operating evidence only"
+}

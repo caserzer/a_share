@@ -1,0 +1,21 @@
+{
+  "scope": "User explicitly requests ALL existing models including independent mechanism experiments; core three tasks and rank-target, L1/L2/L3, EPS/profit expectations, battery, macro, size/style, financing, leader/catchup, financial and capital/event branches",
+  "state_definition": "CSI_ALL market close; past63-session return >=0 vs <0; past21 daily return std relative to median of previous252 rolling21 vol observations (shift1), minimum126 historical vol observations; four states trend_up/down x volatility_high/low; no state when history missing",
+  "known_at": "Signal close, next-close earliest portfolio action; source Historical-proxy, not strict PIT",
+  "reason": "Quarter-scale trend and monthly volatility fixed to economic horizons; prior-year relative volatility avoids fullsample threshold; not selected from performance",
+  "planned_model_comparisons": [
+    "original same cohort",
+    "original plus state dummy intercept terms",
+    "original plus state dummies and state-by-original-feature interactions"
+  ],
+  "principle": "Pooled penalized models, no separate fits per small state; preserve old penalties/label maturity/calibration gates; state-stratified support and metrics required; unsupported branches reported rather than omitted",
+  "no_search": [
+    "state thresholds",
+    "trend/vol windows",
+    "HMM state count",
+    "penalties",
+    "state-specific winners"
+  ],
+  "staging": "First immutable states and exhaustive experiment registry; then all model adapters and eligibility, fits and paired evaluation. Source-gated branches receive same-state descriptive diagnostics only where fitting unsupported",
+  "status": "Regime benefit unknown; no automatic adoption, unchanged global objective"
+}

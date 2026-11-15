@@ -1,0 +1,8 @@
+{
+  "revision": "R258",
+  "question": "Does daily Platt recalibration alter ranking/alerts and event outcomes of frozen regime models?",
+  "scope": "All24 fitted folds, three variants, both calibration versions, all3 original alert rules; annual and pooled evaluation",
+  "rules": "Original R98 top ceil20%, industry-code tie, monthly completed dates, daily, >20-session same-industry cooldown no refill, carried across years. Frozen R155 event catalogue and mature labels, unknown counted. No thresholds or training.",
+  "checks": "Monthly-calibrated alerts must equal R253 exactly. Record slopes and sign flips, raw ranking and selected-list changes all folds. Rebuild event hits independently from alert dates.",
+  "boundaries": "Fixed historical action diagnostics; no probability/causal/executable certification. Sign reversal learned only on past calibration; do not choose sign by test outcomes."
+}

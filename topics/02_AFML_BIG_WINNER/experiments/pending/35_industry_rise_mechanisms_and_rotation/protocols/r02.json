@@ -1,0 +1,23 @@
+{
+ "id":"EP35-R02", "registered_on":"2026-11-13", "question":"在保留价格控制、日期和母体的条件下，扩散/交易拥挤/估值能否改善三个不同任务？", "quality":"Historical-proxy", "independent_holdout":false,
+ "data":"r01 monthly_panel; same historical universe; no new source or threshold search",
+ "horizons":[20,60], "primary_horizon":20,
+ "tasks":{
+  "return":"continuous excess20/excess60 vs CSI_ALL, all feature-ready industries",
+  "onset":"eligible past_excess20<=0; success return20>=5% and excess20>=3%; at60 return>=10% and excess>=5%; economic move thresholds fixed without search; monthly-origin weak-to-strong proxy, NOT daily process recall",
+  "reversal":"eligible past_excess60>0 and mom60>0; success relative wealth trough from next-close entry <=-8% at20 or <=-12% at60; not peak-to-trough drawdown"
+ },
+ "features_F":["mom20","mom60","vol20","dd60","past_excess20","past_excess60","log_members"],
+ "comparisons":{"FD":["breadth21","breadth63"],"FC":["turn_rank504"],"FG":["pe_rank504"],"FDG":["breadth21","breadth63","pe_rank504"]},
+ "cohorts":"F full; each extension versus F on exact common-feature cohort; do not shrink F full result to extension coverage",
+ "features_transform":"centered ranks within origin/era/level/paired cohort before target eligibility; train-only standard scaler; no filling",
+ "model_return":"Ridge alpha=10, training date-equal weights; fixed no search",
+ "model_binary":"LogisticRegression C=1 max_iter=2000; no balancing; training date-equal weights; Platt calibration C=1 in held-out previous July-December",
+ "folds":"annual expanding within classification era and level separately; years 2020..2026; training target maturity strictly before fold Jan1. Binary fitting maturity strictly before previous July1; calibration origin >=previous July1 and label mature before Jan1; no refitting after calibration",
+ "minimums":"training >=18 unique months, >=300 rows; binary each class>=30; calibration >=4 months, >=100 rows, each class>=10; skip folds with exact reason otherwise",
+ "baseline":"train prevalence for binary probability; F for paired incremental comparison; momentum and equal-weight from R01 for returns",
+ "evaluation":"year/era/level metrics; return date IC; binary ROC/PR-AUC/Brier and fixed decile ECE; top20% per-date precision/recall/alert burden; reversal wrong exits (positive future excess), missed positive excess; separate mature vs pending outcomes",
+ "inference":"return paired date IC and binary paired date Brier loss difference; circular 6-month block bootstrap; primary alpha .05/48 (4 extensions*2 levels*2 eras*3 tasks); min24 evaluation months. Secondary60 descriptive. Do not claim calibrated success without Brier improvement and calibration inspection",
+ "costs":"return diagnostic 0/20/50bps per side inherited R01; actual turnover/cost portfolio replay separate; onset and risk scores not portfolio profits",
+ "limitations":"beta/style control incomplete: only market-relative momentum and member count proxy; economic causal identification absent; monthly onsets do not establish process timeliness; original factor definitions unverified"
+}

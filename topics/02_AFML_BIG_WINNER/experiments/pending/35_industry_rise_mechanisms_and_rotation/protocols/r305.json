@@ -1,0 +1,22 @@
+{
+  "round": 305,
+  "prior_turn": "progress: R304 quantified overlapping tasks and actual alerts",
+  "question": "Do all 51 dual-positive labels correspond to continuous next-close 20-session paths with both relative trough and positive terminal targets?",
+  "scope": "all R304 dual eligible both-positive unique origins, no case selection",
+  "rules": [
+    "Original calendar and R129 industry NAV; entry next benchmark session, terminal20 sessions after entry;21 path points",
+    "Check original block and R287 complete_path; preserve any missing path as failure, no fill",
+    "Reproduce absolute terminal return, arithmetic excess and relative-wealth trough separately within1e-10; no changed threshold",
+    "Record first trough breach, minimum step, terminal values; do not infer intraday ordering from daily closes",
+    "51 selected by outcomes cannot estimate forecast skill; count repeated overlapping industry windows explicitly",
+    "No fitting, costs or action optimization; no change to existing predictions"
+  ],
+  "inputs": [
+    "outputs/r304/paired_dates.parquet",
+    "outputs/r287/origins.parquet",
+    "outputs/r129/daily_2026-10-21.parquet",
+    "outputs/r291/path_keys.parquet",
+    "outputs/r291/normalized_paths.npz",
+    "src/build_panel.py"
+  ]
+}

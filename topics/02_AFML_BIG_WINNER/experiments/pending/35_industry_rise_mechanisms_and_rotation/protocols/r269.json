@@ -1,0 +1,19 @@
+{
+  "round": "r269",
+  "question": "Return sensitivity to signal-date versus snapshot-date cap components on identical dual-valid cohort",
+  "estimator": "Unchanged R262 six methods, Ridge alpha10, annual Jan1 maturity gate >=300 rows18 dates, date-equal weights, training-only scaler, same-day ranks before target eligibility",
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "horizons": [
+    20,
+    60
+  ],
+  "clock_treatment": "Only balance_component and cap_component use R268 signal/snapshot definitions; original financing_intensity level retained as fixed control in both. No re-selection of winning clock.",
+  "cohort": "R262 complete panel inner join R268 qualified, common identical rows both clocks",
+  "family": "420 planned IC contrasts: 120 within each clock plus180 same-method snapshot minus signal; no-fit and identical FS/FSE retained",
+  "uncertainty": "Calendar-month Bartlett HAC lags3/6, normal Bonferroni95% family across420; >=24months >=3years all annual positive lower>0 for support",
+  "outcome": "Historical-proxy return sensitivity, not adoption or causal/PIT certification; classification follows separately"
+}

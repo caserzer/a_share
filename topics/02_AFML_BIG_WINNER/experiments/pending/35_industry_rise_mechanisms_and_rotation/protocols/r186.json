@@ -1,0 +1,16 @@
+{
+  "question": "Frozen return models: does training fit improvement survive chronological test years?",
+  "basis": "User asks model progress; previous acceptance comparisons do not distinguish in-sample fit from transfer failure. Diagnostic only, no complexity selection.",
+  "scope": "All return models saved R131; R130 repaired panel; original cohorts and maturity masks",
+  "metrics": "Date equal MSE versus fixed training mean, skill=1-model_MSE/baseline_MSE; train and test separately; unknown test outcomes retained in counts",
+  "no_refit": true,
+  "no_parameter_search": true,
+  "primary": "20-session return; 60-session secondary",
+  "limitations": [
+    "historical reuse",
+    "in-sample fit optimistic",
+    "folds overlap and not independent",
+    "MSE skill does not establish ranking or tradability",
+    "cannot infer nonlinear signal absence from linear failure"
+  ]
+}

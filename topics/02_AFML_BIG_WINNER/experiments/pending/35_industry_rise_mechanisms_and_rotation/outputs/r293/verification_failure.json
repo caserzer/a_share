@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "stage": "receipt verification after numeric comparisons passed",
+  "mismatches": [
+    "inputs:protocols/r293.json",
+    "inputs:src/reversal_stability_r293.py",
+    "outputs:uncertainty.csv"
+  ],
+  "cause": "Corrected run could not finalize receipt: output enumeration included attempt1 directory. Replace with explicit output artifact list and rerun.",
+  "terminal_session": 97617
+}

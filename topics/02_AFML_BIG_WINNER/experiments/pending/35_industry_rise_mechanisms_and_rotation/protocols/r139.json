@@ -1,0 +1,8 @@
+{
+  "question": "Expose verified corrected results through a single local research entry without relabeling historical branches as repaired",
+  "scope": "Overlay only verified R129-R138 artifacts; preserve original selected slots for archived experiment verifiers; explicitly list unreviewed old routes",
+  "gates": "Every adopted artifact and verification must match the preexisting sealed snapshot; all verification statuses PASS; resolver validates hashes on every read and refuses missing or corrupt inputs",
+  "entry": "run_local.py current; optional research_entry_r139.py --key; no training, acquisition, deployment, or scheduler",
+  "acceptance": "Reproducible release construction, preserved legacy pointers, real CLI resolves R138, corruption and missing-proof tests reject",
+  "boundary": "Historical-proxy local research revision; 16 requirements remain unproven; unresolved old branches not adopted wholesale"
+}

@@ -1,0 +1,9 @@
+{
+  "question": "Necessary missing evidence dimension in R10: contemporaneously observable accounting coherence at fixed price alerts, descriptive later performance only",
+  "population": "all37157 existing R10 alerts; monthly primary, daily/cooldown20 separate; never change signals or select on success20",
+  "join": "exact era/level/industry, last R94 observation snapshot strictly before alert date (avoid same-close publication ambiguity); retain latest snapshot even failed coverage; never find older passing observation",
+  "exposure": "R94 available latest-observed source period only, coherence=(both_improve-both_decline)/capex_up, using existing fractions; if capex_up zero ->unknown. Group positive/zero/negative economic sign, no fitted cutoff",
+  "outcomes": "frozen R10 excess20 primary, continuation_excess20_60 secondary, return20 and breadth_change20 context; unknown outcomes counted separately",
+  "aggregation": "strategy and level separate, group date means then equal dates, report unique snapshot/period/industry counts. No p-values, no causal or incremental claim; one2026 fiscal year and repeated stale snapshots not independent",
+  "restrictions": "No future financial actuals, no new model or tuning, no assumption observed report is latest complete market disclosure; snapshot age explicit"
+}

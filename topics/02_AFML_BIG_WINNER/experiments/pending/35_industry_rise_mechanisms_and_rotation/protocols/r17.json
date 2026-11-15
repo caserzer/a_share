@@ -1,0 +1,22 @@
+{
+  "question": "Does fixed monthly top6 L1 selection change synthetic portfolio performance, costs and risk versus equal industry and momentum?",
+  "population": "31 SW2021 L1 R05 synthetic baskets; no SW2014 or cross-level aggregation",
+  "methods": [
+    "equal",
+    "momentum",
+    "F",
+    "FD"
+  ],
+  "selection": "same price/breadth-ready universe >=20; equal holds all; ranked strategies take exactly6 by frozen R01 scores; no new optimization or model selection",
+  "schedule": "R04 complete benchmark month-end calendar; signal close, next-session close rebalance, next monthly rebalance exit; retain any post-start missing interval, suppress full CAGR if missing",
+  "cost": "R04 L1 target-vs-drifted absolute turnover; fee .002/.005 per gross traded notional, initial buy and final liquidation included; costless reported separately",
+  "risk": "full-period beta, volatility, drawdown, monthly/annual results and bottom5% daily average; prior63-session selected-basket correlation/vol with >=42 common observed returns; target/drift concentration",
+  "membership": "origin-month L1 membership snapshot as next month reference; unresolved member count separate; nominal membership equal weights are only concentration diagnostics, not stock return replication",
+  "acceptance": "descriptive fixed-rule portfolio comparison, no optimized claim; source basket reweighting/missing marks and actual fill permissions remain unresolved",
+  "boundaries": [
+    "next close differs from Founders next open; missing original69 factors",
+    "synthetic monthly member baskets not tradable ETFs",
+    "internal constituent turnover/fees not included in industry-level costs",
+    "no full industry/factor causal attribution"
+  ]
+}

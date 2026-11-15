@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "security_id": "D2-521defaefcc5554eba64661bd26a9889",
+  "instrument": "SH689009",
+  "dates": 649,
+  "raw_price_matches": 649,
+  "divisor_missing": 649,
+  "factor_payload_path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/acquired/factors/SH689009.parquet",
+  "factor_payload_present": false,
+  "factor_receipt_present": false,
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r176/stock_date_gaps.parquet": "192194685f63efac9d5ae158492e77461682a10712329fe16c88fce20bef7d07",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r174/receipt.json": "bc9ebe7f008f489893b8cb7b9b19597a1c86146d88b5dc522c38cebb6651b54f",
+    "/home/xiaolv/.cache/a_share/ep30_d2/pit_v5/releases/9ba9324e4ff8f3a5db14c03893d76c77097855d3f83e9dde2b476f2760aec72e/normalized/prices_qfq/D2-521defaefcc5554eba64661bd26a9889.parquet": "837568e14baebb9c7445fd4a03e97cae620610de5b327c4ea995498db8d5c377",
+    "/home/xiaolv/.cache/a_share/ep30_d2/backfill_v2/acquired/sina/SH689009.parquet": "65efde1ab1fbd25fdd764afe780686908a261bd5df296bf11e888025eb12be13",
+    "/home/xiaolv/.cache/a_share/ep30_d2/backfill_v2/acquired/sina/SH689009.parquet.receipt.json": "bb0d5af816fabe8307b894fbe76b5c02f95074ffa23b93dc0f25a8e523d10ad3",
+    "/home/xiaolv/.cache/a_share/ep30_d2/raw/sha256/4d/4df9670ad5812d8c339aa5a0f74d438d84813fae4709b19a8f6ce5761c39962a": "4df9670ad5812d8c339aa5a0f74d438d84813fae4709b19a8f6ce5761c39962a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/audit_adjustment_source_r176.py": "29883668f860ec057ce839246fb3967bf8e2579090abc054fd24c4653b4bbe0d"
+  },
+  "interpretation": "Unadjusted raw price is present, but no cited local factor artifact; do not substitute raw or divisor1",
+  "prices_repaired": 0
+}

@@ -1,0 +1,10 @@
+{
+  "kind": "frozen model algebraic explanation, no causal or return attribution",
+  "inputs": "two sealed R102 historical inference bundles; all formal outputs only, all unknown task rows retained separately",
+  "reference": "zero standardized rank vector, equivalent to frozen training scaler mean",
+  "regression": "intercept plus coefficient times standardized rank, units expected excess return",
+  "classification": "base coefficient terms times Platt slope; baseline = base intercept times slope plus calibration intercept; sum in calibrated logit units, sigmoid only after summation",
+  "ranking": "full eligible source cohort, including explicitly recorded outside-catalogue rank members; before task eligibility",
+  "validation": "independent rank reconstruction, all feature terms and baselines, all prediction sums; missing outputs must have no terms; negative calibration slope test",
+  "limits": "no new model, ranking, threshold, probability-point allocation, mechanism conclusion, portfolio attribution or forward claim"
+}

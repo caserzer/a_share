@@ -1,0 +1,11 @@
+{
+  "question": "Do frozen R131 extension rankings improve top20% outcomes on exactly matched complete dates?",
+  "basis": "R02 pairs IC but averages top outcomes separately; R187 identified ranking/magnitude differences",
+  "scope": "All four extensions, both levels/eras, 20 primary and 60 secondary; no retraining, optimization or external collection",
+  "selection": "ceil(0.2*n) before inspecting labels; descending saved prediction then industry_code ascending; same original cohort",
+  "validity": "Both selected sets must have all original y and excess known; otherwise delta unknown, do not reweight or replace holdings",
+  "cost": "Original fixed full-roundtrip 0.004 deduction only, same for each method and cancels paired delta; not turnover-aware investable portfolio",
+  "report": "All model dates, exact selected identities, paired means by era/level/cohort/horizon/year plus all-year; IC paired on original >=20 mature gate; coverage separately",
+  "inference": "Descriptive diagnostic only; no new acceptance or statistically independent folds; compare original IC acceptance evidence",
+  "stop": "Do not search selection count, windows, labels or favorable subgroup"
+}

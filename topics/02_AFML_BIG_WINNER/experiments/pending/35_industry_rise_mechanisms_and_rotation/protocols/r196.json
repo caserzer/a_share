@@ -1,0 +1,15 @@
+{
+  "question": "Core and L1 regime conditioning, including return-rank objective; all independent families remain in R195 registry for subsequent adapters",
+  "states": "R195 frozen4states; down_low reference;3dummies",
+  "variants": [
+    "base original features",
+    "state main effects",
+    "state main effects plus interactions with every original standardized feature"
+  ],
+  "model": "Original Ridge alpha10 / Logit C1 max_iter2000 random3502; pooled models. Same feature scaler trained on state-known fitting rows. Additional dummy and interaction columns unrescaled, penalty fixed. Platt C1 on original separate calibration dates",
+  "cohort": "Original feature ranks before filtering state eligibility; remove unknown state from all three variants equally. Preserve original train/calibration gates, strict maturity. Unknown test states remain unknown. L1 raw uncalibrated models checked against full original gates, no gate relaxation",
+  "targets": "Original return and within-date rank return; onset/reversal original labels. 20main60secondary. No new thresholds",
+  "evaluation": "Paired date IC for both return objectives >=20 known; negative Brier for calibrated classification; separate state support; no adoption from point estimates",
+  "validation": "Linear normal equations; all variants same train/test identities; convergence warnings recorded; no treating unsupported states as validated",
+  "scope_status": "First actual fitting batch, not completion of all-family request"
+}

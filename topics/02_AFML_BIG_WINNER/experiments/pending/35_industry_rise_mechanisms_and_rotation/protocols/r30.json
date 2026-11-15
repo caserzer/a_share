@@ -1,0 +1,12 @@
+{
+  "round": "R30",
+  "question": "Can local historical capitalization supply a time-aligned industry size control for existing diffusion versus price comparisons?",
+  "scope": "data construction and coverage, no return evaluation or fitted model in this round",
+  "source": "EP32 extension_v2 monthly stock panel raw_close * total_shares; effective_date <= date but known_at absent",
+  "membership": "prior-month identity records from original assignments and EP35 L1; current observation month exact-date stock cap; retain every identified member in denominator",
+  "feature": "median natural log positive finite total market cap of currently listed valid stocks; >=5 known stocks and >=80% member coverage; otherwise missing; no forward fills",
+  "quality": "Historical-proxy; no strict PIT certification; L1 historical parent mapping proxy inherited",
+  "value_boundary": "existing PE historical percentile is valuation-position control, not book-to-market; no complete style-risk attribution claim",
+  "verification": "no future cap/share dates; source cap equality raw price times shares; duplicate identity rejection; direct membership/median recomputation; common price/diffusion coverage only, no outcome selection",
+  "next_gate": "if enough coverage, separately preregister identical-cohort F / FD / F+size / FD+size annual model comparisons; fixed original labels and training rules"
+}

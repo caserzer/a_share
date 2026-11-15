@@ -1,0 +1,9 @@
+{
+  "question": "期末退出收益较差时，是否仍缓解单行业区间亏损，代价为何？",
+  "inputs": ["outputs/r287/origins.parquet", "outputs/r287/alerts.parquet", "outputs/r129/daily_2026-10-21.parquet", "outputs/r290/date_metrics.parquet"],
+  "risk": "仅完整路径，entry后1..20日每日假设清算财富：hold=(1-c)*NAV_t/NAV_entry，cash=1-c，market=(1-c)^3*B_t/B_entry。单行业最坏本金短缺max_t max(0,1-W_t)，及20点平均本金短缺。不是峰值最大回撤或组合ES。每日假设清算计费不表示每日实际卖出。",
+  "comparison": "冻结每日/月末和三版本、三费用。持有风险减替代风险为缓释；随机按原全母体k/N加权每行业风险差，精确期望仅对可加的单行业风险。禁止将平均风险当组合风险或对平均路径求最大损失后叫随机风险期望。",
+  "cost": "期末错失收益max(hold-replacement,0)与避免损失max(replacement-hold,0)分别列出，其差必须复现R290收益差。",
+  "aggregation": "与R290相同完整母体日期主评价，行业等权再日期等权；未知保留R290记录，不补零，不改变提示。",
+  "scope": "全72组，不选择风险收益最优权重或版本，不训练、不调整参数。"
+}

@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "intervals_replayed": 208,
+  "terminal_wealth_error": 9.769962616701378e-15,
+  "checks": [
+    "fixed top6/equal selection",
+    "continuous monthly schedule",
+    "drift turnover not target-to-target turnover",
+    "initial buy and final liquidation fees",
+    "independent compounded terminal wealth",
+    "nominal membership plus unresolved weight equals1",
+    "no duplicate L1 memberships"
+  ],
+  "limitation": "synthetic basket accounting only; no stock-level fill or internal turnover validation"
+}

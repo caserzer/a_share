@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "scope": "Every month-end prefix rebuild equals full calculation; no future threshold, state coverage not performance",
+  "prefix_checks": 118,
+  "rows": 2377,
+  "known": 2230,
+  "unknown_core_prediction_rows": 0,
+  "inputs": {
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "protocols/r195.json": "36202e314dd61c3c3cfefdb6be428ea862d37af46211720c726d6440520e2871",
+    "src/regimes_r195.py": "f0ed02a998fee580d0439b71925b03df08303eeeb01605aedc62e5f14fa32f9a"
+  },
+  "outputs": {
+    "market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "core_prediction_coverage.csv": "1aba1bafe5818674344b0975086b517d6e3750f2f3860e40b35cdec10b7787db",
+    "annual_state_counts.csv": "86c1611f9572d51959e27316e5b0e5e32559a55d58695a258174cfcbc3a39524"
+  },
+  "adoption": false
+}

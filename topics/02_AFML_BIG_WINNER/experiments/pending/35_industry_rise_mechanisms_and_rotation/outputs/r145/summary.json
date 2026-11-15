@@ -1,0 +1,114 @@
+{
+  "comparisons": {
+    "features": {
+      "old": 48713,
+      "new": 48713,
+      "added": 0,
+      "removed": 0,
+      "changes": {
+        "leader_spread": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "leader_return": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "follower_return": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        }
+      }
+    },
+    "three_task": {
+      "old": 155076,
+      "new": 155076,
+      "added": 0,
+      "removed": 0,
+      "changes": {
+        "prediction": {
+          "changed": 45382,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.004030152734727066
+        },
+        "decision": {
+          "changed": 45382,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.04805516562034584
+        },
+        "y": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        }
+      }
+    },
+    "catchup": {
+      "old": 26645,
+      "new": 26645,
+      "added": 0,
+      "removed": 0,
+      "changes": {
+        "controls": {
+          "changed": 7611,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0005755277267569421
+        },
+        "with_leader": {
+          "changed": 7611,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0007256574002341819
+        },
+        "catchup": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        }
+      }
+    },
+    "r109_folds": {
+      "old": 228,
+      "new": 228,
+      "changed_status": 0
+    },
+    "r111_folds": {
+      "old": 38,
+      "new": 38,
+      "changed_status": 0
+    }
+  },
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r133/market_controls.parquet": "79aed2b74ed1045bb8e2559025aa4c3ff3c10cfa17aef8ccf76a0d418e22388a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_monthly_panel.parquet": "3ec486135e6018ca900a53da38078609d682a6b67b78ffbff882fba2ac7f0766",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/l1_assignments.parquet": "c39450a47394587d21b7b1c585a30e181ce9494975ccf5b75a407f549a32992d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/r30_size_control.parquet": "64a08e64dec6a5fb21c858df8f17897529a9a5a7c4e91f70bb3d588455318d89",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/universe_current.csv": "946cacfd5ac79d0c0f021178aa7ffa226869f4f49d369803329932472f1d7ac1",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r108.json": "71fe3b69dffc82537c5c5578e1dbfa2218dfa3614fe2d3ac0ca37d3fdd296f5b",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r109.json": "88f61c2bdb844d9e93059aeeacce5ac74554927a4376ed958195b16cc35d0ad1",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r110.json": "6f930bf1e999cfe371acd436fd9aeaa1bcae086ea906ae5ae6479d1d8920a45e",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r111.json": "4909d3ece3fd9e9d917fe8ea73b94990943df69bbd050d043faa75864cc20610",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/repair_leader_r145.py": "1a09914266049ba6c601a84c84248c6ec2ca89adaf759a7b8471f87ce0d2c0ad",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/protocols/r145.json": "a88ea902c5e60c47d9a93baf71bb202b18997837f4717dac584fe0e4432cf18b",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/leader_feature_r108.py": "5cb54bd8f4e31ae04c319d29c19cfa3ba3d443b1236e183c1fa21d61b9e424e5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/leader_models_r109.py": "90a88431da19c740ba4ce30e46768cc9a71763776ebdfceb00fbda92afa0446d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/evaluate_leader_r109.py": "cbf6327a6739df7bc0a81a2c68dec1590b96daf32b354e32c192a5d145712c0a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/leader_catchup_r110.py": "2329188bcd7b08a96710e07587091656fb75bedc98b5da2949f7f198295441eb",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/catchup_models_r111.py": "31262e1975bc86d34eb9cc030541e09f9f1029d1caff18af3a055dcc0214eb65"
+  },
+  "quality": "Historical-proxy; original fixed leader/catch-up rules; not adopted"
+}

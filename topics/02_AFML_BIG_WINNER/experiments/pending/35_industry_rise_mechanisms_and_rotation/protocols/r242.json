@@ -1,0 +1,10 @@
+{
+  "question": "Do frozen monthly reversal alerts detect distinct observed relative-wealth drawdown processes, and earlier on common episodes?",
+  "catalogue": "All R129 daily industries, segmented on block changes, missing/invalid positive NAV/market, or nonconsecutive benchmark dates; relative wealth NAV/CSI_ALL close; running peak; first <=0.92 peak is breach; recovery >= frozen peak closes episode; equal highs use latest date; no rearming before recovery.",
+  "threshold": "Single 8% amplitude borrowed from original 20-day risk tolerance, but peak-based target is NEW descriptive price-process diagnostic, not original label or economic phase; no parameter search.",
+  "censoring": "First peak at segment start flagged left-boundary; exclude such episode from match denominators; ongoing episodes retained with right_censored, no invented recovery.",
+  "matching": "All original R220 candidate origins; require original complete 20-day action path; find earliest non-left-boundary episode breach 1..20 benchmark trading days after next-close entry. One origin maps at most one episode. Per model/variant earliest alerted origin maps each episode once; later same-episode alerts counted duplicate. Observable recall denominator only episodes with eligible candidate origin for that model. Full catalogue and absent-candidate counts separate.",
+  "comparison": "Frozen base/state/interaction; identical candidates; compare unique episode recall and earliest signal lead on jointly detected episodes, not differing detected subsets. Monthly schedule caps timing resolution. No significance claim on short or reused histories.",
+  "verification": "Independent vector peak runs and all origin matching from date arithmetic; verify key identity, censoring, uniqueness, metric comparisons and source hashes.",
+  "adoption": false
+}

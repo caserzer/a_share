@@ -1,0 +1,13 @@
+{
+  "question": "Can existing exchange historical archives recover R176 absent dates?",
+  "scope": "All R176 absent_date stock dates, observed aliases, pit_v3/acquired/exchange_quotes",
+  "checks": [
+    "receipt and parquet hashes",
+    "raw JSON hash and code",
+    "all decoded kline rows against parquet",
+    "exact missing date join"
+  ],
+  "repair": false,
+  "quality": "Historical-proxy",
+  "stop": "No matching records means stop this source branch, not infer suspension"
+}

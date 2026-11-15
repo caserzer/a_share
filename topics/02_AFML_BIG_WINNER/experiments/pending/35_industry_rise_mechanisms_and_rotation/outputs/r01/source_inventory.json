@@ -1,0 +1,249 @@
+[
+  {
+    "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v5_rdagent_onset_forecast/outputs/daily_input_audit.json",
+    "sha256": "722b420958c09ef58a38beb2ebcbb6ab8c4976746a6149979f69e470d66edbf9",
+    "role": "inherited provenance"
+  },
+  {
+    "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/32_industry_rotation_cycle_observation/extensions/v35_pe_activity_joint/outputs/feature_receipt.json",
+    "sha256": "52849262d4622dd5b846fd02c5a6774138821c5fc79bfe7b6be19e199c6a407e",
+    "role": "inherited provenance"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet",
+    "sha256": "67bb7572e341399bf3e5cb845fd8d0fd1570232c2145697bafb4246d711a3e9e",
+    "bytes": 14588238,
+    "rows": 767515,
+    "columns": [
+      "date",
+      "nav",
+      "coverage",
+      "members",
+      "membership_asof",
+      "day_i",
+      "breadth21",
+      "breadth63",
+      "volume_ratio",
+      "block",
+      "era",
+      "level",
+      "industry_code",
+      "industry_name"
+    ],
+    "quality": "Historical-proxy",
+    "role": "forecast_v5/daily_industries.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet",
+    "sha256": "ee0baa915bf6f842a75aa0fd705e185d8d37a0db908b023092996e0d86e4e470",
+    "bytes": 231447,
+    "rows": 2377,
+    "columns": [
+      "ts_code",
+      "trade_date",
+      "close",
+      "open",
+      "high",
+      "low",
+      "pre_close",
+      "change",
+      "pct_chg",
+      "vol",
+      "amount"
+    ],
+    "quality": "Historical-proxy",
+    "role": "forecast_v5/CSI_ALL.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/joint_pe_v35/daily_expansion.parquet",
+    "sha256": "5b26c7121fe0a669ef15d13a28a4d7bc6259652ec38904ef4078a61ac51602d2",
+    "bytes": 54666682,
+    "rows": 767515,
+    "columns": [
+      "era",
+      "level",
+      "industry_code",
+      "block",
+      "date",
+      "member_count",
+      "turn_short",
+      "turn_medium",
+      "volume_short",
+      "turn_rank504",
+      "turn_rank756",
+      "turn_median",
+      "expansion_breadth",
+      "money_share",
+      "turn21",
+      "share21",
+      "share_short",
+      "turn_slope63",
+      "turn_acceleration",
+      "turn_persistence",
+      "breadth_change21",
+      "block_day",
+      "pe_members",
+      "pe_known_fraction",
+      "pe_positive_fraction",
+      "pe_change21",
+      "pe_change21_coverage",
+      "pe_change63",
+      "pe_change63_coverage",
+      "pe_change126",
+      "pe_change126_coverage",
+      "pe_change252",
+      "pe_change252_coverage",
+      "pe_rank504",
+      "pe_rank504_coverage",
+      "pe_rank756",
+      "pe_rank756_coverage",
+      "pe_breadth21"
+    ],
+    "quality": "Historical-proxy",
+    "role": "joint_pe_v35/daily_expansion.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/extension_v2/products/assignments.parquet",
+    "sha256": "932e6c334860cf3cf9fe26e8cb3aa4359afdc60dd71cb147602f30eabd949f76",
+    "bytes": 41325462,
+    "rows": 1026061,
+    "columns": [
+      "month",
+      "date",
+      "entry_date",
+      "security_id",
+      "instrument",
+      "name",
+      "raw_close",
+      "qfq_close",
+      "close_chain",
+      "entry_open",
+      "entry_chain",
+      "total_shares",
+      "share_effective_date",
+      "cap",
+      "listed",
+      "next_return",
+      "industry_code",
+      "industry_name",
+      "unresolved",
+      "level",
+      "era"
+    ],
+    "quality": "Historical-proxy",
+    "role": "extension_v2/products/assignments.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/extension_v2/sources/legacy_catalog.parquet",
+    "sha256": "86db3cf78d915226dcf1db742560d42497c191889f34820e972d4044040ce8df",
+    "bytes": 11982,
+    "rows": 331,
+    "columns": [
+      "index_code",
+      "industry_name",
+      "level",
+      "industry_code",
+      "is_pub",
+      "parent_code",
+      "src"
+    ],
+    "quality": "Historical-proxy",
+    "role": "extension_v2/sources/legacy_catalog.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/extension_v2/sources/legacy_members.parquet",
+    "sha256": "fd270de1f7f3af6e0b5c27c9f655191260c335387334c8e0e59b7ba355df32d9",
+    "bytes": 117756,
+    "rows": 14806,
+    "columns": [
+      "index_code",
+      "con_code",
+      "in_date",
+      "out_date",
+      "is_new",
+      "industry_name",
+      "level"
+    ],
+    "quality": "Historical-proxy",
+    "role": "extension_v2/sources/legacy_members.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/L1.parquet",
+    "sha256": "50e1892914b9f35dd4df5022a7b11bdb0a6aa7b926ca02a83f1444a937884955",
+    "bytes": 5019,
+    "rows": 31,
+    "columns": [
+      "index_code",
+      "industry_name",
+      "level",
+      "industry_code",
+      "is_pub",
+      "parent_code",
+      "src"
+    ],
+    "quality": "Historical-proxy",
+    "role": "industry_v1/L1.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/L2.parquet",
+    "sha256": "a05eee55ed1f54be59dff0a54e00ad34ac8c2fb32837bace00d3e369590abfff",
+    "bytes": 7743,
+    "rows": 134,
+    "columns": [
+      "index_code",
+      "industry_name",
+      "level",
+      "industry_code",
+      "is_pub",
+      "parent_code",
+      "src"
+    ],
+    "quality": "Historical-proxy",
+    "role": "industry_v1/L2.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/L3.parquet",
+    "sha256": "b95a6ecf2599f26bb6316001604cdd4c9178c06afb12d8a64f4cbd12702d2d53",
+    "bytes": 13433,
+    "rows": 346,
+    "columns": [
+      "index_code",
+      "industry_name",
+      "level",
+      "industry_code",
+      "is_pub",
+      "parent_code",
+      "src"
+    ],
+    "quality": "Historical-proxy",
+    "role": "industry_v1/L3.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep32/industry_v1/members.parquet",
+    "sha256": "a527c5d9ae503f0f5dc439a4f32ccb89e7d67e07ad9c466b90486409d210922d",
+    "bytes": 180077,
+    "rows": 7928,
+    "columns": [
+      "l1_code",
+      "l1_name",
+      "l2_code",
+      "l2_name",
+      "l3_code",
+      "l3_name",
+      "ts_code",
+      "name",
+      "in_date",
+      "out_date",
+      "is_new"
+    ],
+    "quality": "Historical-proxy",
+    "role": "industry_v1/members.parquet"
+  },
+  {
+    "path": "/home/xiaolv/.cache/a_share/ep30_d2/pit_v4/releases/a209472223fad6252a410f6910e132f1baa08242f4bb82d7c8055a51119d01e6/normalized/financial_reviewed_facts.parquet",
+    "sha256": "fa5b4d98af9002709f94f8b61a46a015ce299570e04a0a068a7bd74ab88c9510",
+    "rows": 15,
+    "role": "partial publication-timed financial facts",
+    "quality": "partial; no strict full-panel PIT claim"
+  }
+]

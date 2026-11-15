@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "rows": 202598,
+  "groups": 40,
+  "missing_scores": 0,
+  "max_absolute_error": 1.6653345369377348e-16,
+  "all_identity_keys_match": true,
+  "adoption": false,
+  "new_performance_claim": false,
+  "inputs": {
+    "outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "outputs/r204/scored_panel.parquet": "f05d2804920c487b85fe42f49a0027cfc2698f91c9f5cc19f7b095b946dbf414",
+    "src/evaluate_r01.py": "0afc7bec0184d85d748eb1cda9a209d8118999166126f3439b7cb6cf80099256",
+    "src/regime_fixed_rank_r204.py": "05c89d49ba683841d52bcf61e530bd8bb1a216080520d91cd28062b9cf7e98ca",
+    "protocols/r241.json": "a166fe3fd7579f33d0a42e367a69d4816eb043c98b3aaf30c7a95407679e3056",
+    "src/audit_hierarchical_weights_r241.py": "c48803bad131de6bce25662b6ae44e42f9ad5b814e664409c09dfd332a3ea018"
+  },
+  "outputs": {
+    "score_comparison.csv": "832a43ff483fb78471b18914f3f49a446876190ebd9d7a44e7253595a92b6638",
+    "expanded_weights.json": "a83d2eb5879ad99f06031443508bc7a95830af813f64a480a0e1a73a11e94fe7"
+  }
+}

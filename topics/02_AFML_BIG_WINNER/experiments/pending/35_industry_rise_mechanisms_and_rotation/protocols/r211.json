@@ -1,0 +1,8 @@
+{
+  "round": 211,
+  "scope": "All frozen R199 return models: market_style, size_diffusion, financing; every feature combination, level, era and horizon. Additional mechanism pairs within each same regime; other mechanism families remain pending.",
+  "rules": "R194 complete-month signal, next close entry, next monthly entry exit, top20% equal initial weights, drifted turnover, 0/20/50 bps per traded notional, initial/final fees, no full curve on any missing interval; base/state/interaction plus same-universe mom60/equal",
+  "identity": "Composite family__objective__cohort__method; frozen R199",
+  "meaning": "Monthly rebalanced index simulation; forecast horizon is model training target, not forced 20/60-day holding; no execution certification or adoption",
+  "verification": "All selections and paths/turnover independently recalculated; daily wealth and risk checks"
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "ep35.price_risk_overlay.v1",
+  "status_meanings": {
+    "clear": "No unrecovered threshold breach within currently observed contiguous segment; NOT low risk",
+    "ongoing": "Observed relative-wealth peak breached by 8 percent and not recovered by signal close",
+    "ongoing_left_boundary": "Same condition but peak was initial available segment point; prior peak history unknown",
+    "unknown": "Exact date or source availability/price validity insufficient"
+  },
+  "clock_rules": {
+    "R129": "known_at must be present and not later than archive as_of; date-only evidence, not intraday/first-publication certification",
+    "L1": "No first-release clock field; Historical-proxy with original constituent/aggregation limits"
+  },
+  "fields": {
+    "risk_peak_date": "Latest occurrence of observed segment maximum, no future data",
+    "risk_drawdown": "Current NAV/market ratio divided by observed segment maximum minus one; not absolute loss",
+    "risk_breach_date": "First threshold breach in currently active episode, otherwise null",
+    "risk_days_since_breach": "Benchmark trading days elapsed through snapshot date, null if no active episode",
+    "risk_segment_start": "Start of current contiguous usable price block",
+    "risk_recorded_known_at": "Exact-date source recorded clock, if supplied",
+    "risk_source": "Original local daily price source",
+    "risk_source_sha256": "Frozen whole-file content hash, not evidence all bytes existed at as_of"
+  },
+  "prohibited_interpretations": [
+    "strict PIT",
+    "economic phase certification",
+    "forecast probability",
+    "exit recommendation",
+    "automatic R244 gate"
+  ],
+  "adoption": false
+}

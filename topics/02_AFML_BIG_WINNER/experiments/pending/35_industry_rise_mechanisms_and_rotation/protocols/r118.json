@@ -1,0 +1,9 @@
+{
+  "question": "Does the fixed same-month cap/PE implied total profit agree with separately cached financial TTM under both predeclared clocks?",
+  "scope": "R117 all944946 rows preserved; only comparison_eligible rows evaluated. Negative PE and TTM retained, no clock selection or re-fit. No prices beyond current month.",
+  "metrics": "implied=cap/PE. sign agreement using mathematical sign incl zero. symmetric_distance=2*abs(implied-TTM)/(abs(implied)+abs(TTM)), zero/zero=0; absolute CNY distance separately. signed_relative=(implied-TTM)/abs(TTM) only nonzero TTM; abs_log_magnitude_ratio only same nonzero sign. No clipping/winsorization. Diagnostic within1pct/5pct of abs(TTM), not acceptance/PIT thresholds.",
+  "cohorts": "all eligible per clock; common eligible identities both clocks; partition common into same report_period versus different report_period. Preserve unknown identities and both clock values. No misleading unmatched clock mean attribution.",
+  "aggregation": "Within each date equal stock-weight mean symmetric_distance/sign/within1/within5 and median absolute/log distances; across dates equal weights; annual detail. Also raw counts/quantiles clearly labeled row-weighted descriptive. Same-period values and implied amount should match exactly between clocks.",
+  "limits": "Separate numeric agreement, exact report identity, initial-publication PIT, mechanism, prediction and investment value. Matching can share vendor lineage and is not independent source certification. Opposite-sign symmetric distance saturates at2; report magnitude separately.",
+  "verification": "all source fields, eligibility/unknown propagation, every derived amount, exact clock pairing/cohorts, date/year aggregations and quantiles independently recomputed; synthetic zero/negative/opposite-sign cases"
+}

@@ -1,0 +1,35 @@
+{
+  "status": "PASS_FIXED_SOURCE_SENSITIVITY",
+  "report_ledger_rows": 35421,
+  "changed_report_rows": 1,
+  "old_industry_events": 4475,
+  "new_industry_events": 4473,
+  "industry_membership": {
+    "both": 4473,
+    "left_only": 2,
+    "right_only": 0
+  },
+  "common_changes": {
+    "revision": 0,
+    "event_companies": 0,
+    "event_member_fraction": 0,
+    "pre20": 0,
+    "pre60": 0,
+    "reaction": 0,
+    "post20": 0,
+    "post60": 0,
+    "control_count": 4,
+    "control_pre20": 4,
+    "control_pre60": 4,
+    "control_reaction": 4,
+    "control_post20": 4,
+    "control_post60": 4
+  },
+  "affected_industry_rows": 6,
+  "max_event_mean_delta": 0.0004065682841589008,
+  "max_date_mean_delta": 0.0001238851967295014,
+  "baseline_event_sha256": "51be8be1783e21f4cf554420550a2c03cbce3adf17554fa1d0750c032ee31c9d",
+  "new_event_sha256": "dfadce8b1c55304672588e50e78e8f524c6183c14e8f74bd1bf600877a8f1eef",
+  "code_sha256": "83a03356489e2ad7862a7520214d8bf1508c12b3572bf7e8bb7ee5f6814d5278",
+  "scope": "original rule and sample process unchanged; event pool can change control membership, no causal or forward inference"
+}

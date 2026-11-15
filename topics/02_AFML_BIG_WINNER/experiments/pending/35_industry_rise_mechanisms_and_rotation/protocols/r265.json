@@ -1,0 +1,15 @@
+{
+  "round": "r265",
+  "question": "Frozen reversal selection versus uniform same-capacity random exit; missing-path sensitivity",
+  "source": "outputs/r264/actions.parquet",
+  "random": "Uniform K of N per original date, inclusion probability K/N; exact expectation, no random seeds or new fitting",
+  "evaluation": "Known-path conditional diagnostic retains R264 denominator; separate complete-date subset drops entire dates with missing path, without reranking",
+  "missing": "Full-cohort date-equal gain = known contribution + coefficient times unknown cash/market exit gain. Pairwise and random comparisons preserve symbolic unknown; report zero coefficient or break-even, never impute it. No bounds assumed for unknown return.",
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "comparisons": "R264 four mechanism contrasts within variant and two regime contrasts within method",
+  "inference": "Descriptive only; 16 months/two years insufficient for stable adoption; index action not implementable stock simulation"
+}

@@ -1,0 +1,15 @@
+{
+  "round": 276,
+  "prior_turn": "progress: production qualification audited; export mechanism evidence located",
+  "hypothesis": "Export intensity relative to domestic installation measures an external-demand dimension omitted by domestic installation growth; after price/market and installation controls it may improve return forecasts. Export shipments are not overseas final use; seasonal/shipping effects are alternatives.",
+  "source": "Exact81 frozen R60 sources with R275 corrected article bodies",
+  "selection": "Explicit 动力电池出口 amount, in current-month sentence or immediate 其中 sentence following current-month mixed total. Reject cumulative, 企业电池 and total mixed export; keep all rejected text.",
+  "feature": "export_log_ratio=log(direct power export GWh/domestic installation GWh), same economic month and availability max. This is relative shipment scale, not market share or inventory. Zero/unknown excluded. Export YoY coverage diagnostic only, no alternate feature search.",
+  "model": "R140 corrected battery cohort; FS market-controlled R64 FSM, FSB=FSMB, FSX=FSM+export_log_ratio, FSBX=FSMB+export_log_ratio; primary FSBX minus FSB, secondary FSX minus FS; all base/state/interaction via fixed R195. No claim all model families refit here.",
+  "fit": "Same R198 annual Jan1 expanding strictly mature training,24 months minimum,Ridge alpha10,training-only StandardScaler; same sample for all methods,20day primary60day secondary; save skipped folds and original coverage",
+  "metrics": "Paired date MSE and MAE, year and state; stability requires24 OOS dates and3 calendar years, plus future evidence. No action/cost assertion.",
+  "classification": "No original R198 classification folds eligible; filtered subset cannot increase support; verify subset and ledger before reporting",
+  "scope": "Historical-proxy, no collection, no deployment, no source-definition certification",
+  "before_outcome_read": true,
+  "parser_amendment": "Observed monthly total and power component sometimes separated by exact sentence 合计出口占当月销量<number>%. Permit only this single bridge; keep attempt1. This corrects context linkage, not model gate."
+}

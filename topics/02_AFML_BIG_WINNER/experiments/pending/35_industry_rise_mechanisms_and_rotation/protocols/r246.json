@@ -1,0 +1,8 @@
+{
+  "question": "Does original R94-R96 operating-evidence follow-up change when reconciled with corrected R147 membership/evidence, R156 alerts and R130 monthly prices?",
+  "basis": "R95 reads original data/r10_alert_followup.parquet (37157) rather than repaired R156 (37171); R96 reads original monthly panel. Existing conclusions must not be assumed invariant.",
+  "design": "Replay original R94/R95/R96 and original independent verifiers in isolated evaluation root. R73 industry/member evidence from R147; R72 selected fields unchanged local disclosure source; task base R147; alert paths R156; price panel R130. Preserve strict-prior latest-snapshot/no fallback, financial/coverage gates, sign grouping, date-equal descriptions, complete paired groups.",
+  "evaluation": "Compare identity additions/removals and all shared accounting fields/price outcomes, common-date ledger and summary; separate corrected basket effects from unchanged economic periods. No new labels, models, threshold search or new economic observations.",
+  "boundary": "Q1/H1 2026 only; limited source proxy. Repeated snapshots do not increase independent economic periods. Historical repair, not independent validation.",
+  "adoption": false
+}

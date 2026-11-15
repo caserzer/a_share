@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "member_audits": [
+    {
+      "stage": "R70",
+      "rows": 33300,
+      "known_rows": 31770,
+      "unknown_rows": 1530,
+      "direction_mismatches": {
+        "capex_up": 0,
+        "ocf_up": 0,
+        "ocf_down": 0,
+        "ocf_flat": 0,
+        "profit_up": 0,
+        "profit_down": 0,
+        "profit_flat": 0
+      },
+      "unique_issuers": 5389
+    },
+    {
+      "stage": "R73",
+      "rows": 198376,
+      "known_rows": 122205,
+      "unknown_rows": 76171,
+      "direction_mismatches": {
+        "capex_up": 0,
+        "capex_down": 0,
+        "ocf_up": 0,
+        "ocf_down": 0,
+        "profit_up": 0,
+        "profit_down": 0
+      },
+      "unique_issuers": 5396
+    }
+  ],
+  "aggregate_rows_checked": 6976,
+  "raw_financial_rows": 75015,
+  "all_raw_financial_report_type_one": true,
+  "consolidated_net_profit_column_in_archive": false,
+  "existing_dictionary_names_parent_profit": true,
+  "decision": "No numeric basis defect demonstrated in audited branch; preserve results and clarify interpretation",
+  "scope": "R147 adopted R70/R73 direction branch, not blanket certification of every financial factor"
+}

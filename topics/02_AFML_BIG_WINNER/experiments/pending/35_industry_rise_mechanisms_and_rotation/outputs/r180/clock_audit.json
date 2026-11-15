@@ -1,0 +1,26 @@
+{
+  "status": "INPUT_CLOCK_FAILURE_CONFIRMED",
+  "summary": [
+    {
+      "asof": "2026-06-30",
+      "future_known_prefix_rows": 78,
+      "future_known_on_observation_date": 78,
+      "all_anchors": true,
+      "l2_l3_membership_dates_present": 0
+    },
+    {
+      "asof": "2026-09-30",
+      "future_known_prefix_rows": 79,
+      "future_known_on_observation_date": 79,
+      "all_anchors": true,
+      "l2_l3_membership_dates_present": 0
+    }
+  ],
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r179/runs.json": "f65d5a31aa51c9202bcd3a675df057816f9b6ff997272f3d2541530588c30d1c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/update_store_r179/observations/f29594097605dbce3284a2a46b0ca11efdc54a06b59fef3940ed00228d96857d/manifest.json": "8d22763669b0ef648d48d6fb304ecb6c7970e09c572fb3fd185cab835215f4d5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/update_store_r179/sources/449e93eb403a31b8827b770633c547628d6b2ab91c2686bddbbea74a2c9291c3.parquet": "449e93eb403a31b8827b770633c547628d6b2ab91c2686bddbbea74a2c9291c3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/update_store_r179/observations/b95ec9ac717226ae1b4e2f6c93c4a3d601df4b8989b133b57f0dce191c60895b/manifest.json": "67df0d43c7f731973c363f2e912708b2a320d1968197f5a8584c0a539274ef0a"
+  },
+  "interpretation": "R179 engineering replay preserved, not an admissible as-of observation. Next adapter must enforce known_at and reconstruct provenance without filling old dates."
+}

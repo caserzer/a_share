@@ -1,0 +1,16 @@
+{
+  "round": 304,
+  "prior_turn": "progress: R303 qualified source-scope sensitivity and closed repeated local field scan",
+  "question": "Can fixed onset and reversal tasks overlap in eligibility, labels and actual alerts?",
+  "scope": "R253 onset and R286 reversal F/F core20 daily archives; three frozen variants; R253/R287 existing daily/monthly/cooldown20 alerts",
+  "design": [
+    "Outer join unique industry dates for coverage; three variants must share features/labels/eligibility within each task",
+    "Independently reconstruct eligibility and labels using original inequalities. Missing labels remain unknown. No new thresholds.",
+    "Onset past_excess20<=0; reversal past_excess60>0 and mom60>0. These are not logically exclusive.",
+    "Onset terminal return>=5% and excess>=3%; reversal intrahorizon relative trough<=-8%. Both can hold; not complementary probabilities.",
+    "Report all 4 eligibility categories and nine 0/1/unknown outcome cells on dual-eligible dates, separately by era/level/year",
+    "Pair frozen alerts on era/level/industry/date/variant/strategy; exclude unmatched model dates from conditional comparisons but report them separately",
+    "No score sum, new joint model, optimization, new collection or trading rule. Joint counts do not prove incremental value or calibrated joint probability."
+  ],
+  "full_scope": "all16 retained; this round addresses goal stage-expression and three-task interpretation only"
+}

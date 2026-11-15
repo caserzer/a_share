@@ -1,0 +1,18 @@
+{
+  "revision": "R255",
+  "question": "Does daily cooldown regime discovery improve with identical date-level alert counts?",
+  "inputs": [
+    "outputs/r253/alerts.parquet",
+    "outputs/r253/scores.parquet",
+    "outputs/r155/evaluation/outputs/r09/confirmation_events.csv"
+  ],
+  "comparison": [
+    "state-base",
+    "interaction-base"
+  ],
+  "scope": "All original daily_cooldown20 lists, all scored era/level/dates, pooled and annual; other strategies unchanged",
+  "capacity": "Each date K=min(base count, variant count); retain each side top K by frozen score then code. Empty dates retained with K=0. Do not refill or recompute cooldown after thinning: suppressed original alerts still consume original cooldown.",
+  "random_control": "Independently choose uniform K of original N each day, no seed sampling. Inclusion q=K/N, empty N gives q=0. Original cooldown gap>20 implies at most one same-industry alert within any20-day event window; expected hit=q. Validate that invariant.",
+  "outcomes": "Fixed original event catalogue including no-alert events; left-censored excluded and counted. Report deterministic recall, expected recall, retained counts, known positive/negative/unknown label counts. Ratio expected positive / expected known explicitly ratio of expectations, not expected precision.",
+  "boundaries": "Posthoc fixed-output workload diagnostic, not newly validated deployable strategy; no new fitting or thresholds, no adoption, no independent significance."
+}

@@ -1,0 +1,974 @@
+{
+  "reads": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r130/fold_payload_deltas.json": "9433d8345a303e25a7079532dbbdb8cbe6b53fc90dc7d96b93a4d4679af5a23a",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r130/fold_ledger.csv": "d3bb1451e3b80686a7fc318963dc53c7e199bd7654609e25450c13930959d548",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r02/model_parameters.json": "7400ee890712de490c481f3ec1cb1bd0b73dd6287a5004ef72961ad8027df01c",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r130/label_pairs.parquet": "b972b2fc209c8370cb51266b8a700f4fd7744ae08c1aae3d79813a4dbb9d00cf",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/retrain_scope_r130.py": "0791d5ec727dd88885cd44cc7994c25d2c6413992d084790f8708e3cf294844b"
+  },
+  "folds": [
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "F",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "F",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 60,
+      "year": 2020,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 60,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "F",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FC",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "test"
+      ],
+      "action": "reevaluate_fixed_model",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FC",
+      "task": "return",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "test"
+      ],
+      "action": "reevaluate_fixed_model",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FC",
+      "task": "return",
+      "horizon": 60,
+      "year": 2021,
+      "changed_roles": [
+        "test"
+      ],
+      "action": "reevaluate_fixed_model",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FC",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "test"
+      ],
+      "action": "reevaluate_fixed_model",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FD",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FD",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 60,
+      "year": 2020,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 60,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L2",
+      "cohort": "FD",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 60,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 60,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "F",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FC",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FC",
+      "task": "return",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FC",
+      "task": "return",
+      "horizon": 60,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FC",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FC"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 60,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 60,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2020,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2014",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2021,
+      "changed_roles": [
+        "fit",
+        "test"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 20,
+      "year": 2024,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 20,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 20,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 60,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "return",
+      "horizon": 60,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "F",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F"
+      ],
+      "model_count": 1
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "onset",
+      "horizon": 20,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 20,
+      "year": 2024,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 20,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 20,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 60,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "return",
+      "horizon": 60,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2025,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    },
+    {
+      "era": "SW2021",
+      "level": "L3",
+      "cohort": "FD",
+      "task": "reversal",
+      "horizon": 20,
+      "year": 2026,
+      "changed_roles": [
+        "fit"
+      ],
+      "action": "refit_and_evaluate",
+      "methods": [
+        "F",
+        "FD"
+      ],
+      "model_count": 2
+    }
+  ],
+  "affected_trained_folds": 56,
+  "refit_folds": 52,
+  "refit_models": 80,
+  "reevaluate_only_folds": 4,
+  "changed_label_rows": 2,
+  "state": "required_not_executed",
+  "scope_boundary": "R02 only; downstream model and strategy dependencies still require propagation"
+}

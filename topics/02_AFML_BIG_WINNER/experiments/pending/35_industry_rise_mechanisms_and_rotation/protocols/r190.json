@@ -1,0 +1,21 @@
+{
+  "question": "Do complete R189 frozen-model portfolios retain advantage by calendar year, with what tail and drawdown costs?",
+  "scope": "Every R189 era/level/cohort/horizon/method/cost; all groups including incomplete eligibility ledger",
+  "rules": "Compound only whole-path-valid groups; same full date grid for paired F/extension comparisons. Calendar-year returns not annualized; partial-year first/last dates explicit. No new liquidation on year boundary",
+  "metrics": [
+    "year cumulative return",
+    "fullpath maximum drawdown",
+    "worst day",
+    "daily5percent quantile",
+    "mean at or below quantile",
+    "mean on negative benchmark days",
+    "annual extension minus F returns"
+  ],
+  "boundaries": [
+    "Repeated historical data, not independent forward validation",
+    "No optimization or parameter search",
+    "No compounding incomplete groups even within a good-looking year",
+    "Calendar-year boundary uses actual carried wealth; year drawdown restarts initial peak at1 for descriptive within-year risk"
+  ],
+  "source": "R189 daily returns and summary; fixed tail definition inherited R171"
+}

@@ -1,0 +1,9 @@
+{
+  "question": "Does L1 raw onset sorting show better post-alert continuation than frozen F and momentum?",
+  "sources": "All5474 R160 frozen alerts, same R159 eligible candidate population; original R168/R10 paths",
+  "primary": "daily_cooldown20 raw_logit versus F unconditional continuation20_60 relative return; annual and pooled, full counts and unknowns",
+  "secondary": "momentum, daily and monthly, 5/20/60 returns/drawdowns and success20 conditioned continuation; no best rule chosen",
+  "comparison": "Own selected alert row means plus date-equal paired means on dates where both have at least1 complete60 path; disclose date intersection and unknowns. Same candidates and rules, different selections; conditional selected samples not causal effects",
+  "frozen": "No refit, new thresholds, labels or periods; success20 known only after20, no missing imputation",
+  "inference": "Descriptive reused historical proxy; no significance or portfolio adoption based on dependent alerts; no calibrated probabilities"
+}

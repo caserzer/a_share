@@ -1,0 +1,9 @@
+{
+  "question": "Does the rank-target model improve frozen monthly portfolio outcomes after drift turnover costs?",
+  "scope": "Every R192 original cohort/feature-method and both horizons/eras/levels; rank, raw, momentum, equal controls",
+  "rules": "Reuse R189 monthly schedule, top20 percent, next close, complete path/block checks, missing whole-strategy withholding, initial and final fees, rates0/.002/.005",
+  "mapping": "Composite cohort original_cohort__original_method; F denotes raw score, composite method denotes rank score, momentum literal denotes original mom60; original identities preserved in mapping table",
+  "validation": "Exact mapping of all R192 rows; raw results against overlapping R189 strategies; independent selection/path/turnover verifier adapted solely for input/output and grouped lookup performance",
+  "boundary": "No new model fits, no optimization, repeated history; rank scores not return units; paired complete months not full portfolio if gaps",
+  "stop": "Finish fixed target contrast historical diagnostics; do not search transform/alpha/topN"
+}

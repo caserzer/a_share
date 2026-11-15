@@ -1,0 +1,17 @@
+{
+  "round": "r270",
+  "question": "Dual-clock classification sensitivity on identical R269 cohort",
+  "tasks": [
+    "onset",
+    "reversal"
+  ],
+  "horizons": [
+    20,
+    60
+  ],
+  "methods": "Six R263 combinations; base/state/interaction; original financing level remains fixed control",
+  "training": "Unchanged R263 annual Logit and prior July-Dec Platt; C1 max_iter2000 seed3502; same class and history gates; maturity purged",
+  "comparison": "Same method snapshot minus signal, Brier improvement sign signal_error minus snapshot_error; calendar-date equal, annual separately; AUC/AP secondary",
+  "interpretation": "Descriptive only under short qualified history; preserve no-fit groups; no clock selection or changed thresholds",
+  "outcomes": "No action/adoption claim from probability scores"
+}

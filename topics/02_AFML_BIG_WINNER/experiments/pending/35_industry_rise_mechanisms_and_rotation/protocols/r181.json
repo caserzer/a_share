@@ -1,0 +1,12 @@
+{
+  "question": "Repair clock and membership provenance at R129 snapshot adapter boundary",
+  "dates": [
+    "2026-06-30",
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "clock": "date <= cutoff and known_at <= cutoff; reject missing known_at; regenerate calendar ordinal and continuous blocks",
+  "membership": "observed uses date month minus one; anchor uses date month; join frozen assignments KEY/month, require one snapshot date and exact member count; historical proxy date not publication time",
+  "validation": "September and October prefixes against separately frozen R129 files; missing fields fail closed; no changes to score formula or legacy snapshots",
+  "scope": "Historical local capture only; no external collection or deployment"
+}

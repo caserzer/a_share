@@ -1,0 +1,15 @@
+{
+ "id":"EP35-R07", "registered_on":"2026-11-13",
+ "question":"R03财务代理的覆盖和排序结论对额外信息延迟、冲突版本与负利润基数有多敏感？",
+ "source":"same frozen all-market financial_archive_all_market and monthly_panel; all R03 price-ready SW2021 L2/L3 Apr-Sep2026",
+ "delays_sessions":[0,5,20],
+ "availability":"base already next session after max announcement. Delay uses only versions whose base available date <= origin minus delay exchange sessions. Archived mode filters actual archived_available_at <= origin close, never announcement proxy",
+ "factors":"unchanged R03 dedt symmetric YoY change and margin YoY pp delta; latest comparable quarter; same-date conflicts missing, no update_flag arbitrary tie-breaking",
+ "aggregation":"R03 previous-month members, >=5 valid and >=80% denominator for each field",
+ "comparisons":"F vs C vs FCfund; report each delay's coverage and exact common industry/date cohort across all3 delays. Compute all centered ranks within matched cohort, avoid interpreting sample differences as information effect",
+ "outcomes":"same next-close delayed20/60 CSI_ALL-relative returns; minimum20 cross-section; record unknown outcomes; no fitting",
+ "extra_audits":"count same-date conflicting values including missing vs numeric, effective dates before period end, current/prior deducted-profit sign regimes and zero denominator; archived mode coverage separately",
+ "acceptance":"descriptive only because at most5 primary mature months; no incremental efficacy claim or selection of best delay",
+ "refutation":"historical association vanishes or reverses under delay; positive appearance comes from changing sample; sign changes or restatements dominate",
+ "limits":"lags cannot restore missing original vintages; causal mechanism and fixed-FY analyst expectations are not tested"
+}

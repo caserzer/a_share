@@ -1,0 +1,18 @@
+{
+  "question": "Does the existing adopted accounting branch silently mix profit basis or compute a cash/profit ratio inconsistent with its stated contract?",
+  "scope": [
+    "capital_profit_r70.py",
+    "capital_clock_r72.py",
+    "capital_monthly_r73.py",
+    "reconcile_accounting_r75.py",
+    "R147 corrected R70/R73 member outputs",
+    "R124 current dictionary and R148 release"
+  ],
+  "rules": [
+    "Do not infer a bug merely from consolidated-vs-parent differences",
+    "Recompute all known two-period directions and aggregate category counts on adopted repaired outputs",
+    "Audit raw source report types and fields",
+    "Provide explicit basis addendum without replacing old validated artifacts or model features",
+    "No counterfactual substitution from ten late-acquired reports; no new external acquisition"
+  ]
+}

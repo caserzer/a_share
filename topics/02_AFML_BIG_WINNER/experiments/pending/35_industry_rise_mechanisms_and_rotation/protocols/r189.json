@@ -1,0 +1,16 @@
+{
+  "question": "Do frozen return-model rankings retain paired advantage under monthly paths and drift-based turnover costs?",
+  "scope": "R131 all extension cohorts, F and extension plus same-cohort equal weight; L2/L3 both classification eras and 20/60 forecast horizons",
+  "schedule": "Complete calendar month-end signal; next benchmark close entry, next month-end plus one close exit; monthly rebalance for both forecast horizons, not fixed20/60 return target replication",
+  "selection": "Saved predictions ranked before outcome/path checks; top ceil(20% N), ties industry code; equal all cohort",
+  "paths": "R129 corrected daily; exact benchmark dates continuous single block; unknown never zero-filled; no alternative selection",
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "turnover": "L1 distance target to drifted prior weights; initial entry and final liquidation charged; multiplicative fees",
+  "gaps": "Enumerate every calendar origin between first/last predictions; reject missing signal or selected path; no whole-strategy CAGR if any gap; post-gap interval turnover resets are diagnostic only",
+  "comparison": "Matched valid calendar intervals with method-specific actual history; distinguish continuous whole strategies from conditional intervals; all groups, no cherry-picking",
+  "status": "Historical-proxy synthetic industry baskets, no stock execution certification, no new tuning or adoption"
+}

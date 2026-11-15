@@ -1,0 +1,10 @@
+"""Bounded follow-up of the sole adjusted-price gap; never assume divisor1."""
+import pandas as pd
+from common import *
+
+def run():
+ out=ROOT/'outputs/r176';gp=out/'stock_date_gaps.parquet';g=pd.read_parquet(gp);g=g[g.adjusted_close_missing];assert g.security_id.nunique()==1;sid=g.security_id.iloc[0];receiptp=ROOT/'outputs/r174/receipt.json';receipt=json.loads(receiptp.read_text());paths={Path(p).stem:Path(p) for p in receipt['price_partitions']};npth=paths[sid];assert sha(npth)==receipt['price_partitions'][str(npth)];norm=pd.read_parquet(npth).set_index('date').loc[g.date];assert norm.instrument.nunique()==1;instrument=norm.instrument.iloc[0];base=Path('/home/xiaolv/.cache/a_share/ep30_d2');p=base/f'backfill_v2/acquired/sina/{instrument}.parquet';rp=Path(str(p)+'.receipt.json');r=json.loads(rp.read_text());assert sha(p)==r['parquet_sha256'];rawp=Path(r['archive_path']);assert sha(rawp)==r['sha256'];raw=pd.read_parquet(p).set_index('date');check=norm[['close','qfq_close','qfq_divisor','factor_source_sha256']].join(raw[['close']].rename(columns={'close':'original_sina_close'}),how='left');assert check.original_sina_close.notna().all() and np.allclose(check.close,check.original_sina_close) and check.qfq_close.isna().all() and check.qfq_divisor.isna().all() and check.factor_source_sha256.isna().all();check.to_csv(out/'adjustment_source_comparison.csv')
+ factor=base/f'pit_v5/acquired/factors/{instrument}.parquet';fr=Path(str(factor)+'.receipt.json');assert not factor.exists() and not fr.exists()
+ js(out/'adjustment_source_audit.json',dict(status='PASS',security_id=sid,instrument=instrument,dates=len(check),raw_price_matches=len(check),divisor_missing=len(check),factor_payload_path=str(factor),factor_payload_present=False,factor_receipt_present=False,reads={str(x):sha(x) for x in [gp,receiptp,npth,p,rp,rawp,Path(__file__)]},interpretation='Unadjusted raw price is present, but no cited local factor artifact; do not substitute raw or divisor1',prices_repaired=0))
+ print('PASS adjustment source',instrument,len(check))
+if __name__=='__main__':run()

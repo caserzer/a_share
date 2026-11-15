@@ -1,0 +1,27 @@
+{
+  "purpose": "Bind actual parameters and predictions to original fold gates for R196/R199/R200/R201",
+  "keys": [
+    "era",
+    "level",
+    "cohort",
+    "method",
+    "task",
+    "horizon",
+    "year",
+    "family"
+  ],
+  "model_key_extension": [
+    "objective",
+    "variant"
+  ],
+  "checks": [
+    "one gate per actual model",
+    "unique model keys and industry-date predictions",
+    "fit gate and finite parameter arrays",
+    "classification Platt fields and score bounds",
+    "convergence flags and source-state equality",
+    "unknown/unseen state support preserved"
+  ],
+  "scope": "historical structural linkage; not numerical refit or live eligibility; other mechanism adapters pending",
+  "snapshot": "2026-09-30 archive slice; omit future outcomes; absent exact-date prediction remains absent"
+}

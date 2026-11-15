@@ -1,0 +1,9 @@
+{
+  "round": 213,
+  "scope": "Every R200 catchup family/method/variant/date, plus same-universe equal-industry control",
+  "selection": "Top ceil(20% industries), score descending/code ascending, frozen signal dates; never filter on future availability",
+  "holdings": "Original signal fixed members; equal selected industries, within each industry equal followers and equal leaders separately",
+  "dates": "Original R145/R110 next-month-end entry, following-month-end exit",
+  "cost": "Independent fully opened/closed monthly baskets, no netting across months; fee c times (entry side notional 1 plus exit side wealth); c=0,.002,.005; spread PnL follower-long minus leader-short minus both-side fees per unit starting long exposure",
+  "limits": "No borrowing/shortability/funding certification; not return on equity, no compounding/CAGR/drawdown from monthly endpoints. All-member complete required, otherwise interval unknown. Side long-only returns also reported. No adoption."
+}

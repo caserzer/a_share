@@ -1,0 +1,24 @@
+{
+  "round": "R57",
+  "registered_before_outcome_evaluation": true,
+  "question": "Fixed exits from market-controlled reversal probabilities; cost and missed upside",
+  "source": "R56 calibrated predictions",
+  "selection": "each era/level/horizon/date/method top ceil20percent by probability, ties industry code ascending; select before filtering outcomes; no threshold tuning",
+  "actions": "hold otherwise; on alerts either cash or CSI_ALL from next-close to horizon end; date equal weighting of equal-weight eligible industry exposure",
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "accounting": "R10 shared horizon terminal liquidation: hold=(1+r)*(1-c), cash=1-c, market=(1-c)^3*(1+bm); no cash interest, no reentry or continuous portfolio; capital unit at next-close",
+  "missing": "alert outcomes retained unknown; policy/date only valid if every eligible industry has complete return and market path; no survivor renormalization",
+  "comparison": "FSMD minus FSM; same universe and top20percent count",
+  "diagnostics": "missed positive return, avoided negative return, wrong exits, annual results; no drawdown avoidance inferred from end return",
+  "limits": "synthetic baskets, overlapping horizon research episodes, not executable or portfolio CAGR; no acceptance inferred from descriptive mean",
+  "methods": [
+    "FS",
+    "FSD",
+    "FSM",
+    "FSMD"
+  ]
+}

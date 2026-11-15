@@ -1,0 +1,11 @@
+{
+  "question": "Does the fixed R57 top20 percent reversal exit diagnostic change after R135?",
+  "inputs": [
+    "R135 R56 predictions",
+    "R130 corrected monthly outcomes",
+    "unchanged L1 outcomes"
+  ],
+  "rule": "Run original R57 code unchanged in isolated root; cost 0/20/50 bps and cash/market switch; complete-universe denominators; all groups and methods retained",
+  "verification": "All origin identities and outcomes against corrected panels; independent selections and cash/market algebra; paired policy differences; preserve missingness",
+  "boundary": "Terminal exit diagnostic only, not continuous portfolio or realized fills. No threshold changes or production adoption"
+}

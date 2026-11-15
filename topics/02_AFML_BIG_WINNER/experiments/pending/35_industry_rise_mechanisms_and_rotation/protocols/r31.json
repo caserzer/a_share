@@ -1,0 +1,20 @@
+{
+  "round": "R31",
+  "hypothesis": "Diffusion incremental relative-return information persists after controlling for typical constituent size",
+  "preregistered": "before fitting",
+  "source": "R30 size control, original monthly panels; Historical-proxy",
+  "cohort": "all F,breadth21,breadth63,size_control observed and price_ready, fixed common cohort across four methods; eras and levels separate",
+  "methods": [
+    "F",
+    "FD",
+    "FS",
+    "FDS"
+  ],
+  "features": "F unchanged; D=breadth21,breadth63; S=median log stock total market cap, R30 5/80 coverage",
+  "model": "centered same-date ranks, train-only StandardScaler, date-balanced Ridge alpha10, no tuning",
+  "split": "2020..2026 annual expanding; >=300 rows and >=18 months; labels mature strictly before Jan1",
+  "targets": "frozen excess20 primary and excess60 secondary, next-close entry",
+  "evaluation": "date-equal MSE and Rank IC >=5 complete industries; annual stability; main increment FDS-FS compared to FD-F on same cohort; all results retained",
+  "uncertainty": "primary five era/level comparisons; simultaneous 99% normal-reference HAC intervals (Bonferroni five at 5%), lag3 for20, lag6 for60; descriptive not proof with short samples; no independent-date assumption",
+  "stop": "no parameter search or portfolio optimization on absent increment; not a full style model, not causal or live validation"
+}

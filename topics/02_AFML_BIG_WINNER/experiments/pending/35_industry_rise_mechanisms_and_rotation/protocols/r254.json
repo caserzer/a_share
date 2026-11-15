@@ -1,0 +1,29 @@
+{
+  "revision": "R254",
+  "question": "On identical R253 price confirmation events, distinguish newly detected, lost, shared and missed events and paired timing.",
+  "inputs": [
+    "outputs/r253/event_hits.parquet",
+    "outputs/r253/alerts.parquet",
+    "outputs/r253/summary.csv"
+  ],
+  "comparisons": [
+    "state-base",
+    "interaction-base"
+  ],
+  "scope": "All 3 frozen alert rules and both classifications/L2/L3; pooled and calendar-year strata, including left-censored events separately.",
+  "definitions": {
+    "new": "variant hit, base missed",
+    "lost": "base hit, variant missed",
+    "shared": "both hit",
+    "neither": "neither hit",
+    "paired_lead": "variant lead minus base lead only among shared; positive means earlier; no imputing missed-event lead"
+  },
+  "invariants": [
+    "same event identity and evaluability",
+    "new-lost equals original hit count difference",
+    "four cells sum evaluable denominator",
+    "earlier+same+later equals shared",
+    "rebuild first matching alert directly from R253 alerts"
+  ],
+  "boundaries": "Descriptive posthoc attribution; neither independent confirmation nor economic onset; no tuning, training, model adoption, or equal-workload claim."
+}

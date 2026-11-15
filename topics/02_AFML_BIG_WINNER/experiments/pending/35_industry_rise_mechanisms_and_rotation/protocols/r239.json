@@ -1,0 +1,18 @@
+{
+  "purpose": "Reusable explicit-date immutable historical archive views and change/missingness comparisons",
+  "dates": [
+    "2026-08-31",
+    "2026-09-30"
+  ],
+  "rules": [
+    "no implicit latest",
+    "require existing source trading date and prior close",
+    "retain all16 and empty dates",
+    "immutable completed snapshot with input/output hashes",
+    "outer-join industry rows within original configuration, no zero fill",
+    "event observations never cross-date paired",
+    "crossyear model vintage flag; changes not causal",
+    "no target or realized outcome fields",
+    "no production/adoption"
+  ]
+}

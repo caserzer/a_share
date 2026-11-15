@@ -1,0 +1,8 @@
+{
+  "question": "Does repaired basket construction change the original R04 monthly portfolio paths and cost diagnostics?",
+  "scope": "All original SW2014/SW2021 L2/L3 and equal,momentum,F,FD,FC; original common cohort, monthly schedule, top20 percent and costs unchanged",
+  "inputs": "R129 corrected daily baskets, R130 monthly panel, original CSI_ALL benchmark; derive day_i only as exact benchmark calendar position",
+  "execution": "Original portfolio_r04.py unchanged in isolated ROOT/CACHE; never overwrite old results",
+  "verification": "Independently reconstruct selections, selected path completeness, drifted weights, all interval turnover and costs, daily fee compounding and final liquidation; reconcile old/new holdings, statuses and whole-path gates",
+  "boundary": "Historical-proxy synthetic baskets, not investable fills. Missing selected path still invalidates whole-strategy compounding. No tuned exclusions."
+}

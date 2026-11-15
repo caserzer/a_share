@@ -1,0 +1,14 @@
+{
+  "round": 283,
+  "previous_turn": "progress: frozen120-model validation contract implemented",
+  "question": "Can240 missing prediction labels be reconstructed from existing repaired basket and benchmark paths without changing forecasts?",
+  "sources": [
+    "outputs/r129/daily_2026-10-21.parquet",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/CSI_ALL.parquet",
+    "/home/xiaolv/.cache/a_share/ep32/forecast_v5/daily_industries.parquet"
+  ],
+  "rule": "Original next-session close entry, h sessions after entry close exit; same repaired continuous block and complete benchmark-calendar path; excess=basket_return-market_return. Never substitute industry index for repaired stock basket.",
+  "scope": "Deduplicate industry/date/horizon; verify all previously evaluable labels too; no network, calendar extrapolation, model refit or invented maturity dates",
+  "outputs": "Exact entry if present, required observed-session positions, remaining sessions beyond local calendar, block continuity, unique missing obligations, source hashes",
+  "boundary": "Late historical evaluation only; no future receipt created"
+}

@@ -1,0 +1,22 @@
+{
+  "question": "Can R22 task outputs and R74 dimension evidence be joined without changing identity, clocks, freshness or model lineage?",
+  "kind": "historical integration; no training, outcomes or success selection",
+  "keys": [
+    "era",
+    "level",
+    "industry_code",
+    "asof"
+  ],
+  "task_grid": "retain every R22 task/horizon/method/cohort row, including unknowns and old predictions in separate fields",
+  "clock": "Only publication_proxy evidence view can accompany R22 historical model display. Copy all three evidence clocks separately; do not claim model replay under archive/acquisition clocks. Source clock scope governs company facts only.",
+  "join": "left many-to-one exact key; assert industry names agree; source all columns retained with evidence_ prefix; absent evidence retains null and explicit status; unmatched evidence keys retained",
+  "invariants": [
+    "predictions and model hashes unchanged",
+    "no carry-forward current predictions",
+    "no final realized financial data read",
+    "no re-ranking, new score or stage probability",
+    "511-industry coverage checked against original full catalogue",
+    "separate grid-row counts from unique industries"
+  ],
+  "outputs": "joined publication proxy view, original multi-clock evidence, anti-join diagnostics, coverage and manifest hashes; local historical only"
+}

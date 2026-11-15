@@ -1,0 +1,21 @@
+{
+  "round": 306,
+  "prior_turn": "progress: R305 completed all51 full-path label checks",
+  "question": "Within frozen onset alerts and dual eligibility, do simultaneous reversal alerts separate subsequent risk and return?",
+  "design": [
+    "R304 common dates and dual eligibility, R253 onset alerts; split by R287 same variant and same strategy reversal membership",
+    "Retain all dates, group sizes, unknown paths; primary only dates with both groups present and every origin complete. No complete-case filtering silently within date",
+    "Use R291 normalized 21point paths; return/excess, worst/mean absolute shortfall, worst relative shortfall, original onset/reversal hit labels",
+    "Group means within date, joint minus onset-only; equal-date summaries separately era/level/variant/strategy and year, no pooled row weighting",
+    "Daily/monthly/cooldown20 are original policies, base/state/interaction remain separate; no ranking/refit/threshold change",
+    "Stability eligibility retain24months/3years as prior minimum, report sparse/missing comparisons; no significance claimed from sign counts",
+    "Observational conditional contrast, not causal or joint-model incremental proof; no trading rule or cost-adjusted claim"
+  ],
+  "inputs": [
+    "outputs/r304/paired_alerts.parquet",
+    "outputs/r287/origins.parquet",
+    "outputs/r291/path_keys.parquet",
+    "outputs/r291/normalized_paths.npz"
+  ],
+  "full_scope": "all16 families and full goal retained"
+}

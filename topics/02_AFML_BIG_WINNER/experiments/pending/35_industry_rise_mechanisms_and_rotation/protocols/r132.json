@@ -1,0 +1,7 @@
+{
+  "question": "Does deterministic basket repair change original untrained R01 ranking conclusions, selections or missing-outcome/cost diagnostics? What local downstream source/provenance references still require review?",
+  "evaluation": "Exact original evaluate_r01.py and r01 protocol, isolated root with R130 panel; no retuning. Fivecohorts, 20/60, topquintile, minimum20, original16-family correction and annual-stability gates.",
+  "verification": "Independent ranks/scores, top/bottom membership, outcome completeness, date IC, fixed roundtrip cost subtraction, original seeded bootstrap/acceptance decisions.",
+  "dependency_scope": "Bounded EP35 src Python literal path references plus JSON provenance references to exact old monthly panel path/hash or daily basket path/hash. Distinguish archival references from active consumers; search is candidate inventory, not exhaustive dynamic dependency graph.",
+  "preservation": "All original R01/R02/upstream caches remain unchanged. Local evidence only, no acquisition, deployment or new performance claim."
+}

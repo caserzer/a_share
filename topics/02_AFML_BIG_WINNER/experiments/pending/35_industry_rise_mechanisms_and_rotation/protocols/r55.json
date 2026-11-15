@@ -1,0 +1,20 @@
+{
+  "round": "R55",
+  "hypothesis": "Does diffusion retain increment after size, market beta and residual volatility controls?",
+  "preregistered": "before fitting",
+  "source": "R54 market controls and original frozen monthly panels",
+  "cohort": "F, size, breadth21/63, beta126 and residual-vol126 all observed; same cohort for four methods",
+  "methods": [
+    "FS",
+    "FSD",
+    "FSM",
+    "FSMD"
+  ],
+  "features": "F frozen; S size; M beta126 and residual_vol126; D breadth21/63",
+  "model": "centered same-date ranks, train-only StandardScaler, date-balanced Ridge alpha10, no tuning",
+  "split": "2020..2026 annual expanding; >=300 rows and >=18 months; labels mature strictly before Jan1",
+  "targets": "frozen excess20 primary and excess60 secondary, next-close entry",
+  "evaluation": "Primary FSMD-FSM, diagnostic FSD-FS and FSM-FS; exact same dates and targets; 99% calendar HAC five primary groups; require >=24 IC dates, >=3 years, each annual delta positive and lower99>0 for stable support",
+  "uncertainty": "primary five era/level comparisons; simultaneous 99% normal-reference HAC intervals (Bonferroni five at 5%), lag3 for20, lag6 for60; descriptive not proof with short samples; no independent-date assumption",
+  "stop": "no parameter search or portfolio optimization on absent increment; not a full style model, not causal or live validation"
+}

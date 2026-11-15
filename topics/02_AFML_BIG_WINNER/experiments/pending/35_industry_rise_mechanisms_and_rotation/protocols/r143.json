@@ -1,0 +1,8 @@
+{
+  "question": "Propagate corrected baskets through financing factor coverage, R46/R47 models and R48 exits",
+  "scope": "Recompute R45 source aggregations on corrected signal identities; fixed FS/FSE methods, original horizons and yearly gates, original source/denominator/membership rules",
+  "inputs": "R130 monthly and R129 daily plus unchanged L1; unchanged local financing detail, original stock caps and R30 size; no external collection",
+  "execution": "Original R45-R48 producers and evaluators unchanged in isolated root, including R47 coverage-selection diagnostic",
+  "verification": "Source/ratio aggregation checks, independent Ridge and classifier inference, original metric confidence and gate checks, all exit outcomes and direct price windows; keyed old/new differences",
+  "boundary": "Historical-proxy financing ratio, not exogenous money flow or strict PIT; no tuning, live execution or new efficacy criteria"
+}

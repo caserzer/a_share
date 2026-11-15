@@ -1,0 +1,13 @@
+{
+  "question": "How uncertain are R160 L1 model-minus-baseline precision and process recall differences under shared time blocks?",
+  "estimands": "mature-alert success ratio and evaluable-event hit ratio, exact R160 pooled ratios within each year; unknowns remain outside precision denominator",
+  "population": "frozen R160 selections and event outcomes, 2025/2026 separately",
+  "blocks": "21 exchange sessions anchored first CSI_ALL session per year, truncated at last R159 scored date in year; keep all calendar blocks including zero-count blocks; same sampled blocks for both methods; no reranking or refitting",
+  "replicates": 20000,
+  "seed": 35161,
+  "minimum_blocks": 8,
+  "invalid_draws": "retain NaN if either denominator zero; record invalid count, suppress intervals if any invalid draw",
+  "comparisons": "2 years x3 frequencies x2 baselines x2 metrics =24; main cooldown versus F, others secondary",
+  "intervals": "95% and Bonferroni family24 percentile intervals (.05/48,1-.05/48); family does not adjust all EP35 history reuse",
+  "limitations": "finite short-block descriptive uncertainty conditional on fixed fitted models and observed maturity; does not capture model estimation, selection research, future regimes or long dependence; no new adoption gate/window search"
+}

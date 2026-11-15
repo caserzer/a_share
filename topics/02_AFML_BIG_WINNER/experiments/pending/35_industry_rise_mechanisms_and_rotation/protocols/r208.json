@@ -1,0 +1,31 @@
+{
+  "round": 208,
+  "scope": "Frozen onset/reversal probabilities R196/R199/R200; R201 classifier gate coverage",
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "bins": [
+    0.0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0
+  ],
+  "weighting": "Equal date, equal industry within each date and selected all/year/state scope",
+  "metrics": [
+    "brier",
+    "logloss clipped 1e-12",
+    "bias",
+    "fixed-bin ECE"
+  ],
+  "support": "All four states including zero fit/cal dates; counts are not independent observations",
+  "restrictions": "No refit, recalibration, threshold search, adoption, or confirmatory significance claim"
+}

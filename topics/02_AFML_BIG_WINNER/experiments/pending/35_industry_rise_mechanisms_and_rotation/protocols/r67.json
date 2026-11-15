@@ -1,0 +1,15 @@
+{
+  "round": "R67",
+  "purpose": "Local capital-cycle and inventory-accounting source feasibility before any outcome test",
+  "source": "R03 archived provider responses; no new collection",
+  "fields": {
+    "cashflow_vip": "c_pay_acq_const_fiolta",
+    "fina_indicator_vip": "invturn_days"
+  },
+  "asof": "2026-09-30",
+  "selection": "valid timing and proxy_available_date<=asof; latest proxy date per issuer/period; same latest-date conflicting values including missing remain missing; retain source rows",
+  "pair": "same quarter-end2026 versus2025, no quarterly subtraction or annualization",
+  "quality": "negative cash payments and nonpositive inventory days excluded from eligible pairs; large positive observations flagged descriptively, never winsorized; provider field meaning is not physical output/inventory",
+  "boundary": "4 economic periods and one archived vintage, no first-release certification, no predictive test or daily/monthly forward fill",
+  "next": "Evaluate identity and industry coverage before designing capital/inventory mechanism tests"
+}

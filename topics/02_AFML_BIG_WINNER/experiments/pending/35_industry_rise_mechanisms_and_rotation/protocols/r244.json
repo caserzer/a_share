@@ -1,0 +1,19 @@
+{
+  "hypothesis": "Suppress original exit alerts only when signal-close observed drawdown episode is already active (non-left-boundary); may reduce rebound-related wrong exits beyond action-count reduction.",
+  "origin": "Hypothesis generated after viewing R243; exploratory reused history, NOT independent confirmation.",
+  "rule": "Original R220 alerts unchanged except asof_state == ongoing => suppress; preserve left-boundary and unknown states; no replacement/refill; no new training or capacity thresholds.",
+  "inputs_for_decision": [
+    "original frozen alert",
+    "signal-close asof_state only"
+  ],
+  "control": "For every original model/date A alerts and K retained, exact expected uniform K-of-A thinning: each original alert retained with probability K/A. No Monte Carlo randomness, no selection using realized outcomes. Preserve zero-kept dates.",
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "evaluation": "Original R220 cash and market-switch terminal wealth minus hold; same all-known-candidate denominator. Report original/gated/thinning expected policies, gate minus original and thinning; suppressed positive exit benefits lost and negative exit costs avoided; counts and unknown action exposure. Zero unknown outcomes never filled; scope remains evaluable subset.",
+  "uncertainty": "Report paired dates and distinct calendar years for each model; no significance claim or adoption from posthoc history. No tunable windows, alternative states or threshold search.",
+  "verification": "Reconcile original policy to R220 and gated policy to R243 original minus ongoing contribution; enumerate tiny K-of-A fixtures to validate exact expectation; verify omissions and date-wise decomposition.",
+  "adoption": false
+}

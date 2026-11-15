@@ -1,0 +1,86 @@
+{
+  "family": "financing",
+  "subscope": "Same-company dual-clock measurement comparison",
+  "rounds": [
+    267,
+    268,
+    269,
+    270,
+    271
+  ],
+  "adoption": false,
+  "stop_unsupported_search": true,
+  "completed": [
+    "Exact-date denominator coverage",
+    "Same-company industry decomposition",
+    "Fixed return and classifier comparisons",
+    "Fixed action and random comparators including missing symbolic cancellation"
+  ],
+  "unresolved": [
+    "Share first publication and revision chain",
+    "Independent new period",
+    "Stock execution"
+  ],
+  "reopen": [
+    "New independent mature evidence",
+    "Concrete source or implementation defect",
+    "Grounded necessary omitted economic comparison"
+  ],
+  "evidence": [
+    {
+      "path": "outputs/r267/summary.json",
+      "sha256": "20891dc6a5b0effc55f6a8664a4b60f62fb0cb13f9316e07e41074cae584d9e9",
+      "verification": {
+        "path": "outputs/r267/independent_verification.json",
+        "sha256": "eb5de7c8c74a2af69566a7bb4e2133cb27665ce9ba3860d8aa9b32a343820883"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r268/summary.csv",
+      "sha256": "271ecc910c992941446582082c99731d1c0970f6c3cbba645e75cae20b0bd649",
+      "verification": {
+        "path": "outputs/r268/independent_verification.json",
+        "sha256": "e0a06b7b179db8324c84913636de5995225e32b3ff604a8f68b70d4ed2b3a4bb"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r269/clock_summary.csv",
+      "sha256": "79a7066d4648ca1123ce0af61a75d6bc4feb8e3ba0dd8ef7fff6396a0b5025ed",
+      "verification": {
+        "path": "outputs/r269/independent_verification.json",
+        "sha256": "d7fc55ee94089c6bbc00a52db939183fc346145094324a96024c1d34d545d4cb"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r270/clock_summary.csv",
+      "sha256": "628215ed41a5ed448dbe8c5c9180bce8cdf01eda51bd191b90d68e79f0dc123e",
+      "verification": {
+        "path": "outputs/r270/independent_verification.json",
+        "sha256": "3275463ef886091cbe82ad5bf367f5755cfac605b33ac3cc6e1391ded609c46e"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r271/clock_comparisons.csv",
+      "sha256": "804741f969094d54485cbf1ef06ca5b4044ac9e9d818e4a22170f1925d7ffb1e",
+      "verification": {
+        "path": "outputs/r271/independent_verification.json",
+        "sha256": "1c00ff3366ec662de972ef47c2538886681a9f0233bdf93a4841ebf011cfdcd3"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    }
+  ]
+}

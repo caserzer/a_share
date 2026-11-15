@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "scope": "Maturity, shared cohort and state-known gates; independent linear normal equations; nonlinear fitting not independently certified",
+  "models": 1065,
+  "skipped_folds": 12,
+  "nonconverged_models": 0,
+  "linear_max_prediction_error": 6.4878658001532585e-15,
+  "prediction_rows": 1148355,
+  "all_independent_mechanisms_complete": false,
+  "adoption": false,
+  "inputs": {
+    "outputs/r195/market_regimes.parquet": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615",
+    "protocols/r196.json": "17cb25632fe76d13a09267773844544390151528a8b2f89ef5870ab14484a257",
+    "src/regime_core_r196.py": "728714621888b16e0c36758ac23ac31681eb6f7b6eb4b84a2ce8077d48620bbc",
+    "src/refit_r131.py": "64bd154a993eedd48e3c3a730b3437fe18dd1b5ba830307854f45b193c3add87",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808",
+    "outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "data/l1_monthly_panel.parquet": "3ec486135e6018ca900a53da38078609d682a6b67b78ffbff882fba2ac7f0766",
+    "outputs/r131/model_parameters.json": "f809d75eabac8ca32631253f30e847a0fdb3c229834aa6420caa52b52f727754",
+    "outputs/r16/model_parameters.json": "c180bf05070e04047a754a2d45d3de8fbe557a4afb7bba9b49d808f00c1264b7",
+    "outputs/r16/raw_parameters.json": "b95c1d25f29e670bc9114758e637e7e70eb120e6177fe4e9230a70c5c3fd7860"
+  },
+  "outputs": {
+    "predictions.parquet": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+    "models.json": "b1d8e23cbfa7f75affa61be19040a19498ebfbeab41174c001ed446e7caabd45",
+    "fold_ledger.json": "5c8d30a173bcdf825b24cf608534baad15414111f5ffb11143064a2b123c3460",
+    "date_metrics.csv": "b31beff8b6770db2f819e7eb8a96f6d4aeb22b17c9a99be30fb4c33dbdb80e5a",
+    "summary.csv": "7b2178c5958ef6eb02a3c8cef6a1918de52385086df26e7801574aa23e043ecd"
+  }
+}

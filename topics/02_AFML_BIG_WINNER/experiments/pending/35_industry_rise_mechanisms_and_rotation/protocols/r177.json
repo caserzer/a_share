@@ -1,0 +1,8 @@
+{
+  "question": "Do archived per-security Sina histories contain R176 missing dates?",
+  "scope": "All absent_date stock dates and observed aliases from R176",
+  "method": "Exact date lookup; verify parquet receipt hash and raw archive hash, instrument, source hash; retain missing archives separately",
+  "repair": false,
+  "quality": "Historical-proxy",
+  "interpretation": "A match is a source candidate only; absence does not prove suspension; no new collection or parameter search"
+}

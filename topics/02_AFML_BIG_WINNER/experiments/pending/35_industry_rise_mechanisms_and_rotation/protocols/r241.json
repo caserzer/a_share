@@ -1,0 +1,8 @@
+{
+  "question": "Does current R204 score input implement the frozen hierarchical weights without variant-count overweighting?",
+  "scope": "All R204 scored_panel rows reconstructed from repaired R130 panel; no training or outcome selection",
+  "method": "Independent scipy average ranks and explicit expanded coefficients; exact identity and missingness comparison; atol 1e-14",
+  "controls": "Preserve per-cohort eligibility, price_ready, min20; no changes to gates, hyperparameters or scores",
+  "prior_evidence": "R104-R106 already examined duplicate supervised ranks and unique-direction penalties; do not repeat performance search",
+  "adoption": false
+}

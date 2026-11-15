@@ -1,0 +1,15 @@
+{
+  "question": "Does changing only the Ridge training target from future excess-return magnitude to cross-sectional centered rank improve chronological ranking?",
+  "mechanism": "R186-R190 show weak magnitude error but occasional selection advantage; rank target gives each date bounded label dispersion, reducing domination by high-dispersion return episodes",
+  "scope": "All 122 R131 return model folds, original features/cohorts/years/20and60 horizons; primary20; no winner selection",
+  "training": "Original fit masks and mature known returns only; within each training date rank(y) average ties, (rank-.5)/count-.5; do not use future/test labels in fitting. Rank is among observed matured cohort, not missing industries",
+  "model": "Ridge alpha10, original unweighted feature scaler and date equal normalized weights. Raw-return Ridge recomputed on identical rows to check saved model; rank Ridge only new method",
+  "controls": [
+    "saved raw-return model same features and sample",
+    "60-day momentum same test cohort"
+  ],
+  "evaluation": "Same-date Rank IC, >=20 matured industry outcomes and nonconstant scores; top ceil(20% full test cohort) before checking unknown outcomes; require both top sets complete for pair; equal-weight dates, separate years/eras/levels/features",
+  "comparison": "rank vs raw and rank vs momentum; no error comparison across differently scaled targets; raw and rank predictions not calibrated probabilities",
+  "validation": "Independent weighted normal equation of both fits, exact original predictions, maturity strict-before-year check, immutable input hashes",
+  "interpretation": "Exploratory historical reuse; no new holdout. No adoption from point estimates. Do not tune alpha or transform based on outcome; if needed evaluate uncertainty in subsequent fixed analysis without new models."
+}

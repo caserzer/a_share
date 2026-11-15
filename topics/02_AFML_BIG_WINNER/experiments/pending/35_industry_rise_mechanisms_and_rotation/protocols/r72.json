@@ -1,0 +1,26 @@
+{
+  "round": "R72",
+  "purpose": "Replay accounting source availability before reusing R70 September evidence at earlier dates",
+  "dates": [
+    "2026-04-30",
+    "2026-05-29",
+    "2026-06-30",
+    "2026-07-31",
+    "2026-08-31",
+    "2026-09-30"
+  ],
+  "fields": {
+    "cashflow_vip": [
+      "c_pay_acq_const_fiolta",
+      "n_cashflow_act"
+    ],
+    "income_vip": [
+      "n_income_attr_p"
+    ]
+  },
+  "selection": "valid proxy date <= snapshot, latest proxy date per api/issuer/period; each field same-date disagreement including null remains unknown; profit report_type1/comp_type1; cash payment>=0",
+  "pairs": "Q1 and H1 current2026/prior2025 separate, all six values required; exact six-digit exchange codes only",
+  "scope": "issuer-source availability audit, no industry mapping or market outcomes; archive clock separately, historical-proxy not strictPIT",
+  "comparison": "September joint-known keys compared at every earlier snapshot; missing and changed values separate, never backfill September",
+  "stop": "no prediction from repeated copies of four economic periods"
+}

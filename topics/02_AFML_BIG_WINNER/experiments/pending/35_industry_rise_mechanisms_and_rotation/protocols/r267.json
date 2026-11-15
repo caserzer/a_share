@@ -1,0 +1,12 @@
+{
+  "round": "r267",
+  "question": "Exact financing snapshot-date denominator coverage and two-session measurement difference",
+  "source": "R260 endpoints and original EP30 pit_v5/backfill_v2 releases used by EP32 extension_v2",
+  "price": "Exact date raw close with close_conflict false, positive finite; no qfq substitution or nearest day",
+  "shares": "Original effective-date backward lookup with same-date conflicting assertions unknown; preserve first-publication unknown, Historical-proxy",
+  "listing": "Require snapshot date within original listing/delisting bounds and identity conflict false",
+  "cohort": "Retain all R260 endpoints; descriptive comparison only where old valid and new complete",
+  "signal": "Keep original signal date; do not advance information availability",
+  "outcomes": "No future labels or model fitting this round",
+  "next_condition": "Only if exact-date coverage permits, compare same-company industry decomposition without changing gates"
+}

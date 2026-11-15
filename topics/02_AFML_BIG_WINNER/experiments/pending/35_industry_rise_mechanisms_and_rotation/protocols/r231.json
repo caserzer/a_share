@@ -1,0 +1,13 @@
+{
+  "purpose": "Versioned regime dictionary and local read-only historical state monitor",
+  "invariants": [
+    "preserve original28 dictionary",
+    "exact R195 windows and ddof1",
+    "unknown state not reference dummy",
+    "explicit as-of date and clock",
+    "reject missing signal-close dates, no silent latest substitution",
+    "no forward or production claim",
+    "immutable output unless byte-identical"
+  ],
+  "verification": "independent scalar source-state reconstruction, unknown and clock tests, hash mismatch and overwrite rejection"
+}

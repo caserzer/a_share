@@ -1,0 +1,288 @@
+{
+  "rows": {
+    "alert": {
+      "old": 37157,
+      "new": 37171,
+      "added": 360,
+      "removed": 346,
+      "changes": {
+        "return5": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "return20": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "return60": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "drawdown20": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "continuation_excess20_60": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "breadth_change20": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        }
+      }
+    },
+    "risk": {
+      "old": 6052,
+      "new": 6052,
+      "added": 0,
+      "removed": 0,
+      "changes": {
+        "alert": {
+          "changed": 22,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 1.0
+        },
+        "return20": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "return60": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "excess20": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        },
+        "excess60": {
+          "changed": 0,
+          "known_to_unknown": 0,
+          "unknown_to_known": 0,
+          "max_abs": 0.0
+        }
+      }
+    }
+  },
+  "metrics": {
+    "followup_summary": {
+      "alerts": {
+        "changed": 9,
+        "max_abs": 8.0,
+        "sign_flips": 0
+      },
+      "complete": {
+        "changed": 10,
+        "max_abs": 9.0,
+        "sign_flips": 0
+      },
+      "unknown": {
+        "changed": 6,
+        "max_abs": 2.0,
+        "sign_flips": 0
+      },
+      "absolute_mean": {
+        "changed": 24,
+        "max_abs": 0.0010084876760582985,
+        "sign_flips": 0
+      },
+      "excess_mean": {
+        "changed": 24,
+        "max_abs": 0.0010084876760584009,
+        "sign_flips": 0
+      },
+      "positive_absolute_fraction": {
+        "changed": 18,
+        "max_abs": 0.0035650623885918886,
+        "sign_flips": 0
+      },
+      "mean_drawdown": {
+        "changed": 22,
+        "max_abs": 0.0005779934712722978,
+        "sign_flips": 0
+      },
+      "drawdown_p10": {
+        "changed": 16,
+        "max_abs": 0.0021449613834400028,
+        "sign_flips": 0
+      },
+      "mean_min_return": {
+        "changed": 24,
+        "max_abs": 0.0005595506734577121,
+        "sign_flips": 0
+      }
+    },
+    "followup_annual": {
+      "alerts": {
+        "changed": 15,
+        "max_abs": 9.0,
+        "sign_flips": 0
+      },
+      "complete": {
+        "changed": 16,
+        "max_abs": 10.0,
+        "sign_flips": 0
+      },
+      "unknown": {
+        "changed": 7,
+        "max_abs": 2.0,
+        "sign_flips": 0
+      },
+      "absolute_mean": {
+        "changed": 45,
+        "max_abs": 0.0017159255312165014,
+        "sign_flips": 0
+      },
+      "excess_mean": {
+        "changed": 45,
+        "max_abs": 0.0017159255312164266,
+        "sign_flips": 0
+      },
+      "mean_drawdown": {
+        "changed": 43,
+        "max_abs": 0.0005907833364618975,
+        "sign_flips": 0
+      }
+    },
+    "continuation": {
+      "selected": {
+        "changed": 13,
+        "max_abs": 10.0,
+        "sign_flips": 0
+      },
+      "complete": {
+        "changed": 16,
+        "max_abs": 9.0,
+        "sign_flips": 0
+      },
+      "unknown": {
+        "changed": 13,
+        "max_abs": 3.0,
+        "sign_flips": 0
+      },
+      "absolute_increment": {
+        "changed": 23,
+        "max_abs": 0.001460663365411001,
+        "sign_flips": 0
+      },
+      "relative_increment": {
+        "changed": 23,
+        "max_abs": 0.0020015764061141004,
+        "sign_flips": 0
+      },
+      "positive_relative_fraction": {
+        "changed": 21,
+        "max_abs": 0.017727840199750322,
+        "sign_flips": 0
+      },
+      "breadth_change20": {
+        "changed": 21,
+        "max_abs": 0.007775834078706301,
+        "sign_flips": 0
+      }
+    },
+    "exit_summary_dates": {
+      "cash_improvement": {
+        "changed": 6,
+        "max_abs": 0.00028888416279470013,
+        "sign_flips": 0
+      },
+      "market_improvement": {
+        "changed": 6,
+        "max_abs": 0.00028888416279470013,
+        "sign_flips": 0
+      },
+      "wrong_exit_absolute": {
+        "changed": 6,
+        "max_abs": 0.0014355677992042293,
+        "sign_flips": 0
+      },
+      "wrong_exit_relative": {
+        "changed": 6,
+        "max_abs": 0.0007289343652980285,
+        "sign_flips": 0
+      },
+      "missed_positive_absolute": {
+        "changed": 6,
+        "max_abs": 0.00016591271264009694,
+        "sign_flips": 0
+      },
+      "avoided_negative_absolute": {
+        "changed": 6,
+        "max_abs": 0.0001229714501544965,
+        "sign_flips": 0
+      },
+      "risk_precision": {
+        "changed": 6,
+        "max_abs": 0.00024793388429750207,
+        "sign_flips": 0
+      },
+      "months": {
+        "changed": 0,
+        "max_abs": 0.0,
+        "sign_flips": 0
+      }
+    },
+    "exit_summary_rows": {
+      "origins": {
+        "changed": 0,
+        "max_abs": 0.0,
+        "sign_flips": 0
+      },
+      "complete": {
+        "changed": 0,
+        "max_abs": 0.0,
+        "sign_flips": 0
+      },
+      "unknown": {
+        "changed": 0,
+        "max_abs": 0.0,
+        "sign_flips": 0
+      },
+      "cash_improvement_row_mean": {
+        "changed": 6,
+        "max_abs": 0.00021228354692899923,
+        "sign_flips": 0
+      },
+      "market_improvement_row_mean": {
+        "changed": 6,
+        "max_abs": 0.0002122835469290001,
+        "sign_flips": 0
+      },
+      "wrong_exit_absolute": {
+        "changed": 6,
+        "max_abs": 0.0027472527472527375,
+        "sign_flips": 0
+      },
+      "wrong_exit_relative": {
+        "changed": 0,
+        "max_abs": 0.0,
+        "sign_flips": 0
+      },
+      "risk_precision": {
+        "changed": 0,
+        "max_abs": 0.0,
+        "sign_flips": 0
+      }
+    }
+  }
+}

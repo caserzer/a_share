@@ -1,0 +1,25 @@
+{
+  "question": "Are frozen reversal alerts responding to already-active drawdowns or preceding new episodes, and where do original exit gains/costs arise?",
+  "scope": "All R220 predictions and original action paths; frozen R242 observed-peak episodes/segments; no refit, no new threshold, no altered trade rule.",
+  "asof_status": "At signal close within observed segment, active iff breach<=signal and no recovery yet; left-boundary-active separate. Unknown if signal not within valid segment. Verify using prefix cumulative high, never require future recovery to make asof classification.",
+  "future_status": "Original complete path needed. Any episode first crossing on entry day separate; crossing entry+1..20 separate, with left-boundary crossings separate. No crossing within complete window means no_new20 only, not safe. Unknown path preserved. All future classes ex post diagnostic, prohibited as trade filters.",
+  "strata_priority": [
+    "unknown_signal",
+    "ongoing",
+    "ongoing_left_boundary",
+    "unknown_future",
+    "new_on_entry",
+    "new_within20",
+    "left_boundary_future",
+    "no_new20"
+  ],
+  "costs": [
+    0,
+    0.002,
+    0.005
+  ],
+  "actions": "Unchanged R220 cash versus hold and market-switch versus hold terminal wealth, including original sell/buy/terminal costs.",
+  "aggregation": "Each stratum policy contribution = sum(alert*gain in stratum)/all valid candidate count of same model/date. Sum strata must reproduce R220 policy gain. Equal-date summary with zero contribution for absent stratum, unknown outcomes never zero-filled. Paired variants same candidate universe, signal counts fixed. Separately report alerts/known/unknown counts; no causal or prospective interpretation.",
+  "verification": "Independent prefix classification, first-cross search, scalar cashflow formulas and all original date-policy reconciliations; invariants and hash receipts.",
+  "adoption": false
+}

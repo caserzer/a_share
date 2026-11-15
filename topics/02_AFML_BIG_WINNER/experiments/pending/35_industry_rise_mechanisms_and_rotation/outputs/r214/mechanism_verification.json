@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "paired_source_rows": 1384,
+  "interval_comparisons": 30,
+  "risk_comparisons": 90,
+  "scope": "Exact same industry/date/horizon source universe and identical entry/exit schedules; whole-curve-only mechanism risk differences",
+  "adoption": false,
+  "code_sha256": "185f20f35e4e56bac73a9466a8b2caa1c5f3e692d1aaad36d30694d6f2bfe987",
+  "inputs": {
+    "mapping.csv": "50ff4404505db6f48c3ff81cdd6ace2bfc1a76c678bbc761739efbd70a11419e",
+    "intervals.csv": "411bc40637376e226d68ed638d677cff3ab72d56356b955904d5ec7418d90ad6",
+    "summary.csv": "5d6a6b417a8873da5d9c648962fa9ee276d0687e7521d869740ae9f29e58c8ae",
+    "mapped_predictions.parquet": "8edbd1d2f6053be1e23bbaa0c686f6a35b01ad6d29c6365f00a9cb230dc2310b"
+  },
+  "outputs": {
+    "mechanism_intervals.csv": "4a91745f622b82c9a08349dde465e5700b3924fd6c39d3ecfb3a420de8a128c7",
+    "mechanism_risk.csv": "2ec12710d3081eb79ae300a8b6adb3aa7d997300bdc0c4513766c9b316241579",
+    "mechanism_increment_change.csv": "1e43442164a174d7dcb88f7987d6d97dc42072a4bc071cb81961a2c6df045608"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "round": 221,
+  "scope": "All frozen onset predictions R196/R199/R200, every available identity/horizon/regime; retain R201 qualification failures.",
+  "selection": "Highest ceil20% onset probability per original model/date, industry-code tie break; before future coverage filtering",
+  "economics": "Initial cash1: buy alert industry then liquidate=(1-c)^2*(1+R); cash comparator1; same-capacity market buy/liquidate=(1-c)^2*(1+M). No buys for nonalerts. Costs0/.002/.005.",
+  "paths": "Next benchmark close through original20/60 horizon, continuous R129/L1 blocks. Reconcile original onset label:20d absolute>=5% and excess>=3%;60d absolute>=10% and excess>=5%. Preserve unknowns.",
+  "metrics": "Fixed-capacity known-label precision/recall, coverage and workload; net purchase vs idle cash and same-budget market, per eligible and conditional alert. Selected raw loss/relative underperformance rates and interval drawdown, no portfolio compounding.",
+  "limits": "Overlapping independent holding decisions not continuous portfolio, no compounding or deployable exit recommendation; no threshold/model search."
+}

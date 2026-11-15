@@ -1,0 +1,9 @@
+{
+  "round": 218,
+  "scope": "All R198 battery return forecasts, both industry levels and horizons, all4 feature methods and3 regime variants",
+  "decision": "Industry iff predicted excess>0 else CSI_ALL; zero is original excess benchmark boundary, no threshold search",
+  "dates": "Original R140 entry_date and maturity20/60, entire calendar price chain required. Industry and market path required for paired contrasts. Source targets independently reconciled.",
+  "cost": "Independent fully opened/closed each interval c*(1+exit wealth), c=0,.002,.005. Both industry and market baseline charged identically. Not continuous switching turnover.",
+  "metrics": "Gross/net20/net50 relative to same-fee market and always-industry; within-interval gross max drawdown; wrong industry and missed positive excess; same-method regime and same-state battery increment",
+  "limits": "Overlapping20/60 intervals not compounded or independent observations; industry index not executable ETF; no classifier thresholds or battery-specific causal certification; no adoption."
+}

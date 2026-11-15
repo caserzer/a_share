@@ -1,0 +1,8 @@
+{
+  "question": "先聚合财富后，固定起点组合的本金短缺是否改善？",
+  "inputs": ["outputs/r291/normalized_paths.npz", "outputs/r291/path_keys.parquet", "outputs/r287/origins.parquet", "outputs/r287/alerts.parquet", "outputs/r290/date_metrics.parquet"],
+  "design": "沿R290完整母体日期、全部行业等权、每日/月末、三模型、现金/市场、0/20/50bp。先计算20日各日组合假设清算财富，再计算最大和平均本金短缺；不是连续滚动可执行组合或峰值回撤。",
+  "random": "每日期1024次固定容量无放回均匀抽样，PCG64种子为SHA256('R292|era|level|YYYY-MM-DD')前8字节大端整数；随机均匀数最小k个。所有费用/政策/模型共享同日抽样。逐次计算非线性风险后取均值；固定次数不按结果追加或选种子。",
+  "uncertainty": "随机风险样本方差/1024为均值MC方差；日期抽样流独立，日期等权平均MC标准误=sqrt(sum(var/1024))/D。这仅是数值模拟误差，不是历史收益统计置信区间。月末复用对应日的抽样，不称独立实验。",
+  "acceptance": "端点复现R290；每个样本恰选k；独立排序重建抽样并显式加总财富，核验非线性期望与样本平均路径的Jensen差；小样本穷举核对非交换性。无调参无采用。"
+}

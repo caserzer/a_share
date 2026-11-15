@@ -1,0 +1,20 @@
+{
+  "scope": [
+    "market_style",
+    "size_diffusion",
+    "financing"
+  ],
+  "state": "R195 fixed four states",
+  "variants": [
+    "base",
+    "state",
+    "interaction"
+  ],
+  "targets": "Original return/onset/reversal 20/60; no extra rank target",
+  "data": "R130 corrected prices, R133 market controls, R143 repaired financing, original size controls and L1",
+  "cohorts": "Original complete common feature cohorts; ranks BEFORE target eligibility or state filtering",
+  "gates": "Original 300 rows/18 months, train each class30, calibration100 rows/4 months/each class10; annual mature labels",
+  "models": "Original date weights, Ridge alpha10, Logit C1 plus held-past Platt C1; state and interactions appended after train scaler",
+  "metrics": "Return IC minimum5, negative MSE; classifier negative Brier; both regime and mechanism increments",
+  "boundary": "Exploratory Historical-proxy, no tuning/adoption; shared filtered states"
+}

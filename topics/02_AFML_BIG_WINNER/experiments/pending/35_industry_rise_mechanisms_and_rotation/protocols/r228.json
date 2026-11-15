@@ -1,0 +1,11 @@
+{
+  "round": 228,
+  "question": "Does frozen regime onset selection improve new performance and persistence after entry?",
+  "source": "R221 all onset predictions and alerts; R129 daily synthetic baskets plus CSI_ALL",
+  "entry": "signal next close; 5/20/60 trading sessions after entry; require complete continuous same-block market-calendar path",
+  "metrics": "R10 returns/excess/drawdown/min-from-entry; geometric20to60 continuation minus benchmark geometric continuation",
+  "selection": "unchanged R221 top20%; all alerts primary, success20/not_success20 retrospective secondary known only at entry+20",
+  "aggregation": "equal known alerts within signal date, then equal dates; unknown paths counted never zero; explicit complete-case selection limitation",
+  "comparisons": "same model state-base and interaction-base; fixed all/success20/not_success20 cohorts; all primary; no horizon/model selection",
+  "boundaries": "historical proxy, gross path diagnostics not strategy profits; no refit, no daily or economic-stage claim"
+}

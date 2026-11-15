@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "scope": "Saved test predictions and training means matched; independent row/date MSE aggregation checked",
+  "models": 122,
+  "test_predictions_checked": 155962,
+  "max_prediction_error": 6.938893903907228e-18,
+  "inputs": {
+    "outputs/r130/monthly_panel.parquet": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+    "outputs/r131/model_parameters.json": "f809d75eabac8ca32631253f30e847a0fdb3c229834aa6420caa52b52f727754",
+    "outputs/r131/predictions.parquet": "88ed17561a1ca71b571c1daf084e8a1b0900a9c3722ee0f66138f787281997de",
+    "protocols/r186.json": "f9758519479bc547b2ef1d52e8e7924e60c8936d7567af23e8d69c4d5de1edb4",
+    "src/fit_transfer_r186.py": "6b2dc28b32075fdf5c7566d37b8a5b73ea5305e3f31a3fac82499016f3e32281",
+    "src/refit_r131.py": "64bd154a993eedd48e3c3a730b3437fe18dd1b5ba830307854f45b193c3add87",
+    "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+    "src/common.py": "8e7cc7259c0e066bfa78efbb5e831f1ed42cda657bb82fdb63696982dbce4808"
+  },
+  "outputs": {
+    "fold_metrics.csv": "1d2d9ec5bf51f2ddb9d6631c6d0f31b732e865da4874697ef8a9d91d4cbea41f",
+    "date_metrics.csv": "7f52751aab48c48ea00dc27934562dbd02e5db018c65da0f0e895d93fde85b33",
+    "paired_metrics.csv": "75b3c9226935b2fabf3f76e718566609667356e73418474f15682bb130241f79",
+    "summary.json": "b834248e4eac8c76c3c3f98d902ccab96ea9522e27d1b83d008920fda9f511e4"
+  }
+}
