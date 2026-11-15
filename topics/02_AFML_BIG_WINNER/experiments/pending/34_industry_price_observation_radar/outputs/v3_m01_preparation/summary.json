@@ -1,0 +1,28 @@
+{
+  "directory_rows": 141872,
+  "eligible": 52758,
+  "known_eligible": 50394,
+  "positive": 15484,
+  "feature_prefix_checks": 948,
+  "label_future_perturbation_checks": 7564,
+  "features_base": [
+    "r5",
+    "r20",
+    "r40"
+  ],
+  "features_change": [
+    "r5",
+    "r20",
+    "r40",
+    "prior20",
+    "change5",
+    "change20",
+    "drawdown20",
+    "rebound20",
+    "vol20",
+    "negative_share20"
+  ],
+  "training_target": "Early parent stage confirmed in fixed eight complete future weeks; NOT final E02 process effectiveness",
+  "direct_prefix_reconstruction": true,
+  "final_parent_or_child_labels_read": false
+}

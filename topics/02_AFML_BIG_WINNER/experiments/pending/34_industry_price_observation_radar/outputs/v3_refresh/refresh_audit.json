@@ -1,0 +1,81 @@
+{
+  "result": "PASS_LOCAL_RAW_REFRESH_PREFIX_AND_FRESHNESS",
+  "hash_references": 135,
+  "checks": [
+    {
+      "cutoff": "2026-10-21",
+      "arm": "BALANCED_COMPETE",
+      "rows": 107141,
+      "events": 8069,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2026-10-21",
+      "arm": "BROAD20_COMPETE",
+      "rows": 107141,
+      "events": 8043,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2021-11-26",
+      "arm": "BALANCED_COMPETE",
+      "rows": 22473,
+      "events": 2405,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2021-11-26",
+      "arm": "BROAD20_COMPETE",
+      "rows": 22473,
+      "events": 2408,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2022-01-14",
+      "arm": "BALANCED_COMPETE",
+      "rows": 23167,
+      "events": 2425,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2022-01-14",
+      "arm": "BROAD20_COMPETE",
+      "rows": 23167,
+      "events": 2428,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2025-12-31",
+      "arm": "BALANCED_COMPETE",
+      "rows": 93261,
+      "events": 7087,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2025-12-31",
+      "arm": "BROAD20_COMPETE",
+      "rows": 93261,
+      "events": 7071,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2026-09-30",
+      "arm": "BALANCED_COMPETE",
+      "rows": 106447,
+      "events": 8021,
+      "prefix_unchanged": true
+    },
+    {
+      "cutoff": "2026-09-30",
+      "arm": "BROAD20_COMPETE",
+      "rows": 106447,
+      "events": 7993,
+      "prefix_unchanged": true
+    }
+  ],
+  "reference_events_and_states_reproduced": true,
+  "unavailable_future_date_rejected": true,
+  "tests_passed": 112,
+  "numerical_tolerance": 1e-14,
+  "limits": "Full-history replay, not serialized incremental-state loading. Fixed local data vintage, no prospective method validation. Original v1 empty-candidate bug corrected in v2."
+}
