@@ -1,0 +1,184 @@
+{
+  "revision": "R272",
+  "definitions": [
+    {
+      "family": "financing",
+      "type": "EP35_extension",
+      "frequency": "monthly",
+      "theory": "Distinguish financing balance from valuation denominator",
+      "direction": "Balance increase is a candidate demand proxy; predictive sign not certified",
+      "industry_scope": "SW2014 L2/L3; SW2021 L1/L2/L3 subject to qualification",
+      "economic_date": "Balance snapshot signal date minus 2 trading sessions; cap at signal date",
+      "publication_date": "Original first-release timestamp not established",
+      "available_time": "Historical-proxy signal-date construction; strict PIT false",
+      "revision": "No complete first-release revision chain",
+      "source": [
+        "outputs/r260/pairs.parquet",
+        "outputs/r261/industry_pairs.parquet"
+      ],
+      "aggregation": "Median on fixed positive complete common companies",
+      "missing_rule": "Both original industry endpoints present; >=5 and >=80% of each endpoint membership; else null",
+      "failure": "Nonpositive B/P/S, identity or date mismatch, missing members, insufficient history; no zero fill",
+      "strict_pit": false,
+      "adoption": false,
+      "id": "balance_component",
+      "formula": "0.5*((f10-f00)+(f11-f01))",
+      "notation": "fij = median(B_i / (P_j*S_j)) on identical common company cohort"
+    },
+    {
+      "family": "financing",
+      "type": "EP35_extension",
+      "frequency": "monthly",
+      "theory": "Distinguish financing balance from valuation denominator",
+      "direction": "Balance increase is a candidate demand proxy; predictive sign not certified",
+      "industry_scope": "SW2014 L2/L3; SW2021 L1/L2/L3 subject to qualification",
+      "economic_date": "Balance snapshot signal date minus 2 trading sessions; cap at signal date",
+      "publication_date": "Original first-release timestamp not established",
+      "available_time": "Historical-proxy signal-date construction; strict PIT false",
+      "revision": "No complete first-release revision chain",
+      "source": [
+        "outputs/r260/pairs.parquet",
+        "outputs/r261/industry_pairs.parquet"
+      ],
+      "aggregation": "Median on fixed positive complete common companies",
+      "missing_rule": "Both original industry endpoints present; >=5 and >=80% of each endpoint membership; else null",
+      "failure": "Nonpositive B/P/S, identity or date mismatch, missing members, insufficient history; no zero fill",
+      "strict_pit": false,
+      "adoption": false,
+      "id": "cap_component",
+      "formula": "0.5*((f01-f00)+(f11-f10))",
+      "notation": "fij = median(B_i / (P_j*S_j)) on identical common company cohort"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "outputs/r260/summary.json",
+      "sha256": "3978858b3cb75da659675def408d7fed2c6dd3a2dcba7735cad0c1c0eb83c02f",
+      "verification": {
+        "path": "outputs/r260/independent_verification.json",
+        "sha256": "aa245f344c93aaa16a5c4611f8d5b6e27d8c50dd9f63d4403df682b98df96c9e"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r261/summary.csv",
+      "sha256": "4b0b87391cd7ffdb9f0f87901059807f3d9d42e22f4b897cf3c3dea1b23d9d7f",
+      "verification": {
+        "path": "outputs/r261/independent_verification.json",
+        "sha256": "7c989e5ecf7d4741f05cf5769de5272083943f505b08e64358e013a10cb34f37"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r262/summary.csv",
+      "sha256": "8384d312ba9609f57c33971ee142c7eec03c272691f65dbfdf880518220d229a",
+      "verification": {
+        "path": "outputs/r262/independent_verification.json",
+        "sha256": "6f71cd1342ce01fc0f8cef68a7309729474e0020d079a86ed2af637bfbf39498"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r263/summary.csv",
+      "sha256": "cd6e5df991331262f0013974c7bcdc26c52adf8595d99a53f8f39fad65c8caa1",
+      "verification": {
+        "path": "outputs/r263/independent_verification.json",
+        "sha256": "c2c1da1e547fae00dee8b2ba0940059be36d2c4447858345393306fb64df7d04"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r264/summary.csv",
+      "sha256": "3c1be59523a2445fd014629cb796c8ccf4b6ee5564c5f6f1637190db1934bfda",
+      "verification": {
+        "path": "outputs/r264/independent_verification.json",
+        "sha256": "ac74eb5f82c6749a811b5be7bdd6594159320fc3a3d475000a264f459d6ba63e"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r265/summary.csv",
+      "sha256": "7cec69b7f4fb4d73fa44711d1a7180fef25199c73b13a2793a43cde7a04d8869",
+      "verification": {
+        "path": "outputs/r265/independent_verification.json",
+        "sha256": "fd012685c30372880d7cff79773fbb6564c23215286750276b00fe8c918c4f48"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    }
+  ],
+  "boundary": "Algebra attribution is not causal flow; native/common difference not pure membership effect",
+  "clock_versions": {
+    "signal": "R268 common-company balance/cap with signal-date denominator",
+    "snapshot": "R268 same-company balance/cap with exact snapshot-date denominator, effective-share proxy"
+  },
+  "clock_evidence": [
+    {
+      "path": "outputs/r267/summary.json",
+      "sha256": "20891dc6a5b0effc55f6a8664a4b60f62fb0cb13f9316e07e41074cae584d9e9",
+      "verification": {
+        "path": "outputs/r267/independent_verification.json",
+        "sha256": "eb5de7c8c74a2af69566a7bb4e2133cb27665ce9ba3860d8aa9b32a343820883"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r268/summary.csv",
+      "sha256": "271ecc910c992941446582082c99731d1c0970f6c3cbba645e75cae20b0bd649",
+      "verification": {
+        "path": "outputs/r268/independent_verification.json",
+        "sha256": "e0a06b7b179db8324c84913636de5995225e32b3ff604a8f68b70d4ed2b3a4bb"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r269/clock_summary.csv",
+      "sha256": "79a7066d4648ca1123ce0af61a75d6bc4feb8e3ba0dd8ef7fff6396a0b5025ed",
+      "verification": {
+        "path": "outputs/r269/independent_verification.json",
+        "sha256": "d7fc55ee94089c6bbc00a52db939183fc346145094324a96024c1d34d545d4cb"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r270/clock_summary.csv",
+      "sha256": "628215ed41a5ed448dbe8c5c9180bce8cdf01eda51bd191b90d68e79f0dc123e",
+      "verification": {
+        "path": "outputs/r270/independent_verification.json",
+        "sha256": "3275463ef886091cbe82ad5bf367f5755cfac605b33ac3cc6e1391ded609c46e"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    {
+      "path": "outputs/r271/clock_comparisons.csv",
+      "sha256": "804741f969094d54485cbf1ef06ca5b4044ac9e9d818e4a22170f1925d7ffb1e",
+      "verification": {
+        "path": "outputs/r271/independent_verification.json",
+        "sha256": "1c00ff3366ec662de972ef47c2538886681a9f0233bdf93a4841ebf011cfdcd3"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    }
+  ],
+  "original_level_control": "Original R143 financing_intensity unchanged in R269/R270"
+}

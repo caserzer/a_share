@@ -1,0 +1,20 @@
+{
+  "datasets": [
+    "daily_bars_sina",
+    "hfq_factors_sina",
+    "share_structure"
+  ],
+  "bars_window": [
+    "2026-09-01",
+    "2026-11-13"
+  ],
+  "shares_window": [
+    "2020-01-01",
+    "2026-11-13"
+  ],
+  "factor_window": "source available full series; inspect dates before use",
+  "worker_timeout_seconds": 65,
+  "workers": 2,
+  "mock": false,
+  "scope": "10 fixed random stocks; no all-market acquisition; no financial statement all-market endpoint"
+}

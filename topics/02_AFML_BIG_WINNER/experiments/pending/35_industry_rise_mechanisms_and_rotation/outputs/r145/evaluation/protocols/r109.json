@@ -1,0 +1,13 @@
+{
+ "question":"Does prior-ranked leader-minus-follower past return add predictive information after existing price, breadth, size and market-risk controls?",
+ "scope":"R108 candidate joined by exact era/level/code/date to frozen monthly labels, R30 size and R54 beta/residual-vol controls; catalogue coverage retained",
+ "controls":["mom20","mom60","vol20","dd60","log_members","size_control","market_beta126","residual_vol126","breadth21","breadth63"],
+ "cohorts":"main80=original R108 availability, strict100=all follower endpoints known sensitivity; both compared on their own identical complete feature cohorts before task eligibility; never choose best coverage variant",
+ "models":"baseline controls versus controls plus leader_spread; unique directions, Ridge alpha10, Logit C1 lbfgs tol1e-10 max_iter10000 seed3502, same-window Platt and date-equal weights",
+ "tasks":"original R02 return/onset/reversal labels and eligibility,20primary60secondary; annual2020-2026 mature-only fits; >=18train months/300rows, class>=30, calibration>=4months/100rows/class>=10; preserve every skip",
+ "evaluation":"same dates/identities/mature outcomes; date-equal IC>=20rows for return, Brier reduction for classification, MSE/logloss secondary, annual detail, fixed top20% selection overlap",
+ "uncertainty":"calendar Bartlett lag3/6, approximate95% and family60 Bonferroni intervals; no compression of missing months",
+ "support_rule":"main20 only, >=24known dates and >=3evaluated years, improvement in all years and adjusted lower>0; any support remains historical, requires strict-coverage and mechanism/forward checks; no automatic adoption",
+ "limits":"predicting total industry returns is not demonstrating follower catch-up or causal diffusion; current historical membership and size proxies, partial coverage, no executable portfolio claim",
+ "validation":"independent full joins/cohorts, target and maturity masks/gates, rank/scaler/weighted gradient<=1e-6, all predictions and paired statistics; no data collection or search"
+}

@@ -1,0 +1,40 @@
+{
+  "status": "stopped_parameter_search_not_adopted",
+  "refs": {
+    "outputs/r108/verification.json": "3dc42037281941db9a1fbe113b85419007e22e6b6557127107fdb320bd67ca65",
+    "outputs/r109/model_verification.json": "cb207e737e85dfd80feed3e2006928e6fc87310ceb1206e652c5097e97c67ce8",
+    "outputs/r109/metric_verification.json": "5d38f640e5b517013f9babb6ab71cb718b130f0b1d0ddf8ecd76b3eac6418608",
+    "outputs/r110/verification.json": "a5b719f22aa33ed5ac1278f616bb3ace397c18fa56f68381c9567ad3fbba6b26",
+    "outputs/r111/verification.json": "b3a9a3fa0f9a939ac1da1e0f4b727f80818cc15429287930502c504b5d333e51"
+  },
+  "r109": {
+    "status": "PASS",
+    "paired_rows": 77538,
+    "dates": 764,
+    "groups": 36,
+    "annual_rows": 70,
+    "support_groups": 0,
+    "positive_family_groups": 0,
+    "negative_family_groups": 1,
+    "adopted": false
+  },
+  "r110": {
+    "status": "PASS",
+    "members": 1300242,
+    "industry_rows": 48713,
+    "date_rows": 1703,
+    "complete_signal_outcomes": 27699,
+    "adopted": false
+  },
+  "r111": {
+    "status": "PASS",
+    "folds": 38,
+    "models": 40,
+    "paired_predictions": 26645,
+    "date_metrics": 436,
+    "max_prediction_error": 7.632783294297951e-17,
+    "support_groups": 0,
+    "adopted": false
+  },
+  "next": "Different grounded source/attribution question; no new leader window search"
+}

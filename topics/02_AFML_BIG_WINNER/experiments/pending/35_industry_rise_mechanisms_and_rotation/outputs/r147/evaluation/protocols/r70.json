@@ -1,0 +1,15 @@
+{
+  "round": "R70",
+  "hypothesis": "Capital cash spending increases need not coincide with both operating cashflow and attributable profit improvement; add profit counterevidence on a fixed nonfinancial accounting cohort",
+  "asof": "2026-09-30",
+  "periods": [
+    "2026-03-31",
+    "2026-06-30"
+  ],
+  "membership": "R69 frozen2026-08 members, L1 mapping from same month; exclude801780.SI banks and801790.SI nonbank finance, retain others as accounting diagnostics only",
+  "profit": "income_vip n_income_attr_p; latest valid proxy date<=asof per issuer/period; latest-day disagreement including null remains unknown; negative profit valid; require report_type1 and comp_type1 in both periods",
+  "categories": "capex_up crossed with OCF up/down/flat and profit up/down/flat; negative current profit separately; no future market outcomes",
+  "aggregation": "separate levels and periods; common valid sample explicit; industry minimum5 and80% full member+unresolved denominator; invalid sector not called failed mechanism",
+  "limitations": "Q1 nested inH1; reported attributable profit includes nonrecurring items; nonfinancial is not synonymous with physical production; no causal or predictive claim",
+  "stop": "no threshold tuning or model fitting from one retrospective snapshot"
+}

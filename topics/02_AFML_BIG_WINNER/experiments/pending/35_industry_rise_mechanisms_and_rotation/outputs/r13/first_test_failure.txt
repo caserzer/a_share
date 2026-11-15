@@ -1,0 +1,103 @@
+....FFF......................                                            [100%]
+=================================== FAILURES ===================================
+______ test_macro_availability_strict_and_three_calendar_month_difference ______
+
+>   ???
+E   ValueError: for Period, please use 'M' instead of 'ME'
+
+pandas/_libs/tslibs/offsets.pyx:4891: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_macro_availability_strict_and_three_calendar_month_difference():
+>       raw=macro_fixture();available=pd.Timestamp('2020-04-30')+pd.Timedelta(days=45)
+            ^^^^^^^^^^^^^^^
+
+topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py:11: in macro_fixture
+    for i,period in enumerate(pd.period_range('2020-01','2020-08',freq='ME')):
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/indexes/period.py:611: in period_range
+    data, freq = PeriodArray._generate_range(start, end, periods, freq)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/arrays/period.py:340: in _generate_range
+    freq = Period._maybe_convert_freq(freq)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pandas/_libs/tslibs/period.pyx:1765: in pandas._libs.tslibs.period._Period._maybe_convert_freq
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   ValueError: Invalid frequency: ME, failed to parse with error message: ValueError("for Period, please use 'M' instead of 'ME'")
+
+pandas/_libs/tslibs/offsets.pyx:4954: ValueError
+__________ test_macro_missing_month_is_not_compressed_or_zero_filled ___________
+
+>   ???
+E   ValueError: for Period, please use 'M' instead of 'ME'
+
+pandas/_libs/tslibs/offsets.pyx:4891: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_macro_missing_month_is_not_compressed_or_zero_filled():
+>       raw=macro_fixture();raw=raw[~((raw.metric=='m2_yoy')&(raw.economic_month=='2020-02'))]
+            ^^^^^^^^^^^^^^^
+
+topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py:11: in macro_fixture
+    for i,period in enumerate(pd.period_range('2020-01','2020-08',freq='ME')):
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/indexes/period.py:611: in period_range
+    data, freq = PeriodArray._generate_range(start, end, periods, freq)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/arrays/period.py:340: in _generate_range
+    freq = Period._maybe_convert_freq(freq)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pandas/_libs/tslibs/period.pyx:1765: in pandas._libs.tslibs.period._Period._maybe_convert_freq
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   ValueError: Invalid frequency: ME, failed to parse with error message: ValueError("for Period, please use 'M' instead of 'ME'")
+
+pandas/_libs/tslibs/offsets.pyx:4954: ValueError
+______ test_future_macro_revisions_outside_prefix_do_not_change_alignment ______
+
+>   ???
+E   ValueError: for Period, please use 'M' instead of 'ME'
+
+pandas/_libs/tslibs/offsets.pyx:4891: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_future_macro_revisions_outside_prefix_do_not_change_alignment():
+>       raw=macro_fixture();date=pd.Timestamp('2020-06-15')
+            ^^^^^^^^^^^^^^^
+
+topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py:11: in macro_fixture
+    for i,period in enumerate(pd.period_range('2020-01','2020-08',freq='ME')):
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/indexes/period.py:611: in period_range
+    data, freq = PeriodArray._generate_range(start, end, periods, freq)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+topics/02_AFML_BIG_WINNER/.venv/lib/python3.11/site-packages/pandas/core/arrays/period.py:340: in _generate_range
+    freq = Period._maybe_convert_freq(freq)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pandas/_libs/tslibs/period.pyx:1765: in pandas._libs.tslibs.period._Period._maybe_convert_freq
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   ValueError: Invalid frequency: ME, failed to parse with error message: ValueError("for Period, please use 'M' instead of 'ME'")
+
+pandas/_libs/tslibs/offsets.pyx:4954: ValueError
+=========================== short test summary info ============================
+FAILED topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py::test_macro_availability_strict_and_three_calendar_month_difference
+FAILED topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py::test_macro_missing_month_is_not_compressed_or_zero_filled
+FAILED topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/tests/test_macro_r13.py::test_future_macro_revisions_outside_prefix_do_not_change_alignment
+3 failed, 26 passed in 0.74s

@@ -1,0 +1,23 @@
+{
+  "schema": "ep35.reversal_probability_comparison.v1",
+  "as_of": "2030-01-01",
+  "status": "no_exact_date_output",
+  "scope": "Core F/F reversal20 qualified archived folds only; all16 research scope is not replaced",
+  "quality": "Historical-proxy",
+  "retrospective": true,
+  "strict_pit": false,
+  "production_enabled": false,
+  "adoption": false,
+  "future_outcomes_exposed": false,
+  "calibration_interpretation": {
+    "monthly_probability": "Frozen original monthly Platt output replayed daily; no daily reliability certification",
+    "daily_probability": "R295 previous-year mature daily Platt calibration, historical repeated evaluation, not a certified economic reversal probability",
+    "action_equivalence": "R297 only existing ranked ceil20%, completed-month-end and cooldown selections; no probability-threshold or sizing extrapolation"
+  },
+  "source_hashes": {
+    "outputs/r295/predictions.parquet": "f6cbc1a54422ef0de63a69a85ef7b37b498c34a824ab3f46ac9aafa1482c58ef",
+    "outputs/r295/independent_verification.json": "375a74505c199b147ff28b869ce1175277bd33cf2b16475ec900ccc71876da0f",
+    "outputs/r298/probability_use_contract.json": "e6cd56fca128be2e3ea6f8db4c0eaa3406a03e96dde3f137c35bb05e8cfab9b5"
+  },
+  "rows": []
+}

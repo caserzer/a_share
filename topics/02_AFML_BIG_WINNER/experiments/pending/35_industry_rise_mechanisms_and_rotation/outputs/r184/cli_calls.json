@@ -1,0 +1,128 @@
+[
+  {
+    "args": [
+      "capture",
+      "--asof",
+      "2026-06-30",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/frozen_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 0,
+    "stdout": "{\"receipt\": \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/52bc3874b6605fd03b485501fcb42407b5f120ea0de745df9dd0fb495dd86d0f\", \"replay_kind\": \"historical_only\", \"prospective_records\": 0}\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "capture",
+      "--asof",
+      "2026-06-30",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/frozen_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 0,
+    "stdout": "{\"receipt\": \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/52bc3874b6605fd03b485501fcb42407b5f120ea0de745df9dd0fb495dd86d0f\", \"replay_kind\": \"historical_only\", \"prospective_records\": 0}\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "evaluate",
+      "--asof",
+      "2026-10-21",
+      "--snapshot",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/52bc3874b6605fd03b485501fcb42407b5f120ea0de745df9dd0fb495dd86d0f",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/frozen_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 0,
+    "stdout": "{\"receipt\": \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/2d3396053adb41e76fb1154bd31b70085cedd65e4049af37bed85f67143f1fc5\", \"replay_kind\": \"historical_only\", \"prospective_records\": 0}\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "evaluate",
+      "--asof",
+      "2026-07-15",
+      "--snapshot",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/52bc3874b6605fd03b485501fcb42407b5f120ea0de745df9dd0fb495dd86d0f",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/frozen_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 0,
+    "stdout": "{\"receipt\": \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/f66b2b976f3d23bd0a25db8522b90127fe4b52d2edcce93a20daae5141d04039\", \"replay_kind\": \"historical_only\", \"prospective_records\": 0}\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "verify",
+      "--receipt",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/2d3396053adb41e76fb1154bd31b70085cedd65e4049af37bed85f67143f1fc5"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"PASS\", \"action\": \"evaluate\", \"bundle\": \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/evaluations/2bddc6bb7c5584cd689980b74e3b2e7cd6754409d132a0eab10a1386095ff0ce\", \"replay_kind\": \"historical_only\"}\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "capture",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/frozen_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "usage: historical_replay.py capture [-h] --asof ASOF --sources SOURCES --store\n                                    STORE\nhistorical_replay.py capture: error: the following arguments are required: --asof\n"
+  },
+  {
+    "args": [
+      "capture",
+      "--asof",
+      "2026-10-22",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/frozen_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 81, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 77, in main\n    receipt=replay(args.action,args.asof,args.sources,args.store,getattr(args,'snapshot',None))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 35, in replay\n    manifest,date=checked_manifest(manifest_path,asof);store=Path(store)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 17, in checked_manifest\n    if date>pd.Timestamp(m['max_asof']):raise ValueError('cutoff exceeds source maximum')\n                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: cutoff exceeds source maximum\n"
+  },
+  {
+    "args": [
+      "evaluate",
+      "--asof",
+      "2026-06-29",
+      "--snapshot",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184/replay_receipts/52bc3874b6605fd03b485501fcb42407b5f120ea0de745df9dd0fb495dd86d0f",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/frozen_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 81, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 77, in main\n    receipt=replay(args.action,args.asof,args.sources,args.store,getattr(args,'snapshot',None))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 42, in replay\n    if date<pd.Timestamp(sm['identity']['asof']):raise ValueError('evaluation before observation')\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: evaluation before observation\n"
+  },
+  {
+    "args": [
+      "capture",
+      "--asof",
+      "2026-06-30",
+      "--sources",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/outputs/r184/intentionally_invalid_sources.json",
+      "--store",
+      "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/replay_cli_r184"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 81, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 77, in main\n    receipt=replay(args.action,args.asof,args.sources,args.store,getattr(args,'snapshot',None))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 35, in replay\n    manifest,date=checked_manifest(manifest_path,asof);store=Path(store)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/src/historical_replay.py\", line 20, in checked_manifest\n    if sha(item['path'])!=item['sha256']:raise ValueError('source hash mismatch: '+role)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: source hash mismatch: daily\n"
+  }
+]

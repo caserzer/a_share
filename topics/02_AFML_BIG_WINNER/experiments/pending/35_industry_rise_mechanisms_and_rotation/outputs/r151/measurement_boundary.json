@@ -1,0 +1,19 @@
+{
+  "candidate": "raw_consolidated_equity_growth_as_operating_accumulation",
+  "hypothesis": "Equity growth reflects internally generated operating improvement",
+  "status": "REJECT_UNCONDITIONAL_MEASUREMENT_EQUIVALENCE",
+  "economic_period": "2026H1",
+  "formula": "closing total equity / opening total equity - 1",
+  "counterexamples": [
+    "003021.SZ owner transactions dominate increase",
+    "002406.SZ positive comprehensive income but equity decreases after distributions"
+  ],
+  "replacement": "retain separate comprehensive income, owner transactions, distributions, reserves; comprehensive income itself is not operating profit",
+  "aggregation": "no industry aggregation; three purpose-selected issuer cases",
+  "missing_rule": "blank remains null/undisclosed; computed aggregate residual is separately identified",
+  "publication": "2026 half-year report, date-only metadata from source receipts",
+  "acquisition": "2026-11-14 local PDF acquisition; no historical backfill",
+  "revision_status": "comparatives as presented, first vintage not certified",
+  "prediction": "not tested; no label or model admission",
+  "failure_condition": "raw equity growth can only be called operating accumulation after relevant nonoperating, owner and accounting changes are reconciled"
+}

@@ -1,0 +1,49 @@
+{
+  "comparisons": [
+    {
+      "source": "outputs/r26/summary.csv",
+      "metric": "known",
+      "changed": 12,
+      "sign_flips": 0,
+      "max_abs": 3.0
+    },
+    {
+      "source": "outputs/r26/summary.csv",
+      "metric": "event_mean",
+      "changed": 43,
+      "sign_flips": 1,
+      "max_abs": 0.0132146480480192
+    },
+    {
+      "source": "outputs/r26/summary.csv",
+      "metric": "date_mean",
+      "changed": 43,
+      "sign_flips": 1,
+      "max_abs": 0.0075900333492411
+    },
+    {
+      "source": "outputs/r26/unknown_control_summary.csv",
+      "metric": "known",
+      "changed": 12,
+      "sign_flips": 0,
+      "max_abs": 3.0
+    },
+    {
+      "source": "outputs/r26/unknown_control_summary.csv",
+      "metric": "event_mean",
+      "changed": 43,
+      "sign_flips": 1,
+      "max_abs": 0.0132146480480192
+    },
+    {
+      "source": "outputs/r26/unknown_control_summary.csv",
+      "metric": "date_mean",
+      "changed": 43,
+      "sign_flips": 1,
+      "max_abs": 0.0075900333492411
+    }
+  ],
+  "horizon_summary_exactly_unchanged": true,
+  "quarantined_contexts": 2,
+  "conservative_events": 4473
+}

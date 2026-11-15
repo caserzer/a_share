@@ -1,0 +1,22 @@
+{
+  "revision": "R246",
+  "default_release_unchanged": "R183",
+  "routes": {
+    "latest_observed_operating_period": {
+      "path": "outputs/r246/evaluation/outputs/r94/observations.json",
+      "sha256": "f8b055f6dcbf828aee09d5071fcb5eecd03b19e9124f29e26daa6ff453b67731",
+      "scope": "Corrected historical replay, no new economic periods or adoption"
+    },
+    "price_alert_operating_followup": {
+      "path": "outputs/r246/evaluation/outputs/r95/alerts.parquet",
+      "sha256": "18e03e818ee8a43cc3f62d92820fe185a9a4b556ba65730cb34e82e666c24153",
+      "scope": "Corrected historical replay, no new economic periods or adoption"
+    },
+    "operating_common_date_contrasts": {
+      "path": "outputs/r246/evaluation/outputs/r96/contrasts.json",
+      "sha256": "333e31277476e509d99dc9f0ff350173ce346f9a7918161e9d433d73985488d1",
+      "scope": "Corrected historical replay, no new economic periods or adoption"
+    }
+  },
+  "adoption": false
+}

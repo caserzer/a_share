@@ -1,0 +1,1 @@
+Independent verifier first run failed because pandas iterrows coerced the all-missing initial row alongside known_at into datetime-like NaT; np.isfinite rejected it. Replaced numeric lookup with DataFrame.at preserving column dtype. State source and monitor unchanged.

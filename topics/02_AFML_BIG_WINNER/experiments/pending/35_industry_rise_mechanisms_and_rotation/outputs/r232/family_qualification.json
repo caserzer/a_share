@@ -1,0 +1,344 @@
+{
+  "families": [
+    {
+      "family": "core_three_tasks",
+      "records": 203,
+      "source_rounds": [
+        196
+      ],
+      "fit_gate_records": 203,
+      "other_gate_records": 0,
+      "status_counts": {
+        "fit": 203
+      },
+      "source_reason_counts": {
+        "null": 203
+      },
+      "state_training_support_recorded": 203,
+      "state_calibration_support_recorded": 203,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "l1_three_tasks",
+      "records": 27,
+      "source_rounds": [
+        196
+      ],
+      "fit_gate_records": 15,
+      "other_gate_records": 12,
+      "status_counts": {
+        "fit": 15,
+        "skip": 12
+      },
+      "source_reason_counts": {
+        "null": 15,
+        "\"insufficient_calibration\"": 12
+      },
+      "state_training_support_recorded": 27,
+      "state_calibration_support_recorded": 27,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "rank_target",
+      "records": 137,
+      "source_rounds": [
+        196
+      ],
+      "fit_gate_records": 137,
+      "other_gate_records": 0,
+      "status_counts": {
+        "fit": 137
+      },
+      "source_reason_counts": {
+        "null": 137
+      },
+      "state_training_support_recorded": 137,
+      "state_calibration_support_recorded": 137,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "market_style",
+      "records": 456,
+      "source_rounds": [
+        199
+      ],
+      "fit_gate_records": 140,
+      "other_gate_records": 316,
+      "status_counts": {
+        "skip": 316,
+        "fit": 140
+      },
+      "source_reason_counts": {
+        "\"insufficient_train\"": 236,
+        "null": 140,
+        "\"insufficient_calibration\"": 76,
+        "\"insufficient_train_classes\"": 4
+      },
+      "state_training_support_recorded": 456,
+      "state_calibration_support_recorded": 456,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "battery",
+      "records": 60,
+      "source_rounds": [
+        198
+      ],
+      "fit_gate_records": 8,
+      "other_gate_records": 52,
+      "status_counts": {
+        "skip": 52,
+        "fit": 8
+      },
+      "source_reason_counts": {
+        "[\"train_rows\", \"train_months\", \"train_each_class\", \"cal_rows\", \"cal_months\", \"cal_each_class\"]": 33,
+        "null": 20,
+        "[\"train_rows\", \"train_months\", \"train_each_class\", \"cal_rows\", \"cal_each_class\"]": 4,
+        "[\"train_rows\", \"train_each_class\", \"cal_rows\", \"cal_months\", \"cal_each_class\"]": 3
+      },
+      "state_training_support_recorded": 20,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "eps_expectations",
+      "records": 128,
+      "source_rounds": [
+        197
+      ],
+      "fit_gate_records": 16,
+      "other_gate_records": 112,
+      "status_counts": {
+        "skip": 112,
+        "fit": 16
+      },
+      "source_reason_counts": {
+        "\"insufficient_train_rows_or_months\"": 112,
+        "null": 16
+      },
+      "state_training_support_recorded": 128,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "size_diffusion",
+      "records": 456,
+      "source_rounds": [
+        199
+      ],
+      "fit_gate_records": 152,
+      "other_gate_records": 304,
+      "status_counts": {
+        "skip": 304,
+        "fit": 152
+      },
+      "source_reason_counts": {
+        "\"insufficient_train\"": 220,
+        "null": 152,
+        "\"insufficient_calibration\"": 80,
+        "\"insufficient_train_classes\"": 4
+      },
+      "state_training_support_recorded": 456,
+      "state_calibration_support_recorded": 456,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "financing",
+      "records": 228,
+      "source_rounds": [
+        199
+      ],
+      "fit_gate_records": 28,
+      "other_gate_records": 200,
+      "status_counts": {
+        "skip": 200,
+        "fit": 28
+      },
+      "source_reason_counts": {
+        "\"insufficient_train\"": 184,
+        "null": 28,
+        "\"insufficient_calibration\"": 16
+      },
+      "state_training_support_recorded": 228,
+      "state_calibration_support_recorded": 228,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "profit_events",
+      "records": 140,
+      "source_rounds": [
+        205
+      ],
+      "fit_gate_records": 50,
+      "other_gate_records": 90,
+      "status_counts": {
+        "skip": 90,
+        "fit": 50
+      },
+      "source_reason_counts": {
+        "\"insufficient_train\"": 90,
+        "null": 50
+      },
+      "state_training_support_recorded": 140,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "leader_catchup",
+      "records": 532,
+      "source_rounds": [
+        200
+      ],
+      "fit_gate_records": 180,
+      "other_gate_records": 352,
+      "status_counts": {
+        "skip": 352,
+        "fit": 180
+      },
+      "source_reason_counts": {
+        "\"insufficient_train\"": 292,
+        "null": 180,
+        "\"insufficient_calibration\"": 58,
+        "\"insufficient_train_classes\"": 2
+      },
+      "state_training_support_recorded": 532,
+      "state_calibration_support_recorded": 532,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "financial_dual_clock",
+      "records": 2100,
+      "source_rounds": [
+        201
+      ],
+      "fit_gate_records": 23,
+      "other_gate_records": 2077,
+      "status_counts": {
+        "skip": 2077,
+        "fit": 23
+      },
+      "source_reason_counts": {
+        "\"no_test_rows\"": 1266,
+        "\"insufficient_train\"": 811,
+        "null": 23
+      },
+      "state_training_support_recorded": 2100,
+      "state_calibration_support_recorded": 2100,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "capital_accounting",
+      "records": 6,
+      "source_rounds": [
+        206
+      ],
+      "fit_gate_records": 0,
+      "other_gate_records": 6,
+      "status_counts": {
+        "insufficient_history": 6
+      },
+      "source_reason_counts": {
+        "null": 6
+      },
+      "state_training_support_recorded": 0,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "macro_interaction",
+      "records": 95736,
+      "source_rounds": [
+        202
+      ],
+      "fit_gate_records": 39936,
+      "other_gate_records": 55800,
+      "status_counts": {
+        "skip": 55800,
+        "fit": 39936
+      },
+      "source_reason_counts": {
+        "\"insufficient_history\"": 55800,
+        "null": 39936
+      },
+      "state_training_support_recorded": 0,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "profit_expectations",
+      "records": 48,
+      "source_rounds": [
+        197
+      ],
+      "fit_gate_records": 4,
+      "other_gate_records": 44,
+      "status_counts": {
+        "skip": 44,
+        "fit": 4
+      },
+      "source_reason_counts": {
+        "\"insufficient_train_rows_or_months\"": 44,
+        "null": 4
+      },
+      "state_training_support_recorded": 48,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "early_financial",
+      "records": 28,
+      "source_rounds": [
+        203
+      ],
+      "fit_gate_records": 0,
+      "other_gate_records": 28,
+      "status_counts": {
+        "insufficient_history_before_any_row_or_class_gate": 28
+      },
+      "source_reason_counts": {
+        "null": 28
+      },
+      "state_training_support_recorded": 0,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    },
+    {
+      "family": "fixed_factor_rank",
+      "records": 272,
+      "source_rounds": [
+        204
+      ],
+      "fit_gate_records": 120,
+      "other_gate_records": 152,
+      "status_counts": {
+        "skip": 152,
+        "fit": 120
+      },
+      "source_reason_counts": {
+        "\"insufficient_train\"": 152,
+        "null": 120
+      },
+      "state_training_support_recorded": 0,
+      "state_calibration_support_recorded": 0,
+      "scope": "historical gate ledger; shared family records not independent model counts",
+      "adoption": false
+    }
+  ],
+  "scope": "All16 registered families; exact source granularity retained",
+  "no_live_model_eligibility": true
+}

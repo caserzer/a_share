@@ -1,0 +1,17 @@
+{
+  "round": 275,
+  "prior_turn": "progress: 81 article bodies verified and scope breaks identified",
+  "question": "Which directly disclosed current-month national production figures support scope-consistent annual changes?",
+  "sources": "R274 bodies from exact R60 81 originals; no external collection",
+  "extraction": "Explicit current month followed by 我国动力电池/我国动力和储能电池/我国动力和其他电池 and total production GWh; duplicates agreeing collapse with all citations; conflicting or absent matches remain missing",
+  "scope": "power_only until 2023-07; power_storage 2023-08..11; power_other 2023-12..2025-11; power_storage from2025-12. These are wording segments, not certified definitions. Annual pairs require same uninterrupted segment.",
+  "growth": "log(current/prior same month last year), both directly disclosed positive; available_at max of two original dates; no imputation/cumulative difference/share inference",
+  "qualification": "Join exact economic_month to corrected R140 cohort, require supply available by signal date, same R198 annual Jan1 mature-label training and24-month gate; no fit in this source audit",
+  "boundaries": [
+    "Historical-proxy",
+    "No inventory subtraction",
+    "No state threshold changes",
+    "No pooled independent-count claim for overlapping L2/L3"
+  ],
+  "before_target_read": true
+}

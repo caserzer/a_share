@@ -1,0 +1,25 @@
+{
+  "id": "versioned_three_task_inference",
+  "status": "executable_local_engineering_gap",
+  "owning_evidence": [
+    {
+      "path": "src/versioned_observations.py",
+      "sha256": "e1a8575ce274bf99c446133da3fb1e25ebf84209978af6b1f59007cc4f506e5e"
+    },
+    {
+      "path": "src/task_monitor_r22.py",
+      "sha256": "d5496ccb70733cc18138da4d238420a33f20e825b923c7e3da807409a4f26e34"
+    },
+    {
+      "path": "src/integrated_monitor_r93.py",
+      "sha256": "8b67bae44baba2d815ab285aec083a3435fb0ac709f2f4616b5cdacc386c2749"
+    },
+    {
+      "path": "src/disclosed_period_r94.py",
+      "sha256": "f7a9a4c7e2aaf02f2f99b846e2bad3ec64b01e6512e5f0778eba4da157358465"
+    }
+  ],
+  "finding": "R18 snapshots price_score/rank only; R22 reads stored prediction tables; R93/R94 join evidence but do not bind model, feature snapshot and new inference in a versioned bundle",
+  "next_action": "Register an immutable three-task historical inference bundle using frozen models and exact-date source snapshots; independently reproduce original formal outputs and reject absent/stale/uncalibrated inputs; no network or deployment",
+  "not_proven_by_this_action": "predictive value, full update source acquisition, strictPIT, future calibration or executable investment returns"
+}

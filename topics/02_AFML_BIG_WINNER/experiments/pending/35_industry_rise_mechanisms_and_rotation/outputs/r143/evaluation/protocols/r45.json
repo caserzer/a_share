@@ -1,0 +1,15 @@
+{
+  "round": "R45",
+  "task": "construct financing intensity before outcome analysis",
+  "hypothesis": "Financing balance relative to company size may proxy leveraged demand; alternatively only follows prices/size/eligibility",
+  "formula": "median over prior-month industry members of financing_balance(snapshot T-2 trading sessions)/market_cap(signal T)",
+  "denominator": "raw_close(T)*total_shares(T), positive finite listed stock; share_effective_date<=T; no known_at certification",
+  "timing": "snapshot delay inherited and checked R44; denominator contemporaneous signal close; no lookahead price",
+  "aggregation": "equal-company median then later same-date within-era/level ranks; no pooling levels",
+  "coverage": ">=5 valid company ratios and >=80% of all prior-month members; otherwise missing; full raw median retained only for coverage audit",
+  "missing": "absent margin record unknown not0; reported0 numerator retained; missing cap unknown; no forward fill",
+  "controls": "planned F and size on identical industry dates; denominator price exposure explicitly controlled",
+  "factor_count": 1,
+  "scope": "2018-12..2026-04 local sources only; no ETF mapping or stock-model conclusion reuse",
+  "no_outcomes_read": true
+}

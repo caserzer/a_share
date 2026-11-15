@@ -1,0 +1,20 @@
+{
+  "round": "R68",
+  "purpose": "Map R67 accounting proxy pairs to frozen pre-snapshot industry members before mechanism or return experiments",
+  "asof": "2026-09-30",
+  "membership_month": "2026-08",
+  "population": "SW2021 L1/L2/L3 frozen September monthly catalogue; each level separate",
+  "periods": [
+    "2026-03-31",
+    "2026-06-30"
+  ],
+  "source": "R67 pairs with conservative conflict exclusions, frozen assignments, L1 parent mapping already built",
+  "gate": {
+    "minimum_known": 5,
+    "minimum_fraction": 0.8
+  },
+  "denominator": "resolved membership rows plus per-industry unresolved maximum; no dropping unknown issuers",
+  "missing": "retain empty industries and source conflict reasons; no zero filling or fallback quarter",
+  "interpretation": "coverage gate only; neither accounting comparability nor economic mechanism validity; no outcomes read",
+  "identity_amendment": "First run stopped before joining on duplicate BJ833243: suffix code833243!1.BJ collides with833243.BJ if truncated. Only exact six-digit SH/SZ/BJ identifiers map; other codes quarantined, not silently stripped."
+}

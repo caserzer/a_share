@@ -1,0 +1,1783 @@
+{
+  "revision": "R285",
+  "quality": "Historical-proxy",
+  "overall_status": "active_not_complete",
+  "monitor_dates": [
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "routes": {
+    "corrected_daily_baskets": {
+      "path": "outputs/r129/daily_2026-10-21.parquet",
+      "sha256": "449e93eb403a31b8827b770633c547628d6b2ab91c2686bddbbea74a2c9291c3",
+      "verification": {
+        "path": "outputs/r129/verification.json",
+        "sha256": "ccf8b87a88b13313b40fec5cfbb222ac9fb9f1529588babb880702e627235bca"
+      },
+      "supersedes": null,
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "corrected_monthly_panel": {
+      "path": "outputs/r130/monthly_panel.parquet",
+      "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+      "verification": {
+        "path": "outputs/r130/verification.json",
+        "sha256": "dc0b61ed938f738bc8f1b95c3b74dc12a004a2248c95f53f2cd812b8b5df3095"
+      },
+      "supersedes": null,
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "three_task_price_models": {
+      "path": "outputs/r131/model_parameters.json",
+      "sha256": "f809d75eabac8ca32631253f30e847a0fdb3c229834aa6420caa52b52f727754",
+      "verification": {
+        "path": "outputs/r131/verification.json",
+        "sha256": "f4876b69de9fed835649d0c4ed1eabdf3069a4b64c8bf62c69381e7221c1d490"
+      },
+      "supersedes": {
+        "path": "outputs/r22/task_monitor.csv",
+        "sha256": "d79744ca08fea21155e6ad7f5f2b6a048581c1fcc7ce6b2d4d312e20c5b867ea"
+      },
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "three_task_prediction_evaluation": {
+      "path": "outputs/r131/evaluation_summary.json",
+      "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+      "verification": {
+        "path": "outputs/r131/evaluation_verification.json",
+        "sha256": "377ca7c7ae150d3472debdc1bae65e16a73acd8bd07b757f00d939b8e00a8b3a"
+      },
+      "supersedes": null,
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "fixed_rank_evaluation": {
+      "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+      "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+      "verification": {
+        "path": "outputs/r132/verification.json",
+        "sha256": "8052b421d01de892a6c8cb3c848143505c523922adae330ccf4a727af4e17393"
+      },
+      "supersedes": null,
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "market_exposure_controls": {
+      "path": "outputs/r133/market_controls.parquet",
+      "sha256": "79aed2b74ed1045bb8e2559025aa4c3ff3c10cfa17aef8ccf76a0d418e22388a",
+      "verification": {
+        "path": "outputs/r133/verification.json",
+        "sha256": "41a2ce0cb8243b8a61ce88a8aac675f51639354e2a3714be65df5ffaf7281150"
+      },
+      "supersedes": {
+        "path": "data/r54_market_controls.parquet",
+        "sha256": "d3bb5051c74fc64a438edcbc640b3f44f31495261204004ec1ca614b007288ff"
+      },
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "market_control_return_metrics": {
+      "path": "outputs/r135/evaluation/outputs/r55/increments.csv",
+      "sha256": "22870187b7d07ebae557e7dbc96b3e8e31180d9d1e5a075a7525a7c0281595b6",
+      "verification": {
+        "path": "outputs/r135/evaluation_verification.json",
+        "sha256": "8e98372c6519d066ff9246c12343170ef76d76663226f8e126402480cbc3bef7"
+      },
+      "supersedes": {
+        "path": "outputs/r55/increments.csv",
+        "sha256": "582397992e38d767517c65041f4bf00cf52c951ab982cdfe14890b7c1dad5a4d"
+      },
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "market_control_classifier_metrics": {
+      "path": "outputs/r135/evaluation/outputs/r56/increments.csv",
+      "sha256": "a2eb78429830a419d7dfdeea36e9471e73fcf8390919f0f39fdeea7a31fac75c",
+      "verification": {
+        "path": "outputs/r135/evaluation_verification.json",
+        "sha256": "8e98372c6519d066ff9246c12343170ef76d76663226f8e126402480cbc3bef7"
+      },
+      "supersedes": {
+        "path": "outputs/r56/increments.csv",
+        "sha256": "c1c5871ef209fe5652c7e4ec18a963dcf99ad10bf78b3bb45c9e29527e8ceca7"
+      },
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "market_control_exit_metrics": {
+      "path": "outputs/r136/evaluation/outputs/r57/summary.csv",
+      "sha256": "68f70473725de1d8de6575d223ca146966a431d27896545af43fb056a08ed11b",
+      "verification": {
+        "path": "outputs/r136/verification.json",
+        "sha256": "96af9c8af17d00e0ab6d4d351168ebb4563cc27c1c56997a37db910f71b79002"
+      },
+      "supersedes": {
+        "path": "outputs/r57/summary.csv",
+        "sha256": "b57281903932dea064586f1be9ed24f5ba59b02fcdb227700c33209a8bd9345c"
+      },
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "synthetic_portfolio_summary": {
+      "path": "outputs/r137/evaluation/outputs/r04/summary.csv",
+      "sha256": "966f5277cfb09846b894f9ed06cddcaf895ed40f6072c6a3341c64b14e40f232",
+      "verification": {
+        "path": "outputs/r137/verification.json",
+        "sha256": "90cc0dba227277fd644dfe3ceedea427405ef0b147ca920e79e2bbd8f6867a8d"
+      },
+      "supersedes": null,
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "versioned_historical_inference": {
+      "path": "outputs/r138/bundles.json",
+      "sha256": "9c5198afd1b44682f00498a3b2e46a5eec953eefb4e274b0a8546e8cc96d8870",
+      "verification": {
+        "path": "outputs/r138/verification.json",
+        "sha256": "4b771c5b82cbf18775c4b0de2abe35b572987f09a78fcfe30896e5191190bd4a"
+      },
+      "supersedes": {
+        "path": "outputs/r102/bundles.json",
+        "sha256": "78adb62a73a87b4c144b717d11d2f7c83bf8c09f5b65ec588f0b07f4f783c3ba"
+      },
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "three_task_model_explanations": {
+      "path": "outputs/r138/model_explanations.parquet",
+      "sha256": "24c414aa47efe0b5e2a4b7f359cf43f6752cbbfabf6d3b3448de922f530eddd3",
+      "verification": {
+        "path": "outputs/r138/verification.json",
+        "sha256": "4b771c5b82cbf18775c4b0de2abe35b572987f09a78fcfe30896e5191190bd4a"
+      },
+      "supersedes": {
+        "path": "outputs/r103/receipt.json",
+        "sha256": "715aa39a705ee0947af8d253d41df96a6fd7be6cac4f9de36345c362f0aadbfe"
+      },
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "three_task_model_terms": {
+      "path": "outputs/r138/model_terms.parquet",
+      "sha256": "a2e56461b4edb9bc4b078e4b2dc24228b468c894a7cbf255883f54339ac87f97",
+      "verification": {
+        "path": "outputs/r138/verification.json",
+        "sha256": "4b771c5b82cbf18775c4b0de2abe35b572987f09a78fcfe30896e5191190bd4a"
+      },
+      "supersedes": null,
+      "scope": "local repaired research output, no production or strict PIT claim"
+    },
+    "integrated_historical_task_evidence": {
+      "path": "outputs/r147/task_evidence.parquet",
+      "sha256": "1fb314501f72b1664df16d3bb77b5f3d333ab83a96484b74581ccc6a61700686",
+      "verification": {
+        "path": "outputs/r147/verification.json",
+        "sha256": "16efdf32717ae4d4fd6af30eca704a6445e9b599344e5d563318725642136e2b"
+      },
+      "supersedes": {
+        "path": "outputs/r138/task_evidence.parquet",
+        "sha256": "608cd63b24c51b0dd272f706bb7ef57af6e573c00e65d63f5dec0546f9513421",
+        "verification": {
+          "path": "outputs/r138/verification.json",
+          "sha256": "4b771c5b82cbf18775c4b0de2abe35b572987f09a78fcfe30896e5191190bd4a"
+        },
+        "supersedes": {
+          "path": "outputs/r93/task_evidence.parquet",
+          "sha256": "aa8efeb6f7d56d9e1a298b528edec024429ba46e5a569eeeb7af900fd48bbe47"
+        },
+        "scope": "local repaired research output, no production or strict PIT claim"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "battery_repair_evidence": {
+      "path": "outputs/r140/comparison.json",
+      "sha256": "a6e9e84f7c211f527971f6b73210ca27198cdabd95942aae58fcdd0b63b859e9",
+      "verification": {
+        "path": "outputs/r140/verification.json",
+        "sha256": "76e81fce4319da38410aa654c0c7823131a736f5bddcbd70e8d08b35dffa5b55"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "expectation_repair_evidence": {
+      "path": "outputs/r141/comparison.json",
+      "sha256": "c06e17ee912329a556e6025494f00866f130032bf9d577649c400760a4a0e73b",
+      "verification": {
+        "path": "outputs/r141/verification.json",
+        "sha256": "1dec53692cf5e77dd01ddda1f801cf524809b446df55af2f9983d7207750f9dd"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "size_repair_evidence": {
+      "path": "outputs/r142/summary.json",
+      "sha256": "45535568bded666a87a5cb67686488077bc30d1270597a733cdd617cd58d823e",
+      "verification": {
+        "path": "outputs/r142/verification.json",
+        "sha256": "ae3e43f0990cc51e323f06881ddf9af0c7ada254564a7fd272dcf1a05660d118"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "financing_repair_evidence": {
+      "path": "outputs/r143/summary.json",
+      "sha256": "eb12f0def3d901a2982375cbcfdca1af5f0d218fa8ef95e3721f7b6fdab1bc3b",
+      "verification": {
+        "path": "outputs/r143/verification.json",
+        "sha256": "5e3a9299f7c64f8bd6e9ed410eb00b5d741a90c7b5a3c678b59ea8fc9634ae3a"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "event_repair_evidence": {
+      "path": "outputs/r144/summary.json",
+      "sha256": "ba5b22fdeea384e4badb2b68ae81d62e790687515014c7115c55ea43cd3340b2",
+      "verification": {
+        "path": "outputs/r144/verification.json",
+        "sha256": "6c03a09ea297bab466845ca332dd1cf111e3dac75eaa3de4f78fa24538edd6cf"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "leader_repair_evidence": {
+      "path": "outputs/r145/summary.json",
+      "sha256": "9d92ef4c81a74acfe9e21c933be743359c50605f589171f02a69812bb6f1ce55",
+      "verification": {
+        "path": "outputs/r145/verification.json",
+        "sha256": "37c247e158011f6f99e0fa2cb2f51cd6b9b7d400d144cc15d6dd0a5b215bed1d"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "financial_repair_evidence": {
+      "path": "outputs/r146/summary.json",
+      "sha256": "952106521840fddd5f9147205eead324f354580e959f181ac40259b12e39215a",
+      "verification": {
+        "path": "outputs/r146/verification.json",
+        "sha256": "6c3d687544dccd7ba1650ed24c210c9c1e259861c14e59e93b0191720b1dc12c"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "capital_repair_evidence": {
+      "path": "outputs/r147/summary.json",
+      "sha256": "39eb9a6c452d15d3de4d52ed0acf071134111b914923f0b27e20e8ca4e6cbe7d",
+      "verification": {
+        "path": "outputs/r147/verification.json",
+        "sha256": "16efdf32717ae4d4fd6af30eca704a6445e9b599344e5d563318725642136e2b"
+      },
+      "supersedes": null,
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "battery_source_completion_pilot": {
+      "path": "outputs/r140/evaluation/outputs/r64/metrics.json",
+      "sha256": "19fe3e5c09d49720e4b96b6204ecb988becf35e8c8a3e0a534ce7fe49cfa8efb",
+      "verification": {
+        "path": "outputs/r140/verification.json",
+        "sha256": "76e81fce4319da38410aa654c0c7823131a736f5bddcbd70e8d08b35dffa5b55"
+      },
+      "supersedes": {
+        "path": "outputs/r62/metrics.json",
+        "sha256": "8b60bd1e3c72fb94cc85e7b66c680b22f7c3a0bac65e70b7be4663d6ef51863a"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "latest_battery_classification_gates": {
+      "path": "outputs/r140/evaluation/outputs/r65/fold_ledger.json",
+      "sha256": "e847871715f1ab5e6debb06e8032a0873b4ec432616687cfb642cc51b820cf09",
+      "verification": {
+        "path": "outputs/r140/verification.json",
+        "sha256": "76e81fce4319da38410aa654c0c7823131a736f5bddcbd70e8d08b35dffa5b55"
+      },
+      "supersedes": {
+        "path": "outputs/r65/fold_ledger.json",
+        "sha256": "e847871715f1ab5e6debb06e8032a0873b4ec432616687cfb642cc51b820cf09"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "financing_industry_factor": {
+      "path": "outputs/r143/evaluation/data/r45_financing_intensity.parquet",
+      "sha256": "46e32a312a2a5e3dd139db960046dc01e6a2e7a29f2417af32a01c12a177de9a",
+      "verification": {
+        "path": "outputs/r143/verification.json",
+        "sha256": "5e3a9299f7c64f8bd6e9ed410eb00b5d741a90c7b5a3c678b59ea8fc9634ae3a"
+      },
+      "supersedes": {
+        "path": "data/r45_financing_intensity.parquet",
+        "sha256": "fc01b4a441cddb51c2f2d7ab41dc06a31424ca1ac1490a85d550b4f3dd186841"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "fixed_rule_profit_events": {
+      "path": "outputs/r144/evaluation/data/r26_industry_events.parquet",
+      "sha256": "74cef76dd40fb0eea1ebcebbb631cf6d0d6cd97be290fd9e4aa5f50953c4abe0",
+      "verification": {
+        "path": "outputs/r144/verification.json",
+        "sha256": "6c03a09ea297bab466845ca332dd1cf111e3dac75eaa3de4f78fa24538edd6cf"
+      },
+      "supersedes": {
+        "path": "data/r26_industry_events.parquet",
+        "sha256": "dfadce8b1c55304672588e50e78e8f524c6183c14e8f74bd1bf600877a8f1eef"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "unknown_control_event_sensitivity": {
+      "path": "outputs/r144/evaluation/data/r26_unknown_control_sensitivity.parquet",
+      "sha256": "70a18f2055ff18d71be19d534ce0cbe6df338f48db178b6b39068c9cf64aed4f",
+      "verification": {
+        "path": "outputs/r144/verification.json",
+        "sha256": "6c03a09ea297bab466845ca332dd1cf111e3dac75eaa3de4f78fa24538edd6cf"
+      },
+      "supersedes": {
+        "path": "data/r26_unknown_control_sensitivity.parquet",
+        "sha256": "e136c9cd1d8d92f8b425c0293f2bea288a5426847fa92828b101bf2ec9e0a9ed"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "forecast_horizon_price_comparison": {
+      "path": "outputs/r144/evaluation/outputs/r91/summary.json",
+      "sha256": "b14477bd68c83ca1a9bd0385de20f8ce48d47a4049792ad4723e953ec1825bcd",
+      "verification": {
+        "path": "outputs/r144/verification.json",
+        "sha256": "6c03a09ea297bab466845ca332dd1cf111e3dac75eaa3de4f78fa24538edd6cf"
+      },
+      "supersedes": {
+        "path": "outputs/r91/summary.json",
+        "sha256": "b14477bd68c83ca1a9bd0385de20f8ce48d47a4049792ad4723e953ec1825bcd"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "accounting_historical_monitor": {
+      "path": "outputs/r147/evaluation/outputs/r74/evidence_matrix.parquet",
+      "sha256": "b0ad6fa27c627b1588cd82cd53507041738f0daf02e6e42cd62e2ed785777d7a",
+      "verification": {
+        "path": "outputs/r147/verification.json",
+        "sha256": "16efdf32717ae4d4fd6af30eca704a6445e9b599344e5d563318725642136e2b"
+      },
+      "supersedes": {
+        "path": "outputs/r74/evidence_matrix.parquet",
+        "sha256": "6aa7997736f81b86b9e41dc8dba25d98148c744a778bf4d8d4b855c07b47160b"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "accounting_monthly_evidence": {
+      "path": "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+      "sha256": "67851af3891deb2169442b05eb60d9186eabac168bab1e75364e6cd294dcd4cd",
+      "verification": {
+        "path": "outputs/r147/verification.json",
+        "sha256": "16efdf32717ae4d4fd6af30eca704a6445e9b599344e5d563318725642136e2b"
+      },
+      "supersedes": {
+        "path": "outputs/r73/industry_evidence.json",
+        "sha256": "23bb416ece2100bd6429954b302e83ba6ed87b6c3d8cd3363fcc3c9a909964e7"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "accounting_contemporaneous_controls": {
+      "path": "outputs/r147/evaluation/outputs/r71/summary.json",
+      "sha256": "f3721324f5e5caab0d6656c2e7875f1ae215eb1653ef46ce8328428b18660b31",
+      "verification": {
+        "path": "outputs/r147/verification.json",
+        "sha256": "16efdf32717ae4d4fd6af30eca704a6445e9b599344e5d563318725642136e2b"
+      },
+      "supersedes": {
+        "path": "outputs/r71/summary.json",
+        "sha256": "976de0c2445aad1944656aa04d0c5cd28160e59172eeb145ceed9a49071e2fb2"
+      },
+      "scope": "verified repaired historical evidence; adoption is not predictive acceptance"
+    },
+    "daily_process_summary": {
+      "path": "outputs/r155/evaluation/outputs/r09/summary.csv",
+      "sha256": "7965effae5f149841b5dd5fcbc078900eb80f426e4c5a973d96c0b667ba17a66",
+      "verification": {
+        "path": "outputs/r155/verification.json",
+        "sha256": "42a860b4276d4a0755d09658a617434f86b23b0f14bc7862891de83f089d213d"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "price_process_not_economic_onset",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_calibration_diagnostics": {
+      "path": "outputs/r155/evaluation/outputs/r97/summary.json",
+      "sha256": "e7dcb3b60dc42cc962683b2e167351ce2cb42ade5a903be5ebdfd52b18446670",
+      "verification": {
+        "path": "outputs/r155/verification.json",
+        "sha256": "42a860b4276d4a0755d09658a617434f86b23b0f14bc7862891de83f089d213d"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "recent_calibration_increment_inconclusive",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_calibrated_alert_evaluation": {
+      "path": "outputs/r155/evaluation/outputs/r98/summary.json",
+      "sha256": "e3041399c2cf7fb265a3b8b7366ab3504dc0ec95b00e28a7fc77f37307394fbe",
+      "verification": {
+        "path": "outputs/r155/verification.json",
+        "sha256": "42a860b4276d4a0755d09658a617434f86b23b0f14bc7862891de83f089d213d"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "research_burden_tradeoff_not_adoption",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_calibration_uncertainty": {
+      "path": "outputs/r155/evaluation/outputs/r99/summary.json",
+      "sha256": "5d9de0085849c08e3d2f73f2cc7436368ab1bd14943688ed225d753b9dca4dd7",
+      "verification": {
+        "path": "outputs/r155/verification.json",
+        "sha256": "42a860b4276d4a0755d09658a617434f86b23b0f14bc7862891de83f089d213d"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "recent_calibration_increment_inconclusive",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "alert_followup_summary": {
+      "path": "outputs/r156/evaluation/outputs/r10/followup_summary.csv",
+      "sha256": "8b1ff2513140fd309caf49e64f4360904d0b4c3b0e9b318be0cca077c8e89aa0",
+      "verification": {
+        "path": "outputs/r156/verification.json",
+        "sha256": "42af30bdcea3fef6162d09c0d03e08ea4245459f1371d1860535eb1aada28a86"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "descriptive_post_alert_paths",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "alert_followup_annual": {
+      "path": "outputs/r156/evaluation/outputs/r10/followup_annual.csv",
+      "sha256": "cf88e3a5df2e30646c6cf5a072a37a1ee5059080a627b37421d6431d1dcf1122",
+      "verification": {
+        "path": "outputs/r156/verification.json",
+        "sha256": "42af30bdcea3fef6162d09c0d03e08ea4245459f1371d1860535eb1aada28a86"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "descriptive_post_alert_paths",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "conditional_continuation": {
+      "path": "outputs/r156/evaluation/outputs/r10/continuation.csv",
+      "sha256": "3f64516f5805d9b21194a16efd0505a3e213328e024e4bc894926159421021b7",
+      "verification": {
+        "path": "outputs/r156/verification.json",
+        "sha256": "42af30bdcea3fef6162d09c0d03e08ea4245459f1371d1860535eb1aada28a86"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "condition_known_only_after_20_sessions",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "reversal_exit_economics": {
+      "path": "outputs/r156/evaluation/outputs/r10/exit_summary_dates.csv",
+      "sha256": "daa44aa3f611ea198e145e8ce3befb88762e3fa89b4a51aba47259dd8c5952a6",
+      "verification": {
+        "path": "outputs/r156/verification.json",
+        "sha256": "42af30bdcea3fef6162d09c0d03e08ea4245459f1371d1860535eb1aada28a86"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "exit_value_not_supported",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "alert_followup_paths": {
+      "path": "outputs/r156/evaluation/data/r10_alert_followup.parquet",
+      "sha256": "be611121aa46782473a53f51cc4037d3a4734537edf878d97890f6baab14e3a6",
+      "verification": {
+        "path": "outputs/r156/verification.json",
+        "sha256": "42af30bdcea3fef6162d09c0d03e08ea4245459f1371d1860535eb1aada28a86"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "descriptive_post_alert_paths",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "reversal_followup_paths": {
+      "path": "outputs/r156/evaluation/data/r10_risk_followup.parquet",
+      "sha256": "ae3906674f1ecefafa221fff942554234d3dd77bc15cef43ba4bb5f532e9ac7e",
+      "verification": {
+        "path": "outputs/r156/verification.json",
+        "sha256": "42af30bdcea3fef6162d09c0d03e08ea4245459f1371d1860535eb1aada28a86"
+      },
+      "scope": "verified repaired historical evidence",
+      "interpretation": "exit_value_not_supported",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "macro_repair_comparison": {
+      "path": "outputs/r158/comparison.json",
+      "sha256": "8a013ee42ea5ee6a61604b35faa44a53c5ad204d3716a4ccf9892caaf2aaec7d",
+      "verification": {
+        "path": "outputs/r158/verification.json",
+        "sha256": "9cd856ad8b58a222c024ef0b43c2dd54ab4da4dc3f1f874042ab6aea1ba49e27"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "fixed_macro_interactions_no_predictive_acceptance",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_raw_onset_process": {
+      "path": "outputs/r159/annual_process.csv",
+      "sha256": "854199f5af32169fd505f86ee497c35c249a079049153190428e49fd0e45c6a0",
+      "verification": {
+        "path": "outputs/r159/verification.json",
+        "sha256": "da50eb4afad8e36bbb4664654567df3d1098962221023fa4e409dfca978a6af3"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "uncalibrated_price_onset_not_economic_stage",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_onset_calibration_gates": {
+      "path": "outputs/r159/original_calibration_gates.csv",
+      "sha256": "950d96625e5b3128a7dbc35adff5c8b3c12030f08539582ca1c0641419f6a531",
+      "verification": {
+        "path": "outputs/r159/verification.json",
+        "sha256": "da50eb4afad8e36bbb4664654567df3d1098962221023fa4e409dfca978a6af3"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "original_calibration_gate_failed_not_relaxed",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_process_baselines": {
+      "path": "outputs/r160/summary.csv",
+      "sha256": "9c78e9d34040a91178c446f5908711f8aac383761962d3cd04faaf609800b077",
+      "verification": {
+        "path": "outputs/r160/verification.json",
+        "sha256": "5d96a19b391a96ad1b4c9c225f17439e87fdd200904b3ddb2d56dbb1e0559bba"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "same_population_burden_precision_recall_tradeoff",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_process_uncertainty": {
+      "path": "outputs/r161/summary.csv",
+      "sha256": "7d9069a15545991f6358aef4c27b751fe6896221a850d45e8e4a568bbd4c4c60",
+      "verification": {
+        "path": "outputs/r161/verification.json",
+        "sha256": "84c7ba89e2f1a92277f65624a090707d7e924cb6ff7793f67c61fe133995340e"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "all_family_intervals_include_zero",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "profit_expectation_repair": {
+      "path": "outputs/r162/comparison.json",
+      "sha256": "1f7ac109ed7644ac0c92404ec08d00a54fbad8ebd99ac2cb80362e6be13df41d",
+      "verification": {
+        "path": "outputs/r162/verification.json",
+        "sha256": "f2b81fd9d52fdf423ffe380bcfa9fd650c1a3f535fcd975a05a3cc1f6095fff1"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "unchanged_short_sample_not_full_industry_acceptance",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "early_financial_repair": {
+      "path": "outputs/r165/comparison.json",
+      "sha256": "2f233b013bf135ca1e851b3d67033773973c9beed3a76607a78e773d47135dd0",
+      "verification": {
+        "path": "outputs/r165/verification.json",
+        "sha256": "b8bb51e28b292cb6bc51d0c760131f7941c70acc7fc7ac0c366be6f364c3646e"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "unchanged_short_sample_no_strict_archive_clock",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_raw_reversal_exits": {
+      "path": "outputs/r166/date_summary.csv",
+      "sha256": "07f980cc0f2c8ad312079254f28d5f49a8c689172e34e310a584168f729cb26c",
+      "verification": {
+        "path": "outputs/r166/verification.json",
+        "sha256": "1449444975c3eb9066cff212ff9f2422fd37bc28c67cf6a83429dea69bce197c"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "six_mature_months_uncalibrated_not_adopted",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_raw_reversal_paths": {
+      "path": "outputs/r166/followup.parquet",
+      "sha256": "97ed291d849d5d6d8dfa53063fc9b928f021688080111a68ef316f98ec44bfa4",
+      "verification": {
+        "path": "outputs/r166/verification.json",
+        "sha256": "1449444975c3eb9066cff212ff9f2422fd37bc28c67cf6a83429dea69bce197c"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "91_origins_56_mature_35_unknown_synthetic_paths",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "versioned_factor_dictionary": {
+      "path": "outputs/r167/factor_dictionary.json",
+      "sha256": "1a2283db6428aa580657b51ce1b73bdd3fe30b5dfbbed8ee50142a0f34161081",
+      "verification": {
+        "path": "outputs/r167/dictionary_verification.json",
+        "sha256": "b3ba048b2d3adddee3a75795d8d14a46bad18d71b6d7317d8ed841f1e7806a3d"
+      },
+      "scope": "28 original definitions with current evidence",
+      "interpretation": "financial_repair_closed_predictive_evidence_insufficient",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_followup_baseline_summary": {
+      "path": "outputs/r170/followup_summary.csv",
+      "sha256": "0641907b5cde6f608c772b14add120ce225c5c452e76ca544761f495008ae743",
+      "verification": {
+        "path": "outputs/r170/verification.json",
+        "sha256": "62099cf27e7e47b47a76d9a9bbebf5fa866f54aa4eacfb7b09d8cb2c8ed97801"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "frozen_candidates_different_alert_selections_descriptive",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_followup_baseline_continuation": {
+      "path": "outputs/r170/continuation.csv",
+      "sha256": "05862520945648d89dcdb6dbe68461c8b8fc59ee55b464317feb79b050e0d228",
+      "verification": {
+        "path": "outputs/r170/verification.json",
+        "sha256": "62099cf27e7e47b47a76d9a9bbebf5fa866f54aa4eacfb7b09d8cb2c8ed97801"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "conditional_success_known_only_after20_not_alpha",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l1_followup_date_comparisons": {
+      "path": "outputs/r170/date_comparisons.csv",
+      "sha256": "1596de2cdedab4bbc9868c39e57f31b4d13381b01e523220529142f20b077d3e",
+      "verification": {
+        "path": "outputs/r170/verification.json",
+        "sha256": "62099cf27e7e47b47a76d9a9bbebf5fa866f54aa4eacfb7b09d8cb2c8ed97801"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "common_complete_date_selection_not_causal_increment",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_top10_portfolio_summary": {
+      "path": "outputs/r169/evaluation/outputs/r04/summary.csv",
+      "sha256": "3f9f56560b0f5453a1f2e6fadd72bd5eac607626473ddbaec70a11645f36dd31",
+      "verification": {
+        "path": "outputs/r169/verification.json",
+        "sha256": "450817e448ab7be2536ccb1ce9a92f669a00768ebc209f25289d1571e60275e2"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "synthetic_simplified_reference_not_original_report_replication",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_top10_pair_comparison": {
+      "path": "outputs/r169/paired_summary.csv",
+      "sha256": "4c4feb9654f80363c8dda7339806dc50e4e00b2b7ec6c3485d37c4822f31216c",
+      "verification": {
+        "path": "outputs/r169/verification.json",
+        "sha256": "450817e448ab7be2536ccb1ce9a92f669a00768ebc209f25289d1571e60275e2"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "recent_top10_cost_returns_worse_no_adoption",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_top10_prior_and_drift_risk": {
+      "path": "outputs/r171/risk_by_origin.csv",
+      "sha256": "472474373256364c35df19e896e85828bfe4f9fe1db1010e6e7ada6960846147",
+      "verification": {
+        "path": "outputs/r171/verification.json",
+        "sha256": "13f403fdedd267a2c84c7b5078e9b6cc4700e8dc6f2cc3a061afedf4b2f8425b"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "industry_risk_not_stock_execution",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_top10_tail_risk": {
+      "path": "outputs/r171/tail_risk.csv",
+      "sha256": "02175f3de92ce218a08d1b462933c4c4c1666f4935309cf4f8b100cd1c2f12d9",
+      "verification": {
+        "path": "outputs/r171/verification.json",
+        "sha256": "13f403fdedd267a2c84c7b5078e9b6cc4700e8dc6f2cc3a061afedf4b2f8425b"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "only_whole_valid_synthetic_paths",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_top10_annual_returns": {
+      "path": "outputs/r171/annual.csv",
+      "sha256": "5f50b52a8510d11cbcf76dea0dc45c704f53b60d6494e9fb266374a85c3ab542",
+      "verification": {
+        "path": "outputs/r171/verification.json",
+        "sha256": "13f403fdedd267a2c84c7b5078e9b6cc4700e8dc6f2cc3a061afedf4b2f8425b"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "partial_years_and_synthetic_costs_explicit",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_member_concentration": {
+      "path": "outputs/r172/concentration.csv",
+      "sha256": "bb73b63b8eb4c7e0f746313331532c6bf0df31ff636fb35f389fb16192a449cf",
+      "verification": {
+        "path": "outputs/r172/verification.json",
+        "sha256": "81e937ef73f54ce1c9aa49ef310ffff0fee2767d1c173f83dea88819728ffb01"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "nominal_weights_preserve_unknown_mass",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_stock_target_distances": {
+      "path": "outputs/r172/target_transitions.csv",
+      "sha256": "4e7e2f87f1ed0fce0df5d505fd4ca22af661ff8ff92699eb1733dcb82b8dca75",
+      "verification": {
+        "path": "outputs/r172/verification.json",
+        "sha256": "81e937ef73f54ce1c9aa49ef310ffff0fee2767d1c173f83dea88819728ffb01"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "structural_target_distance_not_executed_turnover",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_endpoint_price_support": {
+      "path": "outputs/r173/portfolio_endpoints.csv",
+      "sha256": "3a730f1fdb90fa4d49fc4abacdd2758301de33ac8a3dedad32d9850be412d02a",
+      "verification": {
+        "path": "outputs/r173/verification.json",
+        "sha256": "f7a0b95606102d52e385f635d507fe9da0f672f12d279ea14a4f3c78dc66323f"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "endpoint_support_not_full_stock_path",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_fixed_stock_intervals": {
+      "path": "outputs/r174/intervals.csv",
+      "sha256": "fa217bd2cecc868f55746db329a5d39eff2141761e9bb998857dc0a411297c79",
+      "verification": {
+        "path": "outputs/r174/verification.json",
+        "sha256": "e91115c616a55340e1ba36dccc03a947529bb485e22e2918f3356bf6bc5b1f52"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "49of880_complete_no_executable_net_curve",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "l2_fixed_stock_summary": {
+      "path": "outputs/r174/summary.csv",
+      "sha256": "37a03310249acfa527e8e5f94d26b4d218efe23b5ae568a52dc218e79737109e",
+      "verification": {
+        "path": "outputs/r174/verification.json",
+        "sha256": "e91115c616a55340e1ba36dccc03a947529bb485e22e2918f3356bf6bc5b1f52"
+      },
+      "scope": "verified historical evidence",
+      "interpretation": "all20_strategy_groups_have_path_gaps_permission_unknown",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "requirements_audit_r175": {
+      "path": "outputs/r175/requirements_audit.json",
+      "sha256": "951b84fe889b1826e51324ad4f196099d2bcd9327c9d133245c88bc0f7bd9f4d",
+      "verification": {
+        "path": "outputs/r175/audit_verification.json",
+        "sha256": "79cfa5dd04b1b6a3c2293e1576438e4ce3cb99307561006c8bde29a50f168af5"
+      },
+      "scope": "current incomplete requirement status",
+      "interpretation": "experiments_completed_do_not_certify_capability",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "exact_stock_gap_summary": {
+      "path": "outputs/r176/summary.json",
+      "sha256": "8f9da57d84e7742221e7596e41160be2d33a105146981abc480bd3d605f2ea17",
+      "verification": {
+        "path": "outputs/r176/verification.json",
+        "sha256": "792f5af4779898c4e140e945f52fb7e48924b5a1e5baf575ed5054fada91d73d"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "Exact missing dates/fields; no price restoration or execution certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "sina_gap_lookup": {
+      "path": "outputs/r177/summary.json",
+      "sha256": "8dadd51e4273413739f7f0a16d2a5372615a76f6b859f43c7f3593b991cbe0a4",
+      "verification": {
+        "path": "outputs/r177/verification.json",
+        "sha256": "4b00f9d61017bdc1266661838eaa8de0c19237243f323d717106058ccfbcaf69"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "Bounded local archive lookup; zero matches does not establish suspension",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "exchange_gap_lookup": {
+      "path": "outputs/r178/summary.json",
+      "sha256": "554c299be564c940e7aa18d89b743bb75278cce14fb3108fde23545e3ec04fae",
+      "verification": {
+        "path": "outputs/r178/verification.json",
+        "sha256": "a9e4f3e3eff0204f87dff5a9b76d3e7bf273250e24e74be7eedff7aff7a06b20"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "Raw JSON checked; zero matches; historical first version not certified",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "failed_update_replay": {
+      "path": "outputs/r179/summary.json",
+      "sha256": "aed5a82e42e84c31feddd8060833611402390d15a396fc6cadf48c04ec84803b",
+      "verification": {
+        "path": "outputs/r179/verification.json",
+        "sha256": "7d57143fd7d59f5986ae617fdb29d1ea78223fc4d0f006f2803b9635fb0b582e"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "FAILED_INPUT_CLOCK: integrity and replay arithmetic only; superseded by R181/R182",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "update_revision_audit": {
+      "path": "outputs/r180/summary.json",
+      "sha256": "7acca6f6a1d129b3c5d96faf0f4fe24955c63ccbb8b73a8ba76448f76ba5732d",
+      "verification": {
+        "path": "outputs/r180/verification.json",
+        "sha256": "0bf76adeb323d1066a4ee5a7b6190e0da39815a5fd8894765ce15c1676a5b1d1"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "Field representation and schema changes; historical rollback only",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "update_clock_failure": {
+      "path": "outputs/r180/clock_audit.json",
+      "sha256": "6ea51772f1eb76b0f488ef47f9fb790931c015c505c683df9f7fda1f8a094de0",
+      "verification": {
+        "path": "outputs/r183/clock_verification.json",
+        "sha256": "eef91996ad21fbfa44331bb3fe693b3f49b1e933cae761ffd2b367cc9f3ff00c"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "Confirmed future-known anchors and absent membership dates in R179; failure retained",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "clock_safe_observation_runs": {
+      "path": "outputs/r181/runs.json",
+      "sha256": "be1a1a52922e9b65717bec3dcb6e2e50781644bcd64a8afb3d94ea900c1e7d55",
+      "verification": {
+        "path": "outputs/r181/verification.json",
+        "sha256": "ed9e633f29fa6a5624b0b7ecfe47ca32fb0a90be0ac66ef3bc38f4257c9e9db6"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "Three repaired historical snapshots; source membership dates are not publication timestamps",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "clock_safe_observation_comparison": {
+      "path": "outputs/r181/comparison.parquet",
+      "sha256": "3ac0b695cf097922cd942be2b09f28cf485ae8e0b10032cce8f894d3fd2d0c2b",
+      "verification": {
+        "path": "outputs/r181/verification.json",
+        "sha256": "ed9e633f29fa6a5624b0b7ecfe47ca32fb0a90be0ac66ef3bc38f4257c9e9db6"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "78/79 status changes; no score or rank change at tested dates",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "clock_safe_evaluation": {
+      "path": "outputs/r182/outcomes.parquet",
+      "sha256": "56b720ec750dbe87805153bc8923be41479cfbf079fc51488901e4c41c07d0d2",
+      "verification": {
+        "path": "outputs/r182/verification.json",
+        "sha256": "55047d2570f0a07102d82a6c857adfed176a595cdcd40bcaa2a95ed604b24505"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "4088 historical outcomes; 2044 paired results unchanged; no forward certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "clock_safe_evaluation_status": {
+      "path": "outputs/r182/status_summary.csv",
+      "sha256": "2225b3e1bee7838c88ede984a26149217e36928c0f23ab211a509efde633e3b9",
+      "verification": {
+        "path": "outputs/r182/verification.json",
+        "sha256": "55047d2570f0a07102d82a6c857adfed176a595cdcd40bcaa2a95ed604b24505"
+      },
+      "scope": "verified historical evidence including documented failures",
+      "interpretation": "Mature, pending and missing separated; no executable strategy claim",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "requirements_audit_r183": {
+      "path": "outputs/r183/requirements_audit.json",
+      "sha256": "b88245d65801628882a6f39b6f5fb7d69434188945692be521eac5ffd04c4f8d",
+      "verification": {
+        "path": "outputs/r183/audit_verification.json",
+        "sha256": "846fd5d56176c6ef6f78044e691cd49dbd8ae09654bddd9382ca8e8fad771df5"
+      },
+      "scope": "current incomplete requirement status",
+      "interpretation": "all requirements still unproven for overall completion",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "regime_family_catalog": {
+      "path": "outputs/r230/family_catalog.json",
+      "sha256": "858a100b795dd0ee8a445d7c5890796196bfcd757e645641a276f6c46322862d",
+      "verification": {
+        "path": "outputs/r230/verification.json",
+        "sha256": "e743776c524dc6ae6f7e6fc11abfb1b9171a7eae15bb9271fe938b24935b5928"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "regime_branch_decisions": {
+      "path": "outputs/r238/branch_decisions.json",
+      "sha256": "2e1444965204340837675a13f75956fa72c307a290044f679dac9617328ccdde",
+      "verification": {
+        "path": "outputs/r238/independent_verification.json",
+        "sha256": "d23f3b4ed05167aeb7601f45a915ebfb0afd6250416648f0dd13cfa5e77dad58"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "regime_dictionary": {
+      "path": "outputs/r231/factor_dictionary_extension.json",
+      "sha256": "7cd6c641050c9788152bcf0dd0ffdfc9a1fe1b52c5d5daeea2c59606773ce76d",
+      "verification": {
+        "path": "outputs/r231/verification.json",
+        "sha256": "fd3fb2c5f872b2626086120665f5fb71e72b2442cfbaafd0131fb8226dc955b8"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "historical_archive_validation": {
+      "path": "outputs/r239/verification.json",
+      "sha256": "ae277eb7af5fd18b5c1b0a091de622880a1b5669ddbe1d93b68be1e696251b33",
+      "verification": {
+        "path": "outputs/r239/verification.json",
+        "sha256": "ae277eb7af5fd18b5c1b0a091de622880a1b5669ddbe1d93b68be1e696251b33"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "risk_state_contract": {
+      "path": "outputs/r245/risk_field_contract.json",
+      "sha256": "e64f55d7a99406f3c1ab89aebc25e84d5035e4d5a7545c4ba974f6177b5d77e0",
+      "verification": {
+        "path": "outputs/r245/independent_verification.json",
+        "sha256": "e75536b06fa48c345630a52fb43dcac42b0ccf6a4d56776989dc07e7e37bfc68"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "operating_repaired_followup": {
+      "path": "outputs/r246/research_route_extension.json",
+      "sha256": "66a02e30be55b96e64501a194d9d0207c575ab5f0cce898ad5a3519e34fd1245",
+      "verification": {
+        "path": "outputs/r246/independent_verification.json",
+        "sha256": "60c2e6dd37cee2a2dd53b391b444a84681b689951e5d0f58fd5c81f3ceb4e693"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "operating_quarter_entry": {
+      "path": "outputs/r250/research_entry.json",
+      "sha256": "d52b6a8350f0aeba30f492b9f03b0baf7f59609fb961678564c75f6ff5eca57d",
+      "verification": {
+        "path": "outputs/r250/independent_verification.json",
+        "sha256": "1b2118222f13055eb1e47c31b4a0bcbbadd69aaac7b7f94cb1b624d53daf86f9"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financial_archive_inventory": {
+      "path": "outputs/r251/summary.json",
+      "sha256": "d47dfcc5ee0ff486b84e383d9e70e82b9ab68bf8e2e22a18b8ff26ac998add03",
+      "verification": {
+        "path": "outputs/r251/independent_verification.json",
+        "sha256": "1deefb92a6142d55b4dc2d585511291b2d13754e463de5f910521d129b10218d"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "reversal_gate_negative_result": {
+      "path": "outputs/r244/verification.json",
+      "sha256": "489434959f962736631f2b1c8b9d28eedc8b55c9ebd4bb319b1500ba46bf39fc",
+      "verification": {
+        "path": "outputs/r244/verification.json",
+        "sha256": "489434959f962736631f2b1c8b9d28eedc8b55c9ebd4bb319b1500ba46bf39fc"
+      },
+      "scope": "historical research evidence; verification is not predictive certification",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "requirements_audit_r252": {
+      "path": "outputs/r252/requirements_audit.json",
+      "sha256": "9e7a906b2cfb3c8c10ab98640f58d3e046bca268da2f528dd9e709dae274e54f",
+      "verification": {
+        "path": "outputs/r252/audit_verification.json",
+        "sha256": "a229f34464722d89987fb4592f0b20fd698c2d7b008277f8529bf754f24ff62a"
+      }
+    },
+    "daily_extension_r253": {
+      "path": "outputs/r253/summary.csv",
+      "sha256": "8898fe6fff3bee3e0ac153dee9cbb78488312ac2e53a608543503ceefd66fa4a",
+      "verification": {
+        "path": "outputs/r253/independent_verification.json",
+        "sha256": "463272072084416fceb5d8d3a0869d42b40b4552be4c68853b50331d7e5d7f8c"
+      },
+      "scope": "Daily extension is core F/F onset20 L2/L3, not a blanket daily validation of every family",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_extension_r254": {
+      "path": "outputs/r254/summary.csv",
+      "sha256": "48e6e04e411ba59d3ea8e14ca665ae3a8a059943cd4e20a35d2b5db98409b41d",
+      "verification": {
+        "path": "outputs/r254/independent_verification.json",
+        "sha256": "3c8ad123197dd1c92554c5a2422a7c6302b05ea9d47801b0f659efe469ce1e65"
+      },
+      "scope": "Daily extension is core F/F onset20 L2/L3, not a blanket daily validation of every family",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_extension_r255": {
+      "path": "outputs/r255/summary.csv",
+      "sha256": "f0807eddcdafbfeae2f19dd174706d7e750e334334c9aa8231570c684bf5d1f0",
+      "verification": {
+        "path": "outputs/r255/independent_verification.json",
+        "sha256": "1ff8cf940daf82f88c395ef77ce4d78ad9d6495b23af0a13bdc828d23eedd21d"
+      },
+      "scope": "Daily extension is core F/F onset20 L2/L3, not a blanket daily validation of every family",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_extension_r256": {
+      "path": "outputs/r256/summary.csv",
+      "sha256": "c8cef78d1b2050c28a64bedd8b2171ac48720a95ccc692318374add04f6d91a0",
+      "verification": {
+        "path": "outputs/r256/independent_verification.json",
+        "sha256": "5e525c5b4896ec923fdf0282f9eaa5704dfd91a57fbe8cd249aab4782b8ad1db"
+      },
+      "scope": "Daily extension is core F/F onset20 L2/L3, not a blanket daily validation of every family",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_extension_r257": {
+      "path": "outputs/r257/summary.csv",
+      "sha256": "1d3cd6ee190cddd180687d4983e9bcaac62286b2f20cfc7a02d1f2b4793e3767",
+      "verification": {
+        "path": "outputs/r257/independent_verification.json",
+        "sha256": "ef7b1babdf1041e92c8db803f85f80bf10c6a620bd67a885cf6e0e08b6f61340"
+      },
+      "scope": "Daily extension is core F/F onset20 L2/L3, not a blanket daily validation of every family",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_extension_r258": {
+      "path": "outputs/r258/summary.csv",
+      "sha256": "366557390eb56678ab9239867475c2776773ebdd81c3d79ba2ad30a943cd3d37",
+      "verification": {
+        "path": "outputs/r258/independent_verification.json",
+        "sha256": "8d6f4416334f60a9e97dac295f6820cccb1844ecfa3073243be8be5312de5367"
+      },
+      "scope": "Daily extension is core F/F onset20 L2/L3, not a blanket daily validation of every family",
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "daily_branch_decision": {
+      "path": "outputs/r259/daily_branch_decision.json",
+      "sha256": "ff20374e60b7e1fb16d085a45cba6b2051995a6b6cc95df3ca86a347fd982301",
+      "verification": {
+        "path": "outputs/r259/integration_proof.json",
+        "sha256": "50b8547afdb1cc13af44e7790c8edc66e62a6a9579c24b20d3559f54da61826b"
+      },
+      "predictive_adoption": false,
+      "production_enabled": false,
+      "strict_pit": false
+    },
+    "requirements_audit_r259": {
+      "path": "outputs/r259/requirements_audit.json",
+      "sha256": "2264b79151d9effb46adc446b69b02304ade8f7e2ae69f457ba97c0c7405d335",
+      "verification": {
+        "path": "outputs/r259/integration_proof.json",
+        "sha256": "50b8547afdb1cc13af44e7790c8edc66e62a6a9579c24b20d3559f54da61826b"
+      },
+      "predictive_adoption": false,
+      "production_enabled": false,
+      "strict_pit": false
+    },
+    "financing_extension_r260": {
+      "path": "outputs/r260/summary.json",
+      "sha256": "3978858b3cb75da659675def408d7fed2c6dd3a2dcba7735cad0c1c0eb83c02f",
+      "verification": {
+        "path": "outputs/r260/independent_verification.json",
+        "sha256": "aa245f344c93aaa16a5c4611f8d5b6e27d8c50dd9f63d4403df682b98df96c9e"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_extension_r261": {
+      "path": "outputs/r261/summary.csv",
+      "sha256": "4b0b87391cd7ffdb9f0f87901059807f3d9d42e22f4b897cf3c3dea1b23d9d7f",
+      "verification": {
+        "path": "outputs/r261/independent_verification.json",
+        "sha256": "7c989e5ecf7d4741f05cf5769de5272083943f505b08e64358e013a10cb34f37"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_extension_r262": {
+      "path": "outputs/r262/summary.csv",
+      "sha256": "8384d312ba9609f57c33971ee142c7eec03c272691f65dbfdf880518220d229a",
+      "verification": {
+        "path": "outputs/r262/independent_verification.json",
+        "sha256": "6f71cd1342ce01fc0f8cef68a7309729474e0020d079a86ed2af637bfbf39498"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_extension_r263": {
+      "path": "outputs/r263/summary.csv",
+      "sha256": "cd6e5df991331262f0013974c7bcdc26c52adf8595d99a53f8f39fad65c8caa1",
+      "verification": {
+        "path": "outputs/r263/independent_verification.json",
+        "sha256": "c2c1da1e547fae00dee8b2ba0940059be36d2c4447858345393306fb64df7d04"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_extension_r264": {
+      "path": "outputs/r264/summary.csv",
+      "sha256": "3c1be59523a2445fd014629cb796c8ccf4b6ee5564c5f6f1637190db1934bfda",
+      "verification": {
+        "path": "outputs/r264/independent_verification.json",
+        "sha256": "ac74eb5f82c6749a811b5be7bdd6594159320fc3a3d475000a264f459d6ba63e"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_extension_r265": {
+      "path": "outputs/r265/summary.csv",
+      "sha256": "7cec69b7f4fb4d73fa44711d1a7180fef25199c73b13a2793a43cde7a04d8869",
+      "verification": {
+        "path": "outputs/r265/independent_verification.json",
+        "sha256": "fd012685c30372880d7cff79773fbb6564c23215286750276b00fe8c918c4f48"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_factor_dictionary": {
+      "path": "outputs/r266/factor_dictionary.json",
+      "sha256": "9c3c3ae62b1049e957999b45e1af342fe817ef0fc0b0b575f41e6d058726c9d3",
+      "verification": {
+        "path": "outputs/r266/integration_proof.json",
+        "sha256": "4a5ccbb873cb8abbf471d1cf658997d5a83cb98567fd0beb13c5c4c93096be02"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_branch_decision": {
+      "path": "outputs/r266/branch_decision.json",
+      "sha256": "efbd29e37d9ff56939e08d65fe0314a3c7faea238eb5c414d2c50d613199de3e",
+      "verification": {
+        "path": "outputs/r266/integration_proof.json",
+        "sha256": "4a5ccbb873cb8abbf471d1cf658997d5a83cb98567fd0beb13c5c4c93096be02"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_mechanism_report": {
+      "path": "reports/r266_financing_mechanism_delivery.md",
+      "sha256": "f69645384970f2de8d3d17d0e35ea8829580f17ac9645c1473aa37ef1cb6d00a",
+      "verification": {
+        "path": "outputs/r266/integration_proof.json",
+        "sha256": "4a5ccbb873cb8abbf471d1cf658997d5a83cb98567fd0beb13c5c4c93096be02"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "requirements_audit_r266": {
+      "path": "outputs/r266/requirements_audit.json",
+      "sha256": "53c0540840c85ab09432390bd584b4a8cacb57bd3641ea53c0e4e6f72a20be60",
+      "verification": {
+        "path": "outputs/r266/integration_proof.json",
+        "sha256": "4a5ccbb873cb8abbf471d1cf658997d5a83cb98567fd0beb13c5c4c93096be02"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_clock_r267": {
+      "path": "outputs/r267/summary.json",
+      "sha256": "20891dc6a5b0effc55f6a8664a4b60f62fb0cb13f9316e07e41074cae584d9e9",
+      "verification": {
+        "path": "outputs/r267/independent_verification.json",
+        "sha256": "eb5de7c8c74a2af69566a7bb4e2133cb27665ce9ba3860d8aa9b32a343820883"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "financing_clock_r268": {
+      "path": "outputs/r268/summary.csv",
+      "sha256": "271ecc910c992941446582082c99731d1c0970f6c3cbba645e75cae20b0bd649",
+      "verification": {
+        "path": "outputs/r268/independent_verification.json",
+        "sha256": "e0a06b7b179db8324c84913636de5995225e32b3ff604a8f68b70d4ed2b3a4bb"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "financing_clock_r269": {
+      "path": "outputs/r269/clock_summary.csv",
+      "sha256": "79a7066d4648ca1123ce0af61a75d6bc4feb8e3ba0dd8ef7fff6396a0b5025ed",
+      "verification": {
+        "path": "outputs/r269/independent_verification.json",
+        "sha256": "d7fc55ee94089c6bbc00a52db939183fc346145094324a96024c1d34d545d4cb"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "financing_clock_r270": {
+      "path": "outputs/r270/clock_summary.csv",
+      "sha256": "628215ed41a5ed448dbe8c5c9180bce8cdf01eda51bd191b90d68e79f0dc123e",
+      "verification": {
+        "path": "outputs/r270/independent_verification.json",
+        "sha256": "3275463ef886091cbe82ad5bf367f5755cfac605b33ac3cc6e1391ded609c46e"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "financing_clock_r271": {
+      "path": "outputs/r271/clock_comparisons.csv",
+      "sha256": "804741f969094d54485cbf1ef06ca5b4044ac9e9d818e4a22170f1925d7ffb1e",
+      "verification": {
+        "path": "outputs/r271/independent_verification.json",
+        "sha256": "1c00ff3366ec662de972ef47c2538886681a9f0233bdf93a4841ebf011cfdcd3"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "financing_clock_dictionary": {
+      "path": "outputs/r272/factor_dictionary.json",
+      "sha256": "7147f11841c175024fc77de38390a769ce533d65fd40747108bdfd3a95557e6c",
+      "verification": {
+        "path": "outputs/r272/integration_proof.json",
+        "sha256": "562a9d819afad803570a904cd123b7ffd113c25f1ed816a0dc6048ce0278a34f"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_clock_decision": {
+      "path": "outputs/r272/branch_decision.json",
+      "sha256": "471af296f00bdd79cdf839d7dda446cc463486c38a4141010ff069a9456ba1ba",
+      "verification": {
+        "path": "outputs/r272/integration_proof.json",
+        "sha256": "562a9d819afad803570a904cd123b7ffd113c25f1ed816a0dc6048ce0278a34f"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "financing_clock_report": {
+      "path": "reports/r272_financing_clock_decision.md",
+      "sha256": "ac2957ef02005ec8bd38d18f4692782d53cfcd89b8a404d8ad47e0cf7947b185",
+      "verification": {
+        "path": "outputs/r272/integration_proof.json",
+        "sha256": "562a9d819afad803570a904cd123b7ffd113c25f1ed816a0dc6048ce0278a34f"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "remaining_work_r272": {
+      "path": "outputs/r272/remaining_work.json",
+      "sha256": "abac0d924557d38ac0829be594b38decc2817c8331d99ca6a262dfd8bc079886",
+      "verification": {
+        "path": "outputs/r272/integration_proof.json",
+        "sha256": "562a9d819afad803570a904cd123b7ffd113c25f1ed816a0dc6048ce0278a34f"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "requirements_audit_r272": {
+      "path": "outputs/r272/requirements_audit.json",
+      "sha256": "babfcd910f1d58c0c3e911a6ce938740ec13f97259ed7fe709972d75e1bf3bfd",
+      "verification": {
+        "path": "outputs/r272/integration_proof.json",
+        "sha256": "562a9d819afad803570a904cd123b7ffd113c25f1ed816a0dc6048ce0278a34f"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "battery_extension_r274": {
+      "path": "outputs/r274/summary.json",
+      "sha256": "282734a9b549b2df24bbe19c420e3d13e0fdfe7ca3e5041dd97ab6113da78f59",
+      "verification": {
+        "path": "outputs/r274/independent_verification.json",
+        "sha256": "028f002ffdf919717b1781bcdb3a2332f1a0850e701a5e4ae0a1bf6afaad6e7c"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_extension_r275": {
+      "path": "outputs/r275/summary.json",
+      "sha256": "42c0d30d40f3ecbf87f72f0719a035d63ce8c059f5ea31eaad4897d2235fb799",
+      "verification": {
+        "path": "outputs/r275/independent_verification.json",
+        "sha256": "d5760dae6097fcabea23baf45163a34e9dea85c22006502cddcdeb7173c95d70"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_extension_r276": {
+      "path": "outputs/r276/summary.json",
+      "sha256": "9cef8bf440550326b7fae8a1335e679c63668d1f96078876ade44795476a45b1",
+      "verification": {
+        "path": "outputs/r276/independent_verification.json",
+        "sha256": "2286d22a43fad881883fb389fe0868f2a287323ee1c0d4f3ac9b53c73be7677b"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_extension_r277": {
+      "path": "outputs/r277/summary.json",
+      "sha256": "0e47da63c0cec6e70e8c0de962ef38dbba9acd21dd2382e83a9c71ec19f0b0b3",
+      "verification": {
+        "path": "outputs/r277/independent_verification.json",
+        "sha256": "17a648444768fdc21c95a79cdc691d9a094b9685a5061b131be15cb63796fcd0"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_extension_r278": {
+      "path": "outputs/r278/summary.json",
+      "sha256": "ad7910b4c6ccb720069e33731f9b10089a6afba1dc97f86ccd44f52335a12e3a",
+      "verification": {
+        "path": "outputs/r278/independent_verification.json",
+        "sha256": "efc1663c46e20a71dcc5c8dfba3c6be478a10cc1d3f692953ce4a7850e2db17d"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_supply_export_dictionary": {
+      "path": "outputs/r279/factor_dictionary.json",
+      "sha256": "efb8e00b726f9651edf73356e072d3a19205caee89fa584810382b320690de29",
+      "verification": {
+        "path": "outputs/r279/integration_proof.json",
+        "sha256": "f681696e37d8093d7bf659dc959c6e5d0dfd325fdd3a538c0e1bfe6abd5ca945"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "battery_supply_export_decision": {
+      "path": "outputs/r279/branch_decision.json",
+      "sha256": "14a411e070e88c5d45b6835e26a9d2ea8923692535db3a71179337dc465c1301",
+      "verification": {
+        "path": "outputs/r279/integration_proof.json",
+        "sha256": "f681696e37d8093d7bf659dc959c6e5d0dfd325fdd3a538c0e1bfe6abd5ca945"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "battery_supply_export_report": {
+      "path": "reports/r279_battery_research_delivery.md",
+      "sha256": "4a8b0d7b157a8bda4a24889c1acda301a7134bec56c07753c90f1c4f7eb5904b",
+      "verification": {
+        "path": "outputs/r279/integration_proof.json",
+        "sha256": "f681696e37d8093d7bf659dc959c6e5d0dfd325fdd3a538c0e1bfe6abd5ca945"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "remaining_work_r279": {
+      "path": "outputs/r279/remaining_work.json",
+      "sha256": "7db2d39ccbcab82cc44d4ced6d599d0edefc260c8842bb8471e2246c5d688399",
+      "verification": {
+        "path": "outputs/r279/integration_proof.json",
+        "sha256": "f681696e37d8093d7bf659dc959c6e5d0dfd325fdd3a538c0e1bfe6abd5ca945"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "requirements_audit_r279": {
+      "path": "outputs/r279/requirements_audit.json",
+      "sha256": "bd1fe9e7f40bb63bc50cbb9aedcbf9bd384a6c55a971b765e1e9cafa9bcb4ba6",
+      "verification": {
+        "path": "outputs/r279/integration_proof.json",
+        "sha256": "f681696e37d8093d7bf659dc959c6e5d0dfd325fdd3a538c0e1bfe6abd5ca945"
+      },
+      "predictive_adoption": false,
+      "strict_pit": false,
+      "production_enabled": false
+    },
+    "battery_validation_r280": {
+      "path": "outputs/r280/summary.json",
+      "sha256": "e1ed5c28961c345b0f792267b1e529b7718cd0bd4885e4370e7e1ec0708af0ea",
+      "verification": {
+        "path": "outputs/r280/independent_verification.json",
+        "sha256": "983568852c533ccd2c912a8402a0c78819b675d900c621f88cc13ef964392585"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_validation_r281": {
+      "path": "outputs/r281/summary.json",
+      "sha256": "fb9def7b40b7356d14d912e184d43f3a2c28fbbde6cdd0e2b8ce4043501514e0",
+      "verification": {
+        "path": "outputs/r281/independent_verification.json",
+        "sha256": "0c4063df6f052f97d0f3689819d1c0c38a753ef425f4ec0898b0aea317b5609e"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_validation_r282": {
+      "path": "outputs/r282/current_status.json",
+      "sha256": "bacb2143cf1689fdbab24a8d07fa434daab40a67778aa16611a387a7f3adcc65",
+      "verification": {
+        "path": "outputs/r282/verification.json",
+        "sha256": "806eb2bb40d8507b7478858b368e7151743d75468ac639f3ec91769bd4c96215"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_validation_r283": {
+      "path": "outputs/r283/summary.json",
+      "sha256": "2f5298df4527d566a42505338c65f8baba3aba31382063832f2ca21810cd76a6",
+      "verification": {
+        "path": "outputs/r283/independent_verification.json",
+        "sha256": "bf3bb85d3ed5d77ee098c32c64f4669e9f3b44c94f397af461cf9e5735a99fec"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_validation_r284": {
+      "path": "outputs/r284/summary.json",
+      "sha256": "7f30e771e1426c65f68f86a0ad84915ca093e09e11aff696a8e08ca50cd0108f",
+      "verification": {
+        "path": "outputs/r284/independent_verification.json",
+        "sha256": "4ffa6420ad83d1ace367cd7eecceac40d63a5c2d7eee7b2aca7f5c732bb6bbbe"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_validation_report": {
+      "path": "reports/r285_battery_validation_delivery.md",
+      "sha256": "e9267a36da500b254e222062a2cbfd29ded55acf19225fc306b27052a28d1e81",
+      "verification": {
+        "path": "outputs/r285/integration_proof.json",
+        "sha256": "824627ae1cf6c98c0b26fd0025f1e67e48515978a03e0c59f1f0677c98a4e0aa"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_validation_decision": {
+      "path": "outputs/r285/branch_decision.json",
+      "sha256": "10a02ec3fd3681826f9a108141af057351eac9a1d17a84394e909b096e12e135",
+      "verification": {
+        "path": "outputs/r285/integration_proof.json",
+        "sha256": "824627ae1cf6c98c0b26fd0025f1e67e48515978a03e0c59f1f0677c98a4e0aa"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "current_requirements_audit": {
+      "path": "outputs/r285/requirements_audit.json",
+      "sha256": "46df9071c4ea48eeb7f288d00ea7eb90fda43051a3b94233d2c9b0d9f38af3ee",
+      "verification": {
+        "path": "outputs/r285/integration_proof.json",
+        "sha256": "824627ae1cf6c98c0b26fd0025f1e67e48515978a03e0c59f1f0677c98a4e0aa"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "remaining_work_r285": {
+      "path": "outputs/r285/remaining_work.json",
+      "sha256": "f8171c5909db786e5f76c77bc36750ae63916bf88b7cdaf864ee425cabf5b318",
+      "verification": {
+        "path": "outputs/r285/integration_proof.json",
+        "sha256": "824627ae1cf6c98c0b26fd0025f1e67e48515978a03e0c59f1f0677c98a4e0aa"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    },
+    "battery_validation_contract": {
+      "path": "protocols/r282.json",
+      "sha256": "56ad1d3bfc5bfe8304eb7ceab2a5330e7717ab7ff403a1e510ac9d5e00c9e4c7",
+      "verification": {
+        "path": "outputs/r285/integration_proof.json",
+        "sha256": "824627ae1cf6c98c0b26fd0025f1e67e48515978a03e0c59f1f0677c98a4e0aa"
+      },
+      "strict_pit": false,
+      "predictive_adoption": false,
+      "production_enabled": false
+    }
+  },
+  "unreviewed_legacy_routes": {
+    "profit_company_revisions": {
+      "path": "data/r25_company_broker_revisions.parquet",
+      "sha256": "bed3f0f50e8bab3b0238aec6161940b9bb546afa159833c4db12480097ad97a3",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "profit_industry_coverage": {
+      "path": "data/r25_revision_coverage.parquet",
+      "sha256": "aa5cc69d69d3ddc90785c8065a8105d160b09c9f5ea9201414538bed4f934b88",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "profit_model_predictions": {
+      "path": "outputs/r25/predictions.parquet",
+      "sha256": "916a359424e7604046248a165a0e7c09f4c91d14a0770e2674e0643fbc4f9d84",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "historical_evidence_monitor": {
+      "path": "outputs/r25/monitor/evidence_matrix.csv",
+      "sha256": "ec9dcf2d9b5d5b290dd6ecae55e01f79285f84fd6667ce3a29e991c9d85e4f24",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "current_factor_dictionary": {
+      "path": "outputs/r124/current_factor_dictionary.json",
+      "sha256": "c8ddb3aaa3658a3b20f148562193f2097091e581e508c98561eec57ae574de37",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "battery_partial_series": {
+      "path": "outputs/r40/frozen_monthly_series.json",
+      "sha256": "448ab9cf0c228ae4a93428a7fcdd555386763fd14565d0f156c1d1ca0afd03c2",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "battery_return_pilot": {
+      "path": "outputs/r41/metrics.json",
+      "sha256": "e87120d1f1255710c6b5baab391d14db699fe099dbb38278b4c1cda7a5920ad5",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "extended_historical_evidence_monitor": {
+      "path": "outputs/r50/evidence_matrix.parquet",
+      "sha256": "fdaad2fc5c0f6b9e8d1e14f1fc8dfbf5e579c0751fb89d02dbe9f637d05dd5d9",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "latest_battery_series": {
+      "path": "outputs/r60/frozen_monthly_series.json",
+      "sha256": "23edd0a348f831c964165936c3a0be605cbeaa5eea2653c4d31b5aeff210fc22",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "latest_battery_return_pilot": {
+      "path": "outputs/r64/metrics.json",
+      "sha256": "19fe3e5c09d49720e4b96b6204ecb988becf35e8c8a3e0a534ce7fe49cfa8efb",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "reviewed_complete_battery_series": {
+      "path": "outputs/r60/frozen_monthly_series.json",
+      "sha256": "23edd0a348f831c964165936c3a0be605cbeaa5eea2653c4d31b5aeff210fc22",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "complete_battery_historical_monitor": {
+      "path": "outputs/r63/evidence_matrix.parquet",
+      "sha256": "b1350186995f6579de40b5813b1e813b3949cf66ed2d3ed02bc5ffb39eb3e54e",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "current_requirements_evidence": {
+      "path": "outputs/r124/requirements_evidence.json",
+      "sha256": "3af5c0a251ac19506f612918c51dff6c72ffbdcac75d4fc1b9403750c0e322fe",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "accounting_source_clock": {
+      "path": "outputs/r72/coverage.json",
+      "sha256": "7df107eaf93ae3ce1094ce688f8a150b0853aea8d65ce95444fc3fbc84137950",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "forecast_realization_common_events": {
+      "path": "outputs/r90/summary.json",
+      "sha256": "4f03af4971921bdf66207c414b22a2deb9a6548406decdcf56e16962a7b8d4ff",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "stock_path_partial_bounds": {
+      "path": "outputs/r83/summary.json",
+      "sha256": "821d539d77f5b5e79c35ee60e0e636c0278cba8c1f07eb99a1a57190f85f305e",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "integrated_historical_clock_evidence": {
+      "path": "outputs/r93/all_clock_evidence.parquet",
+      "sha256": "dc03ec7c0f7818ebb383cf8ab7244780857c3e5c97772ff2a888ab245e12b587",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "latest_stage_requirements_audit": {
+      "path": "outputs/r124/requirements_evidence.json",
+      "sha256": "3af5c0a251ac19506f612918c51dff6c72ffbdcac75d4fc1b9403750c0e322fe",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "rank_redundancy_audit": {
+      "path": "outputs/r104/verification.json",
+      "sha256": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "fixed_penalty_precision_comparison": {
+      "path": "outputs/r106/drift_summary.json",
+      "sha256": "620ef708d804a33654331b7bf353cc9cdd3ddd386d7e814b6ac80c2102be7f3b",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "next_local_mechanism_source_audit": {
+      "path": "outputs/r112/valuation_source_audit.json",
+      "sha256": "e34c3e4f0078d7a6080b41f4a88ef5f1a244d554362afc26ecf335d8f824eb6f",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "leader_diffusion_branch": {
+      "path": "outputs/r112/branch_evidence.json",
+      "sha256": "7f23c15e3b419adf1bb031a7e203106d78addfd9e058d66b22be0158135dcd31",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "valuation_basis_and_financial_timing": {
+      "path": "outputs/r119/branch_evidence.json",
+      "sha256": "925fcd2dc156f2c6d085126e25a6f4415189765b6b2caf8e822e2999261860ac",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "financial_change_branch": {
+      "path": "outputs/r124/branch_evidence.json",
+      "sha256": "5b7b48b04efde339d73e9ecbbfe70422541dc5917fa32e6490be7d604215e7ba",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    },
+    "fund_etf_source_search": {
+      "path": "outputs/r124/source_audit.json",
+      "sha256": "328c3159280c2b1ede94ca31c763fe60754179b3ae4620aeb760982a3dbbe05b",
+      "review_status": "retained_original_route_not_adopted_in_corrected_entry"
+    }
+  },
+  "legacy_registry_refreshes": {
+    "current_requirements_evidence": {
+      "before": {
+        "path": "outputs/r124/requirements_evidence.json",
+        "sha256": "7cf1dd084df8959461485ae29ed6c9d27ff823449401e52cb09334e1a1929e94"
+      },
+      "after": {
+        "path": "outputs/r124/requirements_evidence.json",
+        "sha256": "3af5c0a251ac19506f612918c51dff6c72ffbdcac75d4fc1b9403750c0e322fe"
+      }
+    },
+    "latest_stage_requirements_audit": {
+      "before": {
+        "path": "outputs/r124/requirements_evidence.json",
+        "sha256": "7cf1dd084df8959461485ae29ed6c9d27ff823449401e52cb09334e1a1929e94"
+      },
+      "after": {
+        "path": "outputs/r124/requirements_evidence.json",
+        "sha256": "3af5c0a251ac19506f612918c51dff6c72ffbdcac75d4fc1b9403750c0e322fe"
+      }
+    }
+  },
+  "source_snapshot_sha256": "1506c88194b1388a93d42c7b5d64c829cda2bd284f49f3dcb61e94d7b6176b18",
+  "previous_release": {
+    "path": "outputs/r279/release.json",
+    "sha256": "bd672b87b0f2b94ebde1c0b1fe8ccbd4de7ce79571190c710d39c10902419663"
+  },
+  "next": "核对冻结核心反转模型是否具备日频重放资格，区分月末分类准确度与去重反转过程的提前识别；复用本地日频价格，先审计原趋势资格、事件定义和可用折，不调参数、不新增采集。",
+  "research_extensions": {
+    "all_model_decisions": "regime_branch_decisions",
+    "operating_evidence": "operating_quarter_entry",
+    "archive_cli": "src/research_archive_cli_r239.py",
+    "operating_cli": "src/operating_reader_r250.py",
+    "scope": "Explicit-date historical readers; no live update, scheduling or production enabled",
+    "daily_application": "daily_branch_decision",
+    "financing_components": "financing_branch_decision",
+    "financing_clock": "financing_clock_decision",
+    "battery_supply_export": "battery_supply_export_decision",
+    "battery_validation": "battery_validation_decision"
+  }
+}

@@ -1,0 +1,1922 @@
+{
+  "revision": "R167",
+  "quality": "Historical-proxy",
+  "definitions": 28,
+  "original_dictionary_sha256": "c8ddb3aaa3658a3b20f148562193f2097091e581e508c98561eec57ae574de37",
+  "items": [
+    {
+      "factor": "mom20/mom60",
+      "module": "F",
+      "original_index": 0,
+      "original_definition": {
+        "module": "F",
+        "factor": "mom20/mom60",
+        "theory": "信息缓慢扩散",
+        "formula": "NAV_t/NAV_t-h -1",
+        "direction": "正",
+        "applicable_industries": "全行业可用篮子",
+        "economic_date": "交易日",
+        "publication_date": "对应交易日收盘；合成篮子及历史成分仍为代理",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 forecast_v5 daily_industries；EP35 R05一级合成篮子",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "R01：mom20/mom60秩均值形成动量组；F=(动量组-vol20秩+dd60秩)/3；R02/R16模型使用独立特征",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "未来收益不延续；共同市场/风格解释",
+        "replication_status": "可复现代理",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "未确立稳定独立增量",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R18/R21价格观察；R22正式三任务模型",
+        "evidence_refs": [
+          "src/build_panel.py",
+          "protocols/r01.json",
+          "protocols/r02.json",
+          "reports/R16_一级三任务与校准边界.md",
+          "outputs/r101/verification.json",
+          "outputs/r102/verification.json",
+          "outputs/r103/verification.json",
+          "outputs/r104/verification.json",
+          "outputs/r105/model_verification.json",
+          "outputs/r105/metric_verification.json",
+          "outputs/r106/model_verification.json",
+          "outputs/r106/metric_verification.json",
+          "outputs/r106/drift_verification.json"
+        ],
+        "evidence_sha256": {
+          "src/build_panel.py": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+          "protocols/r01.json": "d455969487f3c80b322c6772100c898312189e6e8a13e0b3d4467bb9ff8a7f67",
+          "protocols/r02.json": "131bbd4898e32da7a458bca00f05077e6e45f565a8929e34b7ef1fbd689f330e",
+          "reports/R16_一级三任务与校准边界.md": "2abaf15096fb54a43689b15060ebb023ce2cf38eb0a376cf5d68ee5cf8fa80f8",
+          "outputs/r101/verification.json": "ba5f8dc1122f84eba0fe77b1be1c39da4d7ee29b1402d9a3cea30af7b366096c",
+          "outputs/r102/verification.json": "500562fa115189eec27f020c43a7a65b89eca472a81834080172ff3c243b83ef",
+          "outputs/r103/verification.json": "bbb625dde36042d75d8777540eac9a5606469254c93889a2043c29ea9b4c449c",
+          "outputs/r104/verification.json": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da",
+          "outputs/r105/model_verification.json": "c3934c278b1804d0871ef8a754e9cac74b9dfbaa74f77780800403cc7590cd08",
+          "outputs/r105/metric_verification.json": "4f77cc12d813af7d5254a0aeef8e792ad93dd93a85c9aaa44628ce9af9668ec5",
+          "outputs/r106/model_verification.json": "94cb8ad8352a719dba40508baeae90305f3863dae3f8f8b20c4730d0b1f7ca72",
+          "outputs/r106/metric_verification.json": "8dc6867223876b474e327eb6d4d9106cc830507d151414cdf58fd21966ee86c3",
+          "outputs/r106/drift_verification.json": "71517b8d32d3683fa427105161db87f55b5099ad0a5fb4cbb3ca3f52cad36937"
+        },
+        "model_application_evidence": "R101/R102冻结模型、精确日期输入和截止日前缀可重放；R103分项是回归值或校准logit，不是因果/概率百分点",
+        "model_application_limit": "R104两组动量/过去超额秩重复；R105/R106惩罚与精度比较未建立SW2021稳定改善；默认容差可能影响微小分类结论，未替换模型",
+        "numerical_research_rule": "后续模型比较显式登记精度并核查惩罚梯度；不将相同截面秩算作独立信息；禁止靠重复列暗增权重"
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "vol20",
+      "module": "F",
+      "original_index": 1,
+      "original_definition": {
+        "module": "F",
+        "factor": "vol20",
+        "theory": "风险与趋势质量",
+        "formula": "std(daily return,20)*sqrt(252)",
+        "direction": "负",
+        "applicable_industries": "全行业可用篮子",
+        "economic_date": "交易日",
+        "publication_date": "对应交易日收盘；合成篮子及历史成分仍为代理",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 forecast_v5 daily_industries；EP35 R05一级合成篮子",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "R01：mom20/mom60秩均值形成动量组；F=(动量组-vol20秩+dd60秩)/3；R02/R16模型使用独立特征",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "低波并不等于高收益；行业风险溢价替代解释",
+        "replication_status": "可复现代理",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "未确立稳定独立增量",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R18/R21价格观察；R22正式三任务模型",
+        "evidence_refs": [
+          "src/build_panel.py",
+          "protocols/r01.json",
+          "protocols/r02.json",
+          "reports/R16_一级三任务与校准边界.md",
+          "outputs/r101/verification.json",
+          "outputs/r102/verification.json",
+          "outputs/r103/verification.json",
+          "outputs/r104/verification.json",
+          "outputs/r105/model_verification.json",
+          "outputs/r105/metric_verification.json",
+          "outputs/r106/model_verification.json",
+          "outputs/r106/metric_verification.json",
+          "outputs/r106/drift_verification.json"
+        ],
+        "evidence_sha256": {
+          "src/build_panel.py": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+          "protocols/r01.json": "d455969487f3c80b322c6772100c898312189e6e8a13e0b3d4467bb9ff8a7f67",
+          "protocols/r02.json": "131bbd4898e32da7a458bca00f05077e6e45f565a8929e34b7ef1fbd689f330e",
+          "reports/R16_一级三任务与校准边界.md": "2abaf15096fb54a43689b15060ebb023ce2cf38eb0a376cf5d68ee5cf8fa80f8",
+          "outputs/r101/verification.json": "ba5f8dc1122f84eba0fe77b1be1c39da4d7ee29b1402d9a3cea30af7b366096c",
+          "outputs/r102/verification.json": "500562fa115189eec27f020c43a7a65b89eca472a81834080172ff3c243b83ef",
+          "outputs/r103/verification.json": "bbb625dde36042d75d8777540eac9a5606469254c93889a2043c29ea9b4c449c",
+          "outputs/r104/verification.json": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da",
+          "outputs/r105/model_verification.json": "c3934c278b1804d0871ef8a754e9cac74b9dfbaa74f77780800403cc7590cd08",
+          "outputs/r105/metric_verification.json": "4f77cc12d813af7d5254a0aeef8e792ad93dd93a85c9aaa44628ce9af9668ec5",
+          "outputs/r106/model_verification.json": "94cb8ad8352a719dba40508baeae90305f3863dae3f8f8b20c4730d0b1f7ca72",
+          "outputs/r106/metric_verification.json": "8dc6867223876b474e327eb6d4d9106cc830507d151414cdf58fd21966ee86c3",
+          "outputs/r106/drift_verification.json": "71517b8d32d3683fa427105161db87f55b5099ad0a5fb4cbb3ca3f52cad36937"
+        },
+        "model_application_evidence": "R101/R102冻结模型、精确日期输入和截止日前缀可重放；R103分项是回归值或校准logit，不是因果/概率百分点",
+        "model_application_limit": "R104两组动量/过去超额秩重复；R105/R106惩罚与精度比较未建立SW2021稳定改善；默认容差可能影响微小分类结论，未替换模型",
+        "numerical_research_rule": "后续模型比较显式登记精度并核查惩罚梯度；不将相同截面秩算作独立信息；禁止靠重复列暗增权重"
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "dd60",
+      "module": "F",
+      "original_index": 2,
+      "original_definition": {
+        "module": "F",
+        "factor": "dd60",
+        "theory": "趋势维持",
+        "formula": "NAV_t/max(NAV last60)-1",
+        "direction": "正",
+        "applicable_industries": "全行业可用篮子",
+        "economic_date": "交易日",
+        "publication_date": "对应交易日收盘；合成篮子及历史成分仍为代理",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 forecast_v5 daily_industries；EP35 R05一级合成篮子",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "R01：mom20/mom60秩均值形成动量组；F=(动量组-vol20秩+dd60秩)/3；R02/R16模型使用独立特征",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "接近高位可能均值回归",
+        "replication_status": "可复现代理",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "未确立稳定独立增量",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R18/R21价格观察；R22正式三任务模型",
+        "evidence_refs": [
+          "src/build_panel.py",
+          "protocols/r01.json",
+          "protocols/r02.json",
+          "reports/R16_一级三任务与校准边界.md",
+          "outputs/r101/verification.json",
+          "outputs/r102/verification.json",
+          "outputs/r103/verification.json",
+          "outputs/r104/verification.json",
+          "outputs/r105/model_verification.json",
+          "outputs/r105/metric_verification.json",
+          "outputs/r106/model_verification.json",
+          "outputs/r106/metric_verification.json",
+          "outputs/r106/drift_verification.json"
+        ],
+        "evidence_sha256": {
+          "src/build_panel.py": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+          "protocols/r01.json": "d455969487f3c80b322c6772100c898312189e6e8a13e0b3d4467bb9ff8a7f67",
+          "protocols/r02.json": "131bbd4898e32da7a458bca00f05077e6e45f565a8929e34b7ef1fbd689f330e",
+          "reports/R16_一级三任务与校准边界.md": "2abaf15096fb54a43689b15060ebb023ce2cf38eb0a376cf5d68ee5cf8fa80f8",
+          "outputs/r101/verification.json": "ba5f8dc1122f84eba0fe77b1be1c39da4d7ee29b1402d9a3cea30af7b366096c",
+          "outputs/r102/verification.json": "500562fa115189eec27f020c43a7a65b89eca472a81834080172ff3c243b83ef",
+          "outputs/r103/verification.json": "bbb625dde36042d75d8777540eac9a5606469254c93889a2043c29ea9b4c449c",
+          "outputs/r104/verification.json": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da",
+          "outputs/r105/model_verification.json": "c3934c278b1804d0871ef8a754e9cac74b9dfbaa74f77780800403cc7590cd08",
+          "outputs/r105/metric_verification.json": "4f77cc12d813af7d5254a0aeef8e792ad93dd93a85c9aaa44628ce9af9668ec5",
+          "outputs/r106/model_verification.json": "94cb8ad8352a719dba40508baeae90305f3863dae3f8f8b20c4730d0b1f7ca72",
+          "outputs/r106/metric_verification.json": "8dc6867223876b474e327eb6d4d9106cc830507d151414cdf58fd21966ee86c3",
+          "outputs/r106/drift_verification.json": "71517b8d32d3683fa427105161db87f55b5099ad0a5fb4cbb3ca3f52cad36937"
+        },
+        "model_application_evidence": "R101/R102冻结模型、精确日期输入和截止日前缀可重放；R103分项是回归值或校准logit，不是因果/概率百分点",
+        "model_application_limit": "R104两组动量/过去超额秩重复；R105/R106惩罚与精度比较未建立SW2021稳定改善；默认容差可能影响微小分类结论，未替换模型",
+        "numerical_research_rule": "后续模型比较显式登记精度并核查惩罚梯度；不将相同截面秩算作独立信息；禁止靠重复列暗增权重"
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "breadth21/breadth63",
+      "module": "H",
+      "original_index": 3,
+      "original_definition": {
+        "module": "H",
+        "factor": "breadth21/breadth63",
+        "theory": "信息扩散",
+        "formula": "前月成分中h日涨幅>0的有效成员比例",
+        "direction": "正，待检验",
+        "applicable_industries": "全行业可用篮子",
+        "economic_date": "交易日",
+        "publication_date": "交易日收盘；历史篮子/个股版本修订未认证",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 verified constituents / EP35 L1",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "有效前月成分的正收益比例；R01 D为21/63日广度秩均值，R02/R16分别输入",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "广度变化被既有价格解释；不得直接当反转",
+        "replication_status": "可复现代理",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "R01-R57",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "R55加入规模/Beta/残差波动后主20日五组IC区间全跨0；R56八组分类增量区间跨0；R57固定退出不如持有；停止无依据参数搜索",
+        "mechanism_status": "价格参与范围；不等同因果经济扩散",
+        "monitor_scope": "R21扩散或交易代理；不认定双拥挤",
+        "evidence_refs": [
+          "protocols/r01.json",
+          "reports/R21_分维度监控与失效检查.md",
+          "outputs/r31/verification.json",
+          "outputs/r31/increments.csv",
+          "outputs/r32/verification.json",
+          "outputs/r32/increments.csv",
+          "outputs/r33/verification.json",
+          "outputs/r33/paired_policy.csv",
+          "outputs/r55/verification.json",
+          "outputs/r55/metrics_verification.json",
+          "outputs/r56/verification.json",
+          "outputs/r57/verification.json",
+          "outputs/r101/verification.json",
+          "outputs/r102/verification.json",
+          "outputs/r103/verification.json",
+          "outputs/r104/verification.json",
+          "outputs/r105/model_verification.json",
+          "outputs/r105/metric_verification.json",
+          "outputs/r106/model_verification.json",
+          "outputs/r106/metric_verification.json",
+          "outputs/r106/drift_verification.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r01.json": "d455969487f3c80b322c6772100c898312189e6e8a13e0b3d4467bb9ff8a7f67",
+          "reports/R21_分维度监控与失效检查.md": "773d648e76e38eed468b83eb6e9146a2ee96e9f3b7658f9bdec77aba695a7a35",
+          "outputs/r31/verification.json": "5b0763d17662717fed95942b704587c4fc3a42c697989b55888c1f61ade85dea",
+          "outputs/r31/increments.csv": "0937392af4ca96dfab976a4203ca0c68c789c0e3cd93e1cef2fa96086c2cd707",
+          "outputs/r32/verification.json": "4747d2f3c24c98a5736e9d87ad662027c26f15617be3bedb232edce7e5eab812",
+          "outputs/r32/increments.csv": "208a6a01add87d3cf4d3e5f909619871875770c70d3311cf80ae30d8284c4374",
+          "outputs/r33/verification.json": "12378b2d4108c5073db251404658c4a58e0facf3ea5880cc26e546fca51d8b6c",
+          "outputs/r33/paired_policy.csv": "b7b4814dbeededeea542b63ea451b80c062ba05e65a75fc1408a207ea5ab99d3",
+          "outputs/r55/verification.json": "f29d0d7cb8627f96b2148fcd998d62eaef88abe37819abf2613d2d6d594ba259",
+          "outputs/r55/metrics_verification.json": "a58921257bc7b56fd55b503c5a50c03dbb95308929535bda90c4578da25ca172",
+          "outputs/r56/verification.json": "7c7358b43e224735fc4d0feac17ab7c384d5da911a4de48a0bac09c866c3cab0",
+          "outputs/r57/verification.json": "12378b2d4108c5073db251404658c4a58e0facf3ea5880cc26e546fca51d8b6c",
+          "outputs/r101/verification.json": "ba5f8dc1122f84eba0fe77b1be1c39da4d7ee29b1402d9a3cea30af7b366096c",
+          "outputs/r102/verification.json": "500562fa115189eec27f020c43a7a65b89eca472a81834080172ff3c243b83ef",
+          "outputs/r103/verification.json": "bbb625dde36042d75d8777540eac9a5606469254c93889a2043c29ea9b4c449c",
+          "outputs/r104/verification.json": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da",
+          "outputs/r105/model_verification.json": "c3934c278b1804d0871ef8a754e9cac74b9dfbaa74f77780800403cc7590cd08",
+          "outputs/r105/metric_verification.json": "4f77cc12d813af7d5254a0aeef8e792ad93dd93a85c9aaa44628ce9af9668ec5",
+          "outputs/r106/model_verification.json": "94cb8ad8352a719dba40508baeae90305f3863dae3f8f8b20c4730d0b1f7ca72",
+          "outputs/r106/metric_verification.json": "8dc6867223876b474e327eb6d4d9106cc830507d151414cdf58fd21966ee86c3",
+          "outputs/r106/drift_verification.json": "71517b8d32d3683fa427105161db87f55b5099ad0a5fb4cbb3ca3f52cad36937"
+        },
+        "model_application_evidence": "R101/R102冻结模型、精确日期输入和截止日前缀可重放；R103分项是回归值或校准logit，不是因果/概率百分点",
+        "model_application_limit": "R104两组动量/过去超额秩重复；R105/R106惩罚与精度比较未建立SW2021稳定改善；默认容差可能影响微小分类结论，未替换模型",
+        "numerical_research_rule": "后续模型比较显式登记精度并核查惩罚梯度；不将相同截面秩算作独立信息；禁止靠重复列暗增权重"
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "turn_rank504",
+      "module": "H",
+      "original_index": 4,
+      "original_definition": {
+        "module": "H",
+        "factor": "turn_rank504",
+        "theory": "行为与拥挤",
+        "formula": "个股换手率504日分位（至少378日有效）的行业中位数；至少5成员且80%有效",
+        "direction": "负，待检验",
+        "applicable_industries": "L2/L3",
+        "economic_date": "交易日",
+        "publication_date": "交易日收盘；历史篮子/个股版本修订未认证",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 joint_pe_v35 inherited turn_rank504",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "个股历史换手分位取行业中位数，完整门槛沿用继承源；R01负向秩为交易拥挤代理",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "高活跃继续上涨；持仓拥挤缺失",
+        "replication_status": "可代理；非交易+持仓双拥挤",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "未确立稳定独立增量",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R21扩散或交易代理；不认定双拥挤",
+        "evidence_refs": [
+          "protocols/r01.json",
+          "reports/R21_分维度监控与失效检查.md"
+        ],
+        "evidence_sha256": {
+          "protocols/r01.json": "d455969487f3c80b322c6772100c898312189e6e8a13e0b3d4467bb9ff8a7f67",
+          "reports/R21_分维度监控与失效检查.md": "773d648e76e38eed468b83eb6e9146a2ee96e9f3b7658f9bdec77aba695a7a35"
+        }
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "pe_rank504",
+      "module": "G",
+      "original_index": 5,
+      "original_definition": {
+        "module": "G",
+        "factor": "pe_rank504",
+        "theory": "估值与预期要求",
+        "formula": "个股正TTM PE过去504日分位；>=75%窗口有效，行业取中位数且>=80%成员有效",
+        "direction": "负，待检验",
+        "applicable_industries": "L2/L3且正PE有效覆盖",
+        "economic_date": "交易日",
+        "publication_date": "当日收盘信息；PE历史发布时点未知",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 joint_pe_v35；供应商PE known_at缺失",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "个股正TTM PE历史分位取行业中位数；R01负向中心秩；不使用Forward PE",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "利润下修低估值陷阱；亏损行业选择偏差",
+        "replication_status": "历史代理；非Forward PE",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "未确立稳定独立增量",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R21显示分位与原覆盖，一级缺失",
+        "evidence_refs": [
+          "protocols/r01.json",
+          "src/build_panel.py",
+          "reports/R21_分维度监控与失效检查.md"
+        ],
+        "evidence_sha256": {
+          "protocols/r01.json": "d455969487f3c80b322c6772100c898312189e6e8a13e0b3d4467bb9ff8a7f67",
+          "src/build_panel.py": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+          "reports/R21_分维度监控与失效检查.md": "773d648e76e38eed468b83eb6e9146a2ee96e9f3b7658f9bdec77aba695a7a35"
+        }
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "dedt_change",
+      "module": "C",
+      "original_index": 6,
+      "original_definition": {
+        "module": "C",
+        "factor": "dedt_change",
+        "theory": "盈利兑现",
+        "formula": "(本年累计扣非-上年同期扣非)/(abs本年+abs上年)",
+        "direction": "正，待检验",
+        "applicable_industries": "四季度财务资料及前月成员身份齐备，至少5公司且有效覆盖80%；财务行业可比性另审",
+        "economic_date": "财报期末",
+        "publication_date": "供应商ann_date/f_ann_date，未验证完整修订历史",
+        "available_at": "max公告日后的下一交易日代理；另保留真实retrieved_at",
+        "frequency": "季",
+        "source": "R03恢复all-market fina_indicator_vip原始30页归档；R07延迟/冲突审计",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "C等权组内合成；行业公司因子等权且有效>=5、覆盖>=80%",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "非主营利润变化；盈利已被市场计价",
+        "replication_status": "公告时点历史代理+归档快照",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "仅5个成熟20日月份；延迟共同样本3个月，证据不足，不能认为已证实无效或有效",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "未接入统一监控",
+        "evidence_refs": [
+          "protocols/r03.json",
+          "protocols/r07.json",
+          "outputs/r07/receipt.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r03.json": "ef8adddfbfb17edc4e7a58b9efaaba239e9c40cdc2ca405ec90b1ec9bc6abcf6",
+          "protocols/r07.json": "650513ff41d28f897811e854dc784bed294a8c2454254f2c91b7ebd0267b32c5",
+          "outputs/r07/receipt.json": "f7caefe93070f543d82d9c52adbf121b6c4de9c81f4327dc1411ef581329b9e7"
+        }
+      },
+      "current_status": "price_repair_verified_short_sample",
+      "current_interpretation": "R165重跑R03/R07结果不变；短样本和真实归档时钟缺口保留，未采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r165/comparison.json",
+          "sha256": "2f233b013bf135ca1e851b3d67033773973c9beed3a76607a78e773d47135dd0",
+          "bytes": 1062
+        },
+        {
+          "path": "outputs/r165/verification.json",
+          "sha256": "b8bb51e28b292cb6bc51d0c760131f7941c70acc7fc7ac0c366be6f364c3646e",
+          "bytes": 233
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "margin_delta",
+      "module": "C",
+      "original_index": 7,
+      "original_definition": {
+        "module": "C",
+        "factor": "margin_delta",
+        "theory": "经营改善",
+        "formula": "本年毛利率-上年同期毛利率（百分点）",
+        "direction": "正，待检验",
+        "applicable_industries": "四季度财务资料及前月成员身份齐备，至少5公司且有效覆盖80%；财务行业可比性另审",
+        "economic_date": "财报期末",
+        "publication_date": "供应商ann_date/f_ann_date，未验证完整修订历史",
+        "available_at": "max公告日后的下一交易日代理；另保留真实retrieved_at",
+        "frequency": "季",
+        "source": "R03恢复all-market fina_indicator_vip原始30页归档；R07延迟/冲突审计",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "C等权组内合成；行业公司因子等权且有效>=5、覆盖>=80%",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "组合变化/会计口径导致毛利率变化",
+        "replication_status": "公告时点历史代理+归档快照",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "仅5个成熟20日月份；延迟共同样本3个月，证据不足，不能认为已证实无效或有效",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "未接入统一监控",
+        "evidence_refs": [
+          "protocols/r03.json",
+          "protocols/r07.json",
+          "outputs/r07/receipt.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r03.json": "ef8adddfbfb17edc4e7a58b9efaaba239e9c40cdc2ca405ec90b1ec9bc6abcf6",
+          "protocols/r07.json": "650513ff41d28f897811e854dc784bed294a8c2454254f2c91b7ebd0267b32c5",
+          "outputs/r07/receipt.json": "f7caefe93070f543d82d9c52adbf121b6c4de9c81f4327dc1411ef581329b9e7"
+        }
+      },
+      "current_status": "price_repair_verified_short_sample",
+      "current_interpretation": "R165重跑R03/R07结果不变；短样本和真实归档时钟缺口保留，未采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r165/comparison.json",
+          "sha256": "2f233b013bf135ca1e851b3d67033773973c9beed3a76607a78e773d47135dd0",
+          "bytes": 1062
+        },
+        {
+          "path": "outputs/r165/verification.json",
+          "sha256": "b8bb51e28b292cb6bc51d0c760131f7941c70acc7fc7ac0c366be6f364c3646e",
+          "bytes": 233
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "industry_spread_inventory",
+      "module": "B",
+      "original_index": 8,
+      "original_definition": {
+        "module": "B",
+        "factor": "industry_spread_inventory",
+        "theory": "产业组织与资本周期",
+        "formula": "待按行业登记：产品价格-投入成本；订单/库存/产能",
+        "direction": "上下游不同",
+        "applicable_industries": "机制明确的少量行业",
+        "economic_date": "待定义",
+        "publication_date": "缺口",
+        "available_at": "缺口",
+        "frequency": "周/月",
+        "source": "R19五份原文已复核，但未取得连续价差/订单/库存/产能序列",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "待按产业链位置及连续变量协议登记；禁止混合上下游方向",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "产品涨价但盈利不改善；供给扩张压低利润",
+        "replication_status": "序列因子未实现；公司事实另列，不静默替代",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "not_implemented_continuous_series",
+        "conclusion": "数据不足，未运行产业领先变量增量检验",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "未接入统一监控",
+        "evidence_refs": [
+          "reports/R19_五份经营原文复核.md",
+          "reports/R20_经营事实的身份时点与覆盖.md"
+        ],
+        "evidence_sha256": {
+          "reports/R19_五份经营原文复核.md": "164364aa03ef0d7463b89f0f65103492b29ba3e5da7f0e12edba29ba6432d0a8",
+          "reports/R20_经营事实的身份时点与覆盖.md": "bf8dee67af3f5e980f1639af49f72ca12b4f12dea957c5fe150a456dbb2923d6"
+        }
+      },
+      "current_status": "continuous_source_missing",
+      "current_interpretation": "产品价差/供需库存连续序列未补齐；会计库存和公司现金流不能替代。",
+      "current_evidence": [
+        {
+          "path": "outputs/r19/review_receipt.json",
+          "sha256": "d3e8d0e7c9b6f94281c7b4a795006cc81e7a789c8219152e437d988feceeabc2",
+          "bytes": 4388
+        },
+        {
+          "path": "outputs/r153/verification.json",
+          "sha256": "cec549ec4c9f26b19ce79c161f6cf7cee74b80739103080b7801666bd703e7ed",
+          "bytes": 274
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "fixed_fy_eps_revision",
+      "module": "D",
+      "original_index": 9,
+      "original_definition": {
+        "module": "D",
+        "factor": "fixed_fy_eps_revision",
+        "theory": "预期修正",
+        "formula": "同公司同机构固定FY EPS对称修正(new-old)/(abs(new)+abs(old))；公司机构中位数再行业成员中位数",
+        "direction": "正，待检验",
+        "applicable_industries": "有历史预期记录的公司聚合行业",
+        "economic_date": "explicit fiscal_year",
+        "publication_date": "max(list date, body date)；来源时间已恢复",
+        "available_at": "严格早于信号日的公告代理，另保留实际归档时间；份额及修订链未认证",
+        "frequency": "日/周",
+        "source": "R24来源隔离、R28完整缓存报告屏障、R29 EPS独立行业聚合",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "R29 EPS自身覆盖母体，FY0/FY1分开；不能与R25不同利润母体比较归因",
+        "missing_rule": "最新报告<=180日；紧邻前报告间隔<=365日；缺失/冲突中间报告不跨越；零分母未知；严格>=5公司及80%，部分覆盖单列",
+        "failure_condition": "年度滚动/样本更替伪修正；追随价格",
+        "replication_status": "EPS来源已定位，EPS修正因子未验证；不得称整个D模块未发现来源",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy_tested_partial_coverage",
+        "conclusion": "R28共同EPS/利润样本训练不足；R29一级部分覆盖两版本各8拟合，主20日MSE未改善、未建立稳定增量，停止参数扩展",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "研究输入；未替换现行利润监控",
+        "evidence_refs": [
+          "protocols/r28.json",
+          "outputs/r28/verification.json",
+          "protocols/r29.json",
+          "outputs/r29/verification.json",
+          "outputs/r29/paired_increments.csv"
+        ],
+        "evidence_sha256": {
+          "protocols/r28.json": "f09413a33c34f2ff24fdcec0c59c3b73554d3d6a55586e06626634557683d6b4",
+          "outputs/r28/verification.json": "8113e3f12fa4bbd9e1eda53200575802b5ccbe306c909c85fe3691436bb1a864",
+          "protocols/r29.json": "bf5db57b1dddb491de2c16f120e106966de5fcdaea34d72c488a8d48246383d5",
+          "outputs/r29/verification.json": "999caf6e3810326b94b0ef368a9364e12e3e737fee76703d02aefc52077d9c8f",
+          "outputs/r29/paired_increments.csv": "c8c9a123e01bc8758aab81f26d29471245949fe892ffad432092a80bfed1b9b7"
+        }
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "R141修复的是固定财年EPS分支，R162利润值分支另列，不合并称同一实验。",
+      "current_evidence": [
+        {
+          "path": "outputs/r141/comparison.json",
+          "sha256": "c06e17ee912329a556e6025494f00866f130032bf9d577649c400760a4a0e73b",
+          "bytes": 7690
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "fund_etf_allocation",
+      "module": "E",
+      "original_index": 10,
+      "original_definition": {
+        "module": "E",
+        "factor": "fund_etf_allocation",
+        "theory": "资金配置",
+        "formula": "待登记：披露后基金超配变化、ETF份额净变化",
+        "direction": "待检验",
+        "applicable_industries": "有可靠历史披露及映射行业",
+        "economic_date": "待定义",
+        "publication_date": "缺口",
+        "available_at": "缺口",
+        "frequency": "季/日",
+        "source": "持仓/ETF历史面板未接入",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "未登记聚合；不以交易换手替代基金持仓或ETF申赎",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "披露滞后；申赎追随价格而无领先",
+        "replication_status": "数据缺口；不以换手替代",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "outputs/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "not_integrated",
+        "conclusion": "数据与映射未接入，未检验",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R21持仓拥挤显式未知",
+        "evidence_refs": [
+          "reports/研究假说与数据缺口.md"
+        ],
+        "evidence_sha256": {
+          "reports/研究假说与数据缺口.md": "ef0d5f2c9e236a51788dac0e43ae6e0f9cf0515eeb5817f896a1f5901f901252"
+        }
+      },
+      "current_status": "mapping_and_flow_semantics_missing",
+      "current_interpretation": "R125/126定位有限份额端点，但无合格资金流间隔，历史申万映射未认证。",
+      "current_evidence": [
+        {
+          "path": "outputs/r125/verification.json",
+          "sha256": "8fd6fce2c289d0ab7be0e1859edfd1ac3b7cb174ab48f41c713ccaa24c06dfc5",
+          "bytes": 202
+        },
+        {
+          "path": "outputs/r126/verification.json",
+          "sha256": "ee701b2b392a91e47abc8719a10ae0020bf850fb1e2d70d1926e70a5c7cd2f62",
+          "bytes": 183
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "same_broker_fixed_FY_profit_revision",
+      "module": "D",
+      "original_index": 11,
+      "original_definition": {
+        "module": "D",
+        "factor": "same_broker_fixed_FY_profit_revision",
+        "theory": "现金流预期修正与信息扩散",
+        "formula": "(new-old)/(abs(new)+abs(old))",
+        "direction": "正向待验证",
+        "applicable_industries": "历史成员>=5已知且覆盖>=80%；不足80%只作独立诊断",
+        "economic_date": "explicit fiscal_year",
+        "publication_date": "max(list date, body date)",
+        "available_at": "严格早于信号日；实际归档时间另存，不称严格PIT",
+        "frequency": "报告事件，月末采样",
+        "source": "R11 EP24原始HTML及回执；R15完整报告屏障修订，R11/R12旧版保留",
+        "historical_revisions": "原始版本修订完整性未知",
+        "aggregation": "同机构同FY修正，机构至公司中位数，公司至行业中位数",
+        "missing_rule": "R15完整缓存报告屏障：同机构当前或紧邻前报缺失/冲突则未知，不跨越；最新<=180日、前报间隔<=365日；零分母缺失；行业>=5且>=80%",
+        "failure_condition": "既有价格解释；覆盖选择；预测误差不改善",
+        "replication_status": "EP35扩展Historical-proxy；当前未确立增量",
+        "horizon": "主20；次60交易日；FY+1主，FY+0次",
+        "dictionary_origin": "outputs/r12/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "屏障修正后覆盖收缩；未确立领先或独立增量，选定报告缓存不等于全市场一致预期；R25隔离3个利润字段后重放：12行业月记录、94预测值改变，未翻转增量结论；R26事件减少1个机构/2个行业，另保留未知对照敏感性；全量来源质量未认证",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R21下一FY最新不晚于截面的覆盖快照；旧快照单列年龄，不填当期",
+        "evidence_refs": [
+          "protocols/r15.json",
+          "src/barrier_sensitivity_r15.py",
+          "outputs/r15/data_verification.json",
+          "outputs/r15/verification.json",
+          "outputs/r24/source_review.json",
+          "outputs/r25/impact_receipt.json",
+          "outputs/r25/verification.json",
+          "outputs/r26/impact_receipt.json",
+          "outputs/r26/unknown_control_receipt.json",
+          "outputs/r84/verification.json",
+          "outputs/r85/verification.json",
+          "outputs/r86/verification.json",
+          "outputs/r87/verification.json",
+          "outputs/r88/verification.json",
+          "outputs/r89/verification.json",
+          "outputs/r90/verification.json",
+          "outputs/r91/verification.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r15.json": "73c54aabeceb568840799f620b6fac282826eb2b9a3d44cfc2a4f8b069b087ce",
+          "src/barrier_sensitivity_r15.py": "a1a24622d31fedeb4c5b15c4006c6581695d86471aaee13ca801bebbf22007c8",
+          "outputs/r15/data_verification.json": "a7fb6f26531edbf910642cd75af84be2789806fecefa5ed13338e7427c6484b1",
+          "outputs/r15/verification.json": "a67bd85b5ed96521320e30f236503eba76c132e71c4e6c9c1c2a0ecc639b3a56",
+          "outputs/r24/source_review.json": "685009fa8ba746f29f5611716a1a6b2ddefe6291cb0db5e9b96417323434d577",
+          "outputs/r25/impact_receipt.json": "1d58422c5f85462891ffae5c33a8de64287aaa7fd274474b652d72064025bff7",
+          "outputs/r25/verification.json": "a67bd85b5ed96521320e30f236503eba76c132e71c4e6c9c1c2a0ecc639b3a56",
+          "outputs/r26/impact_receipt.json": "6c11b85bbeb3ef9812365ac8056f23282bc9f8ca33ffdb5fe8d1d7b08c93c222",
+          "outputs/r26/unknown_control_receipt.json": "4bfcf88df0cab05e22c30ad1dca89ce2cfe8f1b0e0abdd6fc178b114d7b731ec",
+          "outputs/r84/verification.json": "230e72e258fdd210faf3171898d9943f9c572231a30ad4ea088c65b2f9cfda13",
+          "outputs/r85/verification.json": "cd0c614c561a3c3db081f4c4989a2799037fb2e46e3acfae93c2f50f98d13d7b",
+          "outputs/r86/verification.json": "f9f0d9eccfed3f3cc2971803edb7987b84635a0360aa76b00d26899675d007fa",
+          "outputs/r87/verification.json": "8716c1ef14b764849802dddd95f0a83e274f51b138965853f2a52c898c9cff0d",
+          "outputs/r88/verification.json": "0847972942d2e09d7161f2c714ea9c9bc80088e0d7a6333609b9b3454b6b4330",
+          "outputs/r89/verification.json": "ed5a152d3df11405d27714cc654f1d07ff1cf1cdfbca83344b2a93446399e9af",
+          "outputs/r90/verification.json": "ab27af5fef8932dc950e66e32064173e47a5f0712f4c51811fb6ada7e148fe1d",
+          "outputs/r91/verification.json": "416fdfaea2a3a99d2d75d160cbb8a0874bd4d146f9f46f4696153bc9db6906c5"
+        },
+        "realization_evidence": "R84—R90最终年度财务缓存兑现实验；R90共同1718对，当前年五年均缩小平均固定尺度误差，次年四年缩小、2021年扩大；595对尚未成熟保留未知",
+        "price_horizon_evidence": "R91全2313报告对不按实际成熟筛选；4247行业事件，4031/3909有后20/60日价格；SW2021两期限整体方向得分均负，期限差异跨年不稳定，非独立增量",
+        "realization_formula": "|F_after-A|-|F_before-A|，同一分母|F_before|+|A|；公司年度内平均再公司等权；实际缓存仅用于事后评价，不进入信号",
+        "realization_limit": "最终缓存不是首次披露；财务修订、共同样本选择、短期信息吸收和重复事件不提供因果或配置证明",
+        "branch_decision": "停止无新依据的期限/窗口搜索；保留兑现证据，未接受为预测或配置能力"
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "R162利润修正12模型642预测不变；严格母体不足，局部诊断非全行业增量。",
+      "current_evidence": [
+        {
+          "path": "outputs/r162/comparison.json",
+          "sha256": "1f7ac109ed7644ac0c92404ec08d00a54fbad8ebd99ac2cb80362e6be13df41d",
+          "bytes": 1732
+        },
+        {
+          "path": "outputs/r162/verification.json",
+          "sha256": "f2b81fd9d52fdf423ffe380bcfa9fd650c1a3f535fcd975a05a3cc1f6095fff1",
+          "bytes": 425
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "PMI_M2_prior_sensitivity_interaction",
+      "module": "A",
+      "original_index": 12,
+      "original_definition": {
+        "module": "A",
+        "factor": "PMI_M2_prior_sensitivity_interaction",
+        "theory": "增长与融资状态对行业现金流及折现条件的差异影响",
+        "formula": "state=[(制造业PMI-50)/100, (M2同比_t-M2同比_t-3)/100]；前36月/至少24期Ridge(alpha=1)估计滞后状态对past_excess20的敏感度；conditioned=beta·z(state)",
+        "direction": "经验敏感度方向，待验证",
+        "applicable_industries": "各分类层级内>=24历史观测，横截面>=20行业",
+        "economic_date": "PMI及M2统计月份",
+        "publication_date": "未逐月核验",
+        "available_at": "月末+45日主/+75日敏感性，严格早于信号",
+        "frequency": "月",
+        "source": "R11本地宏观JSON与R01/R05历史篮子",
+        "historical_revisions": "现时历史表，修订版本未认证",
+        "aggregation": "各行业独立历史标准化；主方案F_macro=(F价格分数+conditioned横截面秩)/2；两时钟配对且同日>=20行业",
+        "missing_rule": "缺失不压缩统计月份；两时钟共同母体；不补零",
+        "failure_condition": "同样本价格控制已解释；延迟后不稳；主增量未通过",
+        "replication_status": "EP35扩展Historical-proxy，本轮未确立增量",
+        "horizon": "主20/次60交易日",
+        "dictionary_origin": "outputs/r13/factor_dictionary.csv",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "主20日增量未通过；共享宏观与行业敏感度交互不构成因果证明",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "未接入统一监控",
+        "evidence_refs": [
+          "protocols/r13.json",
+          "src/macro_r13.py",
+          "outputs/r13/verification.json",
+          "outputs/r13/increments.csv"
+        ],
+        "evidence_sha256": {
+          "protocols/r13.json": "f7facd44fa7aee754b4e2241f304ddf5e1cf585d104b05a79fef49bec5ae73a9",
+          "src/macro_r13.py": "15e941b8bf742770ef0b62a229322471d68e5c77325f41b8596f04baeb46a4d5",
+          "outputs/r13/verification.json": "c008a97452b2e9980be73270dc2286fb803156712cd405f811d9dc6c7df813b1",
+          "outputs/r13/increments.csv": "ea65f51cb2357e4e4e9ed9c28fa935c1c8222caf3a9fc2302fe55e485a8c0f2f"
+        }
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "R158全量宏观敏感度复核；10主比较无通过项，不调窗口。",
+      "current_evidence": [
+        {
+          "path": "outputs/r158/evaluation/data/r13_sensitivities.parquet",
+          "sha256": "ac25fa4d7f73d2268846ed203c0910f1e4acdefb5cb6c61e3c31275a4411e601",
+          "bytes": 1878028
+        },
+        {
+          "path": "outputs/r158/evaluation/outputs/r13/increments.csv",
+          "sha256": "9274fedac0d2a5ef51a7ecceb0d71e482bddca14db10bf17618d8a0691110d30",
+          "bytes": 4809
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "reviewed_company_operating_evidence",
+      "module": "B",
+      "original_index": 13,
+      "original_definition": {
+        "module": "B",
+        "factor": "reviewed_company_operating_evidence",
+        "theory": "产业与经营机制证据及反证",
+        "formula": "13条原文事实按公司/经济期/分部保留，不加总为行业分数",
+        "direction": "扩张、恶化、水平值及管理层解释可以并存",
+        "applicable_industries": "五选定公司按历史成员连接；不是业务分部或行业整体映射",
+        "economic_date": "2026-06-30半年期",
+        "publication_date": "继承2026-08各报告日期，首次发布/修订链未认证",
+        "available_at": "公告代理、旧归档2026-10-10、EP35实际取得2026-11-13三时钟分别记录",
+        "frequency": "单期，不声称连续",
+        "source": "R19五份PDF，原哈希一致；13条观测复核",
+        "historical_revisions": "PDF当前字节与旧回执一致不证明完整初发链；汇川分部同比重述已注记",
+        "aggregation": "不加总；公司事实、行业身份、样本覆盖分别保存",
+        "missing_rule": "无事实不是零增长；未映射/过时/目录外保留状态",
+        "failure_condition": "公司选样、业务混合、会计重述、投资收益或现金解释不能外推行业机制",
+        "replication_status": "公司原文已复核；不是产业领先因子",
+        "horizon": "不进行单期事实收益预测检验",
+        "dictionary_origin": "R19/R20证据接口",
+        "implemented": "reviewed_case_evidence",
+        "conclusion": "原文事实有支持，领先性与独立性未检验",
+        "mechanism_status": "分维度解释证据，非因果",
+        "monitor_scope": "R20/R21公司事实连接",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r19/review_receipt.json",
+          "outputs/r20/verification.json",
+          "protocols/r20.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r19/review_receipt.json": "d3e8d0e7c9b6f94281c7b4a795006cc81e7a789c8219152e437d988feceeabc2",
+          "outputs/r20/verification.json": "33b5ed87811f45e6bbcbb95fa81ebce6730f3f7f708e5e11c784c3c36f694b6b",
+          "protocols/r20.json": "ff4d828097e63929edbed0a40f224a5bf96a356ec2e43902d670ca6f7d0b3d3f"
+        }
+      },
+      "current_status": "case_evidence_not_predictor",
+      "current_interpretation": "原五公司13观测保留；R149至R154的另10公司材料是单独案例，非严格PIT或连续产业数据。",
+      "current_evidence": [
+        {
+          "path": "outputs/r19/review_receipt.json",
+          "sha256": "d3e8d0e7c9b6f94281c7b4a795006cc81e7a789c8219152e437d988feceeabc2",
+          "bytes": 4388
+        },
+        {
+          "path": "outputs/r149/verification.json",
+          "sha256": "6d8f8f073258b96f12b087d159e74da5a21993018c8af04ae05fd66ca7c8948e",
+          "bytes": 537
+        },
+        {
+          "path": "outputs/r153/verification.json",
+          "sha256": "cec549ec4c9f26b19ce79c161f6cf7cee74b80739103080b7801666bd703e7ed",
+          "bytes": 274
+        },
+        {
+          "path": "outputs/r154/basis_contract.json",
+          "sha256": "2555bb80af6037217ac940d66d1723358efb75d5c3a6b88db380546db63fce73",
+          "bytes": 1467
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "past_excess20/past_excess60",
+      "module": "F",
+      "original_index": 14,
+      "original_definition": {
+        "module": "F",
+        "factor": "past_excess20/past_excess60",
+        "theory": "相对强弱与任务人群控制",
+        "formula": "行业NAV_h期收益-CSI_ALL同h期收益",
+        "direction": "模型估计方向，不预设正向",
+        "applicable_industries": "全行业可用篮子",
+        "economic_date": "交易日",
+        "publication_date": "对应交易日收盘；合成篮子及历史成分仍为代理",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 forecast_v5 daily_industries；EP35 R05一级合成篮子",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "R02/R16按同日同层完整特征母体中心秩，再用训练期标准化与年度模型",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "未来收益不延续；共同市场/风格解释",
+        "replication_status": "可复现代理",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "src/build_panel.py + src/train_r02.py",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "未确立稳定独立增量",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R22冻结模型输入，非额外价格排名因子",
+        "evidence_refs": [
+          "src/build_panel.py",
+          "src/train_r02.py",
+          "src/train_l1_r16.py",
+          "protocols/r02.json",
+          "outputs/r101/verification.json",
+          "outputs/r102/verification.json",
+          "outputs/r103/verification.json",
+          "outputs/r104/verification.json",
+          "outputs/r105/model_verification.json",
+          "outputs/r105/metric_verification.json",
+          "outputs/r106/model_verification.json",
+          "outputs/r106/metric_verification.json",
+          "outputs/r106/drift_verification.json"
+        ],
+        "evidence_sha256": {
+          "src/build_panel.py": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+          "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+          "src/train_l1_r16.py": "d31751743e47cefcaf613c74a0edfb8b8662bf1bd9a852441775ddc3b25350aa",
+          "protocols/r02.json": "131bbd4898e32da7a458bca00f05077e6e45f565a8929e34b7ef1fbd689f330e",
+          "outputs/r101/verification.json": "ba5f8dc1122f84eba0fe77b1be1c39da4d7ee29b1402d9a3cea30af7b366096c",
+          "outputs/r102/verification.json": "500562fa115189eec27f020c43a7a65b89eca472a81834080172ff3c243b83ef",
+          "outputs/r103/verification.json": "bbb625dde36042d75d8777540eac9a5606469254c93889a2043c29ea9b4c449c",
+          "outputs/r104/verification.json": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da",
+          "outputs/r105/model_verification.json": "c3934c278b1804d0871ef8a754e9cac74b9dfbaa74f77780800403cc7590cd08",
+          "outputs/r105/metric_verification.json": "4f77cc12d813af7d5254a0aeef8e792ad93dd93a85c9aaa44628ce9af9668ec5",
+          "outputs/r106/model_verification.json": "94cb8ad8352a719dba40508baeae90305f3863dae3f8f8b20c4730d0b1f7ca72",
+          "outputs/r106/metric_verification.json": "8dc6867223876b474e327eb6d4d9106cc830507d151414cdf58fd21966ee86c3",
+          "outputs/r106/drift_verification.json": "71517b8d32d3683fa427105161db87f55b5099ad0a5fb4cbb3ca3f52cad36937"
+        },
+        "model_application_evidence": "R101/R102冻结模型、精确日期输入和截止日前缀可重放；R103分项是回归值或校准logit，不是因果/概率百分点",
+        "model_application_limit": "R104两组动量/过去超额秩重复；R105/R106惩罚与精度比较未建立SW2021稳定改善；默认容差可能影响微小分类结论，未替换模型",
+        "numerical_research_rule": "后续模型比较显式登记精度并核查惩罚梯度；不将相同截面秩算作独立信息；禁止靠重复列暗增权重"
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "log_members",
+      "module": "F",
+      "original_index": 15,
+      "original_definition": {
+        "module": "F",
+        "factor": "log_members",
+        "theory": "篮子规模控制；不是市值风格因子",
+        "formula": "log(已识别成员数)",
+        "direction": "模型估计方向，不预设正向",
+        "applicable_industries": "全行业可用篮子",
+        "economic_date": "交易日",
+        "publication_date": "对应交易日收盘；合成篮子及历史成分仍为代理",
+        "available_at": "研究信号t收盘，t+1收盘入点；非严格PIT证明",
+        "frequency": "日",
+        "source": "EP32 forecast_v5 daily_industries；EP35 R05一级合成篮子",
+        "historical_revisions": "未证明全量版本完整",
+        "aggregation": "R02/R16按同日同层完整特征母体中心秩，再用训练期标准化与年度模型",
+        "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+        "failure_condition": "未来收益不延续；共同市场/风格解释",
+        "replication_status": "可复现代理",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "src/build_panel.py + src/train_r02.py",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy",
+        "conclusion": "未确立稳定独立增量",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R22冻结模型输入，非额外价格排名因子",
+        "evidence_refs": [
+          "src/build_panel.py",
+          "src/train_r02.py",
+          "src/train_l1_r16.py",
+          "protocols/r02.json",
+          "outputs/r101/verification.json",
+          "outputs/r102/verification.json",
+          "outputs/r103/verification.json",
+          "outputs/r104/verification.json",
+          "outputs/r105/model_verification.json",
+          "outputs/r105/metric_verification.json",
+          "outputs/r106/model_verification.json",
+          "outputs/r106/metric_verification.json",
+          "outputs/r106/drift_verification.json"
+        ],
+        "evidence_sha256": {
+          "src/build_panel.py": "a6f80fb4dd0fed4a68363129e3bf523cbf303be54a00d3dd7879448af3950a9a",
+          "src/train_r02.py": "9149d5dbb0d312d03f329f729344dd84deb85d4984fb61f302d1e51756840456",
+          "src/train_l1_r16.py": "d31751743e47cefcaf613c74a0edfb8b8662bf1bd9a852441775ddc3b25350aa",
+          "protocols/r02.json": "131bbd4898e32da7a458bca00f05077e6e45f565a8929e34b7ef1fbd689f330e",
+          "outputs/r101/verification.json": "ba5f8dc1122f84eba0fe77b1be1c39da4d7ee29b1402d9a3cea30af7b366096c",
+          "outputs/r102/verification.json": "500562fa115189eec27f020c43a7a65b89eca472a81834080172ff3c243b83ef",
+          "outputs/r103/verification.json": "bbb625dde36042d75d8777540eac9a5606469254c93889a2043c29ea9b4c449c",
+          "outputs/r104/verification.json": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da",
+          "outputs/r105/model_verification.json": "c3934c278b1804d0871ef8a754e9cac74b9dfbaa74f77780800403cc7590cd08",
+          "outputs/r105/metric_verification.json": "4f77cc12d813af7d5254a0aeef8e792ad93dd93a85c9aaa44628ce9af9668ec5",
+          "outputs/r106/model_verification.json": "94cb8ad8352a719dba40508baeae90305f3863dae3f8f8b20c4730d0b1f7ca72",
+          "outputs/r106/metric_verification.json": "8dc6867223876b474e327eb6d4d9106cc830507d151414cdf58fd21966ee86c3",
+          "outputs/r106/drift_verification.json": "71517b8d32d3683fa427105161db87f55b5099ad0a5fb4cbb3ca3f52cad36937"
+        },
+        "model_application_evidence": "R101/R102冻结模型、精确日期输入和截止日前缀可重放；R103分项是回归值或校准logit，不是因果/概率百分点",
+        "model_application_limit": "R104两组动量/过去超额秩重复；R105/R106惩罚与精度比较未建立SW2021稳定改善；默认容差可能影响微小分类结论，未替换模型",
+        "numerical_research_rule": "后续模型比较显式登记精度并核查惩罚梯度；不将相同截面秩算作独立信息；禁止靠重复列暗增权重"
+      },
+      "current_status": "repaired_inputs_verified",
+      "current_interpretation": "R130修复面板、R131模型与R132排序分别举证；尚无稳定因子增量或预测采用。",
+      "current_evidence": [
+        {
+          "path": "outputs/r130/monthly_panel.parquet",
+          "sha256": "e1d17e5fbcf4e113ecf92ddb90d76efa2979c24f8dde2fe6745f2f2934bbb88c",
+          "bytes": 4534215
+        },
+        {
+          "path": "outputs/r131/evaluation_summary.json",
+          "sha256": "b6c4e3ae2b7ad1fc6ef7e81e0e402aafdde2938cc70de5dc19d654015dd299a0",
+          "bytes": 2457
+        },
+        {
+          "path": "outputs/r132/evaluation/outputs/r01/date_metrics.csv",
+          "sha256": "6b874de09ca003c47cc9cfb6b6c2109df4c5c89791a65ca67dc33ed3770b6193",
+          "bytes": 630387
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "typical_member_log_market_cap",
+      "module": "F",
+      "original_index": 16,
+      "original_definition": {
+        "module": "F",
+        "factor": "typical_member_log_market_cap",
+        "theory": "典型成员规模风格可能混淆扩散与收益/反转关系",
+        "formula": "前月行业成员中，当月正有效总市值自然对数的中位数",
+        "direction": "控制变量，模型估计方向",
+        "applicable_industries": "全行业可用篮子",
+        "economic_date": "月末股票市值",
+        "publication_date": "价格收盘；股本只有生效日，首次披露未知",
+        "available_at": "Historical-proxy；股本known_at缺失，不能认证严格PIT",
+        "frequency": "日",
+        "source": "EP32 extension_v2股票月末未复权价格乘生效日股本；R30聚合",
+        "historical_revisions": "股本/成员初始版本和修订链未知",
+        "aggregation": "先成员log市值中位数，再同日同行业层完整母体中心秩；训练期标准化",
+        "missing_rule": "当月精确日期、正价/股本、在市；至少5有效公司和80%覆盖，否则未知，不带值",
+        "failure_condition": "股本时点、成员修订和选择性覆盖；单一规模不能替代全风格",
+        "replication_status": "EP35必要控制，不是方正69项完整复现",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "R30-R33",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy_control",
+        "conclusion": "R30覆盖核查；R31/R32同样本控制已运行，无稳定新增预测能力声明",
+        "mechanism_status": "经济假说；非因果证明",
+        "monitor_scope": "R31/R32研究模型输入，未替换生产或现有监控",
+        "evidence_refs": [
+          "protocols/r30.json",
+          "outputs/r30/verification.json",
+          "outputs/r31/verification.json",
+          "outputs/r32/verification.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r30.json": "20ebbd0efd137e8c23a5b04771486d3affbfb365a8b9085e592b3b11c6812ed7",
+          "outputs/r30/verification.json": "cbb01b31f654c23cd4ea3db1c0e9800d557a78d22eb3a087c934d4ff2d108af3",
+          "outputs/r31/verification.json": "5b0763d17662717fed95942b704587c4fc3a42c697989b55888c1f61ade85dea",
+          "outputs/r32/verification.json": "4747d2f3c24c98a5736e9d87ad662027c26f15617be3bedb232edce7e5eab812"
+        }
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "R142规模控制修复并保留微小结果变号，未确立稳定独立增量。",
+      "current_evidence": [
+        {
+          "path": "outputs/r142/summary.json",
+          "sha256": "45535568bded666a87a5cb67686488077bc30d1270597a733cdd617cd58d823e",
+          "bytes": 4036
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "china_power_battery_installation_log_yoy",
+      "module": "B",
+      "original_index": 17,
+      "original_definition": {
+        "module": "B",
+        "factor": "china_power_battery_installation_log_yoy",
+        "theory": "国内动力电池装车量代理已兑现需求；量增须通过价格、成本和供给条件才能转为利润",
+        "formula": "log(V_m/V_(m-12)); V为原文国内动力电池当月总装车量GWh",
+        "direction": "机制预期正向，模型允许反证；不预设上下游同号",
+        "applicable_industries": "仅SW2021二级电池801737.SI与三级锂电池857371.SI，分别研究",
+        "economic_date": "2020-01至2026-09完整81月；69个同比",
+        "publication_date": "原文页面显示日期或经核元数据；转载日非联盟首发认证",
+        "available_at": "分子分母页日较晚者的下一日00:00；信号日不早于该时间；经济月份年龄<=2月",
+        "frequency": "月",
+        "source": "R38授权原文字节，R60人工复核完整月度网格；旧R40/R51保留",
+        "historical_revisions": "首发及修订链未认证，当前下载转载页面为Historical-proxy",
+        "aggregation": "全国总装车量；不汇总企业份额反推；同一变量映射两个行业但不合并计独立样本",
+        "missing_rule": "两期任一缺失即同比未知；无可得或过时变量不入同样本比较",
+        "failure_condition": "低基数、降价、产能过剩、库存、出口与国内口径差异、利润转化失败、价格已提前反映",
+        "replication_status": "EP35产业扩展；非方正原69因子复现",
+        "horizon": "主20日/次60日；分类沿原框架资格不满足",
+        "dictionary_origin": "R38-R65",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy_tested_partial_coverage",
+        "conclusion": "R62补数后主20日二/三级均未改善；R64加入市场Beta/特异波动后仍未建立主期限增量。20日各20月、60日各18月，仅2年。R65分类40折均未满足训练校准门槛，属证据不足而非分类无效。",
+        "mechanism_status": "需求代理假说；未证明因果、利润传导或独立前瞻预测",
+        "monitor_scope": "R63重放两个历史截面，6行同比由未知变可得；不改变排名、阶段、概率或配置，无生产部署",
+        "evidence_refs": [
+          "protocols/r40.json",
+          "outputs/r40/verification.json",
+          "protocols/r41.json",
+          "outputs/r41/metrics.json",
+          "outputs/r41/verification.json",
+          "protocols/r42.json",
+          "outputs/r42/classifier_gates.json",
+          "outputs/r42/verification.json",
+          "reports/R42_装车量先后关系与分类资格.md",
+          "outputs/r51/verification.json",
+          "outputs/r52/verification.json",
+          "outputs/r53/verification.json",
+          "outputs/r53/impact_verification.json",
+          "outputs/r53/metrics.json",
+          "outputs/r60/verification.json",
+          "outputs/r61/verification.json",
+          "outputs/r62/verification.json",
+          "outputs/r62/impact_verification.json",
+          "outputs/r63/verification.json",
+          "outputs/r64/verification.json",
+          "outputs/r64/cohort_audit.json",
+          "outputs/r65/verification.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r40.json": "36c0d7e692e30753cbf04e48e555ba19de4dc2d5ea53be9bbb32fb51bdf8dea0",
+          "outputs/r40/verification.json": "06d7d89b86ea1d6a0781afdde82d4408ddb304766ac19ea4cfdd258643c209d2",
+          "protocols/r41.json": "8e0e23521cd8d4598b7ec6fc84d430a7e5fe6682e4bbee5ae303d73083e1e922",
+          "outputs/r41/metrics.json": "e87120d1f1255710c6b5baab391d14db699fe099dbb38278b4c1cda7a5920ad5",
+          "outputs/r41/verification.json": "056775632e9d169fe678c1cc4b26aebe216562e5125286b0fe2024960a8b821e",
+          "protocols/r42.json": "5d1df9cab84e309c4a73819f43de16a5bf138986b55b547e0ed671ea3d36b307",
+          "outputs/r42/classifier_gates.json": "19b83a4dedfdefdd9607bcdc662bf4b2b5aa4a088584b64acca0682af442b863",
+          "outputs/r42/verification.json": "90148cfbd1d351e25bc637860d19def98fc1787c7b5fb6894e3bcc7ee6cc3ad9",
+          "reports/R42_装车量先后关系与分类资格.md": "b88d677a31bf476a6c60dbd09209d870be5aae216c3036ed108c4faa173ddf24",
+          "outputs/r51/verification.json": "df33ae58dfe15796e2c61ae306378cd7ef40d7d2162a2217387abc7186f75833",
+          "outputs/r52/verification.json": "47e1097f16edd26806b5e3a653d34d505f2d98a2045b610c8de483e4fe71016a",
+          "outputs/r53/verification.json": "4fc458b5919fbe91e7872333c8bb36095e498adbd20f1a73f1e21ddcd87d9e14",
+          "outputs/r53/impact_verification.json": "670bece5a70bde0a822d85185036b300028e9dfee6d899aff2672ad6150e9136",
+          "outputs/r53/metrics.json": "3f30dafefa1cce590ac9fc63d738be3bafb2051d4a3ff5a0d83cd52ba38037b2",
+          "outputs/r60/verification.json": "eb758fa0922bc3aadefa440efddcbb7fc9982c04582723c87ec352d617a4334e",
+          "outputs/r61/verification.json": "84d44371f025224ae31b2c185cd760b9d68e2a617e37f8fe2dd28c423d0d68ae",
+          "outputs/r62/verification.json": "9265eaa3b0d5f413b3317c6ec7908439f97e6577acad417f69895296fd77e730",
+          "outputs/r62/impact_verification.json": "92517d72cf58805b2a24bbf5c9618c1c8aabe95415f5aa51219bea8fb6b16dc8",
+          "outputs/r63/verification.json": "ed2dca45b74273218948deab1128048cdd04e9f95fcfaac9cae23270a8c36c01",
+          "outputs/r64/verification.json": "0945d60fee4cf4399103fb7ff64fe5576de5ac89f0d0aec76112f71363c57bdf",
+          "outputs/r64/cohort_audit.json": "f869faa93951f558c11862a1481357373b9b6fc459c0fb691823e4a07aae3d12",
+          "outputs/r65/verification.json": "52d2000e22edafa1ccf6319f57fc348f4129ff82aad732c9a41e9fe18c89ec86"
+        }
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "完整装车量源不因价格修复改变；R140重放收益/分类，样本与增量限制保留。",
+      "current_evidence": [
+        {
+          "path": "outputs/r60/frozen_monthly_series.json",
+          "sha256": "23edd0a348f831c964165936c3a0be605cbeaa5eea2653c4d31b5aeff210fc22",
+          "bytes": 40030
+        },
+        {
+          "path": "outputs/r140/comparison.json",
+          "sha256": "a6e9e84f7c211f527971f6b73210ca27198cdabd95942aae58fcdd0b63b859e9",
+          "bytes": 3440
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "industry_financing_balance_intensity",
+      "module": "E",
+      "original_index": 18,
+      "original_definition": {
+        "module": "E",
+        "factor": "industry_financing_balance_intensity",
+        "theory": "融资余额相对规模代理杠杆需求，也可能只是规模/融资资格及追涨的结果",
+        "formula": "前月行业成员的融资余额(T前2交易日)/总市值(T)中位数",
+        "direction": "不预设正向配置价值，模型估计及反证",
+        "applicable_industries": "行业分类/层级分别构建；严格覆盖子样本；实际收益拟合仅SW2021 L2/L3、分类仅L3主20日",
+        "economic_date": "融资快照与信号日分母分别记录，2018-12至2026-04",
+        "publication_date": "继承交易所次日披露的历史代理；本地回执下载日不是首次公开日",
+        "available_at": "相隔两市场交易日余额与当日收盘市值；股本只有生效日，非严格PIT",
+        "frequency": "月末采样",
+        "source": "EP24既有交易所原始响应356份，R44只读核验；R45因子",
+        "historical_revisions": "原始快照字节可追溯，首次披露和后续修订链未知",
+        "aggregation": "公司比值等权中位数；模型同日同层共同样本中心秩，训练期标准化",
+        "missing_rule": ">=5有效公司且占前月全部成员>=80%；缺记录/分母不补0，披露0保留",
+        "failure_condition": "融资资格与规模偏向、价格分母、杠杆追涨、股本时点及历史修订；不等同ETF申赎或公募持仓",
+        "replication_status": "EP35 E模块扩展代理，非方正完整复现",
+        "horizon": "主20/次60收益；固定启动反转20/60，退出仅合格L3 20日",
+        "dictionary_origin": "R44-R48",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy_tested_partial_coverage",
+        "conclusion": "R46主收益增量未建立；R47分类Brier变差且仅16月；R48成本后退出不如持有、融资版比FS差；不再搜索本分支参数",
+        "mechanism_status": "杠杆需求假说，未证明因果或独立前瞻能力",
+        "monitor_scope": "R50历史监控只显示最后观测及陈旧状态，当前因子不前填；无生产接入",
+        "evidence_refs": [
+          "protocols/r45.json",
+          "outputs/r45/verification.json",
+          "protocols/r46.json",
+          "outputs/r46/increments.json",
+          "outputs/r46/verification.json",
+          "outputs/r47/verification.json",
+          "outputs/r47/selection_verification.json",
+          "outputs/r48/verification.json",
+          "reports/R48_融资反转提示退出代价.md",
+          "outputs/r50/verification.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r45.json": "6cdc39944643bbe606df22bf07f0294fd01663e6b4b0787fd3c127bd97dfe92c",
+          "outputs/r45/verification.json": "a8959e56810f52985782917b072d6c3fe6e0aa732663c86e201b39f62ca9ee09",
+          "protocols/r46.json": "d891953674d5de75b1b9b1e95a573d7e561b83d627a702d6a15241b5b7091f5a",
+          "outputs/r46/increments.json": "5480b0a3f767bb78bee747be3c79b946f28279a6642765e57d6c97a552d2ec75",
+          "outputs/r46/verification.json": "222c64a2fdcfd41fb29176721b41cc716f03c2859d7481b07b720b05652597f3",
+          "outputs/r47/verification.json": "49383f2d51c8c3991c1dc3147a16dcee6a72a61dfc29ad32ab36d12b79d40708",
+          "outputs/r47/selection_verification.json": "c09901beb09e687a26b7d19794df586e6663124d91954cf823d3d07fb8106a1b",
+          "outputs/r48/verification.json": "3c22aa29382d2baf7be2ef3ccb8308e015f7de0f2ac2780264efc5bdc1172c98",
+          "reports/R48_融资反转提示退出代价.md": "dee098d3bf3b473b732452d8a9d3c3a987aefb2ce38f96d9189892687634bd1c",
+          "outputs/r50/verification.json": "ed2dca45b74273218948deab1128048cdd04e9f95fcfaac9cae23270a8c36c01"
+        }
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "R143融资修复，覆盖母体与模型结果另列，不代表资金因果。",
+      "current_evidence": [
+        {
+          "path": "outputs/r143/summary.json",
+          "sha256": "eb12f0def3d901a2982375cbcfdca1af5f0d218fa8ef95e3721f7b6fdab1bc3b",
+          "bytes": 4959
+        },
+        {
+          "path": "outputs/r143/evaluation/data/r45_financing_intensity.parquet",
+          "sha256": "46e32a312a2a5e3dd139db960046dc01e6a2e7a29f2417af32a01c12a177de9a",
+          "bytes": 480671
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "market_beta126",
+      "module": "F",
+      "original_index": 19,
+      "original_definition": {
+        "module": "F",
+        "factor": "market_beta126",
+        "theory": "控制共同市场敏感度，不预设正向收益",
+        "formula": "cov(r行业,r市场)/var(r市场)，126配对单交易日收益、含截距OLS",
+        "direction": "共同控制变量，无固定配置方向",
+        "applicable_industries": "SW2014/SW2021各层级单独，以同一区段127连续市场日价格可得为限",
+        "economic_date": "截至信号日收盘的126日收益",
+        "publication_date": "收盘价格；重建NAV/成分首发修订未认证",
+        "available_at": "信号收盘可计算，后续标签次日收盘入场；历史代理",
+        "frequency": "月末采样",
+        "source": "冻结industry daily NAV和CSI_ALL，R54构造",
+        "historical_revisions": "继承历史成分及复权/NAV重建边界，无完整首次版本",
+        "aggregation": "行业收益对市场收益滚动OLS；模型同日同层共同样本秩、训练标准化",
+        "missing_rule": "需127连续市场交易日、同block、正行业价与正市场方差；无填充",
+        "failure_condition": "成员修订/断档/短历史/结构变化；不能替代价值成长盈利流动性全风格",
+        "replication_status": "EP35市场暴露控制，非原69项完整复现",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "R54-R57",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy_control",
+        "conclusion": "R54构造核验；R55-R57作为共同控制，无独立因果或稳定配置能力声明",
+        "mechanism_status": "必要替代解释控制",
+        "monitor_scope": "研究模型输入，未改价格排名或生产监控",
+        "evidence_refs": [
+          "protocols/r54.json",
+          "outputs/r54/verification.json",
+          "protocols/r55.json",
+          "outputs/r55/verification.json",
+          "protocols/r56.json",
+          "outputs/r56/verification.json",
+          "protocols/r57.json",
+          "outputs/r57/verification.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r54.json": "f9c5eefb912c4f34e8119ad95bef504b22d89f431a1811b17d92c98f6073b49c",
+          "outputs/r54/verification.json": "1b7f65737f91c22dacf64a63427c368b2bc3e83e3580d0cdcd16d2e9c12035a7",
+          "protocols/r55.json": "be0a0fff5a8ba3aadc2592aa1fcb46eecf5ffce2b5bde8e97b42598a9f2f7d21",
+          "outputs/r55/verification.json": "f29d0d7cb8627f96b2148fcd998d62eaef88abe37819abf2613d2d6d594ba259",
+          "protocols/r56.json": "ad7b4000065061f4307fd771d6a15323f52874978eb58d3d6ec22e3c2c2b59a8",
+          "outputs/r56/verification.json": "7c7358b43e224735fc4d0feac17ab7c384d5da911a4de48a0bac09c866c3cab0",
+          "protocols/r57.json": "0f5eba32a65d82355dd59575295d3e05ffe6ddae433bea1a70873afdd99a3cbd",
+          "outputs/r57/verification.json": "12378b2d4108c5073db251404658c4a58e0facf3ea5880cc26e546fca51d8b6c"
+        }
+      },
+      "current_status": "repaired_controls_not_full_style",
+      "current_interpretation": "R133/R135/R136重放共同控制与退出，仍非完整风格控制或有效择时。",
+      "current_evidence": [
+        {
+          "path": "outputs/r133/market_controls.parquet",
+          "sha256": "79aed2b74ed1045bb8e2559025aa4c3ff3c10cfa17aef8ccf76a0d418e22388a",
+          "bytes": 3012631
+        },
+        {
+          "path": "outputs/r135/evaluation/outputs/r55/increments.csv",
+          "sha256": "22870187b7d07ebae557e7dbc96b3e8e31180d9d1e5a075a7525a7c0281595b6",
+          "bytes": 6900
+        },
+        {
+          "path": "outputs/r136/evaluation/outputs/r57/summary.csv",
+          "sha256": "68f70473725de1d8de6575d223ca146966a431d27896545af43fb056a08ed11b",
+          "bytes": 10166
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "residual_vol126",
+      "module": "F",
+      "original_index": 20,
+      "original_definition": {
+        "module": "F",
+        "factor": "residual_vol126",
+        "theory": "控制市场无法解释的波动，非风险预警概率",
+        "formula": "sqrt((var(r行业)-cov(r行业,r市场)^2/var(r市场))*252)，ddof1",
+        "direction": "共同控制变量，无固定配置方向",
+        "applicable_industries": "SW2014/SW2021各层级单独，以同一区段127连续市场日价格可得为限",
+        "economic_date": "截至信号日收盘的126日收益",
+        "publication_date": "收盘价格；重建NAV/成分首发修订未认证",
+        "available_at": "信号收盘可计算，后续标签次日收盘入场；历史代理",
+        "frequency": "月末采样",
+        "source": "冻结industry daily NAV和CSI_ALL，R54构造",
+        "historical_revisions": "继承历史成分及复权/NAV重建边界，无完整首次版本",
+        "aggregation": "行业收益对市场收益滚动OLS；模型同日同层共同样本秩、训练标准化",
+        "missing_rule": "需127连续市场交易日、同block、正行业价与正市场方差；无填充",
+        "failure_condition": "成员修订/断档/短历史/结构变化；不能替代价值成长盈利流动性全风格",
+        "replication_status": "EP35市场暴露控制，非原69项完整复现",
+        "horizon": "已运行代理主20/次60交易日；未实现候选不继承验收",
+        "dictionary_origin": "R54-R57",
+        "strict_pit_certified": false,
+        "implemented": "historical_proxy_control",
+        "conclusion": "R54构造核验；R55-R57作为共同控制，无独立因果或稳定配置能力声明",
+        "mechanism_status": "必要替代解释控制",
+        "monitor_scope": "研究模型输入，未改价格排名或生产监控",
+        "evidence_refs": [
+          "protocols/r54.json",
+          "outputs/r54/verification.json",
+          "protocols/r55.json",
+          "outputs/r55/verification.json",
+          "protocols/r56.json",
+          "outputs/r56/verification.json",
+          "protocols/r57.json",
+          "outputs/r57/verification.json"
+        ],
+        "evidence_sha256": {
+          "protocols/r54.json": "f9c5eefb912c4f34e8119ad95bef504b22d89f431a1811b17d92c98f6073b49c",
+          "outputs/r54/verification.json": "1b7f65737f91c22dacf64a63427c368b2bc3e83e3580d0cdcd16d2e9c12035a7",
+          "protocols/r55.json": "be0a0fff5a8ba3aadc2592aa1fcb46eecf5ffce2b5bde8e97b42598a9f2f7d21",
+          "outputs/r55/verification.json": "f29d0d7cb8627f96b2148fcd998d62eaef88abe37819abf2613d2d6d594ba259",
+          "protocols/r56.json": "ad7b4000065061f4307fd771d6a15323f52874978eb58d3d6ec22e3c2c2b59a8",
+          "outputs/r56/verification.json": "7c7358b43e224735fc4d0feac17ab7c384d5da911a4de48a0bac09c866c3cab0",
+          "protocols/r57.json": "0f5eba32a65d82355dd59575295d3e05ffe6ddae433bea1a70873afdd99a3cbd",
+          "outputs/r57/verification.json": "12378b2d4108c5073db251404658c4a58e0facf3ea5880cc26e546fca51d8b6c"
+        }
+      },
+      "current_status": "repaired_controls_not_full_style",
+      "current_interpretation": "R133/R135/R136重放共同控制与退出，仍非完整风格控制或有效择时。",
+      "current_evidence": [
+        {
+          "path": "outputs/r133/market_controls.parquet",
+          "sha256": "79aed2b74ed1045bb8e2559025aa4c3ff3c10cfa17aef8ccf76a0d418e22388a",
+          "bytes": 3012631
+        },
+        {
+          "path": "outputs/r135/evaluation/outputs/r55/increments.csv",
+          "sha256": "22870187b7d07ebae557e7dbc96b3e8e31180d9d1e5a075a7525a7c0281595b6",
+          "bytes": 6900
+        },
+        {
+          "path": "outputs/r136/evaluation/outputs/r57/summary.csv",
+          "sha256": "68f70473725de1d8de6575d223ca146966a431d27896545af43fb056a08ed11b",
+          "bytes": 10166
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "long_asset_cash_spending_yoy_direction",
+      "module": "B",
+      "original_index": 21,
+      "original_definition": {
+        "factor": "long_asset_cash_spending_yoy_direction",
+        "module": "B",
+        "theory": "资本投入与未来供给/需求的候选机制，方向不预设为利好",
+        "formula": "两期购建固定资产、无形资产和其他长期资产支付现金严格比较大小；不同比例化、不年化",
+        "direction": "无统一收益排序方向，仅分维度会计证据",
+        "applicable_industries": "SW2021各层分开；原始覆盖保留全目录，交叉经营解释排除同月银行/非银金融；非金融不等于实物生产行业",
+        "economic_date": "2025/2026一季报和半年报，只有四经济期；六个月快照不独立",
+        "publication_date": "归档提供商ann_date/f_ann_date代理，首次发布/修订未认证",
+        "available_at": "最大公告日期的下一交易日；实际归档时间单列，历史截面归档可用为0",
+        "frequency": "季度/半年累计会计口径，月末观察",
+        "source": "R03本地provider_responses.zip和冻结历史成员，R67—R74核验",
+        "historical_revisions": "同截止日重新选最新版本，同日冲突未知；禁止9月版本倒填",
+        "aggregation": "行业至少5共同成员且>=80%完整分母；同比同季末；统计各层独立不相加",
+        "missing_rule": "负现金支付排除；同日冲突含缺失保持未知",
+        "failure_condition": "仅短期同期样本；行业口径/会计分母/支付节奏/首发版本缺失；不得外推配置能力",
+        "implemented": "historical_accounting_evidence_not_predictive_factor",
+        "conclusion": "R67/R68覆盖较高；R69—R71同期兑现分歧，不能等同产能或未来收益",
+        "mechanism_status": "同期机制线索和反证，不证明因果",
+        "replication_status": "EP35扩展；不是方正69项完整复现",
+        "dictionary_origin": "R67-R74",
+        "monitor_scope": "R74保守自然季度切换；新期未知不回填，旧快照不当当前；无部署",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r67/verification.json",
+          "outputs/r68/verification.json",
+          "outputs/r69/verification.json",
+          "outputs/r70/verification.json",
+          "outputs/r71/verification.json",
+          "outputs/r72/verification.json",
+          "outputs/r73/verification.json",
+          "outputs/r74/verification.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r67/verification.json": "78c39d9c46c49ef026d9981298f01ec289e7670a1d7be9b39e2e27116f2428b6",
+          "outputs/r68/verification.json": "7d9e1125f13bc7641d4f5537ef83dc73886d9af341d87083f72f1ed878e0565b",
+          "outputs/r69/verification.json": "1c6094d915b15d3b7f067137a048cfb57a982efed16db3a05d93220da8bc8620",
+          "outputs/r70/verification.json": "4ea161f85edb69195376c31e5e47d79cd23aa65bbf65f3e9d598851f69bc8a13",
+          "outputs/r71/verification.json": "3b2f36062358103e27373d3beed926e4b0ce7693ebaca4d417e73e171b2cbb41",
+          "outputs/r72/verification.json": "dd307e967ad50af5b7ee5c1d206b579c04d94f8f56315e7ea81766d9e5648bbc",
+          "outputs/r73/verification.json": "3976a99b59649f0d5203d5dac19e50362c9ecc1248a9cfe868f36217a2e4a29b",
+          "outputs/r74/verification.json": "da70f130dd1cbe71a77a7c1669b9f79551d0f824de3e74dc1a3a32bcf26fd6a5"
+        }
+      },
+      "current_status": "repaired_accounting_evidence",
+      "current_interpretation": "R147修复会计母体；R154明确现金流与归母利润方向比较不是利润现金含量比率或因果。",
+      "current_evidence": [
+        {
+          "path": "outputs/r147/summary.json",
+          "sha256": "39eb9a6c452d15d3de4d52ed0acf071134111b914923f0b27e20e8ca4e6cbe7d",
+          "bytes": 5990
+        },
+        {
+          "path": "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+          "sha256": "67851af3891deb2169442b05eb60d9186eabac168bab1e75364e6cd294dcd4cd",
+          "bytes": 2349004
+        },
+        {
+          "path": "outputs/r154/basis_contract.json",
+          "sha256": "2555bb80af6037217ac940d66d1723358efb75d5c3a6b88db380546db63fce73",
+          "bytes": 1467
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "inventory_turnover_days_yoy_evidence",
+      "module": "B",
+      "original_index": 22,
+      "original_definition": {
+        "factor": "inventory_turnover_days_yoy_evidence",
+        "module": "B",
+        "theory": "库存与收入成本周转的会计代理，不是实物库存数量",
+        "formula": "同报告期存货周转天数配对；仅来源覆盖审计，未形成当前有效行业信号",
+        "direction": "无统一收益排序方向，仅分维度会计证据",
+        "applicable_industries": "SW2021各层分开；原始覆盖保留全目录，交叉经营解释排除同月银行/非银金融；非金融不等于实物生产行业",
+        "economic_date": "2025/2026一季报和半年报，只有四经济期；六个月快照不独立",
+        "publication_date": "归档提供商ann_date/f_ann_date代理，首次发布/修订未认证",
+        "available_at": "最大公告日期的下一交易日；实际归档时间单列，历史截面归档可用为0",
+        "frequency": "季度/半年累计会计口径，月末观察",
+        "source": "R03本地provider_responses.zip和冻结历史成员，R67—R74核验",
+        "historical_revisions": "同截止日重新选最新版本，同日冲突未知；禁止9月版本倒填",
+        "aggregation": "行业至少5共同成员且>=80%完整分母；同比同季末；统计各层独立不相加",
+        "missing_rule": "非正值与冲突保留未知；极大正值未截尾，需分母核验",
+        "failure_condition": "仅短期同期样本；行业口径/会计分母/支付节奏/首发版本缺失；不得外推配置能力",
+        "implemented": "historical_accounting_evidence_not_predictive_factor",
+        "conclusion": "R67半年报3573个当期发行人同日冲突；R68半年报各层0行业通过覆盖门槛，不回退一季报",
+        "mechanism_status": "同期机制线索和反证，不证明因果",
+        "replication_status": "EP35扩展；不是方正69项完整复现",
+        "dictionary_origin": "R67-R74",
+        "monitor_scope": "R74保守自然季度切换；新期未知不回填，旧快照不当当前；无部署",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r67/verification.json",
+          "outputs/r68/verification.json",
+          "outputs/r69/verification.json",
+          "outputs/r70/verification.json",
+          "outputs/r71/verification.json",
+          "outputs/r72/verification.json",
+          "outputs/r73/verification.json",
+          "outputs/r74/verification.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r67/verification.json": "78c39d9c46c49ef026d9981298f01ec289e7670a1d7be9b39e2e27116f2428b6",
+          "outputs/r68/verification.json": "7d9e1125f13bc7641d4f5537ef83dc73886d9af341d87083f72f1ed878e0565b",
+          "outputs/r69/verification.json": "1c6094d915b15d3b7f067137a048cfb57a982efed16db3a05d93220da8bc8620",
+          "outputs/r70/verification.json": "4ea161f85edb69195376c31e5e47d79cd23aa65bbf65f3e9d598851f69bc8a13",
+          "outputs/r71/verification.json": "3b2f36062358103e27373d3beed926e4b0ce7693ebaca4d417e73e171b2cbb41",
+          "outputs/r72/verification.json": "dd307e967ad50af5b7ee5c1d206b579c04d94f8f56315e7ea81766d9e5648bbc",
+          "outputs/r73/verification.json": "3976a99b59649f0d5203d5dac19e50362c9ecc1248a9cfe868f36217a2e4a29b",
+          "outputs/r74/verification.json": "da70f130dd1cbe71a77a7c1669b9f79551d0f824de3e74dc1a3a32bcf26fd6a5"
+        }
+      },
+      "current_status": "repaired_accounting_evidence",
+      "current_interpretation": "R147修复会计母体；R154明确现金流与归母利润方向比较不是利润现金含量比率或因果。",
+      "current_evidence": [
+        {
+          "path": "outputs/r147/summary.json",
+          "sha256": "39eb9a6c452d15d3de4d52ed0acf071134111b914923f0b27e20e8ca4e6cbe7d",
+          "bytes": 5990
+        },
+        {
+          "path": "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+          "sha256": "67851af3891deb2169442b05eb60d9186eabac168bab1e75364e6cd294dcd4cd",
+          "bytes": 2349004
+        },
+        {
+          "path": "outputs/r154/basis_contract.json",
+          "sha256": "2555bb80af6037217ac940d66d1723358efb75d5c3a6b88db380546db63fce73",
+          "bytes": 1467
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "capital_cashflow_profit_joint_evidence",
+      "module": "B/C",
+      "original_index": 23,
+      "original_definition": {
+        "factor": "capital_cashflow_profit_joint_evidence",
+        "module": "B/C",
+        "theory": "检验投资活动是否同期兑现，并保留反证；非阶段概率",
+        "formula": "共同六值：两期资本支付、经营现金流、归母利润；支出增加者分利润现金流同升、同降或分歧，比例分母明确",
+        "direction": "无统一收益排序方向，仅分维度会计证据",
+        "applicable_industries": "SW2021各层分开；原始覆盖保留全目录，交叉经营解释排除同月银行/非银金融；非金融不等于实物生产行业",
+        "economic_date": "2025/2026一季报和半年报，只有四经济期；六个月快照不独立",
+        "publication_date": "归档提供商ann_date/f_ann_date代理，首次发布/修订未认证",
+        "available_at": "最大公告日期的下一交易日；实际归档时间单列，历史截面归档可用为0",
+        "frequency": "季度/半年累计会计口径，月末观察",
+        "source": "R03本地provider_responses.zip和冻结历史成员，R67—R74核验",
+        "historical_revisions": "同截止日重新选最新版本，同日冲突未知；禁止9月版本倒填",
+        "aggregation": "行业至少5共同成员且>=80%完整分母；同比同季末；统计各层独立不相加",
+        "missing_rule": "现金流/利润负值有效；利润两期报表类型1且公司类型1；最新冲突不回退",
+        "failure_condition": "仅短期同期样本；行业口径/会计分母/支付节奏/首发版本缺失；不得外推配置能力",
+        "implemented": "historical_accounting_evidence_not_predictive_factor",
+        "conclusion": "R70/71非金融同期诊断：增加者存在反证但不比非增加者更差；无因果或领先预测证据",
+        "mechanism_status": "同期机制线索和反证，不证明因果",
+        "replication_status": "EP35扩展；不是方正69项完整复现",
+        "dictionary_origin": "R67-R74",
+        "monitor_scope": "R74保守自然季度切换；新期未知不回填，旧快照不当当前；无部署",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r67/verification.json",
+          "outputs/r68/verification.json",
+          "outputs/r69/verification.json",
+          "outputs/r70/verification.json",
+          "outputs/r71/verification.json",
+          "outputs/r72/verification.json",
+          "outputs/r73/verification.json",
+          "outputs/r74/verification.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r67/verification.json": "78c39d9c46c49ef026d9981298f01ec289e7670a1d7be9b39e2e27116f2428b6",
+          "outputs/r68/verification.json": "7d9e1125f13bc7641d4f5537ef83dc73886d9af341d87083f72f1ed878e0565b",
+          "outputs/r69/verification.json": "1c6094d915b15d3b7f067137a048cfb57a982efed16db3a05d93220da8bc8620",
+          "outputs/r70/verification.json": "4ea161f85edb69195376c31e5e47d79cd23aa65bbf65f3e9d598851f69bc8a13",
+          "outputs/r71/verification.json": "3b2f36062358103e27373d3beed926e4b0ce7693ebaca4d417e73e171b2cbb41",
+          "outputs/r72/verification.json": "dd307e967ad50af5b7ee5c1d206b579c04d94f8f56315e7ea81766d9e5648bbc",
+          "outputs/r73/verification.json": "3976a99b59649f0d5203d5dac19e50362c9ecc1248a9cfe868f36217a2e4a29b",
+          "outputs/r74/verification.json": "da70f130dd1cbe71a77a7c1669b9f79551d0f824de3e74dc1a3a32bcf26fd6a5"
+        }
+      },
+      "current_status": "repaired_accounting_evidence",
+      "current_interpretation": "R147修复会计母体；R154明确现金流与归母利润方向比较不是利润现金含量比率或因果。",
+      "current_evidence": [
+        {
+          "path": "outputs/r147/summary.json",
+          "sha256": "39eb9a6c452d15d3de4d52ed0acf071134111b914923f0b27e20e8ca4e6cbe7d",
+          "bytes": 5990
+        },
+        {
+          "path": "outputs/r147/evaluation/outputs/r73/industry_evidence.json",
+          "sha256": "67851af3891deb2169442b05eb60d9186eabac168bab1e75364e6cd294dcd4cd",
+          "bytes": 2349004
+        },
+        {
+          "path": "outputs/r154/basis_contract.json",
+          "sha256": "2555bb80af6037217ac940d66d1723358efb75d5c3a6b88db380546db63fce73",
+          "bytes": 1467
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "prior_ranked_leader_follower_return_spread",
+      "module": "H",
+      "original_index": 24,
+      "original_definition": {
+        "factor": "prior_ranked_leader_follower_return_spread",
+        "module": "H",
+        "theory": "信息缓慢扩散：事前规模龙头领先可能先于其余成员追赶；规模并非信息领导力",
+        "formula": "上月固定成员按有效总市值降序/证券ID升序取前三；本月同复权链端点等权收益，龙头均值减其余成员均值",
+        "direction": "正差为候选先行，不自动代表行业启动、追赶或反转",
+        "applicable_industries": "SW2014二/三级、SW2021一/二/三级分别研究；全目录缺失保留",
+        "economic_date": "精确相邻月末；排名使用上月成员和市值",
+        "publication_date": "价格/股本历史缓存，首次发布和修订链未认证",
+        "available_at": "信号月末历史代理；非真实归档当时可得证明",
+        "frequency": "月末",
+        "source": "EP32 extension_v2 monthly panel/assignments与EP35一级成员；R108逐成员核验",
+        "historical_revisions": "当前历史缓存；旧版本不覆盖，不声称严格PIT",
+        "aggregation": "至少5成员、无未解决身份、全成员有效前月市值；3龙头全有效，跟随者至少2且>=80%；另列100%敏感性",
+        "missing_rule": "未知市值不删除后排名；价格/上市/复权链缺失保留未知，不填零；未来追赶要求全部原成员端点完整",
+        "failure_condition": "共同市场/风格、规模而非领导力、未来缺价选择偏差；跨年/分类不稳定或同母体无增量",
+        "implemented": "historical_feature_and_matched_experiments_complete",
+        "conclusion": "R109三任务与R111直接追赶控制比较均未达到稳定支持；R110描述混合，停止固定价差分支参数搜索",
+        "mechanism_status": "未证明独立预测、因果扩散或配置价值",
+        "replication_status": "EP35扩展，不是方正完整复现",
+        "dictionary_origin": "R108-R111",
+        "monitor_scope": "研究候选与负结果；未替换冻结模型、无生产部署",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r108/verification.json",
+          "outputs/r109/model_verification.json",
+          "outputs/r109/metric_verification.json",
+          "outputs/r110/verification.json",
+          "outputs/r111/verification.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r108/verification.json": "3dc42037281941db9a1fbe113b85419007e22e6b6557127107fdb320bd67ca65",
+          "outputs/r109/model_verification.json": "cb207e737e85dfd80feed3e2006928e6fc87310ceb1206e652c5097e97c67ce8",
+          "outputs/r109/metric_verification.json": "5d38f640e5b517013f9babb6ab71cb718b130f0b1d0ddf8ecd76b3eac6418608",
+          "outputs/r110/verification.json": "a5b719f22aa33ed5ac1278f616bb3ace397c18fa56f68381c9567ad3fbba6b26",
+          "outputs/r111/verification.json": "b3a9a3fa0f9a939ac1da1e0f4b727f80818cc15429287930502c504b5d333e51"
+        }
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "R145重放事前规模龙头/跟随者，未获得稳定独立增量，停止变体搜索。",
+      "current_evidence": [
+        {
+          "path": "outputs/r145/summary.json",
+          "sha256": "9d92ef4c81a74acfe9e21c933be743359c50605f589171f02a69812bb6f1ce55",
+          "bytes": 6175
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "price_pe_implied_earnings_decomposition",
+      "module": "G/C",
+      "original_index": 25,
+      "original_definition": {
+        "direction": "诊断变量，不设统一正负收益预测方向",
+        "applicable_industries": "各分类/层级分别统计；不能外推未覆盖行业",
+        "frequency": "月末",
+        "publication_date": "最终历史缓存；首次发布版本未恢复",
+        "historical_revisions": "保留历史代理和双时钟；不按匹配率选择时钟",
+        "missing_rule": "未知不填零；完整母体保留，子集不冒充全行业",
+        "implemented": "historical_diagnostic_verified",
+        "mechanism_status": "未证明领先性、独立预测、因果机制或配置价值",
+        "replication_status": "EP35扩展诊断，不是方正完整复现",
+        "dictionary_origin": "R113-R118",
+        "monitor_scope": "研究诊断；未替换冻结模型",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r113/verification.json",
+          "outputs/r114/verification.json",
+          "outputs/r115/verification.json",
+          "outputs/r116/verification.json",
+          "outputs/r117/verification.json",
+          "outputs/r118/verification.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r113/verification.json": "cd8a1689076f0db91ba8b64bec33d738e55806394d969dd34bbbbe9073a03205",
+          "outputs/r114/verification.json": "71467507f79b623272283e691036ec21ac1aade20566acde95a2858294105326",
+          "outputs/r115/verification.json": "86de0a90254e524919152982d703803edb4d07c93c9b1db690678e1db48a8de0",
+          "outputs/r116/verification.json": "e181dad9465830218bb1e032d2bebfdcd4fe4738a3c5a6a87f73106dade7ad06",
+          "outputs/r117/verification.json": "157b6cba1e35e5f474a5f15172c2dd59958ce9c64205ea4ab5ab64623e6096f0",
+          "outputs/r118/verification.json": "7cc7a2daa4afe6edbc13d23ca9797a69ff0725ce0e01ea19c3dff063fbb426ae"
+        },
+        "factor": "price_pe_implied_earnings_decomposition",
+        "module": "G/C",
+        "theory": "资产定价的盈利与估值区分；代数分解只能提出解释问题",
+        "formula": "Δlog(raw)=Δlog(PE)+Δlog(raw/PE)；Δlog(cap)=Δlog(PE)+Δlog(cap/PE)；另列股本变化和复权调整差额",
+        "economic_date": "相邻完整月末，固定上月行业成员",
+        "available_at": "精确日期历史价格/PE/股本代理；不是当时发布版本证明",
+        "source": "R112精确PE股票面板；R113口径审计；R114固定成员聚合",
+        "aggregation": "正PE/原价双端点；>=5成员且>=80%完整分母为子集诊断；仅100%完整可填全篮子算术量。平均对数分解不等于算术收益贡献",
+        "failure_condition": "非正PE不可取对数；股本/复权变化、缺失成员和Jensen效应可破坏朴素经济解释",
+        "conclusion": "恒等式与聚合核验通过，隐含盈利不等于独立披露利润；不能由恒等式推出盈利驱动"
+      },
+      "current_status": "basis_diagnostic_not_economic_attribution",
+      "current_interpretation": "价格/PE/股本恒等与财务口径核验保留；不能代替现金流驱动证据。",
+      "current_evidence": [
+        {
+          "path": "outputs/r119/branch_evidence.json",
+          "sha256": "925fcd2dc156f2c6d085126e25a6f4415189765b6b2caf8e822e2999261860ac",
+          "bytes": 2764
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "reported_ttm_vs_pe_implied_profit_diagnostic",
+      "module": "C/G",
+      "original_index": 26,
+      "original_definition": {
+        "direction": "诊断变量，不设统一正负收益预测方向",
+        "applicable_industries": "各分类/层级分别统计；不能外推未覆盖行业",
+        "frequency": "月末",
+        "publication_date": "最终历史缓存；首次发布版本未恢复",
+        "historical_revisions": "保留历史代理和双时钟；不按匹配率选择时钟",
+        "missing_rule": "未知不填零；完整母体保留，子集不冒充全行业",
+        "implemented": "historical_diagnostic_verified",
+        "mechanism_status": "未证明领先性、独立预测、因果机制或配置价值",
+        "replication_status": "EP35扩展诊断，不是方正完整复现",
+        "dictionary_origin": "R113-R118",
+        "monitor_scope": "研究诊断；未替换冻结模型",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r113/verification.json",
+          "outputs/r114/verification.json",
+          "outputs/r115/verification.json",
+          "outputs/r116/verification.json",
+          "outputs/r117/verification.json",
+          "outputs/r118/verification.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r113/verification.json": "cd8a1689076f0db91ba8b64bec33d738e55806394d969dd34bbbbe9073a03205",
+          "outputs/r114/verification.json": "71467507f79b623272283e691036ec21ac1aade20566acde95a2858294105326",
+          "outputs/r115/verification.json": "86de0a90254e524919152982d703803edb4d07c93c9b1db690678e1db48a8de0",
+          "outputs/r116/verification.json": "e181dad9465830218bb1e032d2bebfdcd4fe4738a3c5a6a87f73106dade7ad06",
+          "outputs/r117/verification.json": "157b6cba1e35e5f474a5f15172c2dd59958ce9c64205ea4ab5ab64623e6096f0",
+          "outputs/r118/verification.json": "7cc7a2daa4afe6edbc13d23ca9797a69ff0725ce0e01ea19c3dff063fbb426ae"
+        },
+        "factor": "reported_ttm_vs_pe_implied_profit_diagnostic",
+        "module": "C/G",
+        "theory": "经营盈利与估值分母应区分，报告期选择和历史修订可能制造表观背离",
+        "formula": "非年末TTM=当期YTD+上一年年报−上年同期YTD；年末取年报；比较cap/PE与TTM，对称距离2|a-b|/(|a|+|b|)，零零为0",
+        "economic_date": "财务报告所属期；比较日期为完整月末",
+        "available_at": "公告代理取全部组成NOTICE；修订代理取全部NOTICE/UPDATE最大值，均下一交易日；先选最新可见报告期再检验组成，不退旧成功值",
+        "source": "R115本地1647财务分区；R116最新期；R117历史代码/上市；R118双时钟比较",
+        "aggregation": "股票月诊断先月内等权再跨月等权；同样本并列两时钟和同/不同报告期；非正利润保留，不用PE一致度筛样本",
+        "failure_condition": "财务分区不足、组成冲突、旧报告、缺首发版本、共享供应商谱系；较高一致率不认证PIT或领先性",
+        "conclusion": "93530共同对中10078同报告期值完全一致；83452不同期，主要体现选期差异。公告匹配较好不能用于选钟或首发认证"
+      },
+      "current_status": "basis_diagnostic_not_economic_attribution",
+      "current_interpretation": "价格/PE/股本恒等与财务口径核验保留；不能代替现金流驱动证据。",
+      "current_evidence": [
+        {
+          "path": "outputs/r119/branch_evidence.json",
+          "sha256": "925fcd2dc156f2c6d085126e25a6f4415189765b6b2caf8e822e2999261860ac",
+          "bytes": 2764
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    },
+    {
+      "factor": "consecutive_reported_ttm_bounded_change",
+      "module": "C",
+      "original_index": 27,
+      "original_definition": {
+        "factor": "consecutive_reported_ttm_bounded_change",
+        "module": "C",
+        "theory": "披露盈利改善可能支持持续性；需排除已有价格、规模、市场和广度解释",
+        "formula": "固定前月成员；股票2*(TTM_t-TTM_t-1)/(|TTM_t|+|TTM_t-1|)，零零为0；已知子集等权平均",
+        "direction": "正值候选盈利改善，亏损缩窄保留；不是利润增长百分比或收益承诺",
+        "applicable_industries": "全目录保留；仅SW2021三级main80收益部分年度有训练资格",
+        "economic_date": "连续完整月末选取报告所属期，先选最新可见报告再验组成",
+        "publication_date": "最终财务缓存NOTICE/UPDATE，首发值版本未恢复",
+        "available_at": "公告/修订两代理分别下一交易日，组成全部可用；不择优时钟",
+        "frequency": "月末",
+        "source": "R115-R117本地财务TTM及历史身份，R108前月成员，R120完整分母",
+        "historical_revisions": "Historical-proxy；同报告期稳定值不是新披露事件；非严格PIT",
+        "aggregation": "至少5成员且>=80%完整分母可给子集均值；100%完整单列；双时钟共同母体另验",
+        "missing_rule": "缺前月/最新组成/身份保留未知；不按PE或利润正负筛选；仅两端已知稳定值填0",
+        "failure_condition": "覆盖少数行业、公告滞后、共因子、月度重复值、时钟母体或组成变化；无稳定同母体增量",
+        "implemented": "historical_feature_and_matched_ridge_verified",
+        "conclusion": "R121三任务仅7收益折合格；R122/R123无稳定支持，IC样本不足；停止固定分支参数搜索，未采用",
+        "mechanism_status": "未证明领先、独立稳定预测、因果或成本后配置价值",
+        "replication_status": "EP35扩展，非方正原报告完整复现",
+        "dictionary_origin": "R120-R123",
+        "monitor_scope": "研究与失败证据，不是生产信号",
+        "strict_pit_certified": false,
+        "evidence_refs": [
+          "outputs/r120/verification.json",
+          "outputs/r121/verification.json",
+          "outputs/r122/verification.json",
+          "outputs/r123/verification.json"
+        ],
+        "evidence_sha256": {
+          "outputs/r120/verification.json": "f74acd0a99e77d9f0e0c7fca036767ffafe80010dbaa708086ca23e655adfa8d",
+          "outputs/r121/verification.json": "5cadad01b13273b491a60aa2aed1acc3122618e06aa1213544e380cd152db338",
+          "outputs/r122/verification.json": "931fc14265781eb7770efda35b288f45a02ac2421c268f4fe8143b450e58a11e",
+          "outputs/r123/verification.json": "989bfc6235c0378619c92d53dea4d73b361e7c393e09dc690430bee59a1d072c"
+        }
+      },
+      "current_status": "replayed_no_adoption",
+      "current_interpretation": "R146重放TTM盈利变化；模型结果不变，严格覆盖及二元任务样本不足。",
+      "current_evidence": [
+        {
+          "path": "outputs/r146/summary.json",
+          "sha256": "952106521840fddd5f9147205eead324f354580e959f181ac40259b12e39215a",
+          "bytes": 5829
+        }
+      ],
+      "predictive_adoption": false,
+      "strict_pit_certified": false
+    }
+  ],
+  "scope": "source and interpretation appendix; no new factors, formulas or calibrated signals"
+}

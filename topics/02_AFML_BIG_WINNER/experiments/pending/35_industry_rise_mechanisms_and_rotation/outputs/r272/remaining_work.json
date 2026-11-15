@@ -1,0 +1,53 @@
+{
+  "status": "active_not_complete",
+  "next_local": {
+    "task": "核对已授权下载的电池月报产量、出口及动力/储能口径，判断供需错配机制的数据资格；不把产量减装车量直接当库存，不新采集。",
+    "why": "Original goal supply-demand/capital-cycle and battery installation failure conditions require supply interpretation; existing local originals contain production statements",
+    "source_samples": [
+      {
+        "path": "data/r38_battery_originals/79a1e93fb30de76d07ecf4c273fb653a797376f4daa5dd435a506b2e5ee06500.html",
+        "sha256": "79a1e93fb30de76d07ecf4c273fb653a797376f4daa5dd435a506b2e5ee06500",
+        "excerpt": "1年12月动力电池月度数据发布如下。 产量方面，2021年12月，我国动力电池产量共计31.6GWh，同比增长109.0%，环比增长12.0%。其中三元电池产量11.4GWh，同比增长34.6%，环比增长10.1%；磷酸铁锂电池产量20.1GWh，同比增长207.7%，环比增长12"
+      },
+      {
+        "path": "data/r38_battery_originals/889dd7ecd578f39ce52db48e0812283a4afd5f0d18dd480012834ce641ee7a81.html",
+        "sha256": "889dd7ecd578f39ce52db48e0812283a4afd5f0d18dd480012834ce641ee7a81",
+        "excerpt": "2年3月动力电池月度数据发布如下。 产量方面， 2022年 3月，我国动力电池产量共计39.2GWh，同比增长247.3%，环比增长23.3%。其中三元电池产量15.6GWh，占总产量39.7%，同比增长167.3%，环比增长33.8%；磷酸铁锂电池产量23.6GWh，占总产量60"
+      },
+      {
+        "path": "data/r38_battery_originals/461dfc5a23c2a35c3f76578b74b3aa92d1440e58120f26915fd0f9d18fb96c95.html",
+        "sha256": "461dfc5a23c2a35c3f76578b74b3aa92d1440e58120f26915fd0f9d18fb96c95",
+        "excerpt": "下为具体内容： 2023年7月动力电池月度数据 产量方面： 7月，我国动力电池产量共计61.0GWh，同比增长28.9%，环比增长1.5%。其中三元电池产量20.4GWh，占总产量33.4%，同比增长17.2%，环比增长15.2%；磷酸铁锂电池产量40.5GWh，占总产量66.4%"
+      },
+      {
+        "path": "data/r38_battery_originals/bc760d63bc6102362147e67153b4911bb82d3943745dcb3b861d93d30a13d1c7.html",
+        "sha256": "bc760d63bc6102362147e67153b4911bb82d3943745dcb3b861d93d30a13d1c7",
+        "excerpt": "0 2022年8月动力电池月度数据发布如下。 产量方 面： 8月，我国动力电池产量共计50.1GWh，同比增长157.0%，环比增长6.0%。其中三元电池产量19.3GWh，占总产量38.4%，同比增长130.1%，环比增长16.1%；磷酸铁锂电池产量30.8GWh，占总产量61."
+      }
+    ],
+    "acceptance": "Separate power-only from power-plus-storage, monthly from cumulative and domestic installations from exports; reject inventory interpretation without accounting coverage"
+  },
+  "external_dependencies": [
+    {
+      "item": "Reference full69/26 and crowding definitions",
+      "evidence": "reports/r240_reference_access_audit.md",
+      "condition": "Accessible authorized full original; no repeat identical failed requests"
+    },
+    {
+      "item": "Operating quarterly history",
+      "evidence": "reports/r251_local_financial_inventory.md",
+      "condition": "Genuine new periods and fields, not duplicated files"
+    },
+    {
+      "item": "First-release/PIT and independent future validation",
+      "evidence": "outputs/r266/requirements_audit.json",
+      "condition": "Evidence of initial publication/revisions and future mature observations"
+    }
+  ],
+  "stopped_local_searches": [
+    "Regime parameter/threshold/window search",
+    "Financing clock winner selection",
+    "Rescan unchanged financial archives",
+    "Repeat already verified hierarchical weighting"
+  ]
+}

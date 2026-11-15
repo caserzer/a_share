@@ -1,0 +1,1025 @@
+[
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "600236.SH",
+    "started_at": "2026-11-14T01:42:47.088316+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "728f647bcbf14fd1424b396a231d67f3bdcec3e995a811625610c1b32d50e594",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/600236.SH/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "600236.SH"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.223,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600236&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/600236.SH/http_0.bin",
+        "sha256": "9180b52ff54cb663d4cd573231461f2479a5088fcbe03fde9bfc0e98f43f6ea7"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "600236.SH",
+    "started_at": "2026-11-14T01:42:47.090086+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 33,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "8d56556f5ec33b393591f583692fc917b535cea064ceb6ba134d983f1fc41df6",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/600236.SH/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-09-21",
+    "elapsed_seconds": 0.32,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sh600236/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/600236.SH/http_0.bin",
+        "sha256": "184c7becc8235674dd96540409a15352f75d7e8905e53d202fdb94e1068955b5"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "600236.SH",
+    "started_at": "2026-11-14T01:42:47.474635+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "empty",
+    "rows": 0,
+    "columns": [],
+    "sha256": "79e8de354c9b055e885f3e539ad5ada0c7aab069f195ca0cd67b175a5798a30d",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/600236.SH/response.parquet",
+    "elapsed_seconds": 0.273,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/600236.SH/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22600236.SH%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/600236.SH/http_1.bin",
+        "sha256": "ea6528a2204b61a7ee34683a73ca00f8afdc86aadf3f765d4dae39bbfb19dbe7"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "605123.SH",
+    "started_at": "2026-11-14T01:42:47.576738+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "d5d329fdbaf8d3e9f389466a39d0746d911fea748adb42373b169dfaf588950a",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/605123.SH/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "605123.SH"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.184,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh605123&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/605123.SH/http_0.bin",
+        "sha256": "99ef10682219b9676bef2f2ce85ab084165940cd4780f8b2099d982e9081936f"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "605123.SH",
+    "started_at": "2026-11-14T01:42:47.918438+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 11,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "41f50c579b03f226214fbffb04f9c8f52c1f6a269cbc4d4059ca2527bb9ace42",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/605123.SH/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-09-21",
+    "elapsed_seconds": 0.149,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sh605123/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/605123.SH/http_0.bin",
+        "sha256": "ba15a55fb1198f2bcf584f6eee2eca005c86aebad274dae2ab993b0460b084ad"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "605123.SH",
+    "started_at": "2026-11-14T01:42:47.918856+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 6,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "8e746a1afbfdf4748d24014a9a7ae1f606e0ebac752ca14e9113063bdf1a2d7e",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/605123.SH/response.parquet",
+    "change_date_min": "2020-08-13",
+    "change_date_max": "2023-08-25",
+    "announce_date_min": "2020-08-24",
+    "announce_date_max": "2023-08-19",
+    "returned_symbols": [
+      "605123.SH"
+    ],
+    "elapsed_seconds": 0.176,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/605123.SH/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22605123.SH%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/605123.SH/http_1.bin",
+        "sha256": "297b657b7798885971590589076a64bc73b0698ff9aead0a2fb979d7fb91b810"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "300411.SZ",
+    "started_at": "2026-11-14T01:42:48.229819+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "f0395b116a26822c2c7eb235f7d18b334029fc143f22ff30e2d6fb313233daef",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/300411.SZ/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "300411.SZ"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.184,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sz300411&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/300411.SZ/http_0.bin",
+        "sha256": "1a87fc7882659a0d75caed207fa4f8c9e94e4fe5cadccce7c9b68a6721797a78"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "300411.SZ",
+    "started_at": "2026-11-14T01:42:48.253089+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 6,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "05908535be7e7c63bfdf6da1cdb8e7971781045f935b926212bf4c2989bcc127",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/300411.SZ/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2018-07-09",
+    "elapsed_seconds": 0.203,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sz300411/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/300411.SZ/http_0.bin",
+        "sha256": "d477dbf9e39efad5ec58bbeef8528ae152531e299809309a564a4e8e52d79036"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "300411.SZ",
+    "started_at": "2026-11-14T01:42:48.575690+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 15,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "8d296c7f85ec38e71dd0a5fdf5f021135a9fe35132f2d7c2bf06c3c8b6477bdb",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/300411.SZ/response.parquet",
+    "change_date_min": "2020-06-30",
+    "change_date_max": "2025-06-30",
+    "announce_date_min": "2020-08-27",
+    "announce_date_max": "2025-08-29",
+    "returned_symbols": [
+      "300411.SZ"
+    ],
+    "elapsed_seconds": 0.171,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/300411.SZ/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22300411.SZ%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/300411.SZ/http_1.bin",
+        "sha256": "163f5a63ad82e9b1f12bf012e6c9346ac9c4a8176cb8a3c225d69490970836a3"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "300693.SZ",
+    "started_at": "2026-11-14T01:42:48.606628+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "3bf8fa30c87f3e6bd86076adbb49060eaf47962b91e7c3b6c27ca22250e0a5da",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/300693.SZ/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "300693.SZ"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.191,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sz300693&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/300693.SZ/http_0.bin",
+        "sha256": "168ff6fe047cc3f89b566f64c13c13b53d5b21b74fd043eed4c4ed9177c37f59"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "300693.SZ",
+    "started_at": "2026-11-14T01:42:48.902590+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 12,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "c87ae7fe67cbe060d909b433ff14539f53a49fa100ecd2d91085f42d261650af",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/300693.SZ/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-09-07",
+    "elapsed_seconds": 0.211,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sz300693/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/300693.SZ/http_0.bin",
+        "sha256": "4c9f5505b27e603642611c68078bc7f4098117f767baaf6d97cce8c969052181"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "300693.SZ",
+    "started_at": "2026-11-14T01:42:48.950697+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 21,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "40d64e4ac7d77b0713b52bb1dfcb18fb798cda581b1ddf3fc2609025399b478a",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/300693.SZ/response.parquet",
+    "change_date_min": "2020-08-26",
+    "change_date_max": "2026-06-30",
+    "announce_date_min": "2020-08-24",
+    "announce_date_max": "2026-08-11",
+    "returned_symbols": [
+      "300693.SZ"
+    ],
+    "elapsed_seconds": 0.168,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/300693.SZ/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22300693.SZ%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/300693.SZ/http_1.bin",
+        "sha256": "b60879c50e5ba24f996302a351fb5bd83027f65c642d3d8d767cf7ee682f643c"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "002832.SZ",
+    "started_at": "2026-11-14T01:42:49.282186+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "2102ddd41684b3c69f9feaa0eaa094902fd4c22aab493f32fda28de8aefb1947",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/002832.SZ/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "002832.SZ"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.184,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sz002832&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/002832.SZ/http_0.bin",
+        "sha256": "39774226cc6a15c8e798eaa392527a734783f92f20bbaa6d4cfe390c0fc85851"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "002832.SZ",
+    "started_at": "2026-11-14T01:42:49.289120+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 13,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "39661192e1e672b37950eec23ad27a60984401ff8d36a90600895e44d2776a6f",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/002832.SZ/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-06-09",
+    "elapsed_seconds": 0.298,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sz002832/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/002832.SZ/http_0.bin",
+        "sha256": "8e88f89b0802f7de795dfcfc7436043ddf343fde884dd83467a0b426582033eb"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "002832.SZ",
+    "started_at": "2026-11-14T01:42:49.631937+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 14,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "7a018d6ddaae9803ff842dd5d4195cc0003fa9655870d4dbf6560418ed5b3f22",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/002832.SZ/response.parquet",
+    "change_date_min": "2020-05-22",
+    "change_date_max": "2026-06-30",
+    "announce_date_min": "2020-05-18",
+    "announce_date_max": "2026-08-28",
+    "returned_symbols": [
+      "002832.SZ"
+    ],
+    "elapsed_seconds": 0.172,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/002832.SZ/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22002832.SZ%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/002832.SZ/http_1.bin",
+        "sha256": "11c45ec203fc8cde3d694264668dc3856044b466f3d89febeb453cce766cb790"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "003021.SZ",
+    "started_at": "2026-11-14T01:42:49.745166+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "319b84e84ed9da322b8b0328f630a9f79062cd700d6de74746fe359eedbbe575",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/003021.SZ/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "003021.SZ"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.2,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sz003021&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/003021.SZ/http_0.bin",
+        "sha256": "3ab0652140d819460c17d69ad364e4df5dc3edc0bb2a9b26b522cf6b169592c6"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "003021.SZ",
+    "started_at": "2026-11-14T01:42:49.976667+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 8,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "cc969030c549fc2947ca3a76567c8d1e840517ba1b996e48b69ba734be40c3dd",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/003021.SZ/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-06-08",
+    "elapsed_seconds": 0.167,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sz003021/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/003021.SZ/http_0.bin",
+        "sha256": "ce1c4d71de57c09f8249505e116e3982175f0cf5345173f08c960d36418d1905"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "003021.SZ",
+    "started_at": "2026-11-14T01:42:50.098637+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 47,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "6fb2f3c5713a48a330bf1e63b8013093a671f1d7ff2e00626580aedf263f1e06",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/003021.SZ/response.parquet",
+    "change_date_min": "2020-11-24",
+    "change_date_max": "2026-10-31",
+    "announce_date_min": "2020-12-03",
+    "announce_date_max": "2026-11-05",
+    "returned_symbols": [
+      "003021.SZ"
+    ],
+    "elapsed_seconds": 0.18,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/003021.SZ/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22003021.SZ%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/003021.SZ/http_1.bin",
+        "sha256": "13727d2d74d6501fa6235bd95b4387d054f6886f2ceb8163426ea6773cd4dacc"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "600955.SH",
+    "started_at": "2026-11-14T01:42:50.298553+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "436a171ef30c863c11f3a9eef852c07059118f3c2cc4b86784dfb9f73136fecb",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/600955.SH/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "600955.SH"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.177,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600955&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/600955.SH/http_0.bin",
+        "sha256": "23ed9779844ef01c2b35f2d4c283d5f0a3aa855f3d47ae342fc05d3db187e22f"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "600955.SH",
+    "started_at": "2026-11-14T01:42:50.439593+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 7,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "8e8521a2d85ee8e61cb7255f3807ae569ca1b8911afdb25485a190cc8d1f35da",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/600955.SH/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-06-05",
+    "elapsed_seconds": 0.136,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sh600955/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/600955.SH/http_0.bin",
+        "sha256": "845e6761f9b6cc4a0f4af3aca129582b35c102ca5123c8d6ced8723a4a04ccae"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "600955.SH",
+    "started_at": "2026-11-14T01:42:50.632492+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 4,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "25c4c1f2a813036ef3a45b752295ab72d4e708c58964d6b23ba5ad74c52d865d",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/600955.SH/response.parquet",
+    "change_date_min": "2020-07-03",
+    "change_date_max": "2024-09-23",
+    "announce_date_min": "2020-07-03",
+    "announce_date_max": "2024-09-14",
+    "returned_symbols": [
+      "600955.SH"
+    ],
+    "elapsed_seconds": 0.178,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/600955.SH/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22600955.SH%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/600955.SH/http_1.bin",
+        "sha256": "66f908947d42099170348d6a851822f0e38feca8d5801c50b2713fac15969212"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "002948.SZ",
+    "started_at": "2026-11-14T01:42:50.721575+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "697c1e683dd27f72e07db98c829f8e0a0ce65ee96b78f6cc18b5bb1891514c71",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/002948.SZ/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "002948.SZ"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.178,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sz002948&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/002948.SZ/http_0.bin",
+        "sha256": "574f17bc46897772eb26209f87852de6096712db3e1a5e6f77b493bfdcd2be45"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "002948.SZ",
+    "started_at": "2026-11-14T01:42:50.962277+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 11,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "854e98b0401ff52a8fb74a618fd4f0fffcbf3fbb5addf6afd610a31612c2420c",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/002948.SZ/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-06-24",
+    "elapsed_seconds": 0.382,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sz002948/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/002948.SZ/http_0.bin",
+        "sha256": "e1b0a7d7494b0ef1e06d50e77bc74e96252560daca69572fa829e48bc84061b4"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "002948.SZ",
+    "started_at": "2026-11-14T01:42:51.066115+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 22,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "e2bc077d907e56f91dd7b67713985727d97667dbf187330b2c41a5834546c90f",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/002948.SZ/response.parquet",
+    "change_date_min": "2020-01-13",
+    "change_date_max": "2026-06-01",
+    "announce_date_min": "2020-01-14",
+    "announce_date_max": "2026-05-29",
+    "returned_symbols": [
+      "002948.SZ"
+    ],
+    "elapsed_seconds": 0.217,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/002948.SZ/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22002948.SZ%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/002948.SZ/http_1.bin",
+        "sha256": "7b261985b099dcf2bae513b81b454c4848ecb521609682c73428b39a064cd5a8"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "920407.BJ",
+    "started_at": "2026-11-14T01:42:51.434424+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "bed827757f8390b5dffa50f8af069abdf643f4be84ff1f1322afccd67b010cb1",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/920407.BJ/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "920407.BJ"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.173,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=bj920407&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/920407.BJ/http_0.bin",
+        "sha256": "dc92b97787dfe2171166598b45873cace97e79d331eaa2440e41fe8213b43845"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "920407.BJ",
+    "started_at": "2026-11-14T01:42:51.498556+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 6,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "64af4b19d9164d7848b8c4c5c430278fb1f12bd48b14da99599a6fc1cd7c4453",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/920407.BJ/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-07-10",
+    "elapsed_seconds": 0.258,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/bj920407/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/920407.BJ/http_0.bin",
+        "sha256": "56257596a251b1ab88d5a24fd2a57d3a612a5d9e983a722a047cd0227fd5df51"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "920407.BJ",
+    "started_at": "2026-11-14T01:42:51.756020+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 17,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "da8510787b4cf99eb314e126ac898416bc027a0d201d68f9e55fbc49d7b802dc",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/920407.BJ/response.parquet",
+    "change_date_min": "2020-06-05",
+    "change_date_max": "2026-07-10",
+    "announce_date_min": "2020-05-28",
+    "announce_date_max": "2026-06-30",
+    "returned_symbols": [
+      "920407.BJ"
+    ],
+    "elapsed_seconds": 0.188,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/920407.BJ/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22920407.BJ%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/920407.BJ/http_1.bin",
+        "sha256": "bfd1d64fa45832f55fea6e0e6089ca2e05502912176c44fc3fb1558d14f4e928"
+      }
+    ]
+  },
+  {
+    "dataset": "daily_bars_sina",
+    "symbol": "002406.SZ",
+    "started_at": "2026-11-14T01:42:51.940511+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 48,
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount"
+    ],
+    "sha256": "2c745bedc0e378c8409d342695c7bb2cba76018ded114d419f5af3c6e50e57f7",
+    "data_path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/002406.SZ/response.parquet",
+    "trade_date_min": "2026-09-01",
+    "trade_date_max": "2026-11-13",
+    "returned_symbols": [
+      "002406.SZ"
+    ],
+    "duplicate_symbol_dates": 0,
+    "invalid_ohlc": 0,
+    "elapsed_seconds": 0.185,
+    "raw": [
+      {
+        "url": "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sz002406&scale=240&ma=no&datalen=100",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/daily_bars_sina/002406.SZ/http_0.bin",
+        "sha256": "db3b839858456985e4d4ad447118aaacf3fdfeeff1dc1d0ef7b544ea233d8b75"
+      }
+    ]
+  },
+  {
+    "dataset": "hfq_factors_sina",
+    "symbol": "002406.SZ",
+    "started_at": "2026-11-14T01:42:52.097495+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 20,
+    "columns": [
+      "trade_date",
+      "factor"
+    ],
+    "sha256": "0f323f517fd876ff9031ef50632be61ec491aa983f97e503e67df50678dd67cb",
+    "data_path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/002406.SZ/response.parquet",
+    "trade_date_min": "1900-01-01",
+    "trade_date_max": "2026-07-10",
+    "elapsed_seconds": 0.282,
+    "raw": [
+      {
+        "url": "https://finance.sina.com.cn/realstock/company/sz002406/hfq.js",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/hfq_factors_sina/002406.SZ/http_0.bin",
+        "sha256": "5d504270e70a004c76fd06c75e233a83ca3bac84f78bea7c5d02336cb3ec651e"
+      }
+    ]
+  },
+  {
+    "dataset": "share_structure",
+    "symbol": "002406.SZ",
+    "started_at": "2026-11-14T01:42:52.276007+00:00",
+    "scope": "adapter probe, not pipeline acceptance",
+    "status": "nonempty",
+    "rows": 23,
+    "columns": [
+      "symbol",
+      "change_date",
+      "total_shares",
+      "float_shares",
+      "restricted_shares",
+      "float_a_shares",
+      "free_float_shares",
+      "change_reason",
+      "announce_date"
+    ],
+    "sha256": "88f1598f1969de31075a36c1cce4c15c4db0e0bd94624db162d7d8383b4acbdf",
+    "data_path": "data/cnequity_probe_20261114/adapters/share_structure/002406.SZ/response.parquet",
+    "change_date_min": "2020-03-31",
+    "change_date_max": "2026-06-30",
+    "announce_date_min": "2020-04-03",
+    "announce_date_max": "2026-08-18",
+    "returned_symbols": [
+      "002406.SZ"
+    ],
+    "elapsed_seconds": 0.174,
+    "raw": [
+      {
+        "url": "https://anonflow2.eastmoney.com/backend/api/webreport",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/002406.SZ/http_0.bin",
+        "sha256": "f7142903cfb14b01c48b5f7825cdd74e1db6bc90e65d182a0671e48d9adabd98"
+      },
+      {
+        "url": "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_F10_EH_EQUITY&columns=SECUCODE,END_DATE,TOTAL_SHARES,LIMITED_SHARES,UNLIMITED_SHARES,LISTED_A_SHARES,FREELIQCI_SHARES,CHANGE_REASON,NOTICE_DATE&pageSize=500&pageNumber=1&filter=(END_DATE%3E=%272020-01-01%27)(END_DATE%3C=%272026-11-13%27)(SECUCODE%20in%20(%22002406.SZ%22))&sortColumns=SECUCODE&sortTypes=1",
+        "status": 200,
+        "path": "data/cnequity_probe_20261114/adapters/share_structure/002406.SZ/http_1.bin",
+        "sha256": "98b1d44639de6074c104a333d8c2f384cf876ad222f27e8caeee3d52a486dc2c"
+      }
+    ]
+  }
+]

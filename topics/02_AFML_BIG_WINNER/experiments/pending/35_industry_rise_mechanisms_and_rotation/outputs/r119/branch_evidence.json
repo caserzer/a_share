@@ -1,0 +1,77 @@
+{
+  "status": "diagnostics_verified_no_predictive_claim",
+  "results": {
+    "outputs/r113/verification.json": {
+      "status": "PASS",
+      "rows": 682461,
+      "raw_identities": 368952,
+      "total_identities": 368950,
+      "adjusted_identities": 368886,
+      "not_economic_validation": true
+    },
+    "outputs/r114/verification.json": {
+      "status": "PASS",
+      "member_rows": 1300242,
+      "industry_basis_rows": 146139,
+      "eligible": 54918,
+      "strict_complete": 12545,
+      "max_mean_identity_error": 3.1086244689504383e-15,
+      "date_rows": 1560,
+      "economic_or_predictive_validation": false
+    },
+    "outputs/r115/verification.json": {
+      "status": "PASS",
+      "source_rows": 122947,
+      "candidate_periods": 42534,
+      "valid_components": 42226,
+      "strict_PIT": false,
+      "monthly_latest_selection_verified": false
+    },
+    "outputs/r116/verification.json": {
+      "status": "PASS",
+      "report_events": 42534,
+      "monthly_rows": 266814,
+      "paired_rows": 133407,
+      "latest_before_component_gate": true,
+      "strict_PIT": false
+    },
+    "outputs/r117/verification.json": {
+      "status": "PASS",
+      "stock_month_rows": 472473,
+      "security_ids": 5833,
+      "months": 81,
+      "linked_rows": 944946,
+      "listing_disagreements": 0,
+      "active_collisions": 0,
+      "canonical_only_partition_rows": 0,
+      "comparison_by_clock": {
+        "notice": 124100,
+        "update": 93530
+      },
+      "denominator_agreement_evaluated": false
+    },
+    "outputs/r118/verification.json": {
+      "status": "PASS",
+      "source_rows": 944946,
+      "eligible_rows": 217630,
+      "common_pairs": 93530,
+      "same_period_pairs": 10078,
+      "different_period_pairs": 83452,
+      "date_metric_rows": 420,
+      "same_period_values_identical": true,
+      "strict_PIT": false
+    }
+  },
+  "refs": {
+    "outputs/r113/verification.json": "cd8a1689076f0db91ba8b64bec33d738e55806394d969dd34bbbbe9073a03205",
+    "outputs/r114/verification.json": "71467507f79b623272283e691036ec21ac1aade20566acde95a2858294105326",
+    "outputs/r115/verification.json": "86de0a90254e524919152982d703803edb4d07c93c9b1db690678e1db48a8de0",
+    "outputs/r116/verification.json": "e181dad9465830218bb1e032d2bebfdcd4fe4738a3c5a6a87f73106dade7ad06",
+    "outputs/r117/verification.json": "157b6cba1e35e5f474a5f15172c2dd59958ce9c64205ea4ab5ab64623e6096f0",
+    "outputs/r118/verification.json": "7cc7a2daa4afe6edbc13d23ca9797a69ff0725ce0e01ea19c3dff063fbb426ae"
+  },
+  "strict_pit": false,
+  "clock_selected": false,
+  "matching_filter_for_prediction": false,
+  "next": "fixed-prior-member dual-clock consecutive financial TTM change coverage, including negative profits; no PE-agreement eligibility filter"
+}

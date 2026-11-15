@@ -1,0 +1,16 @@
+# Auto-written by `cne init --profile demo`. Safe to delete with the demo data_root.
+[data]
+root = "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/35_industry_rise_mechanisms_and_rotation/data/cnequity_probe_20261114/lake"
+# Says what this lake is, so whole-lake checks do not judge five symbols
+# against the full dataset registry.
+profile = "demo"
+
+[orchestrator]
+workers = 1
+batch_size = 50
+
+[tdx_protocol]
+enabled = true
+allow_mock = false
+min_interval_ms = 100
+servers = "auto"

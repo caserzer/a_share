@@ -1,0 +1,10 @@
+{
+  "question": "Does disclosed TTM change add relative-return prediction beyond10 fixed controls on identical samples?",
+  "eligibility": "Exactly7 R121 eligible folds; all833 skipped retained upstream, no additional model search",
+  "methods": "controls vs controls+mean_change, Ridge alpha10 with intercept; date equal sample weights normalized to N; unweighted StandardScaler on training feature ranks only",
+  "ranks": "Within era/level/clock/main80 date cross-section, average centered rank before selecting training maturity or testing known outcomes; no outcome-conditioned ranking",
+  "evaluation": "Paired date mean squared error reduction primary; Spearman IC increment only >=20known industries and nonconstant target/both predictions; unknowns retained outside scoring. Years separate, dates equal.",
+  "uncertainty": "Calendar-month Bartlett HAC lag3 for20d,lag6 for60d; normal95 and Bonferroni family8 across2clock*2h*2metrics, including missing groups; descriptive historical uncertainty only",
+  "support": "Primary20d needs>=24evaluated months,>=3years allpositive MSE reduction, family8lower>0, IC increment known and>=0; no automatic adoption. Limited history cannot pass by relaxing.",
+  "limits": "No pooling clocks, no attributing clock result difference to timing alone, no cost/portfolio claim, no strictPIT. If no stable support stop parameter search; evaluate omitted common-population timing comparison only if grounded."
+}

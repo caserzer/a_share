@@ -1,0 +1,78 @@
+"""Deterministic observation/anchor selection in a separate basket version."""
+import pandas as pd
+from common import *
+from cutoff_features_r102 import DAILY,regenerate
+from basket_replay_r128 import matrices
+
+
+def select_rows(frame,cutoff):
+    f=frame[frame.known_at.le(pd.Timestamp(cutoff))].copy()
+    if not f.source_kind.isin(['observed','anchor']).all():raise ValueError('unknown row kind')
+    if f.duplicated(['date','source_kind']).any():raise ValueError('duplicate same-kind date')
+    f['priority']=np.where(f.source_kind.eq('observed')&np.isfinite(f.nav),0,np.where(f.source_kind.eq('anchor'),1,2))
+    f=f.sort_values(['date','priority']).drop_duplicates('date');f=f[np.isfinite(f.nav)].copy()
+    starts=f.day_i.diff().ne(1)
+    f['block']=f.date.where(starts).ffill().dt.strftime('%Y%m%d').astype('int64')
+    return f.drop(columns='priority')
+
+
+def rebuild(assignments,stocks,calendar,cutoff):
+    cutoff=pd.Timestamp(cutoff);days=pd.DatetimeIndex(calendar[calendar<=cutoff]).sort_values()
+    if not days.is_unique:raise ValueError('duplicate calendar')
+    m=assignments[assignments.month.lt(cutoff.to_period('M'))].copy()
+    if m.duplicated(KEY+['month','security_id']).any():raise ValueError('duplicate industry membership')
+    members=set(m.security_id)
+    stocks={s:f[f.date.le(cutoff)] for s,f in stocks.items() if s in members}
+    for f in stocks.values():
+        if f.date.duplicated().any():raise ValueError('duplicate stock date')
+    ids,relative,breadth=matrices(stocks,days);sid_i={s:i for i,s in enumerate(ids)}
+    month=days.to_period('M');anchors=pd.Series(np.arange(len(days)),index=month).groupby(level=0).max()
+    records=[]
+    for key,g in m.groupby(KEY):
+        prior_end=None;prior_nav=np.nan;pieces=[]
+        for mo,mg in g.groupby('month',sort=True):
+            ix=np.flatnonzero(month==mo+1)
+            if not len(ix):continue
+            if (key[0]=='SW2014' and mo+1>pd.Period('2021-11')) or (key[0]=='SW2021' and mo+1<pd.Period('2022-01')):continue
+            if mo not in anchors:raise ValueError('missing prior month anchor')
+            ai=anchors[mo];si=[sid_i[s] for s in mg.security_id];n=len(si);den=n+int(mg.unresolved.max())
+            x=relative[np.ix_(ix,si)];count=np.isfinite(x).sum(axis=1);coverage=count/den
+            means=np.divide(np.nansum(x,axis=1),count,out=np.full(len(ix),np.nan),where=count>0)
+            scale=prior_nav if prior_end==ai and np.isfinite(prior_nav) else 1.
+            nav=scale*(1+means);nav[(coverage<.8)|(n<5)]=np.nan
+            f=pd.DataFrame(dict(date=days[ix],nav=nav,coverage=coverage,members=n,day_i=ix,source_kind='observed',known_at=days[ix]))
+            for h,values in breadth.items():
+                v=values[np.ix_(ix,si)];cnt=np.isfinite(v).sum(axis=1)
+                f[f'breadth{h}']=np.divide(np.nansum(v,axis=1),cnt,out=np.full(len(ix),np.nan),where=(cnt>=.8*den)&(n>=5))
+            if prior_end!=ai or not np.isfinite(prior_nav):
+                pieces.append(pd.DataFrame([dict(date=days[ai],nav=1.,coverage=np.nan,members=n,day_i=ai,source_kind='anchor',known_at=days[ix[0]])]))
+            pieces.append(f);prior_end=ix[-1];prior_nav=nav[-1]
+        if not pieces:continue
+        f=select_rows(pd.concat(pieces,ignore_index=True),cutoff)
+        for k,v in zip(KEY,key):f[k]=v
+        records.append(f[DAILY+['source_kind','known_at']])
+    return pd.concat(records,ignore_index=True).sort_values(KEY+['date']).reset_index(drop=True)
+
+
+def run():
+    out=ROOT/'outputs/r129';out.mkdir(exist_ok=True)
+    ap=CACHE/'extension_v2/products/assignments.parquet';bp=CACHE/'forecast_v5/CSI_ALL.parquet'
+    audit=EP32/'extensions/v5_rdagent_onset_forecast/outputs/daily_input_audit.json'
+    source=json.loads(audit.read_text());m=pd.read_parquet(ap);market=pd.read_parquet(bp).close
+    assert sha(ap)==source['reads'][str(ap)]
+    paths={Path(p).stem:Path(p) for p in source['reads'] if '/normalized/prices_qfq/' in p}
+    reads={str(p):sha(p) for p in [ap,bp,audit,Path(__file__),ROOT/'src/basket_replay_r128.py',ROOT/'src/cutoff_features_r102.py',ROOT/'src/build_panel.py',ROOT/'protocols/r129.json']}
+    stocks={}
+    for sid in sorted(m.security_id.unique()):
+        p=paths[sid];digest=sha(p);assert digest==source['reads'][str(p)];reads[str(p)]=digest
+        stocks[sid]=pd.read_parquet(p,columns=['date','qfq_close','close_conflict','factor_chain_id'])
+    print('VERIFIED',len(stocks),'stock partitions',flush=True)
+    results=[]
+    for cutoff in json.loads((ROOT/'protocols/r129.json').read_text())['cutoffs']:
+        f=rebuild(m,stocks,market.index,cutoff);fp=out/f'daily_{cutoff}.parquet';f.to_parquet(fp,index=False)
+        features=regenerate(f[DAILY],market,cutoff);p=out/f'features_{cutoff}.parquet';features.to_parquet(p,index=False)
+        results.append(dict(cutoff=cutoff,rows=len(f),anchors=int(f.source_kind.eq('anchor').sum()),feature_rows=len(features),ready=int(features.price_ready.sum()),sha256=sha(fp),feature_sha256=sha(p)))
+        print(results[-1],flush=True)
+    js(out/'receipt.json',dict(reads=reads,results=results,stock_partitions=len(stocks),quality='Historical-proxy',new_observations=0))
+
+if __name__=='__main__':run()

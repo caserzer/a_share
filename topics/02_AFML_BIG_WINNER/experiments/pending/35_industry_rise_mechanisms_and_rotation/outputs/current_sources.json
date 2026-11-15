@@ -1,0 +1,178 @@
+{
+  "status": "historical_research_not_live",
+  "selected": {
+    "profit_company_revisions": {
+      "path": "data/r25_company_broker_revisions.parquet",
+      "sha256": "bed3f0f50e8bab3b0238aec6161940b9bb546afa159833c4db12480097ad97a3"
+    },
+    "profit_industry_coverage": {
+      "path": "data/r25_revision_coverage.parquet",
+      "sha256": "aa5cc69d69d3ddc90785c8065a8105d160b09c9f5ea9201414538bed4f934b88"
+    },
+    "profit_model_predictions": {
+      "path": "outputs/r25/predictions.parquet",
+      "sha256": "916a359424e7604046248a165a0e7c09f4c91d14a0770e2674e0643fbc4f9d84"
+    },
+    "historical_evidence_monitor": {
+      "path": "outputs/r25/monitor/evidence_matrix.csv",
+      "sha256": "ec9dcf2d9b5d5b290dd6ecae55e01f79285f84fd6667ce3a29e991c9d85e4f24"
+    },
+    "three_task_price_models": {
+      "path": "outputs/r22/task_monitor.csv",
+      "sha256": "d79744ca08fea21155e6ad7f5f2b6a048581c1fcc7ce6b2d4d312e20c5b867ea"
+    },
+    "fixed_rule_profit_events": {
+      "path": "data/r26_industry_events.parquet",
+      "sha256": "dfadce8b1c55304672588e50e78e8f524c6183c14e8f74bd1bf600877a8f1eef"
+    },
+    "unknown_control_event_sensitivity": {
+      "path": "data/r26_unknown_control_sensitivity.parquet",
+      "sha256": "e136c9cd1d8d92f8b425c0293f2bea288a5426847fa92828b101bf2ec9e0a9ed"
+    },
+    "current_factor_dictionary": {
+      "path": "outputs/r124/current_factor_dictionary.json",
+      "sha256": "c8ddb3aaa3658a3b20f148562193f2097091e581e508c98561eec57ae574de37"
+    },
+    "battery_partial_series": {
+      "path": "outputs/r40/frozen_monthly_series.json",
+      "sha256": "448ab9cf0c228ae4a93428a7fcdd555386763fd14565d0f156c1d1ca0afd03c2"
+    },
+    "battery_return_pilot": {
+      "path": "outputs/r41/metrics.json",
+      "sha256": "e87120d1f1255710c6b5baab391d14db699fe099dbb38278b4c1cda7a5920ad5"
+    },
+    "financing_industry_factor": {
+      "path": "data/r45_financing_intensity.parquet",
+      "sha256": "fc01b4a441cddb51c2f2d7ab41dc06a31424ca1ac1490a85d550b4f3dd186841"
+    },
+    "extended_historical_evidence_monitor": {
+      "path": "outputs/r50/evidence_matrix.parquet",
+      "sha256": "fdaad2fc5c0f6b9e8d1e14f1fc8dfbf5e579c0751fb89d02dbe9f637d05dd5d9"
+    },
+    "latest_battery_series": {
+      "path": "outputs/r60/frozen_monthly_series.json",
+      "sha256": "23edd0a348f831c964165936c3a0be605cbeaa5eea2653c4d31b5aeff210fc22"
+    },
+    "latest_battery_return_pilot": {
+      "path": "outputs/r64/metrics.json",
+      "sha256": "19fe3e5c09d49720e4b96b6204ecb988becf35e8c8a3e0a534ce7fe49cfa8efb"
+    },
+    "market_exposure_controls": {
+      "path": "data/r54_market_controls.parquet",
+      "sha256": "d3bb5051c74fc64a438edcbc640b3f44f31495261204004ec1ca614b007288ff"
+    },
+    "market_control_return_metrics": {
+      "path": "outputs/r55/increments.csv",
+      "sha256": "582397992e38d767517c65041f4bf00cf52c951ab982cdfe14890b7c1dad5a4d"
+    },
+    "market_control_classifier_metrics": {
+      "path": "outputs/r56/increments.csv",
+      "sha256": "c1c5871ef209fe5652c7e4ec18a963dcf99ad10bf78b3bb45c9e29527e8ceca7"
+    },
+    "market_control_exit_metrics": {
+      "path": "outputs/r57/summary.csv",
+      "sha256": "b57281903932dea064586f1be9ed24f5ba59b02fcdb227700c33209a8bd9345c"
+    },
+    "reviewed_complete_battery_series": {
+      "path": "outputs/r60/frozen_monthly_series.json",
+      "sha256": "23edd0a348f831c964165936c3a0be605cbeaa5eea2653c4d31b5aeff210fc22"
+    },
+    "complete_battery_historical_monitor": {
+      "path": "outputs/r63/evidence_matrix.parquet",
+      "sha256": "b1350186995f6579de40b5813b1e813b3949cf66ed2d3ed02bc5ffb39eb3e54e"
+    },
+    "battery_source_completion_pilot": {
+      "path": "outputs/r62/metrics.json",
+      "sha256": "8b60bd1e3c72fb94cc85e7b66c680b22f7c3a0bac65e70b7be4663d6ef51863a"
+    },
+    "latest_battery_classification_gates": {
+      "path": "outputs/r65/fold_ledger.json",
+      "sha256": "e847871715f1ab5e6debb06e8032a0873b4ec432616687cfb642cc51b820cf09"
+    },
+    "current_requirements_evidence": {
+      "path": "outputs/r124/requirements_evidence.json",
+      "sha256": "3af5c0a251ac19506f612918c51dff6c72ffbdcac75d4fc1b9403750c0e322fe"
+    },
+    "accounting_historical_monitor": {
+      "path": "outputs/r74/evidence_matrix.parquet",
+      "sha256": "6aa7997736f81b86b9e41dc8dba25d98148c744a778bf4d8d4b855c07b47160b"
+    },
+    "accounting_monthly_evidence": {
+      "path": "outputs/r73/industry_evidence.json",
+      "sha256": "23bb416ece2100bd6429954b302e83ba6ed87b6c3d8cd3363fcc3c9a909964e7"
+    },
+    "accounting_source_clock": {
+      "path": "outputs/r72/coverage.json",
+      "sha256": "7df107eaf93ae3ce1094ce688f8a150b0853aea8d65ce95444fc3fbc84137950"
+    },
+    "accounting_contemporaneous_controls": {
+      "path": "outputs/r71/summary.json",
+      "sha256": "976de0c2445aad1944656aa04d0c5cd28160e59172eeb145ceed9a49071e2fb2"
+    },
+    "forecast_realization_common_events": {
+      "path": "outputs/r90/summary.json",
+      "sha256": "4f03af4971921bdf66207c414b22a2deb9a6548406decdcf56e16962a7b8d4ff"
+    },
+    "forecast_horizon_price_comparison": {
+      "path": "outputs/r91/summary.json",
+      "sha256": "b14477bd68c83ca1a9bd0385de20f8ce48d47a4049792ad4723e953ec1825bcd"
+    },
+    "stock_path_partial_bounds": {
+      "path": "outputs/r83/summary.json",
+      "sha256": "821d539d77f5b5e79c35ee60e0e636c0278cba8c1f07eb99a1a57190f85f305e"
+    },
+    "integrated_historical_task_evidence": {
+      "path": "outputs/r93/task_evidence.parquet",
+      "sha256": "aa8efeb6f7d56d9e1a298b528edec024429ba46e5a569eeeb7af900fd48bbe47"
+    },
+    "integrated_historical_clock_evidence": {
+      "path": "outputs/r93/all_clock_evidence.parquet",
+      "sha256": "dc03ec7c0f7818ebb383cf8ab7244780857c3e5c97772ff2a888ab245e12b587"
+    },
+    "latest_stage_requirements_audit": {
+      "path": "outputs/r124/requirements_evidence.json",
+      "sha256": "3af5c0a251ac19506f612918c51dff6c72ffbdcac75d4fc1b9403750c0e322fe"
+    },
+    "versioned_historical_inference": {
+      "path": "outputs/r102/bundles.json",
+      "sha256": "78adb62a73a87b4c144b717d11d2f7c83bf8c09f5b65ec588f0b07f4f783c3ba"
+    },
+    "three_task_model_explanations": {
+      "path": "outputs/r103/receipt.json",
+      "sha256": "715aa39a705ee0947af8d253d41df96a6fd7be6cac4f9de36345c362f0aadbfe"
+    },
+    "rank_redundancy_audit": {
+      "path": "outputs/r104/verification.json",
+      "sha256": "58b4d2e3bae449f620210193f822270d8eaede66a79b00459e0bcea1864269da"
+    },
+    "fixed_penalty_precision_comparison": {
+      "path": "outputs/r106/drift_summary.json",
+      "sha256": "620ef708d804a33654331b7bf353cc9cdd3ddd386d7e814b6ac80c2102be7f3b"
+    },
+    "next_local_mechanism_source_audit": {
+      "path": "outputs/r112/valuation_source_audit.json",
+      "sha256": "e34c3e4f0078d7a6080b41f4a88ef5f1a244d554362afc26ecf335d8f824eb6f"
+    },
+    "leader_diffusion_branch": {
+      "path": "outputs/r112/branch_evidence.json",
+      "sha256": "7f23c15e3b419adf1bb031a7e203106d78addfd9e058d66b22be0158135dcd31"
+    },
+    "valuation_basis_and_financial_timing": {
+      "path": "outputs/r119/branch_evidence.json",
+      "sha256": "925fcd2dc156f2c6d085126e25a6f4415189765b6b2caf8e822e2999261860ac"
+    },
+    "financial_change_branch": {
+      "path": "outputs/r124/branch_evidence.json",
+      "sha256": "5b7b48b04efde339d73e9ecbbfe70422541dc5917fa32e6490be7d604215e7ba"
+    },
+    "fund_etf_source_search": {
+      "path": "outputs/r124/source_audit.json",
+      "sha256": "328c3159280c2b1ede94ca31c763fe60754179b3ae4620aeb760982a3dbbe05b"
+    },
+    "corrected_research_entry": {
+      "path": "outputs/r299/release.json",
+      "sha256": "72133fb83099148fa3e48dea13cd4068d5adf92a03f82995dab6ea0a24746058"
+    }
+  },
+  "pending": "Financial change fixed branch stopped without stable increment; fund/ETF bounded inventory lacks a verified continuous panel. Next inspect actual source storage references and remaining grounded mechanisms; full scope remains incomplete."
+}

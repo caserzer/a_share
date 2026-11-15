@@ -1,0 +1,13 @@
+{
+ "id":"EP35-R04", "registered_on":"2026-11-13", "question":"固定价格、扩散与交易拥挤排序在实际月度换仓和成本后是否保留配置价值？",
+ "scope":"R01 SW2014/SW2021 L2/L3 separately; all feature-ready industries common to F, FD and FC; no optimize or universe cherry-pick",
+ "rules":["industry equal weight", "momentum top20%", "F top20%", "FD top20%", "FC top20%"],
+ "rebalance":"completed month-end signals, next benchmark trading session close entry, next origin's next-session close exit; equal target weights; drift old weights until rebalance",
+ "universe":"common feature-ready set before viewing future returns; min20 industries; selected missing future path invalidates that interval, no replacement or zero return. Report all invalid intervals. Whole-strategy compounded metric withheld if any interval invalid; valid interval averages descriptive only.",
+ "classification_boundary":"exclude scheduled intervals whose exit after 2021-11-30 for SW2014, or before 2022-01-01 for SW2021; no bridge or splicing",
+ "cost":"0/20/50 bps times sum(abs(target weights - drifted old weights)); first entry turnover=1, final liquidation=1; no holding overlap reductions beyond own industry positions; fees deducted from wealth, research convention",
+ "benchmark":"same-entry/exits CSI_ALL and common-industry equal weight; synthetic stock baskets, not published sector indices or investable portfolio",
+ "risk":"gross and net CAGR/drawdown if all intervals valid; daily beta vs CSI_ALL, annualized volatility; maximum industry weight, actual weight turnover; stock overlap/liquidity/tradability gaps separately unresolved",
+ "inference":"descriptive attribution only, no new statistical acceptance after inspecting R01. Positive after-cost performance alone does not establish prediction, mechanism or investability.",
+ "stop":"do not tune top fraction, weights, dates or costs based on results"
+}

@@ -1,0 +1,446 @@
+{
+  "scope": "All16 families; decisions are evidence assessments, not proof true effect is zero",
+  "branches": [
+    {
+      "family": "core_three_tasks",
+      "decision": "不统一采用",
+      "reason": "反转标签召回局部改善，但退出价值、启动过程和成本后排序未统一改善",
+      "reopen_evidence": "独立成熟样本且保留原标签/成本；状态校准支持单独证明",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r210/verification.json",
+          "sha256": "2d8c95b943893d7ee5bf2adbdc48b0450a06f339b93387cbd80946d08296eca6"
+        },
+        {
+          "path": "outputs/r221/verification.json",
+          "sha256": "955fedd24601c111c04d9aafbc761c701f237d490ca8572a3c94125f3d5532da"
+        },
+        {
+          "path": "outputs/r223/verification.json",
+          "sha256": "503d97d1f08d686ed31beb3ab674dfff1be2bd6e14cb30f9b1df7c0ae9170e6e"
+        },
+        {
+          "path": "outputs/r227/verification.json",
+          "sha256": "e646f5203d09827b38116986300b72684f66333cf448dbdd620a6955884e51eb"
+        },
+        {
+          "path": "outputs/r228/verification.json",
+          "sha256": "7961c9eaafd79cd3956d2f4d932c5f82de42bdf578e4b71e5cc95fbf10bff64e"
+        },
+        {
+          "path": "outputs/r229/verification.json",
+          "sha256": "bb0fe691d8ea0d2147579e73fe7432d566aeb6a31ef7cf46e5455907872adb2d"
+        },
+        {
+          "path": "outputs/r236/verification.json",
+          "sha256": "793e18aca5a8b30c369970ca3e69cd1e49ede52f16f6889fcb439f0211727887"
+        },
+        {
+          "path": "outputs/r237/verification.json",
+          "sha256": "9d049cd46568e39d6b01e5aad87f1fd158bbd7d88bb0ff0272b49ee57c7a030b"
+        }
+      ],
+      "current_review": "R253–258及R286–299已补齐日频启动/反转、校准、过程和行动；无独立未来，不继续参数搜索。"
+    },
+    {
+      "family": "l1_three_tasks",
+      "decision": "收益分支不采用；分类证据不足",
+      "reason": "实际regime输出只有收益，旧未校准一级分类不能替代",
+      "reopen_evidence": "新增成熟训练及校准样本满足原门槛",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r196/verification.json",
+          "sha256": "20ffc6c6715a52264a0bcec404f19b02bbaaecc0ede9f04f3e20c1bbb01dcde4"
+        },
+        {
+          "path": "outputs/r224/verification.json",
+          "sha256": "5f55752f918ece1409065236ca732be115c43362d1064829f239efbcd1a0d987"
+        },
+        {
+          "path": "outputs/r232/verification.json",
+          "sha256": "e0aaa496f8dc63547b01fd564bb282879c588b37bea5654c273daa2a2884b359"
+        },
+        {
+          "path": "outputs/r233/verification.json",
+          "sha256": "e778c1bc557e247ab3c869447062898879cbd7f21149b57a2bf06ce6c91b4be2"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    },
+    {
+      "family": "rank_target",
+      "decision": "不采用",
+      "reason": "排名目标局部改进没有普遍成本后优势，名义集中风险仍在",
+      "reopen_evidence": "保留原收益/排名基准的独立时间验证",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r196/verification.json",
+          "sha256": "20ffc6c6715a52264a0bcec404f19b02bbaaecc0ede9f04f3e20c1bbb01dcde4"
+        },
+        {
+          "path": "outputs/r210/verification.json",
+          "sha256": "2d8c95b943893d7ee5bf2adbdc48b0450a06f339b93387cbd80946d08296eca6"
+        },
+        {
+          "path": "outputs/r223/verification.json",
+          "sha256": "503d97d1f08d686ed31beb3ab674dfff1be2bd6e14cb30f9b1df7c0ae9170e6e"
+        },
+        {
+          "path": "outputs/r236/verification.json",
+          "sha256": "793e18aca5a8b30c369970ca3e69cd1e49ede52f16f6889fcb439f0211727887"
+        },
+        {
+          "path": "outputs/r237/verification.json",
+          "sha256": "9d049cd46568e39d6b01e5aad87f1fd158bbd7d88bb0ff0272b49ee57c7a030b"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    },
+    {
+      "family": "market_style",
+      "decision": "不采用",
+      "reason": "交互与风格控制效果分化，部分下跌日改善不能替代全日收益",
+      "reopen_evidence": "新样本下相同控制/成本与方向风险复核",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r199/verification.json",
+          "sha256": "5afdb1756d290a1e807b4a61f6fa728b9d1f1b8a0e2851c460304212b36d4ed5"
+        },
+        {
+          "path": "outputs/r211/verification.json",
+          "sha256": "bc4717542557bc6fa0d753010828f9c85a4610466dbc45dca561ae13c7ed50ba"
+        },
+        {
+          "path": "outputs/r226/verification.json",
+          "sha256": "114f8494173f6cb5b925bb5880fd7322c963259b89aa5288a67793f5328d2a38"
+        },
+        {
+          "path": "outputs/r236/verification.json",
+          "sha256": "793e18aca5a8b30c369970ca3e69cd1e49ede52f16f6889fcb439f0211727887"
+        },
+        {
+          "path": "outputs/r237/verification.json",
+          "sha256": "9d049cd46568e39d6b01e5aad87f1fd158bbd7d88bb0ff0272b49ee57c7a030b"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    },
+    {
+      "family": "battery",
+      "decision": "证据不足，不采用",
+      "reason": "单行业20日正负混合，历史不足以验证稳定，分类资格未过",
+      "reopen_evidence": "原行业连续变量及标签继续成熟，不降低分类门槛",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r198/verification.json",
+          "sha256": "69e211e397b26dc4e3ff31510676c346998adfedece6651fac9be9d1e922ea57"
+        },
+        {
+          "path": "outputs/r218/verification.json",
+          "sha256": "03671bf475cd63415a820fd05506cb38e4e17c5fad75b830702e1c18c70988c6"
+        },
+        {
+          "path": "outputs/r225/verification.json",
+          "sha256": "0297785110d11c8835e49d16c753b352d27dd8e629ceb8c849aab13943d951f7"
+        }
+      ],
+      "current_review": "R273–285生产/出口/季节性与修订核对已执行；原统计差异仍未解释，未来样本不足。"
+    },
+    {
+      "family": "eps_expectations",
+      "decision": "不采用",
+      "reason": "胜交互价格控制不代表胜原价格基准，部分覆盖限制保留",
+      "reopen_evidence": "固定预测年度和首次修订链更完整，独立样本对原价格基线",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r197/verification.json",
+          "sha256": "7da35c6d6bf55cbe535fd4078c57f41b4e2bfbe13b02a94c64feab3900c78d09"
+        },
+        {
+          "path": "outputs/r215/verification.json",
+          "sha256": "691a577ef89f98a716f9215c9ffcd872a401738c3facfed474f0f14fc9798a09"
+        },
+        {
+          "path": "outputs/r223/verification.json",
+          "sha256": "503d97d1f08d686ed31beb3ab674dfff1be2bd6e14cb30f9b1df7c0ae9170e6e"
+        }
+      ],
+      "current_review": "R141/R197固定FY及覆盖/股本上下文已处理；新财报不是分析师预测，不可替代。"
+    },
+    {
+      "family": "size_diffusion",
+      "decision": "不采用",
+      "reason": "局部机制差异存在，持续成本/风险优势未证明",
+      "reopen_evidence": "同母体原价格/规模控制与新时期检验",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r199/verification.json",
+          "sha256": "5afdb1756d290a1e807b4a61f6fa728b9d1f1b8a0e2851c460304212b36d4ed5"
+        },
+        {
+          "path": "outputs/r211/verification.json",
+          "sha256": "bc4717542557bc6fa0d753010828f9c85a4610466dbc45dca561ae13c7ed50ba"
+        },
+        {
+          "path": "outputs/r226/verification.json",
+          "sha256": "114f8494173f6cb5b925bb5880fd7322c963259b89aa5288a67793f5328d2a38"
+        },
+        {
+          "path": "outputs/r236/verification.json",
+          "sha256": "793e18aca5a8b30c369970ca3e69cd1e49ede52f16f6889fcb439f0211727887"
+        },
+        {
+          "path": "outputs/r237/verification.json",
+          "sha256": "9d049cd46568e39d6b01e5aad87f1fd158bbd7d88bb0ff0272b49ee57c7a030b"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    },
+    {
+      "family": "financing",
+      "decision": "证据不足，不采用",
+      "reason": "窄历史分支与状态校准缺口，不能外推全行业",
+      "reopen_evidence": "连续时点一致融资数据及更多成熟年，原资格不变",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r199/verification.json",
+          "sha256": "5afdb1756d290a1e807b4a61f6fa728b9d1f1b8a0e2851c460304212b36d4ed5"
+        },
+        {
+          "path": "outputs/r211/verification.json",
+          "sha256": "bc4717542557bc6fa0d753010828f9c85a4610466dbc45dca561ae13c7ed50ba"
+        },
+        {
+          "path": "outputs/r226/verification.json",
+          "sha256": "114f8494173f6cb5b925bb5880fd7322c963259b89aa5288a67793f5328d2a38"
+        },
+        {
+          "path": "outputs/r232/verification.json",
+          "sha256": "e0aaa496f8dc63547b01fd564bb282879c588b37bea5654c273daa2a2884b359"
+        }
+      ],
+      "current_review": "R260–272分母与双时钟对照已执行，无稳定增量。"
+    },
+    {
+      "family": "profit_events",
+      "decision": "不采用",
+      "reason": "事件机制交互增量偏弱，合格时间区间未确立稳定优势",
+      "reopen_evidence": "原事件时钟和独立修订证据，新样本及同事件控制",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r205/verification.json",
+          "sha256": "b73495afe462e427b3280f746181e4e5e04d034c63b3fd13eefa1c60776e39f7"
+        },
+        {
+          "path": "outputs/r219/verification.json",
+          "sha256": "a1c860e1c0ed427106d71173f60e52de1238f62797bbfc2e24ec381c02c27bfb"
+        },
+        {
+          "path": "outputs/r225/verification.json",
+          "sha256": "0297785110d11c8835e49d16c753b352d27dd8e629ceb8c849aab13943d951f7"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    },
+    {
+      "family": "leader_catchup",
+      "decision": "不采用，保留局部风险线索",
+      "reason": "龙头反转局部改善；追赶完整成员路径少，组合收益与集中度约束仍在",
+      "reopen_evidence": "同原成员完整股票路径及独立时期，保留两侧成本",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r200/verification.json",
+          "sha256": "2bf7b680b5637451d0b145b9b28510e579a134257e0a9ae3bc9cf114ae0b81ee"
+        },
+        {
+          "path": "outputs/r212/verification.json",
+          "sha256": "cd45b713a81a9442be732868b13f1915babf6e080657fbf931c57ece02d347da"
+        },
+        {
+          "path": "outputs/r213/verification.json",
+          "sha256": "3f25eb45f71756ea9e9d7f0464adc5285a54b84feeef783fc3b7957f3434431c"
+        },
+        {
+          "path": "outputs/r225/verification.json",
+          "sha256": "0297785110d11c8835e49d16c753b352d27dd8e629ceb8c849aab13943d951f7"
+        },
+        {
+          "path": "outputs/r226/verification.json",
+          "sha256": "114f8494173f6cb5b925bb5880fd7322c963259b89aa5288a67793f5328d2a38"
+        },
+        {
+          "path": "outputs/r236/verification.json",
+          "sha256": "793e18aca5a8b30c369970ca3e69cd1e49ede52f16f6889fcb439f0211727887"
+        },
+        {
+          "path": "outputs/r237/verification.json",
+          "sha256": "9d049cd46568e39d6b01e5aad87f1fd158bbd7d88bb0ff0272b49ee57c7a030b"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    },
+    {
+      "family": "financial_dual_clock",
+      "decision": "证据不足，不采用",
+      "reason": "窄公告母体相对自身改善，财务相对控制仍未建立价值",
+      "reopen_evidence": "公告/更新双时钟与全行业覆盖及更长成熟样本",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r201/verification.json",
+          "sha256": "086e6cbf572edc76a08abcb4d72ebd1f70d9ace21d63a2f17baecbf98329c208"
+        },
+        {
+          "path": "outputs/r214/verification.json",
+          "sha256": "5b740a45c1c3f3b75f1af9f1c838c85c3a0ee7b9a11b94a519d23b89b1966dc3"
+        },
+        {
+          "path": "outputs/r223/verification.json",
+          "sha256": "503d97d1f08d686ed31beb3ab674dfff1be2bd6e14cb30f9b1df7c0ae9170e6e"
+        },
+        {
+          "path": "outputs/r237/verification.json",
+          "sha256": "9d049cd46568e39d6b01e5aad87f1fd158bbd7d88bb0ff0272b49ee57c7a030b"
+        }
+      ],
+      "current_review": "新增10股原文与公告日期证据可用于修订口径核查；不增加训练历史。"
+    },
+    {
+      "family": "capital_accounting",
+      "decision": "无合格模型，保留机制诊断",
+      "reason": "六期历史不足，不能以零或拟合代理制造结果",
+      "reopen_evidence": "原18月等训练条件满足且会计口径可追溯",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r206/verification.json",
+          "sha256": "6bd2a140d0580f4a45de78a3da7afceacbd352cdec27de14dc427199b0cdc2b8"
+        },
+        {
+          "path": "outputs/r232/verification.json",
+          "sha256": "e0aaa496f8dc63547b01fd564bb282879c588b37bea5654c273daa2a2884b359"
+        }
+      ],
+      "current_review": "新增10股与154个资本支付异常公司无交集，不能解决原异常；同报告比较期仍可核查。"
+    },
+    {
+      "family": "macro_interaction",
+      "decision": "不采用",
+      "reason": "45/75日时钟和时期敏感，不能挑较优时钟宣传",
+      "reopen_evidence": "首发宏观时钟与独立时期，保留两个代理时钟对照",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r202/verification.json",
+          "sha256": "a0bbdd4a4f90c8f9916bf6dd4cb221cb68ed1eabc040ba553af174924cfd3e7a"
+        },
+        {
+          "path": "outputs/r217/verification.json",
+          "sha256": "54d670b76e86e20b386ce44bfac67eccaade982820c2defea63a95148ba3b4fa"
+        },
+        {
+          "path": "outputs/r223/verification.json",
+          "sha256": "503d97d1f08d686ed31beb3ab674dfff1be2bd6e14cb30f9b1df7c0ae9170e6e"
+        },
+        {
+          "path": "outputs/r234/verification.json",
+          "sha256": "dd3650a472ade69861cb2bbb042b493c0948d72469b43c577fdbb80bbaa6a963"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    },
+    {
+      "family": "profit_expectations",
+      "decision": "保留观察线索，不采用",
+      "reason": "八期局部正收益不足以证明稳定独立增量",
+      "reopen_evidence": "固定年度预期继续成熟并扩展覆盖，对原价格基准验证",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r197/verification.json",
+          "sha256": "7da35c6d6bf55cbe535fd4078c57f41b4e2bfbe13b02a94c64feab3900c78d09"
+        },
+        {
+          "path": "outputs/r215/verification.json",
+          "sha256": "691a577ef89f98a716f9215c9ffcd872a401738c3facfed474f0f14fc9798a09"
+        },
+        {
+          "path": "outputs/r223/verification.json",
+          "sha256": "503d97d1f08d686ed31beb3ab674dfff1be2bd6e14cb30f9b1df7c0ae9170e6e"
+        }
+      ],
+      "current_review": "新财报是已实现数据，不补齐八期预期历史。"
+    },
+    {
+      "family": "early_financial",
+      "decision": "无合格模型，保留诊断",
+      "reason": "六期观察不能训练年度历史门槛模型",
+      "reopen_evidence": "更多前期成熟财务观察及原时点证据",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r203/verification.json",
+          "sha256": "f0481bd314aa9516ac429dc775405fa87ce7513b6ff664224e75bb50a38e34eb"
+        },
+        {
+          "path": "outputs/r232/verification.json",
+          "sha256": "e0aaa496f8dc63547b01fd564bb282879c588b37bea5654c273daa2a2884b359"
+        }
+      ],
+      "current_review": "新增单期原文不等于新增季度序列；既有六期资格失败保留。"
+    },
+    {
+      "family": "fixed_factor_rank",
+      "decision": "不采用",
+      "reason": "相对弱校准base改善不能替代原fixed；集中下降也不等于收益增量",
+      "reopen_evidence": "原规则为主基准，新时期验证，不优化持仓数",
+      "adoption": false,
+      "stop_unsupported_parameter_search": true,
+      "evidence": [
+        {
+          "path": "outputs/r204/verification.json",
+          "sha256": "bb5e5b53932047f8c06e6242665f4cbae0da6a9bbc3ecf4337bd5f6e95c8c30c"
+        },
+        {
+          "path": "outputs/r216/verification.json",
+          "sha256": "eadf1a0fb72eecfe0ed127aed7eb2d92fba8f644282ff687307e2172a18fe458"
+        },
+        {
+          "path": "outputs/r223/verification.json",
+          "sha256": "503d97d1f08d686ed31beb3ab674dfff1be2bd6e14cb30f9b1df7c0ae9170e6e"
+        },
+        {
+          "path": "outputs/r237/verification.json",
+          "sha256": "9d049cd46568e39d6b01e5aad87f1fd158bbd7d88bb0ff0272b49ee57c7a030b"
+        }
+      ],
+      "current_review": "保留原实验与失败及重开条件；本批10股单期财报没有直接补齐该分支样本，未据此重训。"
+    }
+  ],
+  "whole_goal_complete": false
+}

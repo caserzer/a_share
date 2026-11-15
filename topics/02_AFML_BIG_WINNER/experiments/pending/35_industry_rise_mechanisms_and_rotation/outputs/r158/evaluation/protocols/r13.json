@@ -1,0 +1,32 @@
+{
+  "question": "Do lagged PMI and monetary conditions interact with previously estimated industry sensitivities to improve ranking?",
+  "hypotheses": [
+    "Growth-sensitive industries respond differently to persistent manufacturing conditions",
+    "M2 acceleration may proxy financing conditions but is not equity buying power"
+  ],
+  "sources": "R11 archived manufacturing PMI and M2 YoY, revised historical proxy; L1/L2/L3 synthetic baskets separately",
+  "states": {
+    "pmi": "(manufacturing PMI-50)/100",
+    "money": "exact 3 economic-month change in M2 YoY divided by100"
+  },
+  "availability": "economic month end +45 calendar days main; +75 delay sensitivity; strictly earlier than signal; no claimed verified original release dates",
+  "sensitivity": "per era/level/industry, trailing36 calendar months before signal, >=24 complete monthly observations; regress known past_excess20 at s on macro state known at prior completed month-end s-1; training-standardized joint Ridge alpha1 with intercept; no current/future return included",
+  "features": "exposure-only = mean of two standardized slopes; macro-conditioned = sum(slope_j * (current_state_j-train_mean_j)/train_sd_j); no calendar-year taxonomy pooling",
+  "scores": {
+    "F": "R01 price score unchanged",
+    "F_exposure": "0.5 F +0.5 centered rank(exposure-only)",
+    "F_macro": "0.5 F +0.5 centered rank(macro-conditioned)"
+  },
+  "cohort": "exact common rows for both45/75 lags and all methods; >=20 signal industries, unknown future outcomes retained; separate coverage bylag",
+  "target": "unchanged R01 t+1 close entry;20 primary/60 secondary excess vs CSI_ALL",
+  "evaluation": "date IC >=20 known outcomes; top quintile selected before outcomes; suppress incomplete group return, no replacements; date equal averages; annual summaries",
+  "comparisons": "F_macro minus F, and F_macro minus F_exposure; two comparisons x five era/level strata=10 primary tests at45days",
+  "uncertainty": "R01 circular6month bootstrap2000, alpha .05/10; 24months minimum, >=2/3 years positive; require delay75 mean increment positive on samecohort; secondary horizon descriptive",
+  "boundaries": [
+    "No factor or window search after results",
+    "Industry slopes are empirical historical exposure, not a causal economic coefficient",
+    "Macro vintage/release and membership uncertainty remain",
+    "Fixed-horizon group return less 2*20/50bps is diagnostic, not a tradable strategy",
+    "No full style control; exposure-only separates dynamic state from static exposure but does not prove full independence"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "question": "Does source-invalid event removal contaminate observed-non-event controls?",
+  "rule": "For auxiliary comparison only, exclude exact era/level/industry/date keys that were events in R14 but absent in R26 from controls; all other R26 rules preserved",
+  "reason": "Invalid report value gives unknown revision, not verified absence of event",
+  "freeze": "registered after fixed R26 event-pool audit, before this auxiliary computation; no threshold tuning",
+  "scope": "bounds known source-invalid contexts only, does not certify complete news coverage"
+}

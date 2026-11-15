@@ -1,0 +1,10 @@
+{
+  "question": "Does the notice/update result difference persist with identical industry-date training and testing populations?",
+  "population": "R121 full industry grid, one-to-one notice/update; assert all controls, labels and maturity equal; main80 requires bothmain80,strict100 requires bothstrict100. Preserve unmatched/ineligible statuses, no PE filtering.",
+  "scope": "Return20/60 only because R121 binary tasks have no qualified folds; all5era/level*2cohort*2h*7years=140candidate folds, unchanged>=300rows18months maturity-purged training.",
+  "models": "Three per eligible fold:10controls,10controls+notice_mean_change,10controls+update_mean_change. Ridge10,training-only scaler,date-equal weights,within common cross-section ranks before outcome availability filtering.",
+  "evaluation": "Date-equal MSE reduction and IC increment if>=20known nonconstant industries. Three contrasts notice-controls,update-controls,update-notice; lag3/6 calendarBartlett; family12 intervals across3contrasts*2h*2metrics. Annual separately,unknown predictions retained.",
+  "support": "20d>=24months>=3years allpositive, family12lower>0 and known nonnegative IC; never autochoose clock or deploy. Clock-only contrast is diagnostic, not adoption.",
+  "limits": "Same industry-date population does not guarantee identical within-industry observed financial member subset. FrozenR120 aggregation preserved; results combine clock-selected report periods/financial availability/values, not causal release-delay experiment.",
+  "stop": "No window/threshold/penalty searches; consolidate R120-R123 results and audit remaining grounded work."
+}

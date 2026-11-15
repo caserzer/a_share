@@ -1,0 +1,17 @@
+{
+ "id":"EP35-R03", "registered_on":"2026-11-13", "question":"本地完整财务分页是否能补齐部分基本面信息，并允许初步检验盈利兑现相对价格的信息？",
+ "source":"golden_loop_artifacts 20261010-data-v1 inputs/provider_responses.zip; all 30 financial receipt pages, not the 2320-company selected CSVs",
+ "periods":["20250331","20250630","20260331","20260630"],
+ "timing":"retain ann_date and f_ann_date, proxy available next exchange trading session after their maximum; archival availability at actual retrieved_at; do not use announcement proxy for strict historical PIT",
+ "versions":"retain all raw records and page hashes. Same company/period/announcement conflicting values => per-field null; no arbitrary update_flag tie-break. Latest available version at each origin selected. Announcement before period end invalid. Do not reconstruct missing versions.",
+ "quality":"Historical-proxy for pre-acquisition history; authenticated archived snapshot for subsequent use; source financial vintage accuracy and amendment completeness not established",
+ "scope":"all raw provider companies mapped through EP32 prior-month historical memberships, not inherited fixed19-sector sample; only SW2021 L2/L3 covered in current price panel",
+ "features":{"dedt_change":"(current YTD deducted profit - prior-year same period)/(abs(current)+abs(prior)); zero denominator => missing", "margin_delta":"current gross profit margin - prior-year same quarter margin in percentage points"},
+ "industry_aggregation":"equal-weight mean of member company factors, >=5 valid companies and >=80% of prior-month assigned plus unresolved members; missing not zero; report denominator and coverage even excluded",
+ "composite":"C = equal average of centered cross-sectional ranks of industry dedt_change and margin_delta; FCfund = (R01 price F + C)/2; matched price F control, no renormalization if one factor missing",
+ "origins":"complete monthly origins Apr-Sep2026, require source effective dates <=origin; choose most recent jointly comparable quarter for each company",
+ "target":"R01 delayed 20 and60 session excess vs CSI_ALL; primary20",
+ "evaluation":"descriptive same-date RankIC and coverage only; <24months is evidence insufficient, never training or success claims; not analyst expectation, not profitability causation",
+ "refutation":"profitability improving but future relative returns uncorrelated or negative; lagged profit may already be priced",
+ "next":"expand fiscal history only from authorized available sources; forward archive mode remains pending mature data"
+}

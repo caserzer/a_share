@@ -1,0 +1,35 @@
+{
+  "id": "EP35-R01", "registered_on": "2026-11-13", "status": "registered_before_EP35_outcome_evaluation",
+  "question": "在同日同母体下，扩散与估值历史代理是否改善简单价格排序？",
+  "quality": "Historical-proxy", "independent_holdout": false,
+  "scope": "SW2014/SW2021 L2/L3 separately; all available industries, no EP34 pool restriction; L1 basket pending",
+  "hypotheses": {
+    "F": "信息缓慢扩散使相对动量延续；未来相对收益无正向排序为反证",
+    "H": "更广泛上涨支持持续性，极端交易活跃可能增加脆弱性；必须分开比较扩散与交易拥挤",
+    "G": "低历史PE分位降低定价要求；盈利衰退与PE修订可能使低分位无效"
+  },
+  "origins": "completed calendar month-end trading sessions",
+  "features": {"F": ["mom20", "mom60", "vol20", "dd60"], "H_diffusion": ["breadth21", "breadth63"], "H_trading": ["turn_rank504"], "G": ["pe_rank504"]},
+  "transforms": "within era/level/date average-tie centered rank: (rank-0.5)/n-0.5; no future values, no missing imputation",
+  "scores": {
+    "momentum": "rank(mom60)",
+    "F": "mean(mean(rank(mom20),rank(mom60)), -rank(vol20), rank(dd60))",
+    "D": "mean(rank(breadth21),rank(breadth63))",
+    "C": "-rank(turn_rank504); transaction proxy only, no holdings crowding claim",
+    "G": "-rank(pe_rank504); median constituent positive TTM-PE historical rank, NOT forward PE",
+    "FD": "mean(F,D)", "FC": "mean(F,C)", "FG": "mean(F,G)", "FDG": "mean(F,D,G)"
+  },
+  "comparisons": "F full coverage vs momentum; paired F/FD, F/FC, F/FG, F/FDG on exact common feature-ready origin sets, report matched denominator loss separately",
+  "primary_horizon": 20, "secondary_horizon": 60,
+  "entry_delay_sessions": 1,
+  "target": "NAV(t+1+h)/NAV(t+1)-1 minus CSI_ALL same-period close return; require full continuous industry block throughout entry and target",
+  "minimum_cross_section": 20,
+  "evaluation": "date-level Spearman IC, top quintile/bottom quintile excess returns, annual/era/level stability; no outcome-dependent membership ranking",
+  "missing_outcomes": "retain feature-based ranks and selections; report missing outcomes; do not replace selected industries or fill missing returns with zero; suppress group return if any selected outcome missing",
+  "uncertainty": "paired date-level IC differences; circular 6-month block bootstrap, 2000 replications, seed 3501; Bonferroni across 4 extensions x 2 levels x 2 eras =16 primary tests; secondary horizon descriptive",
+  "acceptance": "positive delta IC with multiplicity-adjusted interval above zero, at least 24 paired months, positive delta in >=2/3 eligible calendar years; otherwise evidence insufficient/no stable increment. No prediction capability declaration from historical proxy alone.",
+  "costs": "0,20,50 bps per side; fixed-horizon top-quintile diagnostic assumes full entry/exit, reports return minus 2*cost; not compounded, not implementable portfolio or turnover estimate",
+  "split": "R01 untrained fixed rules all dates historical simulation, yearly and classification-era separate; supervised models registered separately before fitting",
+  "limitations": ["historical membership and revision uncertainty", "equal-weight synthetic research baskets not published industry indices or tradable holdings", "PE missing known_at; historical proxy only", "original Founders full definitions unavailable; public URL fetch timed out 2026-11-13; not a replication", "C/D/E/A/B data not silently substituted"],
+  "next_dependency": "three-task supervised baselines, local financial timing audit, L1 construction, mechanism data audit, portfolio replay"
+}

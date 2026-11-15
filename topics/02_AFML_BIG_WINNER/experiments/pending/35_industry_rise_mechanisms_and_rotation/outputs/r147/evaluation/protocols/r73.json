@@ -1,0 +1,23 @@
+{
+  "round": "R73",
+  "purpose": "Historical monthly industry availability using R72 source selection and each snapshot prior-month membership",
+  "dates": "R72 six monthly dates2026Apr-Sep",
+  "scope": "SW2021 L1/L2/L3 frozen monthly panel catalogue at each date, separate levels",
+  "membership": "date.to_period(M)-1, including parent-L1 identity at same month; no September survivor selection",
+  "financial_exclusion": [
+    "801780.SI",
+    "801790.SI"
+  ],
+  "gate": {
+    "min_known": 5,
+    "min_coverage": 0.8
+  },
+  "denominator": "resolved members plus unresolved maximum, retain all catalogue rows; financial excluded not interpreted as mechanism failure",
+  "periods": [
+    "2026-03-31",
+    "2026-06-30"
+  ],
+  "outputs": "member provenance and industry coverage plus joint capex/OCF/profit direction counts when known; no future labels",
+  "validation": "September must reproduce R70 common sample and direction counts; earlier snapshots checked against exact source and member month",
+  "limits": "Historical proxy, six snapshots not six independent economic periods; source availability not causal or investment validation"
+}

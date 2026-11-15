@@ -1,0 +1,10 @@
+{
+  "question": "Does daily instead of monthly past calibration improve daily onset probability reliability with frozen base model?",
+  "models": "All8 R02 F-cohort F-method onset20 models (SW2014 2020/21 and SW2021 2025/26, L2/L3), unchanged scalers/base coefficients",
+  "calibration": "Each test-year model scores daily price-ready rows from previous July1 toDec31, weak eligible past_excess20<=0, maturity20 strictly before Jan1. Fit labels never extend beyond frozen base-fit cutoff. Reconstruct same-day ranks on full price-ready population before eligibility. Do not use previous model-year scores.",
+  "gates": "At least4 calendar months,100 rows,>=10 each class; unchanged gate magnitudes, never relax skipped folds",
+  "estimator": "Platt logistic C1 max_iter2000 random_state3502; equal dates weights, total calibration weight fixed to original monthly model n_cal so additional daily rows do not implicitly reduce regularization",
+  "evaluation": "Exact eligible R09 daily test keys; preserve unknown labels. Date-equal Brier primary, log loss and mean probability-minus-rate secondary; fixed10 probability bins. Annual era/level separately, no pooled acceptance, forward or independent-history claim",
+  "guardrails": "First reproduce old monthly-calibrated probability to1e-10 on every test key; no alert threshold or base-model training change. Calibration slope may flip; record it, never select sign using outcomes. Overlapping labels and only4 year contexts limit evidence",
+  "decision": "report all8, do not adopt on pooled improvement alone; repeated historical experiment not forward validation"
+}

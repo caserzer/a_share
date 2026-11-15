@@ -1,0 +1,5 @@
+{
+  "initial_failure": "pandas callable group transform raises No objects to concatenate for empty strict cohorts",
+  "fix": "Retain empty rank table for empty cohorts; all no-test fold records still emitted; no changes to eligibility or numerical ranks for nonempty samples",
+  "verification_edit": "Adding direct R122 prediction equivalence check initially left an extra parenthesis; syntax fixed before final verification."
+}

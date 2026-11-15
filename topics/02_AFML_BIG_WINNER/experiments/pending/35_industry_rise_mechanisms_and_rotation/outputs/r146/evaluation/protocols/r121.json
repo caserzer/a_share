@@ -1,0 +1,31 @@
+{
+  "question": "Which annual three-task folds are eligible for a matched financial-change increment comparison?",
+  "feature": "R120 mean_change only, no search among breadth/magnitude or clock variants",
+  "clocks": [
+    "notice",
+    "update"
+  ],
+  "cohorts": [
+    "main80",
+    "strict100"
+  ],
+  "controls": [
+    "mom20",
+    "mom60",
+    "vol20",
+    "dd60",
+    "log_members",
+    "size_control",
+    "market_beta126",
+    "residual_vol126",
+    "breadth21",
+    "breadth63"
+  ],
+  "population": "Full R120 industry-clock grid; exact date/key source join; price_ready and all10controls finite; financial mean finite and eligible; strict100 additionally strict_complete",
+  "tasks": "R02 unchanged onset/return/reversal20/60d with original target eligibility; no future-known filter before ranks or test membership",
+  "folds": "All5 era/level groups x2 clocks x2 cohorts x3tasks x2horizons x7 years2020..2026=840 rows, including no_test_rows",
+  "maturity": "R02 return fit: date and label maturity strictly before Jan1; classification fit strictly before priorJul1, calibration priorJul1 inclusive..Jan1 exclusive with maturity strictly before Jan1",
+  "gates": ">=18 training months and>=300 training rows; binary >=30 each training class; calibration>=4months>=100rows>=10eachclass. Primary skip ordering no_test_rows, training,classes,calibration. All failed flags also retained.",
+  "outputs": "Complete joined grid; target memberships including unknown outcomes; all840folds with identities/maturity counts; cross-sectional eligible industry counts; no models/predictions yet",
+  "next": "If eligible, freeze fixed Ridge/Logit comparison with same-date same-population controls; do not lower gates or choose better clock. All inference remains historical proxy."
+}

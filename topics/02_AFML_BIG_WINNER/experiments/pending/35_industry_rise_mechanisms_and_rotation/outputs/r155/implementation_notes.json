@@ -1,0 +1,9 @@
+{
+  "failures_preserved": [
+    "initial_setup_failure.log",
+    "missing_ordinal_failure.log"
+  ],
+  "adapter": "Reconstruct day_i from zero-based CSI_ALL exchange calendar; independently checked against every legacy daily row. All corrected daily source columns remain exact.",
+  "base_model": "Use R131 repaired frozen monthly models; only original R97 daily Platt calibration is fitted again.",
+  "adoption": "Separate repaired evaluation; R148 default entry remains unchanged."
+}

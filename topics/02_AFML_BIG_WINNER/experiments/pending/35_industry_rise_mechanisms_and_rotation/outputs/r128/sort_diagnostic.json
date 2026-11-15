@@ -1,0 +1,31 @@
+{
+  "industry": [
+    "SW2021",
+    "L2",
+    "801011.SI"
+  ],
+  "selected_reason": "first industry in actual identity discrepancy ledger, diagnostic not performance sample",
+  "source_sha256": "e54021eca8f2ee0c86b295e8ad223e8aff4acd392fc1d73abf28049ee6e62317",
+  "stable_source_sha256": "2bc93ea395cf00c5a0691929b8fcd294c3bbfd23bc306962c2409ebeddd222fa",
+  "results": [
+    {
+      "method": "original_quicksort",
+      "comparison": {
+        "shared": 3,
+        "missing": 9,
+        "extra": 11,
+        "different_shared_rows": 1
+      }
+    },
+    {
+      "method": "stable_sort_only",
+      "comparison": {
+        "shared": 1,
+        "missing": 0,
+        "extra": 0,
+        "different_shared_rows": 0
+      }
+    }
+  ],
+  "adopted": false
+}

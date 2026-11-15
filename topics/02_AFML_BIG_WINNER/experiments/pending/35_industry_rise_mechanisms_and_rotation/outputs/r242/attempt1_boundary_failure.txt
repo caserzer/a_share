@@ -1,0 +1,1 @@
+Boundary fixture with no drawdown events failed: catalogue constructed columnless empty DataFrame then sort_values(KEY), raising KeyError: era. Historical catalogue was nonempty and unaffected. Fix: construct event frame with explicit columns; rerun historical build and both verifiers.

@@ -1,0 +1,24 @@
+{
+  "question": "Does leader_spread add predictive information for the fixed delayed-month catchup target after R109 controls?",
+  "motivation": "R110 descriptive associations can reflect common price/size/risk; necessary same-sample incremental comparison",
+  "target": "R110 catchup; exact fixed original members, t+1 month-end entry t+2 exit, full future member coverage. Preserve unknown targets at prediction time. No alternative delay/horizon/threshold search.",
+  "inputs": "R109 joined_panel feature cohorts main80 and strict100; exact identity/date left join R110 catchup,maturity_date,entry_expected,future_status; rank features within eligible date cohort BEFORE target availability filters",
+  "controls": [
+    "mom20",
+    "mom60",
+    "vol20",
+    "dd60",
+    "log_members",
+    "size_control",
+    "market_beta126",
+    "residual_vol126",
+    "breadth21",
+    "breadth63"
+  ],
+  "method": "Controls vs controls+leader_spread; StandardScaler training-only, Ridge alpha10, date-equal weights n/(dates*date_rows), same cohort and train/test IDs",
+  "folds": "annual2020..2026 by era/level/cohort, training signal date AND maturity strictly before Jan1, finite targets only; >=18 train months and >=300 rows; all skipped folds retained; test all feature-eligible rows in year including unknown outcomes",
+  "evaluation": "Date-equal MSE reduction primary, Spearman IC increment secondary with >=20 evaluable rows/nonconstant; annual detail and target missing coverage. Same test IDs/outcomes for both. Calendar-month Bartlett lag3, approximate95% plus Bonferroni family20 covering5 populations*2cohorts*2metrics. No automatic adoption.",
+  "support": "main80 primary MSE >=24 dates and >=3years, all annual improvements positive, family20 lower>0 and mean IC increment>=0; strict100 reported regardless; historical evidence only, no causality/cost claim",
+  "verification": "all exact source joins, eligibility ranks before target availability, all split gates/identities, independent weighted ridge normal equations/scaling and every prediction; all date/year metrics and covariance intervals",
+  "stop": "If unsupported stop this fixed price-lead/catchup branch parameter search; return to overall evidence registry and other grounded gaps"
+}

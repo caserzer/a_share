@@ -1,0 +1,14 @@
+{
+  "round": "R29",
+  "hypothesis": "EPS revisions improve relative return prediction beyond fixed price controls within identical EPS-covered cohorts",
+  "registered_before_fit": true,
+  "source": "R28 monthly EPS full-report barriers, R24 exclusions; raw_proxy primary and share_context_guard sensitivity",
+  "aggregation": "median valid brokers within company, median covered companies within prior-month industry members; never common-profit restriction",
+  "population": "L1/L2/L3 and classification eras separate; strict >=5 companies and >=80%; partial >=5 and <80% diagnostic only; >=2 industries per date",
+  "models": "unchanged R25 centered cross-sectional ranks, train-only StandardScaler, Ridge alpha10, date-balanced weights; price_only / expectation_only / price_plus_expectation",
+  "training": "annual 2021..2026; >=300 rows and >=18 months, label maturity strictly before Jan1; no threshold tuning",
+  "targets": "existing excess20 primary / excess60 secondary, same next-close entry as frozen panel",
+  "evaluation": "date equal-weight MSE and Rank IC (>=5 complete industries); annual stability; paired combined-minus-price; all FY0/1 and versions reported; no significance/acceptance claim with short partial history",
+  "limitations": "historical selected-report proxy; not PIT, not complete consensus, no EPS-versus-profit attribution across different populations; no portfolio test absent credible increment",
+  "stop": "no added windows/parameters on failure; strict coverage insufficient prohibits full-universe acceptance"
+}

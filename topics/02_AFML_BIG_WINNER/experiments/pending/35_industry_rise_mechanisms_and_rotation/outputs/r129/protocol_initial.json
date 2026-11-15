@@ -1,0 +1,16 @@
+{
+  "question": "Does explicit observed-versus-anchor selection remove length-sensitive historical feature changes, and what frozen-model inference changes?",
+  "cutoffs": [
+    "2021-11-30",
+    "2021-12-31",
+    "2022-01-31",
+    "2026-09-30",
+    "2026-10-21"
+  ],
+  "selection": "One valid observed row per date takes priority over a synthetic anchor; anchor takes priority over invalid observation; duplicate rows of same kind rejected. Anchor known_at is first observed calendar day of following target month. Never treat anchor as observed price/coverage.",
+  "blocks": "Continuous segment identifier is segment start YYYYMMDD, not ordinal sensitive to inserted earlier isolated anchors.",
+  "preserve": "R128 matrices, economic membership/coverage/precision unchanged; original sources and research outputs remain untouched. New version only.",
+  "gates": "Shared observations and ready features must be invariant between successive cutoffs. Historical inserts allowed only documented anchors with known_at after prior cutoff. Compare all columns/input eligibility with old version.",
+  "inference": "Fixed R02/R16 models and full current catalog; evaluate latest completed date plus every historical month with changed ready-feature population or values. No training or label refresh in this round; retraining impact remains separate.",
+  "quality": "Historical-proxy local replay; source vintages unchanged, no predictive increment claim."
+}

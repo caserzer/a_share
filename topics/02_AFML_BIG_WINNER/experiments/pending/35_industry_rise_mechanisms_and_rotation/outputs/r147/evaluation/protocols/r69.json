@@ -1,0 +1,11 @@
+{
+  "round": "R69",
+  "question": "Does higher long-asset cash spending coincide with improved operating cash generation, or with deteriorating cash generation?",
+  "scope": "R68 frozen September2026 membership, first-quarter and half-year YoY separately; descriptive contemporaneous evidence only",
+  "inputs": "R67 latest cashflow facts and their exact source rows, n_cashflow_act in same archived statement",
+  "selection": "OCF must agree across every latest source row used by R67; missing/nonmissing disagreement or differing numbers remain unknown; negative OCF is valid",
+  "common_sample": "both periods capex and OCF known; require >=5 members and >=80% full resolved+unresolved denominator; no older-period fallback",
+  "categories": "capex strictly increases: OCF increases, decreases, or unchanged; separately current OCF<0 and current OCF<capex",
+  "interpretation": "OCF<capex is cash-spending coverage gap, not free cash flow, insolvency or stage prediction. Capex increase may reflect demand or future overcapacity, no universal positive sign. Financial/service sectors remain coverage diagnostics, not physical-capacity inference.",
+  "boundaries": "Q1 nested inH1, related levels overlap, no independent count inflation; no returns or parameters selected; only one snapshot and two paired reporting periods"
+}

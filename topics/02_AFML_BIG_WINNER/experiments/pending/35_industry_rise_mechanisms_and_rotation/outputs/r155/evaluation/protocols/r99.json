@@ -1,0 +1,9 @@
+{
+  "question": "Quantify uncertainty of frozen R97 daily calibration Brier differences without retraining or selecting models",
+  "audit": "R55/R56 already use calendar-month lag-adjusted intervals; no claim they lack time-dependence adjustment",
+  "estimand": "Daily-calibrated minus monthly-calibrated Brier, same eligible mature industry rows, within-date mean then equal dates, each of8 model folds separate",
+  "blocks": "Consecutive nonoverlapping21 exchange-session blocks anchored first benchmark session of each test year;21 chosen from20-session target plus next-close entry. Keep short terminal blocks and dates with partial target availability as original estimand. Calendar gaps do not compress into adjacent dates. Record absent-date blocks; resample observed blocks only, conditional on observed support",
+  "bootstrap": "20000 resamples per fold, each samples same number of blocks with replacement; aggregate block sum divided by block observed-date count. RNG numpy default_rng seed35099 reset per fold for reproducibility. No block/window tuning",
+  "intervals": "percentile95% and Bonferroni family8 interval99.375%; family adjustment covers only8 frozen comparisons, not all EP35 research or history reuse. Report block count, min/maxdates and missing-date coverage. If<8 observed blocks report insufficient_blocks and no interval",
+  "limitations": "Finite smallblock descriptive sensitivity, not independent prospective certainty;21 sessions may not capture longer regimes. No pointwise industry resampling, no new p-value/model acceptance, no threshold changes"
+}

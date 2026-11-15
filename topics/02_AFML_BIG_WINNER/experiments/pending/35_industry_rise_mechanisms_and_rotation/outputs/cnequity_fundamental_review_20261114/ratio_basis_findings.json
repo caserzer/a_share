@@ -1,0 +1,25 @@
+[
+  {
+    "symbol": "002948.SZ",
+    "item": "roe",
+    "api_percent": 8.495,
+    "pdf_percent": 16.99,
+    "pdf_page": 8,
+    "pdf_basis": "annualized",
+    "relationship": "api * 2 == annualized PDF",
+    "decision": "basis difference; retain both; full provider calculation not certified"
+  },
+  {
+    "symbol": "600236.SH",
+    "item": "bps",
+    "api": 2.295190526444,
+    "pdf_disclosed": 2.62,
+    "pdf_page": 10,
+    "parent_equity": 20626849923.22,
+    "other_equity": 2535291066.22,
+    "total_shares": 7882377802,
+    "decision": "basis difference; subtraction of other equity numerically reconciles; do not overwrite original bps",
+    "parent_equity_per_share": 2.61683091591808,
+    "excluding_other_equity_per_share": 2.2951905264436347
+  }
+]

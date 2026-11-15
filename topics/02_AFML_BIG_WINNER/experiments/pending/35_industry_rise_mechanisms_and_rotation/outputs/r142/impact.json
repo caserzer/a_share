@@ -1,0 +1,97 @@
+{
+  "model_evaluation": [
+    {
+      "family": "r31",
+      "comparisons": 60,
+      "primary_comparisons": 30,
+      "max_metric_change": 0.0024960731935022,
+      "primary_diffusion_intervals_include_zero": 10,
+      "primary_diffusion_rows": 10,
+      "classification_supported": null,
+      "models": 92
+    },
+    {
+      "family": "r32",
+      "comparisons": 16,
+      "primary_comparisons": 16,
+      "max_metric_change": 1.847223847089999e-05,
+      "primary_diffusion_intervals_include_zero": null,
+      "primary_diffusion_rows": 8,
+      "classification_supported": 0,
+      "models": 60
+    }
+  ],
+  "exit": {
+    "old_rows": 24152,
+    "new_rows": 24152,
+    "added": 0,
+    "removed": 0,
+    "changed_common_alerts": 22,
+    "policies": 48,
+    "changed_policy_values": 24,
+    "max_policy_change": 0.0007886009365675999,
+    "policy_sign_changes": [
+      {
+        "era": "SW2014",
+        "level": "L3",
+        "horizon": 20,
+        "cost": 0.0,
+        "metric": "policy_cash",
+        "comparison": "diffusion_without_size",
+        "mean_delta_old": 0.000134755044025,
+        "mean_delta_new": -7.086344669450765e-05
+      },
+      {
+        "era": "SW2014",
+        "level": "L3",
+        "horizon": 20,
+        "cost": 0.0,
+        "metric": "policy_market",
+        "comparison": "diffusion_without_size",
+        "mean_delta_old": 0.000134755044025,
+        "mean_delta_new": -7.086344669450718e-05
+      },
+      {
+        "era": "SW2014",
+        "level": "L3",
+        "horizon": 20,
+        "cost": 0.002,
+        "metric": "policy_cash",
+        "comparison": "diffusion_without_size",
+        "mean_delta_old": 0.000134485533937,
+        "mean_delta_new": -7.072171980111871e-05
+      },
+      {
+        "era": "SW2014",
+        "level": "L3",
+        "horizon": 20,
+        "cost": 0.002,
+        "metric": "policy_market",
+        "comparison": "diffusion_without_size",
+        "mean_delta_old": 0.000134485533937,
+        "mean_delta_new": -7.072171980111883e-05
+      },
+      {
+        "era": "SW2014",
+        "level": "L3",
+        "horizon": 20,
+        "cost": 0.005,
+        "metric": "policy_cash",
+        "comparison": "diffusion_without_size",
+        "mean_delta_old": 0.0001340812688049,
+        "mean_delta_new": -7.050912946103503e-05
+      },
+      {
+        "era": "SW2014",
+        "level": "L3",
+        "horizon": 20,
+        "cost": 0.005,
+        "metric": "policy_market",
+        "comparison": "diffusion_without_size",
+        "mean_delta_old": 0.0001340812688049,
+        "mean_delta_new": -7.050912946103443e-05
+      }
+    ]
+  },
+  "code_sha256": "fb563cbc8a910c4ea49d21a87dc36cce003160e2c71b672182b0d5210cf334ab"
+}

@@ -1,0 +1,2 @@
+module,factor,theory,formula,direction,applicable_industries,economic_date,publication_date,available_at,frequency,source,historical_revisions,aggregation,missing_rule,failure_condition,replication_status,horizon
+A,PMI_M2_prior_sensitivity_interaction,增长与融资状态对行业现金流及折现条件的差异影响,sum(beta_j * (state_j-train_mean_j)/train_sd_j),经验敏感度方向，待验证,各分类层级内>=24历史观测，横截面>=20行业,PMI及M2统计月份,未逐月核验,月末+45日主/+75日敏感性，严格早于信号,月,R11本地宏观JSON与R01/R05历史篮子,现时历史表，修订版本未认证,PMI及M2联合历史Ridge，宏观条件秩分数与价格各50%,缺失不压缩统计月份；两时钟共同母体；不补零,同样本价格控制已解释；延迟后不稳；主增量未通过,EP35扩展Historical-proxy，本轮未确立增量,主20/次60交易日

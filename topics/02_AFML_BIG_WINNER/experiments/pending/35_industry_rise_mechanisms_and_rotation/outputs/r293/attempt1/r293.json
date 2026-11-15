@@ -1,0 +1,9 @@
+{
+  "question": "固定组合风险缓释及收益代价是否跨年稳定？regime相对原模型是否有稳定增量？",
+  "inputs": ["outputs/r292/date_metrics.parquet", "outputs/r290/date_metrics.parquet", "protocols/r223.json", "src/portfolio_uncertainty_r223.py"],
+  "family": "144模型政策费用组各5项：最坏/平均短缺对持有、最坏/平均短缺对随机、期末收益对持有，共720；96个state/interaction对base组合各3项：最坏/平均短缺及期末收益，共288。全1008项保留，不按结果选取。",
+  "aggregation": "同日期配对，先月内日期等权、再月份等权；年度按该年可用月份等权，不把部分2026年称全年。同时保留日期等权均值便于与R292对照。缺月不填零。",
+  "uncertainty": "沿R223日历月Bartlett HAC6。保留>=24有效月、>=3年、非退化标准误的资格要求；未达门槛不输出区间。合格时全族Bonferroni并分别为历史HAC和MC预留半错误预算，半宽z*(HAC_SE+MC_SE)，仅近似历史参考；共同随机项在regime对base差中严格消除。",
+  "mc": "随机参照单日模拟方差先按月内均值权重传播，再按跨月均值传播；与历史HAC标准误分别列出。不把模拟精度当预测稳定性。",
+  "decision": "跨年全部正向、资格满足且校正下界>0才进入稳定支持筛查；仍不替代独立未来、经济机制和真实执行。"
+}

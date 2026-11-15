@@ -1,0 +1,44 @@
+{
+  "version": "R250",
+  "scope": "capital_accounting family diagnostic extension, original16-family registry unchanged",
+  "routes": {
+    "operating_followup": {
+      "path": "outputs/r246/evaluation/outputs/r95/alerts.parquet",
+      "sha256": "18e03e818ee8a43cc3f62d92820fe185a9a4b556ba65730cb34e82e666c24153"
+    },
+    "operating_paired_contrasts": {
+      "path": "outputs/r246/evaluation/outputs/r96/contrasts.json",
+      "sha256": "333e31277476e509d99dc9f0ff350173ce346f9a7918161e9d433d73985488d1"
+    },
+    "quarter_fields": {
+      "path": "outputs/r247/quarter_fields.parquet",
+      "sha256": "584c5c3a56f1681b1ceedc0ad35600d2fd94f88086bf7c8efb026cb8aeb2050a"
+    },
+    "industry_quarter_comparisons": {
+      "path": "outputs/r248/comparisons.parquet",
+      "sha256": "bc95c4a927018f77c9e00736bbbed1778defb1779b7c2c4bfc6855582ffb24d2"
+    },
+    "unresolved_capex": {
+      "path": "outputs/r249/negative_years.json",
+      "sha256": "37735a53f3a14ef179ff057bafecead8fcc279d4fe82a0f3c4f27d41c278048f"
+    },
+    "annotated_industry_evidence": {
+      "path": "outputs/r250/industry_evidence.parquet",
+      "sha256": "9a6fb294e4225115ec22a5a66ba9c0a0570fb8f25ec7448c203cd69ad46e48eb"
+    },
+    "dictionary": {
+      "path": "outputs/r250/factor_dictionary_extension.json",
+      "sha256": "45af0dd5e85ff7375d32f20b5ae68a6618ba454da1ee0543d49f0de14a981cb7"
+    },
+    "training_gates": {
+      "path": "outputs/r250/training_gates.json",
+      "sha256": "4924d83e89e510bbdea4e11e1c2de276fdf5d910dfde079785c70f2a773b8be2"
+    }
+  },
+  "new_models": 0,
+  "adoption": false,
+  "production_enabled": false,
+  "default_release_unchanged": "R183",
+  "predictive_increment": "not_testable_under_original_history_gate",
+  "whole_goal_complete": false
+}

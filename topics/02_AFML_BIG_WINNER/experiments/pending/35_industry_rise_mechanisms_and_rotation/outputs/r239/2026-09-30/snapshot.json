@@ -1,0 +1,613 @@
+{
+  "schema": "ep35.research_archive_view.v1",
+  "as_of": "2026-09-30",
+  "scope": "Retrospective inspection of exact-date archived records; not proof this whole report was available then",
+  "market_state": {
+    "schema": "ep35.regime_research_monitor.v1",
+    "as_of": "2026-09-30",
+    "clock": "signal_close",
+    "state_date": "2026-09-30",
+    "known_at_proxy": "2026-09-30",
+    "known_at_precision": "date only; usable after market close, no first-publication timestamp certification",
+    "source_last_date": "2026-10-21",
+    "regime": "down_low",
+    "state_status": "known_historical_proxy",
+    "features": {
+      "trend63": -0.114188803654097,
+      "vol21": 0.010345623179675707,
+      "prior_vol_median": 0.012012541766737156
+    },
+    "dummy_reference": "down_low",
+    "state_dummies": {
+      "down_high": 0,
+      "up_low": 0,
+      "up_high": 0
+    },
+    "model_eligibility": "not_established_by_market_state",
+    "prediction": null,
+    "adoption": false,
+    "production_enabled": false,
+    "strict_pit": false,
+    "interpretation": "historical market state only; not economic phase, calibrated probability, recommendation or current live signal",
+    "source": {
+      "path": "outputs/r195/market_regimes.parquet",
+      "sha256": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615"
+    }
+  },
+  "event_prior_state": {
+    "schema": "ep35.regime_research_monitor.v1",
+    "as_of": "2026-09-30",
+    "clock": "prior_close",
+    "state_date": "2026-09-29",
+    "known_at_proxy": "2026-09-29",
+    "known_at_precision": "date only; usable after market close, no first-publication timestamp certification",
+    "source_last_date": "2026-10-21",
+    "regime": "down_low",
+    "state_status": "known_historical_proxy",
+    "features": {
+      "trend63": -0.13909721022237953,
+      "vol21": 0.010496979537128914,
+      "prior_vol_median": 0.012022404608468616
+    },
+    "dummy_reference": "down_low",
+    "state_dummies": {
+      "down_high": 0,
+      "up_low": 0,
+      "up_high": 0
+    },
+    "model_eligibility": "not_established_by_market_state",
+    "prediction": null,
+    "adoption": false,
+    "production_enabled": false,
+    "strict_pit": false,
+    "interpretation": "historical market state only; not economic phase, calibrated probability, recommendation or current live signal",
+    "source": {
+      "path": "outputs/r195/market_regimes.parquet",
+      "sha256": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615"
+    }
+  },
+  "families": [
+    {
+      "family": "core_three_tasks",
+      "name": "核心三任务",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "core_three_tasks",
+        "records": 203,
+        "source_rounds": [
+          196
+        ],
+        "fit_gate_records": 203,
+        "other_gate_records": 0,
+        "status_counts": {
+          "fit": 203
+        },
+        "source_reason_counts": {
+          "null": 203
+        },
+        "state_training_support_recorded": 203,
+        "state_calibration_support_recorded": 203,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "退出较原模型少亏，启动无普遍改善；多数退出仍不及持有",
+      "adoption": false,
+      "exact_date_rows": 16950,
+      "source": "outputs/r196/predictions.parquet",
+      "source_sha256": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 180
+    },
+    {
+      "family": "l1_three_tasks",
+      "name": "一级三任务",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "l1_three_tasks",
+        "records": 27,
+        "source_rounds": [
+          196
+        ],
+        "fit_gate_records": 15,
+        "other_gate_records": 12,
+        "status_counts": {
+          "fit": 15,
+          "skip": 12
+        },
+        "source_reason_counts": {
+          "null": 15,
+          "\"insufficient_calibration\"": 12
+        },
+        "state_training_support_recorded": 27,
+        "state_calibration_support_recorded": 27,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "保留训练/校准失败，不能把原始未校准模型冒充regime概率模型",
+      "adoption": false,
+      "exact_date_rows": 558,
+      "source": "outputs/r196/predictions.parquet",
+      "source_sha256": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 18
+    },
+    {
+      "family": "rank_target",
+      "name": "收益排名目标",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "rank_target",
+        "records": 137,
+        "source_rounds": [
+          196
+        ],
+        "fit_gate_records": 137,
+        "other_gate_records": 0,
+        "status_counts": {
+          "fit": 137
+        },
+        "source_reason_counts": {
+          "null": 137
+        },
+        "state_training_support_recorded": 137,
+        "state_calibration_support_recorded": 137,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "排序局部改善不形成普遍成本后优势",
+      "adoption": false,
+      "exact_date_rows": 12270,
+      "source": "outputs/r196/predictions.parquet",
+      "source_sha256": "5971697176eba481877198b6ea3d0625728cc16bab9fd2c05dc54b212cfca180",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 126
+    },
+    {
+      "family": "market_style",
+      "name": "市场与风格",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "market_style",
+        "records": 456,
+        "source_rounds": [
+          199
+        ],
+        "fit_gate_records": 140,
+        "other_gate_records": 316,
+        "status_counts": {
+          "skip": 316,
+          "fit": 140
+        },
+        "source_reason_counts": {
+          "\"insufficient_train\"": 236,
+          "null": 140,
+          "\"insufficient_calibration\"": 76,
+          "\"insufficient_train_classes\"": 4
+        },
+        "state_training_support_recorded": 456,
+        "state_calibration_support_recorded": 456,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "交互多数增加换手，基准和时期敏感",
+      "adoption": false,
+      "exact_date_rows": 14388,
+      "source": "outputs/r199/predictions.parquet",
+      "source_sha256": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 120
+    },
+    {
+      "family": "battery",
+      "name": "装车量单行业",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "battery",
+        "records": 60,
+        "source_rounds": [
+          198
+        ],
+        "fit_gate_records": 8,
+        "other_gate_records": 52,
+        "status_counts": {
+          "skip": 52,
+          "fit": 8
+        },
+        "source_reason_counts": {
+          "[\"train_rows\", \"train_months\", \"train_each_class\", \"cal_rows\", \"cal_months\", \"cal_each_class\"]": 33,
+          "null": 20,
+          "[\"train_rows\", \"train_months\", \"train_each_class\", \"cal_rows\", \"cal_each_class\"]": 4,
+          "[\"train_rows\", \"train_each_class\", \"cal_rows\", \"cal_months\", \"cal_each_class\"]": 3
+        },
+        "state_training_support_recorded": 20,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "20日决策正负混合，未胜始终行业，区间重叠不可拼净值",
+      "adoption": false,
+      "exact_date_rows": 48,
+      "source": "outputs/r198/predictions.parquet",
+      "source_sha256": "35f7d7febcc877a3601e2af889bb3ab40d108f75bbdae77f6f309eda80837059",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 48
+    },
+    {
+      "family": "eps_expectations",
+      "name": "固定年度EPS",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "eps_expectations",
+        "records": 128,
+        "source_rounds": [
+          197
+        ],
+        "fit_gate_records": 16,
+        "other_gate_records": 112,
+        "status_counts": {
+          "skip": 112,
+          "fit": 16
+        },
+        "source_reason_counts": {
+          "\"insufficient_train_rows_or_months\"": 112,
+          "null": 16
+        },
+        "state_training_support_recorded": 128,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "局部胜过交互价格模型，但仍落后原始价格基线",
+      "adoption": false,
+      "exact_date_rows": 0,
+      "source": "outputs/r197/predictions.parquet",
+      "source_sha256": "c0d9ce2d5e02a5f8035f79d0553a77ed03b11122e1a4d0fcc0bea05b56e257c1",
+      "status": "no_exact_date_output",
+      "reason": "no archived row on requested date; do not infer data failure or fill last score"
+    },
+    {
+      "family": "size_diffusion",
+      "name": "规模与扩散",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "size_diffusion",
+        "records": 456,
+        "source_rounds": [
+          199
+        ],
+        "fit_gate_records": 152,
+        "other_gate_records": 304,
+        "status_counts": {
+          "skip": 304,
+          "fit": 152
+        },
+        "source_reason_counts": {
+          "\"insufficient_train\"": 220,
+          "null": 152,
+          "\"insufficient_calibration\"": 80,
+          "\"insufficient_train_classes\"": 4
+        },
+        "state_training_support_recorded": 456,
+        "state_calibration_support_recorded": 456,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "局部正差受共同完整样本和回撤限制",
+      "adoption": false,
+      "exact_date_rows": 14388,
+      "source": "outputs/r199/predictions.parquet",
+      "source_sha256": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 120
+    },
+    {
+      "family": "financing",
+      "name": "融资机制",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "financing",
+        "records": 228,
+        "source_rounds": [
+          199
+        ],
+        "fit_gate_records": 28,
+        "other_gate_records": 200,
+        "status_counts": {
+          "skip": 200,
+          "fit": 28
+        },
+        "source_reason_counts": {
+          "\"insufficient_train\"": 184,
+          "null": 28,
+          "\"insufficient_calibration\"": 16
+        },
+        "state_training_support_recorded": 228,
+        "state_calibration_support_recorded": 228,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "反转局部线索不代表配置稳定增益",
+      "adoption": false,
+      "exact_date_rows": 0,
+      "source": "outputs/r199/predictions.parquet",
+      "source_sha256": "f924a2e41aed7602b91e5faebbc61cab2140104393b7bd0dd1df5c7c21ee17ce",
+      "status": "no_exact_date_output",
+      "reason": "no archived row on requested date; do not infer data failure or fill last score"
+    },
+    {
+      "family": "profit_events",
+      "name": "利润预期事件",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "profit_events",
+        "records": 140,
+        "source_rounds": [
+          205
+        ],
+        "fit_gate_records": 50,
+        "other_gate_records": 90,
+        "status_counts": {
+          "skip": 90,
+          "fit": 50
+        },
+        "source_reason_counts": {
+          "\"insufficient_train\"": 90,
+          "null": 50
+        },
+        "state_training_support_recorded": 140,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "交互下新增预期修正的20日行动增量十组全负",
+      "adoption": false,
+      "exact_date_rows": 0,
+      "source": "outputs/r205/predictions.parquet",
+      "source_sha256": "299c7f871772a0c06980f4ffb5a7641a881106f105d15545791677c4d949c5d2",
+      "status": "no_exact_date_output",
+      "reason": "no archived row on requested date; do not infer data failure or fill last score"
+    },
+    {
+      "family": "leader_catchup",
+      "name": "龙头与追赶",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "leader_catchup",
+        "records": 532,
+        "source_rounds": [
+          200
+        ],
+        "fit_gate_records": 180,
+        "other_gate_records": 352,
+        "status_counts": {
+          "skip": 352,
+          "fit": 180
+        },
+        "source_reason_counts": {
+          "\"insufficient_train\"": 292,
+          "null": 180,
+          "\"insufficient_calibration\"": 58,
+          "\"insufficient_train_classes\"": 2
+        },
+        "state_training_support_recorded": 532,
+        "state_calibration_support_recorded": 532,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "龙头交互组合偏弱；追赶原股票两侧仅261/1526区间完整",
+      "adoption": false,
+      "exact_date_rows": 19194,
+      "source": "outputs/r200/predictions.parquet",
+      "source_sha256": "edba4f119fbab8f8a472d49779b87344afae9a2bc1cdd26ff8caad35bc10e383",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 156
+    },
+    {
+      "family": "financial_dual_clock",
+      "name": "财务双时钟",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "financial_dual_clock",
+        "records": 2100,
+        "source_rounds": [
+          201
+        ],
+        "fit_gate_records": 23,
+        "other_gate_records": 2077,
+        "status_counts": {
+          "skip": 2077,
+          "fit": 23
+        },
+        "source_reason_counts": {
+          "\"no_test_rows\"": 1266,
+          "\"insufficient_train\"": 811,
+          "null": 23
+        },
+        "state_training_support_recorded": 2100,
+        "state_calibration_support_recorded": 2100,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "窄公告母体交互自身改善，财务相对控制仍负",
+      "adoption": false,
+      "exact_date_rows": 504,
+      "source": "outputs/r201/predictions.parquet",
+      "source_sha256": "cd3d3fdd0d97954b763c141faf7a80fdda3b5f1a639e300a769e4819e0844e5f",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 42
+    },
+    {
+      "family": "capital_accounting",
+      "name": "资本会计",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "capital_accounting",
+        "records": 6,
+        "source_rounds": [
+          206
+        ],
+        "fit_gate_records": 0,
+        "other_gate_records": 6,
+        "status_counts": {
+          "insufficient_history": 6
+        },
+        "source_reason_counts": {
+          "null": 6
+        },
+        "state_training_support_recorded": 0,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "仅六期观察，训练资格不足；未虚构模型",
+      "adoption": false,
+      "exact_date_rows": 0,
+      "status": "no_fitted_model_history_insufficient",
+      "reason": "original training gates failed; no score fabricated"
+    },
+    {
+      "family": "macro_interaction",
+      "name": "宏观交互",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "macro_interaction",
+        "records": 95736,
+        "source_rounds": [
+          202
+        ],
+        "fit_gate_records": 39936,
+        "other_gate_records": 55800,
+        "status_counts": {
+          "skip": 55800,
+          "fit": 39936
+        },
+        "source_reason_counts": {
+          "\"insufficient_history\"": 55800,
+          "null": 39936
+        },
+        "state_training_support_recorded": 0,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "45/75日滞后和时期敏感；自身改善未稳定胜价格F",
+      "adoption": false,
+      "exact_date_rows": 7470,
+      "source": "outputs/r202/scores.parquet",
+      "source_sha256": "d2cf27be9a0d3d3ebe4706f366e80f27d599b0e3142d1941fb68716b09e4a7e4",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 54
+    },
+    {
+      "family": "profit_expectations",
+      "name": "固定年度利润预期",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "profit_expectations",
+        "records": 48,
+        "source_rounds": [
+          197
+        ],
+        "fit_gate_records": 4,
+        "other_gate_records": 44,
+        "status_counts": {
+          "skip": 44,
+          "fit": 4
+        },
+        "source_reason_counts": {
+          "\"insufficient_train_rows_or_months\"": 44,
+          "null": 4
+        },
+        "state_training_support_recorded": 48,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "八期局部正收益线索，未达稳定条件",
+      "adoption": false,
+      "exact_date_rows": 72,
+      "source": "outputs/r197/predictions.parquet",
+      "source_sha256": "c0d9ce2d5e02a5f8035f79d0553a77ed03b11122e1a4d0fcc0bea05b56e257c1",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 36
+    },
+    {
+      "family": "early_financial",
+      "name": "早期财务",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "early_financial",
+        "records": 28,
+        "source_rounds": [
+          203
+        ],
+        "fit_gate_records": 0,
+        "other_gate_records": 28,
+        "status_counts": {
+          "insufficient_history_before_any_row_or_class_gate": 28
+        },
+        "source_reason_counts": {
+          "null": 28
+        },
+        "state_training_support_recorded": 0,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "仅六期观察，训练资格不足；保留状态诊断",
+      "adoption": false,
+      "exact_date_rows": 0,
+      "status": "no_fitted_model_history_insufficient",
+      "reason": "original training gates failed; no score fabricated"
+    },
+    {
+      "family": "fixed_factor_rank",
+      "name": "固定因子排序",
+      "as_of": "2026-09-30",
+      "historical_qualification": {
+        "family": "fixed_factor_rank",
+        "records": 272,
+        "source_rounds": [
+          204
+        ],
+        "fit_gate_records": 120,
+        "other_gate_records": 152,
+        "status_counts": {
+          "skip": 152,
+          "fit": 120
+        },
+        "source_reason_counts": {
+          "\"insufficient_train\"": 152,
+          "null": 120
+        },
+        "state_training_support_recorded": 0,
+        "state_calibration_support_recorded": 0,
+        "scope": "historical gate ledger; shared family records not independent model counts",
+        "adoption": false
+      },
+      "retrospective_conclusion": "相对弱校准base改善不能替代原始fixed对照",
+      "adoption": false,
+      "exact_date_rows": 18240,
+      "source": "outputs/r204/predictions.parquet",
+      "source_sha256": "52d987acdabb6b77bffc4c1e97606f0aa8de06bcbb7ffa92e931af592bdf0196",
+      "status": "historical_exact_date_records",
+      "reason": null,
+      "model_slices": 128
+    }
+  ],
+  "score_view": "historical_score_view.parquet",
+  "ranking": "display within original model slice only; no new selection or cross-model aggregate",
+  "future_outcomes_exposed": false,
+  "production_enabled": false,
+  "adoption": false
+}

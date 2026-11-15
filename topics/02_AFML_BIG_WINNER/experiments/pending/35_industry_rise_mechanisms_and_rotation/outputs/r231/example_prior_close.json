@@ -1,0 +1,32 @@
+{
+  "schema": "ep35.regime_research_monitor.v1",
+  "as_of": "2026-09-30",
+  "clock": "prior_close",
+  "state_date": "2026-09-29",
+  "known_at_proxy": "2026-09-29",
+  "known_at_precision": "date only; usable after market close, no first-publication timestamp certification",
+  "source_last_date": "2026-10-21",
+  "regime": "down_low",
+  "state_status": "known_historical_proxy",
+  "features": {
+    "trend63": -0.13909721022237953,
+    "vol21": 0.010496979537128914,
+    "prior_vol_median": 0.012022404608468616
+  },
+  "dummy_reference": "down_low",
+  "state_dummies": {
+    "down_high": 0,
+    "up_low": 0,
+    "up_high": 0
+  },
+  "model_eligibility": "not_established_by_market_state",
+  "prediction": null,
+  "adoption": false,
+  "production_enabled": false,
+  "strict_pit": false,
+  "interpretation": "historical market state only; not economic phase, calibrated probability, recommendation or current live signal",
+  "source": {
+    "path": "outputs/r195/market_regimes.parquet",
+    "sha256": "d83bdb0135a9a1abf24a8eb6a75eb7f0879e69f8cc716a1318f27cd36c7ab615"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "scope": "R189 engine unchanged except input/output/protocol references and added momentum method",
+  "replacements": [
+    [
+      "out=ROOT/'outputs/r189'",
+      "out=ROOT/'outputs/r194'"
+    ],
+    [
+      "source=ROOT/'outputs/r131/predictions.parquet'",
+      "source=ROOT/'outputs/r194/mapped_predictions.parquet'"
+    ],
+    [
+      "['F',cohort,'equal']",
+      "['F',cohort,'momentum','equal']"
+    ],
+    [
+      "ROOT/'protocols/r189.json'",
+      "ROOT/'protocols/r194.json'"
+    ]
+  ],
+  "source_sha256": "f6f150539bac655d92bb8a8731d09cc722eb830068b6d88676283cf0cefcc457",
+  "engine_sha256": "24a46686f769dc5000da89897e42e07c53395e6389bea6e77fed3485b9191c2c"
+}

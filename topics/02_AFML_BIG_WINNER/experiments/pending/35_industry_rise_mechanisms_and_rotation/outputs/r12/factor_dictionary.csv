@@ -1,0 +1,2 @@
+module,factor,theory,formula,direction,applicable_industries,economic_date,publication_date,available_at,frequency,source,historical_revisions,aggregation,missing_rule,failure_condition,replication_status,horizon
+D,same_broker_fixed_FY_profit_revision,现金流预期修正与信息扩散,(new-old)/(abs(new)+abs(old)),正向待验证,历史成员>=5已知且覆盖>=80%；不足80%只作独立诊断,explicit fiscal_year,"max(list date, body date)",严格早于信号日；实际归档时间另存，不称严格PIT,报告事件，月末采样,R11 EP24 original HTML receipts,原始版本修订完整性未知,同机构同FY修正，机构至公司中位数，公司至行业中位数,冲突/零分母/过期/覆盖不足保留缺失,既有价格解释；覆盖选择；预测误差不改善,EP35扩展Historical-proxy；当前未确立增量,主20；次60交易日；FY+1主，FY+0次

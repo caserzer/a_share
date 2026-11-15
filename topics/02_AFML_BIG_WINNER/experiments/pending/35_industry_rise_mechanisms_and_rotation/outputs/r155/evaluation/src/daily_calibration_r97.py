@@ -1,0 +1,23 @@
+import pandas as pd
+from scipy.special import expit
+from sklearn.linear_model import LogisticRegression
+from common import *
+from build_panel import price_features,delayed_labels
+from train_r02 import F
+
+def run():
+ out=ROOT/'outputs/r97';out.mkdir(exist_ok=True);dp=CACHE/'forecast_v5/daily_industries.parquet';bp=CACHE/'forecast_v5/CSI_ALL.parquet';mp=ROOT/'outputs/r02/model_parameters.json';sp=ROOT/'data/r09_daily_scores.parquet';daily=pd.read_parquet(dp);market=pd.read_parquet(bp).close;parts=[]
+ for _,g in daily.groupby(KEY+['block'],sort=False):
+  q=delayed_labels(price_features(g),market,horizons=(20,));q['log_members']=np.log(q.members);q=q[q[F].notna().all(axis=1)&q.coverage.ge(.8)&q.members.ge(5)];parts.append(q)
+ ready=pd.concat(parts,ignore_index=True);ranks=ready.groupby(['era','level','date'])[F].transform(centered_rank);models=[m for m in json.loads(mp.read_text()) if m['cohort']=='F' and m['method']=='F' and m['task']=='onset' and m['horizon']==20];original=pd.read_parquet(sp);ledger=[];preds=[];calrows=[];summary=[];bins=[]
+ for m in models:
+  boundary=pd.Timestamp(m['year'],1,1);start=pd.Timestamp(m['year']-1,7,1);assert pd.Timestamp(m['fit_max_maturity'])<start;g=ready[ready.era.eq(m['era'])&ready.level.eq(m['level'])&ready.date.ge(start)&ready.date.lt(pd.Timestamp(m['year']+1,1,1))].copy();x=(ranks.loc[g.index,m['columns']].to_numpy()-np.array(m['scaler_mean']))/np.array(m['scaler_scale']);g['linear']=x@np.array(m['coefficient']).reshape(-1)+m['intercept'][0];g=g[g.past_excess20.le(0)];g['y']=((g.return20>=.05)&(g.excess20>=.03)).astype(float).where(g.excess20.notna());ca=g[g.date.lt(boundary)&g.maturity20.lt(boundary)&g.y.notna()].copy();te=g[g.date.ge(boundary)].copy();base=dict(era=m['era'],level=m['level'],year=m['year']);count=ca.y.value_counts().reindex([0.,1.],fill_value=0);ok=ca.date.dt.to_period('M').nunique()>=4 and len(ca)>=100 and count.min()>=10;rec=dict(**base,status='fit' if ok else 'skip',cal_rows=len(ca),cal_dates=ca.date.nunique(),cal_months=ca.date.dt.to_period('M').nunique(),class0=int(count[0]),class1=int(count[1]),cal_max_maturity=ca.maturity20.max(),fit_max_maturity=m['fit_max_maturity'],original_monthly_n_cal=m['n_cal'],base_model=m)
+  if not ok:ledger.append(rec);continue
+  ca['weight']=m['n_cal']/(ca.date.nunique()*ca.groupby('date').date.transform('size'));fit=LogisticRegression(C=1,max_iter=2000,random_state=3502).fit(ca[['linear']],ca.y,sample_weight=ca.weight);rec.update(coefficient=float(fit.coef_[0,0]),intercept=float(fit.intercept_[0]),weight_total=float(ca.weight.sum()),iterations=int(fit.n_iter_[0]));ledger.append(rec);ca['model_year']=m['year'];calrows.append(ca[KEY+['date','maturity20','y','linear','weight','model_year']]);te['monthly_probability']=expit(te.linear*m['calibration_coefficient'][0][0]+m['calibration_intercept'][0]);te['daily_probability']=fit.predict_proba(te[['linear']])[:,1];old=original[original.era.eq(m['era'])&original.level.eq(m['level'])&original.year.eq(m['year'])&original.eligible];check=te.merge(old[KEY+['date','score']],on=KEY+['date'],how='outer',indicator=True,validate='one_to_one');assert check._merge.eq('both').all() and np.max(np.abs(check.monthly_probability-check.score))<1e-10;te['year']=m['year'];preds.append(te[KEY+['date','maturity20','y','year','linear','monthly_probability','daily_probability']]);valid=te[te.y.notna()]
+  for method in ['monthly','daily']:
+   p=valid[method+'_probability'];z=pd.DataFrame(dict(date=valid.date,brier=(p-valid.y)**2,logloss=-(valid.y*np.log(p.clip(1e-15,1-1e-15))+(1-valid.y)*np.log(1-p.clip(1e-15,1-1e-15))),gap=p-valid.y));means=z.groupby('date')[['brier','logloss','gap']].mean().mean();summary.append(dict(**base,method=method,rows=len(te),mature=len(valid),unknown=int(te.y.isna().sum()),dates=valid.date.nunique(),**means.to_dict()))
+   v=valid.assign(bin=np.minimum((p*10).astype(int),9),prob=p)
+   for k,h in v.groupby('bin'):bins.append(dict(**base,method=method,bin=int(k),rows=len(h),probability=h.prob.mean(),observed=h.y.mean()))
+  print('R97',base,len(ca),len(te),flush=True)
+ pd.concat(calrows,ignore_index=True).to_parquet(out/'calibration_rows.parquet',index=False);pd.concat(preds,ignore_index=True).to_parquet(out/'predictions.parquet',index=False);js(out/'folds.json',ledger);js(out/'summary.json',summary);js(out/'bins.json',bins);paths=[dp,bp,mp,sp,ROOT/'protocols/r97.json',Path(__file__),ROOT/'src/build_panel.py',ROOT/'src/train_r02.py'];js(out/'receipt.json',dict(reads={str(p):sha(p) for p in paths},models=len(models),fitted=sum(x['status']=='fit' for x in ledger),base_model_refitted=False));print(json.dumps(summary,default=str))
+if __name__=='__main__':run()

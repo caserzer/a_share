@@ -1,0 +1,35 @@
+{
+  "removed_placeholder": {
+    "module": "A",
+    "factor": "macro_state_x_sensitivity",
+    "theory": "增长信用与折现",
+    "formula": "待登记：PMI/信用冲量×仅用历史估计的行业敏感度",
+    "direction": "行业依赖",
+    "applicable_industries": "宏观敏感行业",
+    "economic_date": "待定义",
+    "publication_date": "缺口",
+    "available_at": "缺口",
+    "frequency": "月",
+    "source": "国家统计局/央行候选；本轮未取得历史发布版本",
+    "historical_revisions": "未证明全量版本完整",
+    "aggregation": "R01协议；变体先组内合成，再模块等权；G使用中位数",
+    "missing_rule": "保留缺失，不填0；配对样本与全母体覆盖分别报告",
+    "failure_condition": "同日共享变量不能独立排序；价格先行",
+    "replication_status": "未实现；来源待补",
+    "horizon": "主20/次60交易日；未实现因子待事前登记",
+    "dictionary_origin": "outputs/factor_dictionary.csv"
+  },
+  "replacement": "PMI_M2_prior_sensitivity_interaction",
+  "preserved_originals": {
+    "outputs/factor_dictionary.csv": "1bd6b69e0d2fde7e1033eba781a1077f229a402f5c1e54bb33bc9b4b760ada8e",
+    "outputs/r12/factor_dictionary.csv": "6ce92a8d02b58ddb585b7d107eeba7cda638122a43d67405af56dfb4e2ff6b60",
+    "outputs/r13/factor_dictionary.csv": "67c495fc5d2a8ca1d36792484260a50c3748e5f9c557390f7d4103284c2e1eb8"
+  },
+  "corrections": [
+    "A已有PMI/M2交互实验，但信用冲量/利率/汇率等未完整实现",
+    "D明确区分EPS来源与实际利润修正实验，完整报告屏障由R15接管",
+    "B原文已下载复核，连续产业序列仍未实现",
+    "F价格及模型控制公式/聚合分开，移除通用PE时点措辞",
+    "C/E/H/G的缺失和代理边界不因目录统一而晋级"
+  ]
+}

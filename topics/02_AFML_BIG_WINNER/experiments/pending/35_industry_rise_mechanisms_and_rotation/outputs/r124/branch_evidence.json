@@ -1,0 +1,63 @@
+{
+  "status": "stopped_parameter_search_not_adopted",
+  "results": {
+    "outputs/r120/verification.json": {
+      "status": "PASS",
+      "stock_rows": 944946,
+      "known_pairs": 212940,
+      "member_rows": 2118522,
+      "industry_rows": 73594,
+      "eligible": 2442,
+      "strict": 846,
+      "known_pairs_without_pe_comparison_eligibility": 373,
+      "negative_endpoint_pairs": 40448,
+      "strict_PIT": false,
+      "prediction_evaluated": false
+    },
+    "outputs/r121/verification.json": {
+      "status": "PASS",
+      "joined_rows": 73594,
+      "folds": 840,
+      "eligible": 7,
+      "skipped": 833,
+      "target_rows": 11254,
+      "model_fitted": false,
+      "strict_PIT": false
+    },
+    "outputs/r122/verification.json": {
+      "status": "PASS",
+      "models": 14,
+      "eligible_folds": 7,
+      "paired_rows": 715,
+      "known": 618,
+      "unknown": 97,
+      "max_normal_equation_prediction_error": 2.463307335887066e-16,
+      "date_metric_rows": 128,
+      "support_groups": 0,
+      "strict_PIT": false,
+      "adopted": false
+    },
+    "outputs/r123/verification.json": {
+      "previous_update_predictions_sha256": "56aef7044c76e27ce1554fc3fbbf1ffaeb1119228a36c09e5c50513237746bcd",
+      "previous_update_predictions_reproduced": true,
+      "status": "PASS",
+      "folds": 140,
+      "models": 9,
+      "predictions": 223,
+      "known": 175,
+      "unknown": 48,
+      "max_prediction_error": 2.2898349882893854e-16,
+      "date_rows": 132,
+      "support_groups": 0,
+      "strict_PIT": false
+    }
+  },
+  "refs": {
+    "outputs/r120/verification.json": "f74acd0a99e77d9f0e0c7fca036767ffafe80010dbaa708086ca23e655adfa8d",
+    "outputs/r121/verification.json": "5cadad01b13273b491a60aa2aed1acc3122618e06aa1213544e380cd152db338",
+    "outputs/r122/verification.json": "931fc14265781eb7770efda35b288f45a02ac2421c268f4fe8143b450e58a11e",
+    "outputs/r123/verification.json": "989bfc6235c0378619c92d53dea4d73b361e7c393e09dc690430bee59a1d072c"
+  },
+  "strict_pit": false,
+  "clock_selected": false
+}

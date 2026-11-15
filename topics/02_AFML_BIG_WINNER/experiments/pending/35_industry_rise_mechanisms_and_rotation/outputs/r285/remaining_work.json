@@ -1,0 +1,48 @@
+{
+  "status": "active_not_complete",
+  "next_local": {
+    "task": "核对冻结核心反转模型是否具备日频重放资格，区分月末分类准确度与去重反转过程的提前识别；复用本地日频价格，先审计原趋势资格、事件定义和可用折，不调参数、不新增采集。",
+    "scope": "Existing local core reversal parameters, price features and event definitions; eligibility audit before new replay",
+    "acceptance": "Identify exact eligible folds, trend/event rules and missing daily inputs; no invented economic reversal label or retrospective tuning"
+  },
+  "external_dependencies": [
+    {
+      "item": "Reference full69/26 and crowding definitions",
+      "evidence": "reports/r240_reference_access_audit.md",
+      "condition": "Accessible authorized full original; no repeat identical failed requests"
+    },
+    {
+      "item": "Operating quarterly history",
+      "evidence": "reports/r251_local_financial_inventory.md",
+      "condition": "Genuine new periods and fields, not duplicated files"
+    },
+    {
+      "item": "First-release/PIT and independent future validation",
+      "evidence": "outputs/r266/requirements_audit.json",
+      "condition": "Evidence of initial publication/revisions and future mature observations"
+    },
+    {
+      "item": "Battery revision explanation and independent mature labels",
+      "evidence": "reports/r284_battery_vintage_resolution.md",
+      "condition": "Identifiable release/revision evidence or actual new observations; no inferred replacement"
+    }
+  ],
+  "stopped_local_searches": [
+    "Regime parameter/threshold/window search",
+    "Financing clock winner selection",
+    "Rescan unchanged financial archives",
+    "Repeat already verified hierarchical weighting",
+    "Battery production scope splicing",
+    "Export coordinate/alpha/threshold winner search",
+    "Conflict-based deletion and model refit",
+    "Battery seasonal harmonic/phase selection",
+    "Repeated synonym searches for same installation discrepancy"
+  ],
+  "completed_since_prior": [
+    "R280 all81 installation body checks",
+    "R281 fixed seasonal control",
+    "R282 frozen validation contract",
+    "R283 missing label coverage",
+    "R284 monthly and annual version comparison"
+  ]
+}

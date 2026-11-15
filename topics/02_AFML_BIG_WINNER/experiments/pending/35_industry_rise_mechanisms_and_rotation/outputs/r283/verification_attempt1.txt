@@ -1,0 +1,1 @@
+Verifier failed before checking results: delayed_labels also computes past_excess20/60 and requires price_features first. AttributeError: DataFrame has no attribute mom20. Fixed verifier call chain to original price_features -> delayed_labels; no source/results changed.

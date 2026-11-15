@@ -1,0 +1,9 @@
+{
+  "question": "Effect of R97 calibration slope changes on frozen R09 alert identity and process detection",
+  "scores": "All R97 test keys, monthly_probability baseline and daily_probability alternative; no fit or direction selection",
+  "selection": "Same weak population; top20% ceil each era/level/date, industry_code tie break; monthly completed-month ends; daily cooldown20 same-industry day_i gap>20 no replacement",
+  "events": "Exact R09 confirmation_events including unassessable left-censored entries; hit only if evaluable and sameblock selected alert in prior20 sessions, strictly before confirmation",
+  "metrics": "Each classification/level/year/strategy/version: alerts, mature precision, unknown count, repeatedindustry-month alerts, process denominators/recall, earliest lead median and hits/100alerts. Confirmation-year denominator, alert-year workload may cross year boundary, not independent opportunities",
+  "validation": "Baseline reproduces all R09 selected identities and event hits; all decisions use scores only, no outcomes. Preserve both versions and event matching detail",
+  "decision": "Describe all years incl unchanged; no automatic adoption, causal claim or cost-adjusted allocation inference; no thresholds/windows search"
+}
