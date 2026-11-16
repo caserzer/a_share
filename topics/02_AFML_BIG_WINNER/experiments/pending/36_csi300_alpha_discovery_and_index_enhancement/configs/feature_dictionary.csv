@@ -1,0 +1,91 @@
+feature,formula,group,availability
+ret_lag0,close/close.shift(1)-1 at lag0,core,signal close; retrospective source proxy
+xsret_lag0,"daily contemporaneous CSI300 zscore return ddof0, min100; lag0",core,signal close; retrospective source proxy
+ret_lag1,close/close.shift(1)-1 at lag1,core,signal close; retrospective source proxy
+xsret_lag1,"daily contemporaneous CSI300 zscore return ddof0, min100; lag1",core,signal close; retrospective source proxy
+ret_lag2,close/close.shift(1)-1 at lag2,core,signal close; retrospective source proxy
+xsret_lag2,"daily contemporaneous CSI300 zscore return ddof0, min100; lag2",core,signal close; retrospective source proxy
+ret_lag3,close/close.shift(1)-1 at lag3,core,signal close; retrospective source proxy
+xsret_lag3,"daily contemporaneous CSI300 zscore return ddof0, min100; lag3",core,signal close; retrospective source proxy
+ret_lag4,close/close.shift(1)-1 at lag4,core,signal close; retrospective source proxy
+xsret_lag4,"daily contemporaneous CSI300 zscore return ddof0, min100; lag4",core,signal close; retrospective source proxy
+ret_lag5,close/close.shift(1)-1 at lag5,core,signal close; retrospective source proxy
+xsret_lag5,"daily contemporaneous CSI300 zscore return ddof0, min100; lag5",core,signal close; retrospective source proxy
+ret_lag6,close/close.shift(1)-1 at lag6,core,signal close; retrospective source proxy
+xsret_lag6,"daily contemporaneous CSI300 zscore return ddof0, min100; lag6",core,signal close; retrospective source proxy
+ret_lag7,close/close.shift(1)-1 at lag7,core,signal close; retrospective source proxy
+xsret_lag7,"daily contemporaneous CSI300 zscore return ddof0, min100; lag7",core,signal close; retrospective source proxy
+ret_lag8,close/close.shift(1)-1 at lag8,core,signal close; retrospective source proxy
+xsret_lag8,"daily contemporaneous CSI300 zscore return ddof0, min100; lag8",core,signal close; retrospective source proxy
+ret_lag9,close/close.shift(1)-1 at lag9,core,signal close; retrospective source proxy
+xsret_lag9,"daily contemporaneous CSI300 zscore return ddof0, min100; lag9",core,signal close; retrospective source proxy
+ret_lag10,close/close.shift(1)-1 at lag10,core,signal close; retrospective source proxy
+xsret_lag10,"daily contemporaneous CSI300 zscore return ddof0, min100; lag10",core,signal close; retrospective source proxy
+ret_lag11,close/close.shift(1)-1 at lag11,core,signal close; retrospective source proxy
+xsret_lag11,"daily contemporaneous CSI300 zscore return ddof0, min100; lag11",core,signal close; retrospective source proxy
+ret_lag12,close/close.shift(1)-1 at lag12,core,signal close; retrospective source proxy
+xsret_lag12,"daily contemporaneous CSI300 zscore return ddof0, min100; lag12",core,signal close; retrospective source proxy
+ret_lag13,close/close.shift(1)-1 at lag13,core,signal close; retrospective source proxy
+xsret_lag13,"daily contemporaneous CSI300 zscore return ddof0, min100; lag13",core,signal close; retrospective source proxy
+ret_lag14,close/close.shift(1)-1 at lag14,core,signal close; retrospective source proxy
+xsret_lag14,"daily contemporaneous CSI300 zscore return ddof0, min100; lag14",core,signal close; retrospective source proxy
+ret_lag15,close/close.shift(1)-1 at lag15,core,signal close; retrospective source proxy
+xsret_lag15,"daily contemporaneous CSI300 zscore return ddof0, min100; lag15",core,signal close; retrospective source proxy
+ret_lag16,close/close.shift(1)-1 at lag16,core,signal close; retrospective source proxy
+xsret_lag16,"daily contemporaneous CSI300 zscore return ddof0, min100; lag16",core,signal close; retrospective source proxy
+ret_lag17,close/close.shift(1)-1 at lag17,core,signal close; retrospective source proxy
+xsret_lag17,"daily contemporaneous CSI300 zscore return ddof0, min100; lag17",core,signal close; retrospective source proxy
+ret_lag18,close/close.shift(1)-1 at lag18,core,signal close; retrospective source proxy
+xsret_lag18,"daily contemporaneous CSI300 zscore return ddof0, min100; lag18",core,signal close; retrospective source proxy
+ret_lag19,close/close.shift(1)-1 at lag19,core,signal close; retrospective source proxy
+xsret_lag19,"daily contemporaneous CSI300 zscore return ddof0, min100; lag19",core,signal close; retrospective source proxy
+mom1,close/close.shift(1)-1,core,signal close; retrospective source proxy
+mom3,close/close.shift(3)-1,core,signal close; retrospective source proxy
+mom5,close/close.shift(5)-1,core,signal close; retrospective source proxy
+mom10,close/close.shift(10)-1,core,signal close; retrospective source proxy
+mom20,close/close.shift(20)-1,core,signal close; retrospective source proxy
+mom60,close/close.shift(60)-1,core,signal close; retrospective source proxy
+seg2_5,close.shift(1)/close.shift(5)-1,core,signal close; retrospective source proxy
+seg6_20,close.shift(5)/close.shift(20)-1,core,signal close; retrospective source proxy
+vol5,return rolling5 std ddof0,core,signal close; retrospective source proxy
+amp5,rolling5 mean(high/low-1),core,signal close; retrospective source proxy
+dd5,close/rolling5 max(close)-1,core,signal close; retrospective source proxy
+pos5,(close-rolling5 min(low))/(rolling5 max(high)-rolling5 min(low)),core,signal close; retrospective source proxy
+volume_rel5,volume/rolling5 mean(volume),core,signal close; retrospective source proxy
+money_rel5,money/rolling5 mean(money),core,signal close; retrospective source proxy
+turnover_rel5,turnover/rolling5 mean(turnover),core,signal close; retrospective source proxy
+market_mom5,CSI300 price index mom5,core,signal close; retrospective source proxy
+market_vol5,CSI300 price index vol5,core,signal close; retrospective source proxy
+market_dd5,CSI300 price index dd5,core,signal close; retrospective source proxy
+vol20,return rolling20 std ddof0,core,signal close; retrospective source proxy
+amp20,rolling20 mean(high/low-1),core,signal close; retrospective source proxy
+dd20,close/rolling20 max(close)-1,core,signal close; retrospective source proxy
+pos20,(close-rolling20 min(low))/(rolling20 max(high)-rolling20 min(low)),core,signal close; retrospective source proxy
+volume_rel20,volume/rolling20 mean(volume),core,signal close; retrospective source proxy
+money_rel20,money/rolling20 mean(money),core,signal close; retrospective source proxy
+turnover_rel20,turnover/rolling20 mean(turnover),core,signal close; retrospective source proxy
+market_mom20,CSI300 price index mom20,core,signal close; retrospective source proxy
+market_vol20,CSI300 price index vol20,core,signal close; retrospective source proxy
+market_dd20,CSI300 price index dd20,core,signal close; retrospective source proxy
+vol60,return rolling60 std ddof0,core,signal close; retrospective source proxy
+amp60,rolling60 mean(high/low-1),core,signal close; retrospective source proxy
+dd60,close/rolling60 max(close)-1,core,signal close; retrospective source proxy
+pos60,(close-rolling60 min(low))/(rolling60 max(high)-rolling60 min(low)),core,signal close; retrospective source proxy
+volume_rel60,volume/rolling60 mean(volume),core,signal close; retrospective source proxy
+money_rel60,money/rolling60 mean(money),core,signal close; retrospective source proxy
+turnover_rel60,turnover/rolling60 mean(turnover),core,signal close; retrospective source proxy
+market_mom60,CSI300 price index mom60,core,signal close; retrospective source proxy
+market_vol60,CSI300 price index vol60,core,signal close; retrospective source proxy
+market_dd60,CSI300 price index dd60,core,signal close; retrospective source proxy
+body5,rolling5 mean((close-open)/(high-low)),extension,signal close; retrospective source proxy
+upvolume5,rolling5 sum(volume*I(return>0))/rolling5 sum(volume),extension,signal close; retrospective source proxy
+price_volume_corr5,"rolling5 corr(return,volume.pct_change)",extension,signal close; retrospective source proxy
+body10,rolling10 mean((close-open)/(high-low)),extension,signal close; retrospective source proxy
+upvolume10,rolling10 sum(volume*I(return>0))/rolling10 sum(volume),extension,signal close; retrospective source proxy
+price_volume_corr10,"rolling10 corr(return,volume.pct_change)",extension,signal close; retrospective source proxy
+body20,rolling20 mean((close-open)/(high-low)),extension,signal close; retrospective source proxy
+upvolume20,rolling20 sum(volume*I(return>0))/rolling20 sum(volume),extension,signal close; retrospective source proxy
+price_volume_corr20,"rolling20 corr(return,volume.pct_change)",extension,signal close; retrospective source proxy
+body60,rolling60 mean((close-open)/(high-low)),extension,signal close; retrospective source proxy
+upvolume60,rolling60 sum(volume*I(return>0))/rolling60 sum(volume),extension,signal close; retrospective source proxy
+price_volume_corr60,"rolling60 corr(return,volume.pct_change)",extension,signal close; retrospective source proxy

@@ -1,0 +1,95 @@
+{
+  "version": "csi300_alpha_ab_v1-p0.1",
+  "authorization": "User execute on 2026-11-16 supersedes GOAL.md document-only authorization; no deployment or monitoring",
+  "evidence": "historical_simulated_oos",
+  "forward": "FORWARD_PENDING",
+  "input_end": "2026-10-21",
+  "universe": "BaoStock historical weekly CSI300 membership, retrospective Historical-proxy; original provider updateDate retained; no current membership backfill",
+  "daily_membership": "Backward-asof provider updateDate; only at/after updateDate, weekly effective-date resolution; intraweek changes unknown",
+  "data_availability": "Daily bar complete assumed 18:00 Asia/Shanghai; not first-vintage certified",
+  "signal": "Last market session of W-FRI, discard terminal incomplete week",
+  "eligibility": "60 consecutive market-calendar positive conflict-free closes and at least 80% finite core features; no future-label/deletion filters",
+  "xs_transform": "ddof=0; at least 100 valid contemporaneous members; zero variance becomes NaN",
+  "target": "H10 adj_open[t+11]/adj_open[t+1]-1; fixed market calendar endpoints; no replacement endpoint; cross-sectional zscore ddof=0 minimum100",
+  "outer": "2021Q1 onward, signal_date quarter determines model; fit cutoff previous quarter final calendar day 23:59 Asia/Shanghai",
+  "inner": "Last 6 calendar months of mature signals; purge training intervals whose exit >= minimum validation entry",
+  "retrain": "Inner selected n_estimators; refit all mature eligible training rows at cutoff; no outer targets in prediction input",
+  "ridge": {
+    "alpha": 10,
+    "imputation": "training median, all-missing=0",
+    "scale": "training mean/population sd, constant sd=1"
+  },
+  "lightgbm": {
+    "objective": "regression",
+    "max_depth": 4,
+    "num_leaves": 15,
+    "learning_rate": 0.03,
+    "min_child_samples": 100,
+    "n_estimators": 1000,
+    "early_stopping_rounds": 50,
+    "reg_lambda": 5,
+    "colsample_bytree": 0.9,
+    "subsample": 0.8,
+    "subsample_freq": 1,
+    "n_jobs": 4,
+    "verbosity": -1,
+    "deterministic": true,
+    "force_col_wise": true
+  },
+  "seeds": [
+    17,
+    42,
+    2026
+  ],
+  "ensemble": "equal mean of 3 scores, no outer selection",
+  "E0_RES": "EP20 rolling_scores audited: 36 complete prior monthly qfq stock returns regressed on CSI300 price return with intercept, rcond1e-12/rank2; next monthly residual; skip most recent completed month, mean/std(ddof1) of 11 residual months. Exact month-end quotes; unknown endpoints remain missing, no EP20 suspension/deletion fill rules. Forward hold each monthly score to subsequent weekly signal; new historical-proxy price basis explicitly labelled.",
+  "quintiles": "ascending score then instrument lexicographic; group=floor(5*ordinal/N)+1, ordinal starts0; no missing-score fill",
+  "costs_bps": {
+    "zero": [
+      0,
+      0
+    ],
+    "main": [
+      10,
+      20
+    ],
+    "stress": [
+      30,
+      80
+    ]
+  },
+  "cost_definition": "all-in execution friction proxy including slippage; fees on actual gross buy/sell value; cash retained",
+  "turnover": "0.5*(sum(abs(target_stock-pretrade_stock))+abs(target_cash-pretrade_cash)); separate executed buys/NAV and sells/NAV; initial entry exempt cap but pays fees",
+  "B": {
+    "active_share_target": 0.1,
+    "stock_active_bound": 0.005,
+    "industry_active_bound": 0.02,
+    "turnover_cap": 0.2,
+    "unscored_z": 0,
+    "projection": "Euclidean least squares; untradeable holdings fixed; cash/nonnegative holdings hard; other breaches explicitly logged"
+  },
+  "weight_availability": "No historic publication timestamp in Tushare snapshots: formal B unavailable. Reconstructed proxy only after snapshot date + one market session close; no future snapshot use; new members without known weights remain unknown, not zero.",
+  "industry": "Retrospective historical interval L1 proxy; no strict vintage certification",
+  "account_gate": "No assumed fills when critical state absent; no carrying unsupported prices as certified NAV; detailed branch blockers if source cannot close",
+  "statistics": {
+    "bootstrap": "circular moving block of weekly observations; same time block across models; preserve entire cross-section",
+    "block_weeks": 13,
+    "replicates": 2000,
+    "seed": 20261116,
+    "interval": "percentile 2.5/97.5",
+    "icir": "mean weekly RankIC / sample sd, not annualized",
+    "annual_days": 252
+  },
+  "robustness": [
+    "rolling36 separately retrained H10",
+    "biweekly anchor first full 2021 weekly signal even ordinal",
+    "one extra market day execution delay",
+    "H5/H20 same H10 predictions"
+  ],
+  "outcome_trials": "All 7 registered models including missing E0-RES; E2/E3 3 seeds; no tuning after outcomes",
+  "outlier_handling": "No target winsorization; invalid/nonpositive/conflicting endpoints unknown. Train-only transforms; ratios reanchor invariant. Source disagreement sensitivity flags never predictors.",
+  "B_proxy_missing_weight_rule": "If most recent available monthly snapshot constituent set differs from signal universe or any benchmark drift price is missing: no B/B0 orders that week, retain actual positions and cash, record target_unavailable and legacy holdings. This is a separately labelled deferred-rebalance reconstructed-weight proxy, not the fully specified formal B. Never assign new members zero weight.",
+  "proxy_account": "Synthetic qfq units: consistently use qfq open/close for holdings and NAV, raw open and vendor trade status and raw daily limits only for fill gates; no claim actual share/cash-dividend replication. Unknown held open/close valuation stops account certification at first affected date; do not carry unsupported old marks.",
+  "execution_gates": "Positive raw/qfq open, vendor_trade_status==1, raw limits finite and lower<upper. Reject buys at/above upper and sells at/below lower within 0.000001 yuan. Unknown state means no order; volume not used as opening-time fill evidence. No book depth/liquidity certification.",
+  "B_proxy_industry": "Historical L1 intervals from EP32; if no unique known interval use UNKNOWN group and disclose affected benchmark weight; this is a proxy constraint only."
+}

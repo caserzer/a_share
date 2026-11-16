@@ -1,0 +1,12 @@
+{
+  "registered_after_execution_v2_blockers_observed": true,
+  "before_sensitivity_outputs": true,
+  "sole_reason": "Missing actual quotes on verified full-day suspension dates",
+  "scenarios": {
+    "suspend_flat": 0.0,
+    "suspend_haircut20": 0.2
+  },
+  "max_age_market_sessions": 20,
+  "mark_rule": "Most recent observed conflict-free qfq close times (1-haircut), only verified full-day suspension and missing close; not a real quotation. No forward-fill features/labels. No trading on missing raw open; baseline projection uses these explicitly proxy marks. Unexplained or >20-session gaps stop the account. No complete wealth/corporate-action certification.",
+  "scope": "All registered model accounts and matched controls, expanding H10 weekly main cost only; no retraining; primary strict accounts unchanged"
+}

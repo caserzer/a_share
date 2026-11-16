@@ -1,0 +1,11 @@
+requirement,status,evidence
+A/B independent disposition,DELIVERED_RESULTS_AND_PRECISE_BLOCKS,reports/A_report_cn.md; reports/B_report_cn.md
+All 7 registered models,PASS,outputs/path_a/expanding_ranking_summary.csv
+Sealed predictions and A/B hashes,PASS,outputs/manifests/final_validation.json
+Calendar/maturity/purge/quarter availability,PASS,tests/test_time_and_features.py
+Causal prefix/reanchor and train-only transforms,PASS_WITH_RETROSPECTIVE_SOURCE_LIMIT,tests/test_time_and_features.py
+Membership/weight availability and corporate actions,AUDITED_PROXY_FORMAL_B_BLOCKED,outputs/data_audit/benchmark_price_gaps.csv
+Account fees/cash/nonfills/missing marks,PASS_ENGINEERING_BLOCKED_VALUATION,outputs/manifests/final_validation.json
+Costs/official/matched/B0/EW controls,RUN_TO_BLOCKERS_OFFICIAL_TOTAL_RETURN_UNAVAILABLE,outputs/account_metrics.csv
+Years/quarters/uncertainty/fixed robustness,RANKING_COMPLETE_ACCOUNTS_BLOCKED_EXPLICITLY,outputs/annual_performance.csv; outputs/sensitivity/
+Historical OOS and forward identity,PASS_FORWARD_PENDING,configs/protocol.json

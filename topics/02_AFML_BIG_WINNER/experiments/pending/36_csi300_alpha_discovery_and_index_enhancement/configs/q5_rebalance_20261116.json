@@ -1,0 +1,63 @@
+{
+  "run_id": "q5_rebalance_20261116",
+  "created_at": "2026-11-16T08:20:23.538821+00:00",
+  "authorization": "User requested E1/E2/E3 Q5 equal-weight, 1-week/2-week/1-month sensitivity and complete report",
+  "models": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "scheme": "expanding",
+  "model_horizon": "H10 unchanged",
+  "training": "reuse all original sealed predictions; no retraining",
+  "seed_selection": "E1 fixed; E2/E3 fixed equal ensemble of 17/42/2026",
+  "frequencies": {
+    "one_week": "all original weekly signal dates",
+    "two_weeks": "W-FRI calendar-week distance from initial signal week divisible by 2; empty holiday weeks do not reset phase",
+    "one_month": "first available weekly signal of each natural calendar month, not every 4 weeks and not exact month-end"
+  },
+  "initial_signal": "2021-01-08 00:00:00",
+  "execution": "next actual market-session open; no intervening retargeting or retry of failed orders",
+  "portfolio": "original Q5 floor(5*ordinal/N)==4, ascending score then instrument; target equal weight; cash and legacy positions retained on failed fills",
+  "valuations": [
+    "strict",
+    "suspend_flat",
+    "suspend_haircut20"
+  ],
+  "main_valuation": "suspend_flat, continuing preceding disclosed net-excess diagnostic",
+  "mark_rule": "Only verified full-day suspension permits last observed qfq-close mark for <=20 sessions; haircut20 applies 20% haircut; no invented corporate-action terminal value; strict branch uses actual quotes only",
+  "costs_bps": {
+    "zero": [
+      0,
+      0
+    ],
+    "main": [
+      10,
+      20
+    ],
+    "stress": [
+      30,
+      80
+    ]
+  },
+  "first_build_cost": true,
+  "annualization_sessions": 252,
+  "benchmarks": [
+    "CSI300_TOTAL_RETURN closes H00300.CSI",
+    "CSI300_PRICE closes 000300.SH"
+  ],
+  "benchmark_clock": "initial signal close, strategy capital in cash until next open; no total-return open imputation",
+  "comparison": "main common end=min available account end across 9 suspend_flat/main combinations; common across 27 flat cost branches separately; global common across all 54 proxy-valuation branches separately; native intervals separately; no cherry-picked end dates",
+  "yearly": "calendar returns on common and available intervals; blocked years explicit, no zero returns after failure",
+  "uncertainty": {
+    "method": "circular paired time blocks of 65 market sessions, 2000 replicates, seed20261116; interval for annualized mean daily active return, not CAGR",
+    "minimum_days": 130
+  },
+  "selection": "report every 3x3 combination; no optimizer chooses model/frequency",
+  "prior_weekly_outcomes_seen": true,
+  "frequency_results_seen_at_freeze": false,
+  "evidence": "historical_simulated_oos",
+  "forward": "FORWARD_PENDING",
+  "data_end": "2026-10-21 00:00:00",
+  "scope_accounts": 81
+}

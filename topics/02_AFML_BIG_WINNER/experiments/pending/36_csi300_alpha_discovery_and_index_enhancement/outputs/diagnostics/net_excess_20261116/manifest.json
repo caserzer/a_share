@@ -1,0 +1,109 @@
+{
+  "post_delivery_diagnostic": true,
+  "models_retrained": false,
+  "costs_changed": false,
+  "mark_rule_changed": false,
+  "start_clock": "first signal close; capital remains cash until next market open; all initial fees retained",
+  "common_end_rule": "minimum available end across E1/E2/E3 and EW/B0 in both existing suspension scenarios",
+  "common_end": "2025-03-03 00:00:00",
+  "account_inputs": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/A_E1.csv",
+      "sha256": "25dc5bbb08d286be796dec9975e19d09b4ef5f5a103ba0ae60a0138e2c4a8ffe",
+      "receipt_sha256": "883a25a552f228b8a3caec54a544134a9f8f424b276b955c88fa5824d8f8ff91"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/A_E2.csv",
+      "sha256": "8f6d87058be7402412d53f4799444126e79551f9eb7c62e494319a8858111914",
+      "receipt_sha256": "90ad40d1d93496983360e86bb17351720e72f390267df627a9d386134f007908"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/A_E3.csv",
+      "sha256": "c1d9baed965ce9d307bf18d43157fc3aeae29fddcdfaeab60ac5cbc0fa4e14bf",
+      "receipt_sha256": "9febb0141c85da553c194132e0fbfe69a32f3793d81006688da855eb49024cbb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/A_EW.csv",
+      "sha256": "96b98a1c816448dc16aef89808419792655a3516d982a763512fd1f09eaf6ed1",
+      "receipt_sha256": "0cc02397d2bc2c26df0a34882d19ce87f7a66066344083760777a62856a9cfc4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/B_E1.csv",
+      "sha256": "04272e45dc4284f8191abae4deed24d64c09d344abc195c2adbc005b8f9d5158",
+      "receipt_sha256": "1067a664dea5d8bab6322bba4ecb2e4ab457f5d43f93b0edd3e1787e9487d15e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/B_E2.csv",
+      "sha256": "8533a293e748298c447a32082797ee398370ee6bc241b46b87c00c016d044a0b",
+      "receipt_sha256": "858fa5f7c13fa551e2162ecf1964de9b0c5925d0330ece0ba65703b2f22933ee"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/B_E3.csv",
+      "sha256": "cc68c726bccd7c76e3b9f267ffc77a14933550a8162b17c7958326dea5f4c232",
+      "receipt_sha256": "25bbd01afa6fe9b35a5641739a021b1a5b1440e562ed4d35345be332235102a1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_flat/B_B0.csv",
+      "sha256": "4afe6992d48bf8be3d0e45615c00ea26e31e00923c5e69f69154cce6f748b592",
+      "receipt_sha256": "2a0d9d9f2852090b23180e71e4b8315303cbb03b6885b41052b3ce134f2e6ae5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/A_E1.csv",
+      "sha256": "16f78f7d002f29c0fe2d570bd6adb02e6e87f22b7dac23d936fe631cda50a7cc",
+      "receipt_sha256": "86726eda96caa35c855cb7c7903c8919dc231396999ca6bdedbb7a9436656b38"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/A_E2.csv",
+      "sha256": "f01059d8c069834cab774070020473b11dc29402bf861585ab3a6d8acc3cbdb3",
+      "receipt_sha256": "fd01c8246b032d5824365e6d24543ab950882f9c781394314095dc968ddeb471"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/A_E3.csv",
+      "sha256": "1b59677590fac1b06611a9aebb64febe1520d84c9254e19e134edbccfb5e192e",
+      "receipt_sha256": "1ac2ff2130ed7b62900b8d079a86f168886f12b1855818907f7abb6d3c5e7962"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/A_EW.csv",
+      "sha256": "07e4be58b9f36ff140d77a316916903ec3687c1d255925dbd95c47d373750217",
+      "receipt_sha256": "d4ba8f48830b6e9d839a154e511f134d273354663d55e238e1a91555a560e3b6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/B_E1.csv",
+      "sha256": "0ecbfcea8eccfcf0b0c6162abec564481f9fb63d0264b7963a13a2a552927a62",
+      "receipt_sha256": "711dcc76b0595a5237bb65b36bee03eb21029151d7f9a288a3be3a8204c37d17"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/B_E2.csv",
+      "sha256": "0dc88455ab37240fef992b434add089cd477b3907819742db5cd70d69f2841d6",
+      "receipt_sha256": "aeef6e5aff986d9cd5b9d784ab00b4a6c651b35782bb0935017e40ba1f99c2d5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/B_E3.csv",
+      "sha256": "3e46ad6a65f67e58d74d6f5274312e1da73194ae67ac6d6d41d08352df012e77",
+      "receipt_sha256": "e293b8cb909966b06e4f1c95e9a77f653a2f376832736d3a9caecc64fea95826"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/sensitivity/suspend_haircut20/B_B0.csv",
+      "sha256": "0f9a27b24089f77b46823844feb26fd74148929312a18591b27c3b874dc1b501",
+      "receipt_sha256": "8ddb8908d26811a7b8f33fa771f3111cbd79cab5dbf3c150d4f2f0d4b4a5bd69"
+    }
+  ],
+  "total_return_source_receipt": {
+    "api": "index_daily",
+    "params": {
+      "ts_code": "H00300.CSI",
+      "start_date": "20210101",
+      "end_date": "20261021"
+    },
+    "sha256": "364af6463bc2c44083ec0e0bd3f7dfd97731c90c9571ee56be1b0c1bd00e2297",
+    "provider_code": 0,
+    "rows": 1403
+  },
+  "script_sha256": "836cbc2c60ee6a72f0babda6af685f25f1f54a5fa4359445751ddf1fa411ee85",
+  "summary_sha256": "d8a538fcd358b4e1b7a119bdaa8d70eee3da58a439f5ab7fea9e5a47a23cf49a",
+  "annual_sha256": "344e33e09a75268a7764d26c054b3eb69ec01692ea1f9b68fdfb6da779e8fefd",
+  "curves_sha256": "9616e25ae74fd1a58cc69b4916d53f8abcac26273e251e0510805feaac154bb7",
+  "official_index_identity_source": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
+  "report_sha256": "1571cb030b69b03e7624869a55d9455f5e2f5d36dbfdd894ef6404c01e409965",
+  "validation_sha256": "46f9c7f9a2108d5feaf39d685357839f7fca42cf4f0ef3252568b4d15f3d5910"
+}

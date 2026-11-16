@@ -1,0 +1,65 @@
+{
+  "scheme": "expanding",
+  "fold": "2025Q1",
+  "model_fit_cutoff": "2024-12-31 23:59:59.999999999",
+  "train_rows": 113387,
+  "train_start": "2017-04-07 00:00:00",
+  "train_end": "2024-12-13 00:00:00",
+  "max_label_maturity": "2024-12-30 00:00:00",
+  "inner_max_exit": "2024-07-01 00:00:00",
+  "validation_min_entry": "2024-07-08 00:00:00",
+  "validation_rows": 7095,
+  "prediction_path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2025Q1.parquet",
+  "prediction_sha256": "0059a91614f56606a84cb7cc6a3650a240bc27a76979bcd4f5f8eb005f0385b2",
+  "feature_sha256": "92ca23db0c918fecce0554803480fe01ca982ad81887c6cb846a59e454063a9f",
+  "models": [
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E1.pkl",
+      "sha256": "51d96521afc76e7c434e9b3547c85f6bc85679dfefa9017d604b792fb4c1b41f"
+    },
+    {
+      "model": "E2",
+      "seed": 17,
+      "rounds": 5,
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E2_seed17.txt",
+      "sha256": "a75f2bbb58a1653f4f69bdad814b0764b8bd271d4772b6c9dbf213195d802b97"
+    },
+    {
+      "model": "E2",
+      "seed": 42,
+      "rounds": 7,
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E2_seed42.txt",
+      "sha256": "55bdde290f6dbc9791ebfe7ee909b51637a4156cb44a2ccda5bacf875b091055"
+    },
+    {
+      "model": "E2",
+      "seed": 2026,
+      "rounds": 33,
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E2_seed2026.txt",
+      "sha256": "fe3f9b7b24a9ee2b357b23dfc996e4161c8637b7ff4037b244afe9de3de502ac"
+    },
+    {
+      "model": "E3",
+      "seed": 17,
+      "rounds": 1,
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E3_seed17.txt",
+      "sha256": "010293d3cdc64e5c753da3458f0c06838bd4c9f16b4745a7b7a0ed82ccd77856"
+    },
+    {
+      "model": "E3",
+      "seed": 42,
+      "rounds": 1,
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E3_seed42.txt",
+      "sha256": "3169a1342a04dfbe3ab372ea002e1e64e4b138af5d64f976d41132aac3ed062a"
+    },
+    {
+      "model": "E3",
+      "seed": 2026,
+      "rounds": 1,
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E3_seed2026.txt",
+      "sha256": "159f4a706f524a386d6a91e4022df4d2b098744bd333a821471512ce5e24d25f"
+    }
+  ],
+  "outer_labels_passed_to_prediction": false
+}

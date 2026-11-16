@@ -1,0 +1,11 @@
+{
+  "version": "execution_v2_suspension_backfill",
+  "reason": "Audit found all pre-2026 trade-status flags missing; v1 accounts held cash until 2026-05-25 and are not strategy evidence",
+  "outcomes_already_seen": true,
+  "preserve_v1": "outputs/archive/execution_v1 and private/archive/execution_v1",
+  "prediction_retraining": false,
+  "prediction_and_cost_rules_unchanged": true,
+  "rule": "Complete vendor suspension date partitions over full calendar; no suspension record means opening state active if queried partition complete; full-day and 09:30-containing intervals block open; later intraday intervals do not affect opening execution; unparseable/conflicting source state unknown; still require raw price limits and valid raw/qfq opening quote",
+  "scope": "Repair execution-state data coverage only, no model/parameter/search changes",
+  "certification": "Historical proxy only; validate on new forward data later"
+}
