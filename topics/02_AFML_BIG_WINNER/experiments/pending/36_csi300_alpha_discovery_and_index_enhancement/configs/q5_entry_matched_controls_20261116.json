@@ -1,0 +1,27 @@
+{
+  "created_at": "2026-11-16T12:00:28.552557+00:00",
+  "authorization": "Continue investigating model-specific new-entry advantage versus simple matched purchases",
+  "posthoc": true,
+  "source": "Original frozen phase1 target and B delayed-account pre-entry holdings/cash; reconstruct same actual fills as preceding trade-leg experiment",
+  "controls": [
+    "market_ew",
+    "industry_ew",
+    "industry_r20_ew"
+  ],
+  "eligible": "Current phase1 signal members, not already held (units<=1e-12), actually buyable at execution open under original gates. Include original new entries; never use future returns to choose or drop controls.",
+  "budget": "Only replace actual new-entry purchase principal, keeping actual sells, retained-stock topups, total buy principal and fees/cash identical. Fractional synthetic units, same as source.",
+  "industry": "Historical original L1 mapping at signal date; UNKNOWN explicit, not strict-PIT certified",
+  "price_matching": "Within each industry and eligible pool, sort known prior20-session raw qfq close returns then instrument; floor(5*ordinal/N) quintile. Unknown returns separate. Small groups retained and disclosed, not replaced with broader favourable matches.",
+  "matching_self_overlap": "Original selected entries remain eligible; disclose benchmark budget overlapping selected entrants, effective number and small-group coverage; no claim of independent controls when self-overlap is high",
+  "valuation": "Original suspend_flat and held-close/end-open requirements unchanged; missing entire matched pair stays unknown; no repair or future quote filtering",
+  "windows": [
+    "actual_phase2_open",
+    "1_sessions",
+    "5_sessions",
+    "10_sessions",
+    "20_sessions"
+  ],
+  "periods": "primary endpoint<=2025-03-03; full limited by original same-model A/B/C common end; common valid events across all three controls for main tables",
+  "statistics": "Ordered monthly episode paired differences; 3-observation circular blocks,2000 resamples,seed20261116. Primary family=9 main-cost model/control contrasts at actual_phase2 endpoint in primary period; two-sided centered-bootstrap p and Holm. Other windows/costs/full scopes descriptive; posthoc not independent confirmation.",
+  "no_search": true
+}

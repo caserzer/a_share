@@ -1,0 +1,17 @@
+{
+  "created_at": "2026-11-16T11:33:22.001995+00:00",
+  "authorization": "Continue investigating monthly-phase dependence; no gap repair",
+  "status": "post_hoc_diagnostic_after_phase_outcomes_seen",
+  "tests": [
+    "annual and monthly concentration, leave-one-year-out and largest-three-month exclusion as descriptive influence only",
+    "exact daily stock PnL minus fees, converted to additive log-wealth contributions",
+    "frozen H5/H10/H20 rankIC and Q5 outcomes by signal ordinal on balanced full calendar months",
+    "phase holding duration and score/basket overlap",
+    "zero/main/stress cost-gap comparison"
+  ],
+  "primary_end": "2025-03-03",
+  "supplement": "model-common horizon across all four phases; signal diagnostics full months ending before October2026",
+  "policy": "No new models, parameters, dates or accounts. No imputation or data repairs. Do not interpret post-hoc exclusions as tradable rules. Intervals descriptive without independent hypothesis confirmation.",
+  "log_attribution": "daily stock contribution=(change in marked stock value-net trade cash)/prior NAV; fee=-actual fee/prior NAV; multiply by log(1+r)/r and sum to recover log NAV exactly",
+  "mean_other": "mean log return across phase2/3/4 as a diagnostic reference, not a rebalanced investable portfolio"
+}

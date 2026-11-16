@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-11-16T11:45:31.666123+00:00",
+  "authorization": "Continue investigating timely replacement of old holdings vs entry into new holdings; no data repair",
+  "evidence": "posthoc mechanism diagnostic; outcomes of earlier phase and delayed-basket experiments already seen",
+  "controls": "For each first monthly signal after Jan2021, clone B delayed-account actual prior-close holdings/cash, mark same next-open initial NAV; H holds unchanged, S executes exactly the sell quantities of F and holds proceeds as cash, F executes the original phase1 Q5 rebalance. No leverage, same gates/costs; no further trades inside episode.",
+  "windows": [
+    "actual_phase2_open",
+    "1_session",
+    "5_sessions",
+    "10_sessions",
+    "20_sessions"
+  ],
+  "valuation": "unchanged existing suspension marks, require every held daily close and final open; any scenario unavailable blocks the matched triple for that window",
+  "membership": "Q5 selected using original sealed score/current membership at first signal close; execution gates unchanged",
+  "periods": "primary: endpoint <=2025-03-03; full: each model common A/B/C endpoint from delayed-control receipt. Every planned episode/window retained with unavailable reasons.",
+  "statistics": "mean episode returns and paired sell/buy increments; not CAGR or stitched NAV; 3-month circular time blocks, 2000 draws fixed seed20261116; descriptive intervals, not independent confirmation",
+  "decomposition": "F-H=(S-H)+(F-S). Per-stock effect dq*(exit_open-entry_open)-buy_fee-sell_fee, divided by shared start NAV. Classify entries/topups/exits/trims from actual units.",
+  "past_return": "raw frozen qfq close ratios at original signal date over 5/20 sessions; no suspension valuation marks in these diagnostic features; no thresholds fitted",
+  "no_search": true
+}

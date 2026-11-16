@@ -11,3 +11,13 @@ outputs/path_a/rolling36_ranking_weekly.csv filter=lfs diff=lfs merge=lfs -text
 outputs/sensitivity/q5_rebalance_20261116/monthly_records/all_81_accounts_monthly.csv filter=lfs diff=lfs merge=lfs -text
 # Original goal uses intentional Markdown hard line breaks.
 GOAL.md whitespace=-blank-at-eol
+
+# Large derived follow-up research tables; preserve exact evidence bytes.
+outputs/diagnostics/q5_entry_matched_controls_20261116/episodes.csv filter=lfs diff=lfs merge=lfs -text
+outputs/diagnostics/q5_phase_investigation_20261116/daily_log_gaps.csv filter=lfs diff=lfs merge=lfs -text
+outputs/diagnostics/q5_phase_investigation_20261116/stock_month_contributions.csv filter=lfs diff=lfs merge=lfs -text
+outputs/diagnostics/q5_signal_age_matched_20261116/targets.csv filter=lfs diff=lfs merge=lfs -text
+outputs/diagnostics/q5_trade_leg_investigation_20261116/stock_leg_contributions.csv filter=lfs diff=lfs merge=lfs -text
+outputs/sensitivity/q5_controls_phases_buffers_20261116/monthly_industry_deviations.csv filter=lfs diff=lfs merge=lfs -text
+outputs/sensitivity/q5_controls_phases_buffers_20261116/monthly_industry_weights.csv filter=lfs diff=lfs merge=lfs -text
+outputs/sensitivity/q5_controls_phases_buffers_20261116/monthly_returns.csv filter=lfs diff=lfs merge=lfs -text

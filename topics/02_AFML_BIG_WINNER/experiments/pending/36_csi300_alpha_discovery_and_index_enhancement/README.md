@@ -1,10 +1,13 @@
 # EP36 · 沪深300 Alpha 与指数增强
 
-当前交付：**历史排序评价完成；严格账户运行至精确数据阻断；正式净增强未认证。**
+当前交付（2026-11-16）：**已完成排序、Q5周期与执行机制、等权及行业／近期涨跌匹配验证。存在历史正向线索，但稳定独立净增量未获确认，正式B指数增强仍未认证。**
 
 用户于 2026-11-16 回复 `execute`，授权执行 GOAL.md 定义的研究，随后授权 `commit and push` 发布研究成果。原目标文档保留不改，其“仅生成文档”说明已被后续授权覆盖。未进行实盘、监控或消息发送。
 
-- 阅读入口：[中文总报告](reports/REPORT.md)
+- 最新完整探索报告：[HTML（含图表、各阶段全文及完整逐月记录）](reports/exploration_summary_20261116/REPORT.html) · [Markdown](reports/exploration_summary_20261116/REPORT.md)
+- 综合结论简版：[SYNTHESIS.md](reports/exploration_summary_20261116/SYNTHESIS.md)
+- 来源及交付核验：[manifest.json](reports/exploration_summary_20261116/manifest.json)
+- 初始阶段报告（保留原裁决）：[中文总报告](reports/REPORT.md)
 - 独立裁决：[A 排序与 Q5](reports/A_report_cn.md)、[B 受约束增强](reports/B_report_cn.md)
 - 主表：[model_comparison.csv](outputs/model_comparison.csv)
 - 年度/季度：[annual_performance.csv](outputs/annual_performance.csv)、[quarterly_performance.csv](outputs/quarterly_performance.csv)
@@ -12,6 +15,24 @@
 - Q5 周度／双周／月度敏感性：[完整报告](reports/q5_rebalance_20261116/REPORT.md)
 - E1/E2/E3 完整逐月记录：[逐月报告](reports/q5_rebalance_20261116/monthly_records/MONTHLY.md)、[Excel](outputs/sensitivity/q5_rebalance_20261116/monthly_records/E1_E2_E3_monthly_returns.xlsx)
 - 扣费后相对沪深300全收益诊断：[报告](outputs/diagnostics/net_excess_20261116/REPORT.md)
+
+## 最新研究判断与后续调查
+
+- E1/E2/E3主窗口RankIC分别约0.0398、0.0227、0.0430；E1跨训练窗口相对稳定，E2/E3未证明复杂度增量。
+- 共同区间2021-01-08至2025-03-03，月内第1信号Q5主成本净年化约4.84%、4.67%、2.73%，但其他月内相位明显较弱，不能泛化为所有月度调仓都有效。
+- 同周期Q5对成分等权的九项比较区间均跨零；缓冲降低换手，却未证明稳定提高收益。
+- 固定名单延迟、买卖分解及同日新旧名单检验指向执行路径与新增买入；不支持直接只买不卖或更频繁刷新名单。
+- 排除原新增股票后，E1相对同行业替代股票有正向支持；进一步匹配20日涨跌，三模型账户层面区间均跨零，且仅覆盖约57%—61%的新增预算。不能断言全部优势被风格解释。
+- 后续优先冻结简单基线与模型方案进行独立确认，不继续在同一历史上搜索最优日历／阈值。尚未开展真实前瞻；暂不处理数据缺口。
+
+后续详细报告：
+
+1. [等权对照、月度相位与缓冲](reports/q5_controls_phases_buffers_20261116/REPORT.html)
+2. [相位来源与固定名单延迟](reports/q5_phase_investigation_20261116/REPORT.html)
+3. [买卖分解与信号年龄](reports/q5_trade_leg_investigation_20261116/REPORT.html)
+4. [新增股票匹配与排除自身对照](reports/q5_entry_matched_controls_20261116/REPORT.html)
+
+最新完整测试集26项通过。报告中的独立窗口收益差不是年化收益；原生账户的不同可用终点不直接横向排名。初始发布与后续新增研究分别保留，本次文档更新不表示后续文件已经提交或推送。
 
 ## 可复核范围
 
@@ -75,5 +96,5 @@ python src/report.py
 
 1. 历史指数权重的真实发布时间、精确调样生效及其间权重；并处理新增成分和公司行动，不能用未来月末权重倒填。
 2. 海通证券等吸收合并/换股、退市和终值权益流水；不能虚构清仓、永久沿用旧价或无依据归零。
-3. 与股票前复权代理一致的完整基准口径；官方价格指数只能作为诊断，不冒充开盘全收益。
+3. 股票前复权代理与完整权益账本、基准计价语义进一步闭合。后续已取得H00300全收益收盘并用于诊断，但不虚构其开盘值，也不把前复权单位当作完整分红／换股权益流水。
 4. 独立冻结后的真实前瞻观察。当前未创建任何前瞻任务。

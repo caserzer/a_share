@@ -1,0 +1,1291 @@
+{
+  "run_id": "q5_controls_phases_buffers_20261116",
+  "created_at": "2026-11-16T11:11:49.041357+00:00",
+  "authorization": "User authorizes directions 2/3/4 and explicitly defers data gap repairs",
+  "models": "fixed original expanding E1/E2/E3 H10 predictions; no training",
+  "valuation": "existing suspend_flat only; no data repair or mark-rule change",
+  "costs": {
+    "zero": [
+      0,
+      0
+    ],
+    "main": [
+      10,
+      20
+    ],
+    "stress": [
+      30,
+      80
+    ]
+  },
+  "phase": "common initial Jan8 signal; starting February choose nth available weekly signal per calendar month, skip months with fewer signals; no retrospective last-week fallback",
+  "buffer": "rank scored current members descending with original tie convention; target count equals original Q5. Retain actually held names within floor(N*0.3) or floor(N*0.4), cap at K best ranks, then fill remaining slots from best ranked names. Equalize selected targets each scheduled rebalance; blocked orders remain real holdings. No score or nonmember cannot be intentionally retained.",
+  "control": "all contemporary members equal target weight, identical schedule and fees; score eligibility does not shrink EW universe",
+  "comparisons": "matched common prefixes only, family-wide primary common end plus same-model pairwise longer prefixes; native horizon separate; initial fees included; calendar monthly/annual returns with missing periods explicit",
+  "industry": "descriptive historical L1 industry weights vs same-schedule EW; not causal attribution or certified PIT; size exposure only if existing compatible point-in-time data available, no new sourcing",
+  "uncertainty": "65-session circular paired block bootstrap, 2000 reps, seed20261116; family-level Holm adjustment for two-sided paired mean-return tests; no winner selection",
+  "phase_judgment": "report all four phases and min/median/max, not select highest phase",
+  "evidence": "historical_simulated_oos; prior baseline results seen; FORWARD_PENDING",
+  "scope": [
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "EW__1w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "EW__1w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "EW__1w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "EW__2w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "EW__2w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "EW__2w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "EW__1m__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "EW__1m__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "EW__1m__p1__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "EW__1m__p2__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "EW__1m__p2__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "EW__1m__p2__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "EW__1m__p3__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "EW__1m__p3__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "EW__1m__p3__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "EW__1m__p4__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "EW__1m__p4__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "EW",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "EW__1m__p4__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E1__1w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E1__1w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E1__1w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E1__2w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E1__2w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E1__2w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E1__1m__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E1__1m__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E1__1m__p1__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__1m__p2__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__1m__p2__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__1m__p2__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__1m__p3__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__1m__p3__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__1m__p3__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__1m__p4__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__1m__p4__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__1m__p4__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E2__1w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E2__1w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E2__1w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E2__2w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E2__2w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E2__2w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E2__1m__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E2__1m__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E2__1m__p1__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__1m__p2__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__1m__p2__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__1m__p2__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__1m__p3__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__1m__p3__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__1m__p3__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__1m__p4__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__1m__p4__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__1m__p4__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E3__1w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E3__1w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E3__1w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E3__2w__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E3__2w__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E3__2w__p1__b0__stress"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": true,
+      "account": "E3__1m__p1__b0__zero"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "main",
+      "reuse": true,
+      "account": "E3__1m__p1__b0__main"
+    },
+    {
+      "group": "control",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": true,
+      "account": "E3__1m__p1__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__1m__p2__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__1m__p2__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 2,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__1m__p2__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__1m__p3__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__1m__p3__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 3,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__1m__p3__b0__stress"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__1m__p4__b0__zero"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__1m__p4__b0__main"
+    },
+    {
+      "group": "phase",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 4,
+      "buffer": null,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__1m__p4__b0__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__1w__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__1w__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__1w__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__1w__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__1w__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__1w__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__2w__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__2w__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__2w__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__2w__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__2w__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__2w__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__1m__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__1m__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__1m__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E1__1m__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E1__1m__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E1",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E1__1m__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__1w__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__1w__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__1w__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__1w__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__1w__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__1w__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__2w__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__2w__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__2w__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__2w__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__2w__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__2w__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__1m__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__1m__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__1m__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E2__1m__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E2__1m__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E2",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E2__1m__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__1w__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__1w__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__1w__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__1w__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__1w__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__1w__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__2w__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__2w__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__2w__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__2w__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__2w__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "2w",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__2w__p1__b40__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__1m__p1__b30__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__1m__p1__b30__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.3,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__1m__p1__b30__stress"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "zero",
+      "reuse": false,
+      "account": "E3__1m__p1__b40__zero"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "main",
+      "reuse": false,
+      "account": "E3__1m__p1__b40__main"
+    },
+    {
+      "group": "buffer",
+      "model": "E3",
+      "frequency": "1m",
+      "phase": 1,
+      "buffer": 0.4,
+      "cost": "stress",
+      "reuse": false,
+      "account": "E3__1m__p1__b40__stress"
+    }
+  ]
+}

@@ -1,5 +1,15 @@
 # a_share
 
+> **EP36专项更新：2026-11-16**
+>
+> 沪深300 Alpha 探索已完成模型排序、Q5调仓周期、等权对照、月内相位、缓冲、延迟执行、买卖分解及新增股票匹配。存在历史排序与特定执行方案的正向线索，但稳定独立净增量、正式指数增强及真实前瞻均未获确认。
+>
+> - [EP36完整探索报告（HTML，含分阶段全文与完整逐月记录）](topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/exploration_summary_20261116/REPORT.html)
+> - [Markdown报告](topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/exploration_summary_20261116/REPORT.md) · [EP36项目说明与证据入口](topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/README.md)
+>
+> 下方2026-10-21概览保留为此前阶段记录，不代表当前全部研究范围。
+
+
 > **研究进展更新：2026-10-21**
 >
 > 仓库已从早期框架初始化发展为多轮A股定量研究。核心专题 **[AFML Big Winner / A股收益与尾部风险研究](topics/02_AFML_BIG_WINNER/README.md)** 已覆盖EP01—EP29，并包含事件生命周期、收益排序、条件分布、重大亏损概率与个股分层适配。

@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-11-16T11:46:44.920393+00:00",
+  "authorization": "Continue same-execution old/new-score investigation",
+  "posthoc": true,
+  "control": "Clone the actual delayed B account state immediately before each phase2 execution. OLD uses frozen phase1 Q5 and NEW fresh phase2 Q5; same entry open, capital, cash, member filter, costs and gates; no later trades in window.",
+  "windows": [
+    1,
+    5,
+    10,
+    20
+  ],
+  "gap_policy": "all held daily closes and ending open required in both alternatives; no repairs; missing matched outcome stays unavailable",
+  "scope": "3models x 3costs; original H10 predictions only",
+  "statistics": "paired mean episode NEW minus OLD and 3-month time-block intervals; no CAGR, no stitched strategy, no independent confirmation"
+}
