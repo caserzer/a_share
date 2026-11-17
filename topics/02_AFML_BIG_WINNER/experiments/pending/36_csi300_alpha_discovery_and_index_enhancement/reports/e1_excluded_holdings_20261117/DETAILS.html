@@ -1,0 +1,708 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 被排除持仓追查</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>被排除持仓完整证据</h1>
+<h2>原账户相对指数：逐年贡献</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2021.0000</td>
+<td style="text-align: right;">12.4460</td>
+</tr>
+<tr>
+<td style="text-align: right;">2022.0000</td>
+<td style="text-align: right;">3.2011</td>
+</tr>
+<tr>
+<td style="text-align: right;">2023.0000</td>
+<td style="text-align: right;">0.8492</td>
+</tr>
+<tr>
+<td style="text-align: right;">2024.0000</td>
+<td style="text-align: right;">2.4543</td>
+</tr>
+<tr>
+<td style="text-align: right;">2025.0000</td>
+<td style="text-align: right;">1.8089</td>
+</tr>
+</tbody>
+</table>
+<p>以下全部为原排除持仓的相对指数贡献，不是同行业替换差。费用与现金仍单列在原账户，未强行分摊至排除持仓。</p>
+<h2>原排除持仓：正负各十只股票</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH688111</td>
+<td style="text-align: right;">1.6261</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601225</td>
+<td style="text-align: right;">1.3246</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300442</td>
+<td style="text-align: right;">1.1758</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601633</td>
+<td style="text-align: right;">1.1656</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600893</td>
+<td style="text-align: right;">0.8786</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000063</td>
+<td style="text-align: right;">0.8386</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002555</td>
+<td style="text-align: right;">0.8039</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600760</td>
+<td style="text-align: right;">0.7714</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600362</td>
+<td style="text-align: right;">0.7602</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH688981</td>
+<td style="text-align: right;">0.7529</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600690</td>
+<td style="text-align: right;">-0.3508</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000876</td>
+<td style="text-align: right;">-0.3603</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600848</td>
+<td style="text-align: right;">-0.3890</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601390</td>
+<td style="text-align: right;">-0.3965</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002271</td>
+<td style="text-align: right;">-0.4042</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300124</td>
+<td style="text-align: right;">-0.4244</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603799</td>
+<td style="text-align: right;">-0.4854</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600011</td>
+<td style="text-align: right;">-0.5283</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601888</td>
+<td style="text-align: right;">-0.5714</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH688036</td>
+<td style="text-align: right;">-0.6030</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/original_excluded_stocks.csv">完整股票×行业×原因</a> · <a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/original_excluded_industries.csv">全部行业</a> · <a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/original_excluded_months.csv">逐月×原因</a> · <a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/original_excluded_by_matching.csv">按可匹配状态分摊</a>。持有延续但非当期目标的股票标为NOT_CURRENT_TARGET_LEGACY，不能冒充本期新买入。</p>
+<h2>O−P替换实验：正负各十项贡献</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH688111</td>
+<td style="text-align: right;">2.0998</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000876</td>
+<td style="text-align: right;">1.7564</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603833</td>
+<td style="text-align: right;">1.7552</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000063</td>
+<td style="text-align: right;">1.5384</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601699</td>
+<td style="text-align: right;">1.3496</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300144</td>
+<td style="text-align: right;">1.3189</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601633</td>
+<td style="text-align: right;">1.3073</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300308</td>
+<td style="text-align: right;">1.3021</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000733</td>
+<td style="text-align: right;">1.2055</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002311</td>
+<td style="text-align: right;">1.1941</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300124</td>
+<td style="text-align: right;">-0.8530</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000069</td>
+<td style="text-align: right;">-0.8758</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600111</td>
+<td style="text-align: right;">-0.8791</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000983</td>
+<td style="text-align: right;">-0.9154</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601898</td>
+<td style="text-align: right;">-1.0851</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002602</td>
+<td style="text-align: right;">-1.0902</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH688036</td>
+<td style="text-align: right;">-1.1803</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600606</td>
+<td style="text-align: right;">-1.2548</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300498</td>
+<td style="text-align: right;">-1.3471</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002050</td>
+<td style="text-align: right;">-1.4929</td>
+</tr>
+</tbody>
+</table>
+<p>预算覆盖率不等于收益贡献覆盖率。原排除持仓20.76元贡献中，可直接对上当期匹配目标的贡献约17.29元；其余包括未知行业、无独立同行、延续持仓等，完整状态表已保留。</p>
+<p>这张表与上一张回答不同问题：它包含买入原股票、避免买入同行对照、权重漂移及费用差；正贡献不一定是原买入股票自身上涨。</p>
+<h2>O−P逐月终值差分配</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-01</td>
+<td style="text-align: right;">2.7020</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-02</td>
+<td style="text-align: right;">1.7319</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-03</td>
+<td style="text-align: right;">-0.0376</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-04</td>
+<td style="text-align: right;">-0.0423</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-05</td>
+<td style="text-align: right;">0.4875</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-06</td>
+<td style="text-align: right;">1.2958</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-07</td>
+<td style="text-align: right;">-0.4675</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-08</td>
+<td style="text-align: right;">3.2023</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-09</td>
+<td style="text-align: right;">0.5188</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-10</td>
+<td style="text-align: right;">3.5553</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-11</td>
+<td style="text-align: right;">0.2952</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-12</td>
+<td style="text-align: right;">-0.3791</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-01</td>
+<td style="text-align: right;">-2.2160</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-02</td>
+<td style="text-align: right;">1.0488</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-03</td>
+<td style="text-align: right;">-0.6293</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-04</td>
+<td style="text-align: right;">0.6284</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">2.8007</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">-1.0608</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-07</td>
+<td style="text-align: right;">-0.4484</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-08</td>
+<td style="text-align: right;">0.5842</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-09</td>
+<td style="text-align: right;">1.0746</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-10</td>
+<td style="text-align: right;">0.6170</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-11</td>
+<td style="text-align: right;">-0.6108</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-12</td>
+<td style="text-align: right;">0.3926</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: right;">0.2961</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-02</td>
+<td style="text-align: right;">0.4953</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-03</td>
+<td style="text-align: right;">0.4658</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-04</td>
+<td style="text-align: right;">1.6829</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-05</td>
+<td style="text-align: right;">0.6271</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-06</td>
+<td style="text-align: right;">-0.6754</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-07</td>
+<td style="text-align: right;">0.4392</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-08</td>
+<td style="text-align: right;">-0.9396</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-09</td>
+<td style="text-align: right;">0.2510</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-10</td>
+<td style="text-align: right;">-1.1842</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-11</td>
+<td style="text-align: right;">0.4136</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-12</td>
+<td style="text-align: right;">-0.0917</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">0.5416</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">1.3558</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-03</td>
+<td style="text-align: right;">0.1013</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-04</td>
+<td style="text-align: right;">-0.4927</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-05</td>
+<td style="text-align: right;">-0.7583</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-06</td>
+<td style="text-align: right;">0.8157</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-07</td>
+<td style="text-align: right;">-0.3183</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-08</td>
+<td style="text-align: right;">0.8739</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-09</td>
+<td style="text-align: right;">0.2479</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-10</td>
+<td style="text-align: right;">0.7693</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-11</td>
+<td style="text-align: right;">-1.1636</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">1.0852</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025-01</td>
+<td style="text-align: right;">1.2238</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025-02</td>
+<td style="text-align: right;">1.3921</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025-03</td>
+<td style="text-align: right;">-0.0569</td>
+</tr>
+</tbody>
+</table>
+<p>单一共同链接尺度使各股票、各月份分别精确加总到22.44元左右；不是每月收益率直接相加。完整P/PR股票差和时期差见<a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/replacement_stocks.csv">股票</a>、<a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/replacement_periods.csv">时期</a>。</p>
+<h2>买入时特征，不用赢家反推规则</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">feature</th>
+<th style="text-align: right;">n_dates</th>
+<th style="text-align: right;">mean_selected</th>
+<th style="text-align: right;">mean_peers</th>
+<th style="text-align: right;">mean_gap</th>
+<th style="text-align: right;">selected_coverage</th>
+<th style="text-align: right;">peer_coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">log_total_mv</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">16.1532</td>
+<td style="text-align: right;">16.0371</td>
+<td style="text-align: right;">0.1161</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom1</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0069</td>
+<td style="text-align: right;">-0.0004</td>
+<td style="text-align: right;">-0.0066</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom20</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0185</td>
+<td style="text-align: right;">0.0063</td>
+<td style="text-align: right;">-0.0247</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom5</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0045</td>
+<td style="text-align: right;">0.0105</td>
+<td style="text-align: right;">-0.0151</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom60</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.0207</td>
+<td style="text-align: right;">0.0088</td>
+<td style="text-align: right;">0.0120</td>
+<td style="text-align: right;">0.9989</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">turnover20</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.0108</td>
+<td style="text-align: right;">0.0106</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.8579</td>
+<td style="text-align: right;">0.9390</td>
+</tr>
+<tr>
+<td style="text-align: left;">vol20</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.0237</td>
+<td style="text-align: right;">0.0223</td>
+<td style="text-align: right;">0.0014</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">vol60</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.0246</td>
+<td style="text-align: right;">0.0233</td>
+<td style="text-align: right;">0.0013</td>
+<td style="text-align: right;">0.9989</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+</tbody>
+</table>
+<p>收益与波动为原小数单位，市值为对数；表内coverage为0到1。对每期已知权重单独归一化，再在日期间平均；两侧缺失支持可能不同。例如换手率原持仓覆盖低于对照，不能把差异当作同样本效应。</p>
+<p>完整<a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/profile_summary.csv">特征表</a>、<a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/signal_profiles.csv">逐期原始特征均值及已知预算</a>、<a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/decision_cases.csv">全部981个原被排除目标决策</a>均保留。决策表包括原E1分数、行业内分位、原13风格、原特征组分数贡献、同行候选清单、H10标签及该月原账本相对贡献。原始H10标签为价格窗口收益，可能无法执行；不与执行事件净收益混同。组分数贡献是模型会计，不是利润归因。</p>
+<h2>全部统计与缺失事件</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">metric</th>
+<th style="text-align: left;">comparison</th>
+<th style="text-align: left;">cost</th>
+<th style="text-align: left;">primary</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">p_holm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-P</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">5.2535</td>
+<td style="text-align: right;">1.8045</td>
+<td style="text-align: right;">8.9858</td>
+<td style="text-align: right;">0.0052</td>
+<td style="text-align: right;">0.0052</td>
+</tr>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-PR</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">5.2401</td>
+<td style="text-align: right;">1.7451</td>
+<td style="text-align: right;">9.0669</td>
+<td style="text-align: right;">0.0050</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-P</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">5.3422</td>
+<td style="text-align: right;">1.8718</td>
+<td style="text-align: right;">9.1030</td>
+<td style="text-align: right;">0.0052</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-PR</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">5.2822</td>
+<td style="text-align: right;">1.7757</td>
+<td style="text-align: right;">9.1246</td>
+<td style="text-align: right;">0.0046</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-P</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">5.0171</td>
+<td style="text-align: right;">1.5926</td>
+<td style="text-align: right;">8.6895</td>
+<td style="text-align: right;">0.0068</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-PR</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">5.1276</td>
+<td style="text-align: right;">1.6660</td>
+<td style="text-align: right;">8.9020</td>
+<td style="text-align: right;">0.0058</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_event</td>
+<td style="text-align: left;">SELECTED-PEERS</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">1.0002</td>
+<td style="text-align: right;">0.5463</td>
+<td style="text-align: right;">1.4917</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0004</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_event</td>
+<td style="text-align: left;">O-P</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0.3236</td>
+<td style="text-align: right;">0.1728</td>
+<td style="text-align: right;">0.4905</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_event</td>
+<td style="text-align: left;">O-PR</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0.3041</td>
+<td style="text-align: right;">0.1563</td>
+<td style="text-align: right;">0.4732</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">nan</td>
+</tr>
+</tbody>
+</table>
+<p>日收益年化或H10每事件单位均pp，按metric区分。只有primary为True的两项属于本轮预设检验族，其余为辅助。所有历史研究选择偏差仍存在。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">metric</th>
+<th style="text-align: left;">sample</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">mark_to_market_entry_cost_only</td>
+<td style="text-align: left;">all</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.9478</td>
+<td style="text-align: right;">0.5137</td>
+<td style="text-align: right;">1.3661</td>
+</tr>
+<tr>
+<td style="text-align: left;">mark_to_market_entry_cost_only</td>
+<td style="text-align: left;">2022_onward_posthoc</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">0.8387</td>
+<td style="text-align: right;">0.3660</td>
+<td style="text-align: right;">1.2953</td>
+</tr>
+<tr>
+<td style="text-align: left;">executable_liquidation</td>
+<td style="text-align: left;">all</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">1.0002</td>
+<td style="text-align: right;">0.5463</td>
+<td style="text-align: right;">1.4917</td>
+</tr>
+<tr>
+<td style="text-align: left;">executable_liquidation</td>
+<td style="text-align: left;">2022_onward_posthoc</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0.9063</td>
+<td style="text-align: right;">0.3744</td>
+<td style="text-align: right;">1.4911</td>
+</tr>
+<tr>
+<td style="text-align: left;">annual_daily_original_path</td>
+<td style="text-align: left;">2022_onward_posthoc</td>
+<td style="text-align: right;">763</td>
+<td style="text-align: right;">2.8879</td>
+<td style="text-align: right;">0.0671</td>
+<td style="text-align: right;">5.6733</td>
+</tr>
+</tbody>
+</table>
+<p>此表为看到结果后加做的披露检查，未改变目标和主裁决；2022_onward保留原账户路径，不是重新起点回测。标记到市值结果只扣入场成本，不假造退出可交易性。</p>
+<p><a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/events.csv">原始事件退出情况</a> · <a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/excluded_rank_ic.csv">周度行业内RankIC</a> · <a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/matching.csv">全部逐期匹配与未匹配原因</a> · <a href="../../outputs/diagnostics/e1_excluded_holdings_20261117/periods.csv">原账户逐年逐月收益</a>。</p></html>

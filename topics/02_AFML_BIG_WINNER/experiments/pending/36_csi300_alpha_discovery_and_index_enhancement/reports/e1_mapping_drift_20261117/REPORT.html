@@ -1,0 +1,137 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 风格映射变化</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>E1 风格映射为何不能稳定复制</h1>
+<p><strong>本轮更支持“13项风格压缩丢失了工程特征表达”，而不是“原 Ridge 每季度更新导致映射剧烈漂移”。</strong> 冻结2021Q4完整78特征模型后，与后续E1的平均截面排序相关仍约0.916；过去13风格复制的相关则很低。</p>
+<p>这里定位的是分数表达与映射变化，不是已经找到了可交易Alpha的经济原因。区间位置特征是重点候选，但其单独预测价值尚未确认。</p>
+<h2>原模型不更新 仍保留多少信息</h2>
+<p>固定2021Q4的原Ridge，包括系数、训练均值/标准差和缺失值中位数；应用到之后每个日期的78项原工程特征，不重训。共同研究信号为2021-10-08至2025-02-28，H10成熟标签终点不超过2025-03-03。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">score</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0471</td>
+<td style="text-align: right;">0.0193</td>
+<td style="text-align: right;">0.0759</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIXED78</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0306</td>
+<td style="text-align: right;">0.0072</td>
+<td style="text-align: right;">0.0541</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXPLAINED13</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0339</td>
+<td style="text-align: right;">0.0115</td>
+<td style="text-align: right;">0.0561</td>
+</tr>
+<tr>
+<td style="text-align: left;">RESIDUAL13</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0137</td>
+<td style="text-align: right;">0.0034</td>
+<td style="text-align: right;">0.0236</td>
+</tr>
+</tbody>
+</table>
+<p>E1是原滚动季度模型；FIXED78是固定2021Q4原模型；EXPLAINED13是当日风格投影；RESIDUAL13是对应残差。表为171个成熟信号的原始未来收益RankIC，不是成本后收益或严格条件RankIC。</p>
+<p>固定完整模型约0.0306，原E1约0.0471；保留了正向排序线索，但不能据此说季度更新没有价值。固定完整模型与过去13风格复制的失败也不能混为一谈：它们保留的特征不同。本轮没有回测固定完整模型的经济账户。</p>
+<p><img alt="排序诊断" src="ranking.png" /></p>
+<h2>映射变化主要落在哪一项</h2>
+<p>每次把旧/新模型与旧/新数据交叉，得到四个13风格投影，再做对称两因素分解。模型项包括完整预处理更新；数据项包括股票特征、风格协方差、截面标准化、行业与股票池变化。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">clock</th>
+<th style="text-align: left;">scope</th>
+<th style="text-align: right;">pairs</th>
+<th style="text-align: right;">model_share</th>
+<th style="text-align: right;">data_share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">adjacent</td>
+<td style="text-align: left;">common</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">0.6460</td>
+<td style="text-align: right;">99.3540</td>
+</tr>
+<tr>
+<td style="text-align: left;">adjacent</td>
+<td style="text-align: left;">native</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">0.6469</td>
+<td style="text-align: right;">99.3531</td>
+</tr>
+<tr>
+<td style="text-align: left;">anchor</td>
+<td style="text-align: left;">common</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">6.9579</td>
+<td style="text-align: right;">93.0421</td>
+</tr>
+<tr>
+<td style="text-align: left;">anchor</td>
+<td style="text-align: left;">native</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">8.4906</td>
+<td style="text-align: right;">91.5094</td>
+</tr>
+</tbody>
+</table>
+<p>adjacent为相邻周信号；anchor为固定2021-10-08首日。native允许两期各自股票池，common只用两期共有股票。数字是映射变化在新日期分数空间的带符号分配，不是收益比例，也不是唯一经济因果份额。</p>
+<p>相邻周模型通常不更新，所以模型份额小并不意外。仅看实际季度模型切换的14个相邻配对，模型份额仍约5.6%—5.7%，数据项约94%；固定首日的较长跨度，模型约7%—8.5%、数据约91.5%—93%。共同股票核验未改变主要方向。</p>
+<p><img alt="模型与数据分解" src="mapping_split.png" /></p>
+<p>这说明：同一个相对稳定的完整模型，在不同数据截面上，投影到简化13风格时所需权重可以变化很大。数据项仍混合标准化、共线性与分布变化，不能直接命名为“市场状态Alpha”。</p>
+<h2>13项风格主要漏掉了什么</h2>
+<p>把原78项特征的实际分数贡献，逐项剥离同一13风格投影后，精确加总回剩余分数：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">特征组</th>
+<th style="text-align: right;">signed_share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">共同市场项</td>
+<td style="text-align: right;">-0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">区间位置</td>
+<td style="text-align: right;">64.9752</td>
+</tr>
+<tr>
+<td style="text-align: left;">收益与趋势</td>
+<td style="text-align: right;">22.0888</td>
+</tr>
+<tr>
+<td style="text-align: left;">波动与回撤</td>
+<td style="text-align: right;">10.1251</td>
+</tr>
+<tr>
+<td style="text-align: left;">量价与流动性</td>
+<td style="text-align: right;">2.8109</td>
+</tr>
+</tbody>
+</table>
+<p>区间位置组约65%，其中pos60约56.8%、pos20约8.95%、pos5约−0.75%。负份额表示对总残差的抵消；这些都是<strong>残差分数的解释份额，不是超额收益贡献</strong>，不能说pos60创造了56.8%的利润。</p>
+<p>pos60的定义是“当日收盘距过去60日最低价的距离，除以过去60日最高价与最低价之差”。它不仅看60日首尾涨幅，还包含期间路径和高低区间。相同60日收益的股票，区间位置可以不同，因此mom60不能直接替代pos60。</p>
+<p><img alt="残差分数组" src="residual_groups.png" /></p>
+<p>区间位置残差组单独的H10 RankIC约0.0046，95%区间约[−0.0119,+0.0196]，未获得明确支持。完整残差约0.0137、普通区间为正，也只是新样本/新区间的辅助历史结果，不能覆盖此前主实验的INCONCLUSIVE裁决。当前仍没有成本后独立Alpha认证。</p>
+<h2>下一步应怎样收敛</h2>
+<p>研究重点应从“寻找更好的13风格复制权重”转向“完整工程特征中哪些表达不可被简单收益风格替代”。优先检查区间位置与波动/回撤之间的组合关系，但不要把本轮分数分配直接变成只买高pos60的新策略。</p>
+<p>若继续，应保留当前模型和交易合同，先验证这些特征对未来收益的增量及可执行经济价值，再考虑简化。当前未调参、未重训或建立新收益模型。</p>
+<p><a href="METHOD.md">分解方法与时序</a> · <a href="FEATURES.md">工程特征和辅助统计</a> · <a href="../../configs/e1_mapping_drift_20261117.json">原冻结配置</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/validation.json">验证</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/feature_audit.json">逐特征分配审计</a>。</p>
+<p>65项测试、867项核验通过；全部173个信号精确复放原分数，旧模型、预测与数据未改。真实前瞻仍未完成，未提交、推送或部署。</p></html>

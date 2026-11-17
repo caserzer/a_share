@@ -1,0 +1,422 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 风格约束来源</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>风格约束接触与持仓替换</h1>
+<p>想验证什么：哪类约束实际改变E1名单，以及这种变化对应哪些收益差。</p>
+<p>怎么比较：13项风格划为四个不重叠组，400次固定优化全部保留。组合行业名额、持仓数和原E1排序目标不变；参考仍为B，容差固定0.25截面标准差。没有将最赚钱的删除组设置为新策略。</p>
+<p>各维度I与B的平均暴露差和超出容差的调仓比例：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">style</th>
+<th style="text-align: right;">mean_I_minus_B</th>
+<th style="text-align: right;">outside_fraction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">beta60</td>
+<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">36.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">idio60</td>
+<td style="text-align: right;">-0.231</td>
+<td style="text-align: right;">42.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">log_amihud20</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">26.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">log_circ_mv</td>
+<td style="text-align: right;">-0.023</td>
+<td style="text-align: right;">28.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">log_money20</td>
+<td style="text-align: right;">-0.105</td>
+<td style="text-align: right;">36.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">log_total_mv</td>
+<td style="text-align: right;">-0.045</td>
+<td style="text-align: right;">34.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom1</td>
+<td style="text-align: right;">0.122</td>
+<td style="text-align: right;">28.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom20</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">50.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom5</td>
+<td style="text-align: right;">0.552</td>
+<td style="text-align: right;">92.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">mom60</td>
+<td style="text-align: right;">-0.443</td>
+<td style="text-align: right;">72.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">turnover20</td>
+<td style="text-align: right;">-0.122</td>
+<td style="text-align: right;">40.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">vol20</td>
+<td style="text-align: right;">-0.158</td>
+<td style="text-align: right;">36.000</td>
+</tr>
+<tr>
+<td style="text-align: left;">vol60</td>
+<td style="text-align: right;">-0.202</td>
+<td style="text-align: right;">34.000</td>
+</tr>
+</tbody>
+</table>
+<p>outside_fraction按百分数展示。所有目标暴露、F及各组接近边界的情况完整保存。整数选股不存在可以简单解释为收益因果的连续影子价格；本轮未作这种归因。</p>
+<p>主成本下各组配对日收益差年化和描述性95%区间：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">comparison</th>
+<th style="text-align: right;">annual_daily_difference</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">all_styles</td>
+<td style="text-align: right;">-7.507</td>
+<td style="text-align: right;">-11.824</td>
+<td style="text-align: right;">-2.983</td>
+</tr>
+<tr>
+<td style="text-align: left;">only_price</td>
+<td style="text-align: right;">-5.626</td>
+<td style="text-align: right;">-10.289</td>
+<td style="text-align: right;">-0.780</td>
+</tr>
+<tr>
+<td style="text-align: left;">only_risk</td>
+<td style="text-align: right;">-2.285</td>
+<td style="text-align: right;">-5.051</td>
+<td style="text-align: right;">0.459</td>
+</tr>
+<tr>
+<td style="text-align: left;">only_liquidity</td>
+<td style="text-align: right;">-0.385</td>
+<td style="text-align: right;">-1.888</td>
+<td style="text-align: right;">1.388</td>
+</tr>
+<tr>
+<td style="text-align: left;">only_size</td>
+<td style="text-align: right;">-0.546</td>
+<td style="text-align: right;">-1.733</td>
+<td style="text-align: right;">0.820</td>
+</tr>
+<tr>
+<td style="text-align: left;">remove_price</td>
+<td style="text-align: right;">5.180</td>
+<td style="text-align: right;">1.547</td>
+<td style="text-align: right;">8.966</td>
+</tr>
+<tr>
+<td style="text-align: left;">remove_risk</td>
+<td style="text-align: right;">1.450</td>
+<td style="text-align: right;">-0.634</td>
+<td style="text-align: right;">3.552</td>
+</tr>
+<tr>
+<td style="text-align: left;">remove_liquidity</td>
+<td style="text-align: right;">1.096</td>
+<td style="text-align: right;">-0.497</td>
+<td style="text-align: right;">2.943</td>
+</tr>
+<tr>
+<td style="text-align: left;">remove_size</td>
+<td style="text-align: right;">0.575</td>
+<td style="text-align: right;">-0.391</td>
+<td style="text-align: right;">1.617</td>
+</tr>
+</tbody>
+</table>
+<h2>价格组频繁换掉或加入的股票</h2>
+<p>以下为相对I的目标名单变化，名称为参考；ADDED/REMOVED只说明实际选择变化。它们不是一一匹配的因果对照。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">direction</th>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: right;">signal_count</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SH603019</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">中科曙光</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SZ300142</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">沃森生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SZ002352</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">顺丰控股</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SH600085</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">同仁堂</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SZ000166</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">申万宏源</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SZ002371</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">北方华创</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SH600018</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">上港集团</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SH600030</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">中信证券</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SH600132</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">重庆啤酒</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADDED</td>
+<td style="text-align: left;">SH600845</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">宝信软件</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SZ002709</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">天赐材料</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SZ002812</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">恩捷股份</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SZ002007</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">华兰生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SH600570</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">恒生电子</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SH600745</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">*ST闻泰</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SH601021</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">春秋航空</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SH601328</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">交通银行</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SH601877</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">正泰电器</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SZ000596</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">古井贡酒</td>
+</tr>
+<tr>
+<td style="text-align: left;">REMOVED</td>
+<td style="text-align: left;">SZ000625</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">长安汽车</td>
+</tr>
+</tbody>
+</table>
+<p>对应账户的股票贡献差，负数意味着价格约束后的账户在该股票项上更差，既可能是卖掉赢家，也可能是买入亏损者；不能只看负号区分两者。这里每项贡献按该对账户的终值财富差连接，其他组使用自己的连接系数，不跨组加总。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_difference_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH600732</td>
+<td style="text-align: left;">爱旭股份</td>
+<td style="text-align: right;">-1.847</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300122</td>
+<td style="text-align: left;">智飞生物</td>
+<td style="text-align: right;">-1.737</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300347</td>
+<td style="text-align: left;">泰格医药</td>
+<td style="text-align: right;">-1.607</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601788</td>
+<td style="text-align: left;">光大证券</td>
+<td style="text-align: right;">-1.515</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601688</td>
+<td style="text-align: left;">华泰证券</td>
+<td style="text-align: right;">-1.437</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600588</td>
+<td style="text-align: left;">用友网络</td>
+<td style="text-align: right;">-1.422</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603392</td>
+<td style="text-align: left;">万泰生物</td>
+<td style="text-align: right;">-1.338</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002709</td>
+<td style="text-align: left;">天赐材料</td>
+<td style="text-align: right;">-1.293</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300223</td>
+<td style="text-align: left;">君正股份</td>
+<td style="text-align: right;">-1.268</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH605499</td>
+<td style="text-align: left;">东鹏饮料</td>
+<td style="text-align: right;">-1.254</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000568</td>
+<td style="text-align: left;">泸州老窖</td>
+<td style="text-align: right;">1.943</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002594</td>
+<td style="text-align: left;">比亚迪</td>
+<td style="text-align: right;">1.782</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002410</td>
+<td style="text-align: left;">广联达</td>
+<td style="text-align: right;">1.550</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603993</td>
+<td style="text-align: left;">洛阳钼业</td>
+<td style="text-align: right;">1.158</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH605117</td>
+<td style="text-align: left;">德业股份</td>
+<td style="text-align: right;">1.110</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_difference_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-09</td>
+<td style="text-align: right;">-3.565</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">-2.965</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">-2.441</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">-2.382</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-11</td>
+<td style="text-align: right;">-2.231</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-02</td>
+<td style="text-align: right;">-2.055</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-12</td>
+<td style="text-align: right;">3.739</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-04</td>
+<td style="text-align: right;">1.884</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-08</td>
+<td style="text-align: right;">1.853</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-08</td>
+<td style="text-align: right;">1.081</td>
+</tr>
+</tbody>
+</table>
+<p>完整替换记录同时给出当期E1分数、13项标准化暴露及后续H10毛收益。H10是描述性标记，不是连续账户贡献；不能将被换出股票后来的收益作为当时可知原因。</p>
+<p><a href="../../outputs/diagnostics/e1_style_channels_20261117/target_exposures.csv">全部目标暴露</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/replacement_outcomes.csv">所有替换及H10结果</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/target_overlap.csv">目标重合</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/stock_contributions.csv">股票贡献差</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/period_contributions.csv">月份贡献差</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/actual_rebalance_risk.csv">成交后风险偏离</a>。</p></html>

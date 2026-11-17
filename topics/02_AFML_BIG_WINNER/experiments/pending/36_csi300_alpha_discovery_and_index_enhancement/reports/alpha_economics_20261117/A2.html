@@ -1,0 +1,488 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 Alpha信息与时间结构验证</title><style>body{max-width:1150px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}pre{overflow:auto;background:#f4f4f4;padding:16px}a{color:#146887}</style><h1>EP36 A2 同风格组合的净信息增量</h1>
+<p><strong>主区间未确认 S1 或 S2 相对 S0 的稳定正向净收益增量。</strong> 月初H10固定事件平均差偏负；连续账户不同频率的结果有正有负，区间均不足以确认稳定提升。</p>
+<h2>想验证什么</h2>
+<p>在同日股票池、持仓数、成本和相近风险暴露下，原Ridge分数或残差分数，是否比其已知风格解释部分更有经济价值？这里的“净”包括实际成交的入场和可执行退出成本，而不是只看未扣费标签均值。</p>
+<p>本轮沿用封存 E1 Ridge 和 E2 预测，未训练新模型、未运行 E3、未优化相位或调仓参数。新增总市值与流通市值来自信号日前一个交易日的供应商快照，仍为 Historical-proxy；历史行业、前复权合成单位和停牌估值也保留原代理身份。所有历史已反复查看，结果属于历史模拟样本外探索，真实前瞻为 FORWARD_PENDING。</p>
+<p>S0 是以当天已覆盖风格拟合原模型分数后的 Q5；S1 用原分数、S2 用残差分数，在 S0 附近的固定暴露约束内选股。<strong>S0 仍依赖原模型分数，并非独立训练的强风格收益模型，不能据此宣布可以直接替换 Ridge。</strong></p>
+<p>每期同一可评分池、相同持仓数及等权目标；数值风格目标差不超过截面0.25个标准差、单行业权重差不超过2个百分点。容差在收益计算前冻结，无事后放宽。约束控制目标组合，成交受限与持仓漂移仍会改变实际暴露；净收益结论是这一固定近似匹配合同下的部分识别，不是精确风险中性的认证 Alpha。</p>
+<h2>组合如何构造</h2>
+<p>S0取风格解释分数的Q5，持仓数使用原floor分组规则。S1/S2在全共同样本内最大化对应分数秩，二元选股、相同k只、每只1/k权重，施加相对S0的13项数值暴露与行业限制。求解器时间上限2秒、相对目标gap上限1%，不根据收益调整。592个模型×信号对应的1184次约束求解全部取得通过独立约束复验的解，最大报告gap小于1%。有限gap意味着不声称每次都获得唯一精确最优名单。</p>
+<p>名单平均重合比例：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">q5_overlap</th>
+<th style="text-align: right;">s1_s0_overlap</th>
+<th style="text-align: right;">s2_s0_overlap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">86.5264</td>
+<td style="text-align: right;">65.6981</td>
+<td style="text-align: right;">53.3617</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">83.1551</td>
+<td style="text-align: right;">61.4064</td>
+<td style="text-align: right;">47.7355</td>
+</tr>
+</tbody>
+</table>
+<p>q5_overlap 是受约束S1相对本轮共同样本原分数Q5的重合比例。它不是旧全样本Q5的复刻率。S1仍由原分数选股，但约13.5%的E1名单平均发生改变，解释时须保留这一条件。</p>
+<h2>固定 H10 事件主结果</h2>
+<p>单位为每事件收益差百分点。第1相位是A2主比较；第2相位和成交后风险合格子集是辅助。各项共同按信号月保留空档，3个月块Bootstrap，2000次。主族Holm p只有两项A2与一项B1，不向辅助结果扩张。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">experiment</th>
+<th style="text-align: left;">contrast</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">planned_periods</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: left;">holm_p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">A2_phase1</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0774</td>
+<td style="text-align: right;">-0.2441</td>
+<td style="text-align: right;">0.0885</td>
+<td style="text-align: left;">0.8471</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">A2_phase2</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0126</td>
+<td style="text-align: right;">-0.1896</td>
+<td style="text-align: right;">0.1565</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">A2_executed_risk_subset</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0774</td>
+<td style="text-align: right;">-0.2441</td>
+<td style="text-align: right;">0.0885</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">A2_phase1</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.1164</td>
+<td style="text-align: right;">-0.3326</td>
+<td style="text-align: right;">0.0846</td>
+<td style="text-align: left;">0.8471</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">A2_phase2</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0586</td>
+<td style="text-align: right;">-0.2419</td>
+<td style="text-align: right;">0.1485</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">A2_executed_risk_subset</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.1164</td>
+<td style="text-align: right;">-0.3326</td>
+<td style="text-align: right;">0.0846</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">A2_phase1</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0644</td>
+<td style="text-align: right;">-0.3826</td>
+<td style="text-align: right;">0.2245</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">A2_phase2</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.0574</td>
+<td style="text-align: right;">-0.228</td>
+<td style="text-align: right;">0.3345</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">A2_executed_risk_subset</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0644</td>
+<td style="text-align: right;">-0.3826</td>
+<td style="text-align: right;">0.2245</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">A2_phase1</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.1891</td>
+<td style="text-align: right;">-0.5414</td>
+<td style="text-align: right;">0.1535</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">A2_phase2</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.1314</td>
+<td style="text-align: right;">-0.1708</td>
+<td style="text-align: right;">0.4314</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">A2_executed_risk_subset</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.1891</td>
+<td style="text-align: right;">-0.5414</td>
+<td style="text-align: right;">0.1535</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+<p>E1主比较计划50个月，其中46个月可完成成对净收益评价。没有把其余月份填零，也没有只保留可顺利退出的股票来重建名单。评价阶段的缺失仍可能有选择性，因此是部分识别。</p>
+<h2>成交与风险匹配的实际边界</h2>
+<p>主区间第1与第2相位合计100个计划事件的覆盖如下；known_net要求持有路径可估值且该策略能在规定开盘完全退出。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">planned_events</th>
+<th style="text-align: right;">rows_present</th>
+<th style="text-align: right;">known_net</th>
+<th style="text-align: right;">mean_unfilled_buy</th>
+<th style="text-align: right;">mean_unsold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">0.0179</td>
+<td style="text-align: right;">0.1359</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">0.0179</td>
+<td style="text-align: right;">0.0649</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">0.0179</td>
+<td style="text-align: right;">0.081</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: right;">0.0179</td>
+<td style="text-align: right;">0.1037</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">0.0357</td>
+<td style="text-align: right;">0.1534</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.0357</td>
+<td style="text-align: right;">0.1657</td>
+</tr>
+</tbody>
+</table>
+<p>全可用区间的事件建仓后风险容差通过率如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">event_bound_pass</th>
+<th style="text-align: right;">mean_numeric_gap</th>
+<th style="text-align: right;">mean_industry_gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">99.2857</td>
+<td style="text-align: right;">0.2283</td>
+<td style="text-align: right;">1.7965</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">99.2857</td>
+<td style="text-align: right;">0.2375</td>
+<td style="text-align: right;">1.79</td>
+</tr>
+</tbody>
+</table>
+<p>独立连续账户在各自再平衡日，成交后相对S0的同日冻结风格暴露检查如下。未映射权重来自旧持仓不在当日共同可评分池，不能按零风险处理。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">frequency</th>
+<th style="text-align: right;">account_bound_pass</th>
+<th style="text-align: right;">mean_unmapped_weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: right;">94.2857</td>
+<td style="text-align: right;">0.1285</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: right;">92.7365</td>
+<td style="text-align: right;">0.1479</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: right;">90.9396</td>
+<td style="text-align: right;">0.1709</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: right;">89.2857</td>
+<td style="text-align: right;">0.1257</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: right;">90.3716</td>
+<td style="text-align: right;">0.1483</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: right;">87.9195</td>
+<td style="text-align: right;">0.1408</td>
+</tr>
+</tbody>
+</table>
+<p>容差通过率并非100%，也没有逐日重新中性化持仓。不能把这些账户说成全程精确同风险组合。主表保留冻结的全可评价样本；事后风险合格子集仅辅助，不替换主族。</p>
+<h2>独立连续账户</h2>
+<p>主区间主成本结果如下，收益、区间、跟踪误差和相对回撤单位为百分比或百分点。cagr_difference是两个CAGR之差；annual_mean_active及其65交易日块区间是日收益差均值×252，二者不是同一估计量。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">frequency</th>
+<th style="text-align: left;">contrast</th>
+<th style="text-align: right;">cagr_difference</th>
+<th style="text-align: right;">annual_mean_active</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">tracking_error</th>
+<th style="text-align: right;">relative_max_drawdown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">0.1839</td>
+<td style="text-align: right;">-0.0049</td>
+<td style="text-align: right;">-3.3008</td>
+<td style="text-align: right;">2.9765</td>
+<td style="text-align: right;">3.8018</td>
+<td style="text-align: right;">-5.3952</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">-1.0819</td>
+<td style="text-align: right;">-1.2169</td>
+<td style="text-align: right;">-6.291</td>
+<td style="text-align: right;">3.0673</td>
+<td style="text-align: right;">4.6999</td>
+<td style="text-align: right;">-11.955</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">1.1963</td>
+<td style="text-align: right;">1.0536</td>
+<td style="text-align: right;">-1.3209</td>
+<td style="text-align: right;">3.4069</td>
+<td style="text-align: right;">3.5648</td>
+<td style="text-align: right;">-5.1292</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">-0.2907</td>
+<td style="text-align: right;">-0.4237</td>
+<td style="text-align: right;">-3.9415</td>
+<td style="text-align: right;">3.0207</td>
+<td style="text-align: right;">4.4214</td>
+<td style="text-align: right;">-9.405</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">-1.5111</td>
+<td style="text-align: right;">-1.5669</td>
+<td style="text-align: right;">-4.1541</td>
+<td style="text-align: right;">0.8515</td>
+<td style="text-align: right;">3.7354</td>
+<td style="text-align: right;">-8.4288</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">-2.5066</td>
+<td style="text-align: right;">-2.521</td>
+<td style="text-align: right;">-6.6082</td>
+<td style="text-align: right;">1.139</td>
+<td style="text-align: right;">4.5178</td>
+<td style="text-align: right;">-12.8074</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">0.1591</td>
+<td style="text-align: right;">0.0312</td>
+<td style="text-align: right;">-3.887</td>
+<td style="text-align: right;">3.8936</td>
+<td style="text-align: right;">4.1478</td>
+<td style="text-align: right;">-7.7598</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">-1.5376</td>
+<td style="text-align: right;">-1.7946</td>
+<td style="text-align: right;">-7.1574</td>
+<td style="text-align: right;">3.5189</td>
+<td style="text-align: right;">4.9047</td>
+<td style="text-align: right;">-12.5499</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">0.6974</td>
+<td style="text-align: right;">0.5814</td>
+<td style="text-align: right;">-3.6086</td>
+<td style="text-align: right;">4.9789</td>
+<td style="text-align: right;">4.003</td>
+<td style="text-align: right;">-7.0405</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">-1.4619</td>
+<td style="text-align: right;">-1.7215</td>
+<td style="text-align: right;">-6.5325</td>
+<td style="text-align: right;">3.3922</td>
+<td style="text-align: right;">4.745</td>
+<td style="text-align: right;">-9.884</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">-0.1652</td>
+<td style="text-align: right;">-0.2725</td>
+<td style="text-align: right;">-5.1906</td>
+<td style="text-align: right;">4.1641</td>
+<td style="text-align: right;">4.3061</td>
+<td style="text-align: right;">-9.4693</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">-4.0269</td>
+<td style="text-align: right;">-4.0809</td>
+<td style="text-align: right;">-9.0661</td>
+<td style="text-align: right;">0.6019</td>
+<td style="text-align: right;">5.0024</td>
+<td style="text-align: right;">-15.5351</td>
+</tr>
+</tbody>
+</table>
+<p>E1月度S1相对S0的CAGR差约−1.51个百分点，S2约−2.51个百分点。它们的日均差年化区间跨零。双周S1点估计偏正，同样不能单独挑出来作为策略成功。</p>
+<h2>当前裁决</h2>
+<p>没有确认稳定独立净增量；也没有设置等价界限来证明简单策略完全复制了Ridge。S0依赖原预测，尚不能作为独立替代模型。没有理由因本轮历史结果增加E3或搜索新阈值。</p>
+<p><a href="../../outputs/diagnostics/alpha_economics_20261117/event_summary.csv">全部事件汇总</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/account_metrics.csv">全部连续账户指标</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/account_monthly.csv">完整逐月收益</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/account_exposures.csv">实际暴露</a></p></html>

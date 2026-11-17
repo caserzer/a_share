@@ -1,0 +1,15 @@
+{
+  "run": "e1_reversal_validation_20261117",
+  "at": "2026-11-17T08:54:41.412600+00:00",
+  "previous_REV_account_seen": true,
+  "new_horizon_results_seen": false,
+  "selection": "reuse exact sealed O/REV full targets and BASE_O normalized support; isolate REV sleeve by subtracting unchanged O budget; no rerank, no new features, no thresholds",
+  "scope": "50 original monthly signals; primary historical2021-01-08 to2025-03-03",
+  "primary": "normalized O sleeve minus REV sleeve H10 net event return, main10/20bps, monthly3block5000; single main endpoint, no equivalence claim",
+  "auxiliary": "H5/H20; zero/stress30/80bps; endpoint marks when liquidation unavailable; original continuous account daymean, yearly/monthly paths and linked stock contributions; no winner selection",
+  "horizon": "next trading-day open entry, t+1+h open attempted full liquidation; maturity<=2025-03-03; missing outcomes not zero; same-month intersection for main paired comparisons",
+  "cohorts": "same supported ~31.6% original budget; rest remains original E1; normalized events not full standalone REV strategy",
+  "prospective": "only first-monthly-phase signals strictly after2026-11-17 and recorded before entry; zero new prospective observations in this run; protocol alone is not forward evidence",
+  "prohibition": "no retuning REV, selecting a favorable year/horizon or equivalence band, relabeling used history as forward",
+  "forward": "FORWARD_PENDING"
+}

@@ -1,0 +1,121 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 风格约束来源</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>E1 风格约束的收益损失来自哪里</h1>
+<p><strong>本轮损失最集中在价格动量与反转组。更关键的是，约束参考B本身偏向中期强势加短期回撤：把E1限制在B附近，是把组合推向这一特定风格，并非只移除风险。因此，约束后亏损不能直接证明原E1的收益都由已知风格解释。</strong></p>
+<p>主区间2021-01-08信号至2025-03-03，原月初50次调仓、1001交易日。沿用上轮C样本、每期约39只、相同行业名额和10/20bps费用；I是仅固定行业名额的E1，F是加全部风格约束的E1，均不是原完整E1账户。原模型、预测、阈值未修改。</p>
+<h2>四组固定对照</h2>
+<p>I净年化约+0.88%，F约−6.42%。每组分别做“只加入该组”和“在全部约束中去掉该组”，没有按收益搜索最佳子集。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">风格组</th>
+<th style="text-align: right;">仅加该组净年化</th>
+<th style="text-align: right;">相对I年化差</th>
+<th style="text-align: right;">去掉该组净年化</th>
+<th style="text-align: right;">相对F年化改善</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">价格动量与反转</td>
+<td style="text-align: right;">-4.593</td>
+<td style="text-align: right;">-5.475</td>
+<td style="text-align: right;">-1.491</td>
+<td style="text-align: right;">4.926</td>
+</tr>
+<tr>
+<td style="text-align: left;">波动与市场风险</td>
+<td style="text-align: right;">-1.464</td>
+<td style="text-align: right;">-2.345</td>
+<td style="text-align: right;">-5.013</td>
+<td style="text-align: right;">1.405</td>
+</tr>
+<tr>
+<td style="text-align: left;">流动性</td>
+<td style="text-align: right;">0.479</td>
+<td style="text-align: right;">-0.402</td>
+<td style="text-align: right;">-5.378</td>
+<td style="text-align: right;">1.040</td>
+</tr>
+<tr>
+<td style="text-align: left;">市值</td>
+<td style="text-align: right;">0.347</td>
+<td style="text-align: right;">-0.534</td>
+<td style="text-align: right;">-5.883</td>
+<td style="text-align: right;">0.535</td>
+</tr>
+</tbody>
+</table>
+<p>单位均为百分数或百分点。价格组包括1/5/20/60日收益；风险组为20/60日波动、60日beta与特质波动；流动性组三项、市值组两项。组效应有交互，不能把四组改善加总或叫作唯一贡献比例。</p>
+<p><img alt="固定风格组" src="group_effects.png" /></p>
+<p>只加价格组，净年化约−4.59%；相对I下降约5.47pp。从全部约束中去掉价格组，净年化回到−1.49%，相对F改善约4.93pp。日均差年化的描述性区间分别约[−10.29,−0.78]pp和[+1.55,+8.97]pp。其他组的对应区间均跨零；多项结果只作历史描述，不作独立确认或择优部署。</p>
+<p>零费用下只加价格组仍使年化下降约5.53pp，全部约束下降约7.38pp。因此这个差异主要不是额外交易成本造成的；仍包含具体持仓与路径变化。</p>
+<h2>为什么 B 会改变 E1 的方向</h2>
+<p>I相对B的目标暴露平均差：5日收益约+0.552个截面标准差，60日收益约−0.443个标准差。换言之，B的5日收益更低、60日收益更高。I在5日收益维度有92%的调仓超出B±0.25标准差，在60日维度有72%。这两项经常要求调整股票。</p>
+<p>“B近期跌得更多、中期更强”是相对比较，并不保证绝对收益符号。约束接近边界不等于已识别该变量的因果贡献；本轮只独立识别到四项价格约束这一组，未事后逐个挑选期限。</p>
+<p><img alt="参照暴露" src="reference_exposures.png" /></p>
+<p>B在当前样本与交易合同下净年化约−7.75%。把E1向一个表现差且有明确方向的参照靠拢后变差，不能视作公平的“全部风格中性化认证”。此前P1/P2/P3证据不足的结果仍保留，但也不能将其解读为原E1不存在Alpha。</p>
+<h2>简单风格能否复制</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">fees</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: right;">0.881</td>
+<td style="text-align: right;">0.096</td>
+<td style="text-align: right;">9.276</td>
+</tr>
+<tr>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">-6.418</td>
+<td style="text-align: right;">0.085</td>
+<td style="text-align: right;">11.453</td>
+</tr>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">-7.750</td>
+<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">12.008</td>
+</tr>
+<tr>
+<td style="text-align: left;">REV</td>
+<td style="text-align: right;">-3.065</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">12.236</td>
+</tr>
+<tr>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: right;">-14.762</td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;">13.042</td>
+</tr>
+<tr>
+<td style="text-align: left;">MIX</td>
+<td style="text-align: right;">-11.711</td>
+<td style="text-align: right;">0.073</td>
+<td style="text-align: right;">13.105</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: right;">0.663</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">9.562</td>
+</tr>
+</tbody>
+</table>
+<p>REV为短期反转，MOM为20/60日动量，MIX为两者等权，均不读取E1、不拟合收益权重。它们没有复现I账户表现。COPY用当日13项风格与行业拟合E1分数，净年化约+0.66%，接近I的+0.88%，但二者差异的描述性区间很宽，不能宣布经济等价。</p>
+<p>COPY平均解释约51.4%分数方差、排序相关约0.667、留一股票重建Q²约0.332。这给出“E1包含可由风格组合重建的信息”的线索；COPY仍需要E1分数，不是可独立替代模型。且这里只复制了行业名额受约束的I，尚未复制原完整E1的4.84%账户。</p>
+<p><img alt="复制比较" src="replication.png" /></p>
+<h2>当前判断</h2>
+<ol>
+<li>价格组是本轮约束损失的主要定位，尤其应注意B对短期与中期收益的方向要求；尚未逐项识别哪个期限是独立来源。</li>
+<li>简单反转、动量及等权组合未复制E1；不能用它们的失败否定更一般的风格组合，也不能继续搜索最佳混合权重。</li>
+<li>风格复制分数具有一定重建能力，经济表现接近I但依赖E1。接下来若要证明“可以简化模型”，必须建立不借用当日E1的独立复制方法，并保留新数据验证；本轮未训练新模型。</li>
+</ol>
+<p>全部结果属于反复查看后的历史代理探索。没有发现经过独立确认的Alpha，也没有证实已知风格完全解释原策略。真实前瞻仍未完成。</p>
+<p><a href="CHANNELS.md">风格约束与股票替换</a> · <a href="REPLICATION.md">简单规则与复制边界</a> · <a href="EXECUTION.md">执行记录</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/metrics.csv">全部30条账户指标</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/periods.csv">完整逐年逐月</a>。</p></html>

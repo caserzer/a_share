@@ -1,0 +1,112 @@
+{
+  "run": "e1_alpha_mechanism_20261117",
+  "version": 1,
+  "status": "DESIGN_COMPLETE",
+  "execution_freeze": "PENDING",
+  "results_computed": false,
+  "forward": {
+    "status": "FORWARD_PENDING",
+    "months": 36,
+    "descriptive_review_month": 24,
+    "formal_tests": "once after 36 months and last H20 maturity",
+    "new_E1_unavailable": "FORWARD_BLOCKED_MODEL; independent B/J may proceed",
+    "no_automatic_extension": true
+  },
+  "hypotheses": [
+    "M1 within-industry medium-term strength and short-term pullback",
+    "M2 common rebound and risk compensation",
+    "M3 execution date and holding path"
+  ],
+  "primary_period": [
+    "2021-01-08",
+    "2025-03-03"
+  ],
+  "evidence": "historical post-selection exploration; prior outcomes seen",
+  "original_account": "E1 expanding original monthly phase1 Q5, not constrained S1",
+  "mechanism_sample": "original members, finite E1, all13 styles; known L1 with >=10 eligible stocks; >=100 stocks/date; >=50 residual degrees of freedom; no E2 requirement",
+  "scores": {
+    "T": "log(C[t-5]/C[t-60])",
+    "P": "-log(C[t]/C[t-5])",
+    "relative": "subtract leave-one-out industry mean, then average-rank percentile (rank-.5)/n",
+    "B": "(u+v)/2",
+    "J": "min(u,v)"
+  },
+  "primary_tests": {
+    "P1": "mean weekly H10 conditional J slope",
+    "P2": "mean paired phase1 H10 main-cost event J minus B",
+    "P3": "mean weekly H10 E1 rank slope conditional on J and controls"
+  },
+  "controls": "13 existing styles, industry, intercept, u/v linear and positive-part hinges .25/.5/.75",
+  "regression": {
+    "svd_rcond": 1e-12,
+    "target_residual_variance_min": 1e-12
+  },
+  "portfolio": {
+    "k": "ceil(n/5)",
+    "industry_slots": "universe-proportional largest remainder, industry-code tie break",
+    "weight": "1/k",
+    "numeric_tolerance_sd": 0.25,
+    "milp_seconds": 2,
+    "milp_gap": 0.01,
+    "no_relaxation": true
+  },
+  "entry": "signal t next session open",
+  "exit": "open t+1+h",
+  "horizons": [
+    5,
+    10,
+    20
+  ],
+  "primary_horizon": 10,
+  "costs_bps": {
+    "zero": [
+      0,
+      0
+    ],
+    "main": [
+      10,
+      20
+    ],
+    "stress": [
+      30,
+      80
+    ]
+  },
+  "primary_economic_coverage": {
+    "minimum_fraction": 0.8,
+    "minimum_valid_months": 36
+  },
+  "stats": {
+    "replicates": 5000,
+    "seed": 20261117,
+    "weekly_block": 13,
+    "monthly_block": 3,
+    "daily_block": 65,
+    "test": "centered two-sided plus-one p",
+    "family": "Holm P1 P2 P3",
+    "alpha": 0.05,
+    "ci": "percentile95 not simultaneous"
+  },
+  "matching": {
+    "industry": "exact L1",
+    "controls": "non-Q5 eligible pool",
+    "each_style_caliper_sd": 0.5,
+    "distance": "sum squared standardized style differences",
+    "replacement": true
+  },
+  "placebo": {
+    "replicates": 100,
+    "max_draws": 100,
+    "seed": 20261117,
+    "selection": "same industry counts and risk tolerances, no best seed selection"
+  },
+  "no_search": [
+    "new models",
+    "windows",
+    "phase",
+    "threshold",
+    "risk tolerance",
+    "best industry"
+  ],
+  "canonical_protocol": "../reports/e1_alpha_mechanism_20261117/PROTOCOL.md"
+}

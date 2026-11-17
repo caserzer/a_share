@@ -1,0 +1,318 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 机制实验</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>候选机制条件收益与经济验证</h1>
+<p>想验证什么：非重叠55日趋势和最近5日回撤的共同状态，是否超出各自主效应；E1是否在此之外还有信息。</p>
+<p>怎么比较：J=min(u,v)，B=(u+v)/2。P1控制13项风格、行业以及u/v在0.25/0.5/0.75的固定折线；P3再加入J控制。H10原始开盘标签与旧封存标签完全一致；可执行事件另加交易状态与费用。风格和分数标准化在标签接入前完成，标签缺失不改变名单。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">主检验</th>
+<th style="text-align: right;">有效期数</th>
+<th style="text-align: right;">均值pp</th>
+<th style="text-align: right;">95%下界pp</th>
+<th style="text-align: right;">95%上界pp</th>
+<th style="text-align: right;">Holm p</th>
+<th style="text-align: left;">裁决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">P1 状态条件系数</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0886</td>
+<td style="text-align: right;">-0.0507</td>
+<td style="text-align: right;">0.2319</td>
+<td style="text-align: right;">0.4499</td>
+<td style="text-align: left;">INCONCLUSIVE</td>
+</tr>
+<tr>
+<td style="text-align: left;">P2 J减B净事件收益</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.2245</td>
+<td style="text-align: right;">0.2151</td>
+<td style="text-align: right;">0.9986</td>
+<td style="text-align: left;">INCONCLUSIVE</td>
+</tr>
+<tr>
+<td style="text-align: left;">P3 E1剩余条件系数</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0620</td>
+<td style="text-align: right;">-0.0259</td>
+<td style="text-align: right;">0.1414</td>
+<td style="text-align: right;">0.4499</td>
+<td style="text-align: left;">INCONCLUSIVE</td>
+</tr>
+</tbody>
+</table>
+<p>全部期限和扩展区间仅辅助：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scope</th>
+<th style="text-align: right;">horizon</th>
+<th style="text-align: left;">test</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">211</td>
+<td style="text-align: right;">0.0737</td>
+<td style="text-align: right;">-0.0145</td>
+<td style="text-align: right;">0.1627</td>
+<td style="text-align: right;">0.1038</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">211</td>
+<td style="text-align: right;">0.0642</td>
+<td style="text-align: right;">0.0066</td>
+<td style="text-align: right;">0.1141</td>
+<td style="text-align: right;">0.0218</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0886</td>
+<td style="text-align: right;">-0.0507</td>
+<td style="text-align: right;">0.2319</td>
+<td style="text-align: right;">0.2160</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0620</td>
+<td style="text-align: right;">-0.0259</td>
+<td style="text-align: right;">0.1414</td>
+<td style="text-align: right;">0.1500</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">206</td>
+<td style="text-align: right;">0.0492</td>
+<td style="text-align: right;">-0.1702</td>
+<td style="text-align: right;">0.2595</td>
+<td style="text-align: right;">0.6557</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">206</td>
+<td style="text-align: right;">0.1283</td>
+<td style="text-align: right;">-0.0509</td>
+<td style="text-align: right;">0.2770</td>
+<td style="text-align: right;">0.1190</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">P2</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.2245</td>
+<td style="text-align: right;">0.2151</td>
+<td style="text-align: right;">0.9986</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">295</td>
+<td style="text-align: right;">0.0907</td>
+<td style="text-align: right;">0.0134</td>
+<td style="text-align: right;">0.1664</td>
+<td style="text-align: right;">0.0166</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">295</td>
+<td style="text-align: right;">0.0890</td>
+<td style="text-align: right;">0.0376</td>
+<td style="text-align: right;">0.1390</td>
+<td style="text-align: right;">0.0012</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">293</td>
+<td style="text-align: right;">0.1055</td>
+<td style="text-align: right;">-0.0034</td>
+<td style="text-align: right;">0.2150</td>
+<td style="text-align: right;">0.0580</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">293</td>
+<td style="text-align: right;">0.0926</td>
+<td style="text-align: right;">0.0155</td>
+<td style="text-align: right;">0.1668</td>
+<td style="text-align: right;">0.0160</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">291</td>
+<td style="text-align: right;">0.0784</td>
+<td style="text-align: right;">-0.0951</td>
+<td style="text-align: right;">0.2428</td>
+<td style="text-align: right;">0.3653</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">291</td>
+<td style="text-align: right;">0.1451</td>
+<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">0.2626</td>
+<td style="text-align: right;">0.0284</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">P2</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">0.0134</td>
+<td style="text-align: right;">-0.1589</td>
+<td style="text-align: right;">0.1729</td>
+<td style="text-align: right;">0.8732</td>
+</tr>
+</tbody>
+</table>
+<p>H10原始排序的主区间描述：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">score</th>
+<th style="text-align: right;">mean_rank_ic</th>
+<th style="text-align: right;">dates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">-0.0035</td>
+<td style="text-align: right;">210</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">0.0395</td>
+<td style="text-align: right;">210</td>
+</tr>
+<tr>
+<td style="text-align: left;">J</td>
+<td style="text-align: right;">0.0059</td>
+<td style="text-align: right;">210</td>
+</tr>
+<tr>
+<td style="text-align: left;">u</td>
+<td style="text-align: right;">-0.0221</td>
+<td style="text-align: right;">210</td>
+</tr>
+<tr>
+<td style="text-align: left;">v</td>
+<td style="text-align: right;">0.0156</td>
+<td style="text-align: right;">210</td>
+</tr>
+</tbody>
+</table>
+<p>经济规则的每期行业名额完全一致，目标13项数值风格差不超过0.25标准差。592次约束优化均成功。J与B名单重合率平均82.5%，并未完全退化为同一名单；J平均共同状态分数改善0.0184。仍然没有主净增量支持。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: left;">cost</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+<th style="text-align: right;">fees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">-5.1529</td>
+<td style="text-align: right;">11.3595</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-7.7498</td>
+<td style="text-align: right;">12.0080</td>
+<td style="text-align: right;">0.0862</td>
+</tr>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-14.3290</td>
+<td style="text-align: right;">13.9853</td>
+<td style="text-align: right;">0.2765</td>
+</tr>
+<tr>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">-4.0458</td>
+<td style="text-align: right;">11.3187</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-6.6600</td>
+<td style="text-align: right;">11.9598</td>
+<td style="text-align: right;">0.0860</td>
+</tr>
+<tr>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-13.2832</td>
+<td style="text-align: right;">13.9107</td>
+<td style="text-align: right;">0.2760</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">-3.8560</td>
+<td style="text-align: right;">10.8598</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-6.4177</td>
+<td style="text-align: right;">11.4535</td>
+<td style="text-align: right;">0.0851</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-12.9129</td>
+<td style="text-align: right;">13.2538</td>
+<td style="text-align: right;">0.2732</td>
+</tr>
+</tbody>
+</table>
+<p>为什么不能下结论：普通95%区间不是同时区间；三个主裁决使用Holm p。连续账户相对B的正点估计、辅助期限或扩展期的正系数，都不能替换主检验失败。未来是否可用尚无数据。</p>
+<p><a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/conditional.csv">每日期条件回归</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/primary_p2_months.csv">逐月P2配对</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/influence.csv">逐年与留一年影响</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/account_periods.csv">连续账户逐年逐月</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/account_metrics.csv">完整账户指标</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/common_extended_accounts.csv">共同扩展终点</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/selection_overlap.csv">目标重合</a>。</p></html>

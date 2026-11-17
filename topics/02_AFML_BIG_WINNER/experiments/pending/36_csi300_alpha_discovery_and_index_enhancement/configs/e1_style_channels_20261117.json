@@ -1,0 +1,52 @@
+{
+  "run": "e1_style_channels_20261117",
+  "at": "2026-11-17T06:53:21.345485+00:00",
+  "prior_results_seen": true,
+  "new_results_seen": false,
+  "scope": "2021-01-08 through 2025-03-03; original 50 monthly signals",
+  "groups": {
+    "price": [
+      "mom1",
+      "mom5",
+      "mom20",
+      "mom60"
+    ],
+    "risk": [
+      "vol20",
+      "vol60",
+      "beta60",
+      "idio60"
+    ],
+    "liquidity": [
+      "log_money20",
+      "turnover20",
+      "log_amihud20"
+    ],
+    "size": [
+      "log_total_mv",
+      "log_circ_mv"
+    ]
+  },
+  "ablation": "each group alone versus I, each group removed versus F; no best subset selection; interactions not additive",
+  "bounds": "same B reference, .25 SD, exact old industry slots, 2sec MILP gap .01; failure retained no relaxed bounds",
+  "baselines": {
+    "REV": "negative average cross-sectional rank(mom1),rank(mom5)",
+    "MOM": "average rank(mom20),rank(mom60)",
+    "MIX": "equal weight REV+MOM; no learned weights",
+    "COPY": "same-date OLS E1 score on all13 styles and industry; teacher-dependent, not independent deployable baseline"
+  },
+  "baseline_selection": "same C universe,k,industry slots; top baseline score; no further numerical style bounds",
+  "main_cost": [
+    0.001,
+    0.002
+  ],
+  "zero_cost": "all accounts auxiliary to distinguish turnover from gross opportunity, not tuning",
+  "statistics": "paired daily65-trading-day circular blocks2000seed20261117, descriptive CI only; fixed H10 event differences auxiliary; no confirmatory claims",
+  "clock": "features at each original signal, monthly signal exposure attribution; no future labels in selection",
+  "forbidden": [
+    "new return-model training",
+    "threshold search",
+    "selecting a winning ablation as alpha",
+    "style-copy claimed independent model"
+  ]
+}

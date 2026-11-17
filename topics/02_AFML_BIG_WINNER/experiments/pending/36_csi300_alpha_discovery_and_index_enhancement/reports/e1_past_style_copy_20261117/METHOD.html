@@ -1,0 +1,195 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>过去风格复制验证</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>过去复制方法与时间隔离</h1>
+<p>目标是验证可跨日期使用的风格映射，而不是再拟合一个未来收益模型。输入为既有13项风格：1/5/20/60日收益、20/60日波动、60日beta和特质波动、三项流动性、总市值及流通市值对数。</p>
+<p>每个历史信号日期，先将13项风格作截面总体标准化，再减去各行业均值；教师E1分数亦先作截面标准化，再行业去均值。每日期行权重为1/sqrt(n)，使训练日期总权重相同。合并过去日期做无截距OLS，rcond=1e-12，不搜索正则参数。</p>
+<p>Q每个季度开始，用所有严格早于季度起点的信号拟合。LOCK只用第一次符合26周和2000行门槛的Q模型，后续固定。COPY为当日同样变换后的教师投影；I为当日E1原分数，二者仅作对照。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">quarter</th>
+<th style="text-align: left;">status</th>
+<th style="text-align: right;">weeks</th>
+<th style="text-align: right;">rows</th>
+<th style="text-align: left;">train_start</th>
+<th style="text-align: left;">train_end</th>
+<th style="text-align: left;">cutoff</th>
+<th style="text-align: right;">rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021Q1</td>
+<td style="text-align: left;">WARMUP</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021Q2</td>
+<td style="text-align: left;">WARMUP</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2168</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021Q3</td>
+<td style="text-align: left;">WARMUP</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">4501</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021Q4</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">7084</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2021-09-30 00:00:00</td>
+<td style="text-align: left;">2021-10-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022Q1</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">9454</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2021-12-31 00:00:00</td>
+<td style="text-align: left;">2022-01-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022Q2</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">11496</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2022-03-25 00:00:00</td>
+<td style="text-align: left;">2022-04-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022Q3</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">13899</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2022-06-24 00:00:00</td>
+<td style="text-align: left;">2022-07-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022Q4</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">16648</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2022-09-30 00:00:00</td>
+<td style="text-align: left;">2022-10-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023Q1</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: right;">19010</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2022-12-30 00:00:00</td>
+<td style="text-align: left;">2023-01-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023Q2</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">21398</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2023-03-31 00:00:00</td>
+<td style="text-align: left;">2023-04-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023Q3</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">127</td>
+<td style="text-align: right;">24063</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2023-06-30 00:00:00</td>
+<td style="text-align: left;">2023-07-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023Q4</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">26624</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2023-09-28 00:00:00</td>
+<td style="text-align: left;">2023-10-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024Q1</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">152</td>
+<td style="text-align: right;">28985</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2023-12-29 00:00:00</td>
+<td style="text-align: left;">2024-01-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024Q2</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">164</td>
+<td style="text-align: right;">31335</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2024-03-29 00:00:00</td>
+<td style="text-align: left;">2024-04-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024Q3</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">177</td>
+<td style="text-align: right;">33873</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2024-06-28 00:00:00</td>
+<td style="text-align: left;">2024-07-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024Q4</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">36624</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2024-09-30 00:00:00</td>
+<td style="text-align: left;">2024-10-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025Q1</td>
+<td style="text-align: left;">FIT</td>
+<td style="text-align: right;">203</td>
+<td style="text-align: right;">38965</td>
+<td style="text-align: left;">2021-01-08 00:00:00</td>
+<td style="text-align: left;">2024-12-27 00:00:00</td>
+<td style="text-align: left;">2025-01-01 00:00:00</td>
+<td style="text-align: right;">13.0000</td>
+</tr>
+</tbody>
+</table>
+<p>第一期2021Q4，训练39个既有信号、7084行，截止2021-09-30。此前季度保持WARMUP，不利用未来补出预测，也不从2021年初用已有后期模型回填。因此所有经济账户改为同日起点重放，不能与原全期4.84%或上轮I全期0.88%直接比较。</p>
+<p>分数复制不需要等未来H10收益成熟，因为其训练目标是过去E1分数；未来收益标签仅在封存预测和名单后接入。实际历史分数发布时间未取得原始接收凭据，故只能称为时序合同下的模拟。</p>
+<p>完整系数逐季度保存。当前/未来E1被改成巨大常数时，历史拟合系数严格不变；预测接口拒绝E1和未来标签列；LOCK所有季度系数完全一致。41期COPY与上一轮同日期COPY名单相同，行业去均值只改变跨行业偏移，不改变固定行业名额下的选股。</p>
+<p><a href="../../outputs/diagnostics/e1_past_style_copy_20261117/coefficients.csv">季度系数</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/prediction_audit.csv">逐日期预测审计</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/freeze.json">冻结哈希</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/selection_complete.json">无标签封存</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/accounts_complete.json">收益账户凭据</a>。</p>
+<p>两个复制器没有读当前分数，但历史C样本仍采用原E1可评分资格和行业有效样本不少于10只的合同。未来独立运行还需实现不依赖存储E1分数的资格生成、最新数据审计与已冻结版本管理；本轮未声称已经部署。</p></html>

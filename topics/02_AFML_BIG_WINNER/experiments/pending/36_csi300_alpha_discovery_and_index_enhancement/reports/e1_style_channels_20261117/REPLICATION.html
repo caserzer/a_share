@@ -1,0 +1,156 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 风格约束来源</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>简单规则与风格重建验证</h1>
+<p>想验证什么：不升级模型，简单价格风格能否复制E1；已知风格能重建多少E1排序。</p>
+<p>规则在读取新结果前固定：REV=−平均rank(mom1),rank(mom5)；MOM=平均rank(mom20),rank(mom60)；MIX=(REV+MOM)/2。COPY是截面OLS：E1分数=截距+13项风格+行业。COPY从未读取未来收益，但读取E1，不能叫独立模型。</p>
+<p>全部采用与I相同C样本、行业名额及k，按各自分数选股；不再加入数值风格约束。因此不是让简单规则额外拥有更宽行业预算。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">nav</th>
+<th style="text-align: right;">fees</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: right;">0.881</td>
+<td style="text-align: right;">1.035</td>
+<td style="text-align: right;">0.096</td>
+<td style="text-align: right;">9.276</td>
+</tr>
+<tr>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">-6.418</td>
+<td style="text-align: right;">0.768</td>
+<td style="text-align: right;">0.085</td>
+<td style="text-align: right;">11.453</td>
+</tr>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">-7.750</td>
+<td style="text-align: right;">0.726</td>
+<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">12.008</td>
+</tr>
+<tr>
+<td style="text-align: left;">REV</td>
+<td style="text-align: right;">-3.065</td>
+<td style="text-align: right;">0.884</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">12.236</td>
+</tr>
+<tr>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: right;">-14.762</td>
+<td style="text-align: right;">0.530</td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;">13.042</td>
+</tr>
+<tr>
+<td style="text-align: left;">MIX</td>
+<td style="text-align: right;">-11.711</td>
+<td style="text-align: right;">0.610</td>
+<td style="text-align: right;">0.073</td>
+<td style="text-align: right;">13.105</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: right;">0.663</td>
+<td style="text-align: right;">1.027</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">9.562</td>
+</tr>
+</tbody>
+</table>
+<p>相对I的日均收益差年化及区间：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">comparison</th>
+<th style="text-align: right;">cagr_difference</th>
+<th style="text-align: right;">annual_daily_difference</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">replicate_REV</td>
+<td style="text-align: right;">-3.946</td>
+<td style="text-align: right;">-3.665</td>
+<td style="text-align: right;">-11.662</td>
+<td style="text-align: right;">5.489</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_MOM</td>
+<td style="text-align: right;">-15.643</td>
+<td style="text-align: right;">-16.878</td>
+<td style="text-align: right;">-25.029</td>
+<td style="text-align: right;">-8.061</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_MIX</td>
+<td style="text-align: right;">-12.592</td>
+<td style="text-align: right;">-13.300</td>
+<td style="text-align: right;">-21.542</td>
+<td style="text-align: right;">-5.352</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_COPY</td>
+<td style="text-align: right;">-0.218</td>
+<td style="text-align: right;">-0.173</td>
+<td style="text-align: right;">-5.580</td>
+<td style="text-align: right;">5.657</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_B</td>
+<td style="text-align: right;">-8.631</td>
+<td style="text-align: right;">-8.974</td>
+<td style="text-align: right;">-16.143</td>
+<td style="text-align: right;">-1.886</td>
+</tr>
+</tbody>
+</table>
+<p>固定月初H10净事件对照：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">comparison</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean_net_H10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">replicate_REV</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.030</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_MOM</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.762</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_MIX</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.549</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_COPY</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.102</td>
+</tr>
+<tr>
+<td style="text-align: left;">replicate_B</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.245</td>
+</tr>
+</tbody>
+</table>
+<p>缺少完整可交易退出的事件保持未知，配对数48—50，不用未来退出条件重新选股。H10事件差不机械外推连续账户。</p>
+<p>重建平均R²=0.5145、分数秩相关=0.6669、留一股票PRESS Q²=0.3315。留一诊断仅检验截面分数重建，并非时间上的未来收益样本外。COPY的经济结果接近I但区间宽，不能证明两者等价，更不能代表复制了原完整E1。</p>
+<p>下一步边界：若继续独立复制，需要另冻结只能用过去数据确定的规则或模型、成熟标签隔离、预测期限和前瞻检验。本轮没有训练该模型，也没有从REV/MOM/MIX中挑胜者部署。</p>
+<p><a href="../../outputs/diagnostics/e1_style_channels_20261117/score_reconstruction.csv">逐日重建</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/comparisons.csv">全部费用对照</a> · <a href="../../outputs/diagnostics/e1_style_channels_20261117/events.csv">逐事件执行结果</a> · <a href="../../configs/e1_style_channels_20261117.json">原始冻结配置</a>。</p></html>

@@ -1,0 +1,30 @@
+{
+  "run": "e1_mapping_drift_20261117",
+  "at": "2026-11-17T07:23:18.438109+00:00",
+  "new_results_seen": false,
+  "old_results_seen": true,
+  "scope": "same scored interval as past-style-copy, through2025-03-03",
+  "objects": [
+    "adjacent original weekly signals",
+    "fixed first scored date anchor"
+  ],
+  "universes": [
+    "native C each date",
+    "intersection of old and new C stocks"
+  ],
+  "mapping": "industry-demeaned13 date-standardized styles X; teacher is global-standardized model score then industry-demeaned; gamma=lstsq(X,y,rcond1e-12)",
+  "cells": "g00 old model old data;g10 new model old data;g01 old model new data;g11 new model new data",
+  "decomposition": "symmetric two-factor allocation of gamma change, evaluated using Xnew; additive model and data score changes; signed projection share dot(component,total)/dot(total,total), not positive variance shares",
+  "model_factor": "entire frozen Ridge bundle: coefficients, training mean/sd and median imputation",
+  "data_factor": "features,style covariance,date standardization,industry composition and stock pool; common-stock sensitivity excludes entry/exit only",
+  "residual": "original78 transformed feature contributions grouped by existing frozen mapping; divide by full score SD then industry demean, project on13-style X; residual group contributions sum to total unexplained score",
+  "anchor": "first scored signal from prior past-copy experiment; fixed original Ridge bundle applied to later features, no refit",
+  "auxiliary": "H10 RankIC original, frozen78-model, explained13 and residual13; no portfolio or new return model; historical descriptive blocks13weeks5000",
+  "prohibitions": [
+    "new training",
+    "window/threshold search",
+    "counterfactual new model on old data called tradable",
+    "coefficient Euclidean norms claimed economic shares",
+    "residual score attribution claimed profit attribution"
+  ]
+}

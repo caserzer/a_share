@@ -1,0 +1,699 @@
+{
+  "check_count": 173,
+  "checks": [
+    {
+      "check": "unique decomposition key",
+      "passed": true
+    },
+    {
+      "check": "score reconstruction",
+      "passed": true
+    },
+    {
+      "check": "all models and layers same counts",
+      "passed": true
+    },
+    {
+      "check": "common identity ('E1', 'price')",
+      "passed": true
+    },
+    {
+      "check": "common identity ('E1', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "common identity ('E2', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "common identity ('E2', 'price')",
+      "passed": true
+    },
+    {
+      "check": "common identity ('E2', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "label counts common across models layers",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h10', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h10', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h10', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h10', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h10', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h10', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h10', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h20', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h20', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h20', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h20', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h20', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h20', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h20', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h5', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h5', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h5', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h5', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h5', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h5', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'available_style', 'h5', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h10', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h10', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h10', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h10', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h10', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h10', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h10', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h20', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h20', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h20', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h20', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h20', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h20', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h20', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h5', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h5', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h5', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h5', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h5', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h5', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price', 'h5', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h10', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h10', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h10', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h10', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h10', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h10', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h10', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h20', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h20', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h20', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h20', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h20', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h20', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h20', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h5', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h5', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h5', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h5', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h5', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h5', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E1', 'price_industry', 'h5', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h10', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h10', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h10', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h10', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h10', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h10', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h10', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h20', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h20', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h20', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h20', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h20', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h20', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h20', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h5', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h5', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h5', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h5', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h5', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h5', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'available_style', 'h5', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h10', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h10', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h10', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h10', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h10', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h10', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h10', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h20', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h20', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h20', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h20', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h20', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h20', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h20', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h5', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h5', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h5', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h5', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h5', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h5', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price', 'h5', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h10', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h10', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h10', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h10', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h10', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h10', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h10', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h20', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h20', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h20', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h20', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h20', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h20', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h20', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h5', 'original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h5', 'explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h5', 'residual_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h5', 'partial_rank_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h5', 'conditional_slope')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h5', 'residual_minus_original_ic')",
+      "passed": true
+    },
+    {
+      "check": "primary cutoff ('E2', 'price_industry', 'h5', 'original_minus_explained_ic')",
+      "passed": true
+    },
+    {
+      "check": "six adjusted primary tests",
+      "passed": true
+    },
+    {
+      "check": "adjustment cannot lower p",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2021-01-08 00:00:00'), 'E1', 'price')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2021-01-08 00:00:00'), 'E1', 'price')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2021-01-08 00:00:00'), 'E1', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2021-01-08 00:00:00'), 'E1', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2021-01-08 00:00:00'), 'E1', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2021-01-08 00:00:00'), 'E1', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2021-01-08 00:00:00'), 'E2', 'price')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2021-01-08 00:00:00'), 'E2', 'price')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2021-01-08 00:00:00'), 'E2', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2021-01-08 00:00:00'), 'E2', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2021-01-08 00:00:00'), 'E2', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2021-01-08 00:00:00'), 'E2', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2023-12-08 00:00:00'), 'E1', 'price')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2023-12-08 00:00:00'), 'E1', 'price')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2023-12-08 00:00:00'), 'E1', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2023-12-08 00:00:00'), 'E1', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2023-12-08 00:00:00'), 'E1', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2023-12-08 00:00:00'), 'E1', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2023-12-08 00:00:00'), 'E2', 'price')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2023-12-08 00:00:00'), 'E2', 'price')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2023-12-08 00:00:00'), 'E2', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2023-12-08 00:00:00'), 'E2', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2023-12-08 00:00:00'), 'E2', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2023-12-08 00:00:00'), 'E2', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2026-09-18 00:00:00'), 'E1', 'price')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2026-09-18 00:00:00'), 'E1', 'price')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2026-09-18 00:00:00'), 'E1', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2026-09-18 00:00:00'), 'E1', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2026-09-18 00:00:00'), 'E1', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2026-09-18 00:00:00'), 'E1', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2026-09-18 00:00:00'), 'E2', 'price')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2026-09-18 00:00:00'), 'E2', 'price')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2026-09-18 00:00:00'), 'E2', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2026-09-18 00:00:00'), 'E2', 'price_industry')",
+      "passed": true
+    },
+    {
+      "check": "scipy residual IC (Timestamp('2026-09-18 00:00:00'), 'E2', 'available_style')",
+      "passed": true
+    },
+    {
+      "check": "joint OLS coefficient (Timestamp('2026-09-18 00:00:00'), 'E2', 'available_style')",
+      "passed": true
+    }
+  ],
+  "original_hashes_verified": true,
+  "all_complete_artifacts_verified": true
+}

@@ -1,0 +1,146 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 机制实验</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>EP36 行业内回撤修复机制实验结果</h1>
+<p><strong>本轮没有确认“行业内中期强势股票的短期回撤修复”具有独立且可兑现的 Alpha，也没有确认 E1 在该状态与既有风格之外仍有稳定信息。三个主检验均为 INCONCLUSIVE。</strong> 这不是证明市场不存在该机制，也不是证明原 E1 没有收益，而是这套预先固定的验证未提供足够支持。</p>
+<p>主历史区间为2021-01-08信号至2025-03-03，原E1为expanding Ridge。没有重训、修改原预测或调仓搜索。行业、市值首发版本和复权估值仍为Historical-proxy，历史已被多次查看。本轮全部历史结果为探索性证据，真实前瞻尚未运行。</p>
+<h2>三个主检验</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">主检验</th>
+<th style="text-align: right;">有效期数</th>
+<th style="text-align: right;">均值pp</th>
+<th style="text-align: right;">95%下界pp</th>
+<th style="text-align: right;">95%上界pp</th>
+<th style="text-align: right;">Holm p</th>
+<th style="text-align: left;">裁决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">P1 状态条件系数</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0886</td>
+<td style="text-align: right;">-0.0507</td>
+<td style="text-align: right;">0.2319</td>
+<td style="text-align: right;">0.4499</td>
+<td style="text-align: left;">INCONCLUSIVE</td>
+</tr>
+<tr>
+<td style="text-align: left;">P2 J减B净事件收益</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0002</td>
+<td style="text-align: right;">-0.2245</td>
+<td style="text-align: right;">0.2151</td>
+<td style="text-align: right;">0.9986</td>
+<td style="text-align: left;">INCONCLUSIVE</td>
+</tr>
+<tr>
+<td style="text-align: left;">P3 E1剩余条件系数</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0620</td>
+<td style="text-align: right;">-0.0259</td>
+<td style="text-align: right;">0.1414</td>
+<td style="text-align: right;">0.4499</td>
+<td style="text-align: left;">INCONCLUSIVE</td>
+</tr>
+</tbody>
+</table>
+<p>P1为标准化共同状态J的条件收益系数，P3为标准化E1分数秩的剩余条件收益系数；二者不是账户年化。P2为每个月初同日H10净事件收益差，买10/sell20bps。P2覆盖50/50个月初事件，点估计约−0.00016pp，区间约[−0.2245,+0.2151]pp。没有用不显著证明等价。13周/3个月时间块、5000次Bootstrap，三项Holm校正。</p>
+<p><img alt="主检验" src="primary_tests.png" /></p>
+<h2>为什么暂时不能解释原 E1</h2>
+<p>原E1有约42.63元/初始100元的累计相对财富差。按每日持仓在此前最近已知信号的状态分组，结果如下。它是对原账本的描述性分配，不是状态的独立回测。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">状态</th>
+<th style="text-align: right;">财富差贡献元</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">状态未知或不属于本轮样本</td>
+<td style="text-align: right;">19.3899</td>
+</tr>
+<tr>
+<td style="text-align: left;">现金机会收益</td>
+<td style="text-align: right;">0.9781</td>
+</tr>
+<tr>
+<td style="text-align: left;">交易费用</td>
+<td style="text-align: right;">-10.0074</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期强势且短期未回撤</td>
+<td style="text-align: right;">-0.1014</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期强势且短期回撤</td>
+<td style="text-align: right;">8.1218</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期弱势且短期未回撤</td>
+<td style="text-align: right;">7.2953</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期弱势且短期回撤</td>
+<td style="text-align: right;">16.9549</td>
+</tr>
+</tbody>
+</table>
+<p>强势回撤对应约8.12元；弱势回撤对应约16.95元，不能将这些数额直接解释为某种预测因子的效果。未知状态贡献约19.39元，且持仓状态会随新信号改变；这种归因不是按买入状态固定分组，也不是各组独立净收益。</p>
+<p>本轮每行业至少10只有效股票的约束，平均只保留约192.0只股票，主区间原Q5目标预算平均覆盖65.4%；实际每日已知状态持仓占股票资本平均66.7%。原账户不能被这个缩小样本完全解释。</p>
+<p><img alt="原账本状态贡献" src="state_bridge.png" /></p>
+<h2>简单规则没有交付可用的经济证据</h2>
+<p>B是趋势与回撤秩的平均，J是二者较小值；都不读取E1、不训练收益模型。新E1在同一样本和风险约束下选股，<strong>不是原60只左右的E1月初账户</strong>。新账户约40只、行业名额按新样本分配。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">days</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">end_nav</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+<th style="text-align: right;">average_cash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">-7.7498</td>
+<td style="text-align: right;">0.7258</td>
+<td style="text-align: right;">12.0080</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">J</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">-6.6600</td>
+<td style="text-align: right;">0.7605</td>
+<td style="text-align: right;">11.9598</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">-6.4177</td>
+<td style="text-align: right;">0.7684</td>
+<td style="text-align: right;">11.4535</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+</tbody>
+</table>
+<p>表中cagr和average_cash以百分数展示，换手为年化单边倍数。原E1的4.84%净年化不能与新受约束E1的−6.42%直接作“模型损失”的因果比较：股票池、行业预算、持仓数、风格约束和路径都改变了。J相对B的连续账户年化点估计略高，也不能代替未通过的固定H10主检验。</p>
+<p><img alt="账户参考图" src="accounts.png" /></p>
+<h2>对照覆盖和实施限制</h2>
+<p>严格逐股13风格匹配平均仅覆盖原Q5约2.1%预算（扩展区间描述）；随机安慰剂成功51/14000次，仅0.36%。这些分支保留完整失败记录，裁决为PARTIAL_IDENTIFICATION，不能当作有效的全样本反证或认证。</p>
+<p>9条连续账户均覆盖主区间1001交易日。扩展期B/J至2026-10-21，新受约束E1因2026-10-19持仓收盘估值未知，停在2026-10-16；三策略共同终点表采用2026-10-16。没有填价延续账户。</p>
+<h2>下一步裁决</h2>
+<p>本轮候选机制没有获得主检验支持，按方案停止本版本的阈值与窗口扩展。不因为“弱势回撤贡献更大”就立即改成另一个胜者规则；那是已看结果后的新假说，需要另立版本。E1仍有原始收益线索，但来源解释未闭合。</p>
+<p>前瞻登记已生成，计划窗口2026-12至2029-11、24个月仅描述、36个月后待最后标签成熟统一检验。但本地封存数据截止2026-10-21，缺少经验证的最新数据和未来E1出分流程，因此状态为FORWARD_PENDING、FORWARD_BLOCKED_DATA_REFRESH及FORWARD_BLOCKED_MODEL；没有自动任务、实际前瞻信号或部署。</p>
+<h2>完整证据</h2>
+<ul>
+<li><a href="MODEL.md">模型解释与原账本</a> · <a href="MECHANISM.md">条件收益与独立规则</a> · <a href="TIMING.md">共同反弹与时间路径</a> · <a href="FORWARD.md">前瞻状态</a></li>
+<li><a href="PROTOCOL.md">原方案</a> · <a href="EXECUTION.md">执行记录</a></li>
+<li><a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/primary_tests.csv">主检验原表</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/all_tests.csv">全部辅助检验</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/all_case_events.csv">全部案例事件</a></li>
+<li><a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/validation.json">验证记录</a>：955项核验通过，51项测试通过，原输入/预测哈希未变。一次格式兼容修复留存旧版本，主结果核对一致。</li>
+</ul></html>

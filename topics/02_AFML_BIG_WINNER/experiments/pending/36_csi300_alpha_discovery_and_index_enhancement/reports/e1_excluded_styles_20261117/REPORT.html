@@ -1,0 +1,173 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 被排除持仓风格检验</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>被排除持仓：短期反转成为优先核验线索</h1>
+<p><strong>预设的简单反转规则给出了接近原E1的账户表现，但尚不能宣布它解释了全部Alpha。</strong> 严格13风格匹配没有可行支持；辅助条件排序也未确认控制风格后的独立信息。</p>
+<h2>这次只改变什么</h2>
+<p>固定上一轮P对照可匹配的原被排除持仓，以及原50个月初交易日期。在各自行业内，以原匹配股票和同行未入选股票的并集为候选，重新按简单规则选相同数量股票，保留同样行业预算；其他原E1持仓不变。简单规则允许选回原股票。</p>
+<p>可支持比较的预算平均占原总资金31.60%，占被排除预算约95.21%。因此下面策略都仍含大部分未改变的原E1持仓，并使用E1确定的行业预算和研究范围；<strong>不是独立的全市场反转策略，也不是从零复制整个E1。</strong></p>
+<ul>
+<li>REV：1日、5日收益分位均值的相反数，买近期跌得较多者。</li>
+<li>MOM：20日、60日收益分位均值，买趋势较强者。</li>
+<li>LOWVOL/HIGHVOL：20日、60日波动分位均值的负/正方向，两者均固定保留。</li>
+<li>MIX：反转、动量、高波动三个组件再取分位、等权相加。高波动方向参考了上一轮已观察的特征差异，不属于独立发现。</li>
+</ul>
+<p>无新模型训练，无窗口、权重或调仓日期搜索。原行业至少10只限制未重新引入。</p>
+<h2>同数量、同行业预算账户结果</h2>
+<p>共同区间2021-01-11至2025-03-03，1001交易日。买入10bps、卖出20bps。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">nav</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+<th style="text-align: right;">holdings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">HIGHVOL</td>
+<td style="text-align: right;">1.7580</td>
+<td style="text-align: right;">1.0717</td>
+<td style="text-align: right;">9.1797</td>
+<td style="text-align: right;">59.2158</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOWVOL</td>
+<td style="text-align: right;">2.1972</td>
+<td style="text-align: right;">1.0902</td>
+<td style="text-align: right;">8.9086</td>
+<td style="text-align: right;">59.2168</td>
+</tr>
+<tr>
+<td style="text-align: left;">MIX</td>
+<td style="text-align: right;">0.8582</td>
+<td style="text-align: right;">1.0345</td>
+<td style="text-align: right;">9.8679</td>
+<td style="text-align: right;">59.1978</td>
+</tr>
+<tr>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: right;">-1.3620</td>
+<td style="text-align: right;">0.9470</td>
+<td style="text-align: right;">10.2146</td>
+<td style="text-align: right;">59.2158</td>
+</tr>
+<tr>
+<td style="text-align: left;">O</td>
+<td style="text-align: right;">4.8446</td>
+<td style="text-align: right;">1.2067</td>
+<td style="text-align: right;">8.8882</td>
+<td style="text-align: right;">59.1978</td>
+</tr>
+<tr>
+<td style="text-align: left;">REV</td>
+<td style="text-align: right;">4.5582</td>
+<td style="text-align: right;">1.1937</td>
+<td style="text-align: right;">9.4212</td>
+<td style="text-align: right;">59.2048</td>
+</tr>
+</tbody>
+</table>
+<p>CAGR为%，单边换手为年倍数，holdings为实际日均持仓。目标持仓数每期与原组合严格相同；成交和旧仓延续导致实际持仓数略有不同。</p>
+<p>原E1净年化+4.84%，REV +4.56%；二者复合年化相差约0.29个百分点。配对日收益差均值年化仅约+0.247pp，普通95%区间[−2.16,+2.64]。该比较是预先列出的辅助项，<strong>未显著不同不等于统计等价</strong>；本轮没有预先定义等价界限，不能说收益已被完全复制。</p>
+<p><img alt="账户与差异" src="style_accounts.png" /></p>
+<p>按行业组等权计算，REV与原选股的平均名单重叠约34.9%，所以也不是简单选回全部原股票后机械获得同样收益。但这种近似表现是否稳定、是否覆盖同一收益路径，仍待下一轮冻结检验。</p>
+<h2>预设主检验没有确认新独立Alpha</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">metric</th>
+<th style="text-align: left;">comparison</th>
+<th style="text-align: left;">status</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">p_holm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-MIX</td>
+<td style="text-align: left;">ESTIMATED</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">3.7793</td>
+<td style="text-align: right;">0.5929</td>
+<td style="text-align: right;">7.1154</td>
+<td style="text-align: right;">0.0944</td>
+</tr>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-SM</td>
+<td style="text-align: left;">NO_MATCHING_SUPPORT</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_event</td>
+<td style="text-align: left;">BASE_O-BASE_MIX</td>
+<td style="text-align: left;">ESTIMATED</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">0.3017</td>
+<td style="text-align: right;">-0.3720</td>
+<td style="text-align: right;">1.0077</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_event</td>
+<td style="text-align: left;">SM_O-SM_PEER</td>
+<td style="text-align: left;">NO_MATCHING_SUPPORT</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+</tbody>
+</table>
+<p>年化日收益或H10事件收益的单位均为pp，按metric区分。O−MIX日收益差年化+3.78pp，普通区间[+0.59,+7.12]，但保留原计划Holm4检验族后p约0.094，未通过。没有因为两个匹配检验不可估计而缩小检验族。</p>
+<p>在归一化的可支持子组合中，原E1−MIX的H10净事件差约+0.302pp，普通区间[−0.372,+1.008]，46个可执行配对，未通过。REV并非本轮主基准，不能看到其接近原E1后事后改成主检验；本轮也没有额外补跑REV的H10来寻找有利结论。</p>
+<h2>为什么严格风格匹配无法裁决</h2>
+<p>在原被排除且能找到同行的521个行业日期组内，要求不使用任何原选中股票、13风格暴露差各不超过0.25个全截面标准差、对照个股权重不超过该组原个股最大权重：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">status</th>
+<th style="text-align: right;">groups</th>
+<th style="text-align: right;">budget</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">INFEASIBLE</td>
+<td style="text-align: right;">364</td>
+<td style="text-align: right;">9.8156</td>
+</tr>
+<tr>
+<td style="text-align: left;">INSUFFICIENT_PEER_CAPACITY</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">3.0930</td>
+</tr>
+<tr>
+<td style="text-align: left;">ORIGINAL_STYLE_MISSING</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: right;">2.9062</td>
+</tr>
+</tbody>
+</table>
+<p>结果是0组可行：99组原股票风格缺失，58组同行数量不足以容纳预算和权重上限，364组线性约束不可行。所有不支持组保留原持仓，因此SM账户机械等于原O。</p>
+<p><strong>SM相等是没有发生替换，不是匹配后Alpha消失。</strong> 该分支的收益估计、p值标为不可用，样本数为0；不能读取SM净年化+4.84%作比较结论。</p>
+<p><img alt="匹配失败原因" src="matching_support.png" /></p>
+<p>额外的纯结构审计发现，364个不可行组中331组，仅看至少一个单独风格在权重上限下的可达到范围，就已经无法满足0.25容差；其余33组属于联合约束。详细范围见<a href="DETAILS.md">证据</a>。这证明在当前合同下缺少可比支持，不证明是哪项风格创造了收益；容差和权重上限未放宽。</p>
+<h2>控制风格后的排序信息</h2>
+<p>辅助周度检验保留被排除、行业已知、13风格完整的候选，不要求行业至少10只。将E1和H10收益的截面分位分别对13风格分位与行业哑变量回归，计算两组残差的相关：</p>
+<p>条件RankIC <strong>0.0099</strong>，普通95%区间 <strong>[-0.0129,0.0334]</strong>，210个有效周信号，未确认独立关联。</p>
+<p>这只控制所指定的线性秩关系，且仍删除缺失风格样本；它与上一轮行业内原始RankIC的估计量和覆盖不同，不能简单相减作为“解释了多少Alpha”。</p>
+<h2>当前判断与下一步</h2>
+<p>这轮使“短期反转能够解释部分表现”成为更具体、可证伪的候选，而不是继续围绕pos60或复杂交互寻找解释。但目前既不能确认Ridge有独立Alpha，也不能断言全部收益只是反转。</p>
+<p>下一轮应保留REV原公式、原比较范围与交易合同，冻结原E1相对REV的固定期限净收益、逐年路径和前瞻差异检验；不能从本轮五个规则中挑赢家，再把同一历史包装为新确认。严格匹配缺乏支持的问题要单独保留，不能靠继续放宽风险边界得到结论。</p>
+<p><a href="DETAILS.md">完整证据</a> · <a href="METHOD.md">方法与零支持修正</a> · <a href="PROTOCOL.md">冻结协议</a> · <a href="../../configs/e1_excluded_styles_20261117.json">配置</a>。</p>
+<p>80项测试、1625项主核验通过；21条账户完整，原O精确复放。旧模型、预测、报告未改；历史反复探索、Historical-proxy、严格PIT未认证、前瞻未完成。未提交、推送或部署。</p></html>

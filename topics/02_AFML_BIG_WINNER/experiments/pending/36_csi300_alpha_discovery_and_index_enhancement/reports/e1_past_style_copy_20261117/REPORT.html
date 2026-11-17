@@ -1,0 +1,77 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>过去风格复制验证</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>过去信息能否独立生成 E1 风格复制分数</h1>
+<p><strong>本轮固定的13风格线性复制没有保住E1的排序或经济表现。季度滚动更新和首次学习后锁定两种方式，都明显弱于同日起点E1的点估计。当前不能把风格COPY当作可替代E1的简单模型。</strong></p>
+<p>这不证明所有过去信息复制都不可能，也不直接证明E1具有未知风格之外的稳定Alpha。它没有支持这个较窄的可操作主张：用固定13项风格、过去E1分数、季度扩展OLS或首次锁定系数，可以在本合同下稳定复制E1。</p>
+<h2>先确保没有借用当天答案</h2>
+<p>Q在每季度开始时只读取此前的E1分数；LOCK只在首个合格季度学习一次，此后不再更新。两者预测接口只接收风格与行业，不接收E1分数和未来收益。</p>
+<p>预设最少26个历史周信号、2000行，季度开始才允许拟合。2021Q3前只有25个信号，因此第一期是2021Q4，训练截止2021-09-30。LOCK此后永久使用该次系数。所有训练在当前/未来教师分数被改写成常数时结果不变。</p>
+<p>这里的“过去”依据历史信号时点合同模拟；数据首发版本和真实分数发布时间未认证，仍是Historical-proxy历史研究，不是真实前瞻。</p>
+<h2>共同区间结果</h2>
+<p>所有账户从2021-10-11开盘后的同一资金起点开始，到2025-03-03，共823交易日、41次月初信号。沿用缩小后的C样本、约39只持仓、相同行业名额及10/20bps费用。I是行业名额受约束的E1，不是原完整E1账户。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: left;">名称</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">同日起点E1</td>
+<td style="text-align: right;">1.6809</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0471</td>
+<td style="text-align: right;">0.0193</td>
+<td style="text-align: right;">0.0759</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">每季度过去分数复制</td>
+<td style="text-align: right;">-6.7423</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0025</td>
+<td style="text-align: right;">-0.0221</td>
+<td style="text-align: right;">0.0274</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: left;">首次学习后锁定</td>
+<td style="text-align: right;">-7.2782</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">-0.0056</td>
+<td style="text-align: right;">-0.0320</td>
+<td style="text-align: right;">0.0221</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: left;">当日E1复制 仅作诊断</td>
+<td style="text-align: right;">-0.8067</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0339</td>
+<td style="text-align: right;">0.0115</td>
+<td style="text-align: right;">0.0561</td>
+</tr>
+</tbody>
+</table>
+<p>cagr为净年化百分数；mean及区间为H10 RankIC，无年化含义。171个有效成熟周信号。Q和LOCK的RankIC区间跨零；与I的差额另有描述性区间，但本轮未作确认性多重检验。</p>
+<p><img alt="共同起点结果" src="past_copy_results.png" /></p>
+<p>Q相对I的年化差约−8.42pp，LOCK约−8.96pp。配对日收益差年化的区间仍跨零，因此应说“未复现”，不能宣布统计上已证明永久劣于E1。月初H10净事件的平均差也为负，完整结果见<a href="DETAILS.md">时序及经济明细</a>。</p>
+<h2>行业内核验也没有恢复</h2>
+<p>为避免行业均值处理造成误解，补做每行业内部Spearman、再按股票数加权的审计。Q与E1的行业内分数排序相关约0.112，LOCK约0.072；当日COPY约0.464。行业内未来H10 RankIC分别约0.0059、−0.0073、0.0461，E1约0.0443。过去复制的区间仍跨零。</p>
+<p>同时，41个日期的COPY和I名单分别与上一轮对应名单完全一致。去均值没有改变行业内选股；当前COPY的年化与上一轮不同，是重新从共同起点建仓、删去暖启动期和路径变化，不能跨区间比较。</p>
+<p><img alt="复制稳定性" src="replication_stability.png" /></p>
+<h2>现在知道了什么</h2>
+<ul>
+<li>当天用风格解释E1，保留了一部分当日排序；把过去的解释关系搬到未来日期，当前两种固定方式未能保留这种能力。</li>
+<li>因而“E1就是一个稳定风格配方”的解释没有获得支持。信息可能包含随时点变化的映射，也可能是13项线性表达过于简单；本轮没有区分这两者，不能把失败自动归因于市场状态。</li>
+<li>Q仍需要过去E1分数来季度更新；LOCK在初次学习后不再需要新E1分数，但仍继承历史E1和C股票池资格，不能称为从未依赖E1的完全独立系统。</li>
+<li>原完整E1的收益来源仍未闭合。下一步若研究映射为何变化，应先利用已保存的原Ridge系数和当前风格投影做解释性诊断，而非继续搜索复制窗口或升级模型。</li>
+</ul>
+<p>本轮停止这两个固定复制版本的参数扩展，保留失败证据。没有重训原E1或训练未来收益预测模型，没有前瞻结果、自动部署或交易建议。</p>
+<p><a href="METHOD.md">冻结方法与时序凭据</a> · <a href="DETAILS.md">全部统计和年度月度</a> · <a href="../../configs/e1_past_style_copy_20261117.json">机器配置</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/validation.json">验证记录</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/measurement_audit.json">行业内测量审计</a>。</p>
+<p>61项测试通过，304项时序/配对/账本检查和82项历史名单一致性检查通过；旧输入、模型和预测哈希保持不变。</p></html>

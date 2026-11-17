@@ -1,0 +1,111 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 Alpha信息与时间结构验证</title><style>body{max-width:1150px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}pre{overflow:auto;background:#f4f4f4;padding:16px}a{color:#146887}</style><h1>EP36 市值补充与 A1 条件信息验证</h1>
+<p><strong>加入总市值和流通市值后，E1 主区间残差 RankIC 约0.0085，区间仍跨零；这没有推翻首批 A1 的裁决。</strong> 条件收益回归仍有正向线索，不能把排序与收益幅度的不同检验合并成一个结论。</p>
+<p>本轮沿用封存 E1 Ridge 和 E2 预测，未训练新模型、未运行 E3、未优化相位或调仓参数。新增总市值与流通市值来自信号日前一个交易日的供应商快照，仍为 Historical-proxy；历史行业、前复权合成单位和停牌估值也保留原代理身份。所有历史已反复查看，结果属于历史模拟样本外探索，真实前瞻为 FORWARD_PENDING。</p>
+<p>S0 是以当天已覆盖风格拟合原模型分数后的 Q5；S1 用原分数、S2 用残差分数，在 S0 附近的固定暴露约束内选股。<strong>S0 仍依赖原模型分数，并非独立训练的强风格收益模型，不能据此宣布可以直接替换 Ridge。</strong></p>
+<p>每期同一可评分池、相同持仓数及等权目标；数值风格目标差不超过截面0.25个标准差、单行业权重差不超过2个百分点。容差在收益计算前冻结，无事后放宽。约束控制目标组合，成交受限与持仓漂移仍会改变实际暴露；净收益结论是这一固定近似匹配合同下的部分识别，不是精确风险中性的认证 Alpha。</p>
+<h2>数据从哪里来</h2>
+<p>使用既有权限调用 Tushare daily_basic，获取296个信号日前一市场交易日的确切快照。供应商说明该接口提供总市值、流通市值等字段，通常于交易日15至17点更新，单次最多6000行。<a href="https://tushare.pro/document/2?doc_id=32">官方字段文档</a></p>
+<p>本轮每次响应均少于6000行，按日期和股票键检查重复，并保存原文SHA256、参数和 observed_at。日志不保存令牌。总市值 total_mv、流通市值 circ_mv 的单位都是万元；circ_mv不是自由流通市值，不把两者混称。</p>
+<p>利用同日 close×total_share 与 total_mv、close×float_share 与 circ_mv 的恒等关系审计，允许1e-4相对舍入差；另与封存未复权收盘价核对，容差0.01元加1e-5相对差。88,698行中11行恒等式冲突被剔除，价格冲突0行。缺少行与冲突均不填补。总计88,687行通过。</p>
+<p>前一交易日滞后可降低当日更新时钟风险，但不能证明历史数据未修订；known_at仍未认证，保持Historical-proxy身份。该滞后下的市值也是明确的一日旧值，不是信号日实时市值。</p>
+<h2>共同样本与指标</h2>
+<p>主日期范围内原成分股票信号行63,600，13项数值风格与两模型共同分数完整行59,756；每期约275至287只股票。主要覆盖限制仍来自原有换手率窗口，新增市值冲突不会被偷偷填零。</p>
+<p>以下为H10主区间结果，共210个有效信号。IC无单位；conditional_slope为每一原分数截面标准差对应的收益小数，例如0.001216等于0.1216个百分点。此补充未替换首批冻结检验族，也未把辅助 p 值纳入新的“成功”裁决。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">metric</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">original_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0411</td>
+<td style="text-align: right;">0.0182</td>
+<td style="text-align: right;">0.0672</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">explained_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0497</td>
+<td style="text-align: right;">0.0231</td>
+<td style="text-align: right;">0.0803</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">residual_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0085</td>
+<td style="text-align: right;">-0.0022</td>
+<td style="text-align: right;">0.0191</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">partial_rank_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">-0.0026</td>
+<td style="text-align: right;">0.0245</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">conditional_slope</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0012</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">original_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0126</td>
+<td style="text-align: right;">-0.0085</td>
+<td style="text-align: right;">0.0339</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">explained_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">-0.006</td>
+<td style="text-align: right;">0.0536</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">residual_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">-0.0083</td>
+<td style="text-align: right;">0.0088</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">partial_rank_ic</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">-0.0076</td>
+<td style="text-align: right;">0.0144</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">conditional_slope</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0.0012</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0023</td>
+</tr>
+</tbody>
+</table>
+<h2>能说明与不能说明什么</h2>
+<p>解释分数仍保留较强排序关联，但完整复制程度不等于经济收益等价。加入市值后的残差排序没有获主区间支持；条件收益系数仍偏正。这种分歧正是继续做经济对照的原因，不能选其中有利的一项作为结论。</p>
+<p>本轮没有独立未见过的历史，不能把市值补充称为真正确认性检验。原首批A1文件与哈希保持不变，本轮使用独立目录。</p>
+<p><a href="../../outputs/diagnostics/alpha_economics_20261117/cap_audit.json">市值审计</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/coverage.csv">共同样本</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/a1_caps_summary.csv">全部 A1 补充</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/a1_caps_weekly.csv">周级原始统计</a></p></html>

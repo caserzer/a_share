@@ -1,0 +1,27 @@
+{
+  "status": "FORWARD_PENDING",
+  "model_status": "FORWARD_BLOCKED_MODEL",
+  "data_status": "FORWARD_BLOCKED_DATA_REFRESH",
+  "reason": "sealed local historical panel ends 2026-10-21; no verified live signal pipeline or scheduler installed",
+  "proposed_first_signal": "2026-12-04 after November implementation freeze, subject to actual data receipt and completed trading week; not yet generated",
+  "observation_start": "2026-12-01",
+  "observation_end": "2029-11-30",
+  "descriptive_review_after": "2028-11-30",
+  "formal_review": "after 2029-11-30 and final H20 maturity",
+  "signal_timestamp_required": true,
+  "automatic_execution": false,
+  "power": [
+    {
+      "months": 24,
+      "approximate_min_detectable_event_return": 0.005187432821037126,
+      "assumed_power": 0.8,
+      "method": "normal approximation, Bonferroni conservative planning alpha, historical block mean SD scaled sqrt(n/months); dependence stationary assumption"
+    },
+    {
+      "months": 36,
+      "approximate_min_detectable_event_return": 0.004235521162169082,
+      "assumed_power": 0.8,
+      "method": "normal approximation, Bonferroni conservative planning alpha, historical block mean SD scaled sqrt(n/months); dependence stationary assumption"
+    }
+  ]
+}

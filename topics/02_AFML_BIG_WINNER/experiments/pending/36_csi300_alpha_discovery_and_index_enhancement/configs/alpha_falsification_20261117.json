@@ -1,0 +1,119 @@
+{
+  "run": "alpha_falsification_20261117",
+  "created_at": "2026-11-17T04:10:19.704065+00:00",
+  "authorization": "User approved the proposed first delivery: data audit, A1, and frozen A2/B1/B2 protocol; progress dependent work only within identified data boundaries",
+  "evidence": "historical_simulated_oos_post_selection_exploration",
+  "forward": "FORWARD_PENDING",
+  "scheme": "expanding",
+  "models": [
+    "E1",
+    "E2"
+  ],
+  "seeds": [
+    "fixed",
+    "equal_seed_ensemble"
+  ],
+  "prediction_policy": "Original sealed scores only; E1/E2 unchanged; no E3; no return-model fitting",
+  "primary_start": "2021-01-08",
+  "primary_end": "2025-03-03",
+  "primary_sample": "signal >= start and horizon mature <= end; no endpoint extrapolation",
+  "extended_sample": "original available calendar; mature labels only; common model sample",
+  "layers": {
+    "price": [
+      "mom1",
+      "mom5",
+      "mom20",
+      "mom60",
+      "vol20",
+      "vol60"
+    ],
+    "price_industry": [
+      "mom1",
+      "mom5",
+      "mom20",
+      "mom60",
+      "vol20",
+      "vol60"
+    ],
+    "available_style": [
+      "mom1",
+      "mom5",
+      "mom20",
+      "mom60",
+      "vol20",
+      "vol60",
+      "beta60",
+      "idio60",
+      "log_money20",
+      "turnover20",
+      "log_amihud20"
+    ]
+  },
+  "industry_layers": [
+    "price_industry",
+    "available_style"
+  ],
+  "common_sample": "Per signal use finite E1/E2 scores and all 11 available numerical styles, across all layers; labels never determine score fitting/selection",
+  "transforms": "Numerical columns standardized cross-section mean/population sd; no clipping; constant columns omitted; intercept plus L1 dummies dropping first category; unknown industry is explicit UNKNOWN dummy",
+  "regression": "OLS SVD rcond=1e-12; minimum 100 rows and 50 residual df; no regularization search",
+  "formulas": {
+    "beta60": "cov(stock return, CSI300 price return)/var(market); 60 complete paired sessions, ddof0",
+    "idio60": "sqrt(max(var(stock)-cov^2/var(market),0)); same 60 paired sessions",
+    "log_money20": "log(20-session mean positive RMB turnover amount), 20 observations",
+    "turnover20": "20-session mean turnover_rate, 20 nonnegative observations",
+    "log_amihud20": "log(20-session mean abs(qfq close return)/positive RMB turnover amount), 20 observations"
+  },
+  "market_cap": "BLOCKED_DATA: no verified total/free-float capitalization input in sealed EP36 panel; never estimate via volume/turnover or current share count",
+  "vintage": "All existing bars and historical L1 intervals Historical-proxy; known_at not certified; no strict PIT claim",
+  "missing": "No zero/median/backward fill of missing styles or labels; all date/stock exclusions disclosed",
+  "rank_ic": "Spearman of score and raw fixed-horizon return on common known label rows; residual IC is not named partial IC",
+  "partial_ic": "Rank original score and return within common labeled rows; regress both ranks on same standardized raw styles and industry dummies, then Pearson residuals; this is the explicitly defined partial-rank statistic",
+  "conditional_slope": "FWL return on standardized original score and same styles on common labeled rows; coefficient in return per one original-score SD; future returns used only for evaluation",
+  "reconstruction": "In-sample adjusted/unadjusted R2, score rank correlation, and cross-sectional leave-one-stock-out PRESS Q2; PRESS is reconstruction diagnostic, not future-return OOS",
+  "primary_metrics": [
+    "partial_rank_ic",
+    "residual_ic"
+  ],
+  "primary_test_family": "6 E1 H10 tests = 3 layers x 2 primary metrics; Holm two-sided p; E2, slopes, horizons and full interval exploratory",
+  "statistics": {
+    "block_weeks": 13,
+    "replicates": 2000,
+    "seed": 20261117,
+    "method": "Circular calendar-week block bootstrap, shared resampling for all metrics; gaps retained as NaN; percentile CI; centered bootstrap two-sided p with +1 correction; minimum 26 known weeks",
+    "significance": 0.05
+  },
+  "selection": "No economic equivalence bound chosen: no claim that null results prove replication",
+  "downstream": {
+    "S0": "Available-style projection of original score; called style-copy, not independent return-trained strong baseline",
+    "S1": "Original score restricted to same signal-available sample",
+    "S2": "Available-style residual score",
+    "primary_phase": [
+      1,
+      2
+    ],
+    "horizon": 10,
+    "auxiliary_horizons": [
+      5,
+      20
+    ],
+    "costs_bps": {
+      "zero": [
+        0,
+        0
+      ],
+      "main": [
+        10,
+        20
+      ],
+      "stress": [
+        30,
+        80
+      ]
+    },
+    "A2": "Same dates, universe, cardinality and execution engine; primary paired net S1-S0 and S2-S0; risk-matched construction must be feasibility-audited before economic run; no tolerance search",
+    "B1": "Monthly paired (S1-S0)_phase1-(S1-S0)_phase2 at H10; only phase1/2 jointly valid months; random industry/style controls require audited capitalization for full design",
+    "B2": "Fixed event basket from next open to open t+1+h; marginal 0-5,5-10,10-20 contributions share initial capital and one entry fee; independent H5/H10/H20 liquidation fees; no future tradeability filtering; continuous accounts separate from overlapping events",
+    "prerequisite": "Full style-matched A2/B1/B2 requires audited capitalization and fixed feasible portfolio matching contract. Do not call unconstrained Q5 a risk-matched portfolio",
+    "no_auto_advance": "First delivery completes A1 and protocol; full economic adjudication BLOCKED_DATA until full-style contract executable; no automated forward task"
+  }
+}

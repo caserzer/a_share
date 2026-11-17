@@ -1,0 +1,682 @@
+{
+  "run": "alpha_economics_20261117",
+  "config_sha256": "b0364b0557d955b613752ccb50e58b548f8fc4f4b64d8a51286cf8986a4e0258",
+  "validation_sha256": "d1a8581b07a3c829def78c3c08c493c048b495cdb4df8480539fe37ff67057a5",
+  "sources": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/alpha_economics.py",
+      "sha256": "abce767bcd5ae620a72271adb0085d11b75cfcc20de2cfb347c8618bed2fcc3f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/alpha_economics_analyze.py",
+      "sha256": "d37346becb4b476c9dae2d753ec405a7825d695e7dcebfd6566e706832c1a982"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/alpha_economics_validate.py",
+      "sha256": "a6ca1e0c944090f99fe29ec20d8edcb44fca9fb08ba265b239f71b65f2f8362e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/alpha_economics_report.py",
+      "sha256": "c10d7ea3dfdbe0de8370e68f4b62aa14bb62ac5818727e587e794b968dfd7ad4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/alpha_rebalance_contribution.py",
+      "sha256": "29156104e6439018de7b4bcfa40dc0747e563a1adcaf0fd7d7a74cd6dcf94a58"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/acquire_style_caps.py",
+      "sha256": "344489e46edc8f384476e24eb1f8879cfad9b2f038981f7c7a72e09d99fe9e0e"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/marginal_net_windows.csv",
+      "sha256": "2dfa932d2cb65ae04b69b6361438d51f74c53f874d73360210854117d0325fb0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/reconstruction.csv",
+      "sha256": "9c916b79274fd099e62056bf1464c3eac72204362d80bb81dd04a33727996425"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/analysis_registration.json",
+      "sha256": "0e5e85055e1d6588d369c69c21a3b20112eb38738dde7b58daf2c92acba685ec"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/account_exposures.csv",
+      "sha256": "5c15f67cf610bd676ce94485b6567dc9c50903aec3d16d586136e20bad2c8dd1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/account_contrasts.csv",
+      "sha256": "b5adfc945f62a5b5e6837e60d103c37f428bb878cf09708a427d1c0e13c91482"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/selection_complete.json",
+      "sha256": "300f8ee665e81d6d51e44f29fff324b3977f88d7944a026a515aef001ec68f0c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/event_summary.csv",
+      "sha256": "ffa66bcd43d4023caf77fa70a73da7e12d8dfd392f13b675feaf63c03eb87b36"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/marginal_windows.csv",
+      "sha256": "ac4294710e6f21eb8d4d991880da6bba71e7f17f85283fd74a84b83e64c8d90e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/a1_caps_summary.csv",
+      "sha256": "75a8ed0c06114dbfd738d858ade51a8b5d0a8609f378a2c48ee8136207c8d595"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/cap_audit.json",
+      "sha256": "93de4b935eb98b85bb45a35a41056429751272333b55344fbe6d30543ecb00f8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/selection_overlap.csv",
+      "sha256": "6c5fdfff1f5a876f94a2d068d47afaea9839803074cab30d18c49b613ab1eda8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/rebalance_contribution_registration.json",
+      "sha256": "2b4e0359f227a831387b67dd55945dfbb1eea5f9f38b5adc47e9fb1b3a5c6f27"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/events.csv",
+      "sha256": "8ea9abf8942846925bebd89fe2bb9e7660584e2380f0ea32cf93186e9c628dea"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/placebo_coverage.csv",
+      "sha256": "bdc472099a056a7fea6e882193c39c5a38b4534299f486aae867400b84276120"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/account_monthly.csv",
+      "sha256": "0ad6100e757a239f5f3c34f3cfb898dc354a1528adc2efa6242f3d80fba2d3e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/marginal_net_events.csv",
+      "sha256": "af7a5db8297e1ad2b19c0f868e43c8bd5441dd25f64bacca48b624276cb24439"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/stability.csv",
+      "sha256": "d119d81ff7eed27ab516520525a142e24865fe7d2349fda39359d1d240df7744"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/breakeven.json",
+      "sha256": "725d0f4fda85527685827c43c95c99d1836acdeb8ac130aa998e2ad69fb9ca25"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/schedule.csv",
+      "sha256": "60bad1d4b314ddb37718c3d675c53c83a876ca946cfd57300132e1deb52e41e7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/event_coverage.csv",
+      "sha256": "6f0d34fb42a7cc3d0e67f12869002e1be82a8782ed8dbf4cfd284912a17a92c3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/event_yearly.csv",
+      "sha256": "90908f94d34a71d194fe8f8c800aeca1d3f269e6b4fe7054583f67e08947a33c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/monthly_pairs.csv",
+      "sha256": "aa068d99226cb9785dcb4d102230b291156f193cd521724f6ba655e9fae79812"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/event_paths.csv",
+      "sha256": "20238ed19f42e239efd55a247a6e075d88c692e7f4d49e9003cf0abe1a6c846b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/event_curve.csv",
+      "sha256": "18e234d2ea34526e3327f51af193e95e3a8de2a85f9be878498009950c7f9c17"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/account_metrics.csv",
+      "sha256": "1351d68fb383d9f753ba2051e769fa3d93dee63bee9e402bf1030aeacfdf5e63"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/placebo_summary.csv",
+      "sha256": "556c6e5adb5bf8b915e8acf7a51ac9616a54aa0d866d44f019ee74964e9f5bcf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/event_exposures.csv",
+      "sha256": "db98995ad9630c6d079b893439c2fcc3080e4ad6dceddfee39aa9ff121b6ad66"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/freeze.json",
+      "sha256": "783417cf795465218885fb8e1ccec55e2e28a9dd1018f11e2f4024d88d2e48f5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/rebalance_contribution_summary.csv",
+      "sha256": "fb3b6a97497bfd833f2494d6ab211978a182be81d19bdf12f75e82135e1a1746"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/events_complete.json",
+      "sha256": "e9dd8677b231e1bb9549c718dbdef9babd46d7fd8a0b79d843fad9e55ccef14b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/solver.csv",
+      "sha256": "ff709e16666465255fce7eceb5982edeca5c8c64cf72186ee2b66d50950bab90"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/breakeven_replays.csv",
+      "sha256": "a6f17400323023bfa1dd52953f4fa19c6e84ecc59eac269041246ac76586ee74"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/validation.json",
+      "sha256": "d1a8581b07a3c829def78c3c08c493c048b495cdb4df8480539fe37ff67057a5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/coverage.csv",
+      "sha256": "236648281058659a24ef33b0f10b872b9924eb9694a3fda4924e0daa74e74226"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/account_endpoints.json",
+      "sha256": "707e512e6983fe7f2e08bc25059cb6d41ccba5d046b5702474a8baca46f0b027"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/rebalance_contributions.csv",
+      "sha256": "a0942d5c6eda7dd1bfa5d2544234c1125f121618026afb42bdc26d6de5c18f56"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/rebalance_contribution_validation.json",
+      "sha256": "18abcddc215aa87c6971e06c830c5b2c1c3cacc4487e6d2214ce122725502f29"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/a1_caps_weekly.csv",
+      "sha256": "184305657560fb2506b73f2f30c87b1db00ceb1129849a31199afffd7e67a6f6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1w_main.csv",
+      "sha256": "0c2009f79a5c847f82f6e97fce1530d2ca760e88ed7c6a0fe6a62a8d78148336"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1m_main.csv",
+      "sha256": "8bcd67a4c85f2206b963b2899a6cdc63c89d12ac5ee2fe42f4e848fe8fb84e09"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_2w_main.csv",
+      "sha256": "a23a367990f3e2d91e9f0266240127d2fbb37aa88008bf43edb6d17ca85ac3f6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1m_stress.json",
+      "sha256": "87de915c017367c73b71aeb87b28b23013e040f8ff473caa33e43d5b36db797b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_2w_stress.json",
+      "sha256": "88dca8ad49b234ea25f67201eac2e8def94d9b8dd8ef25259d5f31cc0e3fd8a2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1m_zero.csv",
+      "sha256": "4925efc32c251a8e36d92a74328121ca37579966f86feae2d708310f6e68f643"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1w_stress.json",
+      "sha256": "29c0ef845fc893249a12a54eb63fe537044fdf747e354fbe2fd955687f286f2b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1w_main.json",
+      "sha256": "cf7900059b17075d700ef64f39abc3abc1fd5ec250aba11e26606a46a62e7b29"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1m_zero.csv",
+      "sha256": "2cead1e2530ba5831adcd45d136b228c1fb4beb8cad467ae45785dbac016df02"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_2w_stress.csv",
+      "sha256": "fa451be2d4fd7de215dbb01b596e82c9376c0ff3c05fa96420f4aa02a5bb9521"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1w_main.csv",
+      "sha256": "9fc4be374f449e4ff6d5b3afe3852008c3874e5caa6e291a846774bb662a0b7c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1w_main.json",
+      "sha256": "aa378812a164d6c70d367871df1c514ee9f3cc4548153f11d2f06523af9c1c9b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1m_zero.csv",
+      "sha256": "228768a800b45840b0361e18c685bf11d7b6ebf8308cd04ecfa74e9b44a3a4a2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1w_main.csv",
+      "sha256": "b8fad98b2567264362b042f9d892b1a9465588a6cd7548ade42fd27865901262"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1w_zero.csv",
+      "sha256": "f79d657f96e3301fdd2a3e5be7fd9db4cb697ada117c6665f5c3a8da7a1bf2e9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1m_main.json",
+      "sha256": "602e577662be4c723ad400e6a4bac62b8ea56feedba9bfb66382bbb5648fde59"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_2w_stress.csv",
+      "sha256": "18e2e814db3536711c9683fa81103d9275452a7cb35cc8858ab4c2454b39f923"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1w_zero.csv",
+      "sha256": "9cba60fb7aafaaeefea27becb30918b3db16cb707bf94d20eeaba13ccec59ff5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1m_stress.json",
+      "sha256": "59c3970a1111f9f837cc1c4eb0f9a2485468c999c3b31ce80a2be042df1df1ea"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1w_stress.csv",
+      "sha256": "2346e62ecff24bf050732f232f1a8c44c8e9c3cd570dba7fc2d022fc84dc84f1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_2w_main.csv",
+      "sha256": "48700f3c87cb599b3fea8a43b80b6e12212b34981c64e841e88651ba5456e67c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1w_main.csv",
+      "sha256": "f374b012a50979f4ad5d776e4e5fea3618ccfcce10f27f6c421cf424a5df25a2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1m_main.csv",
+      "sha256": "8c05419cc39f50b146f0ec52d17e7fa857acee964ab735039da451f5441455f2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1w_stress.csv",
+      "sha256": "2d886be8e0fc3157b664aef30b0da7621a83fc9b4bbfdb8815c4697d453397cf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1m_zero.csv",
+      "sha256": "46275b65aed1844969c8434861b2c14b7def7dbfe6b50b51a7cc57c94316263d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_2w_zero.csv",
+      "sha256": "f8f12a71e7ab74734e7aeb4fb1c13398dea1d1b07b605121dce01d0b4e64e0b8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1m_main.json",
+      "sha256": "ee61eefc42051a4a039b14103617aa5b3ad3c3f34502494ac60bb394bf8194f8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_2w_stress.json",
+      "sha256": "3ce15d900dbcab10494f8a9f2ebdeae044acae4be4a35b052264d2d8159fa037"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1m_stress.json",
+      "sha256": "3d7296a3f77c34c4416852b5b10b6eb6a6cff3fa722627a0554c605db5a458de"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_2w_zero.json",
+      "sha256": "99682249aacf5a6076149bb0dadcf1e85cc8988cba1eb75dbcb272cb2a6ca822"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_2w_stress.json",
+      "sha256": "e96c2e5da62ba72d3b08f52919689dc0f24b4d2e73a78e32c4536c50602239b7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_2w_stress.csv",
+      "sha256": "90cd49bf49808eb32cab8825463cab0993853fdfe373f6ffda7cd38c0038111f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1m_stress.csv",
+      "sha256": "95e5dbe1059818db742a2a9c74d342f445becad44f98d1dc1cc1a037f9890412"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1m_stress.csv",
+      "sha256": "20c67d58d0ec41e1d48486f3ad0916486384f30169fab54210058080f0ae39b9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_2w_stress.csv",
+      "sha256": "7d47e0f3900b382dc6f68bfc0ed63b7a97efde55c2df6d7ebe2e8b5479087e48"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1w_stress.json",
+      "sha256": "d311289d295448bcb2202accccfeb9411a2e35b5ebc55e5c20fe474f5420af33"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_2w_main.csv",
+      "sha256": "4ac5fe8c17b850dca46b8df6272d53225bded8da41b72b8ef0497068a49a6eb0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_2w_zero.csv",
+      "sha256": "a5c13f0d59f28e01eba90a7618963ef9ca447d0a532cdb79153b69a64d7a754e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1w_zero.json",
+      "sha256": "c2bf8f9b51987e9e8afd5f72d861ce6cd2dc2f87915bc778eef69e32b8e33533"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1m_stress.json",
+      "sha256": "ae7fdbf6aae0b87facf4a1942b5bc52c0423fde13d2e29d88ac1bc535977967d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_2w_main.json",
+      "sha256": "3e930f689df480c76d0ceda8e79c6fe9517ee669d043d6dc9ddc6d031faef654"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1w_main.csv",
+      "sha256": "67f58b4b07f1e25ea1e0eb828adf74c01f986fade1448f33d10fc903f58ae535"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1m_stress.json",
+      "sha256": "70449deebf8d97b8296a70b8b70e414af178d22ad7993ff58cfdcec4b891bf42"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1m_zero.json",
+      "sha256": "84f787fba8597cc7d14d393680aad34a645fe175911193a80ab89200805f6d16"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_2w_stress.json",
+      "sha256": "33a320c4ffe9693da7e7b14572fc132711d160d6f39df40dbdda38b1dda5101d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1w_main.json",
+      "sha256": "412633879e56643bf3b85ca6e34e19167df1169210edf04c5ea1ed3856cf49c1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_2w_stress.csv",
+      "sha256": "5edc11748e5ce5f82899f126b091376b7dd7065f33c5432bc6ad1db73bcaa043"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1w_zero.csv",
+      "sha256": "ee11e574203489f941dc462030fa1c264b73e523c992afce50846412617338bf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1m_stress.csv",
+      "sha256": "f0642716ae942ec492b0a15f3ba150c5e234222aa4a3207adfab0382a0139d49"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1w_zero.json",
+      "sha256": "76d051b92503c280a9c0fe784cf234c21e056d89391186ec0a159e9a0ccf798e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1w_main.json",
+      "sha256": "3e146bf435b16384da03c4e59e80497944569cdd336ca41e26cd30fd4bc9c9ef"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1m_stress.csv",
+      "sha256": "edcfad1d57e6b7f631e3e727c9b8566f51aabc60a36a3d8fdb0fc9f1956a5500"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_2w_main.json",
+      "sha256": "c8dc02a3e37d50aa28adf4794486967658439617959656fc640da373a58ef396"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_2w_zero.json",
+      "sha256": "2d09c4a5076128786360429eb80824974aad251b73d6911f551ac1a91ed171aa"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1m_zero.csv",
+      "sha256": "b2e901f8d8b22d11a734d92f1126741b783a552ee6f44a318bc2bdf2d99b2c2d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_2w_zero.csv",
+      "sha256": "e6ea7ef2273a94d7c64062156b2e6971a99a7eed455d77a137f987128e3163e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1w_stress.csv",
+      "sha256": "a33a1c86165414043ff321c69af6f15ac72e5a499f08f7f38d57b8a2dfdfe158"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1m_main.json",
+      "sha256": "9f5b19ed8fddd5ce763fa818e750a0581b65b9a1482e2de545cb06e4ef7f838d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1m_main.json",
+      "sha256": "e4feef88a06a6f414ae45a8af1171cb926f4de8f784edb6c5297623443c5f272"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1w_stress.csv",
+      "sha256": "24af613cb4c45f5edb5a6349964a755a04ef0e200ae2b10394848ee66ba55c61"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1w_stress.json",
+      "sha256": "33051ed65a3b55e672f8b1f05519440294bb8c7741041a6d028234b558b4edcc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_2w_main.json",
+      "sha256": "8fde1edc65daf16df47f328c6bb8963046b67676627870693e5217d0874ded47"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1m_main.json",
+      "sha256": "8733ac9a5441ca55f9f0083280fd0b25f5f84cf680bf4f86ac634a88471b727e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1w_zero.json",
+      "sha256": "0fe0f792a302f7a527a85ddcf381ff072ee665f99ea138cb599a04805407f332"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1w_zero.json",
+      "sha256": "01624a8abc321bd644a31abeb2add5b0dd394c77b9f129712a66c942ee474aa1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1w_main.json",
+      "sha256": "5be19ee00ff7a20b6f8eb8c635a8aa3b71bf41c2ff2231625024f8d4f00b484a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1w_stress.json",
+      "sha256": "62198161ab0f09da41eea2a45161792a0cf1943b164932b4c6d6809971bc7226"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_2w_main.csv",
+      "sha256": "a0a6d0bf3198fc209c913b2bbaee40faac10dabdce2ed7e0f3898584a9caad34"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1m_zero.json",
+      "sha256": "c547f9036cf828bb9fbc6eeff020147ae7f438c25cc8de9cd38c9a1bb8f6c00e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1m_stress.csv",
+      "sha256": "f367cc05513b06de401676d5b93c7e614db653bb048ed936ee7ab0690d45448a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1m_main.csv",
+      "sha256": "b8a4f67c68d3f1767dbd1bc8b71ad547c2e4ea3c72e442b515975b3bd2c89cc0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1m_stress.json",
+      "sha256": "a70daaaba11dcb3406ff9c7753de3531584186afa476481e1b297effd30a8e3a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_2w_stress.json",
+      "sha256": "d4ef77a673bb4ed57f28f936a0435c237a320fd387f631282e24e209164d7015"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_2w_zero.json",
+      "sha256": "33db2640ea41e131621d11845d3067b39e7e242ceec84ca14cc3f48a3649bdf1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1m_zero.json",
+      "sha256": "6ae4c8edc6a3ed33c5078c4053313826c73610dbd8a9bc4de3d655f2350d9e0f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_2w_main.json",
+      "sha256": "958acfa57eccf59633c238ac3c422e905baa158d49636d2d7b97f50da00c8d27"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1m_main.csv",
+      "sha256": "89bb654649326c7ac3c0f710ce0900fa847e4f9b5c7464bac349f6832c87f857"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_2w_zero.csv",
+      "sha256": "436efda5c170bd60ae891f3053ea1ab566c182be7d0bc6d3a0546520b84df0b8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1m_zero.json",
+      "sha256": "785de2bf975e74f7a3b059cc90eb822e65b625fab8e59d7da5790e8af4d8a539"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_2w_main.json",
+      "sha256": "b1ad56c05c81ce34618d487300eda4c4f3d4f92f832808ec078a4806d419f9a6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1w_main.csv",
+      "sha256": "004e5557cbc9caa204b7ee1d02e9fec4cf21a01d78c9b4b77e64e7685464df34"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_2w_stress.json",
+      "sha256": "79a939e7c0ff63764b07df40e6ef9597fdec0377d167c1bf05b48132bf1e665f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1w_zero.csv",
+      "sha256": "ee7ca7ebad9ee987a50d49a9e4f485c8ed11f80f77a224cf09f94ccbb2005cfb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_2w_main.csv",
+      "sha256": "4b1f17225a9a21f300d85a095376c93ac59c9ce1e0a5d0fae4e1976d63ec755c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1m_zero.json",
+      "sha256": "7d42d47a75895566f48e12c01c0fd736d6b234864f5fd0888a1ef156993964eb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1w_zero.json",
+      "sha256": "3f06196640c6673390c10ee57cb1510d254225eeb451621db159b963d1c4d764"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_2w_zero.json",
+      "sha256": "7b225d435832a9a63cb9926ca7da4d8ef723c9d2b4f932b81a2b44c6c93b325b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_2w_zero.json",
+      "sha256": "ee2e4a1b0077c2375e3c8be5969cd9f3010d8b64ad99a15b724a7720997c84cf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1m_main.json",
+      "sha256": "e3f785539decfcaa49c3fd00643f8805846ff76b40847b97b91ebdd4ebc7df93"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1m_stress.csv",
+      "sha256": "e9e4077d57bc5405e5db6063266fd07ee77db0a4f5e99d05192d82abb063b03f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1w_main.json",
+      "sha256": "12c2d10af0ae593c99ba3c031351ddc71c594277bc3ebf6db68d32985d963ce2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1w_zero.json",
+      "sha256": "ae9ae8cfbdf139d9b279a739a2b0521f0b991b05d801a58f712cfebd4d24153e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1m_zero.csv",
+      "sha256": "f57843d6839227ed7494983f2a2cc07a0c1b41467b4730cc6dc7cda751f8ea8e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_2w_zero.json",
+      "sha256": "831fc3b98c17f0de8e7abcb08aa0aba476a2f6f0a9b205ccb3de6e734871fc7a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_2w_zero.csv",
+      "sha256": "0c2a2ffc54f9b4028e322d1e52272878b04926defb76628d8c1339ed4463a81d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1m_zero.json",
+      "sha256": "fba4acec0bdc18f135987d1b032d9582b21442bc5bae8edb6de278ab452d1af8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1w_zero.csv",
+      "sha256": "1845abe621865d896ac6ba56e2b7aa457774756c99d505c6e790a85a49fda749"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1w_zero.csv",
+      "sha256": "f89bd68034dbde78b35f40a502b280b565358ffecb322fecbb326bb35339e3ea"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_1w_stress.csv",
+      "sha256": "8467bf846868e26b7453ea3f2e9d4bff084c35fa82bbe78547fddbc429a3f5c9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_2w_stress.csv",
+      "sha256": "fcf813487032d8c0cbe413f8d45d3364ab177ca5152794119af5c92874a290c4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S2_1w_stress.csv",
+      "sha256": "5f5ee24825f54688773b7cc6d200227c661316fd3a130ed5fcf96a5d42780351"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S1_2w_main.csv",
+      "sha256": "b001d1707d5f2787dc328b92a36fa674eeef255439a122a0acb8c9457f3b0ae1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_1m_main.csv",
+      "sha256": "a79cb5aee26c32b23b9456a6dd23c67fd8b1e2ff509b25a1545ed58327043010"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_2w_main.json",
+      "sha256": "84164858577ff3074b801eb31cd51bb68726fb48c9da6279c222ffa9e23732e4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E2_S0_1m_main.csv",
+      "sha256": "75bc51c03116c72433d80b6924c502bf176e656a283f97c9c4f77ddf6599d031"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S1_2w_zero.csv",
+      "sha256": "9c1668baf5331d949fc5f0f51772874aab62175452eac25b2a8a41525232affe"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S2_1w_stress.json",
+      "sha256": "b3e9c3c66e1e76f133cad4197ecf8a4c0a052428a7109990cc80001c8d1ecc4a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/alpha_economics_20261117/accounts/E1_S0_1w_stress.json",
+      "sha256": "f3a17d15cf34b4543990a754f8fa0c70b981b86c24c6d28d5922b53e2f06f246"
+    }
+  ],
+  "reports": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/B2.md",
+      "sha256": "f9dde0bf664f4f071e8e6480548474c985ba8470f31ff804deb8135499111f64"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/A2.html",
+      "sha256": "ff2d3053393e3b47fecc8ae5731b084f95911e545f1b87a0bfb06894bcaa07cc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/B1.html",
+      "sha256": "8be7fd6fb233afc2f51fbec22bfc5859156b1b584be0c4d9eae2d31cb45430da"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/REPORT.html",
+      "sha256": "8215698581411275117c88ddda05e1d43033abb463ad18bc4c73e5073658c6c7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/A1_CAPS.md",
+      "sha256": "796daa06c4a29d0fa969d7c7badfc38126f13f09ab0af17ca79b4deaa2810b48"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/PROTOCOL.md",
+      "sha256": "026bab6ae842b4a316cde61f7237b4bbff7f88445221aec303693ca56363a469"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/B2.html",
+      "sha256": "0be46d324746a535ae89648305d81619d9394b56507230524d1ba3478cd4fa3c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/REPORT.md",
+      "sha256": "4d40eb4c1ab9d912347dbf0c90bcef64b2eed802dcffbeaf7bba0ca4cdc9fe5f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/cost_and_frequency.png",
+      "sha256": "5cf8df513c68f6b986c64a33bd9190724f3a48c0b92ec77789e646c366ca9d89"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/A1_CAPS.html",
+      "sha256": "ef037da574a64fb138f32c80b5d20dd93eca28521fcbddfc2b4fca2012cfec4e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/PROTOCOL.html",
+      "sha256": "a1f96dc9c1ccc916968077cd1ea725935ef10c66eddbbbf427fd54ca5d0f3c1d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/event_curve.png",
+      "sha256": "847c0a018224c1b95a95425e9a7ac03f568c1dbb48df29f89f61f8db1d041afe"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/B1.md",
+      "sha256": "5a25dd866b68b90d22bc7495d410d2f1f855c397ec2c81d69053a5c61925b706"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/A2.md",
+      "sha256": "adb8c8435a04e9c06d41ec79d9448f5efc7047633ccc527cefa6e55a1bc2ad42"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/alpha_economics_20261117/phase_pairs.png",
+      "sha256": "a102ab1f236f04f43d08ea7bbd3db63041c4ffd1a6663983b92def5b4b769f5d"
+    }
+  ],
+  "tests": "41 passed; one preexisting OSQP PendingDeprecationWarning",
+  "evidence": "Historical-proxy post-selection exploration",
+  "forward": "FORWARD_PENDING"
+}

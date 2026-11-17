@@ -1,0 +1,245 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 风格映射变化</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>工程特征残差分数与预测诊断</h1>
+<p>每项特征的分数贡献使用原季度TrainTransform与Ridge系数，不能把不同季度的标准化系数直接当作相同原始单位的效应。各项先除以当日完整分数标准差、行业去均值，再用同一13风格投影取残差。</p>
+<p>逐项残差加总必须精确回到完整残差；组分配定义为组残差与总残差的内积，占总残差平方和的比例。原冻结特征组保持不变。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">group</th>
+<th style="text-align: right;">signed_allocation</th>
+<th style="text-align: right;">own_energy</th>
+<th style="text-align: right;">signed_share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">market_common</td>
+<td style="text-align: right;">-0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">range_position</td>
+<td style="text-align: right;">11232.6830</td>
+<td style="text-align: right;">15758.4796</td>
+<td style="text-align: right;">64.9752</td>
+</tr>
+<tr>
+<td style="text-align: left;">returns_trend</td>
+<td style="text-align: right;">3818.6295</td>
+<td style="text-align: right;">4497.8453</td>
+<td style="text-align: right;">22.0888</td>
+</tr>
+<tr>
+<td style="text-align: left;">volatility_drawdown</td>
+<td style="text-align: right;">1750.3934</td>
+<td style="text-align: right;">5751.2372</td>
+<td style="text-align: right;">10.1251</td>
+</tr>
+<tr>
+<td style="text-align: left;">volume_liquidity</td>
+<td style="text-align: right;">485.9385</td>
+<td style="text-align: right;">511.5061</td>
+<td style="text-align: right;">2.8109</td>
+</tr>
+</tbody>
+</table>
+<p>own_energy是该组自身平方和，组间有相关性，因此各组own_energy不应加总当成整体平方和。signed_share才是本合同下可加总的带符号分配。</p>
+<h2>区间位置组三项</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">feature</th>
+<th style="text-align: right;">signed_share</th>
+<th style="text-align: right;">min_coefficient</th>
+<th style="text-align: right;">max_coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">pos20</td>
+<td style="text-align: right;">8.9452</td>
+<td style="text-align: right;">0.0105</td>
+<td style="text-align: right;">0.0346</td>
+</tr>
+<tr>
+<td style="text-align: left;">pos5</td>
+<td style="text-align: right;">-0.7534</td>
+<td style="text-align: right;">-0.0116</td>
+<td style="text-align: right;">-0.0007</td>
+</tr>
+<tr>
+<td style="text-align: left;">pos60</td>
+<td style="text-align: right;">56.7834</td>
+<td style="text-align: right;">0.1118</td>
+<td style="text-align: right;">0.1514</td>
+</tr>
+</tbody>
+</table>
+<p>pos5、pos20、pos60分别采用5/20/60日最低low和最高high计算区间位置。当前模型系数中pos60、pos20为正，pos5为负，但这只解释分数方向，未证明单项净收益。特征级细分在看到组结果后补充，明确属于事后记账，不进行78项未来收益筛选。</p>
+<p>示意而非真实回测：两只股票同样从90涨到100，首尾涨幅相同；若一只期间最低80、最高120，区间位置为0.5；另一只最低90、最高100，区间位置为1。简单累计收益无法区分这样的路径。</p>
+<h2>未来收益辅助检查</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">score</th>
+<th style="text-align: left;">metric</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0471</td>
+<td style="text-align: right;">0.0193</td>
+<td style="text-align: right;">0.0759</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0443</td>
+<td style="text-align: right;">0.0248</td>
+<td style="text-align: right;">0.0629</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXPLAINED13</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0339</td>
+<td style="text-align: right;">0.0115</td>
+<td style="text-align: right;">0.0561</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXPLAINED13</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0461</td>
+<td style="text-align: right;">0.0191</td>
+<td style="text-align: right;">0.0736</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIXED78</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0306</td>
+<td style="text-align: right;">0.0072</td>
+<td style="text-align: right;">0.0541</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIXED78</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0394</td>
+<td style="text-align: right;">0.0201</td>
+<td style="text-align: right;">0.0579</td>
+</tr>
+<tr>
+<td style="text-align: left;">RESIDUAL13</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0137</td>
+<td style="text-align: right;">0.0034</td>
+<td style="text-align: right;">0.0236</td>
+</tr>
+<tr>
+<td style="text-align: left;">RESIDUAL13</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0226</td>
+<td style="text-align: right;">0.0093</td>
+<td style="text-align: right;">0.0352</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_market_common</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_market_common</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_range_position</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0046</td>
+<td style="text-align: right;">-0.0119</td>
+<td style="text-align: right;">0.0196</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_range_position</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0104</td>
+<td style="text-align: right;">-0.0084</td>
+<td style="text-align: right;">0.0278</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_returns_trend</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0024</td>
+<td style="text-align: right;">-0.0120</td>
+<td style="text-align: right;">0.0159</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_returns_trend</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0045</td>
+<td style="text-align: right;">-0.0115</td>
+<td style="text-align: right;">0.0208</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_volatility_drawdown</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0146</td>
+<td style="text-align: right;">-0.0017</td>
+<td style="text-align: right;">0.0323</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_volatility_drawdown</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0225</td>
+<td style="text-align: right;">0.0042</td>
+<td style="text-align: right;">0.0417</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_volume_liquidity</td>
+<td style="text-align: left;">rank_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0033</td>
+<td style="text-align: right;">-0.0070</td>
+<td style="text-align: right;">0.0128</td>
+</tr>
+<tr>
+<td style="text-align: left;">residual_volume_liquidity</td>
+<td style="text-align: left;">industry_ic</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0125</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.0249</td>
+</tr>
+</tbody>
+</table>
+<p>rank_ic为分数与原始H10未来收益的Spearman；industry_ic为先逐行业计算相关再按有效股票数加权。不是严格条件因果统计。时间块13周、5000次，普通95%区间未做本轮辅助族的多重校正；不得从其中最好的组升级主结论。</p>
+<p>市场共同项在行业去均值后近乎零，不能形成股票排序，其相关记未知，不填零。其他组单独正点估计也不能替代成本后组合验证。</p>
+<h2>为什么与早期 A1 不同</h2>
+<p>本轮采用缩小C样本、2021-10-08后共同区间、标准化并行业去均值的教师分数和对应残差；早期A1使用不同样本、区间及投影合同。因此本轮残差IC的正区间不能重写早期主裁决，也不能称为又一次独立确认。</p>
+<p>13风格矩阵当前信号均满秩；条件数中位约40.10、最大约76.81。仍有共线性，尤其市值字段；本轮用映射后的分数变化作比较，不能宣称已消除所有数值敏感性。</p>
+<p><a href="../../outputs/diagnostics/e1_mapping_drift_20261117/feature_residual_summary.csv">逐特征完整分配</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/feature_residual_allocation.csv">每期特征贡献</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/rank_ic.csv">逐期RankIC</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/projection_conditioning.csv">投影条件数</a>。</p>
+<p>当前结构平均可解释约33.8%的行业去均值分数平方量；其分母与此前含行业均值的总分数R²不同，不能直接对比成“解释率下降”。原模型没有重训，未生成新组合策略。</p></html>

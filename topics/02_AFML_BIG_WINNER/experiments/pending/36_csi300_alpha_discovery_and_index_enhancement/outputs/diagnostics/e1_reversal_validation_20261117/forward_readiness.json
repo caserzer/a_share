@@ -1,0 +1,18 @@
+{
+  "status": "AWAITING_NEW_SIGNAL",
+  "new_prospective_observations": 0,
+  "protocol_sha256": "ecfa2a48176be4420e081214c4aea803842c8120fa6b8711bf8b849d9f548946",
+  "selection_contract_sha256": "6c5f0adef1ad1af9d6c77c78d3e9c6f7973d922eb31445ab770da50944c5accf",
+  "gate": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/e1_reversal_forward_gate.py",
+  "gate_sha256": "8585262037830eb0c6edc091de6116c443bdc8a94bc8e352c40754393a52d84a",
+  "ledger_sha256": "f0cea4e80902340120e21bf4e925213e86f6c9c32897d63f5db312a35720dfb5",
+  "gate_scope": "metadata checks only; actual hashes, source known_at, phase calendar and trading receipts must be independently checked before acceptance",
+  "automation": false,
+  "new_model_trained": false,
+  "required": [
+    "future inputs and genuine arrival timestamps",
+    "future E1 predictions with checkpoint receipts",
+    "next-session entry and actual tradeability",
+    "mature H10 returns"
+  ]
+}

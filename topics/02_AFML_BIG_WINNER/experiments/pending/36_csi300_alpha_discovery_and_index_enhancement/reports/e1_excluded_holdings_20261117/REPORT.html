@@ -1,0 +1,213 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 被排除持仓追查</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>原 E1 被排除持仓：更明确的行业内选择线索</h1>
+<p><strong>本轮定位到一块此前被缩减股票池排除、但具有较强历史选择收益的持仓。</strong> 只将其中能匹配的预算换成同行业未入选股票，原E1净年化由+4.84%降为约−0.45%；可完成退出的H10事件中，原选股平均领先约1.00个百分点。它比此前单看分数解释份额更接近经济证据，但仍不是独立Alpha或经济原因的最终确认。</p>
+<h2>先区分被排除的是什么</h2>
+<p>C池要求13风格、价格信息完整且行业至少有10只合格股票。这会删除一些在沪深300样本中股票数量较少的行业。<strong>“行业不足10只”不是小盘股定义，也不代表该行业在经济上规模小。</strong></p>
+<p>原月初目标中平均33.19%资金落在C池外。按原账户每日相对指数贡献、使用最近月度决策时点分类，这部分贡献约20.76元/初始100元；交易费与现金单列，不算作该部分收益。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">exclusion_reason</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">INDUSTRY_LT10</td>
+<td style="text-align: right;">17.2527</td>
+</tr>
+<tr>
+<td style="text-align: left;">INDUSTRY_UNKNOWN</td>
+<td style="text-align: right;">0.6177</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:log_money20,log_amihud20</td>
+<td style="text-align: right;">0.0527</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:mom60,vol60,beta60,idio60,T</td>
+<td style="text-align: right;">-0.1299</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:turnover20</td>
+<td style="text-align: right;">2.9002</td>
+</tr>
+<tr>
+<td style="text-align: left;">OFF_SCORED_UNIVERSE_OR_NO_SIGNAL_ROW</td>
+<td style="text-align: right;">0.0661</td>
+</tr>
+</tbody>
+</table>
+<p>其中行业不足10只约17.25元，缺换手率约2.90元。上述20.76是原E1相对指数财富差的账本分摊，<strong>不是删除这批股票后必然损失20.76元</strong>。旧周度分类口径的UNKNOWN约19.39元与本表也不同，不能混用。</p>
+<h2>同日期同行业替换实验</h2>
+<p>保留原E1其余股票及权重、模型、月初交易日期、费用和交易约束。对被排除的原持仓：</p>
+<ul>
+<li>P：把可匹配预算等分给当时同行业、原E1有分数、未被原组合选中的全部股票。</li>
+<li>PR：进一步要求对照股票与原持仓的排除原因相同。</li>
+<li>未知行业、没有独立同行等无法匹配部分保留原持仓，不放宽规则，也不假定收益为零。</li>
+<li>O：原组合精确复放，净值与此前原账本一致。</li>
+</ul>
+<p>预算加权覆盖率P为95.31%，PR为89.10%；对应原总资金平均31.63%和29.57%。这是<strong>同行业对照的覆盖率</strong>，不是此前13风格严格匹配的覆盖率，不能说完整风险匹配已经解决。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">mode</th>
+<th style="text-align: right;">mean_excluded_budget</th>
+<th style="text-align: right;">mean_matched_budget</th>
+<th style="text-align: right;">budget_weighted_coverage</th>
+<th style="text-align: right;">mean_date_coverage</th>
+<th style="text-align: right;">min_date_coverage</th>
+<th style="text-align: right;">max_target_weight</th>
+<th style="text-align: right;">mean_control_count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">P</td>
+<td style="text-align: right;">33.1855</td>
+<td style="text-align: right;">31.6296</td>
+<td style="text-align: right;">95.3114</td>
+<td style="text-align: right;">95.5866</td>
+<td style="text-align: right;">72.7273</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">105.1600</td>
+</tr>
+<tr>
+<td style="text-align: left;">PR</td>
+<td style="text-align: right;">33.1855</td>
+<td style="text-align: right;">29.5685</td>
+<td style="text-align: right;">89.1008</td>
+<td style="text-align: right;">88.8497</td>
+<td style="text-align: right;">65.2174</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">80.5400</td>
+</tr>
+</tbody>
+</table>
+<p>覆盖率、预算和max_target_weight单位%；mean_control_count为目标持仓数。P平均约105只，PR约81只，原约59只。共享少数同行时单只对照目标权重最高10%；并非所有日期都更分散、更低风险。</p>
+<h2>成本后账户：原选股确有更强历史表现</h2>
+<p>同日起点2021-01-11至2025-03-03，共1001交易日、50个月初决策。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: left;">cost</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">nav</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+<th style="text-align: right;">cash</th>
+<th style="text-align: right;">holdings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">O</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">4.8446</td>
+<td style="text-align: right;">1.2067</td>
+<td style="text-align: right;">8.8882</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">59.1978</td>
+</tr>
+<tr>
+<td style="text-align: left;">PR</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-0.4381</td>
+<td style="text-align: right;">0.9827</td>
+<td style="text-align: right;">9.9951</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">80.7263</td>
+</tr>
+<tr>
+<td style="text-align: left;">P</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-0.4477</td>
+<td style="text-align: right;">0.9823</td>
+<td style="text-align: right;">9.7961</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">105.4446</td>
+</tr>
+</tbody>
+</table>
+<p>cagr为%，换手为年单边倍数，nav是初始1元终值。O−P复合年化差约5.29个百分点；下表统计量是<strong>日净收益差均值×252</strong>，与CAGR差不同。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">metric</th>
+<th style="text-align: left;">comparison</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">p_holm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">annual_daily</td>
+<td style="text-align: left;">O-P</td>
+<td style="text-align: right;">1001</td>
+<td style="text-align: right;">5.2535</td>
+<td style="text-align: right;">1.8045</td>
+<td style="text-align: right;">8.9858</td>
+<td style="text-align: right;">0.0052</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_event</td>
+<td style="text-align: left;">SELECTED-PEERS</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">1.0002</td>
+<td style="text-align: right;">0.5463</td>
+<td style="text-align: right;">1.4917</td>
+<td style="text-align: right;">0.0004</td>
+</tr>
+</tbody>
+</table>
+<p>两个预设主检验均在本轮Holm校正后通过：账户差约+5.25pp/年，普通95%区间[+1.80,+8.99]；独立匹配子组合H10约+1.00pp/事件，区间[+0.55,+1.49]。这只是已反复观察历史上的统计支持，校正不能抹掉此前研究选择偏差。</p>
+<p><img alt="账户与逐年贡献" src="accounts_years.png" /></p>
+<p>PR结果接近P；零成本O−P日收益差年化约5.34pp，主成本5.25pp，压力成本5.02pp，不能把差异主要解释为交易费用。相同的是行业目标资本占比，不是完全相同的风险、持仓数和集中度。</p>
+<h2>H10与无法退出的事件</h2>
+<p>对每个月可匹配的被排除持仓单独建立初始1元的子组合，与其同行业对照比较，两边按当期匹配预算归一化。同一股票集合持有10交易日后独立尝试卖出。</p>
+<p>50期中44期两边能完整退出；其余6期至少一边受交易限制，净退出收益保留缺失。44期结果不是原账户收益的机械分解，也不是所有50期都能实现的收益保证。</p>
+<p><img alt="固定期限事件" src="event_differences.png" /></p>
+<p>作为<strong>结果后披露检查</strong>，将全部50期按期末市值计算、只扣已发生入场成本，不假装完成退出，平均差约+0.948pp，区间[+0.514,+1.366]。这支持方向并非仅由删去6期造成，但市值收益不等于可执行净收益。</p>
+<h2>是否仅由2021年贡献</h2>
+<p>O−P终值差约22.44元/初始100元，其中2021年贡献约12.86元，约57.3%；2022、2023、2024及2025截至3月3日的贡献均为正。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">12.8623</td>
+</tr>
+<tr>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">2.1809</td>
+</tr>
+<tr>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">1.7802</td>
+</tr>
+<tr>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">3.0578</td>
+</tr>
+<tr>
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">2.5591</td>
+</tr>
+</tbody>
+</table>
+<p>2025为不完整年份。看到这一集中度后做的辅助留段检查：仅看原账户路径2022年以后的每日收益差，年化约+2.89pp、区间[+0.07,+5.67]；34个可退出H10事件差约+0.906pp、区间[+0.374,+1.491]。这是事后敏感性检查，不是新的盲测，也不是2022年重新现金开仓的账户。</p>
+<h2>买入时能够看到什么</h2>
+<p>这批股票的选择确实由当时已有的E1分数作出，未使用本轮未来收益重新挑名单。对被排除、行业已知的候选股票，每期在至少3只可评分股票的行业内计算RankIC，再按股票数汇总，周度H10 RankIC约0.0316，普通95%区间[0.0104,0.0544]，共210个有效周信号。这是辅助排序证据，不是风格调整后的条件IC。</p>
+<p>原选股相对同行通常具有更弱的近期收益，平均1日、5日、20日收益更低，60日收益略高，波动略高；市值对数并不更小。完整覆盖率和差异见<a href="DETAILS.md">决策证据</a>。这些是信号时点已有特征的描述，尚未检验它们是否解释收益差，不能直接把原因命名为“反转”或“趋势回撤”。</p>
+<h2>本轮裁决</h2>
+<p>现在可以更有依据地说：<strong>原E1在C池之外有值得继续验证的行业内选择信息；此前只在C池做机制实验，不能代表原组合全部Alpha。</strong> 当前“行业内”仍混有其他风格、集中度、持有漂移和执行差异。</p>
+<p>下一步应固定本轮股票范围、账户与对照合同，检验这块选择收益能否被简单反转、动量、波动等已知信息重建，并报告风险匹配支持范围；不要重新搜索pos窗口或从这些赢家反推新规则。此前完整13风格严格匹配覆盖不足，必须保留未识别部分。真正独立确认仍需冻结后才产生的信号及收益。</p>
+<p><a href="METHOD.md">方法与边界</a> · <a href="DETAILS.md">完整逐月、逐股票及信号时点证据</a> · <a href="PROTOCOL.md">冻结协议</a> · <a href="../../configs/e1_excluded_holdings_20261117.json">冻结配置</a>。</p>
+<p>73项测试、2334项主核验及5项披露核验通过；9条连续账户完整，原E1精确复放。模型、原预测和旧报告未改；Historical-proxy、严格PIT未认证、前瞻未完成。未提交、推送或部署。</p></html>

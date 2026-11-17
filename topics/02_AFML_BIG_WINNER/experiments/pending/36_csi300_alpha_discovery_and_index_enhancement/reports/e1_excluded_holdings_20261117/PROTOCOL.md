@@ -1,0 +1,41 @@
+# 原E1被排除持仓追查：冻结协议
+
+{
+  "run": "e1_excluded_holdings_20261117",
+  "at": "2026-11-17T08:00:38.639647+00:00",
+  "prior_results_seen": true,
+  "new_control_outcomes_seen": false,
+  "scope": "original E1 monthly 2021-01-08 through2025-03-03,50signals,1001accountdays",
+  "attribution": "reuse sealed monthly-decision exclusion clock; full original active wealth ledger, no rewriting; separate excluded stock contribution from fees/cash and account replacement effect",
+  "controls": {
+    "O": "exact original",
+    "P": "replace each excluded known-industry target budget by equal weights across ALL same-industry original-scored nonselected stocks; >=1 peer; retained original for unknown/mismatch/no peers",
+    "PR": "same as P, but peers also same exact frozen exclusion reason"
+  },
+  "selection": "no return labels; no minimum10 restriction; no new missing-style restriction; exclude all original selected names from peers; aggregated peer weights may concentrate; no next-open lookahead",
+  "events": "original matched sleeve and peer sleeve each normalized to1 for P only, matchedbudget fixed before returns; H10 maincost independent liquidation; no matched budget => missing; equal monthly event weights, not original equity weights",
+  "primary": [
+    "O minus P annualized paired mean daily net return",
+    "normalized original matched sleeve minus peer sleeve H10 net event return"
+  ],
+  "statistics": "65trading-day circular blocks5000; monthly3blocks5000; seed20261117; Holm2 approximate two-sided tests, ordinary95% intervals; PR/cost sensitivity/weeklyIC auxiliary",
+  "fees": {
+    "main": [
+      0.001,
+      0.002
+    ],
+    "zero": [
+      0,
+      0
+    ],
+    "stress": [
+      0.003,
+      0.008
+    ]
+  },
+  "auxiliary": "weekly E1 within-industry RankIC among excluded candidates, >=3 labeled members per industry; weight by candidate count,13calendarweek blocks; H10 labels mature byend",
+  "identification": "same target industry budget, not same stock count or other risks; unmatchable budget retains original; fractional multi-peer control is partial identification, not causal alpha; current historical industry/style known_at not certified",
+  "no_search": true,
+  "no_new_training": true,
+  "forward": "FORWARD_PENDING"
+}

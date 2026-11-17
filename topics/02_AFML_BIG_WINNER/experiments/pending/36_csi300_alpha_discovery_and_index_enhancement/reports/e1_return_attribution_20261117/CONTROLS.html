@@ -1,0 +1,461 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1原始账户收益归因</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}pre{overflow:auto;background:#f4f4f4;padding:16px}a{color:#146887}</style><h1>E1 行业配置与行业内持仓的同日起点对照</h1>
+<p><strong>同日起点对照的点估计显示，行业内具体持仓、集中度与执行路径对应的差额大于行业预算项。</strong> 这是固定反事实账户的差额分解，不是已经认证的纯选股Alpha。</p>
+<p>本轮固定原始E1 expanding Ridge、每月第一个周信号Q5等权账户，未换成上一轮受约束S1。区间为2021-01-08信号收盘至2025-03-03收盘，首次交易2021-01-11，1001个净值交易日。买入10bps、卖出20bps，建仓费用计入；全天停牌旧价估值最多20日等原代理规则不变。未重训、未调参、未改原始持仓。</p>
+<p>所有股票收益仍是前复权合成单位口径，行业使用历史L1区间代理；基准使用真实沪深300全收益收盘，不虚构指数开盘或历史指数成分权重。原E1和原成分等权账户均完成逐日精确复放。历史已被查看，本轮是描述性归因与反事实比较，不是独立盲测或因果证明。</p>
+<h2>对照如何保持可比</h2>
+<p>初始资金都是1，统一50次原月度调仓日期、买10/卖20bps、相同涨跌停和未知状态限制、相同停牌标记。对照名单仅使用信号日有限E1分数和历史成员，不加上一轮13项风格完整性筛选，不使用未来收益或未来可交易性。</p>
+<ol>
+<li>EW_ALL：全部历史成分等权，精确复放原已有EW账户。</li>
+<li>EW_SCORED：只保留原E1当时可评分成分等权，用于隔离覆盖差异。</li>
+<li>INDUSTRY：先取原E1该次目标行业资本比例，再在每个行业的同一可评分股票池内等权分配。</li>
+<li>E1_REPLAY：逐项复用原目标股票及权重，要求每天NAV与原E1一致。</li>
+</ol>
+<p>所有账户完整覆盖主区间，未缩短终点。原E1、原EW逐日复放误差均通过1e-12级容差检查。</p>
+<h2>各账户结果</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">账户</th>
+<th style="text-align: right;">净年化%</th>
+<th style="text-align: left;">平均持仓数</th>
+<th style="text-align: left;">年化单边换手倍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">原始E1月度Q5</td>
+<td style="text-align: right;">4.845</td>
+<td style="text-align: left;">59.198</td>
+<td style="text-align: left;">8.622</td>
+</tr>
+<tr>
+<td style="text-align: left;">历史成分等权</td>
+<td style="text-align: right;">-3.319</td>
+<td style="text-align: left;">300.000</td>
+<td style="text-align: left;">0.684</td>
+</tr>
+<tr>
+<td style="text-align: left;">可评分成分等权</td>
+<td style="text-align: right;">-3.25</td>
+<td style="text-align: left;">297.918</td>
+<td style="text-align: left;">0.705</td>
+</tr>
+<tr>
+<td style="text-align: left;">沿用E1行业预算的行业内等权</td>
+<td style="text-align: right;">-1.652</td>
+<td style="text-align: left;">238.987</td>
+<td style="text-align: left;">5.241</td>
+</tr>
+<tr>
+<td style="text-align: left;">沪深300全收益指数</td>
+<td style="text-align: right;">-6.05</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+<p>INDUSTRY约239只、原E1约59只，持仓数量并不相同。这个对照回答“将E1选中的股票换成同一行业的可评分平均股票，会发生什么”，因此行业内差额还含集中度效应，不将它冒充同持仓数的纯Alpha检验。</p>
+<h2>差额链</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">解释项</th>
+<th style="text-align: right;">年化差pp</th>
+<th style="text-align: right;">财富差贡献元</th>
+<th style="text-align: right;">占比%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">等权结构及基准口径差</td>
+<td style="text-align: right;">2.731</td>
+<td style="text-align: right;">11.134</td>
+<td style="text-align: right;">26.118</td>
+</tr>
+<tr>
+<td style="text-align: left;">可评分股票池差异</td>
+<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.651</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业预算与相应持仓路径</td>
+<td style="text-align: right;">1.598</td>
+<td style="text-align: right;">6.365</td>
+<td style="text-align: right;">14.931</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业内选股、集中度和执行差异</td>
+<td style="text-align: right;">6.497</td>
+<td style="text-align: right;">24.854</td>
+<td style="text-align: right;">58.3</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="对照链" src="control_bridge.png" /></p>
+<p>等权结构项还包含指数加权方式、原成分代理、成交费用和股票合成单位与指数全收益的计价差异，不能简单全部称为小盘因子。行业预算项还包含由预算变化形成的再平衡和实际成交路径。行业内项仍可能来自动量、反转、规模等已知风格，所以与上一轮“完整风格控制后未确认独立增量”不矛盾。</p>
+<p>原E1相对同行业预算等权组合的日均差年化区间高于零，意味着“行业内具体持仓相对行业平均”的历史正向线索比单独行业预算项更清晰。但这是事后研究，且行业内仍混有价格风格与集中度，不能升级成稳定独立Alpha。</p>
+<p>下面为描述性的65交易日块Bootstrap区间，单位百分点。对象是日均收益差×252，不是上一表CAGR差，不能跨列直接匹配点估计。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">解释项</th>
+<th style="text-align: right;">日均差年化pp</th>
+<th style="text-align: right;">95%下限</th>
+<th style="text-align: right;">95%上限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">等权结构及基准口径差</td>
+<td style="text-align: right;">2.878</td>
+<td style="text-align: right;">-0.865</td>
+<td style="text-align: right;">6.744</td>
+</tr>
+<tr>
+<td style="text-align: left;">可评分股票池差异</td>
+<td style="text-align: right;">0.073</td>
+<td style="text-align: right;">-0.071</td>
+<td style="text-align: right;">0.234</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业预算与相应持仓路径</td>
+<td style="text-align: right;">1.69</td>
+<td style="text-align: right;">-3.123</td>
+<td style="text-align: right;">7.165</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业内选股、集中度和执行差异</td>
+<td style="text-align: right;">6.573</td>
+<td style="text-align: right;">1.705</td>
+<td style="text-align: right;">11.372</td>
+</tr>
+</tbody>
+</table>
+<h2>实际行业比例偏差</h2>
+<p>所有调仓目标的行业比例误差小于1e-12。成交后最大单行业偏差的跨期平均为0.0858个百分点，最坏一次为1.4459个百分点；行业半L1距离平均为0.1291个百分点。不同股票随后会自然漂移，没有每天重置成相同风险。</p>
+<p>“同预算”指同样的初始资金和每次相同的目标行业资金比例；由于两条账户收益不同，后续绝对元预算不会始终相等。未强制成交来消除这个区别。</p>
+<h2>每年各环节贡献</h2>
+<p>单位为对共同全期财富差的贡献元，各列、各年均可加总。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">period</th>
+<th style="text-align: right;">等权结构及基准口径差</th>
+<th style="text-align: right;">可评分股票池差异</th>
+<th style="text-align: right;">行业预算与相应持仓路径</th>
+<th style="text-align: right;">行业内选股、集中度和执行差异</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">8.249</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: right;">-5.922</td>
+<td style="text-align: right;">11.794</td>
+</tr>
+<tr>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">2.943</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">2.181</td>
+<td style="text-align: right;">3.025</td>
+</tr>
+<tr>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">2.507</td>
+<td style="text-align: right;">0.052</td>
+<td style="text-align: right;">-3.286</td>
+<td style="text-align: right;">0.897</td>
+</tr>
+<tr>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">-2.83</td>
+<td style="text-align: right;">0.012</td>
+<td style="text-align: right;">10.266</td>
+<td style="text-align: right;">5.979</td>
+</tr>
+<tr>
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">3.127</td>
+<td style="text-align: right;">3.159</td>
+</tr>
+</tbody>
+</table>
+<h2>哪些行业对应行业预算效果</h2>
+<p>以下以INDUSTRY减EW_SCORED的股票损益对数差再按行业汇总，费用差单列。用于定位这个反事实差异，不是官方指数权重下的独立配置效应。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">行业</th>
+<th style="text-align: right;">财富差贡献元</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">计算机</td>
+<td style="text-align: right;">6.867</td>
+</tr>
+<tr>
+<td style="text-align: left;">非银金融</td>
+<td style="text-align: right;">6.371</td>
+</tr>
+<tr>
+<td style="text-align: left;">房地产</td>
+<td style="text-align: right;">4.284</td>
+</tr>
+<tr>
+<td style="text-align: left;">电力设备</td>
+<td style="text-align: right;">3.434</td>
+</tr>
+<tr>
+<td style="text-align: left;">电子</td>
+<td style="text-align: right;">2.095</td>
+</tr>
+<tr>
+<td style="text-align: left;">银行</td>
+<td style="text-align: right;">0.89</td>
+</tr>
+<tr>
+<td style="text-align: left;">社会服务</td>
+<td style="text-align: right;">0.882</td>
+</tr>
+<tr>
+<td style="text-align: left;">商贸零售</td>
+<td style="text-align: right;">0.845</td>
+</tr>
+<tr>
+<td style="text-align: left;">通信</td>
+<td style="text-align: right;">0.597</td>
+</tr>
+<tr>
+<td style="text-align: left;">未知行业</td>
+<td style="text-align: right;">0.419</td>
+</tr>
+<tr>
+<td style="text-align: left;">汽车</td>
+<td style="text-align: right;">0.311</td>
+</tr>
+<tr>
+<td style="text-align: left;">轻工制造</td>
+<td style="text-align: right;">0.259</td>
+</tr>
+<tr>
+<td style="text-align: left;">医药生物</td>
+<td style="text-align: right;">0.24</td>
+</tr>
+<tr>
+<td style="text-align: left;">纺织服饰</td>
+<td style="text-align: right;">0.039</td>
+</tr>
+<tr>
+<td style="text-align: left;">基础化工</td>
+<td style="text-align: right;">-0.032</td>
+</tr>
+<tr>
+<td style="text-align: left;">美容护理</td>
+<td style="text-align: right;">-0.053</td>
+</tr>
+<tr>
+<td style="text-align: left;">煤炭</td>
+<td style="text-align: right;">-0.065</td>
+</tr>
+<tr>
+<td style="text-align: left;">钢铁</td>
+<td style="text-align: right;">-0.164</td>
+</tr>
+<tr>
+<td style="text-align: left;">机械设备</td>
+<td style="text-align: right;">-0.194</td>
+</tr>
+<tr>
+<td style="text-align: left;">交通运输</td>
+<td style="text-align: right;">-0.31</td>
+</tr>
+<tr>
+<td style="text-align: left;">家用电器</td>
+<td style="text-align: right;">-0.427</td>
+</tr>
+<tr>
+<td style="text-align: left;">建筑材料</td>
+<td style="text-align: right;">-0.475</td>
+</tr>
+<tr>
+<td style="text-align: left;">石油石化</td>
+<td style="text-align: right;">-0.85</td>
+</tr>
+<tr>
+<td style="text-align: left;">传媒</td>
+<td style="text-align: right;">-1.211</td>
+</tr>
+<tr>
+<td style="text-align: left;">有色金属</td>
+<td style="text-align: right;">-1.325</td>
+</tr>
+<tr>
+<td style="text-align: left;">农林牧渔</td>
+<td style="text-align: right;">-1.642</td>
+</tr>
+<tr>
+<td style="text-align: left;">建筑装饰</td>
+<td style="text-align: right;">-1.648</td>
+</tr>
+<tr>
+<td style="text-align: left;">国防军工</td>
+<td style="text-align: right;">-1.662</td>
+</tr>
+<tr>
+<td style="text-align: left;">公用事业</td>
+<td style="text-align: right;">-2.036</td>
+</tr>
+<tr>
+<td style="text-align: left;">食品饮料</td>
+<td style="text-align: right;">-3.784</td>
+</tr>
+<tr>
+<td style="text-align: left;">费用差</td>
+<td style="text-align: right;">-5.289</td>
+</tr>
+</tbody>
+</table>
+<h2>哪些行业对应行业内差异</h2>
+<p>以下以原E1减INDUSTRY的股票损益对数差再按行业汇总，包含集中度、漂移与成交差异。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">行业</th>
+<th style="text-align: right;">财富差贡献元</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">医药生物</td>
+<td style="text-align: right;">10.317</td>
+</tr>
+<tr>
+<td style="text-align: left;">电子</td>
+<td style="text-align: right;">4.339</td>
+</tr>
+<tr>
+<td style="text-align: left;">通信</td>
+<td style="text-align: right;">2.946</td>
+</tr>
+<tr>
+<td style="text-align: left;">有色金属</td>
+<td style="text-align: right;">2.499</td>
+</tr>
+<tr>
+<td style="text-align: left;">传媒</td>
+<td style="text-align: right;">2.2</td>
+</tr>
+<tr>
+<td style="text-align: left;">国防军工</td>
+<td style="text-align: right;">1.815</td>
+</tr>
+<tr>
+<td style="text-align: left;">石油石化</td>
+<td style="text-align: right;">1.43</td>
+</tr>
+<tr>
+<td style="text-align: left;">社会服务</td>
+<td style="text-align: right;">1.261</td>
+</tr>
+<tr>
+<td style="text-align: left;">基础化工</td>
+<td style="text-align: right;">1.013</td>
+</tr>
+<tr>
+<td style="text-align: left;">食品饮料</td>
+<td style="text-align: right;">0.944</td>
+</tr>
+<tr>
+<td style="text-align: left;">银行</td>
+<td style="text-align: right;">0.898</td>
+</tr>
+<tr>
+<td style="text-align: left;">汽车</td>
+<td style="text-align: right;">0.571</td>
+</tr>
+<tr>
+<td style="text-align: left;">轻工制造</td>
+<td style="text-align: right;">0.51</td>
+</tr>
+<tr>
+<td style="text-align: left;">煤炭</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr>
+<td style="text-align: left;">建筑材料</td>
+<td style="text-align: right;">0.401</td>
+</tr>
+<tr>
+<td style="text-align: left;">公用事业</td>
+<td style="text-align: right;">0.395</td>
+</tr>
+<tr>
+<td style="text-align: left;">房地产</td>
+<td style="text-align: right;">0.308</td>
+</tr>
+<tr>
+<td style="text-align: left;">钢铁</td>
+<td style="text-align: right;">0.099</td>
+</tr>
+<tr>
+<td style="text-align: left;">美容护理</td>
+<td style="text-align: right;">0.093</td>
+</tr>
+<tr>
+<td style="text-align: left;">计算机</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr>
+<td style="text-align: left;">纺织服饰</td>
+<td style="text-align: right;">-0.003</td>
+</tr>
+<tr>
+<td style="text-align: left;">建筑装饰</td>
+<td style="text-align: right;">-0.026</td>
+</tr>
+<tr>
+<td style="text-align: left;">未知行业</td>
+<td style="text-align: right;">-0.103</td>
+</tr>
+<tr>
+<td style="text-align: left;">农林牧渔</td>
+<td style="text-align: right;">-0.184</td>
+</tr>
+<tr>
+<td style="text-align: left;">商贸零售</td>
+<td style="text-align: right;">-0.315</td>
+</tr>
+<tr>
+<td style="text-align: left;">交通运输</td>
+<td style="text-align: right;">-0.331</td>
+</tr>
+<tr>
+<td style="text-align: left;">家用电器</td>
+<td style="text-align: right;">-0.36</td>
+</tr>
+<tr>
+<td style="text-align: left;">机械设备</td>
+<td style="text-align: right;">-0.658</td>
+</tr>
+<tr>
+<td style="text-align: left;">非银金融</td>
+<td style="text-align: right;">-0.743</td>
+</tr>
+<tr>
+<td style="text-align: left;">电力设备</td>
+<td style="text-align: right;">-1.074</td>
+</tr>
+<tr>
+<td style="text-align: left;">费用差</td>
+<td style="text-align: right;">-3.943</td>
+</tr>
+</tbody>
+</table>
+<p>这一步缩小了问题：原E1的大部分历史差额需要到具体行业内的股票与持有路径中解释，不能只看行业超配。下一层若做风格拆解，应保留原账户和这一条桥接关系，避免把另一个受约束账户的结果直接当作原E1的来源。</p>
+<p><a href="../../outputs/diagnostics/e1_return_attribution_20261117/attribution_bridge.csv">精确对照链</a> · <a href="../../outputs/diagnostics/e1_return_attribution_20261117/control_navs.csv">四条账户日净值</a> · <a href="../../outputs/diagnostics/e1_return_attribution_20261117/control_target_audit.csv">行业目标审计</a> · <a href="../../outputs/diagnostics/e1_return_attribution_20261117/industry_actual_matching.csv">实际偏差</a> · <a href="../../outputs/diagnostics/e1_return_attribution_20261117/bridge_industry_month.csv">分阶段行业逐月贡献</a> · <a href="../../outputs/diagnostics/e1_return_attribution_20261117/bridge_stock.csv">分阶段股票贡献</a></p></html>

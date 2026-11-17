@@ -1,0 +1,1520 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 优势逐层拆解</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>各步骤及顺序核验</h1>
+<p>所有数值以同一资金起点、相同日期和费用比较。主链与反向链不是相互独立的实验，不能把差额重复相加。行业预算按股票池比例分配整数名额，不是市值权重；风格约束参照上一轮B目标，不是对市场风险归零。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">变化</th>
+<th style="text-align: left;">before</th>
+<th style="text-align: left;">after</th>
+<th style="text-align: right;">cagr_difference</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: right;">mean_daily_annual</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">缩小股票池并补足原数量</td>
+<td style="text-align: left;">O</td>
+<td style="text-align: left;">U</td>
+<td style="text-align: right;">-2.193</td>
+<td style="text-align: right;">-8.156</td>
+<td style="text-align: right;">-2.112</td>
+<td style="text-align: right;">-8.194</td>
+<td style="text-align: right;">3.555</td>
+</tr>
+<tr>
+<td style="text-align: left;">减少持仓数量</td>
+<td style="text-align: left;">U</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: right;">2.612</td>
+<td style="text-align: right;">9.693</td>
+<td style="text-align: right;">2.715</td>
+<td style="text-align: right;">-1.356</td>
+<td style="text-align: right;">7.093</td>
+</tr>
+<tr>
+<td style="text-align: left;">改变行业预算</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">I</td>
+<td style="text-align: right;">-4.382</td>
+<td style="text-align: right;">-16.403</td>
+<td style="text-align: right;">-4.466</td>
+<td style="text-align: right;">-12.081</td>
+<td style="text-align: right;">2.842</td>
+</tr>
+<tr>
+<td style="text-align: left;">加入风格约束</td>
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">-7.299</td>
+<td style="text-align: right;">-28.971</td>
+<td style="text-align: right;">-7.507</td>
+<td style="text-align: right;">-11.824</td>
+<td style="text-align: right;">-2.983</td>
+</tr>
+<tr>
+<td style="text-align: left;">先改行业预算</td>
+<td style="text-align: left;">U</td>
+<td style="text-align: left;">UI</td>
+<td style="text-align: right;">-3.400</td>
+<td style="text-align: right;">-12.995</td>
+<td style="text-align: right;">-3.441</td>
+<td style="text-align: right;">-7.692</td>
+<td style="text-align: right;">1.056</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业预算后再改数量</td>
+<td style="text-align: left;">UI</td>
+<td style="text-align: left;">I</td>
+<td style="text-align: right;">1.630</td>
+<td style="text-align: right;">6.285</td>
+<td style="text-align: right;">1.690</td>
+<td style="text-align: right;">-0.692</td>
+<td style="text-align: right;">4.115</td>
+</tr>
+<tr>
+<td style="text-align: left;">先加风格约束</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">KF</td>
+<td style="text-align: right;">-9.371</td>
+<td style="text-align: right;">-35.966</td>
+<td style="text-align: right;">-9.458</td>
+<td style="text-align: right;">-18.317</td>
+<td style="text-align: right;">-2.097</td>
+</tr>
+<tr>
+<td style="text-align: left;">风格约束后再改行业</td>
+<td style="text-align: left;">KF</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">-2.310</td>
+<td style="text-align: right;">-9.408</td>
+<td style="text-align: right;">-2.514</td>
+<td style="text-align: right;">-7.570</td>
+<td style="text-align: right;">2.142</td>
+</tr>
+<tr>
+<td style="text-align: left;">剔除后留现金</td>
+<td style="text-align: left;">O</td>
+<td style="text-align: left;">X</td>
+<td style="text-align: right;">-0.817</td>
+<td style="text-align: right;">-3.020</td>
+<td style="text-align: right;">-1.749</td>
+<td style="text-align: right;">-7.630</td>
+<td style="text-align: right;">4.295</td>
+</tr>
+<tr>
+<td style="text-align: left;">现金补入剩余股票</td>
+<td style="text-align: left;">X</td>
+<td style="text-align: left;">U</td>
+<td style="text-align: right;">-1.376</td>
+<td style="text-align: right;">-5.136</td>
+<td style="text-align: right;">-0.363</td>
+<td style="text-align: right;">-6.082</td>
+<td style="text-align: right;">5.264</td>
+</tr>
+</tbody>
+</table>
+<p>各主步骤和反向步骤的贡献均按同一个全链F减O财富换算系数连接。单步财富贡献不同于两条账户期末净值直接相减；主链加总恰好还原全链差额。股票差额来自两账户各自的损益与费用连接，不是未持股票的完整机会集因果效应。</p>
+<p><a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/target_changes.csv">全部目标名单变化</a> · <a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/actual_rebalance_risk.csv">实际成交后风险</a>。以下每项只列主要贡献，完整明细保留。</p>
+<h2>缩小股票池并补足原数量</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH688111</td>
+<td style="text-align: left;">金山办公</td>
+<td style="text-align: right;">-1.852</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600763</td>
+<td style="text-align: left;">通策医疗</td>
+<td style="text-align: right;">-1.323</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002475</td>
+<td style="text-align: left;">立讯精密</td>
+<td style="text-align: right;">-1.158</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300442</td>
+<td style="text-align: left;">润泽科技</td>
+<td style="text-align: right;">-1.109</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000063</td>
+<td style="text-align: left;">中兴通讯</td>
+<td style="text-align: right;">-1.007</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">1.374</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603986</td>
+<td style="text-align: left;">兆易创新</td>
+<td style="text-align: right;">1.169</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002241</td>
+<td style="text-align: left;">歌尔股份</td>
+<td style="text-align: right;">1.066</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">-3.423</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-07</td>
+<td style="text-align: right;">-3.100</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-02</td>
+<td style="text-align: right;">-2.889</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">-2.346</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">4.401</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-10</td>
+<td style="text-align: right;">3.251</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801770.SI</td>
+<td style="text-align: right;">-4.994</td>
+<td style="text-align: left;">通信</td>
+</tr>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">-3.065</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801180.SI</td>
+<td style="text-align: right;">-2.168</td>
+<td style="text-align: left;">房地产</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">-1.852</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801950.SI</td>
+<td style="text-align: right;">-1.467</td>
+<td style="text-align: left;">煤炭</td>
+</tr>
+<tr>
+<td style="text-align: left;">801010.SI</td>
+<td style="text-align: right;">2.678</td>
+<td style="text-align: left;">农林牧渔</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">1.398</td>
+<td style="text-align: left;">银行</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">1.374</td>
+<td style="text-align: left;">费用差</td>
+</tr>
+</tbody>
+</table>
+<h2>减少持仓数量</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SZ002129</td>
+<td style="text-align: left;">TCL中环</td>
+<td style="text-align: right;">-1.768</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000568</td>
+<td style="text-align: left;">泸州老窖</td>
+<td style="text-align: right;">-1.363</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300433</td>
+<td style="text-align: left;">蓝思科技</td>
+<td style="text-align: right;">-1.278</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603806</td>
+<td style="text-align: left;">福斯特</td>
+<td style="text-align: right;">-1.195</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">-1.108</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600763</td>
+<td style="text-align: left;">通策医疗</td>
+<td style="text-align: right;">1.554</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300782</td>
+<td style="text-align: left;">卓胜微</td>
+<td style="text-align: right;">1.328</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002180</td>
+<td style="text-align: left;">奔图科技</td>
+<td style="text-align: right;">1.084</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-12</td>
+<td style="text-align: right;">-2.760</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-07</td>
+<td style="text-align: right;">-2.271</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-10</td>
+<td style="text-align: right;">-1.594</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: right;">-1.419</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">3.517</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-09</td>
+<td style="text-align: right;">2.674</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">-2.172</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801120.SI</td>
+<td style="text-align: right;">-2.031</td>
+<td style="text-align: left;">食品饮料</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">-1.108</td>
+<td style="text-align: left;">费用差</td>
+</tr>
+<tr>
+<td style="text-align: left;">801170.SI</td>
+<td style="text-align: right;">-0.645</td>
+<td style="text-align: left;">交通运输</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">-0.231</td>
+<td style="text-align: left;">银行</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">5.497</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801790.SI</td>
+<td style="text-align: right;">3.555</td>
+<td style="text-align: left;">非银金融</td>
+</tr>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">2.639</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+</tbody>
+</table>
+<h2>改变行业预算</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SZ002180</td>
+<td style="text-align: left;">奔图科技</td>
+<td style="text-align: right;">-2.431</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002410</td>
+<td style="text-align: left;">广联达</td>
+<td style="text-align: right;">-1.869</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002916</td>
+<td style="text-align: left;">深南电路</td>
+<td style="text-align: right;">-1.681</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601066</td>
+<td style="text-align: left;">中信建投</td>
+<td style="text-align: right;">-1.616</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002920</td>
+<td style="text-align: left;">德赛西威</td>
+<td style="text-align: right;">-1.614</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300433</td>
+<td style="text-align: left;">蓝思科技</td>
+<td style="text-align: right;">1.886</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000858</td>
+<td style="text-align: left;">五粮液</td>
+<td style="text-align: right;">1.608</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH605499</td>
+<td style="text-align: left;">东鹏饮料</td>
+<td style="text-align: right;">1.203</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">-5.696</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">-4.816</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">-3.649</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-05</td>
+<td style="text-align: right;">-2.899</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: right;">2.891</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-02</td>
+<td style="text-align: right;">2.523</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">-10.694</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: left;">801790.SI</td>
+<td style="text-align: right;">-8.246</td>
+<td style="text-align: left;">非银金融</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">-3.813</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801030.SI</td>
+<td style="text-align: right;">-1.764</td>
+<td style="text-align: left;">基础化工</td>
+</tr>
+<tr>
+<td style="text-align: left;">801880.SI</td>
+<td style="text-align: right;">-1.609</td>
+<td style="text-align: left;">汽车</td>
+</tr>
+<tr>
+<td style="text-align: left;">801120.SI</td>
+<td style="text-align: right;">7.793</td>
+<td style="text-align: left;">食品饮料</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">1.930</td>
+<td style="text-align: left;">银行</td>
+</tr>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">1.122</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+</tbody>
+</table>
+<h2>加入风格约束</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SZ300122</td>
+<td style="text-align: left;">智飞生物</td>
+<td style="text-align: right;">-2.103</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300347</td>
+<td style="text-align: left;">泰格医药</td>
+<td style="text-align: right;">-2.072</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600732</td>
+<td style="text-align: left;">爱旭股份</td>
+<td style="text-align: right;">-1.937</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH605499</td>
+<td style="text-align: left;">东鹏饮料</td>
+<td style="text-align: right;">-1.721</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603392</td>
+<td style="text-align: left;">万泰生物</td>
+<td style="text-align: right;">-1.705</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300033</td>
+<td style="text-align: left;">同花顺</td>
+<td style="text-align: right;">1.993</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002594</td>
+<td style="text-align: left;">比亚迪</td>
+<td style="text-align: right;">1.737</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002410</td>
+<td style="text-align: left;">广联达</td>
+<td style="text-align: right;">1.620</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-09</td>
+<td style="text-align: right;">-3.655</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">-3.655</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">-3.246</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">-3.237</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-12</td>
+<td style="text-align: right;">3.067</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-08</td>
+<td style="text-align: right;">2.552</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">-13.654</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">-5.193</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801080.SI</td>
+<td style="text-align: right;">-4.118</td>
+<td style="text-align: left;">电子</td>
+</tr>
+<tr>
+<td style="text-align: left;">801790.SI</td>
+<td style="text-align: right;">-3.016</td>
+<td style="text-align: left;">非银金融</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">-2.797</td>
+<td style="text-align: left;">银行</td>
+</tr>
+<tr>
+<td style="text-align: left;">801170.SI</td>
+<td style="text-align: right;">1.526</td>
+<td style="text-align: left;">交通运输</td>
+</tr>
+<tr>
+<td style="text-align: left;">801880.SI</td>
+<td style="text-align: right;">0.962</td>
+<td style="text-align: left;">汽车</td>
+</tr>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">0.566</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+</tbody>
+</table>
+<h2>先改行业预算</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SZ300014</td>
+<td style="text-align: left;">亿纬锂能</td>
+<td style="text-align: right;">-1.132</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601336</td>
+<td style="text-align: left;">新华保险</td>
+<td style="text-align: right;">-1.118</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002916</td>
+<td style="text-align: left;">深南电路</td>
+<td style="text-align: right;">-1.117</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600958</td>
+<td style="text-align: left;">东方证券</td>
+<td style="text-align: right;">-1.111</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002241</td>
+<td style="text-align: left;">歌尔股份</td>
+<td style="text-align: right;">-1.100</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603369</td>
+<td style="text-align: left;">今世缘</td>
+<td style="text-align: right;">0.909</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000568</td>
+<td style="text-align: left;">泸州老窖</td>
+<td style="text-align: right;">0.905</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601166</td>
+<td style="text-align: left;">兴业银行</td>
+<td style="text-align: right;">0.902</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">-2.544</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">-2.393</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-05</td>
+<td style="text-align: right;">-2.246</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">-2.210</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-10</td>
+<td style="text-align: right;">1.807</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-06</td>
+<td style="text-align: right;">1.728</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">-9.188</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: left;">801790.SI</td>
+<td style="text-align: right;">-5.493</td>
+<td style="text-align: left;">非银金融</td>
+</tr>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">-2.100</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801180.SI</td>
+<td style="text-align: right;">-1.113</td>
+<td style="text-align: left;">房地产</td>
+</tr>
+<tr>
+<td style="text-align: left;">801170.SI</td>
+<td style="text-align: right;">-1.093</td>
+<td style="text-align: left;">交通运输</td>
+</tr>
+<tr>
+<td style="text-align: left;">801120.SI</td>
+<td style="text-align: right;">6.113</td>
+<td style="text-align: left;">食品饮料</td>
+</tr>
+<tr>
+<td style="text-align: left;">801030.SI</td>
+<td style="text-align: right;">0.885</td>
+<td style="text-align: left;">基础化工</td>
+</tr>
+<tr>
+<td style="text-align: left;">801160.SI</td>
+<td style="text-align: right;">0.495</td>
+<td style="text-align: left;">公用事业</td>
+</tr>
+</tbody>
+</table>
+<h2>行业预算后再改数量</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SZ000568</td>
+<td style="text-align: left;">泸州老窖</td>
+<td style="text-align: right;">-1.358</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">-1.237</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600745</td>
+<td style="text-align: left;">*ST闻泰</td>
+<td style="text-align: right;">-1.105</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000977</td>
+<td style="text-align: left;">浪潮信息</td>
+<td style="text-align: right;">-1.004</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002410</td>
+<td style="text-align: left;">广联达</td>
+<td style="text-align: right;">-0.959</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601360</td>
+<td style="text-align: left;">三六零</td>
+<td style="text-align: right;">1.488</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601336</td>
+<td style="text-align: left;">新华保险</td>
+<td style="text-align: right;">1.437</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002371</td>
+<td style="text-align: left;">北方华创</td>
+<td style="text-align: right;">1.302</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-12</td>
+<td style="text-align: right;">-2.142</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-06</td>
+<td style="text-align: right;">-1.728</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-08</td>
+<td style="text-align: right;">-1.092</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-05</td>
+<td style="text-align: right;">-1.067</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-08</td>
+<td style="text-align: right;">1.918</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-11</td>
+<td style="text-align: right;">1.604</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801030.SI</td>
+<td style="text-align: right;">-2.050</td>
+<td style="text-align: left;">基础化工</td>
+</tr>
+<tr>
+<td style="text-align: left;">801050.SI</td>
+<td style="text-align: right;">-1.576</td>
+<td style="text-align: left;">有色金属</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">-1.237</td>
+<td style="text-align: left;">费用差</td>
+</tr>
+<tr>
+<td style="text-align: left;">801880.SI</td>
+<td style="text-align: right;">-0.572</td>
+<td style="text-align: left;">汽车</td>
+</tr>
+<tr>
+<td style="text-align: left;">801120.SI</td>
+<td style="text-align: right;">-0.351</td>
+<td style="text-align: left;">食品饮料</td>
+</tr>
+<tr>
+<td style="text-align: left;">801080.SI</td>
+<td style="text-align: right;">3.583</td>
+<td style="text-align: left;">电子</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">2.240</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801180.SI</td>
+<td style="text-align: right;">1.503</td>
+<td style="text-align: left;">房地产</td>
+</tr>
+</tbody>
+</table>
+<h2>先加风格约束</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SZ002916</td>
+<td style="text-align: left;">深南电路</td>
+<td style="text-align: right;">-2.405</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600732</td>
+<td style="text-align: left;">爱旭股份</td>
+<td style="text-align: right;">-2.181</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300347</td>
+<td style="text-align: left;">泰格医药</td>
+<td style="text-align: right;">-1.646</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002044</td>
+<td style="text-align: left;">美年健康</td>
+<td style="text-align: right;">-1.616</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600036</td>
+<td style="text-align: left;">招商银行</td>
+<td style="text-align: right;">-1.468</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000568</td>
+<td style="text-align: left;">泸州老窖</td>
+<td style="text-align: right;">2.061</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601919</td>
+<td style="text-align: left;">中远海控</td>
+<td style="text-align: right;">1.545</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000538</td>
+<td style="text-align: left;">云南白药</td>
+<td style="text-align: right;">1.400</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">-11.299</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">-5.250</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">-5.205</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">-3.349</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-12</td>
+<td style="text-align: right;">2.638</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-09</td>
+<td style="text-align: right;">1.585</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801080.SI</td>
+<td style="text-align: right;">-10.600</td>
+<td style="text-align: left;">电子</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">-8.895</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">-7.631</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">-7.216</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">-3.976</td>
+<td style="text-align: left;">银行</td>
+</tr>
+<tr>
+<td style="text-align: left;">801050.SI</td>
+<td style="text-align: right;">4.013</td>
+<td style="text-align: left;">有色金属</td>
+</tr>
+<tr>
+<td style="text-align: left;">801120.SI</td>
+<td style="text-align: right;">2.714</td>
+<td style="text-align: left;">食品饮料</td>
+</tr>
+<tr>
+<td style="text-align: left;">801170.SI</td>
+<td style="text-align: right;">0.797</td>
+<td style="text-align: left;">交通运输</td>
+</tr>
+</tbody>
+</table>
+<h2>风格约束后再改行业</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH603799</td>
+<td style="text-align: left;">华友钴业</td>
+<td style="text-align: right;">-2.184</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603392</td>
+<td style="text-align: left;">万泰生物</td>
+<td style="text-align: right;">-1.674</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600085</td>
+<td style="text-align: left;">同仁堂</td>
+<td style="text-align: right;">-1.588</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601689</td>
+<td style="text-align: left;">拓普集团</td>
+<td style="text-align: right;">-1.555</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300347</td>
+<td style="text-align: left;">泰格医药</td>
+<td style="text-align: right;">-1.549</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300433</td>
+<td style="text-align: left;">蓝思科技</td>
+<td style="text-align: right;">2.072</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300033</td>
+<td style="text-align: left;">同花顺</td>
+<td style="text-align: right;">1.999</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000596</td>
+<td style="text-align: left;">古井贡酒</td>
+<td style="text-align: right;">1.775</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-05</td>
+<td style="text-align: right;">-4.192</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">-2.543</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025-02</td>
+<td style="text-align: right;">-2.280</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-08</td>
+<td style="text-align: right;">-2.173</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: right;">2.577</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">2.357</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801790.SI</td>
+<td style="text-align: right;">-8.915</td>
+<td style="text-align: left;">非银金融</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">-8.571</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801050.SI</td>
+<td style="text-align: right;">-4.790</td>
+<td style="text-align: left;">有色金属</td>
+</tr>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">-2.912</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: left;">801030.SI</td>
+<td style="text-align: right;">-1.118</td>
+<td style="text-align: left;">基础化工</td>
+</tr>
+<tr>
+<td style="text-align: left;">801080.SI</td>
+<td style="text-align: right;">6.793</td>
+<td style="text-align: left;">电子</td>
+</tr>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">3.559</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">3.108</td>
+<td style="text-align: left;">银行</td>
+</tr>
+</tbody>
+</table>
+<h2>剔除后留现金</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH688111</td>
+<td style="text-align: left;">金山办公</td>
+<td style="text-align: right;">-1.852</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300442</td>
+<td style="text-align: left;">润泽科技</td>
+<td style="text-align: right;">-1.109</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601633</td>
+<td style="text-align: left;">长城汽车</td>
+<td style="text-align: right;">-1.008</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000063</td>
+<td style="text-align: left;">中兴通讯</td>
+<td style="text-align: right;">-1.007</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603392</td>
+<td style="text-align: left;">万泰生物</td>
+<td style="text-align: right;">-0.954</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">3.481</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH688036</td>
+<td style="text-align: left;">传音控股</td>
+<td style="text-align: right;">0.929</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002271</td>
+<td style="text-align: left;">东方雨虹</td>
+<td style="text-align: right;">0.801</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2022-11</td>
+<td style="text-align: right;">-5.013</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">-2.915</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">-2.850</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-08</td>
+<td style="text-align: right;">-2.789</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-01</td>
+<td style="text-align: right;">4.386</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-08</td>
+<td style="text-align: right;">2.990</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801770.SI</td>
+<td style="text-align: right;">-4.994</td>
+<td style="text-align: left;">通信</td>
+</tr>
+<tr>
+<td style="text-align: left;">801180.SI</td>
+<td style="text-align: right;">-1.871</td>
+<td style="text-align: left;">房地产</td>
+</tr>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">-1.498</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: left;">801950.SI</td>
+<td style="text-align: right;">-1.467</td>
+<td style="text-align: left;">煤炭</td>
+</tr>
+<tr>
+<td style="text-align: left;">801210.SI</td>
+<td style="text-align: right;">-1.237</td>
+<td style="text-align: left;">社会服务</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">3.481</td>
+<td style="text-align: left;">费用差</td>
+</tr>
+<tr>
+<td style="text-align: left;">801010.SI</td>
+<td style="text-align: right;">2.678</td>
+<td style="text-align: left;">农林牧渔</td>
+</tr>
+<tr>
+<td style="text-align: left;">801160.SI</td>
+<td style="text-align: right;">1.353</td>
+<td style="text-align: left;">公用事业</td>
+</tr>
+</tbody>
+</table>
+<h2>现金补入剩余股票</h2>
+<p>主要股票差额，负数表示改动后更差，正数表示更好：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">-2.107</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600763</td>
+<td style="text-align: left;">通策医疗</td>
+<td style="text-align: right;">-1.303</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002475</td>
+<td style="text-align: left;">立讯精密</td>
+<td style="text-align: right;">-1.167</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601628</td>
+<td style="text-align: left;">中国人寿</td>
+<td style="text-align: right;">-0.916</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300450</td>
+<td style="text-align: left;">先导智能</td>
+<td style="text-align: right;">-0.901</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603986</td>
+<td style="text-align: left;">兆易创新</td>
+<td style="text-align: right;">1.152</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002241</td>
+<td style="text-align: left;">歌尔股份</td>
+<td style="text-align: right;">1.049</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600588</td>
+<td style="text-align: left;">用友网络</td>
+<td style="text-align: right;">0.951</td>
+</tr>
+</tbody>
+</table>
+<p>主要月份：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">-4.114</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-07</td>
+<td style="text-align: right;">-3.591</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-04</td>
+<td style="text-align: right;">-3.244</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-03</td>
+<td style="text-align: right;">-2.914</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">7.250</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-11</td>
+<td style="text-align: right;">4.669</td>
+</tr>
+</tbody>
+</table>
+<p>主要行业：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">-2.225</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">-2.107</td>
+<td style="text-align: left;">费用差</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">-1.642</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801790.SI</td>
+<td style="text-align: right;">-1.568</td>
+<td style="text-align: left;">非银金融</td>
+</tr>
+<tr>
+<td style="text-align: left;">801120.SI</td>
+<td style="text-align: right;">-0.651</td>
+<td style="text-align: left;">食品饮料</td>
+</tr>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">1.916</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">1.196</td>
+<td style="text-align: left;">银行</td>
+</tr>
+<tr>
+<td style="text-align: left;">801170.SI</td>
+<td style="text-align: right;">0.781</td>
+<td style="text-align: left;">交通运输</td>
+</tr>
+</tbody>
+</table></html>

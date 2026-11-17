@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 风格映射变化</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>映射变化的模型与数据分解</h1>
+<p>本轮只解释此前复制失败，不搜索收益参数。先冻结两种时间跨度、两个样本口径和分解公式，再计算结构，封存结构后才接入H10标签。</p>
+<p>每个数据截面将13风格作总体标准化并行业去均值，得到X。原Ridge分数作总体标准化并行业去均值，得到y。令gamma=pinv(X)y，rcond=1e-12。两个日期可能有不同股票数量，但gamma始终为相同13维风格坐标。</p>
+<p>用M0/M1表示旧/新原Ridge整套模型，D0/D1表示旧/新数据。计算gamma00、gamma10、gamma01、gamma11：
+- 模型分配=0.5×[(gamma10−gamma00)+(gamma11−gamma01)]。
+- 数据分配=0.5×[(gamma01−gamma00)+(gamma11−gamma10)]。
+- 二者相加精确等于gamma11−gamma00。
+- 使用新数据的X1将三者映射到股票分数空间；不是用易受共线性影响的系数欧氏距离直接作经济归因。</p>
+<p>对每个日期用平均股票平方变化定义能量。某项带符号分配为该项分数变化与总变化的内积，再除以总变化平方和；汇总先加各日期分子分母再求比。分配可能负值或超过100%，并非互相独立的正方差，也不是利润份额。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">clock</th>
+<th style="text-align: left;">scope</th>
+<th style="text-align: left;">sample</th>
+<th style="text-align: right;">pairs</th>
+<th style="text-align: right;">change_energy_sum</th>
+<th style="text-align: right;">model_share</th>
+<th style="text-align: right;">data_share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">adjacent</td>
+<td style="text-align: left;">common</td>
+<td style="text-align: left;">all</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">25.3041</td>
+<td style="text-align: right;">0.6460</td>
+<td style="text-align: right;">99.3540</td>
+</tr>
+<tr>
+<td style="text-align: left;">adjacent</td>
+<td style="text-align: left;">common</td>
+<td style="text-align: left;">model_change_only</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2.9148</td>
+<td style="text-align: right;">5.6078</td>
+<td style="text-align: right;">94.3922</td>
+</tr>
+<tr>
+<td style="text-align: left;">adjacent</td>
+<td style="text-align: left;">native</td>
+<td style="text-align: left;">all</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">25.6649</td>
+<td style="text-align: right;">0.6469</td>
+<td style="text-align: right;">99.3531</td>
+</tr>
+<tr>
+<td style="text-align: left;">adjacent</td>
+<td style="text-align: left;">native</td>
+<td style="text-align: left;">model_change_only</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2.8878</td>
+<td style="text-align: right;">5.7496</td>
+<td style="text-align: right;">94.2504</td>
+</tr>
+<tr>
+<td style="text-align: left;">anchor</td>
+<td style="text-align: left;">common</td>
+<td style="text-align: left;">all</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">111.0562</td>
+<td style="text-align: right;">6.9579</td>
+<td style="text-align: right;">93.0421</td>
+</tr>
+<tr>
+<td style="text-align: left;">anchor</td>
+<td style="text-align: left;">common</td>
+<td style="text-align: left;">model_change_only</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">107.8532</td>
+<td style="text-align: right;">7.1645</td>
+<td style="text-align: right;">92.8355</td>
+</tr>
+<tr>
+<td style="text-align: left;">anchor</td>
+<td style="text-align: left;">native</td>
+<td style="text-align: left;">all</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">60.6622</td>
+<td style="text-align: right;">8.4906</td>
+<td style="text-align: right;">91.5094</td>
+</tr>
+<tr>
+<td style="text-align: left;">anchor</td>
+<td style="text-align: left;">native</td>
+<td style="text-align: left;">model_change_only</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">57.5154</td>
+<td style="text-align: right;">8.9551</td>
+<td style="text-align: right;">91.0449</td>
+</tr>
+</tbody>
+</table>
+<p>相邻周的同季度模型完全一致，模型分配必须为零；此外单列模型确实更换的边界配对。固定首日2021-10-08的比较跨越多个季度，减少“多数周不更新”的机械影响。common口径只用两期共有股票，但仍保留各期特征、行业和标准化；不是固定整个市场环境。</p>
+<p><strong>新模型放到旧数据上属于事后交叉诊断，可能使用旧日期之后的信息，不能生成可交易历史预测。</strong> 唯一辅助未来预测对照FIXED78使用2021Q4已训练模型向后应用，未读取未来模型。</p>
+<p>模型项包含系数、训练均值/标准差、中位数填补变化；数据项也包含标准化和行业分类变化。本轮不进一步把它们分别命名为因果机制。</p>
+<p><a href="../../outputs/diagnostics/e1_mapping_drift_20261117/mapping_cells.csv">四格投影系数</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/mapping_decomposition.csv">逐配对分解</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/replay.csv">原分数复放</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/freeze.json">输入代码冻结</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/structure_complete.json">无未来收益的结构封存</a> · <a href="../../outputs/diagnostics/e1_mapping_drift_20261117/analysis_complete.json">分析完成</a>。</p></html>

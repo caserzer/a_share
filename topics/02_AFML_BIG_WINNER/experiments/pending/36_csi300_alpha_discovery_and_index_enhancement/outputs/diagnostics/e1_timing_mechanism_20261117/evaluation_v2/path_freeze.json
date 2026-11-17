@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-11-17T09:54:14.715107+00:00",
+  "source_sha256": "b17ea87943ad96e98628ff94a13c57bd24a725d55b1ce5476d23f16983e779b1",
+  "authorized": "Approved account-path mechanism analysis",
+  "prior_fixed_horizon_and_ledger_results_seen": true,
+  "definition": "Monthly phase1 pretrade open to next phase1 pretrade open; last ends primary last close. Clone normalized actual A and B pretrade states; execute frozen actual A/B target calendars. Four self-financing accounts. Average two log-return decomposition orders (Shapley); keep both order-specific effects. Link across intervals to exact terminal wealth difference. Fixed original phase1 state for stock components.",
+  "limits": "Inherited composition encodes past decisions; timing includes old-vs-current carry, cash, gates and calendar market path. Not causal effects of investor behavior; original B membership renormalization retained explicitly.",
+  "new_model_or_rule": false
+}

@@ -1,0 +1,35 @@
+{
+  "run": "e1_return_attribution_20261117",
+  "created_at": "2026-11-17T05:15:41.419620+00:00",
+  "authorization": "User requested year/month concentration, industry/stock contribution, same-date industry controls",
+  "original": "Original E1 expanding monthly first weekly signal Q5, main cost, suspend_flat; not alpha_economics constrained S1",
+  "anchor": "2021-01-08 00:00:00",
+  "primary_end": "2025-03-03 00:00:00",
+  "cost_bps": [
+    10,
+    20
+  ],
+  "evidence": "historical_simulated_oos_posthoc_descriptive_Historical_proxy",
+  "forward": "FORWARD_PENDING",
+  "attribution": {
+    "stock_pnl": "change in close marked stock value minus net executed trade cash; prior NAV denominator",
+    "opportunity_charge": "Subtract previous-close stock weight times actual H00300 close-to-close return; cash charged previous cash weight, fees separate; opening index value never fabricated",
+    "daily_link": "k=(log(1+portfolio_return)-log(1+index_return))/(portfolio_return-index_return), continuous limit 1/(1+index_return)",
+    "wealth_link": "Sum daily linked contributions gives log relative wealth. Multiply all contributions by 100*(terminal portfolio NAV-terminal benchmark NAV)/log(relative NAV) to attribute terminal wealth difference per initial100yuan; single common scale for all months/years/stocks",
+    "industry": "Historical L1 interval at previous market close, UNKNOWN explicit. New stock PnL assigned same previous-close industry. Industry totals locate the account contribution; NOT allocation/selection attribution relative to true index constituent weights",
+    "periods": "Calendar years and months, initial build included; annual/month raw return differences are not additive; linked wealth contributions are additive across all periods",
+    "concentration": "Report top3 months, top5/10 stocks and top3 industries with shares of signed total; no pruning to create strategy"
+  },
+  "controls": {
+    "EW_ALL": "All historical members equalweight, exact original dates; verify against existing same-period EW ledger",
+    "EW_SCORED": "Original E1 finite-score contemporaneous members equalweight; no new 13-style complete-case filter",
+    "INDUSTRY": "Original E1 target industry capital fractions, spread equally within each historical industry over SAME finite-score member pool; same initial1 cash, dates, costs, gates and mark rules; not same number of holdings",
+    "E1_REPLAY": "Original target weights exactly; require original NAV and order replication",
+    "chain": "Index -> EW_ALL -> EW_SCORED -> INDUSTRY -> original E1. Linked log increments and CAGR differences telescope exactly on common available interval",
+    "interpretation": "EW_ALL/index includes equalweight, investable-universe and benchmark-account basis effects. INDUSTRY/EW_SCORED is target-industry-budget/path effect. E1/INDUSTRY includes within-industry selection, concentration, drift and execution, not pure causal stock alpha",
+    "risk": "Target industry fractions identical; realized post-fill industry mismatch, cash, fees and holdings count disclosed; normalized proportions equal, evolving absolute NAV budgets may differ",
+    "missing": "Never fill held unknown values or invent corporate-action terminal payoffs. If control stops before primary end, reduce common bridge endpoint and keep original full-period attribution separately"
+  },
+  "statistics": "Bridge contrasts descriptive paired daily means, 65 trading-day circular blocks, 2000 draws, seed20261117; intervals for annual mean daily return difference, not CAGR gap; no new confirmatory family",
+  "no_change": "No model retraining, score changes, trading-date search, tolerance optimization, original artifact overwrite, deployment or publishing"
+}

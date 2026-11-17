@@ -1,0 +1,534 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1 优势逐层拆解</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>被排除持仓的原因与实际贡献</h1>
+<p>想验证什么：上一轮约三分之一持仓无法进入机制样本，是否因此漏掉原E1的主要来源。</p>
+<p>怎么比较：排除原因只用信号时点字段。IN_C为满足样本合同；INDUSTRY_LT10表示当日行业内完整有效股票不足10只；MISSING列出缺失字段；无当前评分记录单列。原因是数据和样本规则，不是“股票不好”。本轮不补数、不修改最小行业规模。</p>
+<h2>原来19.39元如何分解</h2>
+<p>未知贡献主要来自最小行业规模规则：约16.16元是INDUSTRY_LT10，约2.88元是换手率缺失。不能把全部19.39元都叫数据缺失。</p>
+<p>以下严格接回上一轮按每只股票最近已知周信号分组的UNKNOWN贡献，而非改用新口径后强行宣称一致：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">exclusion_reason</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">INDUSTRY_LT10</td>
+<td style="text-align: right;">16.157</td>
+</tr>
+<tr>
+<td style="text-align: left;">INDUSTRY_UNKNOWN</td>
+<td style="text-align: right;">0.618</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:log_money20,log_amihud20</td>
+<td style="text-align: right;">-0.236</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:mom60,vol60,beta60,idio60,T</td>
+<td style="text-align: right;">-0.030</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:turnover20</td>
+<td style="text-align: right;">2.882</td>
+</tr>
+</tbody>
+</table>
+<p>同时审计了旧分类信号是否等于全市场最近周信号。股票不再出现在可评分池时，旧逐股向后连接可能沿用更早状态；所以本轮另给统一周时钟和月度决策时钟。旧分类未覆盖重写。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">stale_signal</th>
+<th style="text-align: right;">rows</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">60817</td>
+<td style="text-align: right;">51.973</td>
+</tr>
+<tr>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">-0.313</td>
+</tr>
+</tbody>
+</table>
+<h2>按原月度决策时点归因</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">exclusion_reason</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">INDUSTRY_LT10</td>
+<td style="text-align: right;">17.253</td>
+</tr>
+<tr>
+<td style="text-align: left;">INDUSTRY_UNKNOWN</td>
+<td style="text-align: right;">0.618</td>
+</tr>
+<tr>
+<td style="text-align: left;">IN_C</td>
+<td style="text-align: right;">30.901</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:log_money20,log_amihud20</td>
+<td style="text-align: right;">0.053</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:mom60,vol60,beta60,idio60,T</td>
+<td style="text-align: right;">-0.130</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:turnover20</td>
+<td style="text-align: right;">2.900</td>
+</tr>
+<tr>
+<td style="text-align: left;">OFF_SCORED_UNIVERSE_OR_NO_SIGNAL_ROW</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CASH</strong></td>
+<td style="text-align: right;">0.978</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">-10.007</td>
+</tr>
+</tbody>
+</table>
+<p>这些贡献包含指数机会收益调整、持仓路径和全期对数连接。它们不等于删股反事实。下表把原始股票现金损益与指数机会收益项分列；absolute_pnl_per100为初始100元的实际股票损益，index_opportunity_return是未连接日机会收益之和，不应与连接后的财富贡献机械相加。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">exclusion_reason</th>
+<th style="text-align: right;">absolute_pnl_per100</th>
+<th style="text-align: right;">index_opportunity_return</th>
+<th style="text-align: right;">linked_wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">INDUSTRY_LT10</td>
+<td style="text-align: right;">6.937</td>
+<td style="text-align: right;">-0.095</td>
+<td style="text-align: right;">17.253</td>
+</tr>
+<tr>
+<td style="text-align: left;">INDUSTRY_UNKNOWN</td>
+<td style="text-align: right;">0.713</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.618</td>
+</tr>
+<tr>
+<td style="text-align: left;">IN_C</td>
+<td style="text-align: right;">20.504</td>
+<td style="text-align: right;">-0.072</td>
+<td style="text-align: right;">30.901</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:log_money20,log_amihud20</td>
+<td style="text-align: right;">-0.026</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">0.053</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:mom60,vol60,beta60,idio60,T</td>
+<td style="text-align: right;">-0.237</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">-0.130</td>
+</tr>
+<tr>
+<td style="text-align: left;">MISSING:turnover20</td>
+<td style="text-align: right;">2.088</td>
+<td style="text-align: right;">-0.008</td>
+<td style="text-align: right;">2.900</td>
+</tr>
+<tr>
+<td style="text-align: left;">OFF_SCORED_UNIVERSE_OR_NO_SIGNAL_ROW</td>
+<td style="text-align: right;">0.675</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CASH</strong></td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.978</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FEES</strong></td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">-10.007</td>
+</tr>
+</tbody>
+</table>
+<h2>具体股票和行业</h2>
+<p>贡献最高10只和最低5只：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH688111</td>
+<td style="text-align: right;">1.626</td>
+<td style="text-align: left;">金山办公</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601225</td>
+<td style="text-align: right;">1.325</td>
+<td style="text-align: left;">陕西煤业</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300442</td>
+<td style="text-align: right;">1.176</td>
+<td style="text-align: left;">润泽科技</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601633</td>
+<td style="text-align: right;">1.166</td>
+<td style="text-align: left;">长城汽车</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600893</td>
+<td style="text-align: right;">0.879</td>
+<td style="text-align: left;">航发动力</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000063</td>
+<td style="text-align: right;">0.839</td>
+<td style="text-align: left;">中兴通讯</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002555</td>
+<td style="text-align: right;">0.804</td>
+<td style="text-align: left;">三七互娱</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600760</td>
+<td style="text-align: right;">0.771</td>
+<td style="text-align: left;">中航沈飞</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600362</td>
+<td style="text-align: right;">0.760</td>
+<td style="text-align: left;">江西铜业</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH688981</td>
+<td style="text-align: right;">0.753</td>
+<td style="text-align: left;">中芯国际</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300124</td>
+<td style="text-align: right;">-0.424</td>
+<td style="text-align: left;">汇川技术</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603799</td>
+<td style="text-align: right;">-0.485</td>
+<td style="text-align: left;">华友钴业</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600011</td>
+<td style="text-align: right;">-0.528</td>
+<td style="text-align: left;">华能国际</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601888</td>
+<td style="text-align: right;">-0.571</td>
+<td style="text-align: left;">中国中免</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH688036</td>
+<td style="text-align: right;">-0.603</td>
+<td style="text-align: left;">传音控股</td>
+</tr>
+</tbody>
+</table>
+<p>按实际持仓当时行业归类：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">industry</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">801770.SI</td>
+<td style="text-align: right;">4.558</td>
+<td style="text-align: left;">通信</td>
+</tr>
+<tr>
+<td style="text-align: left;">801950.SI</td>
+<td style="text-align: right;">2.774</td>
+<td style="text-align: left;">煤炭</td>
+</tr>
+<tr>
+<td style="text-align: left;">801740.SI</td>
+<td style="text-align: right;">2.225</td>
+<td style="text-align: left;">国防军工</td>
+</tr>
+<tr>
+<td style="text-align: left;">801730.SI</td>
+<td style="text-align: right;">2.000</td>
+<td style="text-align: left;">电力设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801760.SI</td>
+<td style="text-align: right;">1.649</td>
+<td style="text-align: left;">传媒</td>
+</tr>
+<tr>
+<td style="text-align: left;">801080.SI</td>
+<td style="text-align: right;">1.562</td>
+<td style="text-align: left;">电子</td>
+</tr>
+<tr>
+<td style="text-align: left;">801750.SI</td>
+<td style="text-align: right;">1.491</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: left;">801180.SI</td>
+<td style="text-align: right;">1.322</td>
+<td style="text-align: left;">房地产</td>
+</tr>
+<tr>
+<td style="text-align: left;">801880.SI</td>
+<td style="text-align: right;">1.246</td>
+<td style="text-align: left;">汽车</td>
+</tr>
+<tr>
+<td style="text-align: left;">801030.SI</td>
+<td style="text-align: right;">1.227</td>
+<td style="text-align: left;">基础化工</td>
+</tr>
+<tr>
+<td style="text-align: left;">801210.SI</td>
+<td style="text-align: right;">1.107</td>
+<td style="text-align: left;">社会服务</td>
+</tr>
+<tr>
+<td style="text-align: left;">801050.SI</td>
+<td style="text-align: right;">1.096</td>
+<td style="text-align: left;">有色金属</td>
+</tr>
+<tr>
+<td style="text-align: left;">801960.SI</td>
+<td style="text-align: right;">0.865</td>
+<td style="text-align: left;">石油石化</td>
+</tr>
+<tr>
+<td style="text-align: left;">801040.SI</td>
+<td style="text-align: right;">0.714</td>
+<td style="text-align: left;">钢铁</td>
+</tr>
+<tr>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">0.423</td>
+<td style="text-align: left;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">801890.SI</td>
+<td style="text-align: right;">0.394</td>
+<td style="text-align: left;">机械设备</td>
+</tr>
+<tr>
+<td style="text-align: left;">801130.SI</td>
+<td style="text-align: right;">0.293</td>
+<td style="text-align: left;">纺织服饰</td>
+</tr>
+<tr>
+<td style="text-align: left;">801150.SI</td>
+<td style="text-align: right;">0.249</td>
+<td style="text-align: left;">医药生物</td>
+</tr>
+<tr>
+<td style="text-align: left;">801140.SI</td>
+<td style="text-align: right;">0.130</td>
+<td style="text-align: left;">轻工制造</td>
+</tr>
+<tr>
+<td style="text-align: left;">801710.SI</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: left;">建筑材料</td>
+</tr>
+<tr>
+<td style="text-align: left;">801170.SI</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: left;">交通运输</td>
+</tr>
+<tr>
+<td style="text-align: left;">801120.SI</td>
+<td style="text-align: right;">-0.014</td>
+<td style="text-align: left;">食品饮料</td>
+</tr>
+<tr>
+<td style="text-align: left;">801780.SI</td>
+<td style="text-align: right;">-0.023</td>
+<td style="text-align: left;">银行</td>
+</tr>
+<tr>
+<td style="text-align: left;">801110.SI</td>
+<td style="text-align: right;">-0.246</td>
+<td style="text-align: left;">家用电器</td>
+</tr>
+<tr>
+<td style="text-align: left;">801980.SI</td>
+<td style="text-align: right;">-0.296</td>
+<td style="text-align: left;">美容护理</td>
+</tr>
+<tr>
+<td style="text-align: left;">801790.SI</td>
+<td style="text-align: right;">-0.359</td>
+<td style="text-align: left;">非银金融</td>
+</tr>
+<tr>
+<td style="text-align: left;">801200.SI</td>
+<td style="text-align: right;">-0.607</td>
+<td style="text-align: left;">商贸零售</td>
+</tr>
+<tr>
+<td style="text-align: left;">801010.SI</td>
+<td style="text-align: right;">-0.832</td>
+<td style="text-align: left;">农林牧渔</td>
+</tr>
+<tr>
+<td style="text-align: left;">801160.SI</td>
+<td style="text-align: right;">-0.991</td>
+<td style="text-align: left;">公用事业</td>
+</tr>
+<tr>
+<td style="text-align: left;">801720.SI</td>
+<td style="text-align: right;">-1.250</td>
+<td style="text-align: left;">建筑装饰</td>
+</tr>
+</tbody>
+</table>
+<p>被排除持仓贡献最大的10个月及最小5个月：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">month</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-07</td>
+<td style="text-align: right;">3.476</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-08</td>
+<td style="text-align: right;">2.815</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">2.770</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">2.131</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-02</td>
+<td style="text-align: right;">2.129</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-02</td>
+<td style="text-align: right;">2.120</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-10</td>
+<td style="text-align: right;">2.079</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-11</td>
+<td style="text-align: right;">1.503</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">1.355</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-10</td>
+<td style="text-align: right;">1.348</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-01</td>
+<td style="text-align: right;">-2.042</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-10</td>
+<td style="text-align: right;">-1.501</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">-1.475</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-12</td>
+<td style="text-align: right;">-1.345</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-07</td>
+<td style="text-align: right;">-0.995</td>
+</tr>
+</tbody>
+</table>
+<h2>删除与替代不是同一个实验</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">end_nav</th>
+<th style="text-align: right;">cash</th>
+<th style="text-align: right;">fees</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">O</td>
+<td style="text-align: right;">4.845</td>
+<td style="text-align: right;">1.207</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.100</td>
+<td style="text-align: right;">8.888</td>
+</tr>
+<tr>
+<td style="text-align: left;">X</td>
+<td style="text-align: right;">4.027</td>
+<td style="text-align: right;">1.170</td>
+<td style="text-align: right;">33.339</td>
+<td style="text-align: right;">0.063</td>
+<td style="text-align: right;">5.947</td>
+</tr>
+<tr>
+<td style="text-align: left;">U</td>
+<td style="text-align: right;">2.651</td>
+<td style="text-align: right;">1.110</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.080</td>
+<td style="text-align: right;">8.188</td>
+</tr>
+</tbody>
+</table>
+<p>X保留原选股中仍满足C的股票及原目标权重，剩余预算留现金；U在C中补入排名靠前股票恢复原持仓数。现金对照提供删股的账户结果，但同时改变市场暴露与交易费用。不能用它证明被排除股票无价值，也不能把19.39元当成删除后的必然损失。</p>
+<p><a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/old_unknown_stocks.csv">原UNKNOWN逐股票明细</a> · <a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/old_unknown_months.csv">原UNKNOWN逐月</a> · <a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/exclusion_stocks.csv">统一周/月时钟全部明细</a> · <a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/selection_audit.csv">排除预算逐次</a> · <a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/excluded_stock_totals.csv">完整股票表</a> · <a href="../../outputs/diagnostics/e1_advantage_bridge_20261117/excluded_month_totals.csv">完整月份表</a>。</p></html>

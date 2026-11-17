@@ -1,0 +1,13 @@
+{
+  "created_at": "2026-11-17T09:57:31.914235+00:00",
+  "source_sha256": "df3e3b692e6c986734c6aa0c05486e86a79d1c1e7ea3cd5e1909a3ddbd3ab18b",
+  "authorized": "Approved account-path mechanism analysis; evaluation-only fix for numpy string concatenation; original failed source preserved",
+  "prior_fixed_horizon_and_ledger_results_seen": true,
+  "prior_path_bridge_seen": true,
+  "prior_segment_seen": true,
+  "added_fee_split": "Separate booking date of A and B rebalance fees from stock price PnL; no targets or dates changed",
+  "extension": "Approved early/shared calendar decomposition: exact log-return split at actual B execution open before its trade; no date search",
+  "definition": "Monthly phase1 pretrade open to next phase1 pretrade open; last ends primary last close. Clone normalized actual A and B pretrade states; execute frozen actual A/B target calendars. Four self-financing accounts. Average two log-return decomposition orders (Shapley); keep both order-specific effects. Link across intervals to exact terminal wealth difference. Fixed original phase1 state for stock components.",
+  "limits": "Inherited composition encodes past decisions; timing includes old-vs-current carry, cash, gates and calendar market path. Not causal effects of investor behavior; original B membership renormalization retained explicitly.",
+  "new_model_or_rule": false
+}

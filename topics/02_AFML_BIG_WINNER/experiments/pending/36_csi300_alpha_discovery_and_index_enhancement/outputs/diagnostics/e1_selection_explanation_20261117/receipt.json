@@ -1,0 +1,145 @@
+{
+  "status": "PASS",
+  "scope": "50 original monthly signals; known industry and same frozen price state, selected minus unselected; capital-weighted across date-industry-state cells",
+  "no_future_returns_read": true,
+  "score_units": "original target standardized-score units, not expected return percent",
+  "attribution": "correlated features; exact score arithmetic not unique economic causation; group removal fixed coefficients, no retraining, no return evaluation",
+  "files": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/e1_timing_mechanism_20261117/states.parquet",
+      "sha256": "7f4ed3274c595baaa797b6551912b2fbf29b3461795d7ec45a694b578fe33d6e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/features.parquet",
+      "sha256": "92ca23db0c918fecce0554803480fe01ca982ad81887c6cb846a59e454063a9f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_alpha_mechanism_20261117/feature_groups.csv",
+      "sha256": "dba97cdeb104c41703ca206328a4f0174054b2efa38b0f7ab949fc03d6ee39ca"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_predictions.json",
+      "sha256": "99fa92b8ce5319ce10c6f17e986cd88e2f9906c0fe5e37ec21b7b9202a9e29dd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/e1_selection_explanation.py",
+      "sha256": "024305ba0b8c27911b73a5a87784de52c91a51c02aa6e824984d808f238bf0e9"
+    }
+  ],
+  "models": [
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2021Q1_E1.pkl",
+      "sha256": "7f0e4772b052c9830c689c007ac7c866dc0b5840eec57310e95ac127a8f3c8a1"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2021Q2_E1.pkl",
+      "sha256": "7c3d083494bfa61e3be3be2ea441fd6d8ada562dae592811016f428b1a6c99d7"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2021Q3_E1.pkl",
+      "sha256": "31be87742a6f651c71455368ab4fe2b2f659bc9fff530b80e356a3614a9d1ba9"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2021Q4_E1.pkl",
+      "sha256": "2117f2de1f6428068b6c5b0952b781fcabaa559d65765b4f5de012d3791f2c27"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2022Q1_E1.pkl",
+      "sha256": "d2e0d0ab7da64a7aa4f03371c795a4608e6ad814f4f95da6b977c6e1e054773e"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2022Q2_E1.pkl",
+      "sha256": "60686371bdbdcf9a53b7b40498b70b74b2542c7b56e4eb57e0f8d841f8a96649"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2022Q3_E1.pkl",
+      "sha256": "c10e0a49807e66d51203a36ef6fbdc26883b8486dd242e1dacbec737b1179851"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2022Q4_E1.pkl",
+      "sha256": "da4368c33d3d85f22e30434112f8ca1e74b14f9fd3783fae881c8f0d69e029c9"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2023Q1_E1.pkl",
+      "sha256": "aebb3f89ba384d8a5e7aa3e4285ed6bd7e73dcd955fc8c64b8ea487c69a9e3dd"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2023Q2_E1.pkl",
+      "sha256": "d326b4b79ef8971ac13cf0cefe672868c0ed21724011561409874c9163bb03eb"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2023Q3_E1.pkl",
+      "sha256": "950e81f2d9d1a6ed1d9ce2c37c14bf5e2c72f24b7caf33aae3d803d17d0a7f19"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2023Q4_E1.pkl",
+      "sha256": "8b85663f21ecda527405ab4b3f7561f7448d1fd97eb1f52dce7e24ef65d10133"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2024Q1_E1.pkl",
+      "sha256": "4aa7c6ea024eb93b0e3d3ed42db5c5299b7858514c5d5105b1c5bede3d01c0b1"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2024Q2_E1.pkl",
+      "sha256": "e89be03093471b354fa2834d87860d684856700ea50bf67ce02925df74f791a8"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2024Q3_E1.pkl",
+      "sha256": "cf750489c8c572a9ebd9dfe83abdc31d7858d76f0ce35fb12b92458d2722c865"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2024Q4_E1.pkl",
+      "sha256": "b31cdde07407491cbc2300824fe42305152487d381de38f6e8001ce0c4dd7c90"
+    },
+    {
+      "model": "E1",
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/models/expanding/2025Q1_E1.pkl",
+      "sha256": "51d96521afc76e7c434e9b3547c85f6bc85679dfefa9017d604b792fb4c1b41f"
+    }
+  ],
+  "rows": 14883,
+  "selected": 2957,
+  "original_q5_replay": "PASS_50",
+  "outputs": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_selection_explanation_20261117/conditional_score_detail.csv",
+      "sha256": "d51161bbfde13784c8da2a08f314cf284695e26d47349021be5996d8555ebed6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_selection_explanation_20261117/conditional_score_difference.csv",
+      "sha256": "4c03ab9959821c3bb1852df248c79fc7be98b50e3d3e156c25abd2903d29d036"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_selection_explanation_20261117/group_removal.csv",
+      "sha256": "2f78a00617a5069b3494f49541b59283431dba630611127db6ff82c3bf03bd75"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_selection_explanation_20261117/group_removal_summary.csv",
+      "sha256": "57f9e3076b55024536f48d655fc252ce04d44dd425cfa9bc23fa376f29a7b1e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_selection_explanation_20261117/coefficients.csv",
+      "sha256": "5dcdee0ec2f2c370833d80ebaa80a3ff2b7a0fca5bcaae6e269e68831ddfd02a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_selection_explanation_20261117/coverage.csv",
+      "sha256": "82731d9f6c866dbd9d6b343c8746f1662f23374be27abd5dbd8883013fd339ad"
+    }
+  ]
+}

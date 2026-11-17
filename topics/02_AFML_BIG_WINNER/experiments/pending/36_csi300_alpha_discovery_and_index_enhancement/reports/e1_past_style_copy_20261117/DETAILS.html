@@ -1,0 +1,397 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>过去风格复制验证</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>排序与经济验证完整结果</h1>
+<p>所有结果是已反复查看的历史上的新设计探索，p值和普通95%区间仅作描述；没有独立确认或等价边界。量纲不同的指标不能混合加总。</p>
+<h2>原始 H10 排序及其差异</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">metric</th>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">H10_RankIC</td>
+<td style="text-align: left;">I</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0471</td>
+<td style="text-align: right;">0.0193</td>
+<td style="text-align: right;">0.0759</td>
+<td style="text-align: right;">0.0004</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_RankIC</td>
+<td style="text-align: left;">Q</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0025</td>
+<td style="text-align: right;">-0.0221</td>
+<td style="text-align: right;">0.0274</td>
+<td style="text-align: right;">0.8392</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_RankIC</td>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">-0.0056</td>
+<td style="text-align: right;">-0.0320</td>
+<td style="text-align: right;">0.0221</td>
+<td style="text-align: right;">0.6825</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_RankIC</td>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0339</td>
+<td style="text-align: right;">0.0115</td>
+<td style="text-align: right;">0.0561</td>
+<td style="text-align: right;">0.0020</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_RankIC_minus_I</td>
+<td style="text-align: left;">Q</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">-0.0446</td>
+<td style="text-align: right;">-0.0840</td>
+<td style="text-align: right;">-0.0039</td>
+<td style="text-align: right;">0.0298</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_RankIC_minus_I</td>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">-0.0527</td>
+<td style="text-align: right;">-0.0960</td>
+<td style="text-align: right;">-0.0074</td>
+<td style="text-align: right;">0.0220</td>
+</tr>
+<tr>
+<td style="text-align: left;">H10_RankIC_minus_I</td>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">-0.0132</td>
+<td style="text-align: right;">-0.0326</td>
+<td style="text-align: right;">0.0062</td>
+<td style="text-align: right;">0.1794</td>
+</tr>
+</tbody>
+</table>
+<h2>月初固定 H10 净事件差</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">-0.4341</td>
+<td style="text-align: right;">-0.9019</td>
+<td style="text-align: right;">0.0534</td>
+<td style="text-align: right;">0.0784</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">-0.4158</td>
+<td style="text-align: right;">-0.9432</td>
+<td style="text-align: right;">0.1574</td>
+<td style="text-align: right;">0.1466</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.0551</td>
+<td style="text-align: right;">-0.2142</td>
+<td style="text-align: right;">0.3397</td>
+<td style="text-align: right;">0.7069</td>
+</tr>
+</tbody>
+</table>
+<p>本表均值与区间为每事件百分点，主费用买10/卖20bps，事件数40—41。无法完整清算的事件为未知，未据未来状态换名单。此结果不机械外推连续账户。</p>
+<h2>连续账户</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: left;">cost</th>
+<th style="text-align: left;">start</th>
+<th style="text-align: left;">end</th>
+<th style="text-align: right;">days</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">nav</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">1.6809</td>
+<td style="text-align: right;">1.0559</td>
+<td style="text-align: right;">9.0900</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">-0.8067</td>
+<td style="text-align: right;">0.9739</td>
+<td style="text-align: right;">10.0765</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">-4.6920</td>
+<td style="text-align: right;">0.8547</td>
+<td style="text-align: right;">10.5449</td>
+</tr>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">4.3173</td>
+<td style="text-align: right;">1.1480</td>
+<td style="text-align: right;">8.7463</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">-6.7423</td>
+<td style="text-align: right;">0.7961</td>
+<td style="text-align: right;">10.6844</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">-4.1919</td>
+<td style="text-align: right;">0.8695</td>
+<td style="text-align: right;">10.2346</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">-7.2782</td>
+<td style="text-align: right;">0.7813</td>
+<td style="text-align: right;">11.0242</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: left;">2021-10-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">1.8894</td>
+<td style="text-align: right;">1.0630</td>
+<td style="text-align: right;">9.6708</td>
+</tr>
+</tbody>
+</table>
+<p>每种分数仅主费用与零费用两次，总计8条账户，均同日起点和终点。过去复制在零成本下也未恢复同口径E1表现，不能简单归因于交易成本。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: left;">cost</th>
+<th style="text-align: right;">cagr_difference</th>
+<th style="text-align: right;">annual_daily_difference</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-8.4232</td>
+<td style="text-align: right;">-8.2059</td>
+<td style="text-align: right;">-16.3779</td>
+<td style="text-align: right;">1.2492</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">-8.5092</td>
+<td style="text-align: right;">-8.0714</td>
+<td style="text-align: right;">-16.2493</td>
+<td style="text-align: right;">1.3818</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-8.9591</td>
+<td style="text-align: right;">-8.6461</td>
+<td style="text-align: right;">-17.2318</td>
+<td style="text-align: right;">1.7659</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">-9.0093</td>
+<td style="text-align: right;">-8.4599</td>
+<td style="text-align: right;">-17.0732</td>
+<td style="text-align: right;">1.9261</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-2.4876</td>
+<td style="text-align: right;">-2.4275</td>
+<td style="text-align: right;">-7.4181</td>
+<td style="text-align: right;">2.4055</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">-2.4278</td>
+<td style="text-align: right;">-2.3078</td>
+<td style="text-align: right;">-7.2733</td>
+<td style="text-align: right;">2.4926</td>
+</tr>
+</tbody>
+</table>
+<p>cagr_difference是净年化差；区间针对配对日均差年化，不是CAGR差。daily65交易日块、2000次；周度13周/月度3月块、5000次，缺失日历期保留。</p>
+<h2>行业内测量审计</h2>
+<p>这项审计是在看到主结果后补充，只验证结论是否由跨行业均值处理产生，不改变主结果、分数、名单或交易策略。每行业先算相关，再按股票数对当日加权；不把股票当作独立时间样本。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: left;">metric</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: left;">industry_score_correlation</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">0.4636</td>
+<td style="text-align: right;">0.4301</td>
+<td style="text-align: right;">0.5007</td>
+</tr>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: left;">industry_H10_IC</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0461</td>
+<td style="text-align: right;">0.0191</td>
+<td style="text-align: right;">0.0736</td>
+</tr>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">industry_score_correlation</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">industry_H10_IC</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0443</td>
+<td style="text-align: right;">0.0248</td>
+<td style="text-align: right;">0.0629</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: left;">industry_score_correlation</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">0.0723</td>
+<td style="text-align: right;">0.0077</td>
+<td style="text-align: right;">0.1351</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: left;">industry_H10_IC</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">-0.0073</td>
+<td style="text-align: right;">-0.0387</td>
+<td style="text-align: right;">0.0258</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">industry_score_correlation</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">0.1120</td>
+<td style="text-align: right;">0.0535</td>
+<td style="text-align: right;">0.1712</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">industry_H10_IC</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">0.0059</td>
+<td style="text-align: right;">-0.0241</td>
+<td style="text-align: right;">0.0365</td>
+</tr>
+</tbody>
+</table>
+<p>当日行业内风格投影可重建一部分排序，但其时间迁移失败。不得据当日COPY表现挑选未来可用模型。</p>
+<p>平均目标名单与I重合率：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">overlap_with_I</th>
+<th style="text-align: right;">mean_k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">COPY</td>
+<td style="text-align: right;">44.8766</td>
+<td style="text-align: right;">39.2439</td>
+</tr>
+<tr>
+<td style="text-align: left;">I</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">39.2439</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCK</td>
+<td style="text-align: right;">24.8223</td>
+<td style="text-align: right;">39.2439</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q</td>
+<td style="text-align: right;">27.9690</td>
+<td style="text-align: right;">39.2439</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../../outputs/diagnostics/e1_past_style_copy_20261117/periods.csv">全部年度月度收益</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/rank_ic.csv">原始RankIC</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/score_reconstruction.csv">分数重建</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/within_industry_audit.csv">行业内逐日期</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/same_date_coefficient_diagnostic.csv">当日投影系数 仅作事后诊断</a> · <a href="../../outputs/diagnostics/e1_past_style_copy_20261117/events.csv">完整事件</a>。</p>
+<p>全部分数、名单、成交与标签明细保存在private/e1_past_style_copy_20261117，源数据依仓库规则保留本地。未提交、推送、部署，真实前瞻仍FORWARD_PENDING。</p></html>

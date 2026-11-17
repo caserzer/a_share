@@ -1,0 +1,104 @@
+{
+  "run": "alpha_economics_20261117",
+  "created_at": "2026-11-17T04:50:01.442511+00:00",
+  "authorization": "User continue execution of A2 B1 B2, including necessary historical capitalization audit",
+  "evidence": "historical_simulated_oos_post_selection_exploration",
+  "forward": "FORWARD_PENDING",
+  "prior_A1_results_seen": true,
+  "new_economic_results_seen": false,
+  "models": [
+    "E1",
+    "E2"
+  ],
+  "scheme": "expanding",
+  "primary_start": "2021-01-08",
+  "primary_end": "2025-03-03",
+  "caps": "Tushare daily_basic previous market-session exact snapshot; total_mv and circ_mv in 10000 yuan; log of positive values; circ_mv means circulating, not free-float. No current-share-count reconstruction; retrospective proxy without known_at certification",
+  "cap_audit": "Require positive close/share/mv; identity close*total_share=total_mv and close*float_share=circ_mv within 1e-4 relative; compare vendor raw close to sealed prior-day close within 0.01yuan+1e-5relative; reject conflicts, no fill",
+  "styles": [
+    "mom1",
+    "mom5",
+    "mom20",
+    "mom60",
+    "vol20",
+    "vol60",
+    "beta60",
+    "idio60",
+    "log_money20",
+    "turnover20",
+    "log_amihud20",
+    "log_total_mv",
+    "log_circ_mv"
+  ],
+  "industry": "Historical L1 as A1, UNKNOWN retained",
+  "sample": "Common E1/E2 finite score and all13 style values; industry may UNKNOWN. All score projections same sample; at least100 stocks,50 residual df; labels excluded from target construction",
+  "decomposition": "OLS SVD rcond1e-12, intercept+all13 standardized styles+industry dummies; no retraining. Original/explained/residual scores persist before reading labels",
+  "strategies": {
+    "S0": "Q5 by projected style-copy score; not independent return-trained style baseline",
+    "S1": "maximize original score ranks under exposures relative to S0",
+    "S2": "maximize residual score ranks under same exposures relative to S0"
+  },
+  "cardinality": "k=n-sum(floor(5*j/n)<4); exactly k equal-weight positions per strategy; lexicographic instrument tie-break",
+  "matching": {
+    "numerical_max_abs_sd": 0.25,
+    "industry_max_abs_weight": 0.02,
+    "objective": "mean within-signal score rank, unit interval; no realized return",
+    "solver": "scipy milp HiGHS, binary equalweight selections, time_limit=2 sec, mip_rel_gap=.01",
+    "no_solver_fallback": "S0 is a feasible witness. If no verified incumbent or any constraints fail: all strategies NO_TARGET for that model/date; no tolerance relaxation; gap/status recorded",
+    "account_risk": "Constraints apply at signal target. Actual fills and drift can breach; report post-trade frozen-signal exposures and unmatched budget; label partial execution matching, not risk-certified account"
+  },
+  "phases": "month first and second original weekly signal; no four-phase common requirement",
+  "primary_A2": "phase1 fixed H10 main-cost net event S1-S0 and S2-S0; paired events including failure rows; label partial identification when valuation/exit/matching unknown",
+  "primary_B1": "monthly paired [(S1-S0)phase1-(S1-S0)phase2] at H10 main cost",
+  "test_family": "E1 primary A2 two contrasts + B1 one contrast, Holm3; all E2/horizons/full/costs/continuous accounts auxiliary",
+  "events": "Fixed list at signal; next open enter; endpoints open t+1+5/10/20; no retarget; entry gates and exit sell gates; if cannot fully exit net-return unknown, mark remaining budget; no future outcome selection. Marked path separately, never assumed liquidation",
+  "marginal": "On same event units/common initial capital: entry-to5 includes entry fee; 5to10 and10to20 mark differences no repeat entry/exit fee; separate independent terminal liquidation fee by horizon; compare strategy-control on same observed paths",
+  "valuation": "Reuse verified full-day suspension <=20-session flat mark proxy from earlier studies; raw opening gates unchanged; unknown held open/close stops account; no mergers/terminal payoff fabrication",
+  "costs_bps": {
+    "zero": [
+      0,
+      0
+    ],
+    "main": [
+      10,
+      20
+    ],
+    "stress": [
+      30,
+      80
+    ]
+  },
+  "continuous": "independent weekly, calendar biweekly anchored first week, monthly phase1; common initial first signal, cash if no target; days to original data end or first unsupported holding valuation; compare same scope common endpoint",
+  "placebo": {
+    "replicates": 20,
+    "seed": 20261117,
+    "groups": "Industry x within-industry median log_total_mv x within-industry median mom20; exact S1 per-cell cardinality",
+    "draws_per_replicate": 100,
+    "acceptance": "Uniform no-replacement within each cell, accept first draw meeting same numeric/industry tolerance vs S0; draw failure retained, never expand bounds",
+    "analysis": "phases1/2; same next-open and liquidation gates, main cost H10; S1 minus placebo relative to S0 phase difference; each replicate fixed in advance, no best-seed selection"
+  },
+  "stats": {
+    "month_blocks": 3,
+    "weekly_blocks": 13,
+    "daily_blocks": 65,
+    "replicates": 2000,
+    "seed": 20261117,
+    "calendar_gaps": "preserve missing periods",
+    "min_valid_blocks": 2,
+    "ci": "percentile95",
+    "p": "centered two-sided +1",
+    "selection": "No equivalence claim from nonsignificance"
+  },
+  "breakeven": {
+    "buy_bps_range": [
+      0,
+      100
+    ],
+    "sell_buy_ratio": 2,
+    "grid_step_bps": 10,
+    "bisection_steps": 12,
+    "root": "equal terminal NAV of 2w and phase1 monthly S1 on primary common endpoint",
+    "no_root": "report no sign-changing crossing in audited range, not universal absence"
+  },
+  "no_search": "No model upgrade, phase optimization, risk-tolerance widening or best-horizon selection"
+}

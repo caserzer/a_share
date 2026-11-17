@@ -1,0 +1,16 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1与固定反转比较</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>E1−固定REV前瞻登记</h1>
+<p><strong>当前仅完成合同与校验准备，没有新增前瞻信号。</strong> 新观测数0，未启动自动运行。空登记表不是模拟样本，也不使用已有2025—2026收益填充。</p>
+<ul>
+<li>登记时间：2026-11-17T08:54:41.412600+00:00。</li>
+<li>排除所有信号日不晚于2026-11-17的记录。</li>
+<li>使用原每月第一个完整周信号，实际交易日由届时交易日历核实，不在此猜测日期。</li>
+<li>REV公式、支持范围、行业预算和持仓数沿用已冻结合同；规则变更必须建立独立新版本，不能混入本确认序列。</li>
+<li>E1沿用原配方，实际检查点须在信号决策前存在并封存；未来未具备模型凭据时暂停登记该条记录，不用未来训练结果回填。</li>
+<li>原始来源的known_at、数据清单、模型、预测、目标哈希必须在下一交易日入场前封存。元数据声明须能对应真实内容；不能靠声明替代证据。</li>
+<li>主比较为当期可支持的原E1与REV归一化子组合H10成本后收益差，主费用10/20bps；不可退出、缺数据、不可评分均保留原因。</li>
+<li>所有计划月度事件持续记录，不以收益选择记录或停止时点。首次固定确认性复核在24个计划月度事件后；少于6个可执行配对时统计推断不足，24期本身也不保证功效。</li>
+<li>当前没有事前等价界限；差异不显著不能说两者等价。</li>
+<li>不启动真实订单、自动调度、模型重训、邮件或其他通知。</li>
+</ul>
+<p><a href="../../outputs/diagnostics/e1_reversal_validation_20261117/forward_contract.json">机器可读合同</a> · <a href="../../outputs/diagnostics/e1_reversal_validation_20261117/forward_readiness.json">准备状态</a> · <a href="../../outputs/diagnostics/e1_reversal_validation_20261117/forward_observations.csv">当前空登记表</a>。</p>
+<p>严格入口为src/e1_reversal_forward_gate.py的validate_metadata，协议哈希参数应使用forward_contract.json的SHA256。它拒绝历史信号、事后封存、信号日与决策时间不一致、未声明未来收益未见、协议变化等记录；实际日历、来源及文件哈希仍必须另行核验。测试中的日期只是合成用例，不是未来交易日承诺或真实信号。</p></html>

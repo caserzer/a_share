@@ -1,0 +1,104 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 机制实验</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>共同反弹对照与交易时间路径</h1>
+<p>想验证什么：收益是否来自普遍反弹、共同风险或日期与名单刷新。</p>
+<p>怎么比较：市场状态仅用信号前20日总收益和波动，波动阈值取此前252日中位数；未知历史保持UNKNOWN。匹配为同行业13风格每项0.5标准差以内，允许控制股重复，不能保证因果可比。</p>
+<p>发现什么：严格股票匹配预算覆盖约2.1%，安慰剂通过51/14000次。匹配和随机分支均为PARTIAL_IDENTIFICATION，不能从其很小的成功子样本判定M2成立或排除M2。</p>
+<p>固定H10的日期比较，均为新规则账户名单，不是原E1名单。单位为pp，数量为各差值已知配对数：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">immediate_minus_delayed_count</th>
+<th style="text-align: right;">immediate_minus_delayed_mean</th>
+<th style="text-align: right;">fresh_minus_delayed_count</th>
+<th style="text-align: right;">fresh_minus_delayed_mean</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1688</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">-0.1394</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">-0.3914</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">-0.1311</td>
+</tr>
+<tr>
+<td style="text-align: left;">J</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.1680</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1278</td>
+</tr>
+</tbody>
+</table>
+<p>立即与延迟差异同时包含信号老化和日期；同日新名单与旧名单差异定位刷新效应。这里仅作描述，不从负点估计宣布“第二周更优”，不选择新相位。</p>
+<p>月初同一H20路径、J减B的阶段贡献，单位pp；路径包括一次入场费及末段一次退出费，各段加总已核对：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">segment</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">J_minus_B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">first5</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.0414</td>
+</tr>
+<tr>
+<td style="text-align: left;">next5</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.0396</td>
+</tr>
+<tr>
+<td style="text-align: left;">last10</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.0031</td>
+</tr>
+</tbody>
+</table>
+<p>目标匹配并不等于成交后风险中性。下表是每日持仓按最近调仓信号的冻结风格衡量，未知旧仓权重单列；不是每日更新风险模型：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">mean_gap</th>
+<th style="text-align: right;">maximum_gap</th>
+<th style="text-align: right;">unknown_weight</th>
+<th style="text-align: right;">within_bound_fraction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">0.0294</td>
+<td style="text-align: right;">0.1316</td>
+<td style="text-align: right;">0.0460</td>
+<td style="text-align: right;">98.2018</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">0.2575</td>
+<td style="text-align: right;">0.3603</td>
+<td style="text-align: right;">0.0458</td>
+<td style="text-align: right;">41.9580</td>
+</tr>
+<tr>
+<td style="text-align: left;">J</td>
+<td style="text-align: right;">0.1411</td>
+<td style="text-align: right;">0.2970</td>
+<td style="text-align: right;">0.0455</td>
+<td style="text-align: right;">95.7043</td>
+</tr>
+</tbody>
+</table>
+<p>为何不能下结论：主净增量未确认、随机和逐股对照覆盖不足；时间路径只能描述当前规则，并未建立原E1月初优势的完整解释。保持原相位，不据此调参。</p>
+<p><a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/matched_outcomes.csv">匹配失败及结果</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/matched_budget_coverage.csv">匹配预算覆盖</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/placebo_coverage.csv">随机通过记录</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/placebo_comparisons.csv">各随机副本比较</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/market_regimes.csv">预先市场状态</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/regime_events.csv">状态分层结果</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/timing_comparisons.csv">完整日期配对</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/marginal_paths.csv">阶段路径</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/actual_daily_risk.csv">每日实际风险</a>。</p></html>

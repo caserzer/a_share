@@ -1,0 +1,207 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 Alpha信息与时间结构验证</title><style>body{max-width:1150px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}pre{overflow:auto;background:#f4f4f4;padding:16px}a{color:#146887}</style><h1>EP36 B1 风格控制后的月内相位优势</h1>
+<p><strong>未确认第1个周信号存在相对风格复制组合的额外 H10 优势。</strong> E1相位差点估计约−0.097个百分点，95%区间约[−0.350,+0.163]个百分点，不能解释为已证明负效应或已证明全部由日历造成。</p>
+<h2>想验证什么</h2>
+<p>每个月先在第1相位计算S1−S0，再在第2相位计算同一差异，最后取前者减后者。两次使用各自次日开盘和固定H10窗口，不把账户长期路径差混进固定期限事件。只要求第1、第2相位共同有效，不沿用旧四相位共同月份。</p>
+<p>本轮沿用封存 E1 Ridge 和 E2 预测，未训练新模型、未运行 E3、未优化相位或调仓参数。新增总市值与流通市值来自信号日前一个交易日的供应商快照，仍为 Historical-proxy；历史行业、前复权合成单位和停牌估值也保留原代理身份。所有历史已反复查看，结果属于历史模拟样本外探索，真实前瞻为 FORWARD_PENDING。</p>
+<p>S0 是以当天已覆盖风格拟合原模型分数后的 Q5；S1 用原分数、S2 用残差分数，在 S0 附近的固定暴露约束内选股。<strong>S0 仍依赖原模型分数，并非独立训练的强风格收益模型，不能据此宣布可以直接替换 Ridge。</strong></p>
+<p>每期同一可评分池、相同持仓数及等权目标；数值风格目标差不超过截面0.25个标准差、单行业权重差不超过2个百分点。容差在收益计算前冻结，无事后放宽。约束控制目标组合，成交受限与持仓漂移仍会改变实际暴露；净收益结论是这一固定近似匹配合同下的部分识别，不是精确风险中性的认证 Alpha。</p>
+<h2>配对相位结果</h2>
+<p>单位为每月配对差百分点。E1 S1−S0属于三项主族，其余是辅助。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">contrast</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">planned_periods</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: left;">holm_p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0972</td>
+<td style="text-align: right;">-0.3498</td>
+<td style="text-align: right;">0.1627</td>
+<td style="text-align: left;">0.8471</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0971</td>
+<td style="text-align: right;">-0.4083</td>
+<td style="text-align: right;">0.1904</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0982</td>
+<td style="text-align: right;">-0.446</td>
+<td style="text-align: right;">0.2833</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.2557</td>
+<td style="text-align: right;">-0.6101</td>
+<td style="text-align: right;">0.1541</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="逐月相位增量差" src="phase_pairs.png" /></p>
+<p>E1共有42/50个月能完整评价两相位的S1与S0净收益；图中未评价月份保持空档，不能作为零收益月份。以下逐年分解仅用于查看集中度，2025年是部分年度，不按年度切换策略。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">paired_months</th>
+<th style="text-align: right;">phase_difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-0.1005</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">-0</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">-0.0462</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.1796</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.5525</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-0.4575</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">-0.2493</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.1421</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.3544</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1038</td>
+</tr>
+</tbody>
+</table>
+<h2>随机分层安慰剂</h2>
+<p>在同日行业内分别按总市值和20日收益的中位数切分，形成行业×规模×动量单元；每个单元随机选择与S1相同的股票数量，固定20个重复、统一种子，每个重复最多100次尝试。只有同时满足相对S0原数值／行业容差的抽样才保留。不通过就记缺失，不改分层、不增加次数、不放宽容差。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">planned_draws</th>
+<th style="text-align: right;">accepted</th>
+<th style="text-align: right;">acceptance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">2800</td>
+<td style="text-align: right;">1685</td>
+<td style="text-align: right;">60.1786</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">2800</td>
+<td style="text-align: right;">1269</td>
+<td style="text-align: right;">45.3214</td>
+</tr>
+</tbody>
+</table>
+<p>下表的effect是 <code>(S1−随机对照)_phase1 − (S1−随机对照)_phase2</code>，单位百分点；所有预定重复均保留，没有挑选有利seed。随机对照可能与原名单重合，不宣称完全独立股票配对。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">replicates</th>
+<th style="text-align: right;">min_paired_months</th>
+<th style="text-align: right;">median_paired_months</th>
+<th style="text-align: right;">max_paired_months</th>
+<th style="text-align: right;">mean_effect</th>
+<th style="text-align: right;">min_effect</th>
+<th style="text-align: right;">max_effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0.168</td>
+<td style="text-align: right;">-0.0696</td>
+<td style="text-align: right;">0.4812</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6.5</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.4149</td>
+<td style="text-align: right;">-0.5631</td>
+<td style="text-align: right;">1.7485</td>
+</tr>
+</tbody>
+</table>
+<p>E1每重复通常只有约15个共同月份，E2更少，覆盖远不足以作强安慰剂裁决。20个重复不是20份独立市场样本；其均值区间不能直接解释为20倍证据。约52.8%的候选重复通过了固定抽样与风险门槛，其余失败抽样及缺失退出月份不能被外推。</p>
+<h2>当前裁决</h2>
+<p>风格匹配后没有确认模型特有的月初相对优势。但缺失事件、近似风险容差、代理数据和较少月份意味着“月初效应完全由日历解释”也没有被证明。配对差异中之差没有随机分配交易日期，不作严格因果识别。</p>
+<p>较长区间也未确认E1正向相位增量，不能用扩展区间替代原主检验。完整明细见下方，不再搜索第3、第4相位或其他调仓日。</p>
+<p><a href="../../outputs/diagnostics/alpha_economics_20261117/event_summary.csv">相位与其他主副检验</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/monthly_pairs.csv">逐月完整配对</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/placebo_summary.csv">全部随机重复</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/placebo_coverage.csv">抽样覆盖</a></p></html>

@@ -1,0 +1,34 @@
+{
+  "run": "e1_excluded_styles_20261117",
+  "at": "2026-11-17T08:12:20.654156+00:00",
+  "prior_results_seen": true,
+  "new_results_seen": false,
+  "universe": "exact prior P matched excluded targets and original same-industry disjoint peers; original50dates and1001days",
+  "baselines": "REV=-mean rank(mom1,mom5);MOM=mean rank(mom20,mom60);HIGHVOL=mean rank(vol20,vol60);LOWVOL=-HIGHVOL; MIX=equal mean component ranks REV,MOM,HIGHVOL. Highvol direction informed by already-observed profiles; exploratory not independent.",
+  "selection": "per-industry eligible union of prior matched original names and disjoint peers; all6 baseline inputs finite; original matched industry group with any missing input retained for ALL baselines; top original count, equal original industry budget; exclude other original retained names; missing candidate inputs dropped; score tie instrument ascending; no >=10 restriction",
+  "style_match": "per-industry prior matched original group ALL13 finite; disjoint original-scored peers ALL13 finite; whole group retained if unsupported. zscore all same-date ALL13 complete scored stocks, no >=10 restriction. LP min sum w*squared-distance-to-original-stylemean; sumw=originalgroupbudget;0<=w<=max original stock weight; each13 gap<=.25SD; no relaxation.",
+  "main_tests": [
+    "O-MIX annual daily net mean",
+    "normalized baseline-supported original sleeve minus MIX sleeve netH10",
+    "O-SM annual daily net mean",
+    "normalized style-matched original sleeve minus disjoint stylematched sleeve netH10"
+  ],
+  "statistics": "daily65blocks5000/monthly3blocks5000seed20261117; Holm4, ordinary95%CI; unsupported events remain missing; matching coverage reported not screened by performance",
+  "conditional": "auxiliary weekly excluded candidate ALL13 complete, known industry, finite matureH10; residualize ranks of E1 and H10 on rank13styles plus industry indicators+intercept; require n-rank>=30; no >=10 industry minimum; weekly13blocks5000; linear conditional association not causal",
+  "costs": {
+    "main": [
+      0.001,
+      0.002
+    ],
+    "zero": [
+      0,
+      0
+    ],
+    "stress": [
+      0.003,
+      0.008
+    ]
+  },
+  "limits": "SM only supports matched portion; complete styles not PIT-certified; scores/risk controls use original E1 pool and exclusion metadata; baselines not globally independent models; no equivalence conclusion from nonsignificance",
+  "forward": "FORWARD_PENDING"
+}

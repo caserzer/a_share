@@ -1,0 +1,47 @@
+{
+  "run": "e1_past_style_copy_20261117",
+  "at": "2026-11-17T07:12:07.093748+00:00",
+  "prior_results_seen": true,
+  "new_outcomes_seen": false,
+  "teacher": "sealed historical E1 scores; timing simulated, actual publication timestamps not certified",
+  "models": {
+    "Q": "quarter-start expanding OLS of past scores",
+    "LOCK": "first eligible Q fit fixed forever",
+    "I": "same-date E1 reference",
+    "COPY": "same-date OLS diagnostic, not deployable"
+  },
+  "features": [
+    "mom1",
+    "mom5",
+    "mom20",
+    "mom60",
+    "vol20",
+    "vol60",
+    "beta60",
+    "idio60",
+    "log_money20",
+    "turnover20",
+    "log_amihud20",
+    "log_total_mv",
+    "log_circ_mv"
+  ],
+  "transform": "per-date zscore then industry demean X; per-date zscore then industry demean E1; equal date weights 1/sqrt(n)",
+  "fit": "OLS rcond1e-12 no intercept; min26 prior signal dates and2000 rows; no return labels, regularization or window search",
+  "cutoff": "signal strictly earlier than quarter start",
+  "prediction": "features-only API rejects E1/returns",
+  "universe": "sealed C sample including E1 scoring eligibility metadata, not full original universe",
+  "economic": "fresh cash at first common original phase1 date after warmup; same industry quotas and ceil(n/5); end2025-03-03",
+  "costs": {
+    "main": [
+      0.001,
+      0.002
+    ],
+    "zero": [
+      0,
+      0
+    ]
+  },
+  "statistics": "descriptive weekly13/monthly3 calendar blocks5000; daily65-trading-day blocks2000; no equivalence or confirmatory claim",
+  "independence": "Q still needs past E1 updates; LOCK no teacher refresh after first fit, but teacher-derived and C universe constrained",
+  "forward": "FORWARD_PENDING"
+}

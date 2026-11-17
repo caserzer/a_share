@@ -1,0 +1,346 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 机制实验</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>原 E1 选股解释与账本桥接</h1>
+<p>想验证什么：E1是否偏好强势回撤状态，该状态是否解释原账户超额。</p>
+<p>怎么比较：24个季度原模型与变换器逐行复放；每项beta乘变换后特征，78项固定归入5组。最大分数误差2.11×10⁻¹⁵。季度系数、训练均值及标准差完整保存，没有重训。市场共同项在同一截面不改变股票相对排序。</p>
+<p>发现什么：有效样本内强势回撤占池子约24%，占原Q5已覆盖部分约28%；同时强势未回撤也有富集，因此不能把模型简化为单一回撤买入。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">state</th>
+<th style="text-align: right;">pool_share</th>
+<th style="text-align: right;">q5_share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">中期强势且短期未回撤</td>
+<td style="text-align: right;">24.6544</td>
+<td style="text-align: right;">29.5605</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期强势且短期回撤</td>
+<td style="text-align: right;">23.9590</td>
+<td style="text-align: right;">27.9749</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期弱势且短期未回撤</td>
+<td style="text-align: right;">26.7549</td>
+<td style="text-align: right;">19.7928</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期弱势且短期回撤</td>
+<td style="text-align: right;">24.6317</td>
+<td style="text-align: right;">22.6719</td>
+</tr>
+</tbody>
+</table>
+<p>主区间Q5与未入选股票的分数组均值差：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">index</th>
+<th style="text-align: right;">Q5_minus_nonQ5_mean_score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">returns_trend</td>
+<td style="text-align: right;">0.0687</td>
+</tr>
+<tr>
+<td style="text-align: left;">volatility_drawdown</td>
+<td style="text-align: right;">0.0113</td>
+</tr>
+<tr>
+<td style="text-align: left;">range_position</td>
+<td style="text-align: right;">0.0724</td>
+</tr>
+<tr>
+<td style="text-align: left;">volume_liquidity</td>
+<td style="text-align: right;">-0.0013</td>
+</tr>
+<tr>
+<td style="text-align: left;">market_common</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+</tbody>
+</table>
+<p>区间位置和收益趋势组分数差较大；这是选股分数构成，不是收益贡献。特征共线性意味着不能据此宣布哪组创造Alpha。季度系数变化、分数组相关性和完整映射见链接。</p>
+<p>为什么不能下结论：原股票资本仅约三分之二可归入本轮状态，未知部分仍贡献大量收益；原账本分组不能作为因果分解。每个交易日使用严格早于当天的最新周信号，包含换入、换出及持仓漂移。费用和现金独立归因，各组逐日相加回到原账本。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">状态</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">状态未知或不属于本轮样本</td>
+<td style="text-align: right;">19.3899</td>
+</tr>
+<tr>
+<td style="text-align: left;">现金机会收益</td>
+<td style="text-align: right;">0.9781</td>
+</tr>
+<tr>
+<td style="text-align: left;">交易费用</td>
+<td style="text-align: right;">-10.0074</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期强势且短期未回撤</td>
+<td style="text-align: right;">-0.1014</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期强势且短期回撤</td>
+<td style="text-align: right;">8.1218</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期弱势且短期未回撤</td>
+<td style="text-align: right;">7.2953</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期弱势且短期回撤</td>
+<td style="text-align: right;">16.9549</td>
+</tr>
+</tbody>
+</table>
+<p>固定案例为最高5个、最低5个、其余固定随机10个。代码为权威键，名称是参考，不代表历史时点名称认证。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">case</th>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: left;">name_reference</th>
+<th style="text-align: left;">signal_date</th>
+<th style="text-align: left;">state</th>
+<th style="text-align: right;">wealth_contribution</th>
+<th style="text-align: right;">u</th>
+<th style="text-align: right;">v</th>
+<th style="text-align: right;">raw_q5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">top5</td>
+<td style="text-align: left;">SZ300442</td>
+<td style="text-align: left;">润泽科技</td>
+<td style="text-align: left;">2024-12-06</td>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">0.6801</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">top5</td>
+<td style="text-align: left;">SH601216</td>
+<td style="text-align: left;">君正集团</td>
+<td style="text-align: left;">2021-01-22</td>
+<td style="text-align: left;">weak_pullback</td>
+<td style="text-align: right;">0.5470</td>
+<td style="text-align: right;">0.0500</td>
+<td style="text-align: right;">0.7500</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">top5</td>
+<td style="text-align: left;">SZ300142</td>
+<td style="text-align: left;">沃森生物</td>
+<td style="text-align: left;">2022-03-11</td>
+<td style="text-align: left;">weak_no_pullback</td>
+<td style="text-align: right;">0.5440</td>
+<td style="text-align: right;">0.2639</td>
+<td style="text-align: right;">0.4306</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">top5</td>
+<td style="text-align: left;">SH600703</td>
+<td style="text-align: left;">三安光电</td>
+<td style="text-align: left;">2021-07-16</td>
+<td style="text-align: left;">strong_pullback</td>
+<td style="text-align: right;">0.5416</td>
+<td style="text-align: right;">0.8333</td>
+<td style="text-align: right;">0.7222</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">top5</td>
+<td style="text-align: left;">SZ002568</td>
+<td style="text-align: left;">百润股份</td>
+<td style="text-align: left;">2022-09-16</td>
+<td style="text-align: left;">weak_pullback</td>
+<td style="text-align: right;">0.5099</td>
+<td style="text-align: right;">0.1071</td>
+<td style="text-align: right;">0.8929</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">bottom5</td>
+<td style="text-align: left;">SZ002773</td>
+<td style="text-align: left;">康弘药业</td>
+<td style="text-align: left;">2021-04-09</td>
+<td style="text-align: left;">weak_no_pullback</td>
+<td style="text-align: right;">-0.5392</td>
+<td style="text-align: right;">0.0167</td>
+<td style="text-align: right;">0.1833</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">bottom5</td>
+<td style="text-align: left;">SH600009</td>
+<td style="text-align: left;">上海机场</td>
+<td style="text-align: left;">2021-01-29</td>
+<td style="text-align: left;">strong_no_pullback</td>
+<td style="text-align: right;">-0.4911</td>
+<td style="text-align: right;">0.6786</td>
+<td style="text-align: right;">0.1071</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">bottom5</td>
+<td style="text-align: left;">SZ002241</td>
+<td style="text-align: left;">歌尔股份</td>
+<td style="text-align: left;">2022-11-04</td>
+<td style="text-align: left;">weak_no_pullback</td>
+<td style="text-align: right;">-0.4592</td>
+<td style="text-align: right;">0.1400</td>
+<td style="text-align: right;">0.4200</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">bottom5</td>
+<td style="text-align: left;">SH688256</td>
+<td style="text-align: left;">寒武纪</td>
+<td style="text-align: left;">2025-01-10</td>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">-0.3895</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">bottom5</td>
+<td style="text-align: left;">SZ300763</td>
+<td style="text-align: left;">锦浪科技</td>
+<td style="text-align: left;">2023-10-20</td>
+<td style="text-align: left;">weak_no_pullback</td>
+<td style="text-align: right;">-0.3878</td>
+<td style="text-align: right;">0.3167</td>
+<td style="text-align: right;">0.0167</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SZ300529</td>
+<td style="text-align: left;">健帆生物</td>
+<td style="text-align: left;">2021-09-30</td>
+<td style="text-align: left;">weak_no_pullback</td>
+<td style="text-align: right;">-0.0237</td>
+<td style="text-align: right;">0.0139</td>
+<td style="text-align: right;">0.0694</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SH600741</td>
+<td style="text-align: left;">华域汽车</td>
+<td style="text-align: left;">2022-04-29</td>
+<td style="text-align: left;">weak_no_pullback</td>
+<td style="text-align: right;">0.0634</td>
+<td style="text-align: right;">0.3182</td>
+<td style="text-align: right;">0.4091</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SZ300999</td>
+<td style="text-align: left;">金龙鱼</td>
+<td style="text-align: left;">2022-05-06</td>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">0.0124</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SH603259</td>
+<td style="text-align: left;">药明康德</td>
+<td style="text-align: left;">2022-03-04</td>
+<td style="text-align: left;">weak_pullback</td>
+<td style="text-align: right;">0.0265</td>
+<td style="text-align: right;">0.0972</td>
+<td style="text-align: right;">0.5694</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SH600938</td>
+<td style="text-align: left;">中国海油</td>
+<td style="text-align: left;">2024-08-02</td>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">-0.0280</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SZ000768</td>
+<td style="text-align: left;">中航西飞</td>
+<td style="text-align: left;">2021-04-02</td>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">0.0333</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SH601169</td>
+<td style="text-align: left;">北京银行</td>
+<td style="text-align: left;">2024-05-31</td>
+<td style="text-align: left;">strong_pullback</td>
+<td style="text-align: right;">-0.0150</td>
+<td style="text-align: right;">0.6905</td>
+<td style="text-align: right;">0.5476</td>
+<td style="text-align: right;">1.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SH600754</td>
+<td style="text-align: left;">锦江酒店</td>
+<td style="text-align: left;">2023-12-08</td>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">-0.0047</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SH688271</td>
+<td style="text-align: left;">联影医疗</td>
+<td style="text-align: left;">2024-08-23</td>
+<td style="text-align: left;">UNKNOWN</td>
+<td style="text-align: right;">-0.0107</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">nan</td>
+</tr>
+<tr>
+<td style="text-align: left;">random10</td>
+<td style="text-align: left;">SH600803</td>
+<td style="text-align: left;">新奥股份</td>
+<td style="text-align: left;">2024-06-28</td>
+<td style="text-align: left;">strong_pullback</td>
+<td style="text-align: right;">0.0429</td>
+<td style="text-align: right;">0.5769</td>
+<td style="text-align: right;">0.9615</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/feature_groups.csv">78项映射</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/coefficients.csv">季度系数</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/model_replay.csv">逐季复放</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/score_group_means.csv">分数组均值</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/score_group_correlations.csv">分数组相关</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/state_month_contributions.csv">逐月状态贡献</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/original_capital_coverage.csv">实际持仓资本覆盖</a> · <a href="../../outputs/diagnostics/e1_alpha_mechanism_20261117/all_case_events.csv">全部案例事件</a>。</p>
+<p>逐股完整特征和标签表保存在private/e1_alpha_mechanism_20261117/stock_signal_detail.parquet，原始数据依仓库规则保留本地。</p></html>

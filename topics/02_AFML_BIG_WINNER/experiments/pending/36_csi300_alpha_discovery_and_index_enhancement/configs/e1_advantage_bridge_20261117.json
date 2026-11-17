@@ -1,0 +1,85 @@
+{
+  "run": "e1_advantage_bridge_20261117",
+  "created_at": "2026-11-17T06:43:18.560601+00:00",
+  "status": "REGISTERED",
+  "historical_results_seen": true,
+  "new_bridge_results_seen": false,
+  "primary_start": "2021-01-08",
+  "primary_end": "2025-03-03",
+  "fees": [
+    0.001,
+    0.002
+  ],
+  "main_chain": {
+    "O": "exact original target",
+    "U": "C universe top original k by original E1, equal weights; excluded capital refilled",
+    "K": "same C top ceil(n/5) original E1",
+    "I": "same C and k, universe-proportional industry slots, top E1 within each",
+    "F": "exact sealed previous constrained E1 targets; risk <=.25 SD vs previous B, same industry slots"
+  },
+  "auxiliary": {
+    "UI": "U with proportional industry slots at original k",
+    "KF": "K with 13 style bounds against old B, without industry slots",
+    "X": "original targets drop excluded stocks; original weights retained, removed budget cash"
+  },
+  "main_comparisons": [
+    [
+      "O",
+      "U",
+      "universe"
+    ],
+    [
+      "U",
+      "K",
+      "count"
+    ],
+    [
+      "K",
+      "I",
+      "industry"
+    ],
+    [
+      "I",
+      "F",
+      "style"
+    ]
+  ],
+  "reverse_and_cash": [
+    [
+      "U",
+      "UI",
+      "industry_before_count"
+    ],
+    [
+      "UI",
+      "I",
+      "count_after_industry"
+    ],
+    [
+      "K",
+      "KF",
+      "style_before_industry"
+    ],
+    [
+      "KF",
+      "F",
+      "industry_after_style"
+    ],
+    [
+      "O",
+      "X",
+      "drop_excluded_to_cash"
+    ],
+    [
+      "X",
+      "U",
+      "refill_excluded_budget"
+    ]
+  ],
+  "tie": "score descending, instrument ascending",
+  "stat": "descriptive 65-trading-day circular bootstrap, 2000 draws, seed20261117; no confirmatory p claim; CAGR difference separate from annual mean daily difference CI",
+  "attribution": "difference of separately log-linked stock pnl and fees, common scale maps to final F minus O wealth; not unique causal decomposition",
+  "exclusions": "reason per latest monthly rebalance signal; exact old latest-stock-weekly state bridge retained separately, global weekly stale-state audit added",
+  "no_search": true,
+  "no_new_training": true
+}

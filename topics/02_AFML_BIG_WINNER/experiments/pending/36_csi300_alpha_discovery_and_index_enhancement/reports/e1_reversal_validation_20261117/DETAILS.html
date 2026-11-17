@@ -1,0 +1,770 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>E1与固定反转比较</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd}th{background:#edf3f5}img{max-width:100%}a{color:#146887}</style><h1>E1−REV完整证据</h1>
+<h2>全部成本及期限</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">cost</th>
+<th style="text-align: right;">horizon</th>
+<th style="text-align: left;">field</th>
+<th style="text-align: left;">primary</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">-0.0266</td>
+<td style="text-align: right;">-0.4030</td>
+<td style="text-align: right;">0.2865</td>
+<td style="text-align: right;">0.8802</td>
+</tr>
+<tr>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0487</td>
+<td style="text-align: right;">-0.4286</td>
+<td style="text-align: right;">0.2723</td>
+<td style="text-align: right;">0.7922</td>
+</tr>
+<tr>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0.1734</td>
+<td style="text-align: right;">-0.2732</td>
+<td style="text-align: right;">0.5753</td>
+<td style="text-align: right;">0.4109</td>
+</tr>
+<tr>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.2394</td>
+<td style="text-align: right;">-0.2100</td>
+<td style="text-align: right;">0.6451</td>
+<td style="text-align: right;">0.2577</td>
+</tr>
+<tr>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">-0.1817</td>
+<td style="text-align: right;">-0.9454</td>
+<td style="text-align: right;">0.5720</td>
+<td style="text-align: right;">0.6265</td>
+</tr>
+<tr>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1526</td>
+<td style="text-align: right;">-0.9006</td>
+<td style="text-align: right;">0.5733</td>
+<td style="text-align: right;">0.6769</td>
+</tr>
+<tr>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">-0.0264</td>
+<td style="text-align: right;">-0.3998</td>
+<td style="text-align: right;">0.2842</td>
+<td style="text-align: right;">0.8802</td>
+</tr>
+<tr>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0486</td>
+<td style="text-align: right;">-0.4277</td>
+<td style="text-align: right;">0.2718</td>
+<td style="text-align: right;">0.7922</td>
+</tr>
+<tr>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0.1720</td>
+<td style="text-align: right;">-0.2710</td>
+<td style="text-align: right;">0.5707</td>
+<td style="text-align: right;">0.4109</td>
+</tr>
+<tr>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.2389</td>
+<td style="text-align: right;">-0.2096</td>
+<td style="text-align: right;">0.6438</td>
+<td style="text-align: right;">0.2577</td>
+</tr>
+<tr>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">-0.1803</td>
+<td style="text-align: right;">-0.9379</td>
+<td style="text-align: right;">0.5674</td>
+<td style="text-align: right;">0.6265</td>
+</tr>
+<tr>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1523</td>
+<td style="text-align: right;">-0.8988</td>
+<td style="text-align: right;">0.5722</td>
+<td style="text-align: right;">0.6769</td>
+</tr>
+<tr>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">-0.0267</td>
+<td style="text-align: right;">-0.4042</td>
+<td style="text-align: right;">0.2873</td>
+<td style="text-align: right;">0.8802</td>
+</tr>
+<tr>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">-0.0487</td>
+<td style="text-align: right;">-0.4290</td>
+<td style="text-align: right;">0.2726</td>
+<td style="text-align: right;">0.7922</td>
+</tr>
+<tr>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0.1739</td>
+<td style="text-align: right;">-0.2740</td>
+<td style="text-align: right;">0.5770</td>
+<td style="text-align: right;">0.4109</td>
+</tr>
+<tr>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.2396</td>
+<td style="text-align: right;">-0.2103</td>
+<td style="text-align: right;">0.6457</td>
+<td style="text-align: right;">0.2577</td>
+</tr>
+<tr>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">net_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">-0.1823</td>
+<td style="text-align: right;">-0.9483</td>
+<td style="text-align: right;">0.5737</td>
+<td style="text-align: right;">0.6265</td>
+</tr>
+<tr>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">marked_return</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1528</td>
+<td style="text-align: right;">-0.9015</td>
+<td style="text-align: right;">0.5739</td>
+<td style="text-align: right;">0.6769</td>
+</tr>
+</tbody>
+</table>
+<p>net_return为实际能够完整退出的事件净收益；marked_return只扣入场成本，不能当作可执行净收益。主口径仅main/H10/net_return；其他均辅助。不同期限和成本的可交易剩余单位可能影响退出可行性，缺失不填零。</p>
+<h2>每年H10事件表现</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">horizon</th>
+<th style="text-align: right;">count</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">median</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2021.0000</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">0.6419</td>
+<td style="text-align: right;">0.1632</td>
+</tr>
+<tr>
+<td style="text-align: right;">2022.0000</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">11.0000</td>
+<td style="text-align: right;">0.7087</td>
+<td style="text-align: right;">0.3048</td>
+</tr>
+<tr>
+<td style="text-align: right;">2023.0000</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">11.0000</td>
+<td style="text-align: right;">0.0818</td>
+<td style="text-align: right;">0.0220</td>
+</tr>
+<tr>
+<td style="text-align: right;">2024.0000</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">12.0000</td>
+<td style="text-align: right;">-0.3189</td>
+<td style="text-align: right;">-0.0077</td>
+</tr>
+<tr>
+<td style="text-align: right;">2025.0000</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">-3.4871</td>
+<td style="text-align: right;">-3.4871</td>
+</tr>
+</tbody>
+</table>
+<p>单位pp，count为有效配对数。2025只有1个可执行事件，不能据此推断全年或当前市场状态。</p>
+<h2>连续账户逐月收益</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">period</th>
+<th style="text-align: right;">days</th>
+<th style="text-align: right;">O_return</th>
+<th style="text-align: right;">REV_return</th>
+<th style="text-align: right;">return_difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2021-01</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">-1.9453</td>
+<td style="text-align: right;">-3.1825</td>
+<td style="text-align: right;">1.2372</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-02</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0.3803</td>
+<td style="text-align: right;">-0.2243</td>
+<td style="text-align: right;">0.6046</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-03</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">-3.9032</td>
+<td style="text-align: right;">-2.7150</td>
+<td style="text-align: right;">-1.1882</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-04</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">2.3073</td>
+<td style="text-align: right;">2.3156</td>
+<td style="text-align: right;">-0.0082</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-05</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">6.4889</td>
+<td style="text-align: right;">6.8089</td>
+<td style="text-align: right;">-0.3200</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-06</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">-1.4802</td>
+<td style="text-align: right;">-2.2220</td>
+<td style="text-align: right;">0.7417</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-07</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">-6.6122</td>
+<td style="text-align: right;">-6.7785</td>
+<td style="text-align: right;">0.1663</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-08</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">1.6901</td>
+<td style="text-align: right;">0.7847</td>
+<td style="text-align: right;">0.9054</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-09</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">4.4332</td>
+<td style="text-align: right;">4.4065</td>
+<td style="text-align: right;">0.0267</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-10</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">3.3197</td>
+<td style="text-align: right;">2.0083</td>
+<td style="text-align: right;">1.3114</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-11</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">1.1189</td>
+<td style="text-align: right;">1.2193</td>
+<td style="text-align: right;">-0.1005</td>
+</tr>
+<tr>
+<td style="text-align: left;">2021-12</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0.6198</td>
+<td style="text-align: right;">1.3294</td>
+<td style="text-align: right;">-0.7095</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-01</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">-10.7237</td>
+<td style="text-align: right;">-10.2253</td>
+<td style="text-align: right;">-0.4984</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-02</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">2.5368</td>
+<td style="text-align: right;">1.5606</td>
+<td style="text-align: right;">0.9762</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-03</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">-8.4830</td>
+<td style="text-align: right;">-8.3032</td>
+<td style="text-align: right;">-0.1799</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-04</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">-4.6300</td>
+<td style="text-align: right;">-4.6673</td>
+<td style="text-align: right;">0.0372</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-05</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">10.1210</td>
+<td style="text-align: right;">8.9313</td>
+<td style="text-align: right;">1.1898</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-06</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">9.8491</td>
+<td style="text-align: right;">10.5647</td>
+<td style="text-align: right;">-0.7156</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-07</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">-5.3689</td>
+<td style="text-align: right;">-4.6485</td>
+<td style="text-align: right;">-0.7204</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-08</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">-1.4848</td>
+<td style="text-align: right;">-1.6549</td>
+<td style="text-align: right;">0.1701</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-09</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">-7.4014</td>
+<td style="text-align: right;">-7.7099</td>
+<td style="text-align: right;">0.3085</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-10</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">-4.1913</td>
+<td style="text-align: right;">-5.2920</td>
+<td style="text-align: right;">1.1008</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-11</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">10.7117</td>
+<td style="text-align: right;">10.5595</td>
+<td style="text-align: right;">0.1521</td>
+</tr>
+<tr>
+<td style="text-align: left;">2022-12</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">-1.5343</td>
+<td style="text-align: right;">-1.8955</td>
+<td style="text-align: right;">0.3612</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-01</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4.7892</td>
+<td style="text-align: right;">5.1353</td>
+<td style="text-align: right;">-0.3461</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-02</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.4241</td>
+<td style="text-align: right;">0.7993</td>
+<td style="text-align: right;">-0.3752</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-03</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0.2245</td>
+<td style="text-align: right;">0.2512</td>
+<td style="text-align: right;">-0.0266</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-04</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0.8523</td>
+<td style="text-align: right;">-0.3580</td>
+<td style="text-align: right;">1.2103</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-05</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">-3.1917</td>
+<td style="text-align: right;">-3.2514</td>
+<td style="text-align: right;">0.0597</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-06</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.6020</td>
+<td style="text-align: right;">0.9057</td>
+<td style="text-align: right;">-0.3037</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-07</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">3.1259</td>
+<td style="text-align: right;">3.3546</td>
+<td style="text-align: right;">-0.2287</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-08</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">-5.3225</td>
+<td style="text-align: right;">-4.5022</td>
+<td style="text-align: right;">-0.8203</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-09</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">-2.3165</td>
+<td style="text-align: right;">-2.3416</td>
+<td style="text-align: right;">0.0251</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-10</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">-5.0245</td>
+<td style="text-align: right;">-4.5907</td>
+<td style="text-align: right;">-0.4337</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-11</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">-1.8160</td>
+<td style="text-align: right;">-2.0956</td>
+<td style="text-align: right;">0.2796</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-12</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">-1.2070</td>
+<td style="text-align: right;">-1.2008</td>
+<td style="text-align: right;">-0.0061</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-01</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">-2.1916</td>
+<td style="text-align: right;">-3.0813</td>
+<td style="text-align: right;">0.8897</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-02</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">18.3197</td>
+<td style="text-align: right;">17.8717</td>
+<td style="text-align: right;">0.4480</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-03</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0.8034</td>
+<td style="text-align: right;">0.2321</td>
+<td style="text-align: right;">0.5713</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-04</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">3.0898</td>
+<td style="text-align: right;">4.6326</td>
+<td style="text-align: right;">-1.5429</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-05</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">-0.9750</td>
+<td style="text-align: right;">-0.8866</td>
+<td style="text-align: right;">-0.0885</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-06</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">-1.4497</td>
+<td style="text-align: right;">-1.7374</td>
+<td style="text-align: right;">0.2877</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-07</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">-0.7448</td>
+<td style="text-align: right;">0.2101</td>
+<td style="text-align: right;">-0.9549</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-08</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">-3.7424</td>
+<td style="text-align: right;">-3.4317</td>
+<td style="text-align: right;">-0.3108</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-09</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">21.2489</td>
+<td style="text-align: right;">22.4350</td>
+<td style="text-align: right;">-1.1861</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-10</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">-2.4860</td>
+<td style="text-align: right;">-2.7079</td>
+<td style="text-align: right;">0.2219</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-11</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">1.6724</td>
+<td style="text-align: right;">3.0318</td>
+<td style="text-align: right;">-1.3593</td>
+</tr>
+<tr>
+<td style="text-align: left;">2024-12</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0.6267</td>
+<td style="text-align: right;">0.3664</td>
+<td style="text-align: right;">0.2603</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025-01</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0.2884</td>
+<td style="text-align: right;">0.9803</td>
+<td style="text-align: right;">-0.6919</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025-02</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">5.6820</td>
+<td style="text-align: right;">5.4757</td>
+<td style="text-align: right;">0.2064</td>
+</tr>
+<tr>
+<td style="text-align: left;">2025-03</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.0116</td>
+<td style="text-align: right;">-0.3476</td>
+<td style="text-align: right;">0.3360</td>
+</tr>
+</tbody>
+</table>
+<h2>链接到终值差的逐年贡献</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">freq</th>
+<th style="text-align: right;">period</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Y</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">3.1999</td>
+</tr>
+<tr>
+<td style="text-align: left;">Y</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">2.5064</td>
+</tr>
+<tr>
+<td style="text-align: left;">Y</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">-1.1964</td>
+</tr>
+<tr>
+<td style="text-align: left;">Y</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">-3.0192</td>
+</tr>
+<tr>
+<td style="text-align: left;">Y</td>
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">-0.1867</td>
+</tr>
+</tbody>
+</table>
+<p>单位初始100元的终值差贡献，可加总。与各年月收益率差是两种量，不得混用。</p>
+<h2>正负各十项股票贡献</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">instrument</th>
+<th style="text-align: right;">wealth_contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SH688111</td>
+<td style="text-align: right;">1.6691</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000063</td>
+<td style="text-align: right;">1.4496</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601633</td>
+<td style="text-align: right;">1.1587</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH688041</td>
+<td style="text-align: right;">1.1327</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601600</td>
+<td style="text-align: right;">1.0412</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601699</td>
+<td style="text-align: right;">1.0399</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002607</td>
+<td style="text-align: right;">0.9989</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601155</td>
+<td style="text-align: right;">0.9850</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601808</td>
+<td style="text-align: right;">0.9333</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600346</td>
+<td style="text-align: right;">0.9266</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600655</td>
+<td style="text-align: right;">-0.7928</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601088</td>
+<td style="text-align: right;">-0.8187</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002230</td>
+<td style="text-align: right;">-0.8212</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH601888</td>
+<td style="text-align: right;">-0.8321</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600028</td>
+<td style="text-align: right;">-0.8420</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ000002</td>
+<td style="text-align: right;">-0.8565</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ300124</td>
+<td style="text-align: right;">-0.9118</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH603486</td>
+<td style="text-align: right;">-1.1181</td>
+</tr>
+<tr>
+<td style="text-align: left;">SH600011</td>
+<td style="text-align: right;">-1.3018</td>
+</tr>
+<tr>
+<td style="text-align: left;">SZ002050</td>
+<td style="text-align: right;">-1.3378</td>
+</tr>
+</tbody>
+</table>
+<p>包括两条完整账户中买入、少买、权重漂移、费用和现金的差异；不等于单股持有收益。所有正负股票和逐月贡献见<a href="../../outputs/diagnostics/e1_reversal_validation_20261117/stock_contributions.csv">股票</a>、<a href="../../outputs/diagnostics/e1_reversal_validation_20261117/period_contributions.csv">期间</a>。</p>
+<p><a href="../../outputs/diagnostics/e1_reversal_validation_20261117/events.csv">完整事件退出明细</a> · <a href="../../outputs/diagnostics/e1_reversal_validation_20261117/event_pairs.csv">逐事件差值</a> · <a href="../../outputs/diagnostics/e1_reversal_validation_20261117/event_paths.csv">固定持仓市值路径</a> · <a href="../../outputs/diagnostics/e1_reversal_validation_20261117/selection_checks.csv">重叠与预算</a> · <a href="../../outputs/diagnostics/e1_reversal_validation_20261117/account_comparison.csv">原连续账户对比</a>。</p></html>

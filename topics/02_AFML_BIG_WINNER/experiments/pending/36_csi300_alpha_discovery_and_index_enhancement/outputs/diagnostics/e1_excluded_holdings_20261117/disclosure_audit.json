@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "count": 5,
+  "checks": [
+    {
+      "name": "unique decision cases",
+      "passed": true
+    },
+    {
+      "name": "signal no later than source cap date",
+      "passed": true
+    },
+    {
+      "name": "50 planned dates",
+      "passed": true
+    },
+    {
+      "name": "marked pair retains all dates",
+      "passed": true
+    },
+    {
+      "name": "case counterfactual not assigned zero to legacy",
+      "passed": true
+    }
+  ],
+  "post_result": true,
+  "not_confirmatory": true,
+  "files": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_excluded_holdings_20261117/disclosure_sensitivity.csv",
+      "sha256": "d8ba868ff14e0eb40474a5d59a737225502adefa8d24de273503e53f6190677e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_excluded_holdings_20261117/decision_cases.csv",
+      "sha256": "e713c967fe1bc8089d4d04ceac972dd9c9ad9b3bee0121887f093283500b60f9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_excluded_holdings_20261117/coverage_summary.csv",
+      "sha256": "68b4789a32d858b63f565bea50d0025e6fac2850ce9945a514373b3fa85eb7f2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/diagnostics/e1_excluded_holdings_20261117/profile_summary.csv",
+      "sha256": "dd45a54bf6c19fa8614386c0dd98f95abfd568bf1f418752574bad5bdff47940"
+    }
+  ],
+  "source": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/e1_excluded_holdings_audit.py",
+      "sha256": "b3721f2708f8df6713d66e46dda763528c5827b748edf7a3fffdc360c797be8a"
+    }
+  ]
+}

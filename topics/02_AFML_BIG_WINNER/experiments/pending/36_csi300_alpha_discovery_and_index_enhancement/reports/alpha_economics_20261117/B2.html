@@ -1,0 +1,452 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>EP36 Alpha信息与时间结构验证</title><style>body{max-width:1150px;margin:36px auto;padding:0 24px;font:16px/1.8 system-ui;color:#223}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:7px 12px;border:1px solid #ccd;text-align:left}th{background:#edf3f5}img{max-width:100%}pre{overflow:auto;background:#f4f4f4;padding:16px}a{color:#146887}</style><h1>EP36 B2 信号兑现期限与组合交易周期</h1>
+<p><strong>没有识别到稳定的正向残差收益段，因此不能宣布 Alpha 在第10天衰减或持续到第20天。</strong> 连续账户显示：月度优于双周不仅来自费用；周度对月度则确有明显的成本影响。这些是本轮受约束策略的历史路径结果，不是新调仓规则。</p>
+<h2>想验证什么</h2>
+<p>固定信号名单后，1至5日、6至10日、11至20日是否持续产生相对风格对照的增量？然后独立检验不同交易频率在实际费用与持仓漂移下的表现。事件曲线不拼接成账户净值，H10训练标签也不直接决定最优持有期。</p>
+<p>本轮沿用封存 E1 Ridge 和 E2 预测，未训练新模型、未运行 E3、未优化相位或调仓参数。新增总市值与流通市值来自信号日前一个交易日的供应商快照，仍为 Historical-proxy；历史行业、前复权合成单位和停牌估值也保留原代理身份。所有历史已反复查看，结果属于历史模拟样本外探索，真实前瞻为 FORWARD_PENDING。</p>
+<p>S0 是以当天已覆盖风格拟合原模型分数后的 Q5；S1 用原分数、S2 用残差分数，在 S0 附近的固定暴露约束内选股。<strong>S0 仍依赖原模型分数，并非独立训练的强风格收益模型，不能据此宣布可以直接替换 Ridge。</strong></p>
+<p>每期同一可评分池、相同持仓数及等权目标；数值风格目标差不超过截面0.25个标准差、单行业权重差不超过2个百分点。容差在收益计算前冻结，无事后放宽。约束控制目标组合，成交受限与持仓漂移仍会改变实际暴露；净收益结论是这一固定近似匹配合同下的部分识别，不是精确风险中性的认证 Alpha。</p>
+<h2>固定事件的边际净收益</h2>
+<p>每次从次日开盘建立固定股票与单位，不再重选。H5/H10/H20分别对应进入后第5/10/20个市场交易日的开盘退出。无法卖出的持仓不假设已变现，未知估值不沿用无依据旧价。</p>
+<p>下表使用同一批可完整观察且H20可完全退出的事件。1至5日含一次入场费；6至10日不虚构交易；11至20日含实际H20退出费。三段相加严格等于该H20事件的净相对收益，不在每段重复扣往返费。单位为每事件初始资本的收益差百分点。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">contrast</th>
+<th style="text-align: left;">window</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">planned_periods</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">ci_low</th>
+<th style="text-align: right;">ci_high</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: left;">1-5_entry_net</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.0181</td>
+<td style="text-align: right;">-0.0926</td>
+<td style="text-align: right;">0.1354</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: left;">6-10_no_trade</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.0816</td>
+<td style="text-align: right;">-0.1955</td>
+<td style="text-align: right;">0.0424</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: left;">11-20_exit_net</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1236</td>
+<td style="text-align: right;">-0.2939</td>
+<td style="text-align: right;">0.043</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: left;">1-5_entry_net</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.0617</td>
+<td style="text-align: right;">-0.2254</td>
+<td style="text-align: right;">0.1009</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: left;">6-10_no_trade</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.0438</td>
+<td style="text-align: right;">-0.2027</td>
+<td style="text-align: right;">0.1219</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: left;">11-20_exit_net</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1551</td>
+<td style="text-align: right;">-0.4106</td>
+<td style="text-align: right;">0.1274</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: left;">1-5_entry_net</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.0774</td>
+<td style="text-align: right;">-0.2815</td>
+<td style="text-align: right;">0.1186</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: left;">6-10_no_trade</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.0009</td>
+<td style="text-align: right;">-0.2176</td>
+<td style="text-align: right;">0.2524</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1-S0</td>
+<td style="text-align: left;">11-20_exit_net</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.0102</td>
+<td style="text-align: right;">-0.2257</td>
+<td style="text-align: right;">0.2527</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: left;">1-5_entry_net</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1022</td>
+<td style="text-align: right;">-0.3023</td>
+<td style="text-align: right;">0.1065</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: left;">6-10_no_trade</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.0722</td>
+<td style="text-align: right;">-0.332</td>
+<td style="text-align: right;">0.1746</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2-S0</td>
+<td style="text-align: left;">11-20_exit_net</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">-0.1229</td>
+<td style="text-align: right;">-0.4397</td>
+<td style="text-align: right;">0.2189</td>
+</tr>
+</tbody>
+</table>
+<p>E1 S1−S0三段约为+0.018、−0.082、−0.124个百分点，区间均跨零。不同对照组合的共同有效事件数不同，不能拿各段单独挑选不同样本。S2也未出现稳定正向兑现段。</p>
+<p><img alt="固定事件累计相对损益" src="event_curve.png" /></p>
+<p>图中路径为扣入场费、未扣退出费的每日标记损益；阴影为逐点95%区间，不是全曲线同时置信带。表格末段另计实际退出费，图末端不能直接读作可执行净退出收益。H5/H10/H20各自独立退出的净收益另在事件汇总中，不能与这条固定H20路径混淆。</p>
+<h2>独立连续账户与成本</h2>
+<p>以下CAGR为百分比，单边换手为每年倍数。双周沿用日历周锚点，月度沿用月内第1信号，并非精确每10/20个交易日调仓。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">frequency</th>
+<th style="text-align: left;">cost</th>
+<th style="text-align: right;">cagr</th>
+<th style="text-align: right;">annual_oneway_turnover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">6.1916</td>
+<td style="text-align: right;">8.7736</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-0.9897</td>
+<td style="text-align: right;">8.7385</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">9.0205</td>
+<td style="text-align: right;">8.7869</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">4.4133</td>
+<td style="text-align: right;">27.1698</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-15.969</td>
+<td style="text-align: right;">27.0612</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">13.278</td>
+<td style="text-align: right;">27.2119</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">0.9575</td>
+<td style="text-align: right;">16.2835</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-11.3554</td>
+<td style="text-align: right;">16.2178</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">6.0072</td>
+<td style="text-align: right;">16.3084</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">5.411</td>
+<td style="text-align: right;">8.7109</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-1.6658</td>
+<td style="text-align: right;">8.6761</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">8.1978</td>
+<td style="text-align: right;">8.7241</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-1.5045</td>
+<td style="text-align: right;">27.5191</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-20.9495</td>
+<td style="text-align: right;">27.4081</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">6.9683</td>
+<td style="text-align: right;">27.562</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">main</td>
+<td style="text-align: right;">-1.5625</td>
+<td style="text-align: right;">15.9134</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">stress</td>
+<td style="text-align: right;">-13.3057</td>
+<td style="text-align: right;">15.8485</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: left;">zero</td>
+<td style="text-align: right;">3.2445</td>
+<td style="text-align: right;">15.9381</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="费用与频率" src="cost_and_frequency.png" /></p>
+<p>E1零成本周度约13.28%，月度约9.02%；主成本后周度约4.41%，月度约6.19%，说明成本确实会改变这两个周期的排序。另一方面，双周零成本约6.01%，已经低于月度9.02%，说明双周对月度差异不能仅由费用解释。</p>
+<p><strong>这不证明月度是最优周期。</strong> 月度路径也可能反映信号采样、市场状态与历史选择偏差；未新增日历或缓冲参数搜索。</p>
+<h2>盈亏平衡成本</h2>
+<p>按预先登记的双周对月度S1比较，固定卖出费用为买入费用2倍，在买入0至100bps、每10bps网格上做账户重放，再对变号区间二分求根。E1和E2都没有出现网格变号区间；零成本时双周已经落后。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">zero_cost_terminal_gap</th>
+<th style="text-align: right;">at100bps_terminal_gap</th>
+<th style="text-align: left;">buy_bps_roots</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">-14.8484</td>
+<td style="text-align: right;">-31.4075</td>
+<td style="text-align: left;">[]</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: right;">-23.2262</td>
+<td style="text-align: right;">-31.3657</td>
+<td style="text-align: left;">[]</td>
+</tr>
+</tbody>
+</table>
+<p>terminal_gap为双周减月度的期末净值差，按初始资本折算为百分点，不是CAGR差。这里只能说审计网格未找到变号交点，不能证明所有连续成本值都没有切点或多个交点。没有用“年化差除以换手”替代重放，也没有把求根结果变成推荐费用或周期。</p>
+<h2>换仓边际贡献与名单稳定性</h2>
+<p>下面的换仓分解是看到主结果后的机制诊断，不属于主检验族。对每个实际再平衡，比较已成交持仓与“保留完全相同的交易前股票及现金”到下次原定再平衡开盘的差异；买入贡献、卖出贡献和费用逐项对账。没有假设额外成交，也没有选择盈利月份。</p>
+<p>单位为每次决策窗口的初始NAV百分点，窗口长度不同；不能相加或机械年化为策略收益。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: left;">frequency</th>
+<th style="text-align: right;">known_windows</th>
+<th style="text-align: right;">mean_buy</th>
+<th style="text-align: right;">mean_sell</th>
+<th style="text-align: right;">mean_fees</th>
+<th style="text-align: right;">mean_total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.7818</td>
+<td style="text-align: right;">0.6131</td>
+<td style="text-align: right;">-0.2072</td>
+<td style="text-align: right;">1.1877</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: right;">211</td>
+<td style="text-align: right;">0.1423</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">-0.1525</td>
+<td style="text-align: right;">0.0099</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: right;">0.3189</td>
+<td style="text-align: right;">0.153</td>
+<td style="text-align: right;">-0.1807</td>
+<td style="text-align: right;">0.2912</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">0.7506</td>
+<td style="text-align: right;">0.9058</td>
+<td style="text-align: right;">-0.2066</td>
+<td style="text-align: right;">1.4498</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">1w</td>
+<td style="text-align: right;">211</td>
+<td style="text-align: right;">0.0444</td>
+<td style="text-align: right;">0.0591</td>
+<td style="text-align: right;">-0.1547</td>
+<td style="text-align: right;">-0.0512</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">2w</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: right;">0.2058</td>
+<td style="text-align: right;">0.0892</td>
+<td style="text-align: right;">-0.1774</td>
+<td style="text-align: right;">0.1176</td>
+</tr>
+</tbody>
+</table>
+<p>全可用信号相邻周的分数秩相关和实际选股名单留存比例：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">strategy</th>
+<th style="text-align: right;">rank_stability</th>
+<th style="text-align: right;">retained_fraction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S0</td>
+<td style="text-align: right;">0.5151</td>
+<td style="text-align: right;">48.8156</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">50.5057</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">0.5713</td>
+<td style="text-align: right;">48.1065</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S0</td>
+<td style="text-align: right;">0.5605</td>
+<td style="text-align: right;">51.9172</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">0.5046</td>
+<td style="text-align: right;">49.5304</td>
+</tr>
+<tr>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">0.4364</td>
+<td style="text-align: right;">45.6233</td>
+</tr>
+</tbody>
+</table>
+<p>这些统计描述更新幅度，不自动说明该换仓值得执行。连续账户完整逐月记录及所有成本分支均已保存。</p>
+<h2>当前裁决</h2>
+<p>B2没有观察到足够稳定的正向相对路径，不能据此重定义训练标签。成本后月度账户较好与“信号可预测20天”是两回事；本轮没有把二者合并。真实预测寿命仍需新的冻结前瞻信号观察。</p>
+<p><a href="../../outputs/diagnostics/alpha_economics_20261117/marginal_net_windows.csv">边际净收益</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/marginal_net_events.csv">逐事件对账</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/event_curve.csv">完整曲线</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/breakeven_replays.csv">成本重放</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/rebalance_contributions.csv">换仓贡献</a> · <a href="../../outputs/diagnostics/alpha_economics_20261117/account_monthly.csv">全部逐月账户</a></p></html>
