@@ -1,0 +1,39 @@
+{
+  "same_date_common_stocks": {
+    "dates": 35,
+    "stock_events": 10263,
+    "mean_stock_count": 293.22857142857146,
+    "E1_RankIC": 0.061601275379391474,
+    "J_R_RankIC": 0.010841520709803229,
+    "mean_score_rank_correlation": 0.1849480642663954,
+    "paired_difference_bootstrap": {
+      "n": 35,
+      "calendar_n": 100,
+      "mean": 0.050759754669588236,
+      "low": -0.014142337729786802,
+      "high": 0.1180954826748911,
+      "p": 0.136431784107946,
+      "block": 6
+    },
+    "identical_H10_labels_verified": true
+  },
+  "published_endpoint_cost_bridge": {
+    "old_E1_monthly_gross": 0.0758547267860156,
+    "old_E1_monthly_net": 0.0484456342770558,
+    "new_J_R_H10_gross": -0.0491896289243788,
+    "new_J_R_H10_net": -0.118382892936756,
+    "net_decline": 0.1668285272138118,
+    "gross_decline_combined_changes": 0.1250443557103944,
+    "old_cost_drag": 0.027409092508959794,
+    "new_cost_drag": 0.06919326401237719,
+    "extra_cost_drag": 0.04178417150341739,
+    "caveat": "EP36 terminal close and 1001-day CAGR versus EP37 terminal open and 1000-session CAGR; accounting identity, not causal feature attribution"
+  },
+  "initial_training_rows": {
+    "EP36_E1": 52724,
+    "EP37_J_R": 24737
+  },
+  "new_J_R_top20_net": -0.1086490110492047,
+  "posthoc_diagnostic": true,
+  "new_training": false
+}

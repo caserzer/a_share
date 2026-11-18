@@ -1,0 +1,2718 @@
+{
+  "authorization": "先保留EP36-78的原特征，然后以Rank IC为目标训练模型。",
+  "original_results_already_seen": true,
+  "new_model_outer_results_seen": false,
+  "feature_count": 78,
+  "files": [
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/configs/feature_dictionary.csv",
+      "sha256": "60a313dbe9303582cb48e72c79096436b7e8c6814fdbe1fcdda1bff246f6d395"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2021Q1.parquet",
+      "sha256": "35231108f6badc74cfbe0fb90e2bcff4b477a3d4e6c3f7b8022e1dd73da67a9f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2021Q2.parquet",
+      "sha256": "bc4271a74b94cee1e9cec0162dc67836a89c75373a6547d39f3b93c5513ec41b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2021Q3.parquet",
+      "sha256": "ca5d8e9b516e12762f0a5861334e2697dad25d73b4a8142087ac498dd3c16713"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2021Q4.parquet",
+      "sha256": "45255b77526dd371e72d8f55c5af6024270f42c1cafdd3a75bd610544699c751"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2022Q1.parquet",
+      "sha256": "f63380ee94539196422342bdda2f2f3c34003fe8a599471f6299b526ffbd5d1e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2022Q2.parquet",
+      "sha256": "28ce17becc053cbe9eeeb5e02570f785922c4ec1780554e37bf49c27ecebe3f7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2022Q3.parquet",
+      "sha256": "4c25f6b75a8c32da0d2ad3dae57e9746b1de0a9a0df7fce176402dcb23587195"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2022Q4.parquet",
+      "sha256": "30eabb20e080eea6e79d483c14f84ad0c36b7f6a06978cfc7c0f5a2b09495594"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2023Q1.parquet",
+      "sha256": "070227476a92c19435d76a2a139c660cb3fb15b98aa13db1d6b084e31c7ce92e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2023Q2.parquet",
+      "sha256": "a79c2c78917c54601c4397d47a4bcfffe5b3a0731268ce087676b6e31880174d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2023Q3.parquet",
+      "sha256": "62660ab51c526f95c1e245980df073f94f8aff22fcb9caa280b2defbc9a91275"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2023Q4.parquet",
+      "sha256": "ba16d21183418ce5c21f98837c331b43199153df8cd9bf229cab36157f11f451"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2024Q1.parquet",
+      "sha256": "bda688e6a749a084592a73fb86b87529c0aa26c14a6f8a78db353fc2fe70a69f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2024Q2.parquet",
+      "sha256": "8382417012b872d757b36e96c70782b1eb5da3dc3c129c111516493f0f6984c7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2024Q3.parquet",
+      "sha256": "895dc8cf7ac15e37896238431b164e0ae78e67ac3426923d646ca0b54818c1e3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2024Q4.parquet",
+      "sha256": "24ac92bbaaf2156dbb72cca218a509bbfcef1a53c696c93aff98d6dcd5130d95"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2025Q1.parquet",
+      "sha256": "0059a91614f56606a84cb7cc6a3650a240bc27a76979bcd4f5f8eb005f0385b2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2025Q2.parquet",
+      "sha256": "d3e117bb3ff51a81a599120a95798eacaf82fc772a2beba53181057eac20918f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2025Q3.parquet",
+      "sha256": "a9567929930276e2b7896be47382cd986bb4a6065229e4e954f8cd0052e00a8f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2025Q4.parquet",
+      "sha256": "8ca9c14de67a67a42170bf78ac102c92a4d0409838044deda932aeaa69311deb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2026Q1.parquet",
+      "sha256": "17ca659d2f644772963e2e3cb46def51d7ded92673e0915ba6d0e2d2969a3c90"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2026Q2.parquet",
+      "sha256": "f64056d72db8a3f0e5127387ba806fd3d2fe045f1446b835ab1ece7d584f6f2d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2026Q3.parquet",
+      "sha256": "2c6d3bcaec270f8097cbccec5fe127d6d659c152065dea9a2850e5c6d9c85606"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/fold_predictions/expanding/2026Q4.parquet",
+      "sha256": "ec432b644f4cd1a17588bce03da8291f5b6884cdae9f9755c8a8dd20934b8497"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/data_snapshot.json",
+      "sha256": "6cf8d8e7d02b942bc33e5b7926135f90c9e7ab07363f604bd2899964cfd9f07a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2021Q1.json",
+      "sha256": "4e1d17bbd07e7c24da22f10fb54ca8395bbae03c1d1d81b189f1ac17cc594e3e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2021Q2.json",
+      "sha256": "f312310af161a9e372504e8d8c4362486471c3ddffc8908038ff497d02d536b9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2021Q3.json",
+      "sha256": "923b701dbae4b9d438112115ea08fbe0bcdaa85200359174a24aacfa288ebe15"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2021Q4.json",
+      "sha256": "d19aed342ca73958f9330d5d0d791a354706397d5b4d9f188eb118879d2fed90"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2022Q1.json",
+      "sha256": "c8c7081df6f2a2493b2babef7f6c1e5cfce5831e8d5f17e7eb575a099549e887"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2022Q2.json",
+      "sha256": "0270355a5e2fa62450c8b2a1bc1ab4c2e6fa8bc1097f5a8a317846ea39f31b40"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2022Q3.json",
+      "sha256": "93426a17aacd0426e88f748aac5dd21db5221d59706fc648fb7aa942650ecadc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2022Q4.json",
+      "sha256": "d833cfcf51f89c72e250f3c1734929557a2c2882eb80e305390aac91347e7259"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2023Q1.json",
+      "sha256": "f9a8258b9c7ca24ced389322c46c6fda9c5fa52662ecec5fe65d0890fe65ea33"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2023Q2.json",
+      "sha256": "8e17913bd8a24b7edb60f63a8f03aedd3cc5882bc930eb131476f2500bdf4817"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2023Q3.json",
+      "sha256": "55f21322accf857c032a646fa81510b293d7eacd3f5a0bd8cebeee72a620edc7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2023Q4.json",
+      "sha256": "3059c6f6eea2b6156e86eeec347b36e5733d4d50bd4a5b1d8df7133196b611d8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2024Q1.json",
+      "sha256": "f2d7faae4c626585f62c7f47aef97fa0e89bca2390492d0d0173c38cdc06ee10"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2024Q2.json",
+      "sha256": "2b22f168d4134e9408cef0e2b2132b30fc08be014a5e95ca2f3fc39d0563c84b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2024Q3.json",
+      "sha256": "bf04ab65b36fbda8c6ea166b730e2b45f4aedff0e2e5e9aa3434e26fffd0cc34"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2024Q4.json",
+      "sha256": "5259cc06187987eb74acb574aef92c4b46e7680845ce067178a5b40c6299c471"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2025Q1.json",
+      "sha256": "437f92c798eb32def6441256421ecc247cf959404b2502d0049f33f46967538a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2025Q2.json",
+      "sha256": "e07288759709e8cf29f4d56fd9f17725687d0d9ed670d7dd7178de31448b0dc7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2025Q3.json",
+      "sha256": "cfde9ffeb5051225f4fa53c5737f6d865e2d0928aab54214ed33a70e80fe23ad"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2025Q4.json",
+      "sha256": "b86de66d2cd76a0203addf9f666bd6c0f489606861e73a76d79c286075ba6241"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2026Q1.json",
+      "sha256": "e4e26997165917d4f7905d2b02652211e117557d69a8d5c2306a3f3b5cc1c2bd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2026Q2.json",
+      "sha256": "c2ab7318928668bbad1ae756c876874ac6121a0f5c49da881416d8f1222f1394"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2026Q3.json",
+      "sha256": "c8dc55ef4f0aca88080627aa0e1fbc15311d6d7ca00d61cf6ed144f012c193ea"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/outputs/manifests/expanding_2026Q4.json",
+      "sha256": "a1539d8b25536aca67b1f90b85d944ae2628e45e9fbe93112cd85904a2480c0f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/close.parquet",
+      "sha256": "e108911351a611cf6a656c70a95e76bc75669ddabb03550f5bb625706642f778"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/daily_members.parquet",
+      "sha256": "440cb4d2ce2aa48a5c71c2e6c6e79ee7e3353ef5b7b6f3194bce666ef3255121"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/features.parquet",
+      "sha256": "92ca23db0c918fecce0554803480fe01ca982ad81887c6cb846a59e454063a9f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/industry.parquet",
+      "sha256": "a527c5d9ae503f0f5dc439a4f32ccb89e7d67e07ad9c466b90486409d210922d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/labels.parquet",
+      "sha256": "6404b19ae425cb685c278be0752b2616b24e82f85c66fd1fdfaa5267634a1bfc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/limits/daily.parquet",
+      "sha256": "8746bab002113a1831939c970eb176338c22cabaea35c78f897bd6de24bb4638"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/market.parquet",
+      "sha256": "b26883d1d37d37b1c60547142fd5428c034975e696dc0b90d7daba1394023106"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/money.parquet",
+      "sha256": "cb0ef5ebc9fb1b403f6b3ed0fad417e1ae17a82900051e9f85dd1ff0eed59286"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/open.parquet",
+      "sha256": "fe5189c335ee219cb0b2756c149f70056fe32f0195c5b48e7fc9b7e4d02d8326"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/opening_trade_status_v2.parquet",
+      "sha256": "ebfa5525e624deb7e06408b13a972b7d870291205763703ad89204c16cd132f5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/qfq_close.parquet",
+      "sha256": "47f5f984735d76e96c721ec16c7bb39c9ba14cf1f1e46ed871de6fd4e15116a3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/qfq_high.parquet",
+      "sha256": "10646f03701c7092654e96e00261fd23b5ae9495d686e7c189b7ea296c37ca4d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/qfq_low.parquet",
+      "sha256": "41211efc47c767eeb31fc1d7f9630ee4584a3c2f02631128f9bc7fe621abdf38"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/qfq_open.parquet",
+      "sha256": "923df6e70736c9527afcb12b64d69dfb068652de1b3fea67c97c56d0bd6c0a87"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210107.json",
+      "sha256": "7cf1b99ce608928bc82550872b00bd0536d388d0dd13f0549d8b153a7eec0429"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210107.receipt.json",
+      "sha256": "6c156773fdd017f9bd1702605fde8fc4e723b6cd9cd7e535395246b6ba1bf7e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210114.json",
+      "sha256": "df73711daa1d2fb1452fb8c6836c829c0f38707d3a664d66b2ea7a2752aefa63"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210114.receipt.json",
+      "sha256": "de18850a057218a27ea453bd0e15ebf274493a669ff3b42d39b5befb3a3a75be"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210121.json",
+      "sha256": "b590cc1dd1a242eef15cf6fb368dd47e2bc8087885a9bf204cce95d06b65d480"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210121.receipt.json",
+      "sha256": "c87e3db3ab77a793e68198fd51645d8886385ae07d0b4a82c6583002620dd2a7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210128.json",
+      "sha256": "4c54b8def72d4e7608caa023f04f3225d2270c2a3d86f416c98380610f86dff9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210128.receipt.json",
+      "sha256": "b7f875a27e13494e95f28736fe5a68aa05886e103dc4c1b5f30d8e278f6a6b04"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210204.json",
+      "sha256": "ec87b6c7f1ea45febbd738aefd54bb1c31f214fabc0890d9175212d89f874602"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210204.receipt.json",
+      "sha256": "1563ae6aa8bf873d8f64b39cf116c23d1b2eac35734509cb1620a73dafd35e85"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210209.json",
+      "sha256": "5d30c9dad347e7b247d1aba5ab9266ffda1a98a5c1cef4db50af5f23f523f0a3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210209.receipt.json",
+      "sha256": "df782954004c448c56cb64172a0a250103092cd015792a72d4abe1c8d06cda7b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210218.json",
+      "sha256": "74b7ba05bbd9bbddb8beca04b78427e6baf859a04679f13af7722c4dfb3e4da0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210218.receipt.json",
+      "sha256": "11fa011dde854c23ccd40e29db625c8b9a4b05aedf28aaee22b32b438b2b13d9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210225.json",
+      "sha256": "96c3409bb37e0f069a15e24ac39f9d2615b466f250a8960f7f9846172e85fa4e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210225.receipt.json",
+      "sha256": "b3309237ad1bf39e43c64eccf2f136848de8dd98e242e2ec3110f63982aaf749"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210304.json",
+      "sha256": "ecd16a73ba9ec9e28e592e0cad95ce61e463aaedeebbe39ba88290578ba0c507"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210304.receipt.json",
+      "sha256": "dec710f5472d8fe736672391da65b60e49646259715c4939ea1320cec7f26683"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210311.json",
+      "sha256": "ff65cf28fee30ce5c1c8d339eed8b3b8744322ed3a449af25349ce160beb0a19"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210311.receipt.json",
+      "sha256": "5321db76fde6acf63ea60e9da088416b49e92ab7dc8604eeb5547f0922edc756"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210318.json",
+      "sha256": "aa2f4c0e9461f581267babc0fab54bf8abb130d04aa2930aa7c8925e4d8aef10"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210318.receipt.json",
+      "sha256": "9e2b8112a490c605730213243b58243c4f69f40571b1fa119ea16f287a83dc95"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210325.json",
+      "sha256": "b4345ea3b587417550d372f59883058540fdf12c703147d78b7f514002149cb9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210325.receipt.json",
+      "sha256": "e71f7e6f90862538040d51ac39313d2e227b4e9e8d8abeaba27017021f01eddd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210401.json",
+      "sha256": "c213488a72e6d6e8faf0b27bb6d2c167640c9acbe848216a28b9867e6ef6a5fe"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210401.receipt.json",
+      "sha256": "cc76dc5e07921424fe024cbd94bdd2f29645e016dde605d2b318cfe18bedd37f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210408.json",
+      "sha256": "5ccc49b98d8ca726198c869b5b95f8f75f89bb97999cf71f400c1973d651eda7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210408.receipt.json",
+      "sha256": "e50f7e4d52693a64da2d26762d80ec7c4e393164dcb0468d74cd550fb72d3c09"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210415.json",
+      "sha256": "6e1974f5de21d42f28e0b1ed5abead9a3b72006967958ad9d372d44452dabd29"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210415.receipt.json",
+      "sha256": "7e8bf2bd34a047e4810001c5580e7b515923d239a47660ecbff9ab6c18d6d36d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210422.json",
+      "sha256": "90e88da0d242888a68c43422d9a2fd7489aa95a9bba9bece3bb5c5914d5237d6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210422.receipt.json",
+      "sha256": "8036baae0be66e895174316da6de9a9de88f4b3077fbf224f8c7b863275542d3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210429.json",
+      "sha256": "1a160ebdbea4fe6ad0beaf9ab08af9dd766a90eec14774d63a2d19de1498eea7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210429.receipt.json",
+      "sha256": "d62889630f1be2e7f9a23dbc9e1ed1d02e1ced8d20009ebc620c3b3287c18574"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210506.json",
+      "sha256": "babc3525309a3626966dd9412939575a0a97a5dfdc0270e24dfd7895dc276d75"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210506.receipt.json",
+      "sha256": "f86ff912b554d4ce6a3d35f9f689968e03b9d684ecdaacdafd3b1d81efc9acc1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210513.json",
+      "sha256": "11b8eb94f76925fde5c316318c76182bdc893bcac1e788da83b828b3d11ea41d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210513.receipt.json",
+      "sha256": "fa98602dea9fdf14d9c359393fe34317d8283a65c7793aed32e49429a28056c8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210520.json",
+      "sha256": "97a936637bfb2227d629ff821b3347339eda7d132c6aac1225bda80f3b2cdad7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210520.receipt.json",
+      "sha256": "67bad43d81011cb569cef3665e35d0c669075ee36ce43184ca904318866fc3aa"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210527.json",
+      "sha256": "d611caad41708d33152b9654745dae857dce7820e91dc7124d5beeff750c6ddd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210527.receipt.json",
+      "sha256": "d4a6ea6ad9eab55d431efebbaaf0a69ccd93f333fe9573ab173cb7371919a1ad"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210603.json",
+      "sha256": "5d89ba91f6a1a31efab2427b0b11fa4b9ba7bb618d318965364850052c19e4ea"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210603.receipt.json",
+      "sha256": "3416a1e845e093ff10cf94dfc4063cce723acb8a4aa852c29d99984d46caa220"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210610.json",
+      "sha256": "aafb12e53746bea9196b9d18c91fc834df0f57a0cfd6308af6efd12cddf76dac"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210610.receipt.json",
+      "sha256": "3f9365667f022614251adf6291a909b22c4c4e997ade649a11084b9aed606e7a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210617.json",
+      "sha256": "c75321f0987a44637dd10fc7242ebabf8f88e67c1ef19169ac720324ea24c8f8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210617.receipt.json",
+      "sha256": "82096e40016390c7ed93f49c2cbf0403037ad8282cc7f9ca36959e9f2d54eb94"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210624.json",
+      "sha256": "fa7680e0825db6ab857a7fd11c2110c6eb6ef3ad19c98ab7f488d0cad8cf744c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210624.receipt.json",
+      "sha256": "d2cc3e0749b1f944fcde99a501daf531e3967455cf97feaa14585fb152f6e8bf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210701.json",
+      "sha256": "a5cdd89b152f40ae172fd8a359269394709fa221d655c115df308d91dd1f6d58"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210701.receipt.json",
+      "sha256": "21498750da29e7a75535dec983203c5295269bb06f39cbe85b4e059bc2a1b657"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210708.json",
+      "sha256": "ba8feaa8128e0e9581c3c1d9ad056b337c5064794fc1863a94993c566797f5de"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210708.receipt.json",
+      "sha256": "31cafb25a83d2ca359af7ea22539fc7d9b3a01d149df4829f81c8da34c90f278"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210715.json",
+      "sha256": "8d946952d308b6252cd3c6e90eb08f5ce28d2398292e051c49315ee0379f82c0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210715.receipt.json",
+      "sha256": "621316c04c614f3a6c87b09c995557c3560faa4fdb58f61b96a4ec0cf3c9efd4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210722.json",
+      "sha256": "bfaaa5582893b40a8f5805e5957c22c0b99a86b1601b539862a75783fdd4be3c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210722.receipt.json",
+      "sha256": "160eec2262b33fcd8327766a1471ec7fba2aeebfef67810dacca7f912697d922"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210729.json",
+      "sha256": "aceeed7481486dea61033917112e47699cd21a78f80110d2195d31174031ee38"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210729.receipt.json",
+      "sha256": "cd9e8aeef6f384c00f8006373fe0cc18f5f6629d00e67a8892b0d70143df09dc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210805.json",
+      "sha256": "951f2e4542efd77b0d06d541f0bfa51e7bf50a87e9947c0a74d97b0ae8d36984"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210805.receipt.json",
+      "sha256": "9b936ccee1568a52c7906116d3d82ae782d1e27f0c19b10e9490753d0c419c5b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210812.json",
+      "sha256": "84a69160436973512e167bb67bb3c57cddb766ab167cf0859d6c1d869b3115be"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210812.receipt.json",
+      "sha256": "bd9d175b49cc47f9130768a2b5488903140600215c59ea72a47bb8a52aad81bf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210819.json",
+      "sha256": "d06e172e1729a30649c36235b53c052bd6f2334d85b2944041be550c4e0417c3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210819.receipt.json",
+      "sha256": "9f8816d8d4901e635eea605e361c109d8647303d4c8fb1c4300c9e3270d089a6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210826.json",
+      "sha256": "b7a82307a5ae36ae27c3eae63641808bcf241db36101f15f4110b437175a0332"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210826.receipt.json",
+      "sha256": "f6b5efcf04344e1ca1cc613fa3f7bb37e705576d6a5dc655a0c0a8dd45f75dbb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210902.json",
+      "sha256": "03f98507170ff6a590f78d1957a8e9c61aa9989770959ceeea0c3f33eb2cc672"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210902.receipt.json",
+      "sha256": "cf9d06cd3399cecd379e4ee5dfa1302af0c984332a8faaf6c03c0c4f27dff25b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210909.json",
+      "sha256": "a7c631cbd04fb184ea1e5c3f544bfa55c09c43ff45669c8057eaac8c79873250"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210909.receipt.json",
+      "sha256": "c0b9542766ccb46905f0cafd6f2d460a8001b5e890aff264a5709ddbbf6220d9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210916.json",
+      "sha256": "e4fbfb582c6754c6742154402cb1c460254aa9f46e2417413f0d790c3f68f063"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210916.receipt.json",
+      "sha256": "76009926777565290af6c9917ee13145fe24013fbcc8abb111410f9e2092df42"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210923.json",
+      "sha256": "ea339d7bdca842551e2eb7ded345cbdc08099b97bbbd727d0cd03d996eb96075"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210923.receipt.json",
+      "sha256": "ca448d2d3f5138a1fb634336eb7a1a254f34417d7a4c184445f72f9c9ea182e1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210929.json",
+      "sha256": "3b8f8747d8f61173847773e098425ef0c8142244958c06e260dec59e51ed7ade"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210929.receipt.json",
+      "sha256": "697d0ab5960fc87eb3d147148e2593839c0c01576054adbad261915fdbc4fec7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210930.json",
+      "sha256": "e3d03f503b4155a8e30db134bf5908ecf525c1573b3fedba56c875607dbfa8a2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20210930.receipt.json",
+      "sha256": "3b765f2cf720df63c16a99a5a1e06537a8c31966ae6f810a0d2d34e26135d275"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211014.json",
+      "sha256": "a29cc05394f44850d9b7ca762e1b9317f570bc4ce2ff5f45d97d7fe829c41ee2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211014.receipt.json",
+      "sha256": "27107e58966ca0efd686c80586c202cfe9caef1cb2f7128162efe62433bf118f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211021.json",
+      "sha256": "597ae12ecaab4d54c231f2d4defed5ac58fc6b635c07866df5da49af00110dda"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211021.receipt.json",
+      "sha256": "7e82ed09b30c87d2cb0d8611d9124eb11ab8c3a1e180d54e7331af4519d372b8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211028.json",
+      "sha256": "9c7880b300fa442f95d8246d1c7964f17d413ffa97a260ac30bcf9bf6765c3d1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211028.receipt.json",
+      "sha256": "1e15f6bb56047b7f8a1d14f746ac4055f84f399dc945f0f3cc0174ea1871a786"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211104.json",
+      "sha256": "f83abdc31df0990641e925aef15d42ab28017ead5aa2bd318e278963ee264b78"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211104.receipt.json",
+      "sha256": "20e8e93c461d6e29def22fdc0e12e704d158ba7ba914e0ea0462953d87d1efa5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211111.json",
+      "sha256": "1f4a4670c327a9d62e2a6689a68749830930673ea517c68ff26d4247dbf53064"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211111.receipt.json",
+      "sha256": "4ee47c61321ad980092c3d857be585e6ac58de544da8d108e2fcba594c5a4559"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211118.json",
+      "sha256": "d822df1d1b61dee6441f3e5e50e19315421d13dcc5a40f77108aa4a711c160fe"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211118.receipt.json",
+      "sha256": "deacee451c7bf89edf76b266dee04ed9562b72ed509ec8c3d8d31d5ad16dd451"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211125.json",
+      "sha256": "54d3680bdf7d7b64df41a3b552e49f2a1d08ef192a61f8b575a6759b225f35d9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211125.receipt.json",
+      "sha256": "e98aa7cafc64aa2573102820f567ce871ac6db4974013b14413c6f7fce004740"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211202.json",
+      "sha256": "92e4984681a27d61e782858e43fa4ee83332a3fed0b4290dff9aff0a30d0ca3f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211202.receipt.json",
+      "sha256": "6918dcaedc220d6471fb6fca0f34bb317be5a4c49b3da88fa2833594650f5d38"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211209.json",
+      "sha256": "f3758ccf87aac53c19347c6a059f8307ea6dada1b4e7a5fe30f458a4a45444e5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211209.receipt.json",
+      "sha256": "e1bbffb76c39e85e9bda7bca80552a64734b3fdaaf0587751f9c8554b44434ff"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211216.json",
+      "sha256": "6049279a590b5f54b5c99ab84c5303a2e198ed5c38fafb48d568c9ebecd7d2b7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211216.receipt.json",
+      "sha256": "2fa28150f4026b7f9de8ed353c284f1be17b3f091242ae83cce8e29cfdbb6044"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211223.json",
+      "sha256": "9f5173358d520f136d5390513a34edb1cd1883588abccc64edb2f65c77f8e665"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211223.receipt.json",
+      "sha256": "c816255d2df16c2d55cbe638ccadcfe5011add8bed7d194e511ab641dbc959b5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211230.json",
+      "sha256": "06f204c932665a9f97d59042a516ad65d086296e3ab72d3ede0e16cb07e84e23"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20211230.receipt.json",
+      "sha256": "15b536f8064c9472e1d02aae89b983fbd8ebed91a706449e8bde24d9d9c2bd4c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220106.json",
+      "sha256": "c1cf5f4dd055c4cc86a12a562769a6effd82c659dfd44fe06cee6fdbe36b7731"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220106.receipt.json",
+      "sha256": "1cacd74cf53c6de0a8504bf8702afe9fbf7263356a0f56cff5bd0399c058fa68"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220113.json",
+      "sha256": "f928218c2c9d2a49f1a0c64e778d4e4d2d94e1a8f1756c43d27e7b3b2d8ed5d2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220113.receipt.json",
+      "sha256": "70e70e533148edcbe3bbed5d9703c6125fd54377904bea3c00429af8678a50dc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220120.json",
+      "sha256": "5c17a3b0a6d0f5621ba084d91ffe94d11bccc6d765028aa83b4e1a1265d83fd3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220120.receipt.json",
+      "sha256": "574ead266f1b93478f2fb5686db6974ec9ba92d683b246befd552356daff3fb3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220127.json",
+      "sha256": "da4dc7479b0331ce7d68c4ff9304395386c206f50a69a4df0f097d49dfa39cd0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220127.receipt.json",
+      "sha256": "be3264aac9142ae89397a8499b65aef332d43d4d90546435fb81e3967f84d54d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220210.json",
+      "sha256": "a28ba56a4115579f50d0db1ac0f6b59e697b625b1077e66e29ed8c14bb2dcad1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220210.receipt.json",
+      "sha256": "8bdd1c41090212c5881dae0553a81c6b988d870d688f11b43070ae8df45098da"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220217.json",
+      "sha256": "b60ea28593314d0428df9bdc02fd1abfff0d0e571f6ed1075744321f4a796b79"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220217.receipt.json",
+      "sha256": "04a2a7303ca567e273a70876c45a939e916480ba21f94f036d22f0abbc31e671"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220224.json",
+      "sha256": "12fc1a4184310560a43c51b8e72ddc2eb1158d5f56dfea20ec3727e8ac7b9834"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220224.receipt.json",
+      "sha256": "b81e33978e8a10711095492dade34f95a0ea1f8951a45444b0f8bfbf29242426"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220303.json",
+      "sha256": "c11522568d6ef5a7fbeb8ee0289c8128a17f61e08750b1abecf80921c77b8c2b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220303.receipt.json",
+      "sha256": "8eb1dd763e6ac386efc7a5d6193e5e419afcd10aa91bee6413d27a61c8ab3417"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220310.json",
+      "sha256": "29cbde0868606f479639d6e3f612163f74f547186a0760b3b137d4054d6b348f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220310.receipt.json",
+      "sha256": "0019bdfb723b0c60dd48d826a2edc4a0ff3fe0d9e49647afd5dcc2dcfb02fb2f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220317.json",
+      "sha256": "8bedfd8ea60a4286196c9e47978c40bde3f558858afd0bb1a531e88844ae2486"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220317.receipt.json",
+      "sha256": "4be667e82e7e863840f4dedc5b6c97ba0a22839e2632fc3b1e69b1a35135c2e2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220324.json",
+      "sha256": "8fb38a879b645f1f49c22ff5df3a1fc0bf7fde745ed24257793c27f3b7d2402e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220324.receipt.json",
+      "sha256": "616491fba51b687fc65244008eddda130e8bafb0d2c9c92ff8c3d695c4ed98d8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220331.json",
+      "sha256": "264aeaba3720c03a140ef9f16b9089dcb401f45260e7d9b051917fd622e0e2e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220331.receipt.json",
+      "sha256": "06866236ec408e3c00a847144360ce06cb9a2edd39f2f6cd55732c968ae4bf0e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220407.json",
+      "sha256": "500ace6fe5957382b429ce193ba4a8a659bb816d6ae884bc8c9d29da2969a9d0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220407.receipt.json",
+      "sha256": "c787e4bd7f2467143b2f1ab63b3d099b306c4e9ad62edaae3e3f90bb207970a6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220414.json",
+      "sha256": "7177a47e9d193f620e89b6decf901c814579f8ccc8e991e7b32a53596433e5ae"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220414.receipt.json",
+      "sha256": "fb84ee8d9b9d1d6c1df78f49385addf2e384362e7039b68542ccc42b3341f7d0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220421.json",
+      "sha256": "7dcff996d20c04563970310abd840de9af2f9d5b0f907a4c52a297775adb38a5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220421.receipt.json",
+      "sha256": "2b24312d8fea9c809d067cd45a8b027873e40ca606fbe8b5419d921a5049a5d9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220428.json",
+      "sha256": "2830bea50811b34010b9da715749fbd8cabec547f08fb2945e27e9b42c929a0d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220428.receipt.json",
+      "sha256": "e7bfea1c53b5b1f39492188f01fa4d1ffe4c5166d6c609190de2ebd38e0421e0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220505.json",
+      "sha256": "3f75b369c037fb6acb61d77b2413cd4b6a0728af205662c78c2db932b07184bd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220505.receipt.json",
+      "sha256": "cb886b1840f609b10dd96fab920deaf357f23115e15196c19da0d4181a94166e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220512.json",
+      "sha256": "0bf8365234a17cf141357430f1b227a4c5f5850e63aa47f20a7394eb38551ab9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220512.receipt.json",
+      "sha256": "aba3b0aa1f2b59ce940a00696c82dd07acd2c19da49b78758b7e2b917cf5bfe1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220519.json",
+      "sha256": "e93ad4cc264d9ee10c50834beb4c2f30e4240a02b65369c2efb6feb4e2cadc0f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220519.receipt.json",
+      "sha256": "2aa968b79405683084f3d73761c1b0b50f8cff2852d5756799da4aa97b977847"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220526.json",
+      "sha256": "dbc10b199728befa34c249e76c84a647144e21f44e71c6725e2be7de75cd2cdf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220526.receipt.json",
+      "sha256": "f85c06ae32b9745401cc01a203d4464547fc715d1a4c5d26e92e0f9973feeae8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220601.json",
+      "sha256": "eb78f07d9087bf42cb84f6fd25a42741fe70e733cec910bc82e98d6005aa6879"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220601.receipt.json",
+      "sha256": "b65906748736c3bced0f66bbc1afbd58eacd1a1713c3f73bdc9473e7c6ceffdb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220609.json",
+      "sha256": "b811adb4fc9a1c1204fa892496575501bfc0cb452860e6da63d0c00b8b9ecdc1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220609.receipt.json",
+      "sha256": "6f68d6ec3f1a2f314667648ce5f546384853e719cbf2b4f4047bda027350e916"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220616.json",
+      "sha256": "1601a3769fc6db73ff82c32b3aef4233090f250fb602d17e36ca4e538b78078b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220616.receipt.json",
+      "sha256": "fcf0a094782449dc5e32d35c5a82804a94e0bb26553e44f7d531e5f4e5fa956a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220623.json",
+      "sha256": "834ee2c25d7bd3b6e12f2561b4469e809709db4a807c340f3500e9b65819cca7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220623.receipt.json",
+      "sha256": "70291bb039062c56a052e70e50fa631a04d894dea90ea5044d8f65b1f3562185"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220630.json",
+      "sha256": "45bdab51f247238e493009426d1ed7edc60aa50227aca40102c286b8b88601ab"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220630.receipt.json",
+      "sha256": "525499e7ddf64fa0ce78cfb2ad9f43b1e0f117b0e6a4ebc34b6d176126e79bc0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220707.json",
+      "sha256": "2a02aa6333c890c149856c620b82049c3aacd09482b9f6eccdd1c761748bf4eb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220707.receipt.json",
+      "sha256": "ff9aac9c9cbc2f0d0127fc63aa44609fe86bbc9519db29aa07bbe22e518bb645"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220714.json",
+      "sha256": "e5cca34ed2300ec2183040f75170e1ea1a37aa324c87befe1a529890b8101057"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220714.receipt.json",
+      "sha256": "c6f922d68682c96cd209624d5bd14a685fae50f0860dc302919ea447798e9697"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220721.json",
+      "sha256": "1cdda49ef910c14d1f534ad7be32149347be7aa1599bea7f7b3edc172fcb0f3f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220721.receipt.json",
+      "sha256": "abb917fc558c5c0d9fc522cdfca7232c5a247b57140016769a19b232dfeffe3e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220728.json",
+      "sha256": "fffcb37865cb37635912a2ecd692d0a6d95ecf94947f155664868c1ed9c35148"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220728.receipt.json",
+      "sha256": "89d75f3d4f5a9cab9515117799c05d69c44337a03d54b8ae618f15603243d1e1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220804.json",
+      "sha256": "1dade9e8f85f1fc94c1d25a5190ec6bbbd547b84e99e7c61ec09a0de01ea8013"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220804.receipt.json",
+      "sha256": "a1414ecde581b77fb8252744ac2d86546492f4f4161c2771bada80b2fb508f90"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220811.json",
+      "sha256": "bcc9cba2e3d57ec67a288409e893a22f466998333911a4743dd8ef8a074858eb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220811.receipt.json",
+      "sha256": "ed3f79cdc4b1cdb0962179b1e77ac81e05837186f308c72560b72e4b987860fe"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220818.json",
+      "sha256": "ee0158387e52abe45859f15dd57373c3c204e24ad676639242f0554d073b445f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220818.receipt.json",
+      "sha256": "613a1af95109a3974ca229b000570dd0c87e4f31bc540ebaa9e6b2e36a2e8f93"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220825.json",
+      "sha256": "f8b6251ac3de56ed3de163ec4b5b618184ef70140210d87e7d57c6b21e4fca8b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220825.receipt.json",
+      "sha256": "b7d82a3e7341f8ec2a6875dc20fe1605fecb16eb98a7f3486068a8cbac6178b2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220901.json",
+      "sha256": "40bdfdcf028ec9bc0d877e7e6d587296a49bc1f75402e109b08bf5fe15cc554e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220901.receipt.json",
+      "sha256": "da5ab53a388723d4d51c95cc091ebacc2309d8d2757dfa8a01f1f63ee65b7c71"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220908.json",
+      "sha256": "d2eaa65db59b3a80e9736c24754dfb609eaf6e008ddac57679083eed52c4d4ab"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220908.receipt.json",
+      "sha256": "0322e95656e33feff93c3246f20e0f2462f2a53acd469257f3a9db586822b1c5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220915.json",
+      "sha256": "c089aae45e692ab94d6668cbf2ea8d5ab77d40ccec47531ef8e32df16480c512"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220915.receipt.json",
+      "sha256": "5194f76820dcdd9a9c668591d7d6b4f8aeb0394412833e271f7106f8b4ca538e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220922.json",
+      "sha256": "f398b7e477f61b61ca5847be64347096628fd28717875f028b88d63c383479c6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220922.receipt.json",
+      "sha256": "05ce341de32236701ebdf9a036e6c3deb233a46dbb6f4c004921f7babc449124"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220929.json",
+      "sha256": "2b4819f5ca02f55bfbc8e4ce2ffcdc4265e5b8b75b74249313141f6e33074e7e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20220929.receipt.json",
+      "sha256": "9f150eef7a683b9912bedb524b5ceb8b45f31873262977c2d9cd1309b1ca1b6f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221013.json",
+      "sha256": "fd739b1c3dbe965ab288b8e724d1832758ae055ed8c504f3d09c536a65889649"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221013.receipt.json",
+      "sha256": "1b934eb766dce8c4d2846ae6bc5c69cc82b0dda26cbc8a847f4d9ff42ad75336"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221020.json",
+      "sha256": "ffc590db52ac84d9bb344820c8099598d5d01f9f389f7794e5378523c379506d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221020.receipt.json",
+      "sha256": "ccaf0aae59f68d13a38fa9cd1ba3927b031d2d26017e2f7c6abe63797b0f19bf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221027.json",
+      "sha256": "95ada0ac7f4b9aea4889f13883b131e52965f8a20d7236e7df1a3f1f9eb3f1dd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221027.receipt.json",
+      "sha256": "18ac281c996dbb02d7eebab39383212962d2c4a36eaf41929ec31098c493aec9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221103.json",
+      "sha256": "f7f727033af72245ca8e311b609a1b2f7e29d490f9fb19f80b6696bc9e3c2111"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221103.receipt.json",
+      "sha256": "9ab8a6f70bfcbce5ce3c6b057e2536ed0ab5dbaaec4d567c8ffc85e1aa16bcb1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221110.json",
+      "sha256": "cb5f673fb7c0eca328e6e82e54d48f4be30942b11af3a500627f3f92cfcfe8e7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221110.receipt.json",
+      "sha256": "1abae87f95b7bc646d767e30a6834639a448082146bd97018c70e08b8c233efe"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221117.json",
+      "sha256": "2169c2a815381afcbaf5750287993e823eb9aee333d3c35d1264ac619029ef96"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221117.receipt.json",
+      "sha256": "da186ae82d1907712d0831c78c243cadf2d70213fdd06fb6340b01125ccdd003"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221124.json",
+      "sha256": "f822e4ab95918f5c16b1000474cb1eff3333dd10d94fc84754fb33125092be9d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221124.receipt.json",
+      "sha256": "f6c4901135838c50f36c379e9bcccb272801cfa2f0e398a575cad3b3f3b9d2ae"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221201.json",
+      "sha256": "c862058a6d9879dbb4c104c5190e94b88f1b007f4c9f7078f30364c0da122d9e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221201.receipt.json",
+      "sha256": "aba28a72e4b46de7ea93779c424de2c0a54c4a74e917f290892c7ae614a2b032"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221208.json",
+      "sha256": "e39b83a1ea058b34bcaba5cd456675b29bbe9e33fac6321ee7cbbc5ab02b92a9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221208.receipt.json",
+      "sha256": "d5c63105e775c6c3c9167bbceaee97b2b55e58b05c0000aabb9bd8d66ec2a46c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221215.json",
+      "sha256": "71520bd6bceda73a2c46f47c51c31d9c708bb795a9b82404255b3c0debd3bc26"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221215.receipt.json",
+      "sha256": "26686ed598e9819c920167fcd2ab25d1260a8e353d31c184588b3c054909ef77"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221222.json",
+      "sha256": "104a8e218228f4d9a4e81c92428a002e39adfd1f8d369959d0bc92637121a773"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221222.receipt.json",
+      "sha256": "9b3216643dd287b2410bb96c82077630fcce25c8ab05ac39ec0c6ffaa23edc2b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221229.json",
+      "sha256": "36610d10ca273cc85217a753c263fb63138dcaa0260e5706ecdbeaaf57a43d06"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20221229.receipt.json",
+      "sha256": "ede561cd59a286a6242582addf97ee0cde12cbdd1d6d0906846af193930fb0cd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230105.json",
+      "sha256": "fcc55f26ed4d1761dba2cd4cbf414303a4ebfd0e28908ecfa8e11d03913f9b7e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230105.receipt.json",
+      "sha256": "7a27d90273c97c4d3f067e9acaad366ee057644f42f2be61f0fb5fb03b23258f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230112.json",
+      "sha256": "c7766885ac01d9b7de2579ea065394a6795300af42745df93e6618a7ccfb1dba"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230112.receipt.json",
+      "sha256": "a90463187ca2b3bc356ec0abfd1413feea2d0bbac230a03094440fadc7b89a7b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230119.json",
+      "sha256": "b7eaab46cf33805a2dc5fd6ca74e2372975fdc1bfe513f19b255e738ad336184"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230119.receipt.json",
+      "sha256": "2d9fc4bafb49ced7c679fd8af371e4be1850269a8e3ab33541e15c108ca5ee85"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230202.json",
+      "sha256": "dd4d6f83a94ebaef59575e281064bc38e97a0c91e3e09ade128da3fd86816b89"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230202.receipt.json",
+      "sha256": "5500df98df5dc5e352a24d946690e7ae023271f264d77a0dc5741583625bd8f2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230209.json",
+      "sha256": "d05f3f10bfdaf698a3b7a0998a91d73bfb6ddeacb9724f68e8ce5b78a0700cbf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230209.receipt.json",
+      "sha256": "60a6015a9fa115946eaab39612c80fd5b836f1a03159a4f5feae77dba9fc959a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230216.json",
+      "sha256": "5225f0c2a751dc6c93aa6d9f0653995d2cd19dfa822a12fc79a7e5ee2a162a4f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230216.receipt.json",
+      "sha256": "ddb7cc03242081a796cf6bcdf0c854200f593f3dd6d5e74d5c91ce1357d9a728"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230223.json",
+      "sha256": "3b9c47839971745994de84060ee72afc55b7733bc66d75a54f4f868ba524b1b8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230223.receipt.json",
+      "sha256": "425078fa26fa8fca6e9ae33cde603ba7d26bee3cd1587b2890e6ab1f90e53784"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230302.json",
+      "sha256": "9581b6f2e4b86ec2fde5e6c1cb02d8c71faa4c95eaec6df22efd6b93fad66274"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230302.receipt.json",
+      "sha256": "0146daa9d0c70e4b4f7bf11fee6d18e6d883358e8e20eebd352dd8837f0702ed"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230309.json",
+      "sha256": "c64089095db876ec12f78f188fb006d5ae511fc8524b3d9ca6c9348c2b3e50a5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230309.receipt.json",
+      "sha256": "8d9477dc8679b98a481dfa0219836c35f9841a9e38f88f759f8251139ec4a42b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230316.json",
+      "sha256": "5062ff280482498672bbbc0603b3fe7b5fabd06bb815311f70b3b0cf05f2c63c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230316.receipt.json",
+      "sha256": "2ec34eba53ca81ed07a394ddb8c4257e046ee5ffc2901a15f7e4ee4769228035"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230323.json",
+      "sha256": "340cb2d4244c6570af2625a7f1012ed497dfccba68bc0f8ebe95de514fcdb5c0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230323.receipt.json",
+      "sha256": "f7174f19012eea1aede80e59373e23fab1205f740b694d5048062f242274f747"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230330.json",
+      "sha256": "7c7e727795fa518f25dbf8abe935b98e335cc216c876e4960d5a1c74e577e9b7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230330.receipt.json",
+      "sha256": "7c0cdd392ddbcd1c70571678fcc9f9d71f989a65b8d237886240970787720cc4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230406.json",
+      "sha256": "bd1b3ddc9ad5a5c5e8965b0bafce42abe9d94ee4023aac1045e3d1f7bfd9787d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230406.receipt.json",
+      "sha256": "930e97bc1e413f3c9ba7c6d71c3060f04a60fdf838ed0bf0e0b7e43f6cec740c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230413.json",
+      "sha256": "f6cced4c19643d5d8e765e4ea73b307bb7c510c2812a5a27b3b4ded031022a57"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230413.receipt.json",
+      "sha256": "021796b578e542a8b701bc6404b513705c60cc92cb970f78c60a9332c1998f66"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230420.json",
+      "sha256": "9386061a56e1430361a1643623cb4d0b779ef5d06672b6a0ff18b4c562941142"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230420.receipt.json",
+      "sha256": "3e1aa6c56186d17b511c343af48ca07e7d6661e9dfc415b4381f2e2637ccce92"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230427.json",
+      "sha256": "5772b0f70cf063f0d76f7d98a4df089f01da0b437873ae2b68ed6acacb45d4d8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230427.receipt.json",
+      "sha256": "887b657258fe5cdc54292eb9f8f02e4d80aafa5040a01d3305fa78c74e0c4c17"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230504.json",
+      "sha256": "ebbbba50001cb43254f68156b4943fc98f610d3063bdc6737e8f2d664e90a7d9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230504.receipt.json",
+      "sha256": "756e66b43bf2bf2b07dc3f8b3b66967d8d2099992ec8a7685c4a39dc32a0069d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230511.json",
+      "sha256": "86cdad5418b7856657fe46dab43760d6db0394d3ef36fecb982ee2df0ad48c4c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230511.receipt.json",
+      "sha256": "2b1d0dde992642af51bff725f9fab8ec8c454c56f479e04b646dd2594ef225dd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230518.json",
+      "sha256": "6e9a0a3f6dbea055e674b461524536ca5b7f667bdc1f431fecd1e2df45277d52"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230518.receipt.json",
+      "sha256": "6b315740962065edc13ccd1c2ba523fad810abadf5f67d5ad08b37fcc6f5e61d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230525.json",
+      "sha256": "462ae9eaccd49f76b3d0605197545ae2b09814ba7f6c666e742cd8aa5afca493"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230525.receipt.json",
+      "sha256": "1e0e6881dac807cba4fac1babcb75638f7b3d135e6c394dc39fb99d4d58ffd59"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230601.json",
+      "sha256": "1bc7be49ec8f908312b1d6f07bfba4daaaba60b9fdb6e7aa5b5c9e1b542ae267"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230601.receipt.json",
+      "sha256": "810bf93242f667a866871c99a2d655089e46cbafb7e131be9905fe9b7c663a4f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230608.json",
+      "sha256": "571fa319339bb4ee8a42e88e9ffb7f7dd0e7537198d91d9b30ee0a633b9c8f78"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230608.receipt.json",
+      "sha256": "734bbc58e8ff63f56d748e4a06648bac7b7d65e1638c23b4a62efac1e3a68d1f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230615.json",
+      "sha256": "a756515e4ad26a30212144797ac355f1308dafe9dbde8a162dc9d2ed6a2175ba"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230615.receipt.json",
+      "sha256": "7f5e4e179bbf7b6f670c700d37367eab3de4a4bae45a3103c31f4c795bbe8278"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230620.json",
+      "sha256": "400af2afeca5b4fd18e3d1cbf7c44c54d2263ae505ed22059c86fe375debcfb1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230620.receipt.json",
+      "sha256": "6cde72a7e574d80320f1c7324c1f18d86f8daa60f44cebc46e7ba41475f8dde5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230629.json",
+      "sha256": "9c65cc8569587c0128498ee4277cb965623f0c13a2bde28b4e36e02d135b8453"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230629.receipt.json",
+      "sha256": "d1031c24e659fd5c0035beb399d8f9481325d6c0aa4f0500a6ad2dd2bee64376"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230706.json",
+      "sha256": "0c62c436cc4efea8dbdd9aa7ccc66a16e0d31cd68791ef623878aad67f36f335"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230706.receipt.json",
+      "sha256": "81547124f5be72782ff3ac40e82c8eb5095db8ff3d2915c01a09ac507d4921e0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230713.json",
+      "sha256": "579404e6db5f23d357bd1d2c6e586b956984245265f8a860d5b0500d1059fd80"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230713.receipt.json",
+      "sha256": "b2fe67001b0ebd000351e891b6acf9c9f0d7b11e4ec69133eb655efddd3a9bad"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230720.json",
+      "sha256": "e54a8b0103b96f0c394f1d53a8fe05e4c7242a8820bfe20c67a34f8720848ab6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230720.receipt.json",
+      "sha256": "6367644381b57c32a2adc99d1278d2167bb0a71a4ce5cf00dafe927c693b7188"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230727.json",
+      "sha256": "b2719e1e5ee074f1336947f0a1891b0f8044d55b103ea7224e69123795057408"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230727.receipt.json",
+      "sha256": "6148e2aac7656be66dd08650116b5d5685b4b8ed13fb194f0ca284bf297a3b9b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230803.json",
+      "sha256": "64871569c92541a38799df48235dcb8ab3cb0f638a1e586c4ba0f001d3e61bf4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230803.receipt.json",
+      "sha256": "2d5df1528c52cb0b3de9f1ede5c22fec9b4e8aeb797f3821e238ae1b7cda1be6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230810.json",
+      "sha256": "6ce729473387d25298d4445e32befa16c9feec65288eb67d94138d2b86b0b3bb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230810.receipt.json",
+      "sha256": "9bea30b6f6f94940b0eeeee4937593ef1c3fa54159908a0ad7d596b7f67eb846"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230817.json",
+      "sha256": "5d2a7148b455902a736840d752a5368216fbb2bb46960eef6982506f18446459"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230817.receipt.json",
+      "sha256": "662275f8374c6fba9c3c0f9cc6be5e5db6000970b63fb40e6ccec02c6be8ebe4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230824.json",
+      "sha256": "ed4c73795b092a1126a2d062c4e805f7f6e738da6c8705c3e0039fa975477493"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230824.receipt.json",
+      "sha256": "732d60812f1dd5964ee200313f43f3dbc362815b1c9a255f9b3f7812a0ca914c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230831.json",
+      "sha256": "696780b59078e0a65eec3ba195e3c3abe96ee8c562c72980097eb6fb3458b211"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230831.receipt.json",
+      "sha256": "38d8bd95b934e7f01f68e80f062462eddc2ce63e55932d565f5b610b72b5f4f7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230907.json",
+      "sha256": "18eadffe2f22d7e37c3c717caf16ac029562ec172d942b94c54e113eb159d92d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230907.receipt.json",
+      "sha256": "2662f3eee19c8656145a283a718ef077189e5b3d742d471e4e73c4636366d269"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230914.json",
+      "sha256": "593122ab95faedc002d81e0a6f7e71bbf0f7f079d798b473d8be87aadf05def5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230914.receipt.json",
+      "sha256": "d7df24eadfdb9fc07cc7243a05b67f60eb7676f45fbfdc42bc1231d9bb1df759"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230921.json",
+      "sha256": "fbb563ed9a8c2608a0aca96745a416dd967a45fd5f039c69eb4c65897a0d3849"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230921.receipt.json",
+      "sha256": "1072fc2a05e2f5be0d62577ce9d669733752e71a1fcfcb249734981375762a7e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230927.json",
+      "sha256": "9db1610510be72bab7e75cd4efe3a835497a9e1016729bf2198959499c5890f5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20230927.receipt.json",
+      "sha256": "a451cc811e67dedaa198e66769e6c0a7c1c5e047e02fcbeebd8412cef10e1eb9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231012.json",
+      "sha256": "d54a47d88635e0261b836becf56578dd1622aac27ef6003a8e02eeb501ee0d84"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231012.receipt.json",
+      "sha256": "f68232eb7de2e70ec4d82b08c8d56c6d4a331f8f9f2e950e2bbf5d99e3b0ebc0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231019.json",
+      "sha256": "257397fd997ccd60eea299cc8a6de42af9cb417cfefb7256a50f57cb6dee147b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231019.receipt.json",
+      "sha256": "c0f849ea3036c3ee855af4aa4d8c6185e757388a9b31c650d58e5a9ff3984a5e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231026.json",
+      "sha256": "e1cd7e1dfa42bb24fdb2fda10ca11e232293718b6f650737750189060fdc30ca"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231026.receipt.json",
+      "sha256": "2de8e2e57b20eea2224f40763f9fcf42fd3a289e2d6b7040c51a00e3d383af89"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231102.json",
+      "sha256": "fca8c530045cf27ca0b68583483abff13bb54c66b5be046a60158b8615017fef"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231102.receipt.json",
+      "sha256": "91b3bbd6ac6704feddfe5ceae121338f1b9823c432e00f463587bf668ce7d23b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231109.json",
+      "sha256": "c4dd5179491d438718762adbcd4c452712d83a30672cbb0a478b4ea3e365e82e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231109.receipt.json",
+      "sha256": "7092728560596962723cd70eb9d0077a2f03c5fa39132eeb589684b5ffc511a1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231116.json",
+      "sha256": "2643113095b1b5a8aedf90e79a2f48294cfae85b553741ca03d72d6ce4aae866"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231116.receipt.json",
+      "sha256": "3ce06e6273ac9240a3f6182ea7e9b464d6cf4fb4d91d3675a4f4cea5ea9f2b89"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231123.json",
+      "sha256": "26a15a69d24d8f0cf88133f7732deb603d23927513165fde34fff88812516c56"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231123.receipt.json",
+      "sha256": "77836bbe72480d2c90c5e89a3d5ed65c76c5000b63d9931efb9f62bdf6ad9994"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231130.json",
+      "sha256": "af3f04e4e9935f8644fe7dd5524d8e60f4e1c1896997ab59c170b5fa39757a8c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231130.receipt.json",
+      "sha256": "183cfc675dc81b25e4c6d511f4052e40861eb02ec48e1325bfd4da622d23e7d8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231207.json",
+      "sha256": "4ae3275f1bebd05b0321c91858e668ea72ff3e5b961d1e3d89a8ac159e5a4e7e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231207.receipt.json",
+      "sha256": "0d052a5cfd3259db05534270654064bfb8c3d13837a9cad8d4910c6b0b5ec44e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231214.json",
+      "sha256": "0bc113a10fcd0d040b4470ee5ee6dfce91fbe1563939a78bdb52d1cbce8d4b44"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231214.receipt.json",
+      "sha256": "0d3bd2713afd56faba64c0266f53e03fc7a82d538586556de0aa6d3f212892f0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231221.json",
+      "sha256": "f07200b34e97f68a62dcb589f96a0f424ad319a21679bfb152216e5fe9f7472c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231221.receipt.json",
+      "sha256": "c1834f151e2bf2aa16fc004512388f82ec7cc52eeb101d560af5846b8a43ead4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231228.json",
+      "sha256": "6683ef7e6e476c9cbc78731faf7ecfd341528c54602e6d1cbacffb6f93e324ac"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20231228.receipt.json",
+      "sha256": "5d0694160814b88db0b3455af99f72882fa36ca1387bd40f7e51f98354fa23ea"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240104.json",
+      "sha256": "335bbcd100501e87d0c884de43b99d91200835ef6c7d4ec2b6840079638790a8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240104.receipt.json",
+      "sha256": "35ba54b408f6b740ec2456ed3f433a98b847bde3d98232a217078f16d540161d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240111.json",
+      "sha256": "56ef8440061163c4501a5c10c3c292eb9d408dfd455a946f3da19167fc791d1d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240111.receipt.json",
+      "sha256": "6e56bfb468c8ec2b3882876a5844a8b5a164ffd73c5ad990051ac523fe0ea019"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240118.json",
+      "sha256": "1089f795a55861ba06a03d52c63d4b0aeb913d18e09c36b7e61028aa03394c2d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240118.receipt.json",
+      "sha256": "6844eab95175402b44b5bd42f19d63a9887264e9da69252123a73ec4a1bc067d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240125.json",
+      "sha256": "419830df8787a7ccfa7286dc59bc5caec25c41ab5dffb6ce986b72e6f4b6ade2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240125.receipt.json",
+      "sha256": "97b4c28698f26ba17bc0ad656dd3552107c83a73b764fc551a6347f3313f4b2f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240201.json",
+      "sha256": "18d2f3b2b0a8a15c874f360aff2be6cf8796a19787d9375dfaf9e5b8cfea062c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240201.receipt.json",
+      "sha256": "dade49a97b4968c108fa3552b894bd2092bf26eb08638068abe4479def93fff2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240207.json",
+      "sha256": "6cf6bc6f6d0857adba4216bb1d2dd60f54f7c1b2b58a6817f88ffb2593506da7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240207.receipt.json",
+      "sha256": "4bcd4d769720bcb3b2d48b4f1c63a494a911973773d89cbce9ba2cdaea9e8b39"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240222.json",
+      "sha256": "e4fda1d8032f6d1d8ccae08fdf19453e472acbc7ab91158d9ea470c036fb1d16"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240222.receipt.json",
+      "sha256": "d4ecc9d750db0cbd66890154ada4ea7be7399818065da34984206e9fdf6cdac2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240229.json",
+      "sha256": "0935b38dcb362efead1fd2b7f3b9fd079ef9530dfa59c944ccba3bb49bad93e1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240229.receipt.json",
+      "sha256": "3db93db438c8b0130e012390aa64be3821f0e824bf42659b6500fd19f1b97310"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240307.json",
+      "sha256": "e48955b807b7f155c4da5d147c81dfa731eab6c86d6647fdf3e913f166ec1be4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240307.receipt.json",
+      "sha256": "5881c0bfc33ac59f43f9c0047d5c0e46b9ec6d5779f287114cf734bb64116be9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240314.json",
+      "sha256": "d24567e372ea949fbf8a6e223a9b2ebde08b6f785f8ec81cdeaef01f0dab2dbd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240314.receipt.json",
+      "sha256": "46573e235662d54d6f3a6f84362f475dc8f49fc43bbe50e2ac9566bdbdcbeca7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240321.json",
+      "sha256": "13fc0ed3549425a70134292f74fdc969d0b28b86a8820cef4fd7125375b0e5e1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240321.receipt.json",
+      "sha256": "52209b4ef140eb1de9ee0dfabc6ea3f50ee05af6e0d3a09e278e3c8d86b60654"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240328.json",
+      "sha256": "ce608e3e6b3148e02f610748b69aac0f8da5b623dda851e6fa8e1309344fbf2b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240328.receipt.json",
+      "sha256": "49c16cc66f87186bc2142c9ac21815393079ef8df6454b4b04cc0b2a6283f09f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240402.json",
+      "sha256": "4d1cffa535399438ae109b7535fc0906396fd19fa111dbdf9b6a2ee5b60dedfc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240402.receipt.json",
+      "sha256": "87300249ff5ac608ae49dc315d61e1d42bbd7ad82057b705c995b973ae0d29c7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240411.json",
+      "sha256": "8c4bb9afaff388ad763b70e0840af9f6dc98da6d7d7d93bbecc082879739c726"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240411.receipt.json",
+      "sha256": "b690e5fc393040f206fdad31da1dc32976697c37af36a62af4dd2697143c8704"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240418.json",
+      "sha256": "2ab0ca677ca8a305f754dc2ad7646ab4504ad7f2eb4ca25ffd4fd1abbadad41e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240418.receipt.json",
+      "sha256": "2e44426c918a92ac34b8f853206af4cb66ca2b11fb2f9c56cd334d17727a85d2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240425.json",
+      "sha256": "16232574bab2570153961c35276dfec10bb0d15c955f3e45c78a493c0ac7aed1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240425.receipt.json",
+      "sha256": "61d2014952d550b0ff17e050cacf449bd2630ce5074d0d61a39c4b9480b49c81"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240429.json",
+      "sha256": "d1c13d8f85fe3c85ba04fcf363baefd0ed8980bb7b0959cc8c675635d5fa41fa"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240429.receipt.json",
+      "sha256": "4c5accbcd4bec63b0da0eedbf685c98e501da157056adaafefca047125b6dcb1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240509.json",
+      "sha256": "ba03aaa09593dcf223043d6fa2ce347e6bc680ad0037720ff2f82e50e81e7145"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240509.receipt.json",
+      "sha256": "13b38c72c80b708e5c77b801a13d8b8c6c150aa8a5cfa9863542588b59b27406"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240516.json",
+      "sha256": "2d426906d8fed952f17ab31aae1ff73475bf3897e3fca982c672aeedfd472505"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240516.receipt.json",
+      "sha256": "f213ab4858da242a37757f8d89d57eb5b7fb5e6a33975e08ec3014eb26f643da"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240523.json",
+      "sha256": "7e806e8732e77ee5769402d93e5334fa06bab61f91608ae88bc5e7d2238d7f34"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240523.receipt.json",
+      "sha256": "1ea1fad5419a0076d3247be6ac7c6059d5f9fdb4ab82750f91c96337f72182f1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240530.json",
+      "sha256": "31660ce812a671d5db38f53f7d3f881664304f94e6829f31af08a2d290d22583"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240530.receipt.json",
+      "sha256": "01fd003155c44cccefb4e4dda277eedf12ec5ac0fd19c3f66946df4334b4a3c9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240606.json",
+      "sha256": "5c8230200caed1bba9a33e6ff958fb66a0c124b9473cbcbde83ee35d538d3a74"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240606.receipt.json",
+      "sha256": "2dbd0acce95ed92c57edd2d69def7a83a1e6bb18dd356d11dab2eed1bed9d83a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240613.json",
+      "sha256": "5812e4a183c38be94478537068ffde4124a60008761db3ce1cfa06b035bc985f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240613.receipt.json",
+      "sha256": "34011ca51b810793752257c6df4197564a63e231f45e11cc1cb500018a580c1d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240620.json",
+      "sha256": "f3425ab29d50ff8c5cc39e43b9d69324aad161eb60a198dc9fb38834d07af442"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240620.receipt.json",
+      "sha256": "a51070623bb0e44c61c31efa9378edd3b717345a8b1eb88eedcd4adfb8341d0c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240627.json",
+      "sha256": "d0093cd11bd8dd8d2f8793045fcc8c6bcfbc4c25f8b1eb4f2f46434faa279215"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240627.receipt.json",
+      "sha256": "559d8d59330207fa243b5a213231ef4234252c2d6f410adbc4e9db6ce7b6e431"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240704.json",
+      "sha256": "39d042b85c50fa41c74a1adef9681c435dd418d99866f06b8924ca65dadb51cc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240704.receipt.json",
+      "sha256": "4ab3b2e26b2c296426d68eed0f7984a470798b27179e472e11f5b3458792eadf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240711.json",
+      "sha256": "547c35b59d8abe9d4aef6a6f102f61b1b7f99a9ee86ceef3692c5b059b74dfce"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240711.receipt.json",
+      "sha256": "92dd854d4192bce9d46e3059693a1493f50bc3832d52ef185c96bb8aa10b9547"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240718.json",
+      "sha256": "b47b4cefb5ea46b1675cb47f4133272d100dab4981ae8f54b5789483bfe86c92"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240718.receipt.json",
+      "sha256": "0a5dd12a9ab9d5b528213ef1321c868156484b434c9bc99d631de8bedc328fcb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240725.json",
+      "sha256": "34f3c585f9165b00f9868a79a053ea4f4e4bdf52784635966292988ed12c8a32"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240725.receipt.json",
+      "sha256": "0471939b62a9f9231f3f98ca01e7bb9c7875823b4b6d91d19fe98a601be3e594"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240801.json",
+      "sha256": "a06a57eb092f87e652832478e3bb5a13614ef54e3e1c3b95e47ba61a137ca487"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240801.receipt.json",
+      "sha256": "46e7a52d6f66c623ced62f7f53a0fced766d128ce974adb235d8851334d701ec"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240808.json",
+      "sha256": "2f17e6af15b1ffcf58ab6ba01bd801eb3896e2b5e64c231e7b339336a8460ef3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240808.receipt.json",
+      "sha256": "8e7986258748b8daabc6a1384437a597f08df820b761e2d15df858fb5953f697"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240815.json",
+      "sha256": "fe059bf8ed15d8541507ad325a1b53a4f4551576bf554a20eb2c75b8e0f09f16"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240815.receipt.json",
+      "sha256": "b3545448fc6d6b373f930ef55419b70d6246dd5734c96cd0be5dd2fee0f1588d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240822.json",
+      "sha256": "1b7b1ff0d0804772b84b049e05669b64a3f674efab3d93ce44f84ec784cad509"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240822.receipt.json",
+      "sha256": "7af56b88124985c0ff329d50fa0eae8552e5ab020488169c79511bb5165c7ab6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240829.json",
+      "sha256": "30cce0a9cc6e9a7595f2ec5095f10eeb92ebb138940e84647142c7b6f38610e1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240829.receipt.json",
+      "sha256": "ab84b58bb0ebddb351905dec8217d350203335a6ec7dd8614e80e8e66b9d2993"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240905.json",
+      "sha256": "df66de3453cf5c07bb55a3d38d5f88be4e2677fd10067cf107b1f872a483a8de"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240905.receipt.json",
+      "sha256": "686a1bf9db0fe92aec9012561c344d92cb089c14e99d99341a76b9bbc0ce9f00"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240912.json",
+      "sha256": "0dbc705ded3821de6c6311924c2c0c7e910980503e0046cc2218f6c8183904c2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240912.receipt.json",
+      "sha256": "6f1c4d8417e87a532b55d13ad16472e6aafa0c896c106117edf802a960fb9c80"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240919.json",
+      "sha256": "fab4c79ff521fe26b17e38341576e7821b529a9ff3109aa551fed19c94084ef4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240919.receipt.json",
+      "sha256": "eaa94c10226c2cf59e779a3f9061230aeebdabf049778f786b0534b28a3d1a05"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240926.json",
+      "sha256": "56fe3490388e6e0c383e86a522fbe100e976fb73d2774b7a64936b90c745610b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240926.receipt.json",
+      "sha256": "900797180cc0310845c317e29afd0767080973dcc4d1a4a328f95154a8e0e140"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240927.json",
+      "sha256": "240c1557d1dd08dea2ed6ee24395f36299ef4a7daab4f1b5bbda281726cb0fda"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20240927.receipt.json",
+      "sha256": "a7b29edd417a1f01bb8e70678d92071fc02d9a7fd05a47afeab653445a56d23d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241010.json",
+      "sha256": "ed99fe4db5c666b478cf4b2d60e5167129eedaca1118c22d6b90921d15fe586b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241010.receipt.json",
+      "sha256": "cfbb443c3bb3631424b282e11615c3f75ca6251b701c8c376614b395dc628c46"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241017.json",
+      "sha256": "c1b0c8d41d1a28a0a2e816214113fd90c1c33a2a609972b929b7a49764d07a15"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241017.receipt.json",
+      "sha256": "2e49e7bff67b4510627cfe2f15d097872ad55fe0ed3cc4839cdc67bf430156f9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241024.json",
+      "sha256": "28c0610471fb11f030228666e60667947e040b9ba46a810a515cd706eb84a1e3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241024.receipt.json",
+      "sha256": "6f51bdd751e318983820192d5ceea83e117d673f3bc8a124e22de4aef67e320e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241031.json",
+      "sha256": "53f8893ceaba1b2a8781ea7426b9699e293920eb897bb54c0ec379736d8991bc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241031.receipt.json",
+      "sha256": "244bb72cd53c7622c45640731ca180298dbcb161565fb3393e76f02a41061d69"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241107.json",
+      "sha256": "36253a091b1dd7b81fdc392ba9e6c3622c1149b28cff12bde651a24cb2ec15bc"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241107.receipt.json",
+      "sha256": "85c2df2a3c5ff5064e4bbea7a0a950cf78e7262fe2ed4f683fa059d6fb103da1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241114.json",
+      "sha256": "7ed5331b2d1efdf769a845ee4667601f58b16fb608fab4ae4093381969c4a21b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241114.receipt.json",
+      "sha256": "89065734acab6b2ed37badddca462485944ad450f78177a94ed3b6d298067d3f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241121.json",
+      "sha256": "6142ce0937c2c130d1887321d33bea69f2aea3bf1bc6254ba8a19bda6f9dde59"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241121.receipt.json",
+      "sha256": "c0841718706c63e95754bb803124f29f11c207ecbc268b4b13cd58a1e91cfd2e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241128.json",
+      "sha256": "b41eb5008d1eade468788727f544e41417cf183e104ba5607aac5efc721c59a5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241128.receipt.json",
+      "sha256": "22cbd02fe54e5de39b2026918968697a3f671e3d9abbaa3d9d7e2bd07f5468a6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241205.json",
+      "sha256": "96d21a44412b6bfd75f484b738afcb70a24286f6d2e27d2f6aed19d973706b68"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241205.receipt.json",
+      "sha256": "65298bdd6d77494c2b64b487e6df2ff0e41a2616b46a3b77e2ffab67bef065c9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241212.json",
+      "sha256": "59717f7c40651cfa3ed13b81c874c0b54d814edb1d1fcfe9bcacdd7885d36681"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241212.receipt.json",
+      "sha256": "1c2888988ec83cd4189ec539cba63a7080aa15aa8287b1d241fed39580f8d1a4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241219.json",
+      "sha256": "81022411ca3610d5e48f83a419121db35eedf0240d235adb0be2857031e0d051"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241219.receipt.json",
+      "sha256": "b860c365c948d0cd954e77ebca00c3cc81551b1a7356b66ffb37b0bea90e9f19"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241226.json",
+      "sha256": "ab775f0e3cd998ff83829a0b3b300dabb08b188a80002a6620520a00a6ea74e3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20241226.receipt.json",
+      "sha256": "e1b131f842db4b8a9d28f0b0ae4ae22c6172bf5cbc60468e29896b549b61760b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250102.json",
+      "sha256": "63b5b851c41a9336e43a81ca6aa0633dfde778dbab495f0f972890e058f804c6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250102.receipt.json",
+      "sha256": "f7c256b60e4941822e2083c88b2e90c28057935393edd5f5e37e35c373895051"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250109.json",
+      "sha256": "15a206f3a725f346f40c55a4815bfeace409fa473b106641c370c6ddfaff48e7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250109.receipt.json",
+      "sha256": "a246ff381216b1f7000c487836fe618a4df7695c3fdcc359f59575171baf6d37"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250116.json",
+      "sha256": "1e85955728315fee913fdb0697f2eccba5a7e339e8bb3c5c01d31b2924ecd189"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250116.receipt.json",
+      "sha256": "ca01d601eb0e721496837e09653530475d4aaa47653b033370320e76de932137"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250123.json",
+      "sha256": "d8fcc4f61f8443ba8f4024491f0537d360db695da162888890fe8cc8fa111969"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250123.receipt.json",
+      "sha256": "48aefa2a6b3c87c69c0e297f0ecfd9c870f0bf8f1d94a90005a179aba3c9a551"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250124.json",
+      "sha256": "ea3004532df5c1be0743c33367228886be4d4f0e5907e1f9f83440266c447adb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250124.receipt.json",
+      "sha256": "16e370dd849062fc852e455fdbf8ded5a96fe899147db2451f0f63f53c46c3ac"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250206.json",
+      "sha256": "f23c059a847d398237e5e5628883fe6cf3c16c442b2ade3827b672befa2a334c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250206.receipt.json",
+      "sha256": "ab16b2263518a04a0ba430144f663c652468bf92847d58739eef466f924deb99"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250213.json",
+      "sha256": "e374d4e9358baefc49969e5e0a228fcbd19350e1230354e1f5d2a60d2c5f2a73"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250213.receipt.json",
+      "sha256": "7e27cc3b1f7018cb45e54f230f65c9df122719461dfdc7f55abcb5e00ed881cb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250220.json",
+      "sha256": "e07c804f05d7b6726ae363ec78a61a64a31f10a2cd79fc5c31060410fb1be3c2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250220.receipt.json",
+      "sha256": "bbdf55500284a48d7fd91a26a9b9dd1166daf4386578feef7dfffab30d576c45"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250227.json",
+      "sha256": "93affcd134ee8019f5f470904ba197bb3bd2569fbd14d48194bd7524463a7d3a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250227.receipt.json",
+      "sha256": "eeb3e7039abbb0e394033779fb22e2fd60e83da82f15ca9585574bc594ee1bce"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250306.json",
+      "sha256": "33e041269847656a9c452651f8b462edd1fec7f65f645cbc38a8563a0157c9a0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250306.receipt.json",
+      "sha256": "996e3b2ffc6fc27ee0e1bd0eb7903f313dcdb43b06907c360771e9f888d50c35"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250313.json",
+      "sha256": "6c41c84d423a86c47a771ed64a8e9260fad1caa0f7fe8fc863770998f90fc094"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250313.receipt.json",
+      "sha256": "97c57ebf71540670b64229f88c078ff9ec45eaf35112e4d761f24f339e06a5c8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250320.json",
+      "sha256": "3a8460b3a4effa1e6d37de02d44dff51b89ac29c456ecb1770d874ed7ccd85c6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250320.receipt.json",
+      "sha256": "2d3ac25966ba9269d197c626a2768ade3b4b400a386001bf8000d1dbc1dc9611"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250327.json",
+      "sha256": "afe4a3b46880dd066af95fd3ea4e54cbbeffce38065dde2cd81233e238423a00"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250327.receipt.json",
+      "sha256": "74bdf435e3152e9c44b5ebffd062ee330aad5faf1b78e503e16095922d84b392"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250402.json",
+      "sha256": "defce11bc8f09cff43a524207f7b9cd389ea725f3e5fc61a7dd9fda1a1e50dc4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250402.receipt.json",
+      "sha256": "587d81baee0a01979fbd896865b89ce35440e07370a8be24a309d9631f174b06"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250410.json",
+      "sha256": "c06deca05bb32e0c37d70ff3541a4d897d1693df41b7dec3590a0566cdea615a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250410.receipt.json",
+      "sha256": "02e3792914cfdf42dfa25fbfae5a11f461cf533dafb36c8688b938f49d43aee5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250417.json",
+      "sha256": "b48292b105226eb0856f38bc5ebe6587f1942c04ff76d10989914c553064cca8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250417.receipt.json",
+      "sha256": "37cb77d43491539b13a498f101d756a986d8c024c7a90cad3443d7aab5137413"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250424.json",
+      "sha256": "74d112bfa61821f301bce70e394a60ef31de70041287dd885dda8bab961716c4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250424.receipt.json",
+      "sha256": "31b4da473e6a7b264788493a6bf6f679d4df05595ec5ca67b60ecce1773c135e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250429.json",
+      "sha256": "46c8a21e55061a765e43f4b6d613c87f2a89aa1fc16a52afdbb637f3a0bc6d37"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250429.receipt.json",
+      "sha256": "238bf6b521dde74d92b3c481d49a7e968c891cc09d3ea08f9e99bdf5606ee020"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250508.json",
+      "sha256": "44176dfff005cff63c617c3d2e0b2485d31644d8734e77eff02b49e09b47b0f1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250508.receipt.json",
+      "sha256": "b97518757a56299a39cda49e60c28e63ce16b7be7ef4c7f529836e869fcfe4ae"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250515.json",
+      "sha256": "44da239f09e789ddac31b00170395ef54c762be071e712f8687412dc2777a3bd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250515.receipt.json",
+      "sha256": "26d7da08b76d24d4909c0c0dc7f50234a77f5b7342d41be1871647306c12812f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250522.json",
+      "sha256": "0a81fd4d93a55a21fb629b6ef7888d7a3ffab5cfcf91ab90f3bc101c35dd4969"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250522.receipt.json",
+      "sha256": "04dc96972611bf2da223e88c72e52710a2d46c16ee5edb3976c9fda0b4eaaef8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250529.json",
+      "sha256": "0e2a236361f0e995a4ed71dad92176ca994e482425473a97e728631c525ce8b5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250529.receipt.json",
+      "sha256": "027cdbcce11fe39b5abff74e0b76529bf655b9d60f393c6ea033f64e3b23c98a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250605.json",
+      "sha256": "cfc04c7157cb17bde29d55e99d6f1d7b1f434334ffc523558a1ec9056d12425b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250605.receipt.json",
+      "sha256": "92c165b31ce68147a5aac529b478650bd2d3a541b20753025c7ed3e4e146d54c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250612.json",
+      "sha256": "a67d5ed7c31f31699e125289d8b0af1923ac46c98d3b39f3ac4202decd633fad"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250612.receipt.json",
+      "sha256": "a890faec67014e752a008ce8a70d785dc16ebf8aeeb07cfebee3a6f421150239"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250619.json",
+      "sha256": "5e7304cf48389756d0c6fa44515ae92b947b39063795c332c207840167b15d01"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250619.receipt.json",
+      "sha256": "73154c0517120d402edb0a1144461b79d7a50ccef7521d8507cbc3ce0eebbf1c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250626.json",
+      "sha256": "44b63018703b8aa9816fa6882edf456bdbe33de5820eccef599439ddcc4785de"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250626.receipt.json",
+      "sha256": "bf9bab4c38c8aa1b3d09cb67018a4ecab9f866309bd5163daf904c8f134ffcd8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250703.json",
+      "sha256": "3092f7bd0e30036cc10c8a885abc6cbfdf0a84d767da9a5e31ab7edc01bfd01d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250703.receipt.json",
+      "sha256": "5a007a3ce90ac52308280530ffb92eb44df81a4351f3446a780903c3185254e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250710.json",
+      "sha256": "c3cf5eab8b26f20f53ba13adad85643594c92732b5eaa3ab7d328824105ca7a4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250710.receipt.json",
+      "sha256": "667161b85e92c8e221f905fdd898da6099cbc61195257554479022d1e8da749c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250717.json",
+      "sha256": "59d35e2093d77bc40de205109aca3a51b7c25b9f271171e0c78be20520dbaf58"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250717.receipt.json",
+      "sha256": "79a0812bb3fd0c0e584e7f4be4b34558401af7b3682ce365415ff647be7ec671"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250724.json",
+      "sha256": "ee0dfa886f2387fa3f6026bae302453a4156992127a2b187e701db4ae260c674"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250724.receipt.json",
+      "sha256": "8157d3f20dd925db21f15818d5f5e8f8f60e3a5965d67a4a28ea64764df9790d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250731.json",
+      "sha256": "911d72b4d2031a8bffa09aa69f0df3b6a120e179554048d281a51c9da7ca4f20"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250731.receipt.json",
+      "sha256": "9a73fc5a37bf14e0e3d36bfe134fd8ed7cd9f57847e1be7b85e5f5ed29063eab"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250807.json",
+      "sha256": "d0dd1a57affce4cf3f0c5d6923415fcda08e80b84100e0a7b1cf899c3198e870"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250807.receipt.json",
+      "sha256": "b4dad3bbc8972beaaf5df1694dea728a52bed44c289359621f4811362447895b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250814.json",
+      "sha256": "b97b622b697e65a5f10952fbeea32b1e6afb87014fa5aff1062ea25ecaefade8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250814.receipt.json",
+      "sha256": "e1bd8d577f53bde5d120499ccb32e696858b5fe88e3bfde7ca4897cde758e566"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250821.json",
+      "sha256": "5bde03cd489c244604fc89ffef2d64b802d1d18ae8e375079445d68777c9912b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250821.receipt.json",
+      "sha256": "91479db3570830830e7951b286c8c46b26e2118418d7d75fcab4450a8350ab22"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250828.json",
+      "sha256": "40a6c838689f89ae5bcac590eb3084b5c823d62a30ce324700603a50735a0b25"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250828.receipt.json",
+      "sha256": "b31549f8ead2e5d1d19286b03980f417bbf0736e6c1dd457630dc5f309b7c892"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250904.json",
+      "sha256": "352caffe266c919c89817c4edf5f9574b47397d3d811f39f483347ee39b599b6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250904.receipt.json",
+      "sha256": "f788fb7d1a61b2e9480609988fc44190fad6fbdf2b82b243a98c0b9cbd9ef847"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250911.json",
+      "sha256": "53020bfffc4466121e789d702f3c957ba97cb1da887cbb8f163f5f23840b6f01"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250911.receipt.json",
+      "sha256": "b583fb4633856ae842a40c7734128905f2dc88eef3c62cbd01703f1d47561c8f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250918.json",
+      "sha256": "c2032507971919500b0dbb5f3566380ffbf7d8a27d9d5768d981ac39d5539116"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250918.receipt.json",
+      "sha256": "8c82cb430bd774c5f9358fb563b00794e88beadf0971e7817cd67f590975496f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250925.json",
+      "sha256": "afbc9fff4227586350af540796c025dd2b51e7eb0d35d09aa4c99fc675848414"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250925.receipt.json",
+      "sha256": "fddbbe46001b9058e7054c12a7e90568a37eef647335c20a9117953ac5583df1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250929.json",
+      "sha256": "0a028f6a4ffd8c0c9df8a83f35ac618e7c98b63d9fa724beaade5dafaac47471"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20250929.receipt.json",
+      "sha256": "1ec6e5918641f1a78bb0ca9487afe82e827c356d3423651b3831953cfad96b62"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251009.json",
+      "sha256": "424a57ba06e29a1d9dba8fa6e1626d799e8de3a0ddfc173d2d1809291fb10348"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251009.receipt.json",
+      "sha256": "1543294589c9c3777dd17d20628b606f90d6abe12794aa89740675dfe9d9e346"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251016.json",
+      "sha256": "a87efe6d5f05f67af43d8efb4005e1cd455b27aa012d103e0c4024b3fd445555"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251016.receipt.json",
+      "sha256": "f4dd60bb02940372832c8da34b688b811fb95bfd07a1f309429afe4eb4f85b54"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251023.json",
+      "sha256": "8b88462283445e219c26c3cabcaa96769fba1a7fcf858836ed8c051bc489ee02"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251023.receipt.json",
+      "sha256": "ff95aa312135161be260ad87aef7e08d2a689ef24129634db91d40352c6a74ab"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251030.json",
+      "sha256": "cb48892bcd79203bcec76ad340138357be187ab9afdee0ca5e76c44a2589580e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251030.receipt.json",
+      "sha256": "82cb26031577f2879790ae47d2c6241f7c389b8cf9bfc60581bcf2ff595bb8d1"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251106.json",
+      "sha256": "e5cc0886e6c5ba4abb8eaf34f3a1ba87f6ac6b4823d09e853dee051125b21fc8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251106.receipt.json",
+      "sha256": "3d47003d599a75a25fab30350ec0f239fb70df6dbaf34e1b08a3e666543f101b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251113.json",
+      "sha256": "3be219f3a197b1d12361d576372e9c3642124a6729bac44a0e40df3bd3e84e1f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251113.receipt.json",
+      "sha256": "f03b98815ea2c219f7a1e3ef47bfc7d50fcdd672ed2a95644bef6bf43b76506d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251120.json",
+      "sha256": "089c65da6e9e56c273cbfbd20f374b826a57ef85e1af2ad822abe6e125404d98"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251120.receipt.json",
+      "sha256": "9c667246c815bdfa69c1bf575b9b4eb23fb25337c20f5c36e188c129a599e2b9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251127.json",
+      "sha256": "e9d6d628437066c8cf04ce09294d16af41804e651ff5268c310807a6d1ac510b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251127.receipt.json",
+      "sha256": "3eeb658a97a615bb5b460d07f190a6ebab26effdfaf4fdc739a9a4d393003e98"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251204.json",
+      "sha256": "0daa31587bed8ba8efd0009c272c90f68de7b6aa5851fcebe1193ae3af609d69"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251204.receipt.json",
+      "sha256": "a3aa7776ab7921603896f03394b72513504c0f8bd85162488066bbbbf1560354"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251211.json",
+      "sha256": "0e524605f5851b526861e912d57d516d2141ae4337e6bad551b6244479dd7524"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251211.receipt.json",
+      "sha256": "c7987b0820b6fbcb0293fa14a7dce563a7f0e54c94d4b41e198478c6bc9052b3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251218.json",
+      "sha256": "9c993cf3f2de72df076de25bba0859c89b7b80be9a6c25525d459a0301f3617d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251218.receipt.json",
+      "sha256": "cb3bed5b877df851ee8e8665ff811aa73e39bcecb8b251eace6481d2a039568d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251225.json",
+      "sha256": "36a7e232aa97099ef31d87fdfedc7be0d2cb9f3ab99b4ada2a3ccd504afcb37c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251225.receipt.json",
+      "sha256": "e73986de687452b395a1fcc530ef65b9df2a8f084bcf1f2ef9d34bced63b2e52"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251230.json",
+      "sha256": "f05774ca68e6ff8aff12f7a6cd1995a6f388fd111bac0a31bb44b22a3a213a4a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20251230.receipt.json",
+      "sha256": "52d642f5649fc3902ebbb1e682c7543bf82a81f03ab6eea8adfab87505e94b9f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260108.json",
+      "sha256": "477e05e07fdc800ae7d187eaca425c2a49ef14240505af3d357fa5f832e26a0f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260108.receipt.json",
+      "sha256": "ff35926286cc11fedbd3b2b77c30d2013effb76730c70fe5e99c86de2c4228e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260115.json",
+      "sha256": "0e5a86153631be9ae41193f1d633513def5cacc74c745bdaab61e7f4b20ed673"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260115.receipt.json",
+      "sha256": "6ad61f27fad556c0e1faf8fcb92eb49fb4bd4640c69ebf4257effac6093969e7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260122.json",
+      "sha256": "d979a34ce486cfaf499cb9dc2b57ecea3140e7c16e2cfe56493d8f81db4f59d4"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260122.receipt.json",
+      "sha256": "3501d08a36780dda722425390e3e8cb87251b0a7c8d70288efe5c9d61dea23d5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260129.json",
+      "sha256": "a49c41a53be3f1ea14360d569edf26c13a4b58a12145e5ccd2e81152649a5db9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260129.receipt.json",
+      "sha256": "ec152b4fb1e9fea17761ce4be7f9e79369c81f9b61ded9e866c7c304a10ae97d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260205.json",
+      "sha256": "7b7ddd10e7954044fe0903e4e54e8294e77cab5ec4cbbf724c599207203ab2cf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260205.receipt.json",
+      "sha256": "7cc9944dd27efedd0d443a82991ebad60469b3b40675739660bb46ea3424c470"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260212.json",
+      "sha256": "641c4d58150058a242b54750a0137f38d0ffcbc8bd584272e8f35cf024c3c98e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260212.receipt.json",
+      "sha256": "96ce009ab6007bf3b067acb60c8e3fbd3fb9b0f89b7de938cbc5e29919aeab26"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260226.json",
+      "sha256": "4826d71108e6dccb3e447cd66623b98d7daae527e1abbc87635ab37e2fb7e398"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260226.receipt.json",
+      "sha256": "52eda5b019f1bd972133386ced20c602c6de1eaa486a7ba74789d89cd5b90392"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260305.json",
+      "sha256": "24d98ee55bd9a461916e26577201885afe827f6f4f760128ee6e30e5bf82b2b8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260305.receipt.json",
+      "sha256": "86043c588de295569d99dcf8a1aa162a221ff8c10a3d4f69fd39a48a0a3a7843"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260312.json",
+      "sha256": "34dd3114a53c1360bbae6b329cbe64177651768136da8154493d515f23bda69b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260312.receipt.json",
+      "sha256": "f985cdac321303559f5f8d9573dded8249757ff455ab79106bf828f235d35928"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260319.json",
+      "sha256": "c45038cd2b4a9baceab57d87c429204bf9fc08a395306e52ed1cecf5806ecf38"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260319.receipt.json",
+      "sha256": "4acb23431813baa3ac0bede40f79918ae767f9b059c5945136d13112852b3b65"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260326.json",
+      "sha256": "d2d4a04ed089bd5b29e38b6c9336ade20d0e7df78fed161778266b00bfedf438"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260326.receipt.json",
+      "sha256": "998a21d8ba711b94c903e6502eef663864a4c59f4f10f2da196dbcd7e0620e64"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260402.json",
+      "sha256": "d12a2c1a1c7cc46a1a3da2cf972086c180ebc83e89b17caa0f0e27dc30190296"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260402.receipt.json",
+      "sha256": "4563722a6a015cd214dc6de8ab56c6c9c88f1af7dc718df1230ed2004cec9d88"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260409.json",
+      "sha256": "189db7bfeea9d6ef26a512b5673e225df54b9d2ad79ece5c44bf84b3881ee2b8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260409.receipt.json",
+      "sha256": "8b828b3eb800f646a44207729e69d7edde84511c391f455a9f56ba9097159eb0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260416.json",
+      "sha256": "6ee3b4d00335252409cb195107ac1834df3a78848539455aaa8c409f32685e6a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260416.receipt.json",
+      "sha256": "59b43c0c0b150d23decccf27fd4c4c49431fbb9eaaac563c7b1e8ce90f647a42"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260423.json",
+      "sha256": "da19db6b6247e3236300f1b65624fbac39df07d1c7050d00dcfc043098610e52"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260423.receipt.json",
+      "sha256": "fdaef6e7b3796a3cc5990a3935807b30de90903053974298a46c906be1e00805"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260429.json",
+      "sha256": "c0758503c8285275c18ec312e5fcf14161e0f31f2fe1bc138ab54f50aa9f1d45"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260429.receipt.json",
+      "sha256": "420e79280da23d416dfe5217de6701f8a540b0460c45e2d89d620f49b10e3c6a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260507.json",
+      "sha256": "0ee7d0719068a83cf483436abd89165ac70b1f017bd32f3a1bc684927dbf16d9"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260507.receipt.json",
+      "sha256": "3062e2ed2c8030a1169f56a4284efdbf32be86cb5355eef064fd48fb1ec1ff34"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260514.json",
+      "sha256": "df820622b95c04ef3e03184f50dcdc4e6fd555163ecbdb3053bd47c624d053f8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260514.receipt.json",
+      "sha256": "65d1ec72da3e7710414d8d7658ebd2515201396d97e4054d80486ebc99142f04"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260521.json",
+      "sha256": "24bb3791e36dd90e74660df61fd22944ac332332faa87cb1a4f0b8f2b34498bf"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260521.receipt.json",
+      "sha256": "0e928f2e6ae89ad4c5e3581191b66be370886e34fa727ce26578e963611e6ec2"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260528.json",
+      "sha256": "6def58b3264d2db478bf1bdab57158d633ba22954a438100de5dd537ab2233c8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260528.receipt.json",
+      "sha256": "afa0e7bb8ac1325c21ac8378759131b3c8aafce80f649300a1bb994ebc1fae7d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260604.json",
+      "sha256": "64c290dfeaba1ca10f38cd9eee8981ad8dd583dd8765c9c5284488c9cc31eef5"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260604.receipt.json",
+      "sha256": "dbfaa4e8a73593dce24cc6bccce5abe5c9f2b75820e3fb312e9ddb5839ed4033"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260611.json",
+      "sha256": "0ba647657cf792ba84c2c2ea3a7b5144e9df181c10807bb99a3747fc949bc72d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260611.receipt.json",
+      "sha256": "f6f2465b3cf5e79f7a7a5c5234304299bd4f1ee6a3933cb3c4b130cb9dbd8f05"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260617.json",
+      "sha256": "e54f459d61fe980969c1ad1c29cc076af790291d993a7855a09fac1f567bb437"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260617.receipt.json",
+      "sha256": "e06a0e6a222039a1c8e27c8d7ad3afc67cc8c956c53796738bffcc01dabcd5b7"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260625.json",
+      "sha256": "3595ca91bd8b6ed06f419a85dd8b853a94202e708a3336726c14a512825dd204"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260625.receipt.json",
+      "sha256": "4bf34b2e238b285ce6d5956e61d3f90b1076266798026ce161b939f54bbdfb35"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260702.json",
+      "sha256": "63d3b626497cecbca887c2352e8987bc682192be74f40b93110265be9508c055"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260702.receipt.json",
+      "sha256": "7b6a5d64e7a189162ac0f25d7532c75e8f7d0b6d3e899e8e3444aea18390bea6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260709.json",
+      "sha256": "2d51dc519fe34c34d94f8a0cc9c7cdbbc588028d8b1cd8bc31ba03c6a59e4edb"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260709.receipt.json",
+      "sha256": "7275601b3ce457d8210eed43ee668397b60d415d90537d3e241de58264c8c869"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260716.json",
+      "sha256": "1b5cced4dc3332b07f39b5dca9d9d547d1df5aa2db60fe2a4814ceadae75516e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260716.receipt.json",
+      "sha256": "67ea0314aa201f39cfd95afa46d5d26830d0b4e51681639e4a2bfc5dd23b7626"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260723.json",
+      "sha256": "8ce61033be162eb9d814685032a34417e7aa697b660f46e177a94a1a2e542c3d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260723.receipt.json",
+      "sha256": "fa2da059eaa45896f45aa98a6fca15241f67f2471e1f344c9cbeeeb5c07c423b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260730.json",
+      "sha256": "db32e10373b3141d2e69484cca6f6951b34e4a51c0e25c264c910242cc54d9fa"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260730.receipt.json",
+      "sha256": "415b5a73036ee594beaaa0601becfd8fd2a8b4927cf3df73375471e85e33d34c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260806.json",
+      "sha256": "0182694b5bd8f5600788ac46e0296ad8176f48bbc8e7f3d9c2a4c81e04256464"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260806.receipt.json",
+      "sha256": "d5e4a4eb5b7a403117bdfa5a8550077128179ac9b0b434fa6871f252abca107e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260813.json",
+      "sha256": "6b0e0eb72d6db8d7edfc3f4a5d7d719797c926da4fd3517fc1e7d846b5e9ae0e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260813.receipt.json",
+      "sha256": "fd76bb680390c64abfb875658e069dbb645787c8405235bc0a4b3307c931168a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260820.json",
+      "sha256": "6f7a37b4f12511297b4ec33922c485980a03956f098a353cfe9d60988626768e"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260820.receipt.json",
+      "sha256": "8e4dee4d8e00eae9ca5039b785d74fdfcc146602c3e009e6e7b2774a7ac71209"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260827.json",
+      "sha256": "9c08b7f3ef65b9ed7bc5b2cabcab9eac1fdb6feb1e386cf40916e22366e3f1f6"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260827.receipt.json",
+      "sha256": "62321e1560745a97e9a58038f4881108609a3dbcaed12f1531ff0bd1d7c36f94"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260903.json",
+      "sha256": "6f2d29c5a43cf500586debfe53df2e20b070ece721a2fefd0fb1993010a3e422"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260903.receipt.json",
+      "sha256": "a2df07e571a7d85ef111473aaad92eee7006ef51f2436410341f12cadcdb78ce"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260910.json",
+      "sha256": "be1d7760149f2c510b2f732eef11f3aec919905fed450f685a05d2525a412972"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260910.receipt.json",
+      "sha256": "b66e75457433361b38828612aded16877639ec8f94fce99cedb93e095a86dea0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260917.json",
+      "sha256": "15bf5f78b4b987fd8dcb72f5439493ff939b36c9c173ca28c678dc63c5695c05"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260917.receipt.json",
+      "sha256": "b4522701d60657a3cc20f8b1cb76670e5382ca1e2d528db6fc4cda8764006e09"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260923.json",
+      "sha256": "bf2fb643febcd9d0ecafb042467693ac147814ad4b0926708755b27e357626d0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260923.receipt.json",
+      "sha256": "8bb9cf924a75649e597d17c0d2d6bbdb98bdf29902544cb067c6b19016ac6900"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260929.json",
+      "sha256": "8644a0d2f72a22aa78b73b7754f077605a1e0730f67f4cb0042edb97366a7f4a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20260929.receipt.json",
+      "sha256": "0cd22114e1a18adfb0cd3a93aa0e297c330a5ec3d1440a129b6979894b3ca5dd"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20261008.json",
+      "sha256": "7a46dcf114406fc02cb2ae577283279ccc53465895041cec26cb24b47244f620"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20261008.receipt.json",
+      "sha256": "ca1134aea7af2ac94bfa853aed19a872a7e574446c695b1fb50d12e69526271b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20261015.json",
+      "sha256": "217b1c63f70329254a04ea1fa32f7f0a467d9c8587323859981273beb181bf33"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/style_caps_20261117/20261015.receipt.json",
+      "sha256": "e2ef650326d23bb1f6027aeef8b4570bd7792a4d47f835e9e7110e4dfa615d3a"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/suspensions/daily.parquet",
+      "sha256": "dd56ffdc553e5ab00529fe0231245e730389a254d3a7fb8d8c89e18060a24de0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/turnover_rate.parquet",
+      "sha256": "5a13ea0807ce540a4ca4479b3a63a249e6c60aa666a5d827a2d2093043ce4c10"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/volume.parquet",
+      "sha256": "b4aa71b31f47b38531bc960dad3882926b44832be875eb4738f5b5fd80f16d2b"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/common.py",
+      "sha256": "dacbbc7c1cf933bb4d8bc83782416f7db64d352bffd3656c0b61102fe2f986e3"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/features.py",
+      "sha256": "96238d365ac5ae87bd1f2b3eaf47a6a5f35ebbbe68452436950f7e5e32fa7533"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/train.py",
+      "sha256": "5719a1cbba735edeb3ed5d342b61a2a257c944a8e9712dd5ce298201935ee2e8"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/accounts.py",
+      "sha256": "d931aa2af33d04699a545298b10da7d77be5b914a72b98694874d8991a43ff98"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/analyze.py",
+      "sha256": "2690b244c53a1c74789bdadca9d04bacf9f87c132dd7982a130b6ce5a08ffd98"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/compare_ep36.py",
+      "sha256": "59df1eb5589553b9446e78be6be667eaee22986125ed5a3a12069d0b95eeea19"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/core.py",
+      "sha256": "5f6106d6c0224340af6f6a54091891faf2ba56b558ee3d2975833b7e067db51c"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/data_models.py",
+      "sha256": "9f9dddfcb798ccaf847c1bcd479d3133814f52bda171720f88e9049199d37d9f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/report.py",
+      "sha256": "54fa3463e8aa017a6b8bcd747f8100d282d5b33191d2c19b49c7f370c21e3317"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/validate.py",
+      "sha256": "18eb1df89c2df7abf4e8a9f760835c24df167c378990934efc37a19780c05bae"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/config.yaml",
+      "sha256": "ad81daeef624d3e9f514f2f9936a3555532fe8dbc62e5f80bb176bc9141c231f"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/config.json",
+      "sha256": "409442941940623b6c6c60c365c6aee663cc6a9f48f8c7d2f5371f0052d6bbac"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/model.py",
+      "sha256": "b2a8721296fb8cd2c0d582ef818164658ffa55c566c8fe84f0782258aa196ca0"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/run.py",
+      "sha256": "3ced3b8d137ffebed845480949fad31057ca55f1cd50eb4fe9c7cb9987616d90"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/outputs/local_cache/features.parquet",
+      "sha256": "09e27f78e7f6a493192b5218bf17842df60aba02bf0218441675c13ea415ea99"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/outputs/local_cache/labels.parquet",
+      "sha256": "b554da20f5b04795491e660281ca4041476893e819c6b2b73fbd8c7e6527120d"
+    },
+    {
+      "path": "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/outputs/local_cache/predictions.parquet",
+      "sha256": "8d6502c82925fcf12c858557a9e3c12790ff69ae464e21acb0218f7507734219"
+    }
+  ],
+  "environment": {
+    "python": "3.12.4",
+    "numpy": "1.26.2",
+    "pandas": "2.3.1",
+    "torch": "2.8.0+cu128"
+  }
+}

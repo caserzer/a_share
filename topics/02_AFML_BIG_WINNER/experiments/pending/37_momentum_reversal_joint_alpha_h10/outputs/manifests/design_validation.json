@@ -1,0 +1,95 @@
+{
+  "kind": "design_document_validation_only",
+  "status": "PASS",
+  "date": "2026-11-18",
+  "checks": [
+    "draft_only",
+    "five_registered_models",
+    "eleven_joint_features",
+    "six_primary_tests",
+    "H10_calendar_and_label_agree",
+    "ten_groups_highest_D10",
+    "equal_state_control_budget",
+    "no_automated_actions",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/EP36_FULL_EXPERIMENT_REPORT.md",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/e1_four_state_odds_20261117/REPORT.md",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/e1_down_down_cap60_20261117/REPORT.md",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/reports/e1_down_down_account_20261117/REPORT.md",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/configs/protocol.json",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/configs/feature_dictionary.csv",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/configs/execution_v2.json",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/configs/valuation_sensitivity.json",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/train.py",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/features.py",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/src/build_panel.py",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/qfq_close.parquet",
+    "source_unchanged:topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/daily_members.parquet",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/README.md:GOAL.md",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/README.md:config.yaml",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/README.md:notes/EP36_REVIEW.md",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/README.md:notes/source_snapshot.json",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/GOAL.md:notes/EP36_REVIEW.md",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/GOAL.md:../36_csi300_alpha_discovery_and_index_enhancement/reports/EP36_FULL_EXPERIMENT_REPORT.md",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/notes/EP36_REVIEW.md:../../36_csi300_alpha_discovery_and_index_enhancement/reports/EP36_FULL_EXPERIMENT_REPORT.md",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/notes/EP36_REVIEW.md:source_snapshot.json",
+    "link_exists:topics/02_AFML_BIG_WINNER/experiments/README.md:pending/37_momentum_reversal_joint_alpha_h10/GOAL.md",
+    "no_trailing_whitespace:README.md",
+    "no_trailing_whitespace:GOAL.md",
+    "no_trailing_whitespace:EP36_REVIEW.md",
+    "no_trailing_whitespace:config.yaml",
+    "primary_round_count",
+    "primary_last_exit",
+    "extended_round_count",
+    "extended_last_exit"
+  ],
+  "check_count": 38,
+  "local_links_checked": 9,
+  "source_files_unchanged": 13,
+  "calendar": [
+    {
+      "scope": "primary",
+      "planned_complete_rounds": 100,
+      "last_exit": "2025-03-03"
+    },
+    {
+      "scope": "extended",
+      "planned_complete_rounds": 139,
+      "last_exit": "2026-10-12"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": ".gitignore",
+      "sha256": "2a3007ad2e2b9f328da7260d0d6cab03949c78da748ad552c5cb692706232368",
+      "bytes": 77
+    },
+    {
+      "path": "GOAL.md",
+      "sha256": "0a0fbe719403b8b2034d2487c90d1005462e788d66e6e40c7a355d525be23115",
+      "bytes": 23251
+    },
+    {
+      "path": "README.md",
+      "sha256": "8f198e29c21ab0cd179636ea3b5773e4351fb9fbd5f7975011315e8fe423d047",
+      "bytes": 1485
+    },
+    {
+      "path": "config.yaml",
+      "sha256": "385a90fb4f40c38c5cb4af8da6ba4544ca726894c20f10cec1297bf4e00b0433",
+      "bytes": 9384
+    },
+    {
+      "path": "notes/EP36_REVIEW.md",
+      "sha256": "bcaf6dd05e400822f14fde7f41b951f8a3c1e71868cb030894a11ca38df1652b",
+      "bytes": 4271
+    },
+    {
+      "path": "notes/source_snapshot.json",
+      "sha256": "4da1f317d837068a4144ce803b0160040e00b9342d8e488c6eeb25b49c1f2684",
+      "bytes": 3509
+    }
+  ],
+  "model_training_executed": false,
+  "backtest_executed": false,
+  "economic_result_assertions": false
+}

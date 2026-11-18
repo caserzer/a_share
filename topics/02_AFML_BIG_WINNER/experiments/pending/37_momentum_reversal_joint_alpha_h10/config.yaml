@@ -1,0 +1,336 @@
+experiment:
+  id: EP37
+  name: momentum_reversal_joint_alpha_h10
+  status: EXECUTING
+  design_date: '2026-11-18'
+  objective: Find incremental alpha from jointly modelling medium-term momentum and
+    short-term reversal.
+  authorization: User explicitly instructed 执行 after reviewing EP37 on 2026-11-18;
+    research execution only.
+  primary_candidate: J_R
+  primary_trained_baseline: A_R
+  evidence: historical_simulated_oos_exploration
+  forward_status: FORWARD_PENDING
+  parameters_finalized: true
+data:
+  source_experiment: ../36_csi300_alpha_discovery_and_index_enhancement
+  source_read_only: true
+  source_snapshot: notes/source_snapshot.json
+  input_end: '2026-10-21'
+  initial_universe: historical_CSI300_membership_proxy
+  membership_asof: provider_updateDate_backward_asof
+  strict_known_at_certified: false
+  price_basis: synthetic_qfq_units
+  min_consecutive_positive_conflict_free_closes: 61
+  min_signal_candidates: 100
+  eligibility_uses_future_labels: false
+  primary_states:
+  - UU
+  - UD
+  - DU
+  - DD
+  excluded_states_report_separately:
+  - ZERO
+  - UNKNOWN
+  require_original_E1_Q5: false
+  require_original_78_features: false
+  require_complete_style_controls: false
+  minimum_industry_size_filter: null
+state_contract:
+  trend: close[t-5]/close[t-60]-1
+  short_return: close[t]/close[t-5]-1
+  categories:
+    UU: trend>0 and short_return>0
+    UD: trend>0 and short_return<0
+    DU: trend<0 and short_return>0
+    DD: trend<0 and short_return<0
+  zero_policy: exact_zero_separate
+  unknown_policy: missing_separate
+  freeze_state_at: signal_close
+features:
+  raw:
+    T15: close[t-5]/close[t-20]-1
+    T55: close[t-5]/close[t-60]-1
+    R1: -(close[t]/close[t-1]-1)
+    R5: -(close[t]/close[t-5]-1)
+  cross_section_transform: average_rank/(N+1)-0.5
+  cross_section_scope: contemporaneous_primary_eligible_members
+  additive:
+  - T15
+  - T55
+  - R1
+  - R5
+  joint_interactions:
+  - T15_x_R1
+  - T15_x_R5
+  - T55_x_R1
+  - T55_x_R5
+  joint_state_indicators:
+  - UD
+  - DU
+  - DD
+  joint_feature_count: 11
+  state_indicator_reference: UU
+  states_use_raw_signs: true
+  interactions_use_transformed_features: true
+  model_scaling: train_only_mean_and_population_sd_constant_sd_1
+  window_search: false
+label_contract:
+  horizon_market_sessions: 10
+  signal: t_close_available_after_18_00_Asia_Shanghai_proxy
+  entry: t_plus_1_open
+  exit: t_plus_11_open
+  raw_return: qfq_open[t+11]/qfq_open[t+1]-1
+  Z: contemporaneous_H10_return_zscore_ddof0
+  R: contemporaneous_H10_average_rank/(N_valid+1)-0.5
+  min_valid_labels_per_training_date: 100
+  constant_target_policy: unavailable_not_zero
+  unknown_endpoint_policy: NA_no_replacement_endpoint
+  immature_label_policy: excluded_from_fit_retained_in_prediction_universe
+calendar:
+  clock: market_sessions_not_calendar_weeks
+  anchor_signal: '2021-01-08'
+  anchor_entry: '2021-01-11'
+  rebalance_every_market_sessions: 10
+  train_signals: same_grid_extended_backward_after_warmup
+  primary_last_complete_exit: '2025-03-03'
+  primary_planned_complete_rounds: 100
+  extended_last_complete_exit: '2026-10-12'
+  extended_last_complete_entry: '2026-09-18'
+  extended_planned_complete_rounds: 139
+  complete_rounds_are_execution_certification: false
+  grid_offset_sensitivity_sessions: 5
+  holding_period_search: false
+training:
+  estimator: Ridge
+  fit_intercept: true
+  outer: quarterly_expanding_from_2021
+  fit_cutoff: previous_quarter_end
+  require_label_mature_by_cutoff: true
+  inner_validation_months: 12
+  inner_training_min_calendar_months: 24
+  inner_min_valid_signal_dates: 12
+  purge: inner_training_exit_strictly_before_first_validation_entry
+  future_side_training: false
+  alpha_candidates:
+  - 1.0
+  - 10.0
+  - 100.0
+  alpha_selection: mean_per_signal_H10_Spearman_RankIC
+  alpha_comparison_dates: common_valid_dates_across_all_three_candidates_min_12
+  tie_order:
+  - 10.0
+  - 100.0
+  - 1.0
+  final_refit: all_eligible_mature_history_at_fold_cutoff
+  model_selection_using_outer_returns: false
+  prediction_accepts_labels: false
+  registered_models:
+    A_Z:
+      features: additive
+      target: Z
+      sample_weight: uniform
+    J_Z:
+      features: joint
+      target: Z
+      sample_weight: uniform
+    A_R:
+      features: additive
+      target: R
+      sample_weight: uniform
+    J_R:
+      features: joint
+      target: R
+      sample_weight: uniform
+    J_RW:
+      features: joint
+      target: R
+      sample_weight: state_balanced
+  state_balanced:
+    raw_weight: N/(K*n_g)_within_each_mature_training_date
+    clip_before_renormalization:
+    - 0.25
+    - 4.0
+    normalize: each_date_mean_weight_1
+    preprocessing: identical_to_J_R_unweighted_training_transform
+    resampling: false
+  robustness_training:
+    rolling_months: 36
+    models:
+    - A_R
+    - J_R
+  explanatory_retrained_ablations:
+    condition: joint_increment_has_support
+    candidates:
+    - joint_without_interactions
+    - joint_without_state_indicators
+    primary_model_reselection: false
+  alpha_tie_tolerance: 1.0e-12
+  inner_span_interpretation: Declared inner window at least 24 calendar months; signal
+    endpoints may fall inside boundaries. Data history must reach window start; rolling36
+    window is exactly 24 plus 12 months.
+baselines:
+  EW: same_eligible_universe_equal_weight
+  MOM: mean_transformed_T15_T55
+  REV: mean_transformed_R1_R5
+  FIX: 0.5*MOM+0.5*REV
+  depends_on_E1: false
+ranking:
+  groups: 10
+  sort: ascending_score_then_instrument
+  group_formula: floor(10*ordinal/N)+1
+  ordinal_starts: 0
+  highest_score_group: D10
+  lowest_score_group: D1
+  report_all_groups: true
+  selected_primary_group: D10
+  quintile_reference: combine_adjacent_deciles_same_sorted_list
+  top20_reference: D9_plus_D10
+  D10_minus_D1_is_tradable_short_portfolio: false
+  choose_best_group_after_results: false
+accounts:
+  decile_weight: equal_within_group_on_post_fee_available_NAV
+  all_ten_decile_accounts:
+  - A_R
+  - J_R
+  top_decile_accounts:
+  - MOM
+  - REV
+  - FIX
+  - A_Z
+  - J_Z
+  - A_R
+  - J_R
+  - J_RW
+  top_twenty_percent_accounts:
+  - A_R
+  - J_R
+  benchmark_account: EW
+  liquidate_at_each_H10_boundary: true
+  repeat_selection: sell_old_lot_and_buy_new_lot_charge_both
+  failed_buy: cash_for_rest_of_round_no_backfill_no_late_buy
+  failed_exit: retain_position_daily_open_retry_record_overdue
+  failed_exit_event_net_return: NA
+  blocked_old_position_same_instrument: no_new_lot
+  residual_positions: reserve_capital_then_proportionally_scale_new_buys
+  leverage: false
+  shorting: false
+  cash_interest: 0
+  fees_on_actual_turnover: true
+  costs_bps:
+    main:
+      buy: 10
+      sell: 20
+    zero:
+      buy: 0
+      sell: 0
+    stress:
+      buy: 30
+      sell: 80
+  execution: positive_raw_and_qfq_open_known_open_status_and_directional_price_limits
+  intraday_volume_used_to_certify_open_fill: false
+  real_open_auction_capacity_certified: false
+  valuation:
+    required_branch: strict_observed_quotes
+    labelled_proxy_branch: confirmed_full_day_suspension_flat
+    proxy_max_market_sessions: 20
+    proxy_haircut_sensitivity: 0.2
+    unsupported_or_terminal_gap: stop_certification_no_zero_no_permanent_carry
+  index_reference: H00300_total_return_close_context_only_if_no_open_available
+state_allocation_control:
+  models:
+  - A_R
+  - J_R
+  class_quotas:
+    UU: 0.25
+    UD: 0.25
+    DU: 0.25
+    DD: 0.25
+  total_slots: same_date_D10_member_count
+  integer_remainder_order:
+  - UU
+  - UD
+  - DU
+  - DD
+  per_stock_budget: 1/total_slots
+  selection: within_state_score_rank_from_entire_common_universe
+  shortage: cash_no_cross_state_reallocation
+  original_D10_membership_required: false
+  disclose:
+  - stock_overlap
+  - entry_score_percentiles
+  - target_and_actual_state_weights
+  - cash
+  historical_profit_based_tilt: false
+  allocation_grid_search: false
+independence_audit:
+  controls:
+  - historical_industry_dummies
+  - log_total_market_cap
+  - volatility_20
+  - market_beta_60
+  - log_mean_turnover_value_20
+  - mean_turnover_rate_20
+  - T15
+  - T55
+  - R1
+  - R5
+  - A_R_score
+  estimator: Spearman_of_score_and_return_residuals_from_same_controls
+  projection: fixed_pseudoinverse_report_matrix_rank
+  projection_rcond: 1.0e-12
+  future_return_usage: evaluation_only_never_prediction_or_selection
+  support: complete_common_controls_report_stock_and_D10_budget_coverage
+  controls_missing_remove_primary_positions: false
+  market_cap_date: exact_previous_market_session_no_future_fill_no_interpolation
+  coverage_upgrade_to_full_universe: false
+  minimum_rows: 100
+  minimum_residual_df: 30
+statistics:
+  primary_family:
+    P1: mean_RankIC_J_R_minus_A_R
+    P2a: mean_H10_net_D10_J_R_minus_A_R
+    P2b: mean_H10_net_D10_J_R_minus_MOM
+    P2c: mean_H10_net_D10_J_R_minus_REV
+    P2d: mean_H10_net_D10_J_R_minus_FIX
+    P3: mean_conditional_RankIC_J_R
+  family_size: 6
+  expected_direction: positive
+  tests: two_sided
+  correction: Holm
+  alpha: 0.05
+  bootstrap: circular_moving_blocks_of_whole_H10_signal_cross_sections
+  block_rounds: 6
+  sensitivity_block_rounds:
+  - 3
+  - 12
+  replicates: 2000
+  seed: 20261118
+  interval_quantiles:
+  - 0.025
+  - 0.975
+  economic_events: paired_common_executable_entry_and_complete_exit
+  unexecutable_events: NA_with_count_budget_reason_not_zero
+  report_pairwise_and_all_baseline_common_support: true
+  different_terminal_accounts_ranked_together: false
+  already_seen_history_is_forward: false
+  minimum_observed_rounds: 12
+  p_value: centered_block_bootstrap_two_sided_plus_one
+forward:
+  new_signal_only_after_contract_and_pipeline_freeze: true
+  first_descriptive_round_count: 12
+  first_formal_review_planned_round_count: 50
+  early_success_stop: false
+  model_update: frozen_quarterly_training_and_inner_selection_rule
+  schedule_enabled: false
+  trading_enabled: false
+  notifications_enabled: false
+outputs:
+  code_dir: code
+  tests_dir: tests
+  publishable_dir: outputs/publishable
+  local_cache_dir: outputs/local_cache
+  large_raw_dir: outputs/large_raw
+  manifests_dir: outputs/manifests
+  preserve_EP36: true
+  requires_full_rankings_holdings_and_periods: true

@@ -97,3 +97,9 @@ EP30 追加 [D2 v2 实际补数](pending/30_pit_data_foundation_v1/reports/backf
 ## EP31 量价八假说验证（2026-10-22，已立项 / 未执行）
 
 [EP31 GOAL](pending/31_price_volume_hypotheses_oos_walk_forward/GOAL.md)：基于 EP30 D2-v5 检验 H01/H02/H03/H07/H09/H10/H11/H12；强制 nested purged OOS、按季 expanding/rolling walk-forward、标签成熟性、历史 proxy 与真正前瞻区分。H09 无逐笔数据则 BLOCKED，不伪造。当前仅创建研究合同和执行入口，尚无实证结果。
+
+## EP37 动量与反转联合 Alpha（2026-11-18）
+
+[EP37报告](pending/37_momentum_reversal_joint_alpha_h10/outputs/publishable/reports/REPORT.md)：完成216个简单模型、十分组、固定H10的270条账户分支及六项主检验，未确认稳定独立Alpha。主J_R与A_R净年化约−11.84%和−11.85%，均为停牌估值代理；严格报价受阻、风格覆盖及前瞻边界保留。20项测试、4171项核验通过，EP36原研究保留。[研究合同](pending/37_momentum_reversal_joint_alpha_h10/GOAL.md)
+
+追加[原78特征与RankIC训练](pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/outputs/REPORT.md)：按用户要求恢复EP36全部78项特征和每周训练样本，完成72个季度模型。同一H10主区间，RankIC目标模型RankIC 0.0552、D10代理净年化−1.69%；原收益MSE对照为0.0406、+0.11%，收益秩MSE对照为0.0692、+2.81%。原E1预测精确复现，排序改善尚未证明净收益增量或独立Alpha，原实验结果完整保留。

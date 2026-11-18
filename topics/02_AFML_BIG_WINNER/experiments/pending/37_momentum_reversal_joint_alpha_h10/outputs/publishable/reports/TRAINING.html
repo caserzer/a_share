@@ -1,0 +1,565 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><title>EP37 训练方式与稳健性结果</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.7 system-ui,sans-serif;color:#17212c}table{border-collapse:collapse;display:block;overflow:auto;font-size:13px}td,th{border:1px solid #d8dfe8;padding:7px 10px;text-align:right}th{background:#edf3fa}td:first-child,th:first-child{text-align:left}img{max-width:100%}a{color:#195ea8}pre{overflow:auto;background:#f4f6f8;padding:16px}h1,h2,h3{line-height:1.35}</style><h1 id="ep37">EP37 训练方式与稳健性结果</h1>
+<p>本轮训练季度推进，共216个最终模型；主expanding含5种目标/特征/样本权重组合，rolling36及后移5交易日仅复核A_R与J_R。正则从1、10、100中用内层最近12月的共同有效日期选择；所有外层目标在出分时隔离。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scheme</th>
+<th style="text-align: right;">offset</th>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">status</th>
+<th style="text-align: right;">fold_count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">24</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_1">内层正则选择分布</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scheme</th>
+<th style="text-align: right;">offset</th>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">alpha</th>
+<th style="text-align: right;">fold_count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">10.0000</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">100.0000</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_2">滚动训练与起点敏感性</h2>
+<p>下表每条策略与其同方案A_R使用相同起止；不同起点的净值不能解释成同日期纯Alpha差。均固定H10。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scheme</th>
+<th style="text-align: right;">offset</th>
+<th style="text-align: left;">scope</th>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">start</th>
+<th style="text-align: left;">end</th>
+<th style="text-align: left;">valuation_complete</th>
+<th style="text-align: left;">cagr</th>
+<th style="text-align: right;">max_drawdown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">2021-01-18</td>
+<td style="text-align: left;">2025-02-24</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-10.8681</td>
+<td style="text-align: right;">-52.7047</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">2021-01-18</td>
+<td style="text-align: left;">2026-10-19</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-13.8042</td>
+<td style="text-align: right;">-58.1127</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">2021-01-18</td>
+<td style="text-align: left;">2025-02-24</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-12.5227</td>
+<td style="text-align: right;">-59.9935</td>
+</tr>
+<tr>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">2021-01-18</td>
+<td style="text-align: left;">2026-10-19</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-14.8306</td>
+<td style="text-align: right;">-60.2143</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">2021-01-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-11.381</td>
+<td style="text-align: right;">-50.7867</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">2021-01-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">-50.7867</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">2021-01-11</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-14.3862</td>
+<td style="text-align: right;">-55.5304</td>
+</tr>
+<tr>
+<td style="text-align: left;">rolling36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">2021-01-11</td>
+<td style="text-align: left;">2026-10-12</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-12.2358</td>
+<td style="text-align: right;">-55.5304</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">时间块敏感性</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scope</th>
+<th style="text-align: left;">test</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">calendar_n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">low</th>
+<th style="text-align: right;">high</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">block</th>
+<th style="text-align: right;">holm_p</th>
+<th style="text-align: left;">positive_support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0050</td>
+<td style="text-align: right;">-0.0130</td>
+<td style="text-align: right;">0.0238</td>
+<td style="text-align: right;">0.6017</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2a</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0043</td>
+<td style="text-align: right;">0.0044</td>
+<td style="text-align: right;">0.9990</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2b</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">-0.0047</td>
+<td style="text-align: right;">0.0090</td>
+<td style="text-align: right;">0.5497</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2c</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0017</td>
+<td style="text-align: right;">-0.0028</td>
+<td style="text-align: right;">0.0064</td>
+<td style="text-align: right;">0.4643</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2d</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">-0.0024</td>
+<td style="text-align: right;">0.0097</td>
+<td style="text-align: right;">0.2264</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0098</td>
+<td style="text-align: right;">-0.0095</td>
+<td style="text-align: right;">0.0319</td>
+<td style="text-align: right;">0.3538</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0050</td>
+<td style="text-align: right;">-0.0114</td>
+<td style="text-align: right;">0.0217</td>
+<td style="text-align: right;">0.5502</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2a</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.0045</td>
+<td style="text-align: right;">0.0041</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2b</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">-0.0042</td>
+<td style="text-align: right;">0.0079</td>
+<td style="text-align: right;">0.4983</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2c</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0017</td>
+<td style="text-align: right;">-0.0030</td>
+<td style="text-align: right;">0.0060</td>
+<td style="text-align: right;">0.4513</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P2d</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">-0.0018</td>
+<td style="text-align: right;">0.0085</td>
+<td style="text-align: right;">0.1544</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.9265</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0098</td>
+<td style="text-align: right;">-0.0068</td>
+<td style="text-align: right;">0.0281</td>
+<td style="text-align: right;">0.2684</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../folds.csv">逐折时序及模型哈希</a> · <a href="../inner_selection.csv">内层候选完整结果</a> · <a href="../coefficients.csv">所有模型系数</a> · <a href="../training_state_weights.csv.gz">四状态训练权重</a> · <a href="../concentration_diagnostics.csv">事后集中性描述</a> · <a href="REPORT.md">总报告</a></p></html>

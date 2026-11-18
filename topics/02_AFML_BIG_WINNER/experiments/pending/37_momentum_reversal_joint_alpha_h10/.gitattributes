@@ -1,0 +1,9 @@
+# Preserve exact bytes used by the research manifests.
+* -text
+*.csv whitespace=cr-at-eol
+*.csv.gz filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+outputs/publishable/state_deciles_by_date.csv filter=lfs diff=lfs merge=lfs -text
+outputs/publishable/deciles_by_date.csv filter=lfs diff=lfs merge=lfs -text
+outputs/publishable/events.csv filter=lfs diff=lfs merge=lfs -text
+extensions/original78_rankic_20261118/outputs/events.csv filter=lfs diff=lfs merge=lfs -text

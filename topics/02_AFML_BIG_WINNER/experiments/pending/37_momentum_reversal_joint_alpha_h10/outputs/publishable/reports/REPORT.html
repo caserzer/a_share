@@ -1,0 +1,492 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><title>EP37 动量与反转联合 Alpha 实验报告</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.7 system-ui,sans-serif;color:#17212c}table{border-collapse:collapse;display:block;overflow:auto;font-size:13px}td,th{border:1px solid #d8dfe8;padding:7px 10px;text-align:right}th{background:#edf3fa}td:first-child,th:first-child{text-align:left}img{max-width:100%}a{color:#195ea8}pre{overflow:auto;background:#f4f6f8;padding:16px}h1,h2,h3{line-height:1.35}</style><h1 id="ep37-alpha">EP37 动量与反转联合 Alpha 实验报告</h1>
+<p><strong>六项主检验均未获得Holm校正后的正向支持，本轮未确认联合模型带来稳定独立Alpha。</strong></p>
+<p>研究问题是动量与反转的条件关系能否产生增量预测和固定H10净收益。主候选J_R使用4项动量反转输入、4个交互项和3个状态项，以未来H10收益秩为目标；独立训练基线A_R只用4个基础输入。主股票池每个信号按当时历史成员代理和61日价格资格重建，未使用原E1的Q5名单。</p>
+<p>本轮所有实证均为Historical-proxy历史模拟样本外探索。真实前瞻新观测为0。严格报价分支与停牌估值代理分别运行；下列完整账户主表明确使用已确认全天停牌、最多20交易日旧价的代理分支。股票为复权合成单位，尚非完整权益与公司行动账本。</p>
+<h2 id="1">1 主区间结果</h2>
+<p>信号起点2021-01-08，首次入场2021-01-11，最后计划退出2025-03-03开盘，共100个H10窗口。表中H10为可完整退出事件的单位初始资金净收益均值；CAGR和回撤来自独立连续账户，两者不能互相替代。各模型单边事件均值使用的可退出样本不同，不能直接相减作为增量；配对比较见第2节。季度模型另生成末端未成熟预测，它们不进入已实现评价。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">IC期数</th>
+<th style="text-align: right;">RankIC</th>
+<th style="text-align: right;">IC低界</th>
+<th style="text-align: right;">IC高界</th>
+<th style="text-align: right;">H10净均值%</th>
+<th style="text-align: right;">可退出期数</th>
+<th style="text-align: right;">计划期数</th>
+<th style="text-align: right;">平均入场资金%</th>
+<th style="text-align: right;">净年化%</th>
+<th style="text-align: right;">累计净收益%</th>
+<th style="text-align: right;">最大回撤%</th>
+<th style="text-align: left;">valuation_complete</th>
+<th style="text-align: left;">terminal_liquidated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0022</td>
+<td style="text-align: right;">-0.0316</td>
+<td style="text-align: right;">0.0357</td>
+<td style="text-align: right;">-0.4787</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.9001</td>
+<td style="text-align: right;">-11.8514</td>
+<td style="text-align: right;">-39.3822</td>
+<td style="text-align: right;">-51.1219</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.0272</td>
+<td style="text-align: right;">-0.0637</td>
+<td style="text-align: right;">0.0070</td>
+<td style="text-align: right;">-0.6788</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.9001</td>
+<td style="text-align: right;">-17.3551</td>
+<td style="text-align: right;">-53.0654</td>
+<td style="text-align: right;">-61.6981</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIX</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.0209</td>
+<td style="text-align: right;">-0.0559</td>
+<td style="text-align: right;">0.0155</td>
+<td style="text-align: right;">-0.8939</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.8657</td>
+<td style="text-align: right;">-21.2734</td>
+<td style="text-align: right;">-61.2934</td>
+<td style="text-align: right;">-68.6182</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0072</td>
+<td style="text-align: right;">-0.0210</td>
+<td style="text-align: right;">0.0357</td>
+<td style="text-align: right;">-0.3976</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.9001</td>
+<td style="text-align: right;">-11.8383</td>
+<td style="text-align: right;">-39.3463</td>
+<td style="text-align: right;">-56.7931</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0098</td>
+<td style="text-align: right;">-0.0177</td>
+<td style="text-align: right;">0.0374</td>
+<td style="text-align: right;">-0.3310</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.9001</td>
+<td style="text-align: right;">-11.6704</td>
+<td style="text-align: right;">-38.8866</td>
+<td style="text-align: right;">-56.8427</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.0049</td>
+<td style="text-align: right;">-0.0344</td>
+<td style="text-align: right;">0.0235</td>
+<td style="text-align: right;">-0.4098</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.9001</td>
+<td style="text-align: right;">-13.2678</td>
+<td style="text-align: right;">-43.1560</td>
+<td style="text-align: right;">-55.1836</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.0335</td>
+<td style="text-align: right;">-0.0727</td>
+<td style="text-align: right;">0.0061</td>
+<td style="text-align: right;">-0.6964</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.9001</td>
+<td style="text-align: right;">-18.1791</td>
+<td style="text-align: right;">-54.8951</td>
+<td style="text-align: right;">-64.3478</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+</tr>
+<tr>
+<td style="text-align: left;">REV</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0042</td>
+<td style="text-align: right;">-0.0268</td>
+<td style="text-align: right;">0.0357</td>
+<td style="text-align: right;">-0.6553</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.8657</td>
+<td style="text-align: right;">-17.2542</td>
+<td style="text-align: right;">-52.8378</td>
+<td style="text-align: right;">-63.7071</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+</tr>
+</tbody>
+</table>
+<p>J_R净年化点估计为-11.84%，A_R为-11.85%；该差值不等于经过风险控制的Alpha，也不代替六项主检验。</p>
+<p><img alt="全部十分组" src="figures/deciles_primary.png" /></p>
+<p><img alt="主区间净值" src="figures/nav_primary.png" /></p>
+<h2 id="2">2 六项主检验</h2>
+<p>下表P1和P3单位为相关系数，P2a至P2d单位为小数收益率（乘100为每H10窗口的百分点）。区间为6个H10窗口时间块bootstrap的95%区间，Holm按完整6项主族调整。缺失项不缩小主族。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">test</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">calendar_n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">low</th>
+<th style="text-align: right;">high</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">holm_p</th>
+<th style="text-align: left;">positive_support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00503655</td>
+<td style="text-align: right;">-0.01170375</td>
+<td style="text-align: right;">0.02349546</td>
+<td style="text-align: right;">0.57971014</td>
+<td style="text-align: right;">1.00000000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">P2a</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00000063</td>
+<td style="text-align: right;">-0.00402009</td>
+<td style="text-align: right;">0.00405793</td>
+<td style="text-align: right;">1.00000000</td>
+<td style="text-align: right;">1.00000000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">P2b</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00207899</td>
+<td style="text-align: right;">-0.00525210</td>
+<td style="text-align: right;">0.00850431</td>
+<td style="text-align: right;">0.55222389</td>
+<td style="text-align: right;">1.00000000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">P2c</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00173967</td>
+<td style="text-align: right;">-0.00299437</td>
+<td style="text-align: right;">0.00622508</td>
+<td style="text-align: right;">0.45677161</td>
+<td style="text-align: right;">1.00000000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">P2d</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00370946</td>
+<td style="text-align: right;">-0.00243199</td>
+<td style="text-align: right;">0.00952317</td>
+<td style="text-align: right;">0.23288356</td>
+<td style="text-align: right;">1.00000000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00975775</td>
+<td style="text-align: right;">-0.00848014</td>
+<td style="text-align: right;">0.03107431</td>
+<td style="text-align: right;">0.30234883</td>
+<td style="text-align: right;">1.00000000</td>
+<td style="text-align: left;">False</td>
+</tr>
+</tbody>
+</table>
+<p>P1为J_R相对A_R的RankIC差；P2a/P2b/P2c/P2d分别为D10净事件收益相对A_R/MOM/REV/FIX的差；P3为控制行业、市值、风险、流动性及基础动量反转信息后的条件RankIC。未显著不构成等价或不存在Alpha的证明。</p>
+<h2 id="3">3 延伸历史</h2>
+<p>全部现有数据支持139个完整H10日历窗口，最后退出为2026-10-12开盘。最后39个窗口单独给出，仍为已经观察过的历史。部分连续账户因旧仓后续缺价或权益端点无法闭合而提前停止；独立新建事件仍可继续评价，这不等于连续账户能跨过阻断。下表收益、回撤与仓位单位均为%，不同终点不直接横向排名。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">portfolio</th>
+<th style="text-align: left;">end</th>
+<th style="text-align: left;">valuation_complete</th>
+<th style="text-align: left;">terminal_liquidated</th>
+<th style="text-align: left;">cagr</th>
+<th style="text-align: right;">total_return</th>
+<th style="text-align: right;">max_drawdown</th>
+<th style="text-align: right;">average_stock_weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">-39.4865</td>
+<td style="text-align: right;">-51.1219</td>
+<td style="text-align: right;">99.9933</td>
+</tr>
+<tr>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2025-09-04</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">-49.1444</td>
+<td style="text-align: right;">-61.6981</td>
+<td style="text-align: right;">100.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">EW</td>
+<td style="text-align: left;">EW</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">-35.7388</td>
+<td style="text-align: right;">-48.6021</td>
+<td style="text-align: right;">99.9390</td>
+</tr>
+<tr>
+<td style="text-align: left;">FIX</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2026-10-12</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-14.6882</td>
+<td style="text-align: right;">-58.3654</td>
+<td style="text-align: right;">-68.6182</td>
+<td style="text-align: right;">99.8927</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2026-10-12</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-7.6015</td>
+<td style="text-align: right;">-35.3436</td>
+<td style="text-align: right;">-56.7931</td>
+<td style="text-align: right;">99.8761</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2026-10-12</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-8.9824</td>
+<td style="text-align: right;">-40.4966</td>
+<td style="text-align: right;">-56.8427</td>
+<td style="text-align: right;">99.8757</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2025-09-04</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">-39.9730</td>
+<td style="text-align: right;">-55.1836</td>
+<td style="text-align: right;">99.9382</td>
+</tr>
+<tr>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2026-10-12</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">-10.4699</td>
+<td style="text-align: right;">-45.6665</td>
+<td style="text-align: right;">-64.3478</td>
+<td style="text-align: right;">99.8562</td>
+</tr>
+<tr>
+<td style="text-align: left;">REV</td>
+<td style="text-align: left;">D10</td>
+<td style="text-align: left;">2025-03-03</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">-53.3304</td>
+<td style="text-align: right;">-63.7071</td>
+<td style="text-align: right;">99.8988</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="延伸净值" src="figures/nav_extended.png" /></p>
+<h2 id="4">4 四状态与训练方式</h2>
+<p>状态属于信号时的价格背景，十分组属于预测排序。四类比例由模型选择自然形成；另运行两条四状态均衡账户和J_RW样本加权模型，不把EP36双跌历史贡献转成固定超配。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">state</th>
+<th style="text-align: right;">average_share</th>
+<th style="text-align: right;">conditional_mean_return</th>
+<th style="text-align: right;">present_rounds</th>
+<th style="text-align: right;">all_rounds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">UU</td>
+<td style="text-align: right;">8.7525</td>
+<td style="text-align: right;">-0.3925</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">UD</td>
+<td style="text-align: right;">14.5505</td>
+<td style="text-align: right;">-0.4498</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">DU</td>
+<td style="text-align: right;">37.8858</td>
+<td style="text-align: right;">-0.0951</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: left;">DD</td>
+<td style="text-align: right;">38.8112</td>
+<td style="text-align: right;">-0.1990</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">UU</td>
+<td style="text-align: right;">13.1001</td>
+<td style="text-align: right;">-1.1683</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">UD</td>
+<td style="text-align: right;">33.8190</td>
+<td style="text-align: right;">-0.3187</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">DU</td>
+<td style="text-align: right;">37.1213</td>
+<td style="text-align: right;">-0.2095</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: left;">DD</td>
+<td style="text-align: right;">15.9597</td>
+<td style="text-align: right;">-0.5136</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: left;">UU</td>
+<td style="text-align: right;">4.8351</td>
+<td style="text-align: right;">-0.4727</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: left;">UD</td>
+<td style="text-align: right;">40.4557</td>
+<td style="text-align: right;">-0.7327</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: left;">DU</td>
+<td style="text-align: right;">45.6859</td>
+<td style="text-align: right;">-0.1209</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: left;">DD</td>
+<td style="text-align: right;">9.0234</td>
+<td style="text-align: right;">-0.0296</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+<p>四状态缺席的日期按零预算计入平均占比；条件收益仅在该类出现且标签有效时统计。不能把两列相乘当作连续账户精确利润贡献。</p>
+<h2 id="5">5 独立性覆盖与执行边界</h2>
+<p>主区间P3有35个有效窗口。完整历史平均控制变量覆盖股票比例为32.51%，J_R D10预算覆盖为32.19%。前一交易日市值没有精确缓存的日期保持缺失，未用之后快照回填。详情见<a href="H3_INDEPENDENCE.md">独立性报告</a>。</p>
+<p>主合同每10个市场交易日退出，包括连续入选股票的卖出与重新买入，双边计费。买不到留现金；卖不出继续记录原持仓并重试，H10清仓净收益为NA。主统计只比较确有入场且完整退出的配对事件，并另给全入场与全基线共同支持的敏感性。连续账户保留资金占用与超期持仓。</p>
+<h2 id="6">6 验证与交付</h2>
+<p>20项单元测试通过；4171项验证通过，含216个模型数值重放、70条主成本代理账户的成交与持仓账本重建，以及3条无退出阻断账户的独立事件复利核对。全部605个冻结输入保持哈希不变。验证证明实现自洽，不替代经济证据。</p>
+<p>条件消融按方案仅在联合增量有支持时启动；是否触发及其他执行说明见<a href="../../../notes/EXECUTION.md">执行记录</a>。未开展真实前瞻调度、实盘或发布。</p>
+<p>独立报告：<a href="H1_RANKING.md">排序与十分组</a>、<a href="H2_ECONOMICS.md">账户与兑现</a>、<a href="H3_INDEPENDENCE.md">条件信息与缺口</a>、<a href="TRAINING.md">训练与稳健性</a>。</p>
+<ul>
+<li><a href="../../../config.yaml">完整参数</a> · <a href="../../../GOAL.md">研究合同</a></li>
+<li><a href="../all_rankings.csv.gz">全部预测排名</a> · <a href="../all_target_holdings.csv.gz">全部计划持仓</a></li>
+<li><a href="../events.csv">每个H10事件</a> · <a href="../event_stock_details.csv.gz">逐股事件损益</a></li>
+<li><a href="../accounts.csv">全部账户</a> · <a href="../daily_accounts.csv.gz">逐日净值</a> · <a href="../periods.csv">完整逐月逐年</a></li>
+<li><a href="../primary_tests.csv">六项主检验</a> · <a href="../event_support_sensitivity.csv">支持样本敏感性</a> · <a href="../calendar.csv">数据与日历</a></li>
+<li><a href="../folds.csv">模型与折信息</a> · <a href="../../local_cache/ledgers/">实际逐日持仓及成交账本</a> · <a href="../../manifests/final_validation.json">全部核验</a></li>
+</ul></html>

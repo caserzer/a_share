@@ -1,0 +1,125 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><title>EP37 条件信息与识别范围</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.7 system-ui,sans-serif;color:#17212c}table{border-collapse:collapse;display:block;overflow:auto;font-size:13px}td,th{border:1px solid #d8dfe8;padding:7px 10px;text-align:right}th{background:#edf3fa}td:first-child,th:first-child{text-align:left}img{max-width:100%}a{color:#195ea8}pre{overflow:auto;background:#f4f6f8;padding:16px}h1,h2,h3{line-height:1.35}</style><h1 id="ep37">EP37 条件信息与识别范围</h1>
+<p>想验证什么：联合模型的信息能否超出行业、总市值、波动、市场beta、流动性、基础动量反转及A_R分数的线性控制。</p>
+<p>对当期分数和未来H10收益使用同一控制矩阵投影，计算残差的Spearman相关。未来收益只用于评价，不进入预测。矩阵固定伪逆阈值1e-12，至少100行、30个残差自由度；近零分数残差返回NA。</p>
+<p>本轮所有实证均为Historical-proxy历史模拟样本外探索。真实前瞻新观测为0。严格报价分支与停牌估值代理分别运行；下列完整账户主表明确使用已确认全天停牌、最多20交易日旧价的代理分支。股票为复权合成单位，尚非完整权益与公司行动账本。</p>
+<h2 id="_1">支持范围</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scope</th>
+<th style="text-align: right;">planned</th>
+<th style="text-align: right;">available</th>
+<th style="text-align: right;">stock_coverage</th>
+<th style="text-align: right;">D10_budget_coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">33.0898</td>
+<td style="text-align: right;">32.5751</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">32.5147</td>
+<td style="text-align: right;">32.1925</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">31.0400</td>
+<td style="text-align: right;">31.2113</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">status</th>
+<th style="text-align: right;">signal_dates</th>
+<th style="text-align: right;">source_rows</th>
+<th style="text-align: right;">rejected_rows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">EXACT_CACHED_DATE</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">14378</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXACT_PRIOR_DATE_NOT_CACHED</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>精确前一交易日市值缺失导致不少日期不可评价；其他控制缺失也保持未知。覆盖比例是对全部计划信号的均值，不能只对有市值的日期平均后宣称完整覆盖。</p>
+<h2 id="_2">条件信息主检验</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scope</th>
+<th style="text-align: left;">test</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">calendar_n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">low</th>
+<th style="text-align: right;">high</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">block</th>
+<th style="text-align: right;">holm_p</th>
+<th style="text-align: left;">positive_support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0098</td>
+<td style="text-align: right;">-0.0085</td>
+<td style="text-align: right;">0.0311</td>
+<td style="text-align: right;">0.3023</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">0.0104</td>
+<td style="text-align: right;">-0.0085</td>
+<td style="text-align: right;">0.0307</td>
+<td style="text-align: right;">0.2939</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.0122</td>
+<td style="text-align: right;">-0.0385</td>
+<td style="text-align: right;">0.0609</td>
+<td style="text-align: right;">0.6482</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+</tbody>
+</table>
+<p>条件RankIC有支持也只对应已登记控制下的可识别样本；未支持部分不能视为零Alpha。相同行业、市值和波动的净组合反事实并未由这项回归自动建立，因此P3不代表全持仓风险中性交易认证。</p>
+<p><a href="../conditional_information.csv">逐日期控制覆盖与矩阵秩</a> · <a href="../capitalization_audit.csv">精确市值来源审计</a> · <a href="../same_support_rank_ic.csv">同支持样本各模型排序</a> · <a href="../D10_risk_exposures.csv">D10风险暴露及覆盖</a> · <a href="REPORT.md">总报告</a></p></html>

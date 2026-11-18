@@ -1,0 +1,526 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><title>EP37 联合排序与完整十分组</title><style>body{max-width:1120px;margin:36px auto;padding:0 24px;font:16px/1.7 system-ui,sans-serif;color:#17212c}table{border-collapse:collapse;display:block;overflow:auto;font-size:13px}td,th{border:1px solid #d8dfe8;padding:7px 10px;text-align:right}th{background:#edf3fa}td:first-child,th:first-child{text-align:left}img{max-width:100%}a{color:#195ea8}pre{overflow:auto;background:#f4f6f8;padding:16px}h1,h2,h3{line-height:1.35}</style><h1 id="ep37">EP37 联合排序与完整十分组</h1>
+<p>想验证什么：联合模型能否在同一候选池上提高H10排序，并让更高的预测分数组有更好的未来表现。</p>
+<p>主候选为J_R，基线为A_R；其他收益目标和加权模型是登记对照。D10最高、D1最低。所有十组完整保留，未根据收益选择分组。本轮所有实证均为Historical-proxy历史模拟样本外探索。真实前瞻新观测为0。严格报价分支与停牌估值代理分别运行；下列完整账户主表明确使用已确认全天停牌、最多20交易日旧价的代理分支。股票为复权合成单位，尚非完整权益与公司行动账本。</p>
+<h2 id="_1">主区间完整十分组</h2>
+<p>单位为各信号日期组内H10已知标签收益均值再对日期平均，以下显示百分数；尚未扣费或保证全部可以退出。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">decile</th>
+<th style="text-align: right;">A_R</th>
+<th style="text-align: right;">A_Z</th>
+<th style="text-align: right;">FIX</th>
+<th style="text-align: right;">J_R</th>
+<th style="text-align: right;">J_RW</th>
+<th style="text-align: right;">J_Z</th>
+<th style="text-align: right;">MOM</th>
+<th style="text-align: right;">REV</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.0338</td>
+<td style="text-align: right;">0.2484</td>
+<td style="text-align: right;">0.0514</td>
+<td style="text-align: right;">-0.3601</td>
+<td style="text-align: right;">-0.3210</td>
+<td style="text-align: right;">-0.1028</td>
+<td style="text-align: right;">0.4430</td>
+<td style="text-align: right;">-0.3251</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.3130</td>
+<td style="text-align: right;">-0.0157</td>
+<td style="text-align: right;">0.1088</td>
+<td style="text-align: right;">-0.0859</td>
+<td style="text-align: right;">-0.2957</td>
+<td style="text-align: right;">-0.2910</td>
+<td style="text-align: right;">-0.0901</td>
+<td style="text-align: right;">-0.1359</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.0493</td>
+<td style="text-align: right;">0.0933</td>
+<td style="text-align: right;">-0.0488</td>
+<td style="text-align: right;">-0.0983</td>
+<td style="text-align: right;">0.1147</td>
+<td style="text-align: right;">0.1409</td>
+<td style="text-align: right;">-0.1324</td>
+<td style="text-align: right;">-0.2248</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.1390</td>
+<td style="text-align: right;">-0.0799</td>
+<td style="text-align: right;">-0.0223</td>
+<td style="text-align: right;">-0.0971</td>
+<td style="text-align: right;">-0.0752</td>
+<td style="text-align: right;">-0.1397</td>
+<td style="text-align: right;">0.0320</td>
+<td style="text-align: right;">0.1660</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1715</td>
+<td style="text-align: right;">-0.1215</td>
+<td style="text-align: right;">-0.0460</td>
+<td style="text-align: right;">-0.0834</td>
+<td style="text-align: right;">-0.0452</td>
+<td style="text-align: right;">-0.0580</td>
+<td style="text-align: right;">-0.0775</td>
+<td style="text-align: right;">0.1553</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-0.0280</td>
+<td style="text-align: right;">-0.1119</td>
+<td style="text-align: right;">-0.1259</td>
+<td style="text-align: right;">-0.0534</td>
+<td style="text-align: right;">-0.0253</td>
+<td style="text-align: right;">-0.0386</td>
+<td style="text-align: right;">-0.1043</td>
+<td style="text-align: right;">0.0469</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-0.1561</td>
+<td style="text-align: right;">-0.2019</td>
+<td style="text-align: right;">-0.1081</td>
+<td style="text-align: right;">0.1347</td>
+<td style="text-align: right;">-0.0080</td>
+<td style="text-align: right;">-0.1082</td>
+<td style="text-align: right;">-0.0395</td>
+<td style="text-align: right;">0.1032</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-0.1822</td>
+<td style="text-align: right;">0.0183</td>
+<td style="text-align: right;">0.0636</td>
+<td style="text-align: right;">-0.1051</td>
+<td style="text-align: right;">-0.2700</td>
+<td style="text-align: right;">-0.1109</td>
+<td style="text-align: right;">-0.0752</td>
+<td style="text-align: right;">-0.1547</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.1082</td>
+<td style="text-align: right;">-0.3889</td>
+<td style="text-align: right;">-0.2409</td>
+<td style="text-align: right;">-0.0556</td>
+<td style="text-align: right;">0.1135</td>
+<td style="text-align: right;">-0.0352</td>
+<td style="text-align: right;">-0.4836</td>
+<td style="text-align: right;">-0.2043</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">-0.1063</td>
+<td style="text-align: right;">-0.3802</td>
+<td style="text-align: right;">-0.5627</td>
+<td style="text-align: right;">-0.1291</td>
+<td style="text-align: right;">-0.1220</td>
+<td style="text-align: right;">-0.1918</td>
+<td style="text-align: right;">-0.4179</td>
+<td style="text-align: right;">-0.3604</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="十分组曲线" src="figures/deciles_primary.png" /></p>
+<h2 id="_2">排序统计</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scope</th>
+<th style="text-align: left;">scheme</th>
+<th style="text-align: right;">offset</th>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">calendar_n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">low</th>
+<th style="text-align: right;">high</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">block</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00217</td>
+<td style="text-align: right;">-0.03157</td>
+<td style="text-align: right;">0.03566</td>
+<td style="text-align: right;">0.90455</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.02721</td>
+<td style="text-align: right;">-0.06374</td>
+<td style="text-align: right;">0.00703</td>
+<td style="text-align: right;">0.13143</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FIX</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.02089</td>
+<td style="text-align: right;">-0.05586</td>
+<td style="text-align: right;">0.01546</td>
+<td style="text-align: right;">0.26587</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00721</td>
+<td style="text-align: right;">-0.02103</td>
+<td style="text-align: right;">0.03573</td>
+<td style="text-align: right;">0.62019</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00976</td>
+<td style="text-align: right;">-0.01771</td>
+<td style="text-align: right;">0.03739</td>
+<td style="text-align: right;">0.46927</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.00494</td>
+<td style="text-align: right;">-0.03438</td>
+<td style="text-align: right;">0.02346</td>
+<td style="text-align: right;">0.74613</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">-0.03353</td>
+<td style="text-align: right;">-0.07274</td>
+<td style="text-align: right;">0.00615</td>
+<td style="text-align: right;">0.10195</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">REV</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.00416</td>
+<td style="text-align: right;">-0.02682</td>
+<td style="text-align: right;">0.03570</td>
+<td style="text-align: right;">0.79660</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">0.00378</td>
+<td style="text-align: right;">-0.02409</td>
+<td style="text-align: right;">0.03390</td>
+<td style="text-align: right;">0.79710</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">-0.02277</td>
+<td style="text-align: right;">-0.04971</td>
+<td style="text-align: right;">0.00229</td>
+<td style="text-align: right;">0.08496</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FIX</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">-0.00973</td>
+<td style="text-align: right;">-0.04029</td>
+<td style="text-align: right;">0.02031</td>
+<td style="text-align: right;">0.52574</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">0.01387</td>
+<td style="text-align: right;">-0.00955</td>
+<td style="text-align: right;">0.03770</td>
+<td style="text-align: right;">0.25037</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">0.01732</td>
+<td style="text-align: right;">-0.00452</td>
+<td style="text-align: right;">0.04099</td>
+<td style="text-align: right;">0.13843</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">0.00053</td>
+<td style="text-align: right;">-0.02035</td>
+<td style="text-align: right;">0.02181</td>
+<td style="text-align: right;">0.96852</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">-0.02580</td>
+<td style="text-align: right;">-0.05734</td>
+<td style="text-align: right;">0.00585</td>
+<td style="text-align: right;">0.10745</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">REV</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">0.01015</td>
+<td style="text-align: right;">-0.01725</td>
+<td style="text-align: right;">0.03818</td>
+<td style="text-align: right;">0.46927</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_R</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.00790</td>
+<td style="text-align: right;">-0.03357</td>
+<td style="text-align: right;">0.04754</td>
+<td style="text-align: right;">0.71514</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">A_Z</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">-0.01137</td>
+<td style="text-align: right;">-0.04466</td>
+<td style="text-align: right;">0.02223</td>
+<td style="text-align: right;">0.53873</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FIX</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.01889</td>
+<td style="text-align: right;">-0.03186</td>
+<td style="text-align: right;">0.07641</td>
+<td style="text-align: right;">0.48076</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_R</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.03094</td>
+<td style="text-align: right;">-0.00825</td>
+<td style="text-align: right;">0.06846</td>
+<td style="text-align: right;">0.10795</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_RW</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.03668</td>
+<td style="text-align: right;">-0.00125</td>
+<td style="text-align: right;">0.07323</td>
+<td style="text-align: right;">0.05247</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">J_Z</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.01454</td>
+<td style="text-align: right;">-0.01253</td>
+<td style="text-align: right;">0.04879</td>
+<td style="text-align: right;">0.35932</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">MOM</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">-0.00597</td>
+<td style="text-align: right;">-0.05131</td>
+<td style="text-align: right;">0.04242</td>
+<td style="text-align: right;">0.80610</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">expanding</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">REV</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.02550</td>
+<td style="text-align: right;">-0.02701</td>
+<td style="text-align: right;">0.07967</td>
+<td style="text-align: right;">0.35482</td>
+<td style="text-align: right;">6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">主排序增量检验</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">scope</th>
+<th style="text-align: left;">test</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">calendar_n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">low</th>
+<th style="text-align: right;">high</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">block</th>
+<th style="text-align: right;">holm_p</th>
+<th style="text-align: left;">positive_support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">primary</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.0050</td>
+<td style="text-align: right;">-0.0117</td>
+<td style="text-align: right;">0.0235</td>
+<td style="text-align: right;">0.5797</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">extended</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">0.0101</td>
+<td style="text-align: right;">-0.0046</td>
+<td style="text-align: right;">0.0262</td>
+<td style="text-align: right;">0.2024</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.0000</td>
+<td style="text-align: left;">False</td>
+</tr>
+<tr>
+<td style="text-align: left;">extension_only</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.0230</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.0465</td>
+<td style="text-align: right;">0.0490</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.2939</td>
+<td style="text-align: left;">False</td>
+</tr>
+</tbody>
+</table>
+<p>需要解释：单个较好的尾部分组不保证整个模型有单调排序；J_Z或J_RW表现更好也不能事后替换主候选J_R。四状态内部关联与全截面排序分开报告。</p>
+<p><a href="../deciles_by_date.csv">每期十分组全部统计</a> · <a href="../state_ic_by_date.csv">四状态内RankIC</a> · <a href="../state_deciles_by_date.csv">四状态与十分组交叉</a> · <a href="../all_rankings.csv.gz">全股票完整排名</a> · <a href="REPORT.md">总报告</a></p></html>

@@ -1,0 +1,50 @@
+{
+  "stage": "accounts",
+  "config_sha256": "ad81daeef624d3e9f514f2f9936a3555532fe8dbc62e5f80bb176bc9141c231f",
+  "files": [
+    {
+      "path": "outputs/publishable/accounts.csv",
+      "sha256": "f1ea765ad16d913a64d727a12a3ea0bafa7ab02e299a2ba30b199f4535c75d42"
+    },
+    {
+      "path": "outputs/publishable/events.csv",
+      "sha256": "fb3039168fc6853efd458a9ff3a88ad368dfa1ff206840adfd8c3c2e414ffe42"
+    },
+    {
+      "path": "outputs/publishable/periods.csv",
+      "sha256": "bba7bc82385c1df0b555f898c9625401f2fe2d38889010ab919c60f3bf4fda67"
+    },
+    {
+      "path": "outputs/local_cache/daily_accounts.parquet",
+      "sha256": "cf62726308cc742adb2d8528dfaa907d07152847fce8b315fbffbfc041b43ac4"
+    },
+    {
+      "path": "outputs/manifests/account_status.json",
+      "sha256": "f6ff5bb1c57b7a6c2e3705ceb21308440a2e18bd279d164b08f19b6643b0172a"
+    }
+  ],
+  "code": [
+    {
+      "path": "code/accounts.py",
+      "sha256": "d931aa2af33d04699a545298b10da7d77be5b914a72b98694874d8991a43ff98"
+    },
+    {
+      "path": "code/analyze.py",
+      "sha256": "2690b244c53a1c74789bdadca9d04bacf9f87c132dd7982a130b6ce5a08ffd98"
+    },
+    {
+      "path": "code/core.py",
+      "sha256": "5f6106d6c0224340af6f6a54091891faf2ba56b558ee3d2975833b7e067db51c"
+    },
+    {
+      "path": "code/data_models.py",
+      "sha256": "9f9dddfcb798ccaf847c1bcd479d3133814f52bda171720f88e9049199d37d9f"
+    },
+    {
+      "path": "code/validate.py",
+      "sha256": "18eb1df89c2df7abf4e8a9f760835c24df167c378990934efc37a19780c05bae"
+    }
+  ],
+  "branches": 270,
+  "event_rows": 8479
+}
