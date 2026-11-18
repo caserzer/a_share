@@ -1,0 +1,17 @@
+{
+  "allocation": "Each selected stock 1/60 of post-fee NAV at original monthly rebalance; remainder cash with zero return; no intra-month cap reset",
+  "classification": "medium=close[t-5]/close[t-60]-1, short=close[t]/close[t-5]-1; strictly positive/negative; zeros and missing explicitly unclassified",
+  "unclassified_rows": 38,
+  "sample": "Original E1 Q5 only; never fill up a state to 60 names",
+  "costs_bps": [
+    10,
+    20
+  ],
+  "primary_end": "2025-03-03",
+  "supplement_end": "2026-10-16",
+  "main_statistic": "Complete calendar months; partial endpoint months shown separately in all-month sensitivity",
+  "win_definition": "Net monthly account return > 1e-12; zero months remain in denominator and are separately counted",
+  "payoff_definition": "Mean positive monthly return divided by absolute mean negative monthly return; not total gains/total losses",
+  "excess": "Account monthly net return minus H00300 full-return index monthly return; exposure unmatched, not risk-adjusted alpha",
+  "evidence": "Descriptive post-selection historical replay; Historical-proxy; month outcomes dependent; no significance claim"
+}

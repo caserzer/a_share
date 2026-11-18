@@ -1,0 +1,24 @@
+{
+  "created_at": "2026-11-17T12:18:04.730328+00:00",
+  "authorization": "User asks original E1 retain only medium-down short-down and equalweight; monthly net return and excess",
+  "universe": "Only original monthly phase1 E1 Q5 targets, not all down-down CSI300 stocks; original scores and membership unchanged",
+  "trend": "raw frozen qfq close[t-5]/close[t-60]-1 < 0",
+  "short": "raw frozen qfq close[t]/close[t-5]-1 < 0",
+  "target": "1/k across retained names; if k=0 cash target; excluded/unknown/zero not selected; old blocked sells retained",
+  "fees_bps": [
+    10,
+    20
+  ],
+  "calendar": "Original exact monthly execution dates, next market open after original signal; freeze state until next original monthly signal",
+  "valuation": "Original suspend_flat <=20 sessions proxy; no new repair or terminal payment fabrication; stop at first held unknown",
+  "periods": {
+    "primary_end": "2025-03-03",
+    "supplement_end": "original monthly E1 available end, 2026-10-16; if DD blocked, truncate explicitly"
+  },
+  "benchmark": "H00300 full return close; arithmetic monthly net return minus index monthly return in percentage points; relative ratio separately",
+  "monthly": "calendar months, continuous account NAV with prior month last NAV base; first month capital1 at 2021-01-08 close, includes first entry fees; final partial month labelled; no forced terminal liquidation",
+  "comparison": "Original E1 replay via same engine and costs required before DD metrics; full and primary separate",
+  "evidence": "Post-selection historical scenario requested after seeing state profits; not independent alpha confirmation",
+  "no_training": true,
+  "no_parameter_search": true
+}

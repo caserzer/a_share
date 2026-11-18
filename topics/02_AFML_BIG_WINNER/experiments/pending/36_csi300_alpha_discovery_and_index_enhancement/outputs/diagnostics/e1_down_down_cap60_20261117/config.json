@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-11-17T12:28:11.477819+00:00",
+  "authorization": "User requests same original E1 double-down subset, each stock max 1/60, recalculate monthly returns and excess",
+  "selection": "Exactly reuse sealed original E1 Q5 double-down list and 70 original monthly dates; medium close[t-5]/close[t-60]-1<0 and short close[t]/close[t-5]-1<0",
+  "allocation": "Each selected stock target1/60 of total account NAV including cash; residual cash; no search or refill with other stocks",
+  "cap_semantics": "Enforce at scheduled monthly execution using post-fee NAV when sells possible; blocked legacy sells retained and disclosed; price drift allowed between scheduled trades, no added daily rebalancing",
+  "fee_consistency": "Solve target scale q=post_fee_NAV/pretrade_NAV at same observed execution open; numerical fixed point <=40 steps tolerance1e-13; not economic optimization",
+  "cash_return": 0.0,
+  "costs_bps": [
+    10,
+    20
+  ],
+  "primary_end": "2025-03-03",
+  "supplement_end": "2026-10-16 or first unvalued holding",
+  "benchmark": "H00300 full return index close, monthly arithmetic excess in percentage points; cash materially lowers exposure so not risk-adjusted alpha",
+  "evidence": "Post-selection historical sensitivity, Historical-proxy",
+  "no_training": true
+}
