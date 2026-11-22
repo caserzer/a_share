@@ -1,5 +1,7 @@
 # a_share
 
+**[EP37 Alpha 实验总结（2026-11-22）](topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/notes/EXPERIMENT_SUMMARY_20261122.md)** 汇总以 E1 为基线的选股检验、超跌与市场广度、净额执行及中证红利配仓。
+
 > **EP36专项更新：2026-11-16**
 >
 > 沪深300 Alpha 探索已完成模型排序、Q5调仓周期、等权对照、月内相位、缓冲、延迟执行、买卖分解及新增股票匹配。存在历史排序与特定执行方案的正向线索，但稳定独立净增量、正式指数增强及真实前瞻均未获确认。

@@ -1,0 +1,158 @@
+[
+  {
+    "model": "base",
+    "scope": "primary",
+    "mode": "flat",
+    "cost": "main",
+    "valuation_complete": true,
+    "terminal_liquidated": false,
+    "failure": null
+  },
+  {
+    "model": "base",
+    "scope": "primary",
+    "mode": "strict",
+    "cost": "main",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-02-06 00:00:00",
+      "reason": "HELD_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  },
+  {
+    "model": "base",
+    "scope": "primary",
+    "mode": "flat",
+    "cost": "zero",
+    "valuation_complete": true,
+    "terminal_liquidated": false,
+    "failure": null
+  },
+  {
+    "model": "base",
+    "scope": "extended",
+    "mode": "flat",
+    "cost": "main",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-03-04 00:00:00",
+      "reason": "HELD_OPEN_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  },
+  {
+    "model": "base",
+    "scope": "extended",
+    "mode": "strict",
+    "cost": "main",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-02-06 00:00:00",
+      "reason": "HELD_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  },
+  {
+    "model": "base",
+    "scope": "extended",
+    "mode": "flat",
+    "cost": "zero",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-03-04 00:00:00",
+      "reason": "HELD_OPEN_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  },
+  {
+    "model": "tilt",
+    "scope": "primary",
+    "mode": "flat",
+    "cost": "main",
+    "valuation_complete": true,
+    "terminal_liquidated": false,
+    "failure": null
+  },
+  {
+    "model": "tilt",
+    "scope": "primary",
+    "mode": "strict",
+    "cost": "main",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-02-06 00:00:00",
+      "reason": "HELD_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  },
+  {
+    "model": "tilt",
+    "scope": "primary",
+    "mode": "flat",
+    "cost": "zero",
+    "valuation_complete": true,
+    "terminal_liquidated": false,
+    "failure": null
+  },
+  {
+    "model": "tilt",
+    "scope": "extended",
+    "mode": "flat",
+    "cost": "main",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-03-04 00:00:00",
+      "reason": "HELD_OPEN_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  },
+  {
+    "model": "tilt",
+    "scope": "extended",
+    "mode": "strict",
+    "cost": "main",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-02-06 00:00:00",
+      "reason": "HELD_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  },
+  {
+    "model": "tilt",
+    "scope": "extended",
+    "mode": "flat",
+    "cost": "zero",
+    "valuation_complete": false,
+    "terminal_liquidated": false,
+    "failure": {
+      "date": "2025-03-04 00:00:00",
+      "reason": "HELD_OPEN_VALUATION_UNKNOWN",
+      "instruments": [
+        "SH600837"
+      ]
+    }
+  }
+]
