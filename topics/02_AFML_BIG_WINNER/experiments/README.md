@@ -19,6 +19,8 @@ experiment folder.
 
 Current pending experiments:
 
+- [EP38 沪深300周度至月度 Alpha 研究：第1–133轮总结](pending/38_csi300_weekly_monthly_alpha_discovery/ALL_EXPERIMENTS.md)（已暂停）。
+
 - `pending/01_data_prepare_pit_largecap_akshare_qlib_v0`: prepare the PIT
   large-cap A-share universe and Qlib daily data cache from AkShare.
 
