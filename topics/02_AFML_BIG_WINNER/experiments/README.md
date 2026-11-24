@@ -19,6 +19,8 @@ experiment folder.
 
 Current pending experiments:
 
+- [EP40 沪深300 D10 赢家奖励实验](pending/40_csi300_d10_reward_penalty/REPORT.md) 已完成七组账户。相对只罚误买，增加赢家奖励的每十日净差为主段 +0.19 bp、后段 −9.50 bp，两段区间均跨零。 [LightGBM 复验](pending/40_csi300_d10_reward_penalty/lightgbm/REPORT.md)
+
 - [EP39 突破延续与超跌续跌](pending/39_curated_breakout_oversold_cases/README.md) 完成两本真实案例册、23季训练、两池账户和形态内排序检验。精选训练在两池两个区间的全池账户均落后等量随机均值。[首轮训练实测](pending/39_curated_breakout_oversold_cases/TRAINING_REPORT.md)
   - [超跌数据修正与原持仓复测](pending/39_curated_breakout_oversold_cases/revision1/REPORT.md) 收录自然样本、两类风险预测、实付订单以及替补收益；两池后段每十日分别落后原账户3.75、3.62 bp。
 

@@ -1,5 +1,7 @@
 # a_share
 
+[EP40 沪深300 D10 赢家奖励实验](topics/02_AFML_BIG_WINNER/experiments/pending/40_csi300_d10_reward_penalty/REPORT.md) 已完成七组账户。相对只罚误买，增加赢家奖励的每十日净差为主段 +0.19 bp、后段 −9.50 bp，两段区间均跨零。 [LightGBM 复验](topics/02_AFML_BIG_WINNER/experiments/pending/40_csi300_d10_reward_penalty/lightgbm/REPORT.md)
+
 [EP39 超跌数据修正与复测（2026-11-24）](topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/revision1/REPORT.md) 补入先破低后收涨等自然案例，分开预测盘中破低与十日亏损，仅复核原模型选中的超跌股。四个池段的扣费收益差区间均跨零。
 
 [EP39 精选真实案例训练与跨池测试（2026-11-24）](topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/TRAINING_REPORT.md) 完成23季训练与两池账户回放。突破及超跌精选在两个池的主段和后段均落后等量随机训练，另附触发股内排序和两本案例册。
