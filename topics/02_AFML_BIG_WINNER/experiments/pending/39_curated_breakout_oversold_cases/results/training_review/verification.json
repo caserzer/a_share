@@ -1,0 +1,101 @@
+{
+  "status": "PASS",
+  "scores": {
+    "rows": 1937767,
+    "panel_rows": 149059,
+    "dates_per_pool": 139,
+    "models": 13,
+    "target_rows": 192244,
+    "frozen_full_score_max_abs": 7.216449660063518e-16
+  },
+  "training": {
+    "weekly_rows": 137078,
+    "weekly_oof_quarters": 37,
+    "outer_quarters": 23,
+    "arm_folds": 299,
+    "curated_and_random_membership_rows": 25104,
+    "prediction_recompute_max_abs": 4.440892098500626e-16
+  },
+  "accounts": {
+    "book_segments": 390,
+    "H10_windows": 20712,
+    "daily_nav_rows": 207510,
+    "orders": 1968201,
+    "wide_base_attribution_rows": 3290,
+    "wide_primary_common_segments": [
+      35,
+      22,
+      41
+    ],
+    "gap_dates": [
+      "2022-06-30",
+      "2023-06-16"
+    ],
+    "full_ep38_daily_reconciled": true
+  },
+  "decisions": {
+    "swapped_seats": 156108,
+    "seat_summaries": 48,
+    "matched_outcome_rows": 4172,
+    "decision_rows": 255,
+    "trigger_rankic_rows": 3864
+  },
+  "paired_comparisons": {
+    "paired_windows": 11592,
+    "paired_summary_rows": 420,
+    "paired_months": 286,
+    "principal_95pct_intervals_recomputed": 16
+  },
+  "sha256": {
+    "results/training_accounts/CSI300/suspension_marks.csv": "110f9c6dec2f72ea4b4a48e162e044fcda0651d3d02abdd9d26b3aabeffc642e",
+    "results/training_accounts/CSI800/suspension_marks.csv": "0f8bc8095b126a87daa5588d49c1dacc4ef57c2d0416c7c82c8ca3d9c0b9bd8f",
+    "results/training_accounts/account_summary.csv": "59e65530e3bc6d649adfe0c96543c4bf8099b009071ac001821992cf1f299cea",
+    "results/training_accounts/daily.parquet": "41cfc1645110f93b26d795a650bf175fb8e89a9eed323502d70c0ddf4c6ec3dc",
+    "results/training_accounts/gaps.csv": "01f2b4265f4459188f7229111b292da06b8524d9e4ce1d2adb129481521cebfb",
+    "results/training_accounts/orders.parquet": "097002de9155170790b08c2dda8fd85bcfec3fab15e8790fb8b33acc82ecb579",
+    "results/training_accounts/parity.json": "2af0ad2629cfdce9ad9beee72f599e8e178924690dc41ac6e635f3877a7b3d70",
+    "results/training_accounts/targets.parquet": "b450da1253d653eb705ccd8c5866c71422b82ce9a98476705eb70c3e6a9d81cd",
+    "results/training_accounts/windows.parquet": "8887d8b73132ea108deb5db2774a69007bce5eedbe496d0973cece525a8a9bd1",
+    "results/training_fit/breakout_weekly_pairs.parquet": "28f237683b52a5fd4633da73f4d8f8525fac22f74499b1d7a61b599520bd808b",
+    "results/training_fit/folds.csv": "dd2c0518c08f2be7d42c79ac35b9174b7fa1c2d545df6c9c67db0427ee0bba4b",
+    "results/training_fit/full_score_parity.csv": "58ce55956d6289d2529f864d1d1f87deb90e310e9eed5e1fa5a34be522950b98",
+    "results/training_fit/models.json": "2b79e31ba9a40a219c8f5c277cfd5df480e0136a5688fa1b99c64045b969aa28",
+    "results/training_fit/oversold_weekly_pairs.parquet": "00958d123858fa650dcacda53e72fd2101f61792e1475a3e1463a72268fa4a7f",
+    "results/training_fit/quarter_coverage.csv": "109264afa9e6edd5cefce6c46aed5243f8331286847b5fc3cf2e684997717913",
+    "results/training_fit/ranking_by_date.parquet": "6caca76091bcb536b41e5d0a04361f14c80f1d5a14c16944b80fdbb46d21878b",
+    "results/training_fit/ranking_summary.csv": "2590fe6d2906d1d319e2cc1588eaa4cc2b77e8c93b29bc57e005dc9aa4db3079",
+    "results/training_fit/receipt.json": "afef146e400de35ab150c82c0fb019c8947f1c8bccba0ccac630d33247da770f",
+    "results/training_fit/scores.parquet": "4783e408645a71292c65c63b26572aff28b5d1a1b3559533443c316ab34d2524",
+    "results/training_fit/training_membership.parquet": "67d366778abeac94e3ab4d10c0569616f1c6363ed0c5826c7f70e77d729a6e93",
+    "results/training_local/calendar.csv": "90ed3edc4f15b6a1e7a07e18d310629e74af94f798321470435e678e6d1b5abc",
+    "results/training_local/coverage.csv": "6eaf1f9dfbeb16191f09684ee3d9cfbe5530d404ef9b03b0011b1c721946b04f",
+    "results/training_local/group_by_date.parquet": "cb09f2be6c8c7087241c1497fe8441fa4c6687fca48ffc55174255278b614786",
+    "results/training_local/group_summary.csv": "27eae37533951a97bbd4f4d36baea5f685fe6a1ff41a804af58b835c08ac5190",
+    "results/training_local/paired.csv": "8d9a28700eafc1ea4508e59849c180392d784cb341d434a01655ffd7996973e8",
+    "results/training_local/receipt.json": "c654cbc7cda8e920f21c2971def389027c92bb297954894a5f43dcd4f09a408c",
+    "results/training_local/tail_constituents.parquet": "2dc8ea643f7965e0b8329fddb32b08bec451fdd276ebba6e1f1f7a8731671315",
+    "results/training_review/casebook_before.json": "eafc1c947f43457e0d07a1714d37e7f16b569c4f5b31ca138d32112250ea3ca0",
+    "results/training_review/changed_seats.parquet": "ca3804566b1a441b43c6d26cdba058922e36fab03422df9bcc309737694018e1",
+    "results/training_review/matched_case_accuracy.parquet": "46ede10f25fb7273c74200be330c118f61e4b535ace63a32f9e356729b780b87",
+    "results/training_review/paired_months.csv": "b7f0cd74e8e16f45b20023377f844f18de0fedb68d8b2d9c1ee43ddc2cf26867",
+    "results/training_review/paired_summary.csv": "1b13799459c8edc07d93a2ca3bd212cab166d55df6b65f3f361b1da19bb27150",
+    "results/training_review/paired_windows.parquet": "535ca34d00cefdea5f662f294471d55542dcf19c785425f3ce5f83606af03a02",
+    "results/training_review/pairing_coverage.csv": "e7f6ab5f2412e945e46a9fde31b9ae119c2040075838b8c05bbd4dd03b92cb87",
+    "results/training_review/seat_summary.csv": "1b3a085374afa607156c1a8b5363dfd07602d522b9161701249c9d50d8b4ec1a",
+    "results/training_review/trigger_decisions.csv": "f17d0ce48a171502fecc309d306f5d1ff35b7b6d90772a3f45afb1aad98a347d",
+    "results/training_review/trigger_rankic.parquet": "beba0a02ca30919ace79c52e6cde6b2a895c234c706b57db4096e97e87df979c",
+    "results/training_weekly/oof_folds.csv": "5b36c0a50656c5668dcd485a7ddf0e004bb25c1a15efc09a76134489e6a56177",
+    "results/training_weekly/panel.parquet": "b9425d959d2329dd8b1c25c58447633c84685ec8225d4068595e287d3354e4c5",
+    "results/training_weekly/receipt.json": "b7c809807b0dd2dea4b791d322207ebd6f9bb135fa3a2d17b12feccca9eaff66",
+    "training/PROTOCOL.md": "3ed951d39e0dd231a40334440bbb3700505defd23eca6b7b657d962e546ae288",
+    "training/accounts_replay.py": "7f20dfed55812ce0a0d261d116bd9617f0ebbbee17162c782a1d73194a2f6011",
+    "training/compare.py": "764d96ca2820ad9250b48bf46bd3402c490a3324fbcd9091a7acab5b4adfbd7a",
+    "training/context_review.py": "5034414f860655a727243a073e9e6b584293944f7b0d51caa4ca4482106a7897",
+    "training/decisions.py": "629a42ccf048802056c263d3f1f2e32524c36a17191a6fe1a450aa5ed35143d8",
+    "training/fit.py": "878c217dd148fd2118b4d2fa12ebf7f444894741382f19f52cfd961d47e9c2db",
+    "training/local_trigger.py": "a27cdd037649c0b213d3b2b095675905ad9b5b58d08141fd82be4fafda686bd8",
+    "training/report_tables.py": "de9d52d6133995bf2260914b1468fc6042e8ece5536e32fd6e0571b67a899c9f",
+    "training/validate.py": "a34ba1bf7006d9d22a000ade92f18f67bf03ec1af1c1f37fd1e1afa91625e3a0",
+    "training/weekly.py": "7cfb39fe8eb5c2b2a32d0bd7036dfe140c250c3056dfffb3f6345c04f560c311"
+  }
+}

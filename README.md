@@ -1,5 +1,11 @@
 # a_share
 
+[EP39 超跌数据修正与复测（2026-11-24）](topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/revision1/REPORT.md) 补入先破低后收涨等自然案例，分开预测盘中破低与十日亏损，仅复核原模型选中的超跌股。四个池段的扣费收益差区间均跨零。
+
+[EP39 精选真实案例训练与跨池测试（2026-11-24）](topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/TRAINING_REPORT.md) 完成23季训练与两池账户回放。突破及超跌精选在两个池的主段和后段均落后等量随机训练，另附触发股内排序和两本案例册。
+
+[EP38 三线首轮与组合复验（2026-11-24）](topics/02_AFML_BIG_WINNER/experiments/pending/38_csi300_weekly_monthly_alpha_discovery/three_track/REPORT.md) 汇总沪深300扩至中证800、78项因子去冗余、成本入训及同日账户对照。
+
 **[EP37 Alpha 实验总结（2026-11-22）](topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/notes/EXPERIMENT_SUMMARY_20261122.md)** 汇总以 E1 为基线的选股检验、超跌与市场广度、净额执行及中证红利配仓。
 
 > **EP36专项更新：2026-11-16**

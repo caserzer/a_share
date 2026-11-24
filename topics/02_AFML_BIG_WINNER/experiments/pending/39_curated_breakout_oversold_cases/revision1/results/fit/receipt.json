@@ -1,0 +1,47 @@
+{
+  "n_scores": 102578,
+  "quarters": 23,
+  "models": 7,
+  "heads": 2,
+  "logistic_fits": 322,
+  "C": 1.0,
+  "independent_checks": {
+    "persisted_probabilities_recomputed": 205156,
+    "maximum_absolute_error": 0.0,
+    "independent_maturity_prefix_checks": 322
+  },
+  "solver": "lbfgs",
+  "tolerance": 1e-08,
+  "natural_weight": 1,
+  "additional_weight": 1,
+  "seeds": [
+    39,
+    139,
+    239,
+    339,
+    439
+  ],
+  "trigger_counts": {
+    "CSI300": 3987,
+    "CSI800": 10667
+  },
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/revision1/fit.py": "b9f9a5e569221cbb03cbeaa142c7a137c776b3025c5c73f1381d82edb32b11a0",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/revision1/results/data/weekly.parquet": "825c372d7a1588c3ee0326ca77c2d265abe1c78781ad6db38355b486a13a52ce",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/panel.parquet": "0122863e1d981956acba1f70127d85466cd83662506fc22446de8c315059e9fb",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/local_cache/h10_features.parquet": "e9ca8c406f8306557436c22d1020885b64654c4861deafb6af13abb6a74c9d4d",
+    "/home/xiaolv/.cache/a_share/ep38_three_track/market/wide_features.parquet": "8c5ada2bfc981e5ea775a1badb668371fd46815bd1bccbafa9d021ceb526c7ec",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/outputs/original_78_features.csv": "41010b12804fcf734344500b3725d1abc71cbd23e58c6321d8517d01b969c941",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/oversold.py": "d286b8bb771aefff39c98339f5bea9eab1256143946ae77c7cddd8359bbe3278",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/model.py": "b2a8721296fb8cd2c0d582ef818164658ffa55c566c8fe84f0782258aa196ca0"
+  },
+  "outputs": {
+    "extra_weight_membership.parquet": "7f468ad8ff61ab950ccd4aa2d23e50eb0974ff1afcac243a3aca8774fb5105ef",
+    "folds.csv": "c641083ff8f7d601fe1d52f030d2fe6e79e0f2588d9266823b8b78cfc552f163",
+    "metrics.csv": "cced7918e1c1a421d23ffa3b9e2b9c09cc27961dd7af9436891b24e64df56617",
+    "metrics_daily.parquet": "96319010cc3f9c64e6577950f4ec62448ccc70c1ed679683828807626985817f",
+    "models.json": "49415f247722ba10597fb09d179fe71d4c2768df0695e15f1603bb0b1890d55b",
+    "pairs.parquet": "0c39b3bff48500ca0992a2ad08397e43936693e55aca23e614eba197f0538aa0",
+    "scores.parquet": "7a26e6ada1ab5e21913952a95b148b9e4a40a577741cdae8c829f6c6ae54a425"
+  }
+}

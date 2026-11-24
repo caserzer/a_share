@@ -1,6 +1,6 @@
 # EP38 沪深300十日选股历史实验
 
-[第1–133轮完整总结、关键结果与逐轮索引](ALL_EXPERIMENTS.md) · 截至2026年11月23日，研究已暂停。
+[第1–133轮完整总结、关键结果与逐轮索引](ALL_EXPERIMENTS.md) · 前133轮于2026年11月23日结束。2026年11月24日完成独立的[三线首轮及组合复验](three_track/REPORT.md)。
 
 已推进至第133轮。后段延迟换股的损失分布于前后两个五日。等新评分确认才换入、其余仓位不动，五段均胜过到第五日一律换入；主段相对原收益秩多3.22 bp/十日，后段仍少0.05 bp。配平换入目标金额后，确认规则主、后段仅多0.37、0.22 bp/十日，尚无新的前瞻候选。[前后五日](rounds/131_crossing_half_window/REPORT.md) · [逐对实际中点换仓](rounds/132_crossing_midpoint_orders/REPORT.md) · [同额对照](rounds/133_midpoint_matched_orders/REPORT.md)
 

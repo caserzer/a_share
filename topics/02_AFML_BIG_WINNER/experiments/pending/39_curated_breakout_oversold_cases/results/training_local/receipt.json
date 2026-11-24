@@ -1,0 +1,26 @@
+{
+  "min_scored_triggers": 10,
+  "tail_divisor": 5,
+  "require_complete_quotes_all_seven": true,
+  "seeds": [
+    39,
+    139,
+    239,
+    339,
+    439
+  ],
+  "unordered_ties": "score_then_instrument_ascending",
+  "inputs": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/panel.parquet": "0122863e1d981956acba1f70127d85466cd83662506fc22446de8c315059e9fb",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/training_fit/scores.parquet": "4783e408645a71292c65c63b26572aff28b5d1a1b3559533443c316ab34d2524",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/training/local_trigger.py": "a27cdd037649c0b213d3b2b095675905ad9b5b58d08141fd82be4fafda686bd8"
+  },
+  "outputs": {
+    "calendar.csv": "90ed3edc4f15b6a1e7a07e18d310629e74af94f798321470435e678e6d1b5abc",
+    "coverage.csv": "6eaf1f9dfbeb16191f09684ee3d9cfbe5530d404ef9b03b0011b1c721946b04f",
+    "group_by_date.parquet": "cb09f2be6c8c7087241c1497fe8441fa4c6687fca48ffc55174255278b614786",
+    "group_summary.csv": "27eae37533951a97bbd4f4d36baea5f685fe6a1ff41a804af58b835c08ac5190",
+    "paired.csv": "8d9a28700eafc1ea4508e59849c180392d784cb341d434a01655ffd7996973e8",
+    "tail_constituents.parquet": "2dc8ea643f7965e0b8329fddb32b08bec451fdd276ebba6e1f1f7a8731671315"
+  }
+}

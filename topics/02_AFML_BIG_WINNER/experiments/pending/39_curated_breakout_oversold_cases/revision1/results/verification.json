@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "models": {
+    "fits": 322,
+    "probabilities": 205156,
+    "maximum_probability_error": 1.1102230246251565e-15,
+    "maximum_normalized_objective_gradient": 2.436955032864426e-07,
+    "shared_dates": 48,
+    "shared_stock_dates": 14079
+  },
+  "decisions": {
+    "targets": 207032,
+    "swap_pairs": 7436,
+    "planned_scores": 2086826,
+    "decision_groups": 3892
+  },
+  "accounts": {
+    "windows": 21546,
+    "daily_rows": 215838,
+    "orders": 1840488,
+    "common_segments": {
+      "CSI300_later": [
+        39
+      ],
+      "CSI300_primary": [
+        100
+      ],
+      "CSI800_later": [
+        39
+      ],
+      "CSI800_primary": [
+        58,
+        41
+      ]
+    },
+    "original_native_days": 7092,
+    "maximum_original_nav_error": 0.0
+  },
+  "comparisons": {
+    "status": "PASS",
+    "paired_windows": 7479,
+    "summary_rows": 243,
+    "principal_intervals": 8
+  },
+  "inputs_sha256": {
+    "/home/xiaolv/.cache/a_share/ep38_three_track/market/wide_features.parquet": "8c5ada2bfc981e5ea775a1badb668371fd46815bd1bccbafa9d021ceb526c7ec",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/daily_members.parquet": "440cb4d2ce2aa48a5c71c2e6c6e79ee7e3353ef5b7b6f3194bce666ef3255121",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/features.parquet": "92ca23db0c918fecce0554803480fe01ca982ad81887c6cb846a59e454063a9f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/qfq_close.parquet": "47f5f984735d76e96c721ec16c7bb39c9ba14cf1f1e46ed871de6fd4e15116a3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/data_models.py": "9f9dddfcb798ccaf847c1bcd479d3133814f52bda171720f88e9049199d37d9f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/local_cache/h10_features.parquet": "e9ca8c406f8306557436c22d1020885b64654c4861deafb6af13abb6a74c9d4d",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/model.py": "b2a8721296fb8cd2c0d582ef818164658ffa55c566c8fe84f0782258aa196ca0",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/outputs/original_78_features.csv": "41010b12804fcf734344500b3725d1abc71cbd23e58c6321d8517d01b969c941",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/run.py": "3ced3b8d137ffebed845480949fad31057ca55f1cd50eb4fe9c7cb9987616d90",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/oversold.py": "d286b8bb771aefff39c98339f5bea9eab1256143946ae77c7cddd8359bbe3278",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/panel.parquet": "0122863e1d981956acba1f70127d85466cd83662506fc22446de8c315059e9fb",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/training_accounts/daily.parquet": "41cfc1645110f93b26d795a650bf175fb8e89a9eed323502d70c0ddf4c6ec3dc",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/training_fit/scores.parquet": "4783e408645a71292c65c63b26572aff28b5d1a1b3559533443c316ab34d2524",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/training_weekly/panel.parquet": "b9425d959d2329dd8b1c25c58447633c84685ec8225d4068595e287d3354e4c5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/training_weekly/receipt.json": "b7c809807b0dd2dea4b791d322207ebd6f9bb135fa3a2d17b12feccca9eaff66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/training/accounts_replay.py": "7f20dfed55812ce0a0d261d116bd9617f0ebbbee17162c782a1d73194a2f6011"
+  },
+  "revision_sha256": {
+    "PROTOCOL.md": "05d97a550e55d3163e913ceef1f81eaec860f661b4ad1b653987f59201286163",
+    "accounts.py": "eeb5414cf99d36d33efabfef0b274b2098ada6176b1bd465f2f80967a4b5d7d9",
+    "check.py": "bd538f4dfbb1f086e3d3b98321dc577d9b78d869e704e226fb5eae7a288517bd",
+    "data.py": "47347a35be28b276d106a4c30813b118d4800cbd3086ea9c8fe7f3ddffacc78f",
+    "decisions.py": "0aa833d1dcf21791a0f168e0c7af5139b6cd4ad3199e5ba6cf659f13a018037c",
+    "fit.py": "b9f9a5e569221cbb03cbeaa142c7a137c776b3025c5c73f1381d82edb32b11a0",
+    "results/accounts/CSI300/suspension_marks.csv": "110f9c6dec2f72ea4b4a48e162e044fcda0651d3d02abdd9d26b3aabeffc642e",
+    "results/accounts/CSI800/suspension_marks.csv": "0f8bc8095b126a87daa5588d49c1dacc4ef57c2d0416c7c82c8ca3d9c0b9bd8f",
+    "results/accounts/account_summary.csv": "feb828a740deb4c9ee4b8c7eec67662f838291434c505202b3501db190bd7d0f",
+    "results/accounts/daily.parquet": "c1557359e54be7322a0c0913b2aa16647abfc5d94eb2f42bfee61e0373f20b4e",
+    "results/accounts/decision_orders.parquet": "ae3b5803d1a110beba1a2a4664eb115a57d331196c0e8a553ff9ccb5c17a1dcf",
+    "results/accounts/decision_orders_summary.csv": "c1f873685d7d9487c761d9151a9f51222e3dc795a527ac95db1e9992e5f0c5b5",
+    "results/accounts/gaps.csv": "e57f7325bc3d2e2e4ed6c41cf229dbc6d6ebfd8b29dc5e8adc01aaf2f8bfd6e2",
+    "results/accounts/orders.parquet": "6ffcc775ad7ff2cb581a8dcda54b792dcb6743ea198de439e24371e9161ad01f",
+    "results/accounts/parity.json": "da25fa42b286013ee67c0d6bee8d065ff16a8510a4035be5bc8adcf6b1fe9e18",
+    "results/accounts/targets.parquet": "f97f9d73724acd7d0fdf432ccbdfd347530231ecef3185edae23e0410aee3e3e",
+    "results/accounts/windows.parquet": "30da0907dc28b473ac4a818fa0aa1e4843b59abd963330a6398d89971ae98200",
+    "results/data/natural_oversold_by_quarter.csv": "48327843af2a137c87076d29a52ddc7f34155036c4da9935dd3d7aac6ec23264",
+    "results/data/receipt.json": "4417f9328e5a08ba3764993fed5c11f8a2fec6a09c7879a9a845d00e5a0dcdc5",
+    "results/data/shared_dates.csv": "ef6d10549c1761990f28705a6d4c715d7971cfb6fdc368414ed91bdd6cf06396",
+    "results/data/weekly.parquet": "825c372d7a1588c3ee0326ca77c2d265abe1c78781ad6db38355b486a13a52ce",
+    "results/decisions/dates.csv": "f11757f45c90dc4e9a5c07927095392c51c66371ffcbc7afdf7d804441f3f021",
+    "results/decisions/planned.parquet": "ee63614e162d35434213ddc897b268db0118e26502e3adefa65d5422f22156da",
+    "results/decisions/receipt.json": "7f01e283f7aea915cbe578e195cc22efe55204b16025ceabc2db839de2f7dcf7",
+    "results/decisions/swaps.parquet": "6311bfd29cb363d5b93b17ec01c4be902a2770b62df2c76f2d5a24b688ecfac0",
+    "results/fit/extra_weight_membership.parquet": "7f468ad8ff61ab950ccd4aa2d23e50eb0974ff1afcac243a3aca8774fb5105ef",
+    "results/fit/folds.csv": "c641083ff8f7d601fe1d52f030d2fe6e79e0f2588d9266823b8b78cfc552f163",
+    "results/fit/metrics.csv": "cced7918e1c1a421d23ffa3b9e2b9c09cc27961dd7af9436891b24e64df56617",
+    "results/fit/metrics_daily.parquet": "96319010cc3f9c64e6577950f4ec62448ccc70c1ed679683828807626985817f",
+    "results/fit/models.json": "49415f247722ba10597fb09d179fe71d4c2768df0695e15f1603bb0b1890d55b",
+    "results/fit/pairs.parquet": "0c39b3bff48500ca0992a2ad08397e43936693e55aca23e614eba197f0538aa0",
+    "results/fit/receipt.json": "5290fb1d9b818e66bf7a09175cc5556fd2bcb83637f0d045bf8c50cdfbaf2381",
+    "results/fit/scores.parquet": "7a26e6ada1ab5e21913952a95b148b9e4a40a577741cdae8c829f6c6ae54a425",
+    "results/review/comparisons.csv": "be7b027ff518c4e56ccb4c0c8aebcbd58ec78bfd3227b5722a071ddc26fb55f6",
+    "results/review/paired_windows.parquet": "c301da9c1235095232ea1748a8e4a5aa1b286872066ef84aa87356be1c2a0830",
+    "results/review/seats.csv": "b003d6fc20dbd65ca78dcebc2b2a740ee3af4ed7aa6bc207b01e03025d6aded7",
+    "results/review/swap_outcomes.parquet": "553603391081c93dd50cae5ad62a02fe2327a006d3ec2edff90a31a3e4a59df2",
+    "review.py": "3be3f2f2716fbf74f85c1fe3e6bc0d1a48d09b9a76e9a4e47660d8c4a7063747"
+  }
+}

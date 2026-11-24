@@ -1,0 +1,53 @@
+{
+  "source_rows": 137078,
+  "aligned_rows": 135181,
+  "removed_rows": 1897,
+  "dates": 472,
+  "shared_dates": 48,
+  "shared_aligned_rows": 14079,
+  "shared_removed": 186,
+  "original_shared_oversold_mismatches": 11,
+  "aligned_shared_oversold_mismatches": 0,
+  "aligned_shared_d10_mismatches": 0,
+  "max_abs_shared_score_error": 5.828670879282072e-16,
+  "last_training_cutoff_exclusive": "2026-07-01",
+  "mature_natural_last_fold": {
+    "quarter": "2026Q3",
+    "train_cutoff_exclusive": "2026-07-01",
+    "rows": 13098,
+    "dates": 469,
+    "path_known": 13043,
+    "return_known": 13050,
+    "no_original_score": 320,
+    "original_d10": 1380,
+    "持续下跌": 6323,
+    "破低后收涨": 3947,
+    "止跌反弹": 2296,
+    "守低仍收跌": 388,
+    "期末持平": 75,
+    "路径及终值未知": 34,
+    "路径未知": 21,
+    "终值未知": 14
+  },
+  "score_definition": "Fixed original model OOF score, reranked over aligned same-day eligible universe.",
+  "target_definition": "breach is strict future path low < historical 5-day low; terminal_loss is known H10 return < 0. Unknowns are separate for each endpoint. No future execution gate filter.",
+  "maturity": "Both labels used only for maturity strictly before each quarterly deployment.",
+  "source_boundary": "Historical adjusted prices and historical constituent archives. First-quarter OOF baseline score unavailable; natural trigger rows retained.",
+  "inputs_sha256": {
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/revision1/data.py": "47347a35be28b276d106a4c30813b118d4800cbd3086ea9c8fe7f3ddffacc78f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/training_weekly/panel.parquet": "b9425d959d2329dd8b1c25c58447633c84685ec8225d4068595e287d3354e4c5",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/training_weekly/receipt.json": "b7c809807b0dd2dea4b791d322207ebd6f9bb135fa3a2d17b12feccca9eaff66",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/results/panel.parquet": "0122863e1d981956acba1f70127d85466cd83662506fc22446de8c315059e9fb",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/features.parquet": "92ca23db0c918fecce0554803480fe01ca982ad81887c6cb846a59e454063a9f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/qfq_close.parquet": "47f5f984735d76e96c721ec16c7bb39c9ba14cf1f1e46ed871de6fd4e15116a3",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/36_csi300_alpha_discovery_and_index_enhancement/private/daily_members.parquet": "440cb4d2ce2aa48a5c71c2e6c6e79ee7e3353ef5b7b6f3194bce666ef3255121",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/outputs/original_78_features.csv": "41010b12804fcf734344500b3725d1abc71cbd23e58c6321d8517d01b969c941",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/code/data_models.py": "9f9dddfcb798ccaf847c1bcd479d3133814f52bda171720f88e9049199d37d9f",
+    "/home/xiaolv/code/a_share/topics/02_AFML_BIG_WINNER/experiments/pending/37_momentum_reversal_joint_alpha_h10/extensions/original78_rankic_20261118/run.py": "3ced3b8d137ffebed845480949fad31057ca55f1cd50eb4fe9c7cb9987616d90"
+  },
+  "outputs_sha256": {
+    "weekly.parquet": "825c372d7a1588c3ee0326ca77c2d265abe1c78781ad6db38355b486a13a52ce",
+    "shared_dates.csv": "ef6d10549c1761990f28705a6d4c715d7971cfb6fdc368414ed91bdd6cf06396",
+    "natural_oversold_by_quarter.csv": "48327843af2a137c87076d29a52ddc7f34155036c4da9935dd3d7aac6ec23264"
+  }
+}

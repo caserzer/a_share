@@ -19,6 +19,9 @@ experiment folder.
 
 Current pending experiments:
 
+- [EP39 突破延续与超跌续跌](pending/39_curated_breakout_oversold_cases/README.md) 完成两本真实案例册、23季训练、两池账户和形态内排序检验。精选训练在两池两个区间的全池账户均落后等量随机均值。[首轮训练实测](pending/39_curated_breakout_oversold_cases/TRAINING_REPORT.md)
+  - [超跌数据修正与原持仓复测](pending/39_curated_breakout_oversold_cases/revision1/REPORT.md) 收录自然样本、两类风险预测、实付订单以及替补收益；两池后段每十日分别落后原账户3.75、3.62 bp。
+
 - [EP38 沪深300周度至月度 Alpha 研究：第1–133轮总结](pending/38_csi300_weekly_monthly_alpha_discovery/ALL_EXPERIMENTS.md)（已暂停）。
 
 - `pending/01_data_prepare_pit_largecap_akshare_qlib_v0`: prepare the PIT

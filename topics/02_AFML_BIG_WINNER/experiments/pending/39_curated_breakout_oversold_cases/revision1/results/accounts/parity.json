@@ -1,0 +1,116 @@
+{
+  "CSI300": {
+    "primary": {
+      "days": 1001,
+      "max_abs_nav_error": 0.0
+    },
+    "later": {
+      "days": 391,
+      "max_abs_nav_error": 0.0
+    }
+  },
+  "CSI800": {
+    "primary": {
+      "days": 581,
+      "max_abs_nav_error": 0.0
+    },
+    "later": {
+      "days": 391,
+      "max_abs_nav_error": 0.0
+    }
+  },
+  "archived_restart": [
+    {
+      "segment": 2,
+      "first": "2023-06-19",
+      "last": "2025-03-03",
+      "days": 411,
+      "max_abs_nav_error": 0.0
+    }
+  ],
+  "scores_sha256": "ee63614e162d35434213ddc897b268db0118e26502e3adefa65d5422f22156da",
+  "baseline_plan": {
+    "stock_dates": 149059,
+    "planned_rows": 2086826,
+    "arms": [
+      "full",
+      "hard",
+      "legacy_local",
+      "natural",
+      "random_139",
+      "random_239",
+      "random_339",
+      "random_39",
+      "random_439",
+      "shuffle_139",
+      "shuffle_239",
+      "shuffle_339",
+      "shuffle_39",
+      "shuffle_439"
+    ],
+    "max_baseline_score_error": 0.0
+  },
+  "baseline_targets": 14788,
+  "ledger_checks": {
+    "common_segments": [
+      {
+        "pool": "CSI300",
+        "scope": "later",
+        "segment": 1,
+        "n": 39,
+        "first": "2025-03-03",
+        "last": "2026-10-12"
+      },
+      {
+        "pool": "CSI300",
+        "scope": "primary",
+        "segment": 1,
+        "n": 100,
+        "first": "2021-01-11",
+        "last": "2025-03-03"
+      },
+      {
+        "pool": "CSI800",
+        "scope": "later",
+        "segment": 1,
+        "n": 39,
+        "first": "2025-03-03",
+        "last": "2026-10-12"
+      },
+      {
+        "pool": "CSI800",
+        "scope": "primary",
+        "segment": 1,
+        "n": 58,
+        "first": "2021-01-11",
+        "last": "2023-06-05"
+      },
+      {
+        "pool": "CSI800",
+        "scope": "primary",
+        "segment": 2,
+        "n": 41,
+        "first": "2023-06-19",
+        "last": "2025-03-03"
+      }
+    ],
+    "windows": 21546,
+    "daily_rows": 215838,
+    "net_orders": 1840488,
+    "account_segments": 378
+  },
+  "swaps_sha256": "6311bfd29cb363d5b93b17ec01c4be902a2770b62df2c76f2d5a24b688ecfac0",
+  "linked_standard_cost_swaps": 7397,
+  "sha256": {
+    "targets.parquet": "f97f9d73724acd7d0fdf432ccbdfd347530231ecef3185edae23e0410aee3e3e",
+    "orders.parquet": "6ffcc775ad7ff2cb581a8dcda54b792dcb6743ea198de439e24371e9161ad01f",
+    "windows.parquet": "30da0907dc28b473ac4a818fa0aa1e4843b59abd963330a6398d89971ae98200",
+    "daily.parquet": "c1557359e54be7322a0c0913b2aa16647abfc5d94eb2f42bfee61e0373f20b4e",
+    "account_summary.csv": "feb828a740deb4c9ee4b8c7eec67662f838291434c505202b3501db190bd7d0f",
+    "gaps.csv": "e57f7325bc3d2e2e4ed6c41cf229dbc6d6ebfd8b29dc5e8adc01aaf2f8bfd6e2",
+    "decision_orders.parquet": "ae3b5803d1a110beba1a2a4664eb115a57d331196c0e8a553ff9ccb5c17a1dcf",
+    "decision_orders_summary.csv": "c1f873685d7d9487c761d9151a9f51222e3dc795a527ac95db1e9992e5f0c5b5",
+    "accounts.py": "eeb5414cf99d36d33efabfef0b274b2098ada6176b1bd465f2f80967a4b5d7d9",
+    "accounts_replay.py": "7f20dfed55812ce0a0d261d116bd9617f0ebbbee17162c782a1d73194a2f6011"
+  }
+}
