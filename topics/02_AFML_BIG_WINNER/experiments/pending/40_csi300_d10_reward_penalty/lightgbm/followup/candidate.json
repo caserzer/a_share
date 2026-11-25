@@ -1,0 +1,15 @@
+{
+  "research_date": "2026-11-25",
+  "status": "exploratory_historical_candidate_forward_pending",
+  "historical_account_endpoint": "2026-10-12",
+  "reference": "EP40 baseline rank Ridge (all 78 columns)",
+  "tree": "EP40 20+60 ordinary rank recipe, fold medians, seed 4002, remove all 9 market_ columns from the tree only",
+  "universe": "original PIT-asof historical CSI300 membership proxy and EP40 signal eligibility",
+  "selection": "K=floor(N/10), m=floor(K/5); rank by Ridge, replace lowest tree-ranked m of R top K with highest tree-ranked m of R ranks K+1 through 2K; ties high security code first",
+  "weights": "equal target weights per sleeve, actual opening fills and legacy untradeable holdings",
+  "capital": "10 sleeves each initially one tenth; offset 0 through 9; before first trade hold cash; internal cross before fees",
+  "fees_bp": {"net_buy":10, "net_sell":20},
+  "training": "quarterly expanding, previous-quarter mature weekly H10 outcomes only",
+  "comparators": ["R", "T", "B", "X11 with 78 feature tree"],
+  "review": "first 12 mature new H10 for attribution and 24 for directional review. No pre-entry timestamped forward records in this historical evaluation"
+}

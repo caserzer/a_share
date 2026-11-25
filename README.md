@@ -1,6 +1,6 @@
 # a_share
 
-[EP40 沪深300 D10 赢家奖励实验](topics/02_AFML_BIG_WINNER/experiments/pending/40_csi300_d10_reward_penalty/REPORT.md) 已完成七组账户。相对只罚误买，增加赢家奖励的每十日净差为主段 +0.19 bp、后段 −9.50 bp，两段区间均跨零。 [LightGBM 复验](topics/02_AFML_BIG_WINNER/experiments/pending/40_csi300_d10_reward_penalty/lightgbm/REPORT.md)
+[EP40 综合实验报告](topics/02_AFML_BIG_WINNER/experiments/pending/40_csi300_d10_reward_penalty/EP40_FULL_REPORT.md) 汇总赢家奖惩、LightGBM 过拟合检验、逐年费后收益、逐股归因及中证800迁移与重训。沪深300有限换股错峰账户累计领先 Ridge 5.27 个百分点，中证800未复现。
 
 [EP39 超跌数据修正与复测（2026-11-24）](topics/02_AFML_BIG_WINNER/experiments/pending/39_curated_breakout_oversold_cases/revision1/REPORT.md) 补入先破低后收涨等自然案例，分开预测盘中破低与十日亏损，仅复核原模型选中的超跌股。四个池段的扣费收益差区间均跨零。
 
