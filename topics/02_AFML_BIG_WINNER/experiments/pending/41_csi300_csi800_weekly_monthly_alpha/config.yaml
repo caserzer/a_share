@@ -1,6 +1,8 @@
 experiment:
   id: EP41
   name: "沪深300与中证800的周至月度选股 Alpha"
+  protocol_revision: 2
+  revision_of_commit: "2a3592e89f142a2f0dd623a7307c3be6ccedfddf"
   registered_on: "2026-11-27"
   timezone: Asia/Shanghai
   status: registered
@@ -55,6 +57,28 @@ primary_tests:
     l800: "floor(eligible_N800 / 10)"
     primary_pair: [head_equally_weighted, runner_up_equally_weighted]
     auxiliary: [runner_up_random_K300, runner_up_style_matched, all_L800_equally_weighted]
+    ledger_diagnostics:
+      groups: [head, runner_up, full_decile]
+      metrics: [gross_on_actual_fills, net, fees, buy_and_sell_value_per_initial_nav, fees_per_10000_traded, internal_crossing]
+      runner_up_exits: [promoted_into_top_K, below_L, eligibility_or_membership_change]
+      gross_net_bridge: "delta_net = delta_gross_on_actual_fills - delta_fees"
+    match_sensitivity:
+      primary_caliper: 0.10
+      wide_caliper: 0.20
+      per_field: [float_market_cap_percentile, adv20_percentile]
+      same_universe: ranks_Kplus1_through_L
+      coverage_denominator: all_head_target_capital_including_missing_covariates
+      outputs: [industry_support_counts, matched_target_fraction, realized_capital_coverage, distance_distribution, intersected_support]
+    cross_experiment_bridge:
+      scores: ../40_csi300_d10_reward_penalty/lightgbm/followup/csi800_69/results/scores.parquet
+      score_columns: [refit_R, transfer_R]
+      keys: [signal_date, instrument]
+      reference_phase: 0
+      sleeves: [individual_offsets_0_to_9, funded_staggered_with_and_without_order_netting]
+      groups: [head, runner_up, full_decile]
+      reproduce_phase0_full_decile_bp_per_H10: [-7.98, -21.59, -14.59]
+      reference_windows_by_segment: [58, 41, 39]
+      secondary_contrast: "(head-runner_up)_refit - (head-runner_up)_transfer"
     strict_intervals:
       - ["2021-01-11", "2023-06-15"]
       - ["2023-06-19", "2025-03-03"]
@@ -67,6 +91,13 @@ primary_tests:
     fixed: [ridge_core, tree_sell_list, reserve_pool_Kplus1_to_2K, target_buy_budget, seats]
     primary_pair: [tree_ranked_buys, ridge_ranked_buys]
     auxiliary: [matched_random_buys, hold_original_ridge, common_start_single_period_ledger]
+    path_diagnostics:
+      next_rebalance: same_sleeve_next_H10
+      track: [entry_ridge_rank, planned_and_filled_buy_amount, promoted_to_ridge_core, retained_in_final_target, actual_retained_value, restricted_legacy, marginal_net_orders, actual_fees, unreconciled_residual]
+      conditions: [same_start_gross_gap, continuous_gross_gap, continuous_net_gap, interval_precision]
+      divergence_replay: two_actual_opening_states_by_two_current_buy_rules_on_common_dates
+      endpoint: next_rebalance_fees_belong_to_next_window_terminal_cost_reported_separately
+      mechanism: require_measured_promotion_and_reconciled_fee_bridge_before_E1_E2_attribution
     intervals:
       - ["2021-01-11", "2025-03-03"]
       - ["2025-03-03", "2026-10-12"]
@@ -91,6 +122,50 @@ validation:
   forward_checkpoints_mature_nonoverlapping_H10: [12, 24]
   forward_start: first_pre_entry_timestamped_signal_after_version_freeze
   results: pending
+
+exploratory_protocols:
+  M1:
+    sector_min_valid_stocks_per_feature: 5
+    too_small_or_unknown_sector: same_date_full_pool_feature_rank_if_observed
+    duplicates: audit_common_support_order_vs_actual_rank_values_and_missing_masks
+    exact_unique_rank_control: training_fold_only_same_masks_and_values_tolerance_1e-12_preimputation
+    preferred_representative: ret_lag_over_xsret_lag_or_mom1
+    additional_mask_different_family_sensitivity: one_ret_lag_representative_per_lag
+  M3:
+    compare_feature_fraction: [1.0, 0.8]
+    representation_pair_for_sampling: [all_rank_columns, fold_exact_unique_ranks]
+  M2:
+    prior_complete_quarters_with_mature_weekly_rows: 4
+    warmup_rows: exclude_from_tree_training_for_all_four_cells
+    oof: forward_only_train_preprocess_and_model_on_mature_past
+    residual_tree_schedule: all_20_plus_60_trees_fit_residual_label
+    residual_score_weights: {primary: 1.0, shrinkage_sensitivity: 0.5, ridge_reference: 0.0}
+    early_stopping: M3_purged_inner_time_validation_only
+    diagnostics: [per_date_sd_y_R_y_minus_R_e, sd_e_over_sd_R, cov_R_e, corr_y_residual_label, corr_R_e, final_rank_correlations, topK_overlap, changed_seats, oos_mse_gain, retained_weeks_and_rows]
+  V1:
+    incumbent: original_daily_78_same_risk_target
+    challengers: [incumbent_plus_daily_tail_family, incumbent_plus_minute_downside_semivariance_and_skew]
+    validation_scope: historically_eligible_original_top_K_in_mature_inner_time_OOF
+    account_eligibility_per_outer_fold:
+      min_events_and_nonevents_each: 20
+      min_distinct_dates_per_class: 4
+      auc_min: 0.55
+      require_auc_above_incumbent: true
+      require_brier_below: [same_sample_incumbent, historical_training_event_rate]
+      require_ece_below_incumbent: true
+      fixed_ece_bin_edges: [0, 0.02, 0.05, 0.10, 0.20, 0.50, 1]
+      if_unavailable_or_fails: retain_original_holdings
+    max_vetoed_seats_primary: 2
+  N2:
+    first_round_specs: [equal_weight_20_sessions, exponential_half_life_60_sessions]
+    half_life_sessions: 60
+    maximum_age_sessions_for_half_life: 180
+    decay: "2 ** (-age_sessions / 60)"
+    event: most_recent_comparable_eps_revision_per_institution_company_and_signal_date_fiscal_year
+    denominator: sum_of_valid_institution_weights
+    missing_policy: distinguish_no_comparable_revision_from_flat_or_balanced_revisions
+    sparse_flag: fewer_than_3_nonzero_reserve_stocks
+    family_if_testing_significance: {method: Holm, alpha: 0.05, specs: 2}
 
 directions:
   P1: CSI800_head_versus_reserves
