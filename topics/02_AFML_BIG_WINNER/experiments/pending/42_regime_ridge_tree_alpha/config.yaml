@@ -1,0 +1,121 @@
+experiment:
+  id: EP42
+  name: 绝对量纲、市场状态与 Ridge／树的选股收益
+  protocol_revision: 2
+  registered_on: '2026-11-27'
+  revised_on: '2026-11-27'
+  timezone: Asia/Shanghai
+  status: registered_pending_execution
+  scope: registration_only
+  common_protocol: README.md
+  historical_endpoint: '2026-10-12'
+  predecessor_run: EP41-20261127-R1
+  repo_head_at_registration: 7b526fb9f0df784d9e04d5e831728b8f04dbd2c7
+  predecessor_file_sha256:
+    ../41_csi300_csi800_weekly_monthly_alpha/REPORT.md: aac3bfc0d3bfe3490bfd5b798ef1eeebe6aacf19d3a207059080ae6193fe02a9
+    ../41_csi300_csi800_weekly_monthly_alpha/config.yaml: fe8554d98cd8a82982cb7ee272977dfc88dc404b7900a5e5f2d2c9891d27d023
+    ../41_csi300_csi800_weekly_monthly_alpha/models/results/model_accounts.csv: a319668e3ebe3095f20c0d63acc9d91a1b7200bc7c99aa58a9d38d3597c26e4e
+    ../40_csi300_d10_reward_penalty/lightgbm/followup/candidate.json: de268332556819a4f6d451d038736069da4ba799612780e9d8e292296505e326
+
+account:
+  inheritance: ../41_csi300_csi800_weekly_monthly_alpha/config.yaml
+  primary_pool: historical_CSI300_eligible
+  signal: close_t
+  entry: open_t_plus_1
+  exit: open_t_plus_11
+  sleeves: 10
+  fees_bp: {net_buy: 10, net_sell: 20}
+  holding_horizon: 10
+  training: weekly_rows_quarterly_expanding
+  label_maturity: strictly_before_prediction_quarter
+  primary_metric: paired_mean_net_bp_per_common_full_month
+  segments_300:
+    - ['2021-01-11', '2025-03-03']
+    - ['2025-03-03', '2026-10-12']
+  segments_800:
+    - ['2021-01-11', '2023-06-15']
+    - ['2023-06-19', '2025-03-03']
+    - ['2025-03-03', '2026-10-12']
+  bootstrap: {method: within_segment_paired_moving_blocks, months: 3, draws: 10000, seed: 4201, interval: two_sided_percentile_95}
+  concentration_check: drop_best_three_months_per_segment
+  forward_origin: first_actual_pre_entry_timestamp_after_version_freeze
+  forward_checkpoints_mature_nonoverlapping_h10: [12, 24]
+
+state_mixture:
+  primary_id: D5
+  score_inputs: [frozen_Ridge78, frozen_raw_tree69]
+  score_normalization: average_cross_section_rank_divided_by_N_plus_1
+  primary_state: Z1
+  Z1: trailing_20_session_mean_of_daily_eligible_stock_return_IQR
+  Z2: trailing_5_session_mean_of_median_stock_value_traded_over_prior_60_session_mean
+  Z3: 60_session_CSI300_total_return
+  Z4: drawdown_from_trailing_60_session_CSI300_total_return_index_high
+  percentile_reference: prior_252_sessions_excluding_signal_date
+  minimum_valid_names_for_cross_section: 100
+  static_tree_weights: [0, 0.0875, 0.175, 0.2625, 0.35]
+  slope_in_tie_order: [0, 1, -1]
+  dynamic_tree_weight: 'clip(b + s * 0.175 * (2 * Z1 - 1), 0, 0.35)'
+  missing_state: same_quarter_static_b
+  missing_inner_history: both_use_Ridge
+  inner_window_completed_quarters: 8
+  min_inner_quarters: 4
+  constant_reference: same_quarter_b_chosen_on_same_mature_inner_oof
+  decision: both_segment_means_positive_and_pooled_lower_95_above_zero_then_assess_concentration_and_coverage
+  secondary_multiplicity: all_preregistered_like_contrasts_within_id_Holm_if_significance_reported
+
+# spec is the canonical per-item protocol, including component arms and conditional variants.
+# All items inherit registered_pending_execution. D4A–D4D are components of D4.
+register:
+  A1: {role: attribution, spec: 'ATTRIBUTION.md#a1', contrast: original_head_minus_runner_attributed_on_original_books}
+  A2: {role: attribution, spec: 'ATTRIBUTION.md#a2', contrast: tree_removals_minus_ridge_boundary_with_same_rank_buys}
+  A3: {role: attribution, spec: 'ATTRIBUTION.md#a3', contrast: tree_buy_minus_rank_buy_all_offsets_common_start_and_holding_age}
+  A4: {role: attribution, spec: 'ATTRIBUTION.md#a4', contrast: feature_group_masking_and_account_session_reconciliation}
+  A5: {role: attribution, spec: 'ATTRIBUTION.md#a5', contrast: gated_versus_original_orders_and_mechanically_matched_pairs}
+  D1: {role: exploratory, spec: 'CANDIDATES.md#d1', contrast: tree_versus_ridge_boundary_removal_on_natural_buys}
+  D2: {role: exploratory, spec: 'CANDIDATES.md#d2', contrast: path_conditioned_versus_rank_only_retention}
+  D3: {role: exploratory, spec: 'CANDIDATES.md#d3', contrast: dual_tail_versus_left_tail_veto_equal_replacement_budget}
+  D4: {role: exploratory, spec: 'CANDIDATES.md#d4', components: [D4A_EPS_revisions, D4B_quarterly_surprises, D4C_ETF_baskets, D4D_supply_events], contrast: source_specific_versus_same_coverage_same_budget_control}
+  D5: {role: primary, spec: 'MARKET_STATE.md#d5', contrast: state_adaptive_versus_quarterly_static_score_mix}
+  D6: {role: exploratory, spec: 'CANDIDATES.md#d6', contrast: domain_refit_versus_pooled_scores_same_domain_budgets}
+  S1: {role: mechanism, spec: 'ABSOLUTE_SCALE.md#s1', contrast: tree_path_shifts_current_versus_fixed_members}
+  S2: {role: mechanism, spec: 'ABSOLUTE_SCALE.md#s2', contrast: raw_versus_rank_mapped_to_fixed_reference_mask_matched}
+  S3: {role: mechanism, spec: 'ABSOLUTE_SCALE.md#s3', contrast: actual_vs_fixed_cross_section_location_and_scale}
+  S4: {role: mechanism, spec: 'ABSOLUTE_SCALE.md#s4', contrast: correctly_dated_versus_lagged_joint_scales}
+  S5: {role: mechanism, spec: 'ABSOLUTE_SCALE.md#s5', contrast: scale_effect_within_same_sector_style_opportunities}
+  G1: {role: mechanism, spec: 'MARKET_STATE.md#g1', contrast: high_minus_low_Z1_tree_minus_ridge_common_start}
+  G2: {role: mechanism, spec: 'MARKET_STATE.md#g2', contrast: matched_input_and_loss_tree_versus_linear_state_spread}
+  G3: {role: mechanism, spec: 'MARKET_STATE.md#g3', contrast: varying_coefficient_ridge_versus_same_main_effects}
+  G4: {role: mechanism, spec: 'MARKET_STATE.md#g4', contrast: dynamic_minus_static_by_score_mix_versus_budget_mix}
+  G5: {role: mechanism, spec: 'MARKET_STATE.md#g5', contrast: incremental_state_beyond_Z1}
+  G6: {role: mechanism, spec: 'MARKET_STATE.md#g6', contrast: contemporaneous_versus_lagged_weight_gate}
+  G7: {role: mechanism, spec: 'MARKET_STATE.md#g7', contrast: transferred_dynamic_versus_static_in_non300_sleeve}
+
+# Required child runs of the existing D1–D4 registrations. Each status applies
+# to this child alone; one completed or data-limited child cannot close a sibling.
+required_subtrials:
+  D1:
+    D1.1: {name: 自然买单树低分剔除1至3席, spec: 'D1_D4.md#d1-1', status: pending}
+    D1.2: {name: 候补池宽度与30%树分保护线, spec: 'D1_D4.md#d1-2', status: pending}
+    D1.3: {name: 浅层早停树剔除, spec: 'D1_D4.md#d1-3', status: pending}
+    D1.4: {name: 180日成分安全垫与已披露公告, spec: 'D1_D4.md#d1-4', status: pending}
+    D1.5: {name: 原始窄候补联合规则, spec: 'D1_D4.md#d1-5', status: pending}
+  D2:
+    D2.1: {name: 非对称排名缓冲, spec: 'D1_D4.md#d2-1', status: pending}
+    D2.2: {name: 超额上涨后的留仓与退出, spec: 'D1_D4.md#d2-2', status: pending}
+    D2.3: {name: 等席数及换手金额可比的随机缓冲, spec: 'D1_D4.md#d2-3', status: pending}
+  D3:
+    D3.1: {name: 左右尾概率校准, spec: 'D1_D4.md#d3-1', status: pending}
+    D3.2: {name: 自然新买名单左右尾概率差, spec: 'D1_D4.md#d3-2', status: pending}
+    D3.3: {name: 左尾前15%和右尾后50%交集, spec: 'D1_D4.md#d3-3', status: pending}
+  D4:
+    D4.1: {name: 全池EPS修正, spec: 'D1_D4.md#d4-1', status: pending}
+    D4.2: {name: 目标价调整, spec: 'D1_D4.md#d4-2', status: pending}
+    D4.3: {name: 机构覆盖变化, spec: 'D1_D4.md#d4-3', status: pending}
+    D4.4: {name: 全池季度盈利意外, spec: 'D1_D4.md#d4-4', status: pending}
+    D4.5: {name: 全池EPS与季度盈利意外融合, spec: 'D1_D4.md#d4-5', status: pending}
+    D4.6: {name: 季度财报预告快报事件, spec: 'D1_D4.md#d4-6', status: pending}
+    D4.7: {name: 营收及扣非净利同比加速度, spec: 'D1_D4.md#d4-7', status: pending}
+    D4.8: {name: 同机构大幅上修事件, spec: 'D1_D4.md#d4-8', status: pending}
+    D4.9: {name: 两只ETF申赎双向, spec: 'D1_D4.md#d4-9', status: pending}
+    D4.10: {name: 宽基及行业ETF扩池双向, spec: 'D1_D4.md#d4-10', status: pending}
+    D4.11: {name: 供需关系事件, spec: 'D1_D4.md#d4-11', status: pending}

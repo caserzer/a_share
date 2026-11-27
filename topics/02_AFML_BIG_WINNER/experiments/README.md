@@ -19,7 +19,11 @@ experiment folder.
 
 Current pending experiments:
 
-- [EP41 沪深300与中证800的周至月度选股 Alpha](pending/41_csi300_csi800_weekly_monthly_alpha/README.md) 已登记两项主检验及后续实验方向。首批分别检验中证800头部排名、沪深300中69项树的换入选择力。[研究目标与检验口径](pending/41_csi300_csi800_weekly_monthly_alpha/GOAL.md)
+- [EP43 精简合分、分时标签、连续权重与基本面锚](pending/43_rank_blend_sessions_turnover_fundamentals/README.md) 2026-11-27 已完成20项历史执行。四个主检验均未达到推进条件，800严格基本面行业覆盖不足。[执行结果](pending/43_rank_blend_sessions_turnover_fundamentals/REPORT.md) · [机器登记册](pending/43_rank_blend_sessions_turnover_fundamentals/config.yaml)
+
+- [EP42 绝对量纲、市场状态与 Ridge／树的选股收益](pending/42_regime_ridge_tree_alpha/REPORT.md) 修订2已执行23个一级编号和方向1–4全部22个子项。沪深300按状态调权相对同季静态，67个完整月平均 −1.29 bp/月，95%区间 [−3.79，+0.85]。含分域重训、盈利归因和事件条件覆盖。[逐项结果](pending/42_regime_ridge_tree_alpha/run_register.csv) · [方向1–4子项](pending/42_regime_ridge_tree_alpha/subtrials.csv)
+
+- [EP41 沪深300与中证800的周至月度选股 Alpha](pending/41_csi300_csi800_weekly_monthly_alpha/README.md) 已执行19项登记实验与准入核查。中证800头部对候补为+35.47 bp/月，沪深300树补位对 Ridge 顺位为−1.19 bp/月，两项95%区间均跨零。[执行总报告](pending/41_csi300_csi800_weekly_monthly_alpha/REPORT.md)。[研究目标与检验口径](pending/41_csi300_csi800_weekly_monthly_alpha/GOAL.md)
 
 - [EP40 综合实验报告](pending/40_csi300_d10_reward_penalty/EP40_FULL_REPORT.md) 汇总赢家奖惩、LightGBM 过拟合检验、逐年费后收益、逐股归因及中证800迁移与重训。沪深300有限换股错峰账户累计领先 Ridge 5.27 个百分点，中证800未复现。
 

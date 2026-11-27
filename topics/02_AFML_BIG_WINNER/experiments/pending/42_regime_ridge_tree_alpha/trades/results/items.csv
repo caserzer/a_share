@@ -1,0 +1,15 @@
+id,status,interpretation,comparison,funding_or_coverage,audit
+D1.1,ACCOUNT_COMPLETE,阶段集中,contrasts.csv,capital.csv,random_summary.csv
+D1.2,ACCOUNT_COMPLETE,补位限制未带来一致改善,contrasts.csv,natural_replacement_coverage.csv,random_summary.csv
+D1.3,ACCOUNT_COMPLETE,两段不同向,contrasts.csv,actual_switches.parquet,random_summary.csv
+D1.4,ACCOUNT_COMPLETE_PARTIAL_NOTICE_COVERAGE,覆盖不完全，过滤影响很小,contrasts.csv,risk_opportunities.parquet,member_notice_audit.csv
+D1.5,ACCOUNT_COMPLETE,联合约束两段均低于仅剔除,contrasts.csv,natural_replacement_coverage.csv,capital.csv
+D2.1,ACCOUNT_COMPLETE,纯排名缓冲正向，待独立检验,contrasts.csv,annual.csv,capital.csv
+D2.2,ACCOUNT_COMPLETE,涨后释放未改善纯缓冲,contrasts.csv,buffer_actual_pnl.csv,buffer_path_summary.csv
+D2.3,ACCOUNT_COMPLETE,金额匹配后两段不同向,random_summary.csv,random_contrasts.parquet,buffer_actual_pnl.csv
+D3.1,PROBABILITY_AND_COVERAGE_COMPLETE,双尾在23季中共同启用3季,dual_gate.csv,natural_tail_calibration.csv,dual_weekly.parquet
+D3.2,ACCOUNT_COMPLETE_LATE_NO_TRIGGER,前段少量交易，后段无合格季度,contrasts.csv,switch_outcomes.csv,capital.csv
+D3.3,ACCOUNT_COMPLETE_LATE_NO_TRIGGER,交集仅前段5日5席,contrasts.csv,switch_outcomes.csv,capital.csv
+A2,ATTRIBUTION_COMPLETE,相近风格和资金后无法确认卖方选择,contrasts.csv,seller_match_summary.csv,seller_actual_summary.csv
+A3,ATTRIBUTION_COMPLETE,原第0相位的正向在全十相位消退,../a3/phase_comparison.csv,../a3/age_month_gap.csv,../a3/qualification_summary.csv
+A5,ATTRIBUTION_COMPLETE,后段实际节费被放弃的机会收益超过,../a5/comparisons.csv,../a5/same_budget_summary.csv,../a5/fee_reconciliation.csv

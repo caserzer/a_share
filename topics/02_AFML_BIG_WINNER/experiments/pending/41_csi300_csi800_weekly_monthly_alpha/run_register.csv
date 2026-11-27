@@ -1,0 +1,20 @@
+id,status,scope,report,primary_evidence
+P1,HISTORICAL_INCONCLUSIVE,3 strict segments 66 common months,p1/REPORT.md,p1/results/primary.csv
+P2,HISTORICAL_INCONCLUSIVE,2 strict segments 67 common months,p2/REPORT.md,p2/results/contrasts.csv
+U1,HISTORICAL_LIMITED_SUPPORT,2 domains 3 segments matched overlap 24 dates,u1/REPORT.md,u1/results/summary.csv
+U2,PARTIAL_SOURCE_GATE,3 filtered portfolios complete 1 announcement gate constrained,u2/REPORT.md,u2/results/summary.csv
+M1,HISTORICAL_REPLAY,23 quarterly folds raw and two ranked inputs,models/REPORT.md,models/results/model_accounts.csv
+M2,HISTORICAL_REPLAY,4 shared-OOF cells plus fixed shrinkage and controls,models/REPORT.md,models/results/residual_diagnostics.csv
+M3,HISTORICAL_REPLAY,3 single parameter changes and crossed sampling controls,models/REPORT.md,models/results/m3_learning_curves.csv
+N1,LIMITED_SOURCE_TRIAL,three fixed historical pilot intervals with minute-frequency coverage audit,sources/n1/REPORT.md,sources/n1/comparisons.csv
+N2,HISTORICAL_LIMITED_SUPPORT,2 revision windows original research vintage proxy,sources/n2/REPORT.md,sources/n2/comparisons.csv
+N3,NO_DISTINGUISHABLE_BUDGET,annual EPS first disclosures and separate flash proxy,sources/n3_n4/REPORT.md,sources/n3_n4/results/SUE_event_outcomes.csv
+N4,HISTORICAL_LIMITED_SUPPORT,frozen 2019 dual listing map excluding missing histories,sources/n3_n4/REPORT.md,sources/n3_n4/results/comparisons.csv
+N5,LIMITED_SOURCE_TRIAL,4 disclosed supply agreements 7 discriminating dates,sources/n5/REPORT.md,sources/n5/coverage.csv
+N6,PARTIAL_SOURCE_GATE,2 ETF quarterly audits and later segment proxy,sources/n6/REPORT.md,sources/n6/results/segment/monthly_net.csv
+V1,CONDITIONAL_REPLAY,daily tail challenger enabled in 3 of 23 quarters minute challenger lacks warmup,models/REPORT.md,models/results/veto_impact.csv
+I1,PARTIAL_SOURCE_GATE,global sector targets and budgets including pseudo groups weight timestamp gate,models/REPORT.md,models/results/industry_tracking.csv
+I2,HISTORICAL_EXPLORATORY,EP32 V28 SW2014 and SW2021 industry budgets with peer selection,models/REPORT.md,models/results/i2_attribution.csv
+E1,HISTORICAL_REPLAY,two models with and without gates plus mechanical control and stress across both pools,e1_e2/300/REPORT.md,e1_800/results/summary.csv
+E2,HISTORICAL_INCONCLUSIVE,natural buy budget compared with original mechanical and forced swap,e1_e2/300/REPORT.md,e1_e2/300/results/comparisons.csv
+E3,SINGLE_HORIZONS_COMPLETE,3 training horizons and 3 holding horizons composite gate unmet,models/REPORT.md,models/results/e3_stages.csv

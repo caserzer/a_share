@@ -1,0 +1,23 @@
+id,parent,name,protocol,status,finding,report,evidence
+D1.1,D1,自然买单树低分剔除1至3席,D1_D4.md#d1-1,历史回放完成,1、2、3席及每规格200种随机剔除。,trades/REPORT.md,trades/results/contrasts.csv
+D1.2,D1,候补池宽度与30%树分保护线,D1_D4.md#d1-2,历史回放完成,窄宽候补池与30%保护线交叉四格。,trades/REPORT.md,trades/results/contrasts.csv
+D1.3,D1,浅层早停树剔除,D1_D4.md#d1-3,历史回放完成,联合浅层早停减原树+0.60/−4.83 bp/月。,trades/REPORT.md,trades/results/contrasts.csv
+D1.4,D1,180日成分安全垫与已披露公告,D1_D4.md#d1-4,历史回放及公告覆盖审计完成,180日安全垫和公告单独回放，188次退出中116次与公告生效日对齐。,trades/REPORT.md,trades/results/member_notice_audit.csv
+D1.5,D1,原始窄候补联合规则,D1_D4.md#d1-5,历史回放完成,窄池联合减仅剔除2席−1.03/−1.80 bp/月。,trades/REPORT.md,trades/results/contrasts.csv
+D2.1,D2,非对称排名缓冲,D1_D4.md#d2-1,历史回放完成,24/40、24/45、K/40及简单排名对照。,trades/REPORT.md,trades/results/contrasts.csv
+D2.2,D2,超额上涨后的留仓与退出,D1_D4.md#d2-2,历史回放完成,过去H10超额超过8个百分点提早释放对纯缓冲。,trades/REPORT.md,trades/results/buffer_path_summary.csv
+D2.3,D2,等席数及换手金额可比的随机缓冲,D1_D4.md#d2-3,历史回放完成,200条等席、金额可比及实际换手接近月的随机对照。,trades/REPORT.md,trades/results/random_summary.csv
+D3.1,D3,左右尾概率校准,D1_D4.md#d3-1,概率审计完成,左右尾模型逐季比较，两门共同通过3/23季。,trades/REPORT.md,trades/results/dual_gate.csv
+D3.2,D3,自然新买名单左右尾概率差,D1_D4.md#d3-2,历史回放完成，后段未触发,最多2席联合否决前段20日改32席。,trades/REPORT.md,trades/results/contrasts.csv
+D3.3,D3,左尾前15%和右尾后50%交集,D1_D4.md#d3-3,历史回放完成，后段未触发,前段5日改5席。,trades/REPORT.md,trades/results/contrasts.csv
+D4.1,D4,全池EPS修正,D1_D4.md#d4-1,历史代理账户完成,全池EPS20相对Ridge−0.34，同覆盖−0.27 bp/月。,events/REPORT.md,events/results/same_coverage/comparisons.csv
+D4.2,D4,目标价调整,D1_D4.md#d4-2,历史代理账户完成,全池目标价正交−0.05；同覆盖−0.03 bp/月。,events/REPORT.md,events/results/fusion/comparisons.csv
+D4.3,D4,机构覆盖变化,D1_D4.md#d4-3,历史代理账户完成,覆盖机构数变化同覆盖增量+0.47 bp/月。,events/REPORT.md,events/results/same_coverage/comparisons.csv
+D4.4,D4,全池季度盈利意外,D1_D4.md#d4-4,历史代理账户完成，主规格未触发,"9,919个有值股票日，季度SUE主规格未改仓。",events/REPORT.md,events/results/fusion/folds.csv
+D4.5,D4,全池EPS与季度盈利意外融合,D1_D4.md#d4-5,历史代理账户完成，双源交集未改仓,两源等权较单EPS零增量。,events/REPORT.md,events/results/fusion/comparisons.csv
+D4.6,D4,季度财报预告快报事件,D1_D4.md#d4-6,历史代理账户及来源审计完成，部分财季缺事前预期,正式、预告及快报分开，Q1至Q3同财期可比预期覆盖另列。,events/REPORT.md,events/results/events_h10/comparisons.csv
+D4.7,D4,营收及扣非净利同比加速度,D1_D4.md#d4-7,历史代理账户完成，部分财季缺事前预期,营收与扣非加速度分别对当日匹配及简单增速。,events/REPORT.md,events/results/events_h10/comparisons.csv
+D4.8,D4,同机构大幅上修事件,D1_D4.md#d4-8,历史代理账户完成,大幅对温和上修H10/H20分别−1.06/+7.44 bp/月。,events/REPORT.md,events/results/events_h20/comparisons.csv
+D4.9,D4,两只ETF申赎双向,D1_D4.md#d4-9,历史代理账户完成,原两只300ETF的顺流、逆流、同覆盖及现金替代对照。,events/REPORT.md,events/results/etf/comparisons.csv
+D4.10,D4,宽基及行业ETF扩池双向,D1_D4.md#d4-10,历史代理账户及篮子覆盖审计完成,八只基金顺流/逆流对Ridge为−40.52/−30.30 bp/月，相同300席上的扩池顺流增量−0.83。,events/REPORT.md,events/results/etf/comparisons.csv
+D4.11,D4,供需关系事件,D1_D4.md#d4-11,历史代理账户完成，具名关系有限,保留原4条并核5条新增合同，供方和采购方分别比较。,events/REPORT.md,events/results/supply/comparisons.csv

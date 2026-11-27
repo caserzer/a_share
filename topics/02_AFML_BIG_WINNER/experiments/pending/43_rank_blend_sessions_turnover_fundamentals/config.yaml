@@ -1,0 +1,97 @@
+experiment:
+  id: EP43
+  revision: 1
+  registered_on: '2026-11-27'
+  timezone: Asia/Shanghai
+  status: registered_pending_execution
+  scope: registration_only
+  protocol: README.md
+  historical_endpoint: '2026-10-12'
+account:
+  inherit: ../41_csi300_csi800_weekly_monthly_alpha/config.yaml
+  reference: ../42_regime_ridge_tree_alpha/config.yaml
+  pool: signal_date_historical_eligible
+  primary_K: floor(N/10)
+  signal: close_t
+  entry: open_t_plus_1
+  exit: open_t_plus_11
+  sleeves: 10
+  fee_bp: {buy: 10, sell: 20}
+  fee_multiples: [1, 2]
+  segments_300: [['2021-01-11','2025-03-03'],['2025-03-03','2026-10-12']]
+  segments_800: [['2021-01-11','2023-06-15'],['2023-06-19','2025-03-03'],['2025-03-03','2026-10-12']]
+  training: weekly_mature_labels_quarterly_expanding
+  inner_complete_quarters: {lookback: 8, minimum_contiguous: 4}
+  inner_objective: paired_common_full_month_mean_net
+  tie_break: first_in_registered_grid
+inference:
+  primary_ids: [B2, L3, W3, F4]
+  unit: paired_net_bp_per_common_complete_month
+  bootstrap: {unit: months_within_segment, block: 3, draws: 10000, seed: 4301, interval: percentile_95}
+  concentration: delete_best_three_paired_months_per_segment
+  multiplicity: Holm_four_centered_one_sided_tests
+  forward_mature_nonoverlapping_H10: [12, 24]
+directions:
+  B:
+    spec: BLEND.md
+    primary_pool: CSI300
+    remove: [volume_rel5, money_rel5, turnover_rel5, volume_rel20, money_rel20, turnover_rel20, volume_rel60, money_rel60, turnover_rel60]
+    tree: {inputs: 60, loss: mse, depth: 3, rounds: 80, other_parameters: EP42_G2_mse69}
+    b: [0, 0.0875, 0.175, 0.2625, 0.35]
+    fallback_b: 0
+    buffer: ceil(1.35*K)
+    one_H10_fee_reduction_min: 0.30
+    each_segment_drop3_min_exclusive: 0
+  L:
+    spec: LABELS.md
+    primary_pool: CSI300
+    labels: [rank_log_intraday_10, rank_log_overnight_10, rank_log_open_open_10]
+    lambda: [1, 0, 0.5, 1.5, 2]
+    fallback_lambda: 1
+    intraday_retention_min: 1
+    overnight_loss_fraction_max: 0.5
+    label_identity_atol: 1.0e-10
+  W:
+    spec: WEIGHTS.md
+    primary_pool: CSI800
+    score: centered_rank_R78
+    cap: 0.05
+    cap_controls: [1/K, 0.06]
+    tau: 0.01
+    tau_controls: [0, 0.005, 0.02]
+    qp_penalty: K/2
+    solver_tolerance: 1.0e-8
+  F:
+    spec: FUNDAMENTALS.md
+    primary_pool: CSI800
+    first_source: ../35_industry_rise_mechanisms_and_rotation/data/financial_archive_all_market.parquet
+    anchors: [EP_TTM, book_to_market, ROE_TTM, negative_ROE_TTM_sd8q, operating_cash_to_profit_TTM, gross_margin_yoy_change]
+    strict_coverage_min_exclusive: 0.95
+    max_report_age_days: 180
+    min_names_per_industry: 10
+    max_abs_mean_rank_corr: 0.30
+    low_price_fraction: 0.20
+    low_quality_fraction: 0.20
+    quality_min_valid: 3
+# Every item inherits the pending status above. Results belong to a separate execution receipt.
+register:
+  B1: {role: bridge, contrast: retrain_60_69_by_tree_depth_and_frozen_mask}
+  B2: {role: primary, contrast: blended_buffer_minus_unbuffered_R78_and_factorial_interaction}
+  B3: {role: attribution, contrast: exact_H10_FIFO_fee_reduction}
+  B4: {role: transfer, contrast: frozen_300_models_and_b_in_800}
+  B5: {role: replication, contrast: 800_refit_factorial_and_frozen_b_bridge}
+  L1: {role: audit, contrast: reconstruct_open_open_with_10_intraday_and_10_overnight_legs}
+  L2: {role: bridge, contrast: separate_legs_and_equal_sum_vs_total_rank}
+  L3: {role: primary, contrast: calibrated_two_Ridge_legs_minus_same_rows_total_rank_Ridge}
+  L4: {role: mechanism, contrast: tree_overnight_minus_Ridge_overnight}
+  L5: {role: attribution, contrast: funded_intraday_retention_and_overnight_loss_fraction}
+  W1: {role: audit, contrast: asof_feasibility_and_account_reconciliation}
+  W2: {role: mechanism, contrast: concentration_with_zero_turnover_penalty}
+  W3: {role: primary, contrast: fixed_L1_LP_minus_R78_proportional_buffer}
+  W4: {role: mechanism, contrast: quadratic_smoothing_and_same_turnover_control}
+  W5: {role: attribution, contrast: FIFO_fees_old_rank_and_cross_pool_stress}
+  F1: {role: audit, contrast: original_vintages_vs_historical_proxy_coverage}
+  F2: {role: coverage, contrast: individual_and_joint_six_anchor_strict_coverage}
+  F3: {role: mechanism, contrast: raw_industry_neutral_and_residual_anchor_information}
+  F4: {role: primary, contrast: R78_plus_six_industry_neutral_anchors_minus_R78}
+  F5: {role: conditional, contrast: low_price_quality_gate_vs_same_seats_mechanical_replacement}

@@ -1,0 +1,24 @@
+id,role,protocol,status,finding,report,evidence
+A1,attribution,ATTRIBUTION.md#a1,归因已核平,66月原账头部减候补+35.47，三段各删三月后−14.60 bp/月。,attribution/REPORT.md,attribution/results/a1_concentration.csv
+A2,attribution,ATTRIBUTION.md#a2,归因已核平,同买单下树选卖方较顺位+1.78/+4.03 bp/月，区间跨零。,trades/REPORT.md,trades/results/contrasts.csv
+A3,attribution,ATTRIBUTION.md#a3,归因已核平,十相位按资金加权共同起点−0.11/−0.03 bp/H10。,trades/a3/REPORT.md,trades/a3/phase_comparison.csv
+A4,attribution,ATTRIBUTION.md#a4,归因已核平,两池五段均以真实持仓加回日内、隔夜和实付费用。,scale/a4/REPORT.md,scale/a4/results/verification.json
+A5,attribution,ATTRIBUTION.md#a5,归因已核平,50本连续账逐日核对；800后段Ridge少付37.19、毛利少110.55 bp/月。,trades/a5/REPORT.md,trades/a5/fee_reconciliation.csv
+D1,exploratory,CANDIDATES.md#d1,历史回放完成,2席树低分剔除减Ridge边界−0.05/+7.42 bp/月。,trades/REPORT.md,trades/results/contrasts.csv
+D2,exploratory,CANDIDATES.md#d2,历史回放完成,K/40纯排名缓冲较无缓冲+8.12/+6.29；加价格路径+0.14/−1.93 bp/月。,trades/REPORT.md,trades/results/contrasts.csv
+D3,exploratory,CANDIDATES.md#d3,历史回放完成，触发稀少,23季中仅3季同时通过质量门，后段无触发。,trades/REPORT.md,trades/results/dual_gate.csv
+D4,exploratory,CANDIDATES.md#d4,历史回放及来源审计完成，部分条件数据不足,11项均有结果或来源边界，分列同覆盖与同金额对照。,events/REPORT.md,subtrials.csv
+D5,primary,MARKET_STATE.md#d5,主检验完成，未通过,动态减季度静态−1.77/0.00，67月合计−1.29 bp/月。,state/REPORT.md,state/results/main/comparisons.csv
+D6,exploratory,CANDIDATES.md#d6,历史回放完成,同域预算下丙减乙−6.57/−17.82/−8.80 bp/月。,state/D6.md,state/results/d6/comparisons.csv
+S1,mechanism,ABSOLUTE_SCALE.md#s1,机制审计完成,固定构成及实际合格股均核查树分支穿越。,scale/REPORT.md,scale/results/S1_structure.csv
+S2,mechanism,ABSOLUTE_SCALE.md#s2,历史回放完成,原值减同秩固定分布+41.05/+28.34 bp/月，汇总区间跨零。,scale/REPORT.md,scale/results/comparisons.csv
+S3,mechanism,ABSOLUTE_SCALE.md#s3,历史回放完成,三列恢复真实截面水平和离散度+1.80/−2.24 bp/月。,scale/REPORT.md,scale/results/S3_four_cells.csv
+S4,mechanism,ABSOLUTE_SCALE.md#s4,历史回放完成,正确日期减错后20日+5.11/+7.17 bp/月。,scale/REPORT.md,scale/results/S4_placebo_spread.csv
+S5,mechanism,ABSOLUTE_SCALE.md#s5,历史回放完成，固定构成状态覆盖不足,严格配对276/2871个分歧席位，固定构成Z1无满252日校准窗。,scale/REPORT.md,scale/results/S5_coverage.csv
+G1,mechanism,MARKET_STATE.md#g1,历史回放完成,高减低档下树相对Ridge的H10净差−20.63/−27.66 bp。,state/REPORT.md,state/results/main/g1_high_low.csv
+G2,mechanism,MARKET_STATE.md#g2,历史回放完成,同输入同平方损失高低档净差之差−18.78/+13.52 bp/H10。,scale/REPORT.md,scale/results/state_spreads.csv
+G3,mechanism,MARKET_STATE.md#g3,历史回放完成,线性状态交互减相同主效应+1.61/−0.48 bp/月。,scale/REPORT.md,scale/results/G3_coefficients.csv
+G4,mechanism,MARKET_STATE.md#g4,历史回放完成,合分状态增量减预算状态增量−1.01/0.00 bp/月。,state/REPORT.md,state/results/main/g4_double_difference.csv
+G5,mechanism,MARKET_STATE.md#g5,历史回放完成,成交、趋势及回撤均已对Z1做增量及单因素对照。,state/REPORT.md,state/results/main/g5_all_state_pairs.csv
+G6,mechanism,MARKET_STATE.md#g6,历史回放完成,滞后20日减当日+0.82/0.00 bp/月。,state/REPORT.md,state/results/main/g6_transitions.csv
+G7,mechanism,MARKET_STATE.md#g7,历史回放完成，纯树有局部估值缺口,迁移与重训股票模型的外域动态增量分别−1.94/+1.00 bp/月。,state/REPORT.md,state/results/g7_matched_calendar.csv

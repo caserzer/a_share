@@ -1,0 +1,12 @@
+item,status,group,arm,comparator,months,bp,low,high,notes
+D4.1,HISTORICAL_PROXY,fusion,eps20,ridge,66,-0.3394796788207113,-1.0092787054208576,-0.0012357709522274,同机构同财年20日及半衰期60；另列同覆盖、纯标志和未正交
+D4.2,HISTORICAL_PROXY,fusion,target20,ridge,66,-0.0502590791046535,-0.5066513062726585,0.2887470591067084,目标价同机构、拆并排除、币种A股映射；纯动量、同覆盖
+D4.3,HISTORICAL_PROXY,fusion,coverage_delta,ridge,66,0.2709357475664913,-2.5382140268939466,2.043922294604557,滚动两组60日不同机构数及当前机构数对照；归档中断日期
+D4.4,NO_FUNDED_TRIGGER,fusion,sue20,ridge,66,0.0,0.0,0.0,年财期可算；Q1、半年、Q3无双机构且有历史误差的同口径共识
+D4.5,NO_INCREMENT_OVER_EPS,fusion,mixed,eps20,66,0.0,0.0,0.0,单EPS、单SUE、覆盖标志、两源交集和共同资金
+D4.6,ANNUAL_ONLY_PROXY,events_h10,annual_profit,annual_profit_match,66,4.932049301599049,-5.6653112673857,12.622157936234522,正式、预告、快报各列；中期无触发；H10及H20独立行业市值匹配
+D4.7,HISTORICAL_PROXY,events_h10,revenue_accel,revenue_accel_match,66,-24.670168675860488,-63.42625031502824,1.2544776712303976,营收、扣非各比单纯增速及同日匹配；H20受影响段独立重启
+D4.8,HISTORICAL_PROXY,events_h10,eps_large,eps_large_match,66,58.731855689013,-3.3459282599876654,92.28929587992752,大幅对温和同日同资及行业市值配对，H10/H20
+D4.9,LAGGED_SHARE_PROXY,etf,two_flow,ridge,66,-12.321225048418723,-23.030758508114268,-1.242744332095257,原300双基金、顺逆同席同资和退补代理
+D4.10,LAGGED_SHARE_PROXY,etf,expanded_flow,ridge,66,-40.52076446569807,-62.10228947888443,-9.442093641262064,八只ETF、300共同席、各子域；800域外无冻结分与严格交易账
+D4.11,DATED_EDGES_SMALL_N,supply,expanded_supplier_partner,expanded_supplier_pseudo,66,39.93567778139201,-122.11333850185906,196.10512239743952,9条合约，两个方向、同行动量、等数伪边及原4条

@@ -1,0 +1,123 @@
+[
+  {
+    "family": "N1",
+    "api": "stk_mins",
+    "query": {
+      "ts_code": "600000.SH",
+      "freq": "1min",
+      "start_date": "2023-01-05 09:00:00",
+      "end_date": "2023-01-05 15:00:00"
+    },
+    "asof": "2026-11-27T08:11:19.553298+00:00",
+    "status": 0,
+    "message": "",
+    "fields": [
+      "ts_code",
+      "trade_time",
+      "close",
+      "open",
+      "high",
+      "low",
+      "vol",
+      "amount"
+    ],
+    "rows": 241,
+    "sha256": "1b881399ff4059e3d796dafbe08bb4b9aa5162b59ccc26f98e79a8d8871f5d42"
+  },
+  {
+    "family": "N6",
+    "api": "etf_sh_cons",
+    "query": {
+      "ts_code": "510300.SH",
+      "trade_date": "20250605"
+    },
+    "asof": "2026-11-27T08:11:19.620429+00:00",
+    "status": 0,
+    "message": "",
+    "fields": [
+      "trade_date",
+      "ts_code",
+      "con_code",
+      "con_name",
+      "qty",
+      "sub_flag",
+      "cpr",
+      "rdr",
+      "sca",
+      "exchange"
+    ],
+    "rows": 300,
+    "sha256": "3567487212a4655712fdfa796753eb309e3e781e33866cfb062b338976bae1d1"
+  },
+  {
+    "family": "N6",
+    "api": "etf_sz_cons",
+    "query": {
+      "ts_code": "159919.SZ",
+      "trade_date": "20250605"
+    },
+    "asof": "2026-11-27T08:11:19.685212+00:00",
+    "status": 0,
+    "message": "",
+    "fields": [
+      "trade_date",
+      "ts_code",
+      "con_code",
+      "con_name",
+      "qty",
+      "sub_flag",
+      "cpr",
+      "rdr",
+      "sub_cc",
+      "red_cc",
+      "exchange"
+    ],
+    "rows": 301,
+    "sha256": "58bb9b6effdf0c74d62a8167fe35696db4e522eefaaa2bb06a82245bc7fd2ff8"
+  },
+  {
+    "family": "N6",
+    "api": "fund_share",
+    "query": {
+      "ts_code": "510300.SH",
+      "trade_date": "20250605"
+    },
+    "asof": "2026-11-27T08:11:19.741509+00:00",
+    "status": 0,
+    "message": "",
+    "fields": [
+      "ts_code",
+      "trade_date",
+      "fd_share",
+      "fund_type",
+      "market"
+    ],
+    "rows": 1,
+    "sha256": "d2d8656041a5decc967aeb18869996c5bcbd72854c2e7dc8e468d27e31d6cc7d"
+  },
+  {
+    "family": "N6",
+    "api": "fund_nav",
+    "query": {
+      "ts_code": "510300.SH",
+      "end_date": "20250605",
+      "start_date": "20250605"
+    },
+    "asof": "2026-11-27T08:11:19.808575+00:00",
+    "status": 0,
+    "message": "",
+    "fields": [
+      "ts_code",
+      "ann_date",
+      "nav_date",
+      "unit_nav",
+      "accum_nav",
+      "accum_div",
+      "net_asset",
+      "adj_nav",
+      "update_flag"
+    ],
+    "rows": 1,
+    "sha256": "897a44de3d311fc72d415dd59727ba89ad4364209dc10226d6fe506dfc818ad3"
+  }
+]
