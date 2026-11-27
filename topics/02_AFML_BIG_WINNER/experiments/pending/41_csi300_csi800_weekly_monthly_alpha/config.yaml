@@ -1,0 +1,114 @@
+experiment:
+  id: EP41
+  name: "沪深300与中证800的周至月度选股 Alpha"
+  registered_on: "2026-11-27"
+  timezone: Asia/Shanghai
+  status: registered
+  scope: design_and_registration
+  source_commit: "7514ecdcf825f8c4e60d074d2ad1f8ce9e8c2edc"
+  historical_account_endpoint: "2026-10-12"
+  goal: GOAL.md
+  direction_register: README.md
+
+data:
+  pools: [historical_CSI300, historical_CSI800]
+  inputs:
+    ep40_summary: ../40_csi300_d10_reward_penalty/EP40_FULL_REPORT.md
+    csi800_results: ../40_csi300_d10_reward_penalty/lightgbm/followup/csi800_69/results
+    frozen_csi300_candidate: ../40_csi300_d10_reward_penalty/lightgbm/followup/candidate.json
+  training: weekly_rows_quarterly_expanding
+  maturity_cutoff: strictly_before_start_of_prediction_quarter
+  eligibility: contemporaneous_members_and_features_only
+  availability_note: retrospective_source_proxy
+  external_source_gate: audit_first_publication_vintage_and_eligible_capital_before_account
+
+label_contract:
+  main_horizon_sessions: 10
+  secondary_horizons_sessions: [5, 20]
+  decision_time: signal_close
+  execution_time: next_session_open_with_original_trade_constraints
+  main_return: "adj_open[t+11] / adj_open[t+1] - 1"
+  main_target: "cross_section_average_rank / (valid_N + 1) - 0.5"
+  missing_future_label: keep_in_selection_tag_unknown_attribution
+
+account:
+  capital: 1
+  staggered_sleeves: 10
+  initial_sleeve_fraction: 0.1
+  offsets_sessions: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  fees_bp_on_net_traded_value:
+    standard: {buy: 10, sell: 20}
+    zero: {buy: 0, sell: 0}
+    double: {buy: 20, sell: 40}
+  strict_gaps: report_segments_no_splice
+  valuation_sensitivities: [zero_mark_without_fill, carry_last_close_without_fill]
+  score_rank_tie_break: inherited_EP40_higher_security_code_first
+  benchmark: same_pool_ridge_and_eligible_equal_weight_and_total_return_index
+  index_endpoint: close_to_close_reference
+
+primary_tests:
+  P1:
+    question: head_versus_disjoint_runner_up_inside_CSI800_top_decile
+    scoring: original_800_refit_rank_ridge_with_original_300_feature_reference
+    buckets: {head: "ranks 1..K300", runner_up: "ranks (K300+1)..L800"}
+    k300: "floor(eligible_N300 / 10) on the same date"
+    l800: "floor(eligible_N800 / 10)"
+    primary_pair: [head_equally_weighted, runner_up_equally_weighted]
+    auxiliary: [runner_up_random_K300, runner_up_style_matched, all_L800_equally_weighted]
+    strict_intervals:
+      - ["2021-01-11", "2023-06-15"]
+      - ["2023-06-19", "2025-03-03"]
+      - ["2025-03-03", "2026-10-12"]
+  P2:
+    question: incremental_buy_selection_of_frozen_69_feature_tree_inside_Ridge_reserves
+    scoring: frozen_EP40_CSI300_Ridge78_tree69
+    k: "floor(eligible_N300 / 10)"
+    m: "floor(K / 5)"
+    fixed: [ridge_core, tree_sell_list, reserve_pool_Kplus1_to_2K, target_buy_budget, seats]
+    primary_pair: [tree_ranked_buys, ridge_ranked_buys]
+    auxiliary: [matched_random_buys, hold_original_ridge, common_start_single_period_ledger]
+    intervals:
+      - ["2021-01-11", "2025-03-03"]
+      - ["2025-03-03", "2026-10-12"]
+
+validation:
+  primary_metric: paired_funded_net_return_gap_bp_per_common_full_calendar_month
+  primary_historical_aggregate_weight: eligible_month_count_by_segment
+  interval: paired_block_bootstrap_95_percent_within_segments
+  block_months: 3
+  bootstrap_replicates: 10000
+  bootstrap_seed: 4101
+  family_if_testing_significance: {method: Holm, alpha: 0.05, tests: [P1, P2]}
+  registered_sensitivities: [original_phase_H10, all_ten_phases, annual, excluding_best_three_months_per_segment, double_fee, drawdown, matched_capital_share]
+  matching:
+    strata: contemporaneous_industry
+    distance: "L1 on signal-date percentile ranks of float market cap and 20-session mean value traded"
+    percentile_caliper_per_field: 0.10
+    assignment: maximum_cardinality_then_minimum_distance_without_replacement
+    matched_random_assignment: same_calipers_maximum_cardinality_then_seeded_random_edge_weights
+    allow_same_stock_when_eligible_in_control: true
+    random_seeds_inclusive: [1, 200]
+  forward_checkpoints_mature_nonoverlapping_H10: [12, 24]
+  forward_start: first_pre_entry_timestamped_signal_after_version_freeze
+  results: pending
+
+directions:
+  P1: CSI800_head_versus_reserves
+  P2: CSI300_tree_buy_leg_counterfactual
+  U1: CSI300_inside_versus_outside_in_CSI800
+  U2: tradability_and_capacity
+  M1: full_pool_and_industry_feature_ranks
+  M2: time_out_of_fold_ridge_residual_boosting
+  M3: tree_complexity_and_drift
+  N1: minute_microstructure_aggregates
+  N2: analyst_consensus_revision
+  N3: earnings_surprise
+  N4: AH_lead_lag
+  N5: supply_chain_spillover
+  N6: ETF_creation_redemption_basket_demand
+  V1: H10_volatility_scaled_downside_veto
+  I1: industry_target_and_seat_budget
+  I2: separate_industry_rotation
+  E1: marginal_net_cost_gate
+  E2: natural_rebalance_buy_budget
+  E3: horizon_and_execution_frequency

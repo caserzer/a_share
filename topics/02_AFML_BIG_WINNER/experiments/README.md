@@ -19,6 +19,8 @@ experiment folder.
 
 Current pending experiments:
 
+- [EP41 沪深300与中证800的周至月度选股 Alpha](pending/41_csi300_csi800_weekly_monthly_alpha/README.md) 已登记两项主检验及后续实验方向。首批分别检验中证800头部排名、沪深300中69项树的换入选择力。[研究目标与检验口径](pending/41_csi300_csi800_weekly_monthly_alpha/GOAL.md)
+
 - [EP40 综合实验报告](pending/40_csi300_d10_reward_penalty/EP40_FULL_REPORT.md) 汇总赢家奖惩、LightGBM 过拟合检验、逐年费后收益、逐股归因及中证800迁移与重训。沪深300有限换股错峰账户累计领先 Ridge 5.27 个百分点，中证800未复现。
 
 - [EP39 突破延续与超跌续跌](pending/39_curated_breakout_oversold_cases/README.md) 完成两本真实案例册、23季训练、两池账户和形态内排序检验。精选训练在两池两个区间的全池账户均落后等量随机均值。[首轮训练实测](pending/39_curated_breakout_oversold_cases/TRAINING_REPORT.md)
